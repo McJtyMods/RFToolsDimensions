@@ -3,7 +3,9 @@ package mcjty.rftoolsdim.proxy;
 import mcjty.lib.base.GeneralConfig;
 import mcjty.lib.network.PacketHandler;
 import mcjty.lib.varia.WrenchChecker;
+import mcjty.rftoolsdim.ModCrafting;
 import mcjty.rftoolsdim.RFToolsDim;
+import mcjty.rftoolsdim.items.ModItems;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -30,9 +32,9 @@ public abstract class CommonProxy {
         SimpleNetworkWrapper network = PacketHandler.registerMessages(RFToolsDim.MODID, "rftoolsdim");
 //        RFToolsMessages.registerNetworkMessages(network);
 
-//        ModItems.init();
+        ModItems.init();
 //        ModBlocks.init();
-//        ModCrafting.init();
+        ModCrafting.init();
     }
 
     private void readMainConfig() {

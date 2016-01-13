@@ -1,0 +1,31 @@
+package mcjty.rftoolsdim.items;
+
+import mcjty.rftoolsdim.items.parts.*;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
+public class ModItems {
+
+    public static DimletBaseItem dimletBaseItem;
+    public static DimletControlCircuitItem dimletControlCircuitItem;
+    public static DimletEnergyModuleItem dimletEnergyModuleItem;
+    public static DimletMemoryUnitItem dimletMemoryUnitItem;
+    public static DimletTypeControllerItem dimletTypeControllerItem;
+
+    public static void init() {
+        dimletBaseItem = new DimletBaseItem();
+        dimletControlCircuitItem = new DimletControlCircuitItem();
+        dimletEnergyModuleItem = new DimletEnergyModuleItem();
+        dimletMemoryUnitItem = new DimletMemoryUnitItem();
+        dimletTypeControllerItem = new DimletTypeControllerItem();
+    }
+
+    @SideOnly(Side.CLIENT)
+    public static void initClient() {
+        dimletBaseItem.initModel();
+        dimletControlCircuitItem.initModel();
+        dimletEnergyModuleItem.initModel();
+        dimletMemoryUnitItem.initModel();
+        dimletTypeControllerItem.initModel();
+    }
+}
