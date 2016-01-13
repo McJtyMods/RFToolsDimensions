@@ -1,27 +1,14 @@
-package mcjty.rftools.proxy;
+package mcjty.rftoolsdim.proxy;
 
 import mcjty.lib.base.GeneralConfig;
 import mcjty.lib.network.PacketHandler;
 import mcjty.lib.varia.WrenchChecker;
-import mcjty.rftools.ForgeEventHandlers;
-import mcjty.rftools.GeneralConfiguration;
-import mcjty.rftools.RFTools;
-import mcjty.rftools.blocks.ModBlocks;
-import mcjty.rftools.blocks.crafter.CrafterConfiguration;
-import mcjty.rftools.blocks.generator.CoalGeneratorConfiguration;
-import mcjty.rftools.blocks.screens.ScreenConfiguration;
-import mcjty.rftools.blocks.storage.ModularStorageConfiguration;
-import mcjty.rftools.crafting.ModCrafting;
-import mcjty.rftools.gui.GuiProxy;
-import mcjty.rftools.items.ModItems;
-import mcjty.rftools.network.RFToolsMessages;
-import net.minecraftforge.common.MinecraftForge;
+import mcjty.rftoolsdim.RFToolsDim;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import org.apache.logging.log4j.Level;
 
@@ -36,34 +23,34 @@ public abstract class CommonProxy {
         GeneralConfig.preInit(e);
 
         modConfigDir = e.getModConfigurationDirectory();
-        mainConfig = new Configuration(new File(modConfigDir.getPath() + File.separator + "rftools", "main.cfg"));
+        mainConfig = new Configuration(new File(modConfigDir.getPath() + File.separator + "rftools", "dimensions.cfg"));
 
         readMainConfig();
 
-        SimpleNetworkWrapper network = PacketHandler.registerMessages(RFTools.MODID, "rftools");
-        RFToolsMessages.registerNetworkMessages(network);
+        SimpleNetworkWrapper network = PacketHandler.registerMessages(RFToolsDim.MODID, "rftoolsdim");
+//        RFToolsMessages.registerNetworkMessages(network);
 
-        ModItems.init();
-        ModBlocks.init();
-        ModCrafting.init();
+//        ModItems.init();
+//        ModBlocks.init();
+//        ModCrafting.init();
     }
 
     private void readMainConfig() {
         Configuration cfg = mainConfig;
         try {
             cfg.load();
-            cfg.addCustomCategoryComment(GeneralConfiguration.CATEGORY_GENERAL, "General settings");
-            cfg.addCustomCategoryComment(CoalGeneratorConfiguration.CATEGORY_COALGEN, "Settings for the coal generator");
-            cfg.addCustomCategoryComment(CrafterConfiguration.CATEGORY_CRAFTER, "Settings for the crafter");
-            cfg.addCustomCategoryComment(ModularStorageConfiguration.CATEGORY_STORAGE, "Settings for the modular storage system");
-            cfg.addCustomCategoryComment(ModularStorageConfiguration.CATEGORY_STORAGE_CONFIG, "Generic item module categories for various items");
-            cfg.addCustomCategoryComment(ScreenConfiguration.CATEGORY_SCREEN, "Settings for the screen system");
+//            cfg.addCustomCategoryComment(GeneralConfiguration.CATEGORY_GENERAL, "General settings");
+//            cfg.addCustomCategoryComment(CoalGeneratorConfiguration.CATEGORY_COALGEN, "Settings for the coal generator");
+//            cfg.addCustomCategoryComment(CrafterConfiguration.CATEGORY_CRAFTER, "Settings for the crafter");
+//            cfg.addCustomCategoryComment(ModularStorageConfiguration.CATEGORY_STORAGE, "Settings for the modular storage system");
+//            cfg.addCustomCategoryComment(ModularStorageConfiguration.CATEGORY_STORAGE_CONFIG, "Generic item module categories for various items");
+//            cfg.addCustomCategoryComment(ScreenConfiguration.CATEGORY_SCREEN, "Settings for the screen system");
 
-            GeneralConfiguration.init(cfg);
-            CoalGeneratorConfiguration.init(cfg);
-            CrafterConfiguration.init(cfg);
-            ModularStorageConfiguration.init(cfg);
-            ScreenConfiguration.init(cfg);
+//            GeneralConfiguration.init(cfg);
+//            CoalGeneratorConfiguration.init(cfg);
+//            CrafterConfiguration.init(cfg);
+//            ModularStorageConfiguration.init(cfg);
+//            ScreenConfiguration.init(cfg);
         } catch (Exception e1) {
             FMLLog.log(Level.ERROR, e1, "Problem loading config file!");
         } finally {
@@ -74,8 +61,8 @@ public abstract class CommonProxy {
     }
 
     public void init(FMLInitializationEvent e) {
-        NetworkRegistry.INSTANCE.registerGuiHandler(RFTools.instance, new GuiProxy());
-        MinecraftForge.EVENT_BUS.register(new ForgeEventHandlers());
+//        NetworkRegistry.INSTANCE.registerGuiHandler(RFToolsDim.instance, new GuiProxy());
+//        MinecraftForge.EVENT_BUS.register(new ForgeEventHandlers());
     }
 
     public void postInit(FMLPostInitializationEvent e) {

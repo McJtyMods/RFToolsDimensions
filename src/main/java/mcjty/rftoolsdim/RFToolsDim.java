@@ -1,15 +1,12 @@
-package mcjty.rftools;
+package mcjty.rftoolsdim;
 
 import mcjty.lib.base.ModBase;
 import mcjty.lib.compat.MainCompatHandler;
 import mcjty.lib.varia.Logging;
-import mcjty.rftools.blocks.logic.RedstoneChannels;
-import mcjty.rftools.blocks.storage.RemoteStorageIdRegistry;
-import mcjty.rftools.blocks.teleporter.TeleportDestinations;
-import mcjty.rftools.items.ModItems;
-import mcjty.rftools.proxy.CommonProxy;
+import mcjty.rftoolsdim.proxy.CommonProxy;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -20,23 +17,25 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.EnumMap;
 
-@Mod(modid = RFTools.MODID, name="RFTools", dependencies =
-        "required-after:Forge@["+RFTools.MIN_FORGE_VER+
-//        ",);required-after:CoFHLib@["+RFTools.MIN_COFHLIB_VER+
-        ",);required-after:McJtyLib@["+RFTools.MIN_MCJTYLIB_VER+",)",
-        version = RFTools.VERSION)
-public class RFTools implements ModBase {
-    public static final String MODID = "rftools";
+@Mod(modid = RFToolsDim.MODID, name="RFTools Dimensions", dependencies =
+        "required-after:Forge@["+ RFToolsDim.MIN_FORGE_VER+
+//                ",);required-after:CoFHLib@["+RFTools.MIN_COFHLIB_VER+
+        ",);required-after:RFTools@["+RFToolsDim.MIN_RFTOOLS_VER+
+        ",);required-after:McJtyLib@["+ RFToolsDim.MIN_MCJTYLIB_VER+",)",
+        version = RFToolsDim.VERSION)
+public class RFToolsDim implements ModBase {
+    public static final String MODID = "rftoolsdim";
     public static final String VERSION = "4.20beta8";
     public static final String MIN_FORGE_VER = "11.15.0.1686";
 //    public static final String MIN_COFHLIB_VER = "1.0.3";
     public static final String MIN_MCJTYLIB_VER = "1.8.9-1.8.1beta4";
+    public static final String MIN_RFTOOLS_VER = "1.8.9-4.20beta8";
 
     @SidedProxy(clientSide="mcjty.rftools.proxy.ClientProxy", serverSide="mcjty.rftools.proxy.ServerProxy")
     public static CommonProxy proxy;
 
-    @Mod.Instance("rftools")
-    public static RFTools instance;
+    @Mod.Instance("rftoolsdim")
+    public static RFToolsDim instance;
 
     // Are some mods loaded?.
 
@@ -45,37 +44,18 @@ public class RFTools implements ModBase {
     /** This is used to keep track of GUIs that we make*/
     private static int modGuiIndex = 0;
 
-    public ClientInfo clientInfo = new ClientInfo();
-
-    public static CreativeTabs tabRfTools = new CreativeTabs("RfTools") {
+    public static CreativeTabs tabRfToolsDim = new CreativeTabs("RfToolsDim") {
         @Override
         @SideOnly(Side.CLIENT)
         public Item getTabIconItem() {
-            return ModItems.rfToolsManualItem;
+            return Items.diamond; /*ModItems.rfToolsManualItem;*/
         }
     };
 
     public static final String SHIFT_MESSAGE = "<Press Shift>";
 
     /** Set our custom inventory Gui index to the next available Gui index */
-    public static final int GUI_MANUAL_MAIN = modGuiIndex++;
-    public static final int GUI_COALGENERATOR = modGuiIndex++;
-    public static final int GUI_CRAFTER = modGuiIndex++;
-    public static final int GUI_MODULAR_STORAGE = modGuiIndex++;
-    public static final int GUI_REMOTE_STORAGE = modGuiIndex++;
-    public static final int GUI_STORAGE_FILTER = modGuiIndex++;
-    public static final int GUI_REMOTE_STORAGE_ITEM = modGuiIndex++;
-    public static final int GUI_MODULAR_STORAGE_ITEM = modGuiIndex++;
-    public static final int GUI_DIALING_DEVICE = modGuiIndex++;
-    public static final int GUI_MATTER_RECEIVER = modGuiIndex++;
-    public static final int GUI_MATTER_TRANSMITTER = modGuiIndex++;
-    public static final int GUI_ADVANCEDPORTER = modGuiIndex++;
-    public static final int GUI_TELEPORTPROBE = modGuiIndex++;
-    public static final int GUI_SCREEN = modGuiIndex++;
-    public static final int GUI_SCREENCONTROLLER = modGuiIndex++;
-    public static final int GUI_COUNTER = modGuiIndex++;
-    public static final int GUI_SEQUENCER = modGuiIndex++;
-    public static final int GUI_TIMER = modGuiIndex++;
+//    public static final int GUI_MANUAL_MAIN = modGuiIndex++;
 
 
     /**
@@ -94,7 +74,7 @@ public class RFTools implements ModBase {
     public void init(FMLInitializationEvent e) {
         this.proxy.init(e);
 
-        Achievements.init();
+//        Achievements.init();
     }
 
     @Mod.EventHandler
@@ -107,9 +87,9 @@ public class RFTools implements ModBase {
     @Mod.EventHandler
     public void serverStopped(FMLServerStoppedEvent event) {
         Logging.log("RFTools: server is stopping. Shutting down gracefully");
-        TeleportDestinations.clearInstance();
-        RemoteStorageIdRegistry.clearInstance();
-        RedstoneChannels.clearInstance();
+//        TeleportDestinations.clearInstance();
+//        RemoteStorageIdRegistry.clearInstance();
+//        RedstoneChannels.clearInstance();
     }
 
     /**
@@ -131,6 +111,6 @@ public class RFTools implements ModBase {
     @Override
     public void openManual(EntityPlayer player, int bookIndex, String page) {
 //        GuiRFToolsManual.locatePage = page;
-        player.openGui(RFTools.instance, bookIndex, player.worldObj, (int) player.posX, (int) player.posY, (int) player.posZ);
+        player.openGui(RFToolsDim.instance, bookIndex, player.worldObj, (int) player.posX, (int) player.posY, (int) player.posZ);
     }
 }

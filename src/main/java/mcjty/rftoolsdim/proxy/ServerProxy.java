@@ -1,4 +1,4 @@
-package mcjty.rftools.proxy;
+package mcjty.rftoolsdim.proxy;
 
 
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;

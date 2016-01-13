@@ -1,8 +1,8 @@
 [
 {
-  "modid": "rftools",
-  "name": "RFTools",
-  "description": "RedFlux tools",
+  "modid": "rftoolsdim",
+  "name": "RFTools Dimensions",
+  "description": "RFTools Dimensions Addon",
   "version": "${version}",
   "mcversion": "${mcversion}",
   "url": "",
