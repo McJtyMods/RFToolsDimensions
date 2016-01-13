@@ -41,8 +41,8 @@ def ENV = System.getenv()
 if (ENV.DRONE_BUILD_NUMBER) {
     version += ".n" + ENV.DRONE_BUILD_NUMBER
 }
-group= "mcjty.rftools" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "rftools"
+group= "mcjty.rftoolsdim" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = "rftoolsdim"
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -74,11 +74,11 @@ dependencies {
 //    compile "com.github.mcjty:mcjtylib:1.8.9-1.8.1beta4-SNAPSHOT:dev"
 }
 
-jar {
-    manifest {
-        attributes 'FMLAT': 'rftools_at.cfg'
-    }
-}
+//jar {
+//    manifest {
+//        attributes 'FMLAT': 'rftools_at.cfg'
+//    }
+//}
 
 processResources
 {
