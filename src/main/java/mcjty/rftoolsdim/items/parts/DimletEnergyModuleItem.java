@@ -3,11 +3,14 @@ package mcjty.rftoolsdim.items.parts;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.items.GenericRFToolsItem;
 import mcjty.rftoolsdim.items.ModItems;
+import net.minecraft.client.resources.model.ModelBakery;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.input.Keyboard;
@@ -24,8 +27,19 @@ public class DimletEnergyModuleItem extends GenericRFToolsItem {
     }
 
     @SideOnly(Side.CLIENT)
+    public void initModel() {
+        ModelResourceLocation models[] = new ModelResourceLocation[7];
+        for (int i = 0 ; i <= 3 ; i++) {
+            models[i] = new ModelResourceLocation(getRegistryName() + i, "inventory");
+            ModelBakery.registerItemVariants(this, models[i]);
+        }
+
+        ModelLoader.setCustomMeshDefinition(this, stack -> models[stack.getItemDamage()]);
+    }
+
+    @SideOnly(Side.CLIENT)
     @Override
-    public void addInformation(ItemStack itemStack, EntityPlayer player, List list, boolean whatIsThis) {
+    public void addInformation(ItemStack itemStack, EntityPlayer player, List<String> list, boolean whatIsThis) {
         super.addInformation(itemStack, player, list, whatIsThis);
         if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
             list.add(EnumChatFormatting.WHITE + "Every dimlet needs an energy module. You can get");
@@ -45,7 +59,7 @@ public class DimletEnergyModuleItem extends GenericRFToolsItem {
     }
 
     @Override
-    public void getSubItems(Item item, CreativeTabs creativeTabs, List list) {
+    public void getSubItems(Item item, CreativeTabs creativeTabs, List<ItemStack> list) {
         for (int i = 0 ; i < 3 ; i++) {
             list.add(new ItemStack(ModItems.dimletEnergyModuleItem, 1, i));
         }

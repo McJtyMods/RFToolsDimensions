@@ -19,7 +19,7 @@ public class DimletBaseItem extends GenericRFToolsItem {
 
     @SideOnly(Side.CLIENT)
     @Override
-    public void addInformation(ItemStack itemStack, EntityPlayer player, List list, boolean whatIsThis) {
+    public void addInformation(ItemStack itemStack, EntityPlayer player, List<String> list, boolean whatIsThis) {
         super.addInformation(itemStack, player, list, whatIsThis);
         if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
             list.add(EnumChatFormatting.WHITE + "This is a basic part of a dimlet. You can get this");

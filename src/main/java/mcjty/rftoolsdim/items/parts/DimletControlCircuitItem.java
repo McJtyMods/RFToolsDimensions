@@ -34,14 +34,12 @@ public class DimletControlCircuitItem extends GenericRFToolsItem {
             ModelBakery.registerItemVariants(this, models[i]);
         }
 
-        ModelLoader.setCustomMeshDefinition(this, stack -> {
-            return models[stack.getItemDamage()];
-        });
+        ModelLoader.setCustomMeshDefinition(this, stack -> models[stack.getItemDamage()]);
     }
 
     @SideOnly(Side.CLIENT)
     @Override
-    public void addInformation(ItemStack itemStack, EntityPlayer player, List list, boolean whatIsThis) {
+    public void addInformation(ItemStack itemStack, EntityPlayer player, List<String> list, boolean whatIsThis) {
         super.addInformation(itemStack, player, list, whatIsThis);
         if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
             list.add(EnumChatFormatting.WHITE + "Every dimlet needs one control circuit. You can get");
@@ -61,7 +59,7 @@ public class DimletControlCircuitItem extends GenericRFToolsItem {
     }
 
     @Override
-    public void getSubItems(Item item, CreativeTabs creativeTabs, List list) {
+    public void getSubItems(Item item, CreativeTabs creativeTabs, List<ItemStack> list) {
         for (int i = 0 ; i < 7 ; i++) {
             list.add(new ItemStack(ModItems.dimletControlCircuitItem, 1, i));
         }
