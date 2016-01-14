@@ -5,7 +5,6 @@ import java.util.Map;
 
 public enum DimletType {
     DIMLET_BIOME(new BiomeDimletType()),
-    DIMLET_FOLIAGE(new FoliageDimletType()),
     DIMLET_LIQUID(new LiquidDimletType()),
     DIMLET_MATERIAL(new MaterialDimletType()),
     DIMLET_MOBS(new MobDimletType()),
