@@ -29,6 +29,7 @@ public class DimletTypeControllerItem extends GenericRFToolsItem {
         setMaxDamage(0);
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public void initModel() {
         Map<DimletType,ModelResourceLocation> models = new HashMap<>();

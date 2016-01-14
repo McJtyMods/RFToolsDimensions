@@ -1,7 +1,7 @@
 {
   "parent": "builtin/generated",
   "textures": {
-    "layer0": "rftools:items/parts/dimletBase"
+    "layer0": "rftoolsdim:items/parts/dimletBase"
   },
   "display": {
     "thirdperson": {

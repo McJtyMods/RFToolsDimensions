@@ -26,6 +26,7 @@ public class DimletControlCircuitItem extends GenericRFToolsItem {
         setMaxDamage(0);
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public void initModel() {
         ModelResourceLocation models[] = new ModelResourceLocation[7];
