@@ -20,7 +20,7 @@ import java.util.EnumMap;
 @Mod(modid = RFToolsDim.MODID, name="RFTools Dimensions", dependencies =
         "required-after:Forge@["+ RFToolsDim.MIN_FORGE_VER+
 //                ",);required-after:CoFHLib@["+RFTools.MIN_COFHLIB_VER+
-        ",);required-after:RFTools@["+RFToolsDim.MIN_RFTOOLS_VER+
+        ",);required-after:rftools@["+RFToolsDim.MIN_RFTOOLS_VER+
         ",);required-after:McJtyLib@["+ RFToolsDim.MIN_MCJTYLIB_VER+",)",
         version = RFToolsDim.VERSION)
 public class RFToolsDim implements ModBase {
@@ -31,7 +31,7 @@ public class RFToolsDim implements ModBase {
     public static final String MIN_MCJTYLIB_VER = "1.8.9-1.8.1beta4";
     public static final String MIN_RFTOOLS_VER = "1.8.9-4.20beta8";
 
-    @SidedProxy(clientSide="mcjty.rftools.proxy.ClientProxy", serverSide="mcjty.rftools.proxy.ServerProxy")
+    @SidedProxy(clientSide="mcjty.rftoolsdim.proxy.ClientProxy", serverSide="mcjty.rftoolsdim.proxy.ServerProxy")
     public static CommonProxy proxy;
 
     @Mod.Instance("rftoolsdim")
