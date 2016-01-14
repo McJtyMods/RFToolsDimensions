@@ -1,37 +1,40 @@
 package mcjty.rftoolsdim.items.parts;
 
 import mcjty.rftoolsdim.RFToolsDim;
+import mcjty.rftoolsdim.dimensions.types.StructureType;
 import mcjty.rftoolsdim.items.GenericRFToolsItem;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.apache.commons.lang3.StringUtils;
 import org.lwjgl.input.Keyboard;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class StructureEssenceItem extends GenericRFToolsItem {
-//    public static final Map<Integer,StructureType> structures = new HashMap<Integer, StructureType>();
-//
-//    static {
-//        structures.put(1, StructureType.STRUCTURE_VILLAGE);
-//        structures.put(2, StructureType.STRUCTURE_STRONGHOLD);
-//        structures.put(3, StructureType.STRUCTURE_DUNGEON);
-//        structures.put(4, StructureType.STRUCTURE_FORTRESS);
-//        structures.put(5, StructureType.STRUCTURE_MINESHAFT);
-//        structures.put(6, StructureType.STRUCTURE_SCATTERED);
-//    }
 
     public StructureEssenceItem() {
         super("structure_essence");
-        setMaxStackSize(16);
+        setMaxStackSize(64);
         setHasSubtypes(true);
         setMaxDamage(0);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void initModel() {
+        ModelResourceLocation resource = new ModelResourceLocation(getRegistryName(), "inventory");
+        ModelLoader.setCustomMeshDefinition(this, stack -> resource);
+    }
+
+    private String calculateUnlocalizedNameSuffix(StructureType type) {
+        return "_" + StringUtils.uncapitalize(type.getName());
     }
 
     @SideOnly(Side.CLIENT)
@@ -46,20 +49,15 @@ public class StructureEssenceItem extends GenericRFToolsItem {
         }
     }
 
-//    @Override
-//    public String getUnlocalizedName(ItemStack itemStack) {
-//        StructureType structureType = structures.get(itemStack.getItemDamage());
-//        if (structureType == null) {
-//            return "unknown";
-//        }
-//        return super.getUnlocalizedName(itemStack) + structureType.getName();
-//    }
-
     @Override
-    public void getSubItems(Item item, CreativeTabs creativeTabs, List list) {
-//        for (Integer key : structures.keySet()) {
-//            list.add(new ItemStack(DimletConstructionSetup.structureEssenceItem, 1, key));
-//        }
+    public String getUnlocalizedName(ItemStack itemStack) {
+        return super.getUnlocalizedName(itemStack) + calculateUnlocalizedNameSuffix(StructureType.values()[itemStack.getItemDamage()]);
     }
 
+    @Override
+    public void getSubItems(Item item, CreativeTabs creativeTabs, List<ItemStack> list) {
+        for (StructureType type : StructureType.values()) {
+            list.add(new ItemStack(this, 1, type.ordinal()));
+        }
+    }
 }

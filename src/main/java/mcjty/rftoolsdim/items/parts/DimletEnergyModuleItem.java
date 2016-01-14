@@ -2,7 +2,6 @@ package mcjty.rftoolsdim.items.parts;
 
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.items.GenericRFToolsItem;
-import mcjty.rftoolsdim.items.ModItems;
 import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
@@ -62,7 +61,7 @@ public class DimletEnergyModuleItem extends GenericRFToolsItem {
     @Override
     public void getSubItems(Item item, CreativeTabs creativeTabs, List<ItemStack> list) {
         for (int i = 0 ; i < 3 ; i++) {
-            list.add(new ItemStack(ModItems.dimletEnergyModuleItem, 1, i));
+            list.add(new ItemStack(this, 1, i));
         }
     }
 }

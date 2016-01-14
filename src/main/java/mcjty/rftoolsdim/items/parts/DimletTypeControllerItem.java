@@ -3,7 +3,6 @@ package mcjty.rftoolsdim.items.parts;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.dimensions.dimlets.types.DimletType;
 import mcjty.rftoolsdim.items.GenericRFToolsItem;
-import mcjty.rftoolsdim.items.ModItems;
 import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
@@ -68,9 +67,7 @@ public class DimletTypeControllerItem extends GenericRFToolsItem {
     @Override
     public void getSubItems(Item item, CreativeTabs creativeTabs, List<ItemStack> list) {
         for (DimletType type : DimletType.values()) {
-//            if (icons.containsKey(type)) {
-                list.add(new ItemStack(ModItems.dimletTypeControllerItem, 1, type.ordinal()));
-//            }
+            list.add(new ItemStack(this, 1, type.ordinal()));
         }
     }
 }
