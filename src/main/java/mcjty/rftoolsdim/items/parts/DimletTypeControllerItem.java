@@ -1,7 +1,7 @@
 package mcjty.rftoolsdim.items.parts;
 
 import mcjty.rftoolsdim.RFToolsDim;
-import mcjty.rftoolsdim.dimlets.types.DimletType;
+import mcjty.rftoolsdim.dimensions.dimlets.types.DimletType;
 import mcjty.rftoolsdim.items.GenericRFToolsItem;
 import mcjty.rftoolsdim.items.ModItems;
 import net.minecraft.client.resources.model.ModelBakery;
