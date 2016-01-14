@@ -5,7 +5,9 @@ import mcjty.lib.network.PacketHandler;
 import mcjty.lib.varia.WrenchChecker;
 import mcjty.rftoolsdim.ModCrafting;
 import mcjty.rftoolsdim.RFToolsDim;
+import mcjty.rftoolsdim.dimensions.ModDimensions;
 import mcjty.rftoolsdim.items.ModItems;
+import mcjty.rftoolsdim.network.RFToolsDimMessages;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -26,15 +28,15 @@ public abstract class CommonProxy {
 
         modConfigDir = e.getModConfigurationDirectory();
         mainConfig = new Configuration(new File(modConfigDir.getPath() + File.separator + "rftools", "dimensions.cfg"));
-
         readMainConfig();
 
         SimpleNetworkWrapper network = PacketHandler.registerMessages(RFToolsDim.MODID, "rftoolsdim");
-//        RFToolsMessages.registerNetworkMessages(network);
+        RFToolsDimMessages.registerNetworkMessages(network);
 
         ModItems.init();
 //        ModBlocks.init();
         ModCrafting.init();
+        ModDimensions.init();
     }
 
     private void readMainConfig() {
