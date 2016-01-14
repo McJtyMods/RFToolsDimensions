@@ -76,7 +76,7 @@ dependencies {
 
 //jar {
 //    manifest {
-//        attributes 'FMLAT': 'rftools_at.cfg'
+//        attributes 'FMLAT': 'rftoolsdim_at.cfg'
 //    }
 //}
 

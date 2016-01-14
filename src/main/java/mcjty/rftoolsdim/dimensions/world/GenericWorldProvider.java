@@ -1,37 +1,34 @@
 package mcjty.rftoolsdim.dimensions.world;
 
-import cpw.mods.fml.common.Optional;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import ivorius.reccomplex.dimensions.DimensionDictionary;
 import mcjty.lib.varia.Logging;
-import mcjty.rftools.api.dimension.RFToolsWorldProvider;
-import mcjty.rftools.blocks.dimlets.DimletConfiguration;
-import mcjty.rftools.dimension.DimensionInformation;
-import mcjty.rftools.dimension.DimensionStorage;
-import mcjty.rftools.dimension.RfToolsDimensionManager;
-import mcjty.rftools.dimension.description.WeatherDescriptor;
-import mcjty.rftools.dimension.network.PacketGetDimensionEnergy;
-import mcjty.rftools.dimension.world.types.ControllerType;
-import mcjty.rftools.dimension.world.types.SkyType;
-import mcjty.rftools.dimension.world.types.StructureType;
-import mcjty.rftools.items.dimlets.types.Patreons;
-import mcjty.rftools.network.RFToolsMessages;
+import mcjty.rftoolsdim.api.dimension.RFToolsWorldProvider;
+import mcjty.rftoolsdim.dimensions.DimensionInformation;
+import mcjty.rftoolsdim.dimensions.DimensionStorage;
+import mcjty.rftoolsdim.dimensions.DimletConfiguration;
+import mcjty.rftoolsdim.dimensions.RfToolsDimensionManager;
+import mcjty.rftoolsdim.dimensions.description.WeatherDescriptor;
+import mcjty.rftoolsdim.dimensions.dimlets.types.Patreons;
+import mcjty.rftoolsdim.dimensions.types.ControllerType;
+import mcjty.rftoolsdim.dimensions.types.SkyType;
+import mcjty.rftoolsdim.network.RFToolsDimMessages;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.Vec3;
+import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.biome.WorldChunkManager;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraftforge.common.DimensionManager;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-@Optional.InterfaceList(@Optional.Interface(iface = "ivorius.reccomplex.dimensions.DimensionDictionary$Handler", modid = "reccomplex"))
-public class GenericWorldProvider extends WorldProvider implements DimensionDictionary.Handler, RFToolsWorldProvider {
+//@Optional.InterfaceList(@Optional.Interface(iface = "ivorius.reccomplex.dimensions.DimensionDictionary$Handler", modid = "reccomplex"))
+public class GenericWorldProvider extends WorldProvider implements  /*@todo implements DimensionDictionary.Handler,*/ RFToolsWorldProvider {
 
     public static final String RFTOOLS_DIMENSION = "rftools dimension";
 
@@ -42,6 +39,10 @@ public class GenericWorldProvider extends WorldProvider implements DimensionDict
 
     private long calculateSeed(long seed, int dim) {
         return dim * 13L + seed;
+    }
+
+    public World getWorld() {
+        return worldObj;
     }
 
     @Override
@@ -55,7 +56,7 @@ public class GenericWorldProvider extends WorldProvider implements DimensionDict
 
     private DimensionInformation getDimensionInformation() {
         if (dimensionInformation == null) {
-            int dim = worldObj.provider.dimensionId;
+            int dim = worldObj.provider.getDimensionId();
             dimensionInformation = RfToolsDimensionManager.getDimensionManager(worldObj).getDimensionInformation(dim);
             if (dimensionInformation == null) {
                 Logging.log("Dimension information for dimension " + dim + " is missing!");
@@ -67,53 +68,53 @@ public class GenericWorldProvider extends WorldProvider implements DimensionDict
         return dimensionInformation;
     }
 
-    @Override
-    @Optional.Method(modid = "reccomplex")
-    public Set<String> getDimensionTypes() {
-        getDimensionInformation();
-        if (dimensionInformation == null) {
-            return Collections.EMPTY_SET;
-        }
-        if (dimensionTypes == null) {
-            dimensionTypes = new HashSet<String>();
-            dimensionTypes.add(DimensionDictionary.INFINITE);
-            dimensionTypes.add("RFTOOLS_DIMENSION");
-            // @todo temporary. This should probably be in the TerrainType enum.
-            switch (dimensionInformation.getTerrainType()) {
-                case TERRAIN_VOID:
-                case TERRAIN_ISLAND:
-                case TERRAIN_ISLANDS:
-                case TERRAIN_CHAOTIC:
-                case TERRAIN_PLATEAUS:
-                case TERRAIN_GRID:
-                    dimensionTypes.add(DimensionDictionary.NO_TOP_LIMIT);
-                    dimensionTypes.add(DimensionDictionary.NO_BOTTOM_LIMIT);
-                    break;
-                case TERRAIN_FLAT:
-                case TERRAIN_AMPLIFIED:
-                case TERRAIN_NORMAL:
-                case TERRAIN_NEARLANDS:
-                    dimensionTypes.add(DimensionDictionary.NO_TOP_LIMIT);
-                    dimensionTypes.add(DimensionDictionary.BOTTOM_LIMIT);
-                    break;
-                case TERRAIN_CAVERN_OLD:
-                    dimensionTypes.add(DimensionDictionary.BOTTOM_LIMIT);
-                    dimensionTypes.add(DimensionDictionary.TOP_LIMIT);
-                    break;
-                case TERRAIN_CAVERN:
-                case TERRAIN_LOW_CAVERN:
-                case TERRAIN_FLOODED_CAVERN:
-                    dimensionTypes.add(DimensionDictionary.BOTTOM_LIMIT);
-                    dimensionTypes.add(DimensionDictionary.NO_TOP_LIMIT);
-                    break;
-            }
-            if (dimensionInformation.hasStructureType(StructureType.STRUCTURE_RECURRENTCOMPLEX)) {
-                Collections.addAll(dimensionTypes, dimensionInformation.getDimensionTypes());
-            }
-        }
-        return dimensionTypes;
-    }
-
+//    @Override
+//    @Optional.Method(modid = "reccomplex")
+//    public Set<String> getDimensionTypes() {
+//        getDimensionInformation();
+//        if (dimensionInformation == null) {
+//            return Collections.EMPTY_SET;
+//        }
+//        if (dimensionTypes == null) {
+//            dimensionTypes = new HashSet<String>();
+//            dimensionTypes.add(DimensionDictionary.INFINITE);
+//            dimensionTypes.add("RFTOOLS_DIMENSION");
+//            // @todo temporary. This should probably be in the TerrainType enum.
+//            switch (dimensionInformation.getTerrainType()) {
+//                case TERRAIN_VOID:
+//                case TERRAIN_ISLAND:
+//                case TERRAIN_ISLANDS:
+//                case TERRAIN_CHAOTIC:
+//                case TERRAIN_PLATEAUS:
+//                case TERRAIN_GRID:
+//                    dimensionTypes.add(DimensionDictionary.NO_TOP_LIMIT);
+//                    dimensionTypes.add(DimensionDictionary.NO_BOTTOM_LIMIT);
+//                    break;
+//                case TERRAIN_FLAT:
+//                case TERRAIN_AMPLIFIED:
+//                case TERRAIN_NORMAL:
+//                case TERRAIN_NEARLANDS:
+//                    dimensionTypes.add(DimensionDictionary.NO_TOP_LIMIT);
+//                    dimensionTypes.add(DimensionDictionary.BOTTOM_LIMIT);
+//                    break;
+//                case TERRAIN_CAVERN_OLD:
+//                    dimensionTypes.add(DimensionDictionary.BOTTOM_LIMIT);
+//                    dimensionTypes.add(DimensionDictionary.TOP_LIMIT);
+//                    break;
+//                case TERRAIN_CAVERN:
+//                case TERRAIN_LOW_CAVERN:
+//                case TERRAIN_FLOODED_CAVERN:
+//                    dimensionTypes.add(DimensionDictionary.BOTTOM_LIMIT);
+//                    dimensionTypes.add(DimensionDictionary.NO_TOP_LIMIT);
+//                    break;
+//            }
+//            if (dimensionInformation.hasStructureType(StructureType.STRUCTURE_RECURRENTCOMPLEX)) {
+//                Collections.addAll(dimensionTypes, dimensionInformation.getDimensionTypes());
+//            }
+//        }
+//        return dimensionTypes;
+//    }
+//
     private void setSeed(int dim) {
         if (dimensionInformation == null) {
             if (worldObj == null) {
@@ -151,15 +152,16 @@ public class GenericWorldProvider extends WorldProvider implements DimensionDict
         if (dimensionInformation != null) {
             ControllerType type = dimensionInformation.getControllerType();
             if (type == ControllerType.CONTROLLER_SINGLE) {
-                worldChunkMgr = new SingleBiomeWorldChunkManager(worldObj, worldObj.getSeed(), terrainType);
+//                worldChunkMgr = new SingleBiomeWorldChunkManager(worldObj, worldObj.getSeed(), terrainType);
+                worldChunkMgr = new SingleBiomeWorldChunkManager(worldObj, worldObj.getSeed(), worldObj.getWorldType());
             } else if (type == ControllerType.CONTROLLER_DEFAULT) {
-                worldChunkMgr = new WorldChunkManager(seed, worldObj.getWorldInfo().getTerrainType());
+                worldChunkMgr = new WorldChunkManager(seed, worldObj.getWorldInfo().getTerrainType(), ""); // @todo
             } else {
                 GenericWorldChunkManager.hackyDimensionInformation = dimensionInformation;      // Hack to get the dimension information in the superclass.
                 worldChunkMgr = new GenericWorldChunkManager(seed, worldObj.getWorldInfo().getTerrainType(), dimensionInformation);
             }
         } else {
-            worldChunkMgr = new WorldChunkManager(seed, worldObj.getWorldInfo().getTerrainType());
+            worldChunkMgr = new WorldChunkManager(seed, worldObj.getWorldInfo().getTerrainType(), ""); //@todo
         }
 
         if (dimensionInformation != null) {
@@ -240,7 +242,7 @@ public class GenericWorldProvider extends WorldProvider implements DimensionDict
 
     @Override
     public IChunkProvider createChunkGenerator() {
-        int dim = worldObj.provider.dimensionId;
+        int dim = worldObj.provider.getDimensionId();
         setSeed(dim);
         return new GenericChunkProvider(worldObj, seed);
     }
@@ -260,10 +262,10 @@ public class GenericWorldProvider extends WorldProvider implements DimensionDict
     @Override
     @SideOnly(Side.CLIENT)
     public Vec3 getFogColor(float angle, float dt) {
-        int dim = worldObj.provider.dimensionId;
+        int dim = worldObj.provider.getDimensionId();
         if (System.currentTimeMillis() - lastFogTime > 1000) {
             lastFogTime = System.currentTimeMillis();
-            RFToolsMessages.INSTANCE.sendToServer(new PacketGetDimensionEnergy(dim));
+            RFToolsDimMessages.INSTANCE.sendToServer(new PacketGetDimensionEnergy(dim));
         }
 
         float factor = calculatePowerBlackout(dim);
@@ -281,7 +283,7 @@ public class GenericWorldProvider extends WorldProvider implements DimensionDict
         }
 
         Vec3 color = super.getFogColor(angle, dt);
-        return Vec3.createVectorHelper(color.xCoord * r, color.yCoord * g, color.zCoord * b);
+        return new Vec3(color.xCoord * r, color.yCoord * g, color.zCoord * b);
     }
 
     private static long lastTime = 0;
@@ -289,10 +291,10 @@ public class GenericWorldProvider extends WorldProvider implements DimensionDict
     @Override
     @SideOnly(Side.CLIENT)
     public Vec3 getSkyColor(Entity cameraEntity, float partialTicks) {
-        int dim = worldObj.provider.dimensionId;
+        int dim = worldObj.provider.getDimensionId();
         if (System.currentTimeMillis() - lastTime > 1000) {
             lastTime = System.currentTimeMillis();
-            RFToolsMessages.INSTANCE.sendToServer(new PacketGetDimensionEnergy(dim));
+            RFToolsDimMessages.INSTANCE.sendToServer(new PacketGetDimensionEnergy(dim));
         }
 
         float factor = calculatePowerBlackout(dim);
@@ -310,7 +312,7 @@ public class GenericWorldProvider extends WorldProvider implements DimensionDict
         }
 
         Vec3 skyColor = super.getSkyColor(cameraEntity, partialTicks);
-        return Vec3.createVectorHelper(skyColor.xCoord * r, skyColor.yCoord * g, skyColor.zCoord * b);
+        return new Vec3(skyColor.xCoord * r, skyColor.yCoord * g, skyColor.zCoord * b);
     }
 
     private float calculatePowerBlackout(int dim) {
@@ -335,7 +337,7 @@ public class GenericWorldProvider extends WorldProvider implements DimensionDict
         if (dimensionInformation == null) {
             return super.getSunBrightness(par1);
         }
-        int dim = worldObj.provider.dimensionId;
+        int dim = worldObj.provider.getDimensionId();
         float factor = calculatePowerBlackout(dim);
         return super.getSunBrightness(par1) * dimensionInformation.getSkyDescriptor().getSunBrightnessFactor() * factor;
     }

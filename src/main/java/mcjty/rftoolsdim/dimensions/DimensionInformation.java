@@ -299,22 +299,22 @@ public class DimensionInformation {
         }
 
         // Support for the old format with only one sphere block.
-        BlockMeta oldLiquidSphereBlock = getBlockMeta(tagCompound, "liquidSphereBlock");
+        IBlockState oldLiquidSphereBlock = getBlockMeta(tagCompound, "liquidSphereBlock");
         liquidSphereBlocks = readBlockArrayFromNBT(tagCompound, "liquidSphereBlocks");
         if (liquidSphereBlocks.length == 0) {
-            liquidSphereBlocks = new BlockMeta[] { oldLiquidSphereBlock };
+            liquidSphereBlocks = new IBlockState[] { oldLiquidSphereBlock };
         }
 
         pyramidBlocks = readBlockArrayFromNBT(tagCompound, "pyramidBlocks");
         if (pyramidBlocks.length == 0) {
-            pyramidBlocks = new BlockMeta[] { BlockMeta.STONE };
+            pyramidBlocks = new IBlockState[] { Blocks.stone.getDefaultState() };
         }
 
         // Support for the old format with only one sphere block.
-        BlockMeta oldSphereBlock = getBlockMeta(tagCompound, "sphereBlock");
+        IBlockState oldSphereBlock = getBlockMeta(tagCompound, "sphereBlock");
         sphereBlocks = readBlockArrayFromNBT(tagCompound, "sphereBlocks");
         if (sphereBlocks.length == 0) {
-            sphereBlocks = new BlockMeta[] { oldSphereBlock };
+            sphereBlocks = new IBlockState[] { oldSphereBlock };
         }
 
         hugeSphereBlocks = readBlockArrayFromNBT(tagCompound, "hugeSphereBlocks");
@@ -375,7 +375,7 @@ public class DimensionInformation {
     private Block[] readFluidsFromNBT(NBTTagCompound tagCompound, String name) {
         List<Block> fluids = new ArrayList<Block>();
         for (int a : getIntArraySafe(tagCompound, name)) {
-            fluids.add((Block) Block.blockRegistry.getObjectById(a));
+            fluids.add(Block.blockRegistry.getObjectById(a));
         }
         return fluids.toArray(new Block[fluids.size()]);
     }
@@ -386,7 +386,7 @@ public class DimensionInformation {
         int[] metas = getIntArraySafe(tagCompound, name + "_meta");
         for (int i = 0 ; i < blockIds.length ; i++) {
             int id = blockIds[i];
-            Block block = (Block) Block.blockRegistry.getObjectById(id);
+            Block block = Block.blockRegistry.getObjectById(id);
             int meta = 0;
             if (i < metas.length) {
                 meta = metas[i];
@@ -523,12 +523,12 @@ public class DimensionInformation {
         tagCompound.setIntArray(name, ArrayUtils.toPrimitive(c.toArray(new Integer[c.size()])));
     }
 
-    private static void writeBlocksToNBT(NBTTagCompound tagCompound, BlockMeta[] blocks, String name) {
+    private static void writeBlocksToNBT(NBTTagCompound tagCompound, IBlockState[] blocks, String name) {
         List<Integer> ids = new ArrayList<Integer>(blocks.length);
         List<Integer> meta = new ArrayList<Integer>(blocks.length);
-        for (BlockMeta t : blocks) {
+        for (IBlockState t : blocks) {
             ids.add(Block.blockRegistry.getIDForObject(t.getBlock()));
-            meta.add((int)t.getMeta());
+            meta.add((int)t.getBlock().getMetaFromState(t));
         }
         tagCompound.setIntArray(name, ArrayUtils.toPrimitive(ids.toArray(new Integer[ids.size()])));
         tagCompound.setIntArray(name + "_meta", ArrayUtils.toPrimitive(meta.toArray(new Integer[meta.size()])));
