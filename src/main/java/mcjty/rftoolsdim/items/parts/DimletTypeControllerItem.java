@@ -14,6 +14,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.apache.commons.lang3.StringUtils;
 import org.lwjgl.input.Keyboard;
 
 import java.util.HashMap;
@@ -34,11 +35,15 @@ public class DimletTypeControllerItem extends GenericRFToolsItem {
     public void initModel() {
         Map<DimletType,ModelResourceLocation> models = new HashMap<>();
         for (DimletType type : DimletType.values()) {
-            models.put(type, new ModelResourceLocation(getRegistryName() + type.dimletType.getName(), "inventory"));
+            models.put(type, new ModelResourceLocation(getRegistryName() + calculateUnlocalizedNameSuffix(type), "inventory"));
             ModelBakery.registerItemVariants(this, models.get(type));
         }
 
         ModelLoader.setCustomMeshDefinition(this, stack -> models.get(DimletType.values()[stack.getItemDamage()]));
+    }
+
+    private String calculateUnlocalizedNameSuffix(DimletType type) {
+        return "_" + StringUtils.uncapitalize(type.dimletType.getName());
     }
 
     @SideOnly(Side.CLIENT)
@@ -57,7 +62,7 @@ public class DimletTypeControllerItem extends GenericRFToolsItem {
 
     @Override
     public String getUnlocalizedName(ItemStack itemStack) {
-        return super.getUnlocalizedName(itemStack) + DimletType.values()[itemStack.getItemDamage()].dimletType.getName();
+        return super.getUnlocalizedName(itemStack) + calculateUnlocalizedNameSuffix(DimletType.values()[itemStack.getItemDamage()]);
     }
 
     @Override
