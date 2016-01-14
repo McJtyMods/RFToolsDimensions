@@ -3,11 +3,14 @@ package mcjty.rftoolsdim.items.parts;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.items.GenericRFToolsItem;
 import mcjty.rftoolsdim.items.ModItems;
+import net.minecraft.client.resources.model.ModelBakery;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.input.Keyboard;
@@ -21,6 +24,19 @@ public class DimletControlCircuitItem extends GenericRFToolsItem {
         setMaxStackSize(64);
         setHasSubtypes(true);
         setMaxDamage(0);
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void initModel() {
+        ModelResourceLocation models[] = new ModelResourceLocation[7];
+        for (int i = 0 ; i <= 6 ; i++) {
+            models[i] = new ModelResourceLocation(getRegistryName() + i, "inventory");
+            ModelBakery.registerItemVariants(this, models[i]);
+        }
+
+        ModelLoader.setCustomMeshDefinition(this, stack -> {
+            return models[stack.getItemDamage()];
+        });
     }
 
     @SideOnly(Side.CLIENT)
