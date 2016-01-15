@@ -385,8 +385,7 @@ public class DimensionTickEvent {
                                 y = 63;
                             }
 
-//                            TeleportationTools.teleportToDimension(player, DimletConfiguration.spawnDimension, x, y, z);
-                            // @todo
+                            RFToolsDim.teleportationManager.teleportPlayer(player, DimletConfiguration.spawnDimension, new BlockPos(x, y, z));
                         } else {
                             if (doEffects) {
                                 player.addPotionEffect(new PotionEffect(Potion.moveSlowdown.getId(), EFFECTS_MAX * MAXTICKS, 4, true, true));

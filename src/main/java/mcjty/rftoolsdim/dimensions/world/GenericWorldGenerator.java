@@ -1,22 +1,17 @@
 package mcjty.rftoolsdim.dimensions.world;
 
 import mcjty.blocks.ModBlocks;
-import mcjty.lib.varia.GlobalCoordinate;
 import mcjty.lib.varia.Logging;
-import mcjty.lib.varia.WeightedRandomSelector;
+import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.dimensions.DimensionInformation;
 import mcjty.rftoolsdim.dimensions.DimletConfiguration;
 import mcjty.rftoolsdim.dimensions.RfToolsDimensionManager;
-import mcjty.rftoolsdim.dimensions.dimlets.DimletKey;
-import mcjty.rftoolsdim.dimensions.dimlets.DimletRandomizer;
 import mcjty.rftoolsdim.dimensions.dimlets.types.Patreons;
 import mcjty.rftoolsdim.dimensions.types.FeatureType;
 import mcjty.rftoolsdim.dimensions.types.TerrainType;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.item.EntityItemFrame;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
@@ -43,8 +38,7 @@ public class GenericWorldGenerator implements IWorldGenerator {
             }
         }
 
-//        addOreSpawn(DimletSetup.dimensionalShardBlock, (byte) 0, Blocks.stone, world, random, chunkX * 16, chunkZ * 16, 5, 8, 3, 2, 40);
-        // @todo
+        addOreSpawn(ModBlocks.dimensionalShardBlock.getDefaultState(), Blocks.stone.getDefaultState(), world, random, chunkX * 16, chunkZ * 16, 5, 8, 3, 2, 40);
 
         if (information.isPatreonBitSet(Patreons.PATREON_PUPPETEER) && Math.abs(chunkX) <= 1 && Math.abs(chunkZ) <= 1) {
             generateBigSpawnPlatform(world, chunkX, chunkZ, puppeteerSpawnPlatform);
@@ -201,10 +195,9 @@ public class GenericWorldGenerator implements IWorldGenerator {
             for (int z = sz; z < sz + r; z++) {
                 int color = platform[r - x - r / 2 - 1][z + r / 2];
                 if (color == -2) {
-//                    if (world.getBlockState(new BlockPos(x + midx, starty, z + midz)).getBlock() == TeleporterSetup.matterReceiverBlock) {
-//                        return true;
-//                    }
-                    // @todo RFTools teleporter block
+                    if (RFToolsDim.teleportationManager.getReceiverName(world, new BlockPos(x + midx, starty, z + midz)) != null) {
+                        return true;
+                    }
                 }
             }
         }
@@ -239,12 +232,7 @@ public class GenericWorldGenerator implements IWorldGenerator {
                     if (chunkZ == cz) {
                         int color = platform[r - x - r / 2 -1][z + r / 2];
                         if (color == -2) {
-//                            world.setBlockState(new BlockPos(x + midx, starty, z + midz), TeleporterSetup.matterReceiverBlock, 0, 2);
-                            // @todo
-//                            MatterReceiverTileEntity matterReceiverTileEntity = (MatterReceiverTileEntity) world.getTileEntity(x + midx, starty, z + midz);
-//                            matterReceiverTileEntity.modifyEnergyStored(TeleportConfiguration.RECEIVER_MAXENERGY);
-//                            matterReceiverTileEntity.setName(information.getName());
-//                            matterReceiverTileEntity.markDirty();
+                            RFToolsDim.teleportationManager.createReceiver(world, new BlockPos(x+midx, starty, z+midz), information.getName(), -1);
                         } else if (color != -1) {
                             world.setBlockState(new BlockPos(x + midx, starty, z + midz), Blocks.stained_hardened_clay.getStateFromMeta(color), 2);
                         } else {
@@ -259,7 +247,7 @@ public class GenericWorldGenerator implements IWorldGenerator {
         }
 
         if (chunkX == 0 && chunkZ == 0) {
-            createReceiver(world, dimensionManager, information, midx, midz, starty);
+            registerReceiver(world, dimensionManager, information, midx, midz, starty);
         }
     }
 
@@ -294,12 +282,7 @@ public class GenericWorldGenerator implements IWorldGenerator {
         for (int x = -bounds ; x <= bounds ; x++) {
             for (int z = -bounds ; z <= bounds ; z++) {
                 if (x == 0 && z == 0) {
-                    // @todo
-//                    world.setBlock(x+midx, starty, z+midz, TeleporterSetup.matterReceiverBlock, 0, 2);
-//                    MatterReceiverTileEntity matterReceiverTileEntity = (MatterReceiverTileEntity) world.getTileEntity(x+midx, starty, z+midz);
-//                    matterReceiverTileEntity.modifyEnergyStored(TeleportConfiguration.RECEIVER_MAXENERGY);
-//                    matterReceiverTileEntity.setName(information.getName());
-//                    matterReceiverTileEntity.markDirty();
+                    RFToolsDim.teleportationManager.createReceiver(world, new BlockPos(x+midx, starty, z+midz), information.getName(), -1);
                 } else if (x == 0 && (z == 2 || z == -2)) {
                     world.setBlockState(new BlockPos(x + midx, starty, z + midz), Blocks.glowstone.getDefaultState(), 3);
                 } else {
@@ -349,20 +332,12 @@ public class GenericWorldGenerator implements IWorldGenerator {
             world.setBlockState(new BlockPos(midx - 1, starty, midz - bounds - 2), Blocks.stained_hardened_clay.getStateFromMeta(3), 2);
         }
 
-        createReceiver(world, dimensionManager, information, midx, midz, starty);
+        registerReceiver(world, dimensionManager, information, midx, midz, starty);
     }
 
-    private void createReceiver(World world, RfToolsDimensionManager dimensionManager, DimensionInformation information, int midx, int midz, int starty) {
-//        TeleportDestinations destinations = TeleportDestinations.getDestinations(world);
-//        Coordinate spawnPoint = new Coordinate(midx, starty, midz);
-//        GlobalCoordinate gc = new GlobalCoordinate(spawnPoint, world.provider.dimensionId);
-//        TeleportDestination destination = destinations.addDestination(gc);
-//        destination.setName(information.getName());
-//        destinations.save(world);
-//
-//        information.setSpawnPoint(spawnPoint);
-//        dimensionManager.save(world);
-        // @todo
+    private void registerReceiver(World world, RfToolsDimensionManager dimensionManager, DimensionInformation information, int midx, int midz, int starty) {
+        information.setSpawnPoint(new BlockPos(midx, starty, midz));
+        dimensionManager.save(world);
     }
 
     private void generateDungeon(World world, Random random, int midx, int starty, int midz) {

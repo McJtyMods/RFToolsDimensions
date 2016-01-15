@@ -3,6 +3,7 @@ package mcjty.rftoolsdim;
 import mcjty.lib.base.ModBase;
 import mcjty.lib.compat.MainCompatHandler;
 import mcjty.lib.varia.Logging;
+import mcjty.rftools.api.teleportation.ITeleportationManager;
 import mcjty.rftoolsdim.dimensions.DimensionStorage;
 import mcjty.rftoolsdim.dimensions.ModDimensions;
 import mcjty.rftoolsdim.dimensions.RfToolsDimensionManager;
@@ -20,7 +21,9 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nullable;
 import java.util.EnumMap;
+import java.util.function.Function;
 
 @Mod(modid = RFToolsDim.MODID, name="RFTools Dimensions", dependencies =
         "required-after:Forge@["+ RFToolsDim.MIN_FORGE_VER+
@@ -41,6 +44,8 @@ public class RFToolsDim implements ModBase {
 
     @Mod.Instance("rftoolsdim")
     public static RFToolsDim instance;
+
+    public static ITeleportationManager teleportationManager;
 
     // Are some mods loaded?.
 
@@ -71,7 +76,10 @@ public class RFToolsDim implements ModBase {
     public void preInit(FMLPreInitializationEvent e) {
         this.proxy.preInit(e);
         MainCompatHandler.registerWaila();
+
+        FMLInterModComms.sendFunctionMessage("rftools", "getApi", "mcjty.rftoolsdim.RFToolsDim$GetTeleportationManager");
     }
+
     /**
      * Do your mod setup. Build whatever data structures you care about. Register recipes.
      */
@@ -123,5 +131,14 @@ public class RFToolsDim implements ModBase {
     public void openManual(EntityPlayer player, int bookIndex, String page) {
 //        GuiRFToolsManual.locatePage = page;
         player.openGui(RFToolsDim.instance, bookIndex, player.worldObj, (int) player.posX, (int) player.posY, (int) player.posZ);
+    }
+
+    public static class GetTeleportationManager implements com.google.common.base.Function<ITeleportationManager, Void> {
+        @Nullable
+        @Override
+        public Void apply(ITeleportationManager manager) {
+            teleportationManager = manager;
+            return null;
+        }
     }
 }
