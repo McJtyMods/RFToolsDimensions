@@ -558,7 +558,17 @@ public class DimensionInformation {
         }
     }
 
+    private static String getDisplayName(Block block) {
+        if (block == null) {
+            return "null";
+        }
+        return new ItemStack(block).getDisplayName();
+    }
+
     private static String getDisplayName(IBlockState state) {
+        if (state == null) {
+            return "null";
+        }
         return new ItemStack(state.getBlock(), 1, state.getBlock().getMetaFromState(state)).getDisplayName();
     }
 
@@ -618,7 +628,7 @@ public class DimensionInformation {
         if (featureTypes.contains(FeatureType.FEATURE_CANYONS)) {
             logDebug(player, "        Canyon block: " + getDisplayName(canyonBlock));
         }
-        logDebug(player, "        Base fluid: " + new ItemStack(fluidForTerrain).getDisplayName());
+        logDebug(player, "        Base fluid: " + getDisplayName(fluidForTerrain));
         logDebug(player, "    Biome controller: " + (controllerType == null ? "<null>" : controllerType.name()));
         for (BiomeGenBase biome : getBiomes()) {
             if (biome != null) {
@@ -634,16 +644,16 @@ public class DimensionInformation {
             }
         }
         for (Block block : fluidsForLakes) {
-            logDebug(player, "        Lake fluid: " + new ItemStack(block).getDisplayName());
+            logDebug(player, "        Lake fluid: " + getDisplayName(block));
         }
         if (featureTypes.contains(FeatureType.FEATURE_LIQUIDORBS)) {
             for (Block fluid : liquidSphereFluids) {
-                logDebug(player, "        Liquid orb fluids: " + new ItemStack(fluid).getDisplayName());
+                logDebug(player, "        Liquid orb fluids: " + getDisplayName(fluid));
             }
         }
         if (featureTypes.contains(FeatureType.FEATURE_HUGELIQUIDORBS)) {
             for (Block fluid : hugeLiquidSphereFluids) {
-                logDebug(player, "        Huge Liquid orb fluids: " + new ItemStack(fluid).getDisplayName());
+                logDebug(player, "        Huge Liquid orb fluids: " + getDisplayName(fluid));
             }
         }
         for (StructureType structureType : getStructureTypes()) {

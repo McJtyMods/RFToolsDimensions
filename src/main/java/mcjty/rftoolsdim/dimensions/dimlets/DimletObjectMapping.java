@@ -3,6 +3,7 @@ package mcjty.rftoolsdim.dimensions.dimlets;
 import com.sun.istack.internal.NotNull;
 import mcjty.rftoolsdim.dimensions.description.MobDescriptor;
 import mcjty.rftoolsdim.dimensions.description.SkyDescriptor;
+import mcjty.rftoolsdim.dimensions.description.WeatherDescriptor;
 import mcjty.rftoolsdim.dimensions.dimlets.types.DimletType;
 import mcjty.rftoolsdim.dimensions.types.*;
 import net.minecraft.block.Block;
@@ -116,7 +117,14 @@ public class DimletObjectMapping {
         if (DimletType.DIMLET_SKY.equals(dimlet.getType())) {
             // @todo
         }
-        return null;
+        return new SkyDescriptor.Builder().build();
+    }
+
+    public static WeatherDescriptor getWeather(DimletKey dimlet) {
+        if (DimletType.DIMLET_WEATHER.equals(dimlet.getType())) {
+            // @todo
+        }
+        return new WeatherDescriptor.Builder().build();
     }
 
     public static SpecialType getSpecial(DimletKey dimlet) {

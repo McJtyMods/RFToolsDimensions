@@ -3,6 +3,8 @@ package mcjty.rftoolsdim.commands;
 import mcjty.rftoolsdim.dimensions.RfToolsDimensionManager;
 import mcjty.rftoolsdim.dimensions.description.DimensionDescriptor;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletKey;
+import mcjty.rftoolsdim.dimensions.dimlets.DimletObjectMapping;
+import mcjty.rftoolsdim.dimensions.dimlets.types.DimletType;
 import mcjty.rftoolsdim.dimensions.types.TerrainType;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
@@ -61,8 +63,15 @@ public class CmdCreateDimension extends AbstractRfToolsCommand {
 
         RfToolsDimensionManager dimensionManager = RfToolsDimensionManager.getDimensionManager(sender.getEntityWorld());
         List<DimletKey> descriptors = new ArrayList<>();
+        descriptors.add(new DimletKey(DimletType.DIMLET_TERRAIN, terrainType.getId()));
         DimensionDescriptor descriptor = new DimensionDescriptor(descriptors, 0);
-        int dim = dimensionManager.createNewDimension(sender.getEntityWorld(), descriptor, name, player.getDisplayName().toString(), player.getPersistentID());
+        int dim = 0;
+        try {
+            dim = dimensionManager.createNewDimension(sender.getEntityWorld(), descriptor, name, player.getDisplayName().toString(), player.getPersistentID());
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
         sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GREEN + "Created dimension: " + dim));
 
         dimensionManager.save(sender.getEntityWorld());

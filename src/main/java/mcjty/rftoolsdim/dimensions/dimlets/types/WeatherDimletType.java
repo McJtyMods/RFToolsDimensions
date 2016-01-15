@@ -1,8 +1,11 @@
 package mcjty.rftoolsdim.dimensions.dimlets.types;
 
-import mcjty.rftoolsdim.dimensions.dimlets.DimletKey;
-import mcjty.rftoolsdim.dimensions.dimlets.DimletRandomizer;
 import mcjty.rftoolsdim.dimensions.DimensionInformation;
+import mcjty.rftoolsdim.dimensions.DimletConfiguration;
+import mcjty.rftoolsdim.dimensions.description.WeatherDescriptor;
+import mcjty.rftoolsdim.dimensions.dimlets.DimletKey;
+import mcjty.rftoolsdim.dimensions.dimlets.DimletObjectMapping;
+import mcjty.rftoolsdim.dimensions.dimlets.DimletRandomizer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.config.Configuration;
 import org.apache.commons.lang3.tuple.Pair;
@@ -94,31 +97,33 @@ public class WeatherDimletType implements IDimletType {
 
     @Override
     public void inject(DimletKey key, DimensionInformation dimensionInformation) {
-//        WeatherDescriptor.Builder builder = new WeatherDescriptor.Builder();
-//        builder.combine(dimensionInformation.getWeatherDescriptor());
-//        WeatherDescriptor newDescriptor = DimletObjectMapping.idToWeatherDescriptor.get(key);
-//        builder.combine(newDescriptor);
-//        dimensionInformation.setWeatherDescriptor(builder.build());
+        WeatherDescriptor.Builder builder = new WeatherDescriptor.Builder();
+        builder.combine(dimensionInformation.getWeatherDescriptor());
+        WeatherDescriptor newDescriptor = DimletObjectMapping.getWeather(key);
+        builder.combine(newDescriptor);
+        dimensionInformation.setWeatherDescriptor(builder.build());
     }
 
     @Override
     public void constructDimension(List<Pair<DimletKey, List<DimletKey>>> dimlets, Random random, DimensionInformation dimensionInformation) {
-//        dimlets = DimensionInformation.extractType(DimletType.DIMLET_WEATHER, dimlets);
-//        WeatherDescriptor.Builder builder = new WeatherDescriptor.Builder();
-//        if (dimlets.isEmpty()) {
-//            while (random.nextFloat() > DimletConfiguration.randomWeatherChance) {
-//                List<DimletKey> keys = new ArrayList<DimletKey>(DimletObjectMapping.idToWeatherDescriptor.keySet());
+        dimlets = DimensionInformation.extractType(DimletType.DIMLET_WEATHER, dimlets);
+        WeatherDescriptor.Builder builder = new WeatherDescriptor.Builder();
+        if (dimlets.isEmpty()) {
+            while (random.nextFloat() > DimletConfiguration.randomWeatherChance) {
+//                List<DimletKey> keys = new ArrayList<>(DimletObjectMapping.idToWeatherDescriptor.keySet());
 //                DimletKey key = keys.get(random.nextInt(keys.size()));
 //                dimensionInformation.updateCostFactor(key);
 //                builder.combine(DimletObjectMapping.idToWeatherDescriptor.get(key));
-//            }
-//        } else {
+                // @todo
+            }
+        } else {
 //            for (Pair<DimletKey, List<DimletKey>> dimlet : dimlets) {
 //                DimletKey key = dimlet.getKey();
 //                builder.combine(DimletObjectMapping.idToWeatherDescriptor.get(key));
 //            }
-//        }
-//        dimensionInformation.setWeatherDescriptor(builder.build());
+            // @todo
+        }
+        dimensionInformation.setWeatherDescriptor(builder.build());
     }
 
     @Override
