@@ -7,19 +7,19 @@ import mcjty.rftoolsdim.dimensions.dimlets.types.DimletType;
 */
 public class DimletKey {
     private final DimletType type;
-    private final String name;
+    private final String id;
 
-    public DimletKey(DimletType type, String name) {
+    public DimletKey(DimletType type, String id) {
         this.type = type;
-        this.name = name;
+        this.id = id;
     }
 
     public DimletType getType() {
         return type;
     }
 
-    public String getName() {
-        return name;
+    public String getId() {
+        return id;
     }
 
     @Override
@@ -36,7 +36,7 @@ public class DimletKey {
         if (type != dimletKey.type) {
             return false;
         }
-        if (!name.equals(dimletKey.name)) {
+        if (!id.equals(dimletKey.id)) {
             return false;
         }
 
@@ -46,13 +46,13 @@ public class DimletKey {
     @Override
     public int hashCode() {
         int result = type.hashCode();
-        result = 31 * result + name.hashCode();
+        result = 31 * result + id.hashCode();
         return result;
     }
 
     @Override
     public String toString() {
-        return type.dimletType.getOpcode() + name;
+        return type.dimletType.getOpcode() + id;
     }
 
     public static DimletKey parseKey(String skey) {

@@ -1,8 +1,15 @@
 package mcjty.rftoolsdim.dimensions.dimlets.types;
 
-import mcjty.rftoolsdim.dimensions.dimlets.DimletKey;
-import mcjty.rftoolsdim.dimensions.dimlets.DimletRandomizer;
 import mcjty.rftoolsdim.dimensions.DimensionInformation;
+import mcjty.rftoolsdim.dimensions.DimletConfiguration;
+import mcjty.rftoolsdim.dimensions.dimlets.DimletKey;
+import mcjty.rftoolsdim.dimensions.dimlets.DimletObjectMapping;
+import mcjty.rftoolsdim.dimensions.dimlets.DimletRandomizer;
+import mcjty.rftoolsdim.dimensions.types.FeatureType;
+import mcjty.rftoolsdim.dimensions.types.TerrainType;
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.config.Configuration;
 import org.apache.commons.lang3.tuple.Pair;
@@ -111,41 +118,38 @@ public class FeatureDimletType implements IDimletType {
 
     @Override
     public float getModifierCreateCostFactor(DimletType modifierType, DimletKey key) {
-//        FeatureType featureType = DimletObjectMapping.idToFeatureType.get(key);
-//        if (modifierType == DimletType.DIMLET_MATERIAL) {
-//            return factors[featureType.getMaterialClass()].materialCreationCostFactor;
-//        } else if (modifierType == DimletType.DIMLET_LIQUID) {
-//            return factors[featureType.getLiquidClass()].liquidCreationCostFactor;
-//        } else {
-//            return 1.0f;
-//        }
-        return 1.0f;
+        FeatureType featureType = DimletObjectMapping.getFeature(key);
+        if (modifierType == DimletType.DIMLET_MATERIAL) {
+            return factors[featureType.getMaterialClass()].materialCreationCostFactor;
+        } else if (modifierType == DimletType.DIMLET_LIQUID) {
+            return factors[featureType.getLiquidClass()].liquidCreationCostFactor;
+        } else {
+            return 1.0f;
+        }
     }
 
     @Override
     public float getModifierMaintainCostFactor(DimletType modifierType, DimletKey key) {
-//        FeatureType featureType = DimletObjectMapping.idToFeatureType.get(key);
-//        if (modifierType == DimletType.DIMLET_MATERIAL) {
-//            return factors[featureType.getMaterialClass()].materialMaintenanceCostFactor;
-//        } else if (modifierType == DimletType.DIMLET_LIQUID) {
-//            return factors[featureType.getLiquidClass()].liquidMaintenanceCostFactor;
-//        } else {
-//            return 1.0f;
-//        }
-        return 1.0f;
+        FeatureType featureType = DimletObjectMapping.getFeature(key);
+        if (modifierType == DimletType.DIMLET_MATERIAL) {
+            return factors[featureType.getMaterialClass()].materialMaintenanceCostFactor;
+        } else if (modifierType == DimletType.DIMLET_LIQUID) {
+            return factors[featureType.getLiquidClass()].liquidMaintenanceCostFactor;
+        } else {
+            return 1.0f;
+        }
     }
 
     @Override
     public float getModifierTickCostFactor(DimletType modifierType, DimletKey key) {
-//        FeatureType featureType = DimletObjectMapping.idToFeatureType.get(key);
-//        if (modifierType == DimletType.DIMLET_MATERIAL) {
-//            return factors[featureType.getMaterialClass()].materialTickCostFactor;
-//        } else if (modifierType == DimletType.DIMLET_LIQUID) {
-//            return factors[featureType.getLiquidClass()].liquidTickCostFactor;
-//        } else {
-//            return 1.0f;
-//        }
-        return 1.0f;
+        FeatureType featureType = DimletObjectMapping.getFeature(key);
+        if (modifierType == DimletType.DIMLET_MATERIAL) {
+            return factors[featureType.getMaterialClass()].materialTickCostFactor;
+        } else if (modifierType == DimletType.DIMLET_LIQUID) {
+            return factors[featureType.getLiquidClass()].liquidTickCostFactor;
+        } else {
+            return 1.0f;
+        }
     }
 
     @Override
@@ -160,111 +164,110 @@ public class FeatureDimletType implements IDimletType {
 
     @Override
     public void constructDimension(List<Pair<DimletKey, List<DimletKey>>> dimlets, Random random, DimensionInformation dimensionInformation) {
-//        TerrainType terrainType = dimensionInformation.getTerrainType();
-//        Set<FeatureType> featureTypes = dimensionInformation.getFeatureTypes();
-//        dimlets = DimensionInformation.extractType(DimletType.DIMLET_FEATURE, dimlets);
-//        if (dimlets.isEmpty()) {
-//            while (random.nextFloat() < DimletConfiguration.randomFeatureChance) {
-//                DimletKey key = DimletRandomizer.getRandomFeature(random, false);
-//                FeatureType featureType = DimletObjectMapping.idToFeatureType.get(key);
-//                if (!featureTypes.contains(featureType) && featureType.isTerrainSupported(terrainType)) {
-//                    dimensionInformation.updateCostFactor(key);
-//                    featureTypes.add(featureType);
-//                    List<DimletKey> modifiers = Collections.emptyList();
-//                    // @todo randomize those?
-//                    dimlets.add(Pair.of(key, modifiers));
-//                }
-//            }
-//        }
-//
-//        Map<FeatureType,List<DimletKey>> modifiersForFeature = new HashMap<FeatureType, List<DimletKey>>();
-//        for (Pair<DimletKey, List<DimletKey>> dimlet : dimlets) {
-//            DimletKey key = dimlet.getLeft();
-//            FeatureType featureType = DimletObjectMapping.idToFeatureType.get(key);
-//            featureTypes.add(featureType);
-//            modifiersForFeature.put(featureType, dimlet.getRight());
-//        }
-//
-//        dimensionInformation.setFluidsForLakes(getRandomFluidArray(random, dimensionInformation, featureTypes, modifiersForFeature, FeatureType.FEATURE_LAKES, true));
-//        dimensionInformation.setExtraOregen(getRandomBlockArray(random, featureTypes, modifiersForFeature, FeatureType.FEATURE_OREGEN, true));
-//        dimensionInformation.setTendrilBlock(dimensionInformation.getFeatureBlock(random, modifiersForFeature, FeatureType.FEATURE_TENDRILS));
-//        dimensionInformation.setSphereBlocks(getRandomBlockArray(random, featureTypes, modifiersForFeature, FeatureType.FEATURE_ORBS, false));
-//        dimensionInformation.setPyramidBlocks(getRandomBlockArray(random, featureTypes, modifiersForFeature, FeatureType.FEATURE_PYRAMIDS, false));
-//        dimensionInformation.setHugeSphereBlocks(getRandomBlockArray(random, featureTypes, modifiersForFeature, FeatureType.FEATURE_HUGEORBS, false));
-//        dimensionInformation.setLiquidSphereBlocks(getRandomBlockArray(random, featureTypes, modifiersForFeature, FeatureType.FEATURE_LIQUIDORBS, false));
-//        dimensionInformation.setLiquidSphereFluids(getRandomFluidArray(random, dimensionInformation, featureTypes, modifiersForFeature, FeatureType.FEATURE_LIQUIDORBS, false));
-//        dimensionInformation.setHugeLiquidSphereBlocks(getRandomBlockArray(random, featureTypes, modifiersForFeature, FeatureType.FEATURE_HUGELIQUIDORBS, false));
-//        dimensionInformation.setHugeLiquidSphereFluids(getRandomFluidArray(random, dimensionInformation, featureTypes, modifiersForFeature, FeatureType.FEATURE_HUGELIQUIDORBS, false));
-//        dimensionInformation.setCanyonBlock(dimensionInformation.getFeatureBlock(random, modifiersForFeature, FeatureType.FEATURE_CANYONS));
+        TerrainType terrainType = dimensionInformation.getTerrainType();
+        Set<FeatureType> featureTypes = dimensionInformation.getFeatureTypes();
+        dimlets = DimensionInformation.extractType(DimletType.DIMLET_FEATURE, dimlets);
+        if (dimlets.isEmpty()) {
+            while (random.nextFloat() < DimletConfiguration.randomFeatureChance) {
+                DimletKey key = DimletRandomizer.getRandomFeature(random, false);
+                FeatureType featureType = DimletObjectMapping.getFeature(key);
+                if (!featureTypes.contains(featureType) && featureType.isTerrainSupported(terrainType)) {
+                    dimensionInformation.updateCostFactor(key);
+                    featureTypes.add(featureType);
+                    List<DimletKey> modifiers = Collections.emptyList();
+                    // @todo randomize those?
+                    dimlets.add(Pair.of(key, modifiers));
+                }
+            }
+        }
+
+        Map<FeatureType,List<DimletKey>> modifiersForFeature = new HashMap<FeatureType, List<DimletKey>>();
+        for (Pair<DimletKey, List<DimletKey>> dimlet : dimlets) {
+            FeatureType featureType = DimletObjectMapping.getFeature(dimlet.getLeft());
+            featureTypes.add(featureType);
+            modifiersForFeature.put(featureType, dimlet.getRight());
+        }
+
+        dimensionInformation.setFluidsForLakes(getRandomFluidArray(random, dimensionInformation, featureTypes, modifiersForFeature, FeatureType.FEATURE_LAKES, true));
+        dimensionInformation.setExtraOregen(getRandomBlockArray(random, featureTypes, modifiersForFeature, FeatureType.FEATURE_OREGEN, true));
+        dimensionInformation.setTendrilBlock(dimensionInformation.getFeatureBlock(random, modifiersForFeature, FeatureType.FEATURE_TENDRILS));
+        dimensionInformation.setSphereBlocks(getRandomBlockArray(random, featureTypes, modifiersForFeature, FeatureType.FEATURE_ORBS, false));
+        dimensionInformation.setPyramidBlocks(getRandomBlockArray(random, featureTypes, modifiersForFeature, FeatureType.FEATURE_PYRAMIDS, false));
+        dimensionInformation.setHugeSphereBlocks(getRandomBlockArray(random, featureTypes, modifiersForFeature, FeatureType.FEATURE_HUGEORBS, false));
+        dimensionInformation.setLiquidSphereBlocks(getRandomBlockArray(random, featureTypes, modifiersForFeature, FeatureType.FEATURE_LIQUIDORBS, false));
+        dimensionInformation.setLiquidSphereFluids(getRandomFluidArray(random, dimensionInformation, featureTypes, modifiersForFeature, FeatureType.FEATURE_LIQUIDORBS, false));
+        dimensionInformation.setHugeLiquidSphereBlocks(getRandomBlockArray(random, featureTypes, modifiersForFeature, FeatureType.FEATURE_HUGELIQUIDORBS, false));
+        dimensionInformation.setHugeLiquidSphereFluids(getRandomFluidArray(random, dimensionInformation, featureTypes, modifiersForFeature, FeatureType.FEATURE_HUGELIQUIDORBS, false));
+        dimensionInformation.setCanyonBlock(dimensionInformation.getFeatureBlock(random, modifiersForFeature, FeatureType.FEATURE_CANYONS));
     }
 
-//    private Block[] getRandomFluidArray(Random random, DimensionInformation dimensionInformation, Set<FeatureType> featureTypes, Map<FeatureType, List<DimletKey>> modifiersForFeature, FeatureType t, boolean allowEmpty) {
-//        Block[] fluidsForLakes;
-//        if (featureTypes.contains(t)) {
-//            List<BlockMeta> blocks = new ArrayList<BlockMeta>();
-//            List<Block> fluids = new ArrayList<Block>();
-//            DimensionInformation.getMaterialAndFluidModifiers(modifiersForFeature.get(t), blocks, fluids);
-//
-//            // If no fluids are specified we will usually have default fluid generation (water+lava). Otherwise some random selection.
-//            if (fluids.isEmpty()) {
-//                while (random.nextFloat() < DimletConfiguration.randomLakeFluidChance) {
-//                    DimletKey key = DimletRandomizer.getRandomFluidBlock(random, true);
-//                    dimensionInformation.updateCostFactor(key);
-//                    fluids.add(DimletObjectMapping.idToFluid.get(key));
-//                }
-//            } else if (fluids.size() == 1 && fluids.get(0) == null) {
-//                fluids.clear();
-//            }
-//            fluidsForLakes = fluids.toArray(new Block[fluids.size()]);
-//            for (int i = 0 ; i < fluidsForLakes.length ; i++) {
-//                if (fluidsForLakes[i] == null) {
-//                    fluidsForLakes[i] = Blocks.water;
-//                }
-//            }
-//        } else {
-//            fluidsForLakes = new Block[0];
-//        }
-//        if (allowEmpty || fluidsForLakes.length > 0) {
-//            return fluidsForLakes;
-//        }
-//
-//        return new Block[] { Blocks.water };
-//    }
-//
-//    private BlockMeta[] getRandomBlockArray(Random random, Set<FeatureType> featureTypes, Map<FeatureType, List<DimletKey>> modifiersForFeature, FeatureType t, boolean allowEmpty) {
-//        BlockMeta[] blockArray;
-//        if (featureTypes.contains(t)) {
-//            List<BlockMeta> blocks = new ArrayList<BlockMeta>();
-//            List<Block> fluids = new ArrayList<Block>();
-//            DimensionInformation.getMaterialAndFluidModifiers(modifiersForFeature.get(t), blocks, fluids);
-//
-//            // If no blocks are specified we will generate a few random ores.
-//            if (blocks.isEmpty()) {
-//                float chance = 1.1f;
-//                while (random.nextFloat() < chance) {
-//                    DimletKey key = DimletRandomizer.getRandomMaterialBlock(random, true);
-//                    BlockMeta bm = DimletObjectMapping.idToBlock.get(key);
-//                    if (bm != null) {
-//                        blocks.add(bm);
-//                        chance = chance * 0.80f;
-//                    }
-//                }
-//            }
-//
-//            blockArray = blocks.toArray(new BlockMeta[blocks.size()]);
-//            for (int i = 0 ; i < blockArray.length ; i++) {
-//                if (blockArray[i] == null) {
-//                    blockArray[i] = BlockMeta.STONE;
-//                }
-//            }
-//        } else {
-//            blockArray = new BlockMeta[0];
-//        }
-//        if (allowEmpty || blockArray.length > 0) {
-//            return blockArray;
-//        }
-//        return new BlockMeta[] { BlockMeta.STONE };
-//    }
+    private Block[] getRandomFluidArray(Random random, DimensionInformation dimensionInformation, Set<FeatureType> featureTypes, Map<FeatureType, List<DimletKey>> modifiersForFeature, FeatureType t, boolean allowEmpty) {
+        Block[] fluidsForLakes;
+        if (featureTypes.contains(t)) {
+            List<IBlockState> blocks = new ArrayList<>();
+            List<Block> fluids = new ArrayList<>();
+            DimensionInformation.getMaterialAndFluidModifiers(modifiersForFeature.get(t), blocks, fluids);
+
+            // If no fluids are specified we will usually have default fluid generation (water+lava). Otherwise some random selection.
+            if (fluids.isEmpty()) {
+                while (random.nextFloat() < DimletConfiguration.randomLakeFluidChance) {
+                    DimletKey key = DimletRandomizer.getRandomFluidBlock(random, true);
+                    dimensionInformation.updateCostFactor(key);
+                    fluids.add(DimletObjectMapping.getFluid(key));
+                }
+            } else if (fluids.size() == 1 && fluids.get(0) == null) {
+                fluids.clear();
+            }
+            fluidsForLakes = fluids.toArray(new Block[fluids.size()]);
+            for (int i = 0 ; i < fluidsForLakes.length ; i++) {
+                if (fluidsForLakes[i] == null) {
+                    fluidsForLakes[i] = Blocks.water;
+                }
+            }
+        } else {
+            fluidsForLakes = new Block[0];
+        }
+        if (allowEmpty || fluidsForLakes.length > 0) {
+            return fluidsForLakes;
+        }
+
+        return new Block[] { Blocks.water };
+    }
+
+    private IBlockState[] getRandomBlockArray(Random random, Set<FeatureType> featureTypes, Map<FeatureType, List<DimletKey>> modifiersForFeature, FeatureType t, boolean allowEmpty) {
+        IBlockState[] blockArray;
+        if (featureTypes.contains(t)) {
+            List<IBlockState> blocks = new ArrayList<>();
+            List<Block> fluids = new ArrayList<Block>();
+            DimensionInformation.getMaterialAndFluidModifiers(modifiersForFeature.get(t), blocks, fluids);
+
+            // If no blocks are specified we will generate a few random ores.
+            if (blocks.isEmpty()) {
+                float chance = 1.1f;
+                while (random.nextFloat() < chance) {
+                    DimletKey key = DimletRandomizer.getRandomMaterialBlock(random, true);
+                    IBlockState bm = DimletObjectMapping.getBlock(key);
+                    if (bm != null) {
+                        blocks.add(bm);
+                        chance = chance * 0.80f;
+                    }
+                }
+            }
+
+            blockArray = blocks.toArray(new IBlockState[blocks.size()]);
+            for (int i = 0 ; i < blockArray.length ; i++) {
+                if (blockArray[i] == null) {
+                    blockArray[i] = Blocks.stone.getDefaultState();
+                }
+            }
+        } else {
+            blockArray = new IBlockState[0];
+        }
+        if (allowEmpty || blockArray.length > 0) {
+            return blockArray;
+        }
+        return new IBlockState[] { Blocks.stone.getDefaultState() };
+    }
 
     @Override
     public String[] getInformation() {

@@ -1,9 +1,11 @@
 package mcjty.blocks.shards;
 
 import mcjty.rftoolsdim.RFToolsDim;
+import mcjty.rftoolsdim.items.ModItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.item.Item;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.MathHelper;
@@ -38,11 +40,10 @@ public class DimensionalShardBlock extends Block {
         }
     }
 
-//    @Override
-//    public Item getItemDropped(int p_149650_1_, Random random, int p_149650_3_) {
-//        return DimletSetup.dimensionalShard;
-//    }
-    // @todo
+    @Override
+    public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+        return ModItems.dimensionalShardItem;
+    }
 
     @Override
     public int quantityDropped(Random random) {

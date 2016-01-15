@@ -229,7 +229,7 @@ public class DimensionDescriptor {
     }
 
     private int calculateCreationRfCost(List<Pair<DimletKey,List<DimletKey>>> dimlets, List<DimletKey> unusedModifiers, int tickCost) {
-        int rf = 0;//@todo DimletCosts.baseDimensionCreationCost;
+        int rf = DimletCosts.baseDimensionCreationCost;
 
         for (Pair<DimletKey, List<DimletKey>> dimletWithModifier : dimlets) {
             DimletKey key = dimletWithModifier.getLeft();

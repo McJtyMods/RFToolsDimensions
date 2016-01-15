@@ -12,6 +12,7 @@ public class ModItems {
     public static DimletMemoryUnitItem dimletMemoryUnitItem;
     public static DimletTypeControllerItem dimletTypeControllerItem;
     public static StructureEssenceItem structureEssenceItem;
+    public static DimensionalShardItem dimensionalShardItem;
 
     public static void init() {
         dimletBaseItem = new DimletBaseItem();
@@ -20,6 +21,7 @@ public class ModItems {
         dimletMemoryUnitItem = new DimletMemoryUnitItem();
         dimletTypeControllerItem = new DimletTypeControllerItem();
         structureEssenceItem = new StructureEssenceItem();
+        dimensionalShardItem = new DimensionalShardItem();
     }
 
     @SideOnly(Side.CLIENT)
@@ -30,5 +32,6 @@ public class ModItems {
         dimletMemoryUnitItem.initModel();
         dimletTypeControllerItem.initModel();
         structureEssenceItem.initModel();
+        dimensionalShardItem.initModel();
     }
 }

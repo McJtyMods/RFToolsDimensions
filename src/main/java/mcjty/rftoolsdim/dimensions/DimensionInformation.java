@@ -2,13 +2,10 @@ package mcjty.rftoolsdim.dimensions;
 
 import io.netty.buffer.ByteBuf;
 import mcjty.lib.network.NetworkTools;
-import mcjty.lib.varia.BlockMeta;
 import mcjty.lib.varia.BlockPosTools;
 import mcjty.lib.varia.Logging;
 import mcjty.rftoolsdim.dimensions.description.*;
-import mcjty.rftoolsdim.dimensions.dimlets.DimletEntry;
-import mcjty.rftoolsdim.dimensions.dimlets.DimletKey;
-import mcjty.rftoolsdim.dimensions.dimlets.KnownDimletConfiguration;
+import mcjty.rftoolsdim.dimensions.dimlets.*;
 import mcjty.rftoolsdim.dimensions.dimlets.types.DimletType;
 import mcjty.rftoolsdim.dimensions.dimlets.types.IDimletType;
 import mcjty.rftoolsdim.dimensions.dimlets.types.Patreons;
@@ -1024,48 +1021,45 @@ public class DimensionInformation {
         }
     }
 
-    public static void getMaterialAndFluidModifiers(List<DimletKey> modifiers, List<BlockMeta> blocks, List<Block> fluids) {
+    public static void getMaterialAndFluidModifiers(List<DimletKey> modifiers, List<IBlockState> blocks, List<Block> fluids) {
         if (modifiers != null) {
             for (DimletKey modifier : modifiers) {
                 if (modifier.getType() == DimletType.DIMLET_MATERIAL) {
-//                    BlockMeta block = DimletObjectMapping.idToBlock.get(modifier);
-//                    blocks.add(block);
+                    IBlockState block = DimletObjectMapping.getBlock(modifier);
+                    blocks.add(block);
                 } else if (modifier.getType() == DimletType.DIMLET_LIQUID) {
-//                    Block fluid = DimletObjectMapping.idToFluid.get(modifier);
-//                    fluids.add(fluid);
+                    Block fluid = DimletObjectMapping.getFluid(modifier);
+                    fluids.add(fluid);
                 }
             }
         }
-        //@todo
     }
 
-    public BlockMeta getFeatureBlock(Random random, Map<FeatureType, List<DimletKey>> modifiersForFeature, FeatureType featureType) {
-        BlockMeta block;
+    public IBlockState getFeatureBlock(Random random, Map<FeatureType, List<DimletKey>> modifiersForFeature, FeatureType featureType) {
+        IBlockState block;
         if (featureTypes.contains(featureType)) {
-            List<BlockMeta> blocks = new ArrayList<BlockMeta>();
-            List<Block> fluids = new ArrayList<Block>();
+            List<IBlockState> blocks = new ArrayList<>();
+            List<Block> fluids = new ArrayList<>();
             getMaterialAndFluidModifiers(modifiersForFeature.get(featureType), blocks, fluids);
 
             if (!blocks.isEmpty()) {
                 block = blocks.get(random.nextInt(blocks.size()));
                 if (block == null) {
-                    block = BlockMeta.STONE;     // This is the default in case None was specified.
+                    block = Blocks.stone.getDefaultState();     // This is the default in case None was specified.
                 }
             } else {
                 // Nothing was specified. With a relatively big chance we use stone. But there is also a chance that the material will be something else.
-//                if (random.nextFloat() < DimletConfiguration.randomFeatureMaterialChance) {
-//                    DimletKey key = DimletRandomizer.getRandomMaterialBlock(random, true);
-//                    actualRfCost += calculateCostFactor(key);
-//                    block = DimletObjectMapping.idToBlock.get(key);
-//                } else {
-//                    block = BlockMeta.STONE;
-//                }
-                // @todo
-block = BlockMeta.STONE;
+                if (random.nextFloat() < DimletConfiguration.randomFeatureMaterialChance) {
+                    DimletKey key = DimletRandomizer.getRandomMaterialBlock(random, true);
+                    actualRfCost += calculateCostFactor(key);
+                    block = DimletObjectMapping.getBlock(key);
+                } else {
+                    block = Blocks.stone.getDefaultState();
+                }
 
             }
         } else {
-            block = BlockMeta.STONE;
+            block = Blocks.stone.getDefaultState();
         }
         return block;
     }

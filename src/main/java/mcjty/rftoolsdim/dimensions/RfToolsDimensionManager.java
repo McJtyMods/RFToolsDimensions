@@ -5,6 +5,7 @@ import mcjty.rftoolsdim.dimensions.description.DimensionDescriptor;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletKey;
 import mcjty.rftoolsdim.dimensions.world.GenericWorldProvider;
 import mcjty.rftoolsdim.network.PacketRegisterDimensions;
+import mcjty.rftoolsdim.network.PacketSyncDimensionInfo;
 import mcjty.rftoolsdim.network.RFToolsDimMessages;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -217,8 +218,7 @@ public class RfToolsDimensionManager extends WorldSavedData {
 
     public static void unfreezeChunk(Chunk chunk) {
         chunk.setChunkLoaded(true);
-//        chunk.getWorld().func_147448_a(chunk.chunkTileEntityMap.values());
-//@todo
+        chunk.getWorld().addTileEntities(chunk.getTileEntityMap().values());
         for (ClassInheritanceMultiMap<Entity> entityList : chunk.getEntityLists()) {
             chunk.getWorld().loadedEntityList.addAll(entityList);
         }
@@ -286,8 +286,7 @@ public class RfToolsDimensionManager extends WorldSavedData {
         if (!world.isRemote) {
             // Sync to clients.
             Logging.log("Sync dimension info to clients!");
-//            RFToolsMessages.INSTANCE.sendToAll(new PacketSyncDimensionInfo(dimensions, dimensionInformation));
-            // @todo
+            RFToolsDimMessages.INSTANCE.sendToAll(new PacketSyncDimensionInfo(dimensions, dimensionInformation));
         }
     }
 
