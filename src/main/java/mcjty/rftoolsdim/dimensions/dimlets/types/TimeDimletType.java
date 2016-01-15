@@ -1,6 +1,8 @@
 package mcjty.rftoolsdim.dimensions.dimlets.types;
 
+import mcjty.rftoolsdim.dimensions.DimletConfiguration;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletKey;
+import mcjty.rftoolsdim.dimensions.dimlets.DimletObjectMapping;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletRandomizer;
 import mcjty.rftoolsdim.dimensions.DimensionInformation;
 import net.minecraft.item.ItemStack;
@@ -8,6 +10,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.config.Configuration;
 import org.apache.commons.lang3.tuple.Pair;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -95,33 +98,38 @@ public class TimeDimletType implements IDimletType {
 
     @Override
     public void inject(DimletKey key, DimensionInformation dimensionInformation) {
-//        dimensionInformation.setCelestialAngle(DimletObjectMapping.idToCelestialAngle.get(key));
-//        dimensionInformation.setTimeSpeed(DimletObjectMapping.idToSpeed.get(key));
+        dimensionInformation.setCelestialAngle(DimletObjectMapping.getCelestialAngle(key));
+        dimensionInformation.setTimeSpeed(DimletObjectMapping.getTimeSpeed(key));
     }
 
     @Override
     public void constructDimension(List<Pair<DimletKey, List<DimletKey>>> dimlets, Random random, DimensionInformation dimensionInformation) {
-//        Float celestialAngle = null;
-//        Float timeSpeed = null;
-//        dimlets = DimensionInformation.extractType(DimletType.DIMLET_TIME, dimlets);
-//        if (dimlets.isEmpty()) {
-//            if (random.nextFloat() < DimletConfiguration.randomSpecialTimeChance) {
-//                celestialAngle = null;      // Default
-//                timeSpeed = null;
-//            } else {
-//                List<DimletKey> keys = new ArrayList<DimletKey>(DimletObjectMapping.idToCelestialAngle.keySet());
+        Float celestialAngle = null;
+        Float timeSpeed = null;
+        dimlets = DimensionInformation.extractType(DimletType.DIMLET_TIME, dimlets);
+        if (dimlets.isEmpty()) {
+            if (random.nextFloat() < DimletConfiguration.randomSpecialTimeChance) {
+                celestialAngle = null;      // Default
+                timeSpeed = null;
+            } else {
+                // @todo
+                celestialAngle = 0.0f;
+                timeSpeed = 1.0f;
+//                List<DimletKey> keys = new ArrayList<>(DimletObjectMapping.idToCelestialAngle.keySet());
 //                DimletKey key = keys.get(random.nextInt(keys.size()));
 //                celestialAngle = DimletObjectMapping.idToCelestialAngle.get(key);
 //                timeSpeed = DimletObjectMapping.idToSpeed.get(key);
-//            }
-//        } else {
-//            DimletKey key = dimlets.get(random.nextInt(dimlets.size())).getKey();
+            }
+        } else {
+            DimletKey key = dimlets.get(random.nextInt(dimlets.size())).getKey();
+            // @todo
+            celestialAngle = 0.0f;
+            timeSpeed = 1.0f;
 //            celestialAngle = DimletObjectMapping.idToCelestialAngle.get(key);
 //            timeSpeed = DimletObjectMapping.idToSpeed.get(key);
-//        }
-//        dimensionInformation.setCelestialAngle(celestialAngle);
-//        dimensionInformation.setTimeSpeed(timeSpeed);
-//
+        }
+        dimensionInformation.setCelestialAngle(celestialAngle);
+        dimensionInformation.setTimeSpeed(timeSpeed);
     }
 
     @Override

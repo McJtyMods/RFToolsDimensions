@@ -94,41 +94,41 @@ public class PatreonDimletType implements IDimletType {
 
     @Override
     public void inject(DimletKey key, DimensionInformation dimensionInformation) {
-//        if ("McJty".equals(key.getName())) {
-//            dimensionInformation.setPatreonBit(Patreons.PATREON_FIREWORKS);
-//        } else if ("SickHippie".equals(key.getName())) {
-//            dimensionInformation.setPatreonBit(Patreons.PATREON_SICKMOON);
-//            dimensionInformation.setPatreonBit(Patreons.PATREON_SICKSUN);
-//        } else if ("Nissenfeld".equals(key.getName())) {
-//            dimensionInformation.setPatreonBit(Patreons.PATREON_RABBITMOON);
-//            dimensionInformation.setPatreonBit(Patreons.PATREON_RABBITSUN);
-//        } else if ("Lockesly".equals(key.getName())) {
-//            dimensionInformation.setPatreonBit(Patreons.PATREON_PINKPILLARS);
-//        } else if ("Puppeteer".equals(key.getName())) {
-//            dimensionInformation.setPatreonBit(Patreons.PATREON_PUPPETEER);
-//        } else if ("Rouven".equals(key.getName())) {
-//            dimensionInformation.setPatreonBit(Patreons.PATREON_LAYEREDMETA);
-//        } else if ("FireBall".equals(key.getName())) {
-//            dimensionInformation.setPatreonBit(Patreons.PATREON_COLOREDPRISMS);
-//        } else if ("DarkCorvuz".equals(key.getName())) {
-//            dimensionInformation.setPatreonBit(Patreons.PATREON_DARKCORVUS);
-//        } else if ("TomWolf".equals(key.getName())) {
-//            dimensionInformation.setPatreonBit(Patreons.PATREON_TOMWOLF);
-//        } else if ("Kenney".equals(key.getName())) {
-//            dimensionInformation.setPatreonBit(Patreons.PATREON_KENNEY);
-//        }
+        if ("McJty".equals(key.getId())) {
+            dimensionInformation.setPatreonBit(Patreons.PATREON_FIREWORKS);
+        } else if ("SickHippie".equals(key.getId())) {
+            dimensionInformation.setPatreonBit(Patreons.PATREON_SICKMOON);
+            dimensionInformation.setPatreonBit(Patreons.PATREON_SICKSUN);
+        } else if ("Nissenfeld".equals(key.getId())) {
+            dimensionInformation.setPatreonBit(Patreons.PATREON_RABBITMOON);
+            dimensionInformation.setPatreonBit(Patreons.PATREON_RABBITSUN);
+        } else if ("Lockesly".equals(key.getId())) {
+            dimensionInformation.setPatreonBit(Patreons.PATREON_PINKPILLARS);
+        } else if ("Puppeteer".equals(key.getId())) {
+            dimensionInformation.setPatreonBit(Patreons.PATREON_PUPPETEER);
+        } else if ("Rouven".equals(key.getId())) {
+            dimensionInformation.setPatreonBit(Patreons.PATREON_LAYEREDMETA);
+        } else if ("FireBall".equals(key.getId())) {
+            dimensionInformation.setPatreonBit(Patreons.PATREON_COLOREDPRISMS);
+        } else if ("DarkCorvuz".equals(key.getId())) {
+            dimensionInformation.setPatreonBit(Patreons.PATREON_DARKCORVUS);
+        } else if ("TomWolf".equals(key.getId())) {
+            dimensionInformation.setPatreonBit(Patreons.PATREON_TOMWOLF);
+        } else if ("Kenney".equals(key.getId())) {
+            dimensionInformation.setPatreonBit(Patreons.PATREON_KENNEY);
+        }
     }
 
     @Override
     public void constructDimension(List<Pair<DimletKey, List<DimletKey>>> dimlets, Random random, DimensionInformation dimensionInformation) {
-//        dimlets = DimensionInformation.extractType(DimletType.DIMLET_PATREON, dimlets);
-//        if (dimlets.isEmpty()) {
-//            return;
-//        }
-//
-//        for (Pair<DimletKey, List<DimletKey>> dimlet : dimlets) {
-//            inject(dimlet.getKey(), dimensionInformation);
-//        }
+        dimlets = DimensionInformation.extractType(DimletType.DIMLET_PATREON, dimlets);
+        if (dimlets.isEmpty()) {
+            return;
+        }
+
+        for (Pair<DimletKey, List<DimletKey>> dimlet : dimlets) {
+            inject(dimlet.getKey(), dimensionInformation);
+        }
     }
 
     @Override

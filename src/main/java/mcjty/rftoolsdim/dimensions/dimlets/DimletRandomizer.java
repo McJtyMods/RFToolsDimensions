@@ -4,6 +4,7 @@ import mcjty.rftoolsdim.dimensions.dimlets.types.DimletType;
 import mcjty.rftoolsdim.dimensions.types.ControllerType;
 import mcjty.rftoolsdim.dimensions.types.EffectType;
 import mcjty.rftoolsdim.dimensions.types.FeatureType;
+import mcjty.rftoolsdim.dimensions.types.StructureType;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.biome.BiomeGenBase;
 
@@ -29,6 +30,11 @@ public class DimletRandomizer {
         return new DimletKey(DimletType.DIMLET_EFFECT, EffectType.EFFECT_NONE.getId());
     }
 
+    public static DimletKey getRandomStructure(Random random, boolean forWorldGen) {
+        // @todo
+        return new DimletKey(DimletType.DIMLET_STRUCTURE, StructureType.STRUCTURE_NONE.getId());
+    }
+
     public static DimletKey getRandomFluidBlock(Random random, boolean forWorldGen) {
         // @todo
         return new DimletKey(DimletType.DIMLET_LIQUID, Blocks.water.getRegistryName()+"@0");
@@ -52,5 +58,10 @@ public class DimletRandomizer {
                 return new DimletKey(DimletType.DIMLET_BIOME, Integer.toString(biome.biomeID));
             }
         }
+    }
+
+    public static DimletKey getRandomMob(Random random, boolean forWorldGen) {
+        // @todo
+        return new DimletKey(DimletType.DIMLET_MOBS, "@@@");
     }
 }

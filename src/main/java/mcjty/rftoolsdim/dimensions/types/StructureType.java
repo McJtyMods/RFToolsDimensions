@@ -1,5 +1,8 @@
 package mcjty.rftoolsdim.dimensions.types;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public enum StructureType {
     STRUCTURE_NONE("None"),
     STRUCTURE_VILLAGE("Village"),
@@ -10,13 +13,25 @@ public enum StructureType {
     STRUCTURE_SCATTERED("Scattered"),
     STRUCTURE_RECURRENTCOMPLEX("RecurrentComplex");
 
-    private final String name;
+    private static final Map<String,StructureType> STRUCTURE_TYPE_MAP = new HashMap<>();
 
-    StructureType(String name) {
-        this.name = name;
+    static {
+        for (StructureType type : StructureType.values()) {
+            STRUCTURE_TYPE_MAP.put(type.getId(), type);
+        }
     }
 
-    public String getName() {
-        return name;
+    private final String id;
+
+    StructureType(String id) {
+        this.id = id;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public static StructureType getStructureById(String id) {
+        return STRUCTURE_TYPE_MAP.get(id);
     }
 }

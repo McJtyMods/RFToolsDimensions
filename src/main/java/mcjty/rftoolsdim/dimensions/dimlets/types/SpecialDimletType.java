@@ -1,8 +1,10 @@
 package mcjty.rftoolsdim.dimensions.dimlets.types;
 
 import mcjty.rftoolsdim.dimensions.dimlets.DimletKey;
+import mcjty.rftoolsdim.dimensions.dimlets.DimletObjectMapping;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletRandomizer;
 import mcjty.rftoolsdim.dimensions.DimensionInformation;
+import mcjty.rftoolsdim.dimensions.types.SpecialType;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.config.Configuration;
 import org.apache.commons.lang3.tuple.Pair;
@@ -94,32 +96,32 @@ public class SpecialDimletType implements IDimletType {
 
     @Override
     public void inject(DimletKey key, DimensionInformation dimensionInformation) {
-//        SpecialType specialType = DimletObjectMapping.idToSpecialType.get(key);
-//        if (specialType == SpecialType.SPECIAL_PEACEFUL) {
-//            dimensionInformation.setPeaceful(true);
-//        } else if (specialType == SpecialType.SPECIAL_NOANIMALS) {
-//            dimensionInformation.setNoanimals(true);
-//        } else if (specialType == SpecialType.SPECIAL_SPAWN) {
-//            dimensionInformation.setRespawnHere(true);
-//        }
+        SpecialType specialType = DimletObjectMapping.getSpecial(key);
+        if (specialType == SpecialType.SPECIAL_PEACEFUL) {
+            dimensionInformation.setPeaceful(true);
+        } else if (specialType == SpecialType.SPECIAL_NOANIMALS) {
+            dimensionInformation.setNoanimals(true);
+        } else if (specialType == SpecialType.SPECIAL_SPAWN) {
+            dimensionInformation.setRespawnHere(true);
+        }
     }
 
     @Override
     public void constructDimension(List<Pair<DimletKey, List<DimletKey>>> dimlets, Random random, DimensionInformation dimensionInformation) {
-//        dimlets = DimensionInformation.extractType(DimletType.DIMLET_SPECIAL, dimlets);
-//        for (Pair<DimletKey, List<DimletKey>> dimlet : dimlets) {
-//            DimletKey key = dimlet.getLeft();
-//            SpecialType specialType = DimletObjectMapping.idToSpecialType.get(key);
-//            if (specialType == SpecialType.SPECIAL_PEACEFUL) {
-//                dimensionInformation.setPeaceful(true);
-//            } else if (specialType == SpecialType.SPECIAL_NOANIMALS) {
-//                dimensionInformation.setNoanimals(true);
-//            } else if (specialType == SpecialType.SPECIAL_SHELTER) {
-//                dimensionInformation.setShelter(true);
-//            } else if (specialType == SpecialType.SPECIAL_SPAWN) {
-//                dimensionInformation.setRespawnHere(true);
-//            }
-//        }
+        dimlets = DimensionInformation.extractType(DimletType.DIMLET_SPECIAL, dimlets);
+        for (Pair<DimletKey, List<DimletKey>> dimlet : dimlets) {
+            DimletKey key = dimlet.getLeft();
+            SpecialType specialType = DimletObjectMapping.getSpecial(key);
+            if (specialType == SpecialType.SPECIAL_PEACEFUL) {
+                dimensionInformation.setPeaceful(true);
+            } else if (specialType == SpecialType.SPECIAL_NOANIMALS) {
+                dimensionInformation.setNoanimals(true);
+            } else if (specialType == SpecialType.SPECIAL_SHELTER) {
+                dimensionInformation.setShelter(true);
+            } else if (specialType == SpecialType.SPECIAL_SPAWN) {
+                dimensionInformation.setRespawnHere(true);
+            }
+        }
     }
 
     @Override

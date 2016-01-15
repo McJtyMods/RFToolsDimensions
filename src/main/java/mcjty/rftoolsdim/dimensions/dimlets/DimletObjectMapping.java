@@ -1,10 +1,10 @@
 package mcjty.rftoolsdim.dimensions.dimlets;
 
 import com.sun.istack.internal.NotNull;
+import mcjty.rftoolsdim.dimensions.description.MobDescriptor;
+import mcjty.rftoolsdim.dimensions.description.SkyDescriptor;
 import mcjty.rftoolsdim.dimensions.dimlets.types.DimletType;
-import mcjty.rftoolsdim.dimensions.types.ControllerType;
-import mcjty.rftoolsdim.dimensions.types.EffectType;
-import mcjty.rftoolsdim.dimensions.types.FeatureType;
+import mcjty.rftoolsdim.dimensions.types.*;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.ResourceLocation;
@@ -38,6 +38,24 @@ public class DimletObjectMapping {
             return type == null ? EffectType.EFFECT_NONE : type;
         }
         return EffectType.EFFECT_NONE;
+    }
+
+    @NotNull
+    public static StructureType getStructure(DimletKey dimlet) {
+        if (DimletType.DIMLET_STRUCTURE.equals(dimlet.getType())) {
+            StructureType type = StructureType.getStructureById(dimlet.getId());
+            return type == null ? StructureType.STRUCTURE_NONE : type;
+        }
+        return StructureType.STRUCTURE_NONE;
+    }
+
+    @NotNull
+    public static TerrainType getTerrain(DimletKey dimlet) {
+        if (DimletType.DIMLET_TERRAIN.equals(dimlet.getType())) {
+            TerrainType type = TerrainType.getTerrainById(dimlet.getId());
+            return type == null ? TerrainType.TERRAIN_VOID : type;
+        }
+        return TerrainType.TERRAIN_VOID;
     }
 
     public static IBlockState getBlock(DimletKey dimlet) {
@@ -85,5 +103,36 @@ public class DimletObjectMapping {
             return dimlet.getId();
         }
         return "";
+    }
+
+    public static MobDescriptor getMob(DimletKey dimlet) {
+        if (DimletType.DIMLET_MOBS.equals(dimlet.getType())) {
+            // @todo
+        }
+        return null;
+    }
+
+    public static SkyDescriptor getSky(DimletKey dimlet) {
+        if (DimletType.DIMLET_SKY.equals(dimlet.getType())) {
+            // @todo
+        }
+        return null;
+    }
+
+    public static SpecialType getSpecial(DimletKey dimlet) {
+        if (DimletType.DIMLET_SPECIAL.equals(dimlet.getType())) {
+            // @todo
+        }
+        return null;
+    }
+
+    public static float getCelestialAngle(DimletKey dimlet) {
+        // @todo
+        return 0.0f;
+    }
+
+    public static float getTimeSpeed(DimletKey dimlet) {
+        // @todo
+        return 0.0f;
     }
 }

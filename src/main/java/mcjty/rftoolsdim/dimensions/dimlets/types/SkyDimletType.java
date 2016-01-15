@@ -1,8 +1,11 @@
 package mcjty.rftoolsdim.dimensions.dimlets.types;
 
+import mcjty.rftoolsdim.dimensions.description.SkyDescriptor;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletKey;
+import mcjty.rftoolsdim.dimensions.dimlets.DimletObjectMapping;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletRandomizer;
 import mcjty.rftoolsdim.dimensions.DimensionInformation;
+import mcjty.rftoolsdim.dimensions.types.SkyType;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.config.Configuration;
 import org.apache.commons.lang3.tuple.Pair;
@@ -94,20 +97,20 @@ public class SkyDimletType implements IDimletType {
 
     @Override
     public void inject(DimletKey key, DimensionInformation dimensionInformation) {
-//        SkyDescriptor.Builder builder = new SkyDescriptor.Builder();
-//        builder.combine(dimensionInformation.getSkyDescriptor());
-//        SkyDescriptor newDescriptor = DimletObjectMapping.idToSkyDescriptor.get(key);
-//        if (newDescriptor.specifiesFogColor()) {
-//            builder.resetFogColor();
-//        }
-//        if (newDescriptor.specifiesSkyColor()) {
-//            builder.resetSkyColor();
-//        }
-//        if (dimensionInformation.isPatreonBitSet(Patreons.PATREON_DARKCORVUS)) {
-//            builder.skyType(SkyType.SKY_STARS3);
-//        }
-//        builder.combine(newDescriptor);
-//        dimensionInformation.setSkyDescriptor(builder.build());
+        SkyDescriptor.Builder builder = new SkyDescriptor.Builder();
+        builder.combine(dimensionInformation.getSkyDescriptor());
+        SkyDescriptor newDescriptor = DimletObjectMapping.getSky(key);
+        if (newDescriptor.specifiesFogColor()) {
+            builder.resetFogColor();
+        }
+        if (newDescriptor.specifiesSkyColor()) {
+            builder.resetSkyColor();
+        }
+        if (dimensionInformation.isPatreonBitSet(Patreons.PATREON_DARKCORVUS)) {
+            builder.skyType(SkyType.SKY_STARS3);
+        }
+        builder.combine(newDescriptor);
+        dimensionInformation.setSkyDescriptor(builder.build());
     }
 
     @Override

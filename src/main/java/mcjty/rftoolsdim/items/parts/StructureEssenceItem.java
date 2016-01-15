@@ -34,7 +34,7 @@ public class StructureEssenceItem extends GenericRFToolsItem {
     }
 
     private String calculateUnlocalizedNameSuffix(StructureType type) {
-        return "_" + StringUtils.uncapitalize(type.getName());
+        return "_" + StringUtils.uncapitalize(type.getId());
     }
 
     @SideOnly(Side.CLIENT)
