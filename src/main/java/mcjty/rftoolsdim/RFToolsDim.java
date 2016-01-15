@@ -4,6 +4,7 @@ import mcjty.lib.base.ModBase;
 import mcjty.lib.compat.MainCompatHandler;
 import mcjty.lib.varia.Logging;
 import mcjty.rftools.api.teleportation.ITeleportationManager;
+import mcjty.rftoolsdim.commands.CommandRftDim;
 import mcjty.rftoolsdim.dimensions.DimensionStorage;
 import mcjty.rftoolsdim.dimensions.ModDimensions;
 import mcjty.rftoolsdim.dimensions.RfToolsDimensionManager;
@@ -95,6 +96,7 @@ public class RFToolsDim implements ModBase {
 
     @Mod.EventHandler
     public void serverLoad(FMLServerStartingEvent event) {
+        event.registerServerCommand(new CommandRftDim());
 //        event.registerServerCommand(new CommandRftTp());
 //        event.registerServerCommand(new CommandRftDb());
 //        event.registerServerCommand(new CommandRftCfg());
