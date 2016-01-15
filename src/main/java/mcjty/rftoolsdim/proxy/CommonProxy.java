@@ -1,5 +1,6 @@
 package mcjty.rftoolsdim.proxy;
 
+import mcjty.blocks.ModBlocks;
 import mcjty.lib.base.GeneralConfig;
 import mcjty.lib.network.PacketHandler;
 import mcjty.lib.varia.WrenchChecker;
@@ -34,7 +35,7 @@ public abstract class CommonProxy {
         RFToolsDimMessages.registerNetworkMessages(network);
 
         ModItems.init();
-//        ModBlocks.init();
+        ModBlocks.init();
         ModCrafting.init();
         ModDimensions.init();
     }

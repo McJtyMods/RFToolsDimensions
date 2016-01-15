@@ -4,6 +4,7 @@ import mcjty.lib.base.ModBase;
 import mcjty.lib.compat.MainCompatHandler;
 import mcjty.lib.varia.Logging;
 import mcjty.rftoolsdim.dimensions.DimensionStorage;
+import mcjty.rftoolsdim.dimensions.RfToolsDimensionManager;
 import mcjty.rftoolsdim.proxy.CommonProxy;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -89,6 +90,7 @@ public class RFToolsDim implements ModBase {
     public void serverStopped(FMLServerStoppedEvent event) {
         Logging.log("RFTools: server is stopping. Shutting down gracefully");
         DimensionStorage.clearInstance();
+        RfToolsDimensionManager.clearInstance();
     }
 
     /**

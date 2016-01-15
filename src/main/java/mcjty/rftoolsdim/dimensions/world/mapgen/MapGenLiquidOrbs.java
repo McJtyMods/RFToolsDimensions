@@ -3,6 +3,7 @@ package mcjty.rftoolsdim.dimensions.world.mapgen;
 import mcjty.lib.varia.BlockMeta;
 import mcjty.rftoolsdim.dimensions.world.GenericChunkProvider;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.ChunkPrimer;
@@ -21,7 +22,7 @@ public class MapGenLiquidOrbs {
     }
 
     public void generate(World world, int chunkX, int chunkZ, ChunkPrimer primer) {
-        BlockMeta[] blocks = large ? provider.dimensionInformation.getHugeLiquidSphereBlocks() : provider.dimensionInformation.getLiquidSphereBlocks();
+        IBlockState[] blocks = large ? provider.dimensionInformation.getHugeLiquidSphereBlocks() : provider.dimensionInformation.getLiquidSphereBlocks();
         Block[] fluids = large ? provider.dimensionInformation.getHugeLiquidSphereFluids() : provider.dimensionInformation.getLiquidSphereFluids();
 
         for (int cx = -r ; cx <= r ; cx++) {
@@ -35,7 +36,7 @@ public class MapGenLiquidOrbs {
                     int y = 40 + random.nextInt(40);
                     int z = cz * 16 + random.nextInt(16);
                     int radius = random.nextInt(large ? 20 : 6) + (large ? 10 : 4);
-                    BlockMeta block = BlockMeta.STONE;
+                    IBlockState block = Blocks.stone.getDefaultState();
                     if (blocks.length > 1) {
                         block = blocks[random.nextInt(blocks.length)];
                     } else if (blocks.length == 1) {
@@ -48,15 +49,13 @@ public class MapGenLiquidOrbs {
                         fluid = fluids[0];
                     }
 
-                    fillSphere(ablock, ameta, x, y, z, radius, block, fluid);
+                    fillSphere(primer, x, y, z, radius, block, fluid);
                 }
             }
         }
     }
 
-    private void fillSphere(Block[] ablock, byte[] ameta, int centerx, int centery, int centerz, int radius, BlockMeta blockMeta, Block fluid) {
-        Block block = blockMeta.getBlock();
-        byte meta = blockMeta.getMeta();
+    private void fillSphere(ChunkPrimer primer, int centerx, int centery, int centerz, int radius, IBlockState block, Block fluid) {
 
         double sqradius = radius * radius;
         double liquidradius = (((double) radius) - 1.5f) * (((double) radius) - 1.5f);
@@ -70,11 +69,9 @@ public class MapGenLiquidOrbs {
                     double dydy = (y-centery) * (y-centery);
                     double sqdist = dxdx + dydy + dzdz;
                     if (sqdist < liquidradius) {
-                        ablock[index + y] = fluid;
-                        ameta[index + y] = 0;
+                        primer.setBlockState(index + y, fluid.getDefaultState());
                     } else if (sqdist <= sqradius) {
-                        ablock[index + y] = block;
-                        ameta[index + y] = meta;
+                        primer.setBlockState(index + y, block);
                     }
                 }
             }

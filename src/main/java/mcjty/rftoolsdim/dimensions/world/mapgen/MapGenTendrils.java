@@ -68,8 +68,8 @@ public class MapGenTendrils {
             f3 += (random.nextFloat() - random.nextFloat()) * random.nextFloat() * 4.0F;
 
             if (!flag2 && p_151541_15_ == k1 && p_151541_12_ > 1.0F && p_151541_16_ > 0) {
-                this.func_151541_a(random.nextLong(), chunkX, chunkZ, data, meta, p_151541_6_, p_151541_8_, p_151541_10_, random.nextFloat() * 0.5F + 0.5F, p_151541_13_ - ((float) Math.PI / 2F), p_151541_14_ / 3.0F, p_151541_15_, p_151541_16_, 1.0D);
-                this.func_151541_a(random.nextLong(), chunkX, chunkZ, data, meta, p_151541_6_, p_151541_8_, p_151541_10_, random.nextFloat() * 0.5F + 0.5F, p_151541_13_ + ((float) Math.PI / 2F), p_151541_14_ / 3.0F, p_151541_15_, p_151541_16_, 1.0D);
+                this.func_151541_a(random.nextLong(), chunkX, chunkZ, primer, p_151541_6_, p_151541_8_, p_151541_10_, random.nextFloat() * 0.5F + 0.5F, p_151541_13_ - ((float) Math.PI / 2F), p_151541_14_ / 3.0F, p_151541_15_, p_151541_16_, 1.0D);
+                this.func_151541_a(random.nextLong(), chunkX, chunkZ, primer, p_151541_6_, p_151541_8_, p_151541_10_, random.nextFloat() * 0.5F + 0.5F, p_151541_13_ + ((float) Math.PI / 2F), p_151541_14_ / 3.0F, p_151541_15_, p_151541_16_, 1.0D);
                 return;
             }
 
@@ -130,11 +130,10 @@ public class MapGenTendrils {
                                     double d12 = (l3 + 0.5D - p_151541_8_) / d7;
 
                                     if (d12 > -0.7D && d13 * d13 + d12 * d12 + d14 * d14 < 1.0D) {
-                                        Block block  = data[k3];
+                                        IBlockState block = primer.getBlockState(k3);
 
-                                        if (block == Blocks.air || block == null) {
-                                            data[k3] = baseBlock.getBlock();
-                                            meta[k3] = baseBlock.getMeta();
+                                        if (block.getBlock() == Blocks.air || block == null) {
+                                            primer.setBlockState(k3, baseBlock);
                                         }
                                     }
 

@@ -762,7 +762,7 @@ public class DimensionInformation {
         writeFluidArrayToBuf(buf, hugeLiquidSphereFluids);
 
         buf.writeInt(Block.blockRegistry.getIDForObject(canyonBlock.getBlock()));
-        buf.writeInt(canyonBlock.getMeta());
+        buf.writeInt(canyonBlock.getBlock().getMetaFromState(canyonBlock));
         buf.writeInt(Block.blockRegistry.getIDForObject(fluidForTerrain));
 
         writeBlockArrayToBuf(buf, extraOregen);
@@ -867,10 +867,10 @@ public class DimensionInformation {
         hugeLiquidSphereBlocks = readBlockArrayFromBuf(buf);
         hugeLiquidSphereFluids = readFluidArrayFromBuf(buf);
 
-        block = (Block) Block.blockRegistry.getObjectById(buf.readInt());
+        block = Block.blockRegistry.getObjectById(buf.readInt());
         meta = buf.readInt();
-        canyonBlock = new BlockMeta(block, meta);
-        fluidForTerrain = (Block) Block.blockRegistry.getObjectById(buf.readInt());
+        canyonBlock = block.getStateFromMeta(meta);
+        fluidForTerrain = Block.blockRegistry.getObjectById(buf.readInt());
 
         extraOregen = readBlockArrayFromBuf(buf);
 

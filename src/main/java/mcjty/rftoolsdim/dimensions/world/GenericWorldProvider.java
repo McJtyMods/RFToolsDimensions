@@ -10,9 +10,11 @@ import mcjty.rftoolsdim.dimensions.description.WeatherDescriptor;
 import mcjty.rftoolsdim.dimensions.dimlets.types.Patreons;
 import mcjty.rftoolsdim.dimensions.types.ControllerType;
 import mcjty.rftoolsdim.dimensions.types.SkyType;
+import mcjty.rftoolsdim.network.PacketGetDimensionEnergy;
 import mcjty.rftoolsdim.network.RFToolsDimMessages;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
@@ -23,8 +25,6 @@ import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.Set;
 
 //@Optional.InterfaceList(@Optional.Interface(iface = "ivorius.reccomplex.dimensions.DimensionDictionary$Handler", modid = "reccomplex"))
@@ -43,6 +43,11 @@ public class GenericWorldProvider extends WorldProvider implements  /*@todo impl
 
     public World getWorld() {
         return worldObj;
+    }
+
+    @Override
+    public String getInternalNameSuffix() {
+        return "_rftools";
     }
 
     @Override
@@ -248,8 +253,8 @@ public class GenericWorldProvider extends WorldProvider implements  /*@todo impl
     }
 
     @Override
-    public BiomeGenBase getBiomeGenForCoords(int x, int z) {
-        return super.getBiomeGenForCoords(x, z);
+    public BiomeGenBase getBiomeGenForCoords(BlockPos pos) {
+        return super.getBiomeGenForCoords(pos);
     }
 
     @Override

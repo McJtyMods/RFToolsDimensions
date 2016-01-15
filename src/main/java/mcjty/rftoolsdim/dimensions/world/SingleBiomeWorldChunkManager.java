@@ -1,8 +1,8 @@
 package mcjty.rftoolsdim.dimensions.world;
 
-import mcjty.rftools.dimension.DimensionInformation;
-import mcjty.rftools.dimension.RfToolsDimensionManager;
-import net.minecraft.world.ChunkPosition;
+import mcjty.rftoolsdim.dimensions.DimensionInformation;
+import mcjty.rftoolsdim.dimensions.RfToolsDimensionManager;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldType;
 import net.minecraft.world.biome.BiomeGenBase;
@@ -16,19 +16,19 @@ public class SingleBiomeWorldChunkManager extends WorldChunkManager {
     private BiomeGenBase biomeGenBase;
 
     public SingleBiomeWorldChunkManager(World world, long seed, WorldType worldType) {
-        super(seed, worldType);
-        DimensionInformation dimensionInformation = RfToolsDimensionManager.getDimensionManager(world).getDimensionInformation(world.provider.dimensionId);
+        super(seed, worldType, ""); // @todo
+        DimensionInformation dimensionInformation = RfToolsDimensionManager.getDimensionManager(world).getDimensionInformation(world.provider.getDimensionId());
         biomeGenBase = dimensionInformation.getBiomes().get(0);
     }
 
-    /**
-     * Returns the BiomeGenBase related to the x, z position on the world.
-     */
-    @Override
-    public BiomeGenBase getBiomeGenAt(int x, int z) {
-        return this.biomeGenBase;
-    }
-
+//    /**
+//     * Returns the BiomeGenBase related to the x, z position on the world.
+//     */
+//    @Override
+//    public BiomeGenBase getBiomeGenAt(int x, int z) {
+//        return this.biomeGenBase;
+//    }
+//
     /**
      * Returns an array of biomes for the location input.
      */
@@ -79,8 +79,8 @@ public class SingleBiomeWorldChunkManager extends WorldChunkManager {
     }
 
     @Override
-    public ChunkPosition findBiomePosition(int p_150795_1_, int p_150795_2_, int p_150795_3_, List p_150795_4_, Random p_150795_5_) {
-        return p_150795_4_.contains(this.biomeGenBase) ? new ChunkPosition(p_150795_1_ - p_150795_3_ + p_150795_5_.nextInt(p_150795_3_ * 2 + 1), 0, p_150795_2_ - p_150795_3_ + p_150795_5_.nextInt(p_150795_3_ * 2 + 1)) : null;
+    public BlockPos findBiomePosition(int p_150795_1_, int p_150795_2_, int p_150795_3_, List p_150795_4_, Random p_150795_5_) {
+        return p_150795_4_.contains(this.biomeGenBase) ? new BlockPos(p_150795_1_ - p_150795_3_ + p_150795_5_.nextInt(p_150795_3_ * 2 + 1), 0, p_150795_2_ - p_150795_3_ + p_150795_5_.nextInt(p_150795_3_ * 2 + 1)) : null;
     }
 
     /**

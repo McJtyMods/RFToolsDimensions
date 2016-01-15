@@ -1,14 +1,15 @@
 package mcjty.rftoolsdim.dimensions.world.terrain;
 
-import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
 import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.chunk.ChunkPrimer;
 
 public class GridTerrainGenerator extends NormalTerrainGenerator {
 
     @Override
-    public void generate(int chunkX, int chunkZ, Block[] aBlock, byte[] abyte) {
-        Block baseBlock = provider.dimensionInformation.getBaseBlockForTerrain().getBlock();
-        byte baseMeta = provider.dimensionInformation.getBaseBlockForTerrain().getMeta();
+    public void generate(int chunkX, int chunkZ, ChunkPrimer primer) {
+        IBlockState baseBlock = provider.dimensionInformation.getBaseBlockForTerrain();
 
         int borderx;
         if ((chunkX & 1) == 0) {
@@ -28,42 +29,31 @@ public class GridTerrainGenerator extends NormalTerrainGenerator {
             for (int z = 0; z < 16; ++z) {
                 // Clear the bedrock
                 for (int y = 0 ; y < 10 ; y++) {
-                    aBlock[index+y] = null;
+                    // @todo optimize references to air/defaultstate
+                    primer.setBlockState(index+y, Blocks.air.getDefaultState());
                 }
 
                 boolean filled = (x == borderx) && (z == borderz);
                 if (filled) {
                     for (int y = 0 ; y < 128 ; y++) {
-                        aBlock[index] = baseBlock;
-                        byte realMeta;
-                        if (baseMeta == 127) {
-                            realMeta = (byte)(y & 0xf);
-                        } else {
-                            realMeta = baseMeta;
-                        }
-                        abyte[index++] = realMeta;
+                        primer.setBlockState(index, baseBlock);
+                        // @todo support for 127
+//                        if (baseMeta == 127) {
+//                            realMeta = (byte)(y & 0xf);
                     }
                     index += 128;
                 } else if (x == borderx || z == borderz) {
                     for (int y = 0 ; y < 128 ; y+=32) {
                         if (y > 0) {
-                            aBlock[index-1] = baseBlock;
-                            byte realMeta;
-                            if (baseMeta == 127) {
-                                realMeta = (byte)((y/2 + x/2 + z/2) & 0xf);
-                            } else {
-                                realMeta = baseMeta;
-                            }
-                            abyte[index-1] = realMeta;
+                            primer.setBlockState(index-1, baseBlock);
+                            // @todo support for 127
+//                            if (baseMeta == 127) {
+//                                realMeta = (byte)((y/2 + x/2 + z/2) & 0xf);
                         }
-                        aBlock[index] = baseBlock;
-                        byte realMeta;
-                        if (baseMeta == 127) {
-                            realMeta = (byte)((y/2 + x/2 + z/2) & 0xf);
-                        } else {
-                            realMeta = baseMeta;
-                        }
-                        abyte[index] = realMeta;
+                        primer.setBlockState(index, baseBlock);
+                        // @todo support for 127
+//                        if (baseMeta == 127) {
+//                            realMeta = (byte)((y/2 + x/2 + z/2) & 0xf);
                         index += 32;
                     }
                     index += 128;
@@ -75,6 +65,6 @@ public class GridTerrainGenerator extends NormalTerrainGenerator {
     }
 
     @Override
-    public void replaceBlocksForBiome(int chunkX, int chunkZ, Block[] aBlock, byte[] abyte, BiomeGenBase[] biomeGenBases) {
+    public void replaceBlocksForBiome(int chunkX, int chunkZ, ChunkPrimer primer, BiomeGenBase[] biomeGenBases) {
     }
 }

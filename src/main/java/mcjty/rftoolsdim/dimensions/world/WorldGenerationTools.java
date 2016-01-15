@@ -2,12 +2,13 @@ package mcjty.rftoolsdim.dimensions.world;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 
 public class WorldGenerationTools {
 
     public static int findSuitableEmptySpot(World world, int x, int z) {
-        int y = world.getTopSolidOrLiquidBlock(x, z);
+        int y = world.getTopSolidOrLiquidBlock(new BlockPos(x, 0, z)).getY();
         if (y == -1) {
             return -1;
         }
@@ -19,13 +20,13 @@ public class WorldGenerationTools {
         }
 
 
-        Block block = world.getBlock(x, y+1, z);
+        Block block = world.getBlockState(new BlockPos(x, y + 1, z)).getBlock();
         while (block.getMaterial().isLiquid()) {
             y++;
             if (y > world.getHeight()-10) {
                 return -1;
             }
-            block = world.getBlock(x, y+1, z);
+            block = world.getBlockState(new BlockPos(x, y + 1, z)).getBlock();
         }
 
         return y;
@@ -33,19 +34,19 @@ public class WorldGenerationTools {
 
     // Return true if this block is solid.
     public static boolean isSolid(World world, int x, int y, int z) {
-        if (world.isAirBlock(x, y, z)) {
+        if (world.isAirBlock(new BlockPos(x, y, z))) {
             return false;
         }
-        Block block = world.getBlock(x, y, z);
+        Block block = world.getBlockState(new BlockPos(x, y, z)).getBlock();
         return block.getMaterial().blocksMovement();
     }
 
     // Return true if this block is solid.
     public static boolean isAir(World world, int x, int y, int z) {
-        if (world.isAirBlock(x, y, z)) {
+        if (world.isAirBlock(new BlockPos(x, y, z))) {
             return true;
         }
-        Block block = world.getBlock(x, y, z);
+        Block block = world.getBlockState(new BlockPos(x, y, z)).getBlock();
         return block == null;
     }
 
@@ -53,7 +54,7 @@ public class WorldGenerationTools {
     // non-air block is encountered.
     public static void fillEmptyWithStone(World world, int x, int y, int z) {
         while (y > 0 && !isSolid(world, x, y, z)) {
-            world.setBlock(x, y, z, Blocks.stone, 0, 2);
+            world.setBlockState(new BlockPos(x, y, z), Blocks.stone.getDefaultState(), 2);
             y--;
         }
     }

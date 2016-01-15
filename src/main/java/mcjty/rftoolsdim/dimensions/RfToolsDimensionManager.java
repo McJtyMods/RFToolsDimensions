@@ -3,6 +3,9 @@ package mcjty.rftoolsdim.dimensions;
 import mcjty.lib.varia.Logging;
 import mcjty.rftoolsdim.dimensions.description.DimensionDescriptor;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletKey;
+import mcjty.rftoolsdim.dimensions.world.GenericWorldProvider;
+import mcjty.rftoolsdim.network.PacketRegisterDimensions;
+import mcjty.rftoolsdim.network.RFToolsDimMessages;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -107,7 +110,7 @@ public class RfToolsDimensionManager extends WorldSavedData {
     }
 
     public void save(World world) {
-        world.mapStorage.setData(DIMMANAGER_NAME, this);
+        world.getMapStorage().setData(DIMMANAGER_NAME, this);
         markDirty();
 
         syncDimInfoToClients(world);
@@ -306,14 +309,14 @@ public class RfToolsDimensionManager extends WorldSavedData {
             DimensionManager.registerProviderType(id, GenericWorldProvider.class, false);
             DimensionManager.registerDimension(id, id);
         }
-        RFToolsMessages.INSTANCE.sendToAll(new PacketRegisterDimensions(id));
+        RFToolsDimMessages.INSTANCE.sendToAll(new PacketRegisterDimensions(id));
     }
 
     public static RfToolsDimensionManager getDimensionManager(World world) {
         if (instance != null) {
             return instance;
         }
-        instance = (RfToolsDimensionManager) world.mapStorage.loadData(RfToolsDimensionManager.class, DIMMANAGER_NAME);
+        instance = (RfToolsDimensionManager) world.getMapStorage().loadData(RfToolsDimensionManager.class, DIMMANAGER_NAME);
         if (instance == null) {
             instance = new RfToolsDimensionManager(DIMMANAGER_NAME);
         }
@@ -420,7 +423,8 @@ public class RfToolsDimensionManager extends WorldSavedData {
             try {
                 providerServer.loadChunk(0, 0);
                 providerServer.populate(providerServer, 0, 0);
-                providerServer.unloadChunksIfNotNearSpawn(0, 0);
+//                providerServer.unloadChunksIfNotNearSpawn(0, 0);
+                providerServer.unloadAllChunks();
             } catch (Exception e) {
                 Logging.logError("Something went wrong during creation of the dimension!");
                 e.printStackTrace();

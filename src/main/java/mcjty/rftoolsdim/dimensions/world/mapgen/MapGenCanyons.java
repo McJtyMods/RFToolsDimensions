@@ -3,6 +3,7 @@ package mcjty.rftoolsdim.dimensions.world.mapgen;
 import mcjty.lib.varia.BlockMeta;
 import mcjty.rftoolsdim.dimensions.world.GenericChunkProvider;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
@@ -21,8 +22,8 @@ public class MapGenCanyons {
         this.provider = provider;
     }
 
-    private void func_151540_a(long seed, int p_151540_3_, int p_151540_4_, Block[] data, byte[] meta, double p_151540_6_, double p_151540_8_, double p_151540_10_, float p_151540_12_, float p_151540_13_, float p_151540_14_, int p_151540_15_, int p_151540_16_, double p_151540_17_) {
-        BlockMeta baseBlock = provider.dimensionInformation.getCanyonBlock();
+    private void func_151540_a(long seed, int p_151540_3_, int p_151540_4_, ChunkPrimer primer, double p_151540_6_, double p_151540_8_, double p_151540_10_, float p_151540_12_, float p_151540_13_, float p_151540_14_, int p_151540_15_, int p_151540_16_, double p_151540_17_) {
+        IBlockState baseBlock = provider.dimensionInformation.getCanyonBlock();
 
         Random random = new Random(seed);
         double d4 = (p_151540_3_ * 16 + 8);
@@ -127,11 +128,10 @@ public class MapGenCanyons {
                                     double d11 = (l3 + 0.5D - p_151540_8_) / d6;
 
                                     if ((d13 * d13 + d14 * d14) * this.field_75046_d[l3] + d11 * d11 / 6.0D < 1.0D) {
-                                        Block block  = data[k3];
+                                        IBlockState block = primer.getBlockState(k3);
 
-                                        if (block == Blocks.air || block == null) {
-                                            data[k3] = baseBlock.getBlock();
-                                            meta[k3] = baseBlock.getMeta();
+                                        if (block.getBlock() == Blocks.air || block == null) {
+                                            primer.setBlockState(k3, baseBlock);
                                         }
                                     }
 
@@ -176,7 +176,7 @@ public class MapGenCanyons {
                 float f = this.rand.nextFloat() * (float) Math.PI * 2.0F;
                 float f1 = (this.rand.nextFloat() - 0.5F) * 2.0F / 8.0F;
                 float f2 = (this.rand.nextFloat() * 2.0F + this.rand.nextFloat()) * 2.0F;
-                this.func_151540_a(this.rand.nextLong(), chunkX, chunkZ, data, ameta, x, y, z, f2, f, f1, 0, 0, 3.0D);
+                this.func_151540_a(this.rand.nextLong(), chunkX, chunkZ, primer, x, y, z, f2, f, f1, 0, 0, 3.0D);
             }
         }
     }
