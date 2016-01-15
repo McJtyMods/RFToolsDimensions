@@ -23,12 +23,12 @@ public class DimletRandomizer {
 
     public static DimletKey getRandomFluidBlock(Random random, boolean allowWorldgen) {
         // @todo
-        return new DimletKey(DimletType.DIMLET_LIQUID, Blocks.water.getRegistryName()+"_0");
+        return new DimletKey(DimletType.DIMLET_LIQUID, Blocks.water.getRegistryName()+"@0");
     }
 
     public static DimletKey getRandomMaterialBlock(Random random, boolean allowWorldgen) {
         // @todo
-        return new DimletKey(DimletType.DIMLET_MATERIAL, Blocks.stone.getRegistryName()+"_0");
+        return new DimletKey(DimletType.DIMLET_MATERIAL, Blocks.stone.getRegistryName()+"@0");
     }
 
 }

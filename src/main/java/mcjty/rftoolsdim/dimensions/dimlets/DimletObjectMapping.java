@@ -22,8 +22,8 @@ public class DimletObjectMapping {
     public static IBlockState getBlock(DimletKey dimlet) {
         if (DimletType.DIMLET_MATERIAL.equals(dimlet.getType())) {
             String id = dimlet.getId();
-            int lastIndexOf = StringUtils.lastIndexOf(id, "_");
-            String blockid = id.substring(0, lastIndexOf-1);
+            int lastIndexOf = StringUtils.lastIndexOf(id, "@");
+            String blockid = id.substring(0, lastIndexOf);
             int meta = Integer.parseInt(id.substring(lastIndexOf+1));
 
             Block block = Block.blockRegistry.getObject(new ResourceLocation(blockid));
@@ -38,8 +38,8 @@ public class DimletObjectMapping {
     public static Block getFluid(DimletKey dimlet) {
         if (DimletType.DIMLET_LIQUID.equals(dimlet.getType())) {
             String id = dimlet.getId();
-            int lastIndexOf = StringUtils.lastIndexOf(id, "_");
-            String blockid = id.substring(0, lastIndexOf-1);
+            int lastIndexOf = StringUtils.lastIndexOf(id, "@");
+            String blockid = id.substring(0, lastIndexOf);
 //            int meta = Integer.parseInt(id.substring(lastIndexOf+1));
 
             Block block = Block.blockRegistry.getObject(new ResourceLocation(blockid));
