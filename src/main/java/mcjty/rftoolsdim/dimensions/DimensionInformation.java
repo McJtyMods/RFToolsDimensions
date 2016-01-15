@@ -562,14 +562,25 @@ public class DimensionInformation {
         if (block == null) {
             return "null";
         }
-        return new ItemStack(block).getDisplayName();
+
+        ItemStack itemStack = new ItemStack(block);
+        if (itemStack.getItem() == null) {
+            return "null";
+        }
+
+        return itemStack.getDisplayName();
     }
 
     private static String getDisplayName(IBlockState state) {
         if (state == null) {
             return "null";
         }
-        return new ItemStack(state.getBlock(), 1, state.getBlock().getMetaFromState(state)).getDisplayName();
+        ItemStack itemStack = new ItemStack(state.getBlock(), 1, state.getBlock().getMetaFromState(state));
+        if (itemStack.getItem() == null) {
+            return "null";
+        }
+
+        return itemStack.getDisplayName();
     }
 
     public void dump(EntityPlayer player) {

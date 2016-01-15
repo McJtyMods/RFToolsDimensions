@@ -1,10 +1,7 @@
 package mcjty.rftoolsdim.dimensions.dimlets;
 
 import mcjty.rftoolsdim.dimensions.dimlets.types.DimletType;
-import mcjty.rftoolsdim.dimensions.types.ControllerType;
-import mcjty.rftoolsdim.dimensions.types.EffectType;
-import mcjty.rftoolsdim.dimensions.types.FeatureType;
-import mcjty.rftoolsdim.dimensions.types.StructureType;
+import mcjty.rftoolsdim.dimensions.types.*;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.biome.BiomeGenBase;
 
@@ -19,6 +16,11 @@ public class DimletRandomizer {
     public static final int RARITY_4 = 4;
     public static final int RARITY_5 = 5;
     public static final int RARITY_6 = 6;
+
+    public static DimletKey getRandomTerrain(Random random, boolean forWorldGen) {
+        // @todo
+        return new DimletKey(DimletType.DIMLET_TERRAIN, TerrainType.TERRAIN_VOID.getId());
+    }
 
     public static DimletKey getRandomFeature(Random random, boolean forWorldGen) {
         // @todo

@@ -145,11 +145,16 @@ public class GenericWorldProvider extends WorldProvider implements  /*@todo impl
         }
     }
 
+    private DimensionStorage getStorage() {
+        if (storage == null) {
+            storage = DimensionStorage.getDimensionStorage(worldObj);
+        }
+        return storage;
+    }
+
     @Override
     public void registerWorldChunkManager() {
         getDimensionInformation();
-        storage = DimensionStorage.getDimensionStorage(worldObj);
-
         setupProviderInfo();
     }
 
@@ -234,7 +239,7 @@ public class GenericWorldProvider extends WorldProvider implements  /*@todo impl
     public int getRespawnDimension(EntityPlayerMP player) {
         getDimensionInformation();
         if (DimletConfiguration.respawnSameDim || (dimensionInformation != null && dimensionInformation.isRespawnHere())) {
-            DimensionStorage dimensionStorage = DimensionStorage.getDimensionStorage(worldObj);
+            DimensionStorage dimensionStorage = getStorage();
             int power = dimensionStorage.getEnergyLevel(dimensionId);
             if (power < 1000) {
                 return DimletConfiguration.spawnDimension;
@@ -322,7 +327,7 @@ public class GenericWorldProvider extends WorldProvider implements  /*@todo impl
 
     private float calculatePowerBlackout(int dim) {
         float factor = 1.0f;
-        int power = storage.getEnergyLevel(dim);
+        int power = getStorage().getEnergyLevel(dim);
         if (power < DimletConfiguration.DIMPOWER_WARN3) {
             factor = ((float) power) / DimletConfiguration.DIMPOWER_WARN3 * 0.2f;
         } else  if (power < DimletConfiguration.DIMPOWER_WARN2) {
@@ -414,7 +419,7 @@ public class GenericWorldProvider extends WorldProvider implements  /*@todo impl
 
     @Override
     public int getCurrentRF() {
-        DimensionStorage dimensionStorage = DimensionStorage.getDimensionStorage(worldObj);
-        return dimensionStorage.getEnergyLevel(dimensionId);
+//        DimensionStorage dimensionStorage = DimensionStorage.getDimensionStorage(worldObj);
+        return getStorage().getEnergyLevel(dimensionId);
     }
 }

@@ -1,14 +1,20 @@
 package mcjty.rftoolsdim.dimensions.dimlets.types;
 
 import mcjty.rftoolsdim.dimensions.DimensionInformation;
+import mcjty.rftoolsdim.dimensions.DimletConfiguration;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletKey;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletObjectMapping;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletRandomizer;
 import mcjty.rftoolsdim.dimensions.types.TerrainType;
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.config.Configuration;
 import org.apache.commons.lang3.tuple.Pair;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -139,68 +145,69 @@ public class TerrainDimletType implements IDimletType {
 
     @Override
     public void constructDimension(List<Pair<DimletKey, List<DimletKey>>> dimlets, Random random, DimensionInformation dimensionInformation) {
-//        dimlets = DimensionInformation.extractType(DimletType.DIMLET_TERRAIN, dimlets);
-//        List<DimletKey> modifiers;
-//        TerrainType terrainType = TerrainType.TERRAIN_VOID;
-//        if (dimlets.isEmpty()) {
-//            // Pick a random terrain type with a seed that is generated from all the
-//            // dimlets so we always get the same random value for these dimlets.
-//            List<DimletKey> idList = new ArrayList<DimletKey>(DimletObjectMapping.idToTerrainType.keySet());
-//            DimletKey key = idList.get(random.nextInt(idList.size()));
-//            dimensionInformation.updateCostFactor(key);
-//            terrainType = DimletObjectMapping.idToTerrainType.get(key);
-//            modifiers = Collections.emptyList();
-//        } else {
-//            int index = random.nextInt(dimlets.size());
-//            DimletKey key = dimlets.get(index).getLeft();
-//            terrainType = DimletObjectMapping.idToTerrainType.get(key);
-//            modifiers = dimlets.get(index).getRight();
-//        }
-//
-//        List<BlockMeta> blocks = new ArrayList<BlockMeta>();
-//        List<Block> fluids = new ArrayList<Block>();
-//        DimensionInformation.getMaterialAndFluidModifiers(modifiers, blocks, fluids);
-//        dimensionInformation.setTerrainType(terrainType);
-//
-//        BlockMeta baseBlockForTerrain;
-//        if (dimensionInformation.isPatreonBitSet(Patreons.PATREON_LAYEREDMETA)) {
+        dimlets = DimensionInformation.extractType(DimletType.DIMLET_TERRAIN, dimlets);
+        List<DimletKey> modifiers;
+        TerrainType terrainType = TerrainType.TERRAIN_VOID;
+        if (dimlets.isEmpty()) {
+            // Pick a random terrain type with a seed that is generated from all the
+            // dimlets so we always get the same random value for these dimlets.
+            DimletKey key = DimletRandomizer.getRandomTerrain(random, true);
+            dimensionInformation.updateCostFactor(key);
+            terrainType = DimletObjectMapping.getTerrain(key);
+            modifiers = Collections.emptyList();
+        } else {
+            int index = random.nextInt(dimlets.size());
+            DimletKey key = dimlets.get(index).getLeft();
+            terrainType = DimletObjectMapping.getTerrain(key);
+            modifiers = dimlets.get(index).getRight();
+        }
+
+        List<IBlockState> blocks = new ArrayList<>();
+        List<Block> fluids = new ArrayList<>();
+        DimensionInformation.getMaterialAndFluidModifiers(modifiers, blocks, fluids);
+        dimensionInformation.setTerrainType(terrainType);
+
+        IBlockState baseBlockForTerrain;
+        if (dimensionInformation.isPatreonBitSet(Patreons.PATREON_LAYEREDMETA)) {
+            baseBlockForTerrain = Blocks.stone.getDefaultState();
 //            baseBlockForTerrain = new BlockMeta(Blocks.wool, 127);
-//        } else {
-//            if (!blocks.isEmpty()) {
-//                baseBlockForTerrain = blocks.get(random.nextInt(blocks.size()));
-//                if (baseBlockForTerrain == null) {
-//                    baseBlockForTerrain = BlockMeta.STONE;     // This is the default in case None was specified.
-//                }
-//            } else {
-//                // Nothing was specified. With a relatively big chance we use stone. But there is also a chance that the material will be something else.
-//                // Note that in this particular case we disallow randomly selecting 'expensive' blocks like glass.
-//                if (random.nextFloat() < DimletConfiguration.randomBaseBlockChance) {
-//                    DimletKey key = DimletRandomizer.getRandomMaterialBlock(random, false);
-//                    dimensionInformation.updateCostFactor(key);
-//                    baseBlockForTerrain = DimletObjectMapping.idToBlock.get(key);
-//                } else {
-//                    baseBlockForTerrain = BlockMeta.STONE;
-//                }
-//            }
-//        }
-//        dimensionInformation.setBaseBlockForTerrain(baseBlockForTerrain);
-//
-//        Block fluidForTerrain;
-//        if (!fluids.isEmpty()) {
-//            fluidForTerrain = fluids.get(random.nextInt(fluids.size()));
-//            if (fluidForTerrain == null) {
-//                fluidForTerrain = Blocks.water;         // This is the default.
-//            }
-//        } else {
-//            if (random.nextFloat() < DimletConfiguration.randomOceanLiquidChance) {
-//                DimletKey key = DimletRandomizer.getRandomFluidBlock(random, false);
-//                dimensionInformation.updateCostFactor(key);
-//                fluidForTerrain = DimletObjectMapping.idToFluid.get(key);
-//            } else {
-//                fluidForTerrain = Blocks.water;
-//            }
-//        }
-//        dimensionInformation.setFluidForTerrain(fluidForTerrain);
+            // @todo
+        } else {
+            if (!blocks.isEmpty()) {
+                baseBlockForTerrain = blocks.get(random.nextInt(blocks.size()));
+                if (baseBlockForTerrain == null) {
+                    baseBlockForTerrain = Blocks.stone.getDefaultState();     // This is the default in case None was specified.
+                }
+            } else {
+                // Nothing was specified. With a relatively big chance we use stone. But there is also a chance that the material will be something else.
+                // Note that in this particular case we disallow randomly selecting 'expensive' blocks like glass.
+                if (random.nextFloat() < DimletConfiguration.randomBaseBlockChance) {
+                    DimletKey key = DimletRandomizer.getRandomMaterialBlock(random, false);
+                    dimensionInformation.updateCostFactor(key);
+                    baseBlockForTerrain = DimletObjectMapping.getBlock(key);
+                } else {
+                    baseBlockForTerrain = Blocks.stone.getDefaultState();
+                }
+            }
+        }
+        dimensionInformation.setBaseBlockForTerrain(baseBlockForTerrain);
+
+        Block fluidForTerrain;
+        if (!fluids.isEmpty()) {
+            fluidForTerrain = fluids.get(random.nextInt(fluids.size()));
+            if (fluidForTerrain == null) {
+                fluidForTerrain = Blocks.water;         // This is the default.
+            }
+        } else {
+            if (random.nextFloat() < DimletConfiguration.randomOceanLiquidChance) {
+                DimletKey key = DimletRandomizer.getRandomFluidBlock(random, false);
+                dimensionInformation.updateCostFactor(key);
+                fluidForTerrain = DimletObjectMapping.getFluid(key);
+            } else {
+                fluidForTerrain = Blocks.water;
+            }
+        }
+        dimensionInformation.setFluidForTerrain(fluidForTerrain);
     }
 
     @Override

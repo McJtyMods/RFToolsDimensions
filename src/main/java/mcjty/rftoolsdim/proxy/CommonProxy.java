@@ -4,11 +4,13 @@ import mcjty.blocks.ModBlocks;
 import mcjty.lib.base.GeneralConfig;
 import mcjty.lib.network.PacketHandler;
 import mcjty.lib.varia.WrenchChecker;
+import mcjty.rftoolsdim.ForgeEventHandlers;
 import mcjty.rftoolsdim.ModCrafting;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.dimensions.ModDimensions;
 import mcjty.rftoolsdim.items.ModItems;
 import mcjty.rftoolsdim.network.RFToolsDimMessages;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -67,7 +69,7 @@ public abstract class CommonProxy {
 
     public void init(FMLInitializationEvent e) {
 //        NetworkRegistry.INSTANCE.registerGuiHandler(RFToolsDim.instance, new GuiProxy());
-//        MinecraftForge.EVENT_BUS.register(new ForgeEventHandlers());
+        MinecraftForge.EVENT_BUS.register(new ForgeEventHandlers());
     }
 
     public void postInit(FMLPostInitializationEvent e) {

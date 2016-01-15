@@ -140,11 +140,11 @@ public class SkyDimletType implements IDimletType {
 //                }
                 // @todo
 
-                for (int i = 0 ; i < random.nextInt(3) ; i++) {
-                    DimletKey key = bodyKeys.get(random.nextInt(bodyKeys.size()));
-                    List<DimletKey> modifiers = Collections.emptyList();
-                    dimlets.add(Pair.of(key, modifiers));
-                }
+//                for (int i = 0 ; i < random.nextInt(3) ; i++) {
+//                    DimletKey key = bodyKeys.get(random.nextInt(bodyKeys.size()));
+//                    List<DimletKey> modifiers = Collections.emptyList();
+//                    dimlets.add(Pair.of(key, modifiers));
+//                }
             }
         }
 
