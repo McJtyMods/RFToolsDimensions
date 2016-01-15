@@ -3,11 +3,14 @@ package mcjty.rftoolsdim.dimensions.types;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.BiomeDictionary;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public enum ControllerType {
-    CONTROLLER_DEFAULT(0, null),
-    CONTROLLER_SINGLE(1, null),
-    CONTROLLER_CHECKERBOARD(2, null),
-    CONTROLLER_COLD(0, new BiomeFilter() {
+    CONTROLLER_DEFAULT("Default", 0, null),
+    CONTROLLER_SINGLE("Single", 1, null),
+    CONTROLLER_CHECKERBOARD("Checker", 2, null),
+    CONTROLLER_COLD("Cold", 0, new BiomeFilter() {
         @Override
         public boolean match(BiomeGenBase biome) {
             return biome.getTempCategory() == BiomeGenBase.TempCategory.COLD;
@@ -18,7 +21,7 @@ public enum ControllerType {
             return calculateBiomeDistance(a, b, false, true, false);
         }
     }),
-    CONTROLLER_MEDIUM(0, new BiomeFilter() {
+    CONTROLLER_MEDIUM("Medium", 0, new BiomeFilter() {
         @Override
         public boolean match(BiomeGenBase biome) {
             return biome.getTempCategory() == BiomeGenBase.TempCategory.MEDIUM;
@@ -29,7 +32,7 @@ public enum ControllerType {
             return calculateBiomeDistance(a, b, false, true, false);
         }
     }),
-    CONTROLLER_WARM(0, new BiomeFilter() {
+    CONTROLLER_WARM("Warm", 0, new BiomeFilter() {
         @Override
         public boolean match(BiomeGenBase biome) {
             return biome.getTempCategory() == BiomeGenBase.TempCategory.WARM;
@@ -40,7 +43,7 @@ public enum ControllerType {
             return calculateBiomeDistance(a, b, false, true, false);
         }
     }),
-    CONTROLLER_DRY(0, new BiomeFilter() {
+    CONTROLLER_DRY("Dry", 0, new BiomeFilter() {
         @Override
         public boolean match(BiomeGenBase biome) {
             return biome.rainfall < 0.1;
@@ -51,7 +54,7 @@ public enum ControllerType {
             return calculateBiomeDistance(a, b, true, false, false);
         }
     }),
-    CONTROLLER_WET(0, new BiomeFilter() {
+    CONTROLLER_WET("Wet", 0, new BiomeFilter() {
         @Override
         public boolean match(BiomeGenBase biome) {
             return biome.isHighHumidity();
@@ -62,7 +65,7 @@ public enum ControllerType {
             return calculateBiomeDistance(a, b, true, false, false);
         }
     }),
-    CONTROLLER_FIELDS(0, new BiomeFilter() {
+    CONTROLLER_FIELDS("Fields", 0, new BiomeFilter() {
         @Override
         public boolean match(BiomeGenBase biome) {
             float rootHeight = biome.minHeight;
@@ -75,7 +78,7 @@ public enum ControllerType {
             return calculateBiomeDistance(a, b, false, false, true);
         }
     }),
-    CONTROLLER_MOUNTAINS(0, new BiomeFilter() {
+    CONTROLLER_MOUNTAINS("Mountains", 0, new BiomeFilter() {
         @Override
         public boolean match(BiomeGenBase biome) {
             float heightVariation = biome.maxHeight;
@@ -87,8 +90,8 @@ public enum ControllerType {
             return calculateBiomeDistance(a, b, false, false, true);
         }
     }),
-    CONTROLLER_FILTERED(-1, null),
-    CONTROLLER_MAGICAL(0, new BiomeFilter() {
+    CONTROLLER_FILTERED("Filtered", -1, null),
+    CONTROLLER_MAGICAL("Magical", 0, new BiomeFilter() {
         @Override
         public boolean match(BiomeGenBase biome) {
             return BiomeDictionary.isBiomeOfType(biome, BiomeDictionary.Type.MAGICAL) || BiomeDictionary.isBiomeOfType(biome, BiomeDictionary.Type.SPOOKY);
@@ -99,7 +102,7 @@ public enum ControllerType {
             return calculateBiomeDistance(a, b, false, false, false);
         }
     }),
-    CONTROLLER_FOREST(0, new BiomeFilter() {
+    CONTROLLER_FOREST("Forest", 0, new BiomeFilter() {
         @Override
         public boolean match(BiomeGenBase biome) {
             return biome.theBiomeDecorator.treesPerChunk >= 5;
@@ -111,13 +114,33 @@ public enum ControllerType {
         }
     });
 
+    private static final Map<String,ControllerType> CONTROLLER_TYPE_MAP = new HashMap<>();
+
+    static {
+        for (ControllerType type : ControllerType.values()) {
+            CONTROLLER_TYPE_MAP.put(type.getId(), type);
+        }
+    }
+
+
+    private final String id;
     private final int neededBiomes;
     private final BiomeFilter filter;
 
-    ControllerType(int neededBiomes, BiomeFilter filter) {
+    ControllerType(String id, int neededBiomes, BiomeFilter filter) {
+        this.id = id;
         this.neededBiomes = neededBiomes;
         this.filter = filter;
     }
+
+    public String getId() {
+        return id;
+    }
+
+    public static ControllerType getControllerById(String id) {
+        return CONTROLLER_TYPE_MAP.get(id);
+    }
+
 
     /**
      * Return the amount of biomes needed for this controller. -1 means that it can use any number of biomes.

@@ -1,10 +1,14 @@
 package mcjty.rftoolsdim.dimensions.dimlets.types;
 
+import mcjty.rftoolsdim.dimensions.DimletConfiguration;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletKey;
+import mcjty.rftoolsdim.dimensions.dimlets.DimletObjectMapping;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletRandomizer;
 import mcjty.rftoolsdim.dimensions.DimensionInformation;
+import mcjty.rftoolsdim.dimensions.types.ControllerType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.config.Configuration;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -98,64 +102,61 @@ public class BiomeDimletType implements IDimletType {
 
     @Override
     public void constructDimension(List<Pair<DimletKey, List<DimletKey>>> dimlets, Random random, DimensionInformation dimensionInformation) {
-//        Set<DimletKey> biomeKeys = new HashSet<DimletKey>();
-//        List<Pair<DimletKey, List<DimletKey>>> biomeDimlets = DimensionInformation.extractType(DimletType.DIMLET_BIOME, dimlets);
-//        List<Pair<DimletKey, List<DimletKey>>> controllerDimlets = DimensionInformation.extractType(DimletType.DIMLET_CONTROLLER, dimlets);
-//
-//        ControllerType controllerType;
-//
-//        // First determine the controller to use.
-//        if (controllerDimlets.isEmpty()) {
-//            if (random.nextFloat() < DimletConfiguration.randomControllerChance) {
-//                List<DimletKey> keys = new ArrayList<DimletKey>(DimletObjectMapping.idToControllerType.keySet());
-//                DimletKey key = keys.get(random.nextInt(keys.size()));
-//                controllerType = DimletObjectMapping.idToControllerType.get(key);
-//            } else {
-//                if (biomeDimlets.isEmpty()) {
-//                    controllerType = ControllerType.CONTROLLER_DEFAULT;
-//                } else if (biomeDimlets.size() > 1) {
-//                    controllerType = ControllerType.CONTROLLER_FILTERED;
-//                } else {
-//                    controllerType = ControllerType.CONTROLLER_SINGLE;
-//                }
-//            }
-//        } else {
-//            DimletKey key = controllerDimlets.get(random.nextInt(controllerDimlets.size())).getLeft();
-//            controllerType = DimletObjectMapping.idToControllerType.get(key);
-//        }
-//        dimensionInformation.setControllerType(controllerType);
-//
-//        // Now see if we have to add or randomize biomes.
-//        for (Pair<DimletKey, List<DimletKey>> dimletWithModifiers : biomeDimlets) {
-//            DimletKey key = dimletWithModifiers.getKey();
-//            biomeKeys.add(key);
-//        }
-//
-//        int neededBiomes = controllerType.getNeededBiomes();
-//        if (neededBiomes == -1) {
-//            // Can work with any number of biomes.
-//            if (biomeKeys.size() >= 2) {
-//                neededBiomes = biomeKeys.size();     // We already have enough biomes
-//            } else {
-//                neededBiomes = random.nextInt(10) + 3;
-//            }
-//        }
-//
-//        while (biomeKeys.size() < neededBiomes) {
-//            DimletKey key;
-//            List<DimletKey> keys = new ArrayList<DimletKey>(DimletObjectMapping.idToBiome.keySet());
-//            key = keys.get(random.nextInt(keys.size()));
-//            while (biomeKeys.contains(key)) {
-//                key = keys.get(random.nextInt(keys.size()));
-//            }
-//            biomeKeys.add(key);
-//        }
-//
-//        List<BiomeGenBase> biomes = dimensionInformation.getBiomes();
-//        biomes.clear();
-//        for (DimletKey key : biomeKeys) {
-//            biomes.add(DimletObjectMapping.idToBiome.get(key));
-//        }
+        Set<DimletKey> biomeKeys = new HashSet<DimletKey>();
+        List<Pair<DimletKey, List<DimletKey>>> biomeDimlets = DimensionInformation.extractType(DimletType.DIMLET_BIOME, dimlets);
+        List<Pair<DimletKey, List<DimletKey>>> controllerDimlets = DimensionInformation.extractType(DimletType.DIMLET_CONTROLLER, dimlets);
+
+        ControllerType controllerType;
+
+        // First determine the controller to use.
+        if (controllerDimlets.isEmpty()) {
+            if (random.nextFloat() < DimletConfiguration.randomControllerChance) {
+                DimletKey key = DimletRandomizer.getRandomController(random, true);
+                controllerType = DimletObjectMapping.getController(key);
+            } else {
+                if (biomeDimlets.isEmpty()) {
+                    controllerType = ControllerType.CONTROLLER_DEFAULT;
+                } else if (biomeDimlets.size() > 1) {
+                    controllerType = ControllerType.CONTROLLER_FILTERED;
+                } else {
+                    controllerType = ControllerType.CONTROLLER_SINGLE;
+                }
+            }
+        } else {
+            DimletKey key = controllerDimlets.get(random.nextInt(controllerDimlets.size())).getLeft();
+            controllerType = DimletObjectMapping.getController(key);
+        }
+        dimensionInformation.setControllerType(controllerType);
+
+        // Now see if we have to add or randomize biomes.
+        for (Pair<DimletKey, List<DimletKey>> dimletWithModifiers : biomeDimlets) {
+            DimletKey key = dimletWithModifiers.getKey();
+            biomeKeys.add(key);
+        }
+
+        int neededBiomes = controllerType.getNeededBiomes();
+        if (neededBiomes == -1) {
+            // Can work with any number of biomes.
+            if (biomeKeys.size() >= 2) {
+                neededBiomes = biomeKeys.size();     // We already have enough biomes
+            } else {
+                neededBiomes = random.nextInt(10) + 3;
+            }
+        }
+
+        while (biomeKeys.size() < neededBiomes) {
+            DimletKey key = DimletRandomizer.getRandomBiome(random, true);
+            while (biomeKeys.contains(key)) {
+                key = DimletRandomizer.getRandomBiome(random, true);
+            }
+            biomeKeys.add(key);
+        }
+
+        List<BiomeGenBase> biomes = dimensionInformation.getBiomes();
+        biomes.clear();
+        for (DimletKey key : biomeKeys) {
+            biomes.add(DimletObjectMapping.getBiome(key));
+        }
     }
 
     @Override

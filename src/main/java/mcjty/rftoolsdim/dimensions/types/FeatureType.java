@@ -34,7 +34,7 @@ public enum FeatureType {
     private final int materialClass;            // A value indicating how expensive material modifiers should be for this feature (0 is cheapest, 3 is most expensive)
     private final int liquidClass;              // A value indicating how expensive liquid modifiers should be for this feature (0 is cheapest, 3 is most expensive)
 
-    private final static Map<String,FeatureType> FEATURE_TYPE_MAP = new HashMap<>();
+    private static final Map<String,FeatureType> FEATURE_TYPE_MAP = new HashMap<>();
 
     static {
         for (FeatureType type : FeatureType.values()) {

@@ -1,14 +1,18 @@
 package mcjty.rftoolsdim.dimensions.dimlets.types;
 
+import mcjty.rftoolsdim.dimensions.DimletConfiguration;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletKey;
+import mcjty.rftoolsdim.dimensions.dimlets.DimletObjectMapping;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletRandomizer;
 import mcjty.rftoolsdim.dimensions.DimensionInformation;
+import mcjty.rftoolsdim.dimensions.types.EffectType;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.config.Configuration;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 public class EffectDimletType implements IDimletType {
     private static final String CATEGORY_TYPE = "type_effect";
@@ -94,37 +98,37 @@ public class EffectDimletType implements IDimletType {
 
     @Override
     public void inject(DimletKey key, DimensionInformation dimensionInformation) {
-//        Set<EffectType> effectTypes = dimensionInformation.getEffectTypes();
-//        EffectType effectType = DimletObjectMapping.idToEffectType.get(key);
-//        if (EffectType.EFFECT_NONE.equals(effectType)) {
-//            effectTypes.clear();
-//        } else {
-//            effectTypes.add(effectType);
-//        }
+        Set<EffectType> effectTypes = dimensionInformation.getEffectTypes();
+        EffectType effectType = DimletObjectMapping.getEffect(key);
+        if (EffectType.EFFECT_NONE.equals(effectType)) {
+            effectTypes.clear();
+        } else {
+            effectTypes.add(effectType);
+        }
     }
 
     @Override
     public void constructDimension(List<Pair<DimletKey, List<DimletKey>>> dimlets, Random random, DimensionInformation dimensionInformation) {
-//        Set<EffectType> effectTypes = dimensionInformation.getEffectTypes();
-//        dimlets = DimensionInformation.extractType(DimletType.DIMLET_EFFECT, dimlets);
-//        if (dimlets.isEmpty()) {
-//            while (random.nextFloat() < DimletConfiguration.randomEffectChance) {
-//                DimletKey key = DimletRandomizer.getRandomEffect(random, false);
-//                EffectType effectType = DimletObjectMapping.idToEffectType.get(key);
-//                if (!effectTypes.contains(effectType)) {
-//                    dimensionInformation.updateCostFactor(key);
-//                    effectTypes.add(effectType);
-//                }
-//            }
-//        } else {
-//            for (Pair<DimletKey, List<DimletKey>> dimletWithModifier : dimlets) {
-//                DimletKey key = dimletWithModifier.getLeft();
-//                EffectType effectType = DimletObjectMapping.idToEffectType.get(key);
-//                if (effectType != EffectType.EFFECT_NONE) {
-//                    effectTypes.add(effectType);
-//                }
-//            }
-//        }
+        Set<EffectType> effectTypes = dimensionInformation.getEffectTypes();
+        dimlets = DimensionInformation.extractType(DimletType.DIMLET_EFFECT, dimlets);
+        if (dimlets.isEmpty()) {
+            while (random.nextFloat() < DimletConfiguration.randomEffectChance) {
+                DimletKey key = DimletRandomizer.getRandomEffect(random, false);
+                EffectType effectType = DimletObjectMapping.getEffect(key);
+                if (!effectTypes.contains(effectType)) {
+                    dimensionInformation.updateCostFactor(key);
+                    effectTypes.add(effectType);
+                }
+            }
+        } else {
+            for (Pair<DimletKey, List<DimletKey>> dimletWithModifier : dimlets) {
+                DimletKey key = dimletWithModifier.getLeft();
+                EffectType effectType = DimletObjectMapping.getEffect(key);
+                if (effectType != EffectType.EFFECT_NONE) {
+                    effectTypes.add(effectType);
+                }
+            }
+        }
     }
 
     @Override

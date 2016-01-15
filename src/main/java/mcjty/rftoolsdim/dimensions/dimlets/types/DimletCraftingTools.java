@@ -1,23 +1,25 @@
 package mcjty.rftoolsdim.dimensions.dimlets.types;
 
+import mcjty.rftoolsdim.dimensions.dimlets.DimletEntry;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletKey;
+import mcjty.rftoolsdim.dimensions.dimlets.KnownDimletConfiguration;
 import net.minecraft.item.ItemStack;
 
 public class DimletCraftingTools {
     public static boolean matchDimletRecipe(DimletKey key, ItemStack stackController, ItemStack stackMemory, ItemStack stackEnergy) {
-//        DimletEntry dimletEntry = KnownDimletConfiguration.getEntry(key);
-//        int rarity = dimletEntry.getRarity();
-//        if (stackController.getItemDamage() != rarity) {
-//            return false;
-//        }
-//        int level = calculateItemLevelFromRarity(rarity);
-//        if (stackMemory.getItemDamage() != level) {
-//            return false;
-//        }
-//        if (stackEnergy.getItemDamage() != level) {
-//            return false;
-//        }
-//
+        DimletEntry dimletEntry = KnownDimletConfiguration.getEntry(key);
+        int rarity = dimletEntry.getRarity();
+        if (stackController.getItemDamage() != rarity) {
+            return false;
+        }
+        int level = calculateItemLevelFromRarity(rarity);
+        if (stackMemory.getItemDamage() != level) {
+            return false;
+        }
+        if (stackEnergy.getItemDamage() != level) {
+            return false;
+        }
+
         return true;
     }
 

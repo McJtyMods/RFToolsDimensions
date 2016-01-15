@@ -1,6 +1,7 @@
 package mcjty.rftoolsdim.dimensions.dimlets.types;
 
 import mcjty.rftoolsdim.dimensions.dimlets.DimletKey;
+import mcjty.rftoolsdim.dimensions.dimlets.DimletObjectMapping;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletRandomizer;
 import mcjty.rftoolsdim.dimensions.DimensionInformation;
 import net.minecraft.item.ItemStack;
@@ -99,13 +100,13 @@ public class DigitDimletType implements IDimletType {
 
     @Override
     public void constructDimension(List<Pair<DimletKey, List<DimletKey>>> dimlets, Random random, DimensionInformation dimensionInformation) {
-//        dimlets = DimensionInformation.extractType(DimletType.DIMLET_DIGIT, dimlets);
-//        String digitString = "";
-//        for (Pair<DimletKey, List<DimletKey>> dimletWithModifiers : dimlets) {
-//            DimletKey key = dimletWithModifiers.getKey();
-//            digitString += DimletObjectMapping.idToDigit.get(key);
-//        }
-//        dimensionInformation.setDigitString(digitString);
+        dimlets = DimensionInformation.extractType(DimletType.DIMLET_DIGIT, dimlets);
+        String digitString = "";
+        for (Pair<DimletKey, List<DimletKey>> dimletWithModifiers : dimlets) {
+            DimletKey key = dimletWithModifiers.getKey();
+            digitString += DimletObjectMapping.getDigit(key);
+        }
+        dimensionInformation.setDigitString(digitString);
     }
 
     @Override
