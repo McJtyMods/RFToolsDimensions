@@ -1,7 +1,10 @@
 package mcjty.rftoolsdim.dimensions.description;
 
 import mcjty.rftoolsdim.dimensions.DimletConfiguration;
+import mcjty.rftoolsdim.dimensions.dimlets.DimletCosts;
+import mcjty.rftoolsdim.dimensions.dimlets.DimletEntry;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletKey;
+import mcjty.rftoolsdim.dimensions.dimlets.KnownDimletConfiguration;
 import mcjty.rftoolsdim.dimensions.dimlets.types.DimletType;
 import net.minecraft.nbt.NBTTagCompound;
 import org.apache.commons.lang3.StringUtils;
@@ -215,14 +218,13 @@ public class DimensionDescriptor {
 
     private int getCreationCost(DimletType type, DimletKey key) {
         int cost = 0;
-//        DimletEntry entry = KnownDimletConfiguration.getEntry(key);
-//        if (entry != null) {
-//            cost = entry.getRfCreateCost();
-//            if (cost == -1) {
-//                cost = type.dimletType.getCreationCost();
-//            }
-//        }
-        // @todo
+        DimletEntry entry = KnownDimletConfiguration.getEntry(key);
+        if (entry != null) {
+            cost = entry.getRfCreateCost();
+            if (cost == -1) {
+                cost = type.dimletType.getCreationCost();
+            }
+        }
         return cost;
     }
 
@@ -257,14 +259,13 @@ public class DimensionDescriptor {
 
     private int getMaintenanceCost(DimletType type, DimletKey key) {
         int cost = 0;
-//        DimletEntry entry = KnownDimletConfiguration.getEntry(key);
-//        if (entry != null) {
-//            cost = entry.getRfMaintainCost();
-//            if (cost == -1) {
-//                cost = type.dimletType.getMaintenanceCost();
-//            }
-//        }
-        // @todo
+        DimletEntry entry = KnownDimletConfiguration.getEntry(key);
+        if (entry != null) {
+            cost = entry.getRfMaintainCost();
+            if (cost == -1) {
+                cost = type.dimletType.getMaintenanceCost();
+            }
+        }
         return cost;
     }
 
@@ -285,7 +286,7 @@ public class DimensionDescriptor {
 
     // Calculate the maintenance cost of a dimension without bonus dimlets.
     private int calculateMaintenanceRfCost(List<Pair<DimletKey,List<DimletKey>>> dimlets) {
-        int rf = 0;//@todo DimletCosts.baseDimensionMaintenanceCost;
+        int rf = DimletCosts.baseDimensionMaintenanceCost;
 
         for (Pair<DimletKey, List<DimletKey>> dimletWithModifier : dimlets) {
             DimletKey key = dimletWithModifier.getLeft();
@@ -326,19 +327,18 @@ public class DimensionDescriptor {
 
     private int getTickCost(DimletType type, DimletKey key) {
         int cost = 0;
-//        DimletEntry entry = KnownDimletConfiguration.getEntry(key);
-//        if (entry != null) {
-//            cost = entry.getTickCost();
-//            if (cost == -1) {
-//                cost = type.dimletType.getTickCost();
-//            }
-//        }
-        // @todo
+        DimletEntry entry = KnownDimletConfiguration.getEntry(key);
+        if (entry != null) {
+            cost = entry.getTickCost();
+            if (cost == -1) {
+                cost = type.dimletType.getTickCost();
+            }
+        }
         return cost;
     }
 
     private int calculateTickCost(List<Pair<DimletKey,List<DimletKey>>> dimlets) {
-        int ticks = 0;//@todo DimletCosts.baseDimensionTickCost;
+        int ticks = DimletCosts.baseDimensionTickCost;
 
         for (Pair<DimletKey, List<DimletKey>> dimletWithModifier : dimlets) {
             DimletKey key = dimletWithModifier.getLeft();

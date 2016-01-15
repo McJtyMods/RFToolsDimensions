@@ -6,7 +6,9 @@ import mcjty.lib.varia.BlockMeta;
 import mcjty.lib.varia.BlockPosTools;
 import mcjty.lib.varia.Logging;
 import mcjty.rftoolsdim.dimensions.description.*;
+import mcjty.rftoolsdim.dimensions.dimlets.DimletEntry;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletKey;
+import mcjty.rftoolsdim.dimensions.dimlets.KnownDimletConfiguration;
 import mcjty.rftoolsdim.dimensions.dimlets.types.DimletType;
 import mcjty.rftoolsdim.dimensions.dimlets.types.IDimletType;
 import mcjty.rftoolsdim.dimensions.dimlets.types.Patreons;
@@ -997,32 +999,29 @@ public class DimensionInformation {
     }
 
     private int calculateCostFactor(DimletKey key) {
-//        DimletEntry dimletEntry = KnownDimletConfiguration.getEntry(key);
-//        if (dimletEntry == null) {
-//            Logging.logError("Something went wrong for key: " + key);
-//            return 0;
-//        }
-//        return (int) (dimletEntry.getRfMaintainCost() * DimletConfiguration.afterCreationCostFactor);
-        // @todo
-        return 0;
+        DimletEntry dimletEntry = KnownDimletConfiguration.getEntry(key);
+        if (dimletEntry == null) {
+            Logging.logError("Something went wrong for key: " + key);
+            return 0;
+        }
+        return (int) (dimletEntry.getRfMaintainCost() * DimletConfiguration.afterCreationCostFactor);
     }
 
     private void addToCost(DimletKey key) {
-//        DimletEntry dimletEntry = KnownDimletConfiguration.getEntry(key);
-//        int rfMaintainCost = dimletEntry.getRfMaintainCost();
-//
-//        if (rfMaintainCost < 0) {
-//            int nominalCost = descriptor.calculateNominalCost();
-//            int rfMinimum = Math.max(10, nominalCost * DimletConfiguration.minimumCostPercentage / 100);
-//
-//            actualRfCost = actualRfCost - (actualRfCost * (-rfMaintainCost) / 100);
-//            if (actualRfCost < rfMinimum) {
-//                actualRfCost = rfMinimum;        // Never consume less then this
-//            }
-//        } else {
-//            actualRfCost += rfMaintainCost;
-//        }
-        // @todo
+        DimletEntry dimletEntry = KnownDimletConfiguration.getEntry(key);
+        int rfMaintainCost = dimletEntry.getRfMaintainCost();
+
+        if (rfMaintainCost < 0) {
+            int nominalCost = descriptor.calculateNominalCost();
+            int rfMinimum = Math.max(10, nominalCost * DimletConfiguration.minimumCostPercentage / 100);
+
+            actualRfCost = actualRfCost - (actualRfCost * (-rfMaintainCost) / 100);
+            if (actualRfCost < rfMinimum) {
+                actualRfCost = rfMinimum;        // Never consume less then this
+            }
+        } else {
+            actualRfCost += rfMaintainCost;
+        }
     }
 
     public static void getMaterialAndFluidModifiers(List<DimletKey> modifiers, List<BlockMeta> blocks, List<Block> fluids) {

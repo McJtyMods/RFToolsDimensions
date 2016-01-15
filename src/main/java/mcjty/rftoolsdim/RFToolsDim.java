@@ -4,7 +4,9 @@ import mcjty.lib.base.ModBase;
 import mcjty.lib.compat.MainCompatHandler;
 import mcjty.lib.varia.Logging;
 import mcjty.rftoolsdim.dimensions.DimensionStorage;
+import mcjty.rftoolsdim.dimensions.ModDimensions;
 import mcjty.rftoolsdim.dimensions.RfToolsDimensionManager;
+import mcjty.rftoolsdim.network.DimensionSyncChannelHandler;
 import mcjty.rftoolsdim.proxy.CommonProxy;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,6 +16,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.*;
 import net.minecraftforge.fml.common.network.FMLEmbeddedChannel;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -76,7 +79,10 @@ public class RFToolsDim implements ModBase {
     public void init(FMLInitializationEvent e) {
         this.proxy.init(e);
 
+        channels = NetworkRegistry.INSTANCE.newChannel("RFToolsChannel", DimensionSyncChannelHandler.instance);
+
 //        Achievements.init();
+        // @todo
     }
 
     @Mod.EventHandler
@@ -87,10 +93,17 @@ public class RFToolsDim implements ModBase {
     }
 
     @Mod.EventHandler
+    public void serverStarted(FMLServerStartedEvent event) {
+        Logging.log("RFTools: server is starting");
+        ModDimensions.initDimensions();
+    }
+
+    @Mod.EventHandler
     public void serverStopped(FMLServerStoppedEvent event) {
         Logging.log("RFTools: server is stopping. Shutting down gracefully");
-        DimensionStorage.clearInstance();
+        RfToolsDimensionManager.cleanupDimensionInformation();
         RfToolsDimensionManager.clearInstance();
+        DimensionStorage.clearInstance();
     }
 
     /**
@@ -100,9 +113,6 @@ public class RFToolsDim implements ModBase {
     public void postInit(FMLPostInitializationEvent e) {
         this.proxy.postInit(e);
     }
-
-    // Implementation for ModBase
-
 
     @Override
     public String getModId() {

@@ -65,8 +65,9 @@ public enum ControllerType {
     CONTROLLER_FIELDS(0, new BiomeFilter() {
         @Override
         public boolean match(BiomeGenBase biome) {
-            return false;//@todo
-//            return biome.heightVariation < 0.11 && biome.rootHeight < 0.25f;
+            float rootHeight = biome.minHeight;
+            float heightVariation = biome.maxHeight;
+            return heightVariation < 0.11 && rootHeight < 0.25f;
         }
 
         @Override
@@ -77,8 +78,8 @@ public enum ControllerType {
     CONTROLLER_MOUNTAINS(0, new BiomeFilter() {
         @Override
         public boolean match(BiomeGenBase biome) {
-            return false;//@todo
-//            return biome.heightVariation > 0.45f;
+            float heightVariation = biome.maxHeight;
+            return heightVariation > 0.45f;
         }
 
         @Override
@@ -149,8 +150,9 @@ public enum ControllerType {
             if (ignoreTemperature) {
                 dt = 0.0f;
             }
-            float dv = 0;//@todo a.heightVariation - b.heightVariation;
-            float dh = 0;//@todo a.rootHeight - b.rootHeight;
+
+            float dv = a.maxHeight - b.maxHeight;
+            float dh = a.minHeight - b.minHeight;
             if (ignoreHeight) {
                 dv = 0.0f;
                 dh = 0.0f;
