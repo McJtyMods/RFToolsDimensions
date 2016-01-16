@@ -5,7 +5,7 @@ public class CommandRftDim extends DefaultCommand {
     public CommandRftDim() {
         super();
         registerCommand(new CmdCreateDimension());
-//        registerCommand(new CmdListDimensions());
+        registerCommand(new CmdListDimensions());
 //        registerCommand(new CmdDelDimension());
 //        registerCommand(new CmdTeleport());
 //        registerCommand(new CmdDumpRarity());
@@ -13,8 +13,8 @@ public class CommandRftDim extends DefaultCommand {
 //        registerCommand(new CmdListEffects());
 //        registerCommand(new CmdAddEffect());
 //        registerCommand(new CmdDelEffect());
-//        registerCommand(new CmdSetPower());
-//        registerCommand(new CmdInfo());
+        registerCommand(new CmdSetPower());
+        registerCommand(new CmdInfo());
 //        registerCommand(new CmdReclaim());
 //        registerCommand(new CmdSafeDelete());
 //        registerCommand(new CmdCreateTab());
