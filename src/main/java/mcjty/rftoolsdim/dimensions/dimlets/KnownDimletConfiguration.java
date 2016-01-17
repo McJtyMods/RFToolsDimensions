@@ -5,7 +5,12 @@ import mcjty.rftoolsdim.items.ModItems;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class KnownDimletConfiguration {
+
+    private static Set<DimletKey> craftableDimlets = new HashSet<>();
 
     public static DimletEntry getEntry(DimletKey key) {
         // @todo
@@ -40,8 +45,11 @@ public class KnownDimletConfiguration {
     }
 
     public static boolean isCraftable(DimletKey key) {
-        // @todo
-        return false;
+        return craftableDimlets.contains(key);
+    }
+
+    public static void registerCraftableDimlet(DimletKey key) {
+        craftableDimlets.add(key);
     }
 
     public static boolean isSeedDimlet(DimletEntry entry) {

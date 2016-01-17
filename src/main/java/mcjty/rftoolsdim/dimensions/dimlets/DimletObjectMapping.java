@@ -10,11 +10,14 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.BiomeGenBase;
 import org.apache.commons.lang3.StringUtils;
 
 public class DimletObjectMapping {
+
+    public static String DEFAULT_ID = "Default";
 
     @NotNull
     public static FeatureType getFeature(DimletKey dimlet) {
@@ -64,6 +67,9 @@ public class DimletObjectMapping {
     public static IBlockState getBlock(DimletKey dimlet) {
         if (DimletType.DIMLET_MATERIAL.equals(dimlet.getType())) {
             String id = dimlet.getId();
+            if (DimletObjectMapping.DEFAULT_ID.equals(id)) {
+                return Blocks.stone.getDefaultState();
+            }
             int lastIndexOf = StringUtils.lastIndexOf(id, "@");
             String blockid = id.substring(0, lastIndexOf);
             int meta = Integer.parseInt(id.substring(lastIndexOf+1));
@@ -80,6 +86,9 @@ public class DimletObjectMapping {
     public static Block getFluid(DimletKey dimlet) {
         if (DimletType.DIMLET_LIQUID.equals(dimlet.getType())) {
             String id = dimlet.getId();
+            if (DimletObjectMapping.DEFAULT_ID.equals(id)) {
+                return Blocks.water;
+            }
             int lastIndexOf = StringUtils.lastIndexOf(id, "@");
             String blockid = id.substring(0, lastIndexOf);
 //            int meta = Integer.parseInt(id.substring(lastIndexOf+1));
