@@ -1,6 +1,6 @@
 package mcjty.rftoolsdim.dimensions.world;
 
-import mcjty.blocks.ModBlocks;
+import mcjty.rftoolsdim.blocks.ModBlocks;
 import mcjty.lib.varia.Logging;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.dimensions.DimensionInformation;

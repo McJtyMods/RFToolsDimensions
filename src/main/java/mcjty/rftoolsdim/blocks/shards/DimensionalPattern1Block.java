@@ -1,4 +1,4 @@
-package mcjty.blocks.shards;
+package mcjty.rftoolsdim.blocks.shards;
 
 public class DimensionalPattern1Block extends AbstractDirectionalBlock {
 

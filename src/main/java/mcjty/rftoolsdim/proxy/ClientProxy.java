@@ -1,6 +1,6 @@
 package mcjty.rftoolsdim.proxy;
 
-import mcjty.blocks.ModBlocks;
+import mcjty.rftoolsdim.blocks.ModBlocks;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.items.ModItems;
 import net.minecraft.util.ResourceLocation;

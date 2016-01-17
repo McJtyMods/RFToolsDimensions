@@ -1,17 +1,17 @@
-package mcjty.blocks.shards;
+package mcjty.rftoolsdim.blocks.shards;
 
 import mcjty.rftoolsdim.RFToolsDim;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 
-public class DimensionalBlock extends Block {
+public class DimensionalBlankBlock extends Block {
 
-    public DimensionalBlock() {
+    public DimensionalBlankBlock() {
         super(Material.rock);
         setHardness(2.0f);
         setResistance(4.0f);
-        setUnlocalizedName("dimensional_block");
-        setRegistryName("dimensional_block");
+        setUnlocalizedName("dimensional_blank_block");
+        setRegistryName("dimensional_blank_block");
         setCreativeTab(RFToolsDim.tabRfToolsDim);
     }
 

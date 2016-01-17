@@ -1,4 +1,4 @@
-package mcjty.blocks.shards;
+package mcjty.rftoolsdim.blocks.shards;
 
 public class DimensionalCross2Block extends AbstractDirectionalBlock {
 

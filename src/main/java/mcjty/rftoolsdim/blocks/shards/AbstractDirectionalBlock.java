@@ -1,4 +1,4 @@
-package mcjty.blocks.shards;
+package mcjty.rftoolsdim.blocks.shards;
 
 import mcjty.rftoolsdim.RFToolsDim;
 import net.minecraft.block.Block;

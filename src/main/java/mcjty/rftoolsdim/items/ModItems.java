@@ -14,6 +14,8 @@ public class ModItems {
     public static StructureEssenceItem structureEssenceItem;
     public static DimensionalShardItem dimensionalShardItem;
     public static KnownDimlet knownDimletItem;
+    public static EmptyDimensionTab emptyDimensionTabItem;
+    public static RealizedDimensionTab realizedDimensionTabItem;
 
     public static void init() {
         dimletBaseItem = new DimletBaseItem();
@@ -24,6 +26,8 @@ public class ModItems {
         structureEssenceItem = new StructureEssenceItem();
         dimensionalShardItem = new DimensionalShardItem();
         knownDimletItem = new KnownDimlet();
+        emptyDimensionTabItem = new EmptyDimensionTab();
+        realizedDimensionTabItem = new RealizedDimensionTab();
     }
 
     @SideOnly(Side.CLIENT)
@@ -36,5 +40,7 @@ public class ModItems {
         structureEssenceItem.initModel();
         dimensionalShardItem.initModel();
         knownDimletItem.initModel();
+        emptyDimensionTabItem.initModel();
+        realizedDimensionTabItem.initModel();
     }
 }

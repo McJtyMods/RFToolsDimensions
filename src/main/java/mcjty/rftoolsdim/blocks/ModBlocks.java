@@ -1,6 +1,6 @@
-package mcjty.blocks;
+package mcjty.rftoolsdim.blocks;
 
-import mcjty.blocks.shards.*;
+import mcjty.rftoolsdim.blocks.shards.*;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 

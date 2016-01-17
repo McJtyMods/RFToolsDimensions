@@ -1,6 +1,6 @@
 package mcjty.rftoolsdim.proxy;
 
-import mcjty.blocks.ModBlocks;
+import mcjty.rftoolsdim.blocks.ModBlocks;
 import mcjty.lib.base.GeneralConfig;
 import mcjty.lib.network.PacketHandler;
 import mcjty.lib.varia.WrenchChecker;
