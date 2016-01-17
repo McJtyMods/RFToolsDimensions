@@ -33,10 +33,10 @@ public class ModCrafting {
         addRecipe(DimletType.DIMLET_TIME, "Normal", " r ", "rwr", "ppp", 'r', Items.redstone, 'w', Items.clock, 'p', ModItems.dimletTemplateItem);
         addRecipe(DimletType.DIMLET_WEATHER, DimletObjectMapping.DEFAULT_ID, " r ", "rwr", "ppp", 'r', Items.redstone, 'w', Items.snowball, 'p', Items.paper);
         addRecipe(DimletType.DIMLET_DIGIT, "0", " r ", "rtr", "ppp", 'r', Items.redstone, 't', redstoneTorch, 'p', Items.paper);
+        // @todo the other digits
     }
 
     private static void addRecipe(DimletType type, String id, Object... params) {
         GameRegistry.addRecipe(KnownDimletConfiguration.getDimletStack(type, id), params);
-        KnownDimletConfiguration.registerCraftableDimlet(new DimletKey(type, id));
     }
 }

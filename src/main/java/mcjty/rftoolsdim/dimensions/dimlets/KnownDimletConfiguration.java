@@ -1,5 +1,6 @@
 package mcjty.rftoolsdim.dimensions.dimlets;
 
+import mcjty.rftoolsdim.dimensions.DimletConfiguration;
 import mcjty.rftoolsdim.dimensions.dimlets.types.DimletType;
 import mcjty.rftoolsdim.items.ModItems;
 import net.minecraft.item.ItemStack;
@@ -45,11 +46,47 @@ public class KnownDimletConfiguration {
     }
 
     public static boolean isCraftable(DimletKey key) {
+        if (craftableDimlets.isEmpty()) {
+            registerCraftables();
+        }
         return craftableDimlets.contains(key);
     }
 
-    public static void registerCraftableDimlet(DimletKey key) {
-        craftableDimlets.add(key);
+    private static void registerCraftables() {
+        craftableDimlets.add(new DimletKey(DimletType.DIMLET_EFFECT, "None"));
+        craftableDimlets.add(new DimletKey(DimletType.DIMLET_FEATURE, "None"));
+        craftableDimlets.add(new DimletKey(DimletType.DIMLET_STRUCTURE, "None"));
+        craftableDimlets.add(new DimletKey(DimletType.DIMLET_TERRAIN, "Void"));
+        if (!DimletConfiguration.voidOnly) {
+            craftableDimlets.add(new DimletKey(DimletType.DIMLET_TERRAIN, "Flat"));
+        }
+        craftableDimlets.add(new DimletKey(DimletType.DIMLET_CONTROLLER, DimletObjectMapping.DEFAULT_ID));
+        craftableDimlets.add(new DimletKey(DimletType.DIMLET_CONTROLLER, "Single"));
+        craftableDimlets.add(new DimletKey(DimletType.DIMLET_MATERIAL, DimletObjectMapping.DEFAULT_ID));
+        craftableDimlets.add(new DimletKey(DimletType.DIMLET_LIQUID, DimletObjectMapping.DEFAULT_ID));
+        craftableDimlets.add(new DimletKey(DimletType.DIMLET_SKY, "Normal"));
+        craftableDimlets.add(new DimletKey(DimletType.DIMLET_SKY, "Normal Day"));
+        craftableDimlets.add(new DimletKey(DimletType.DIMLET_SKY, "Normal Night"));
+        craftableDimlets.add(new DimletKey(DimletType.DIMLET_MOB, DimletObjectMapping.DEFAULT_ID));
+        craftableDimlets.add(new DimletKey(DimletType.DIMLET_TIME, "Normal"));
+        craftableDimlets.add(new DimletKey(DimletType.DIMLET_WEATHER, DimletObjectMapping.DEFAULT_ID));
+        craftableDimlets.add(new DimletKey(DimletType.DIMLET_DIGIT, "0"));
+        craftableDimlets.add(new DimletKey(DimletType.DIMLET_DIGIT, "1"));
+        craftableDimlets.add(new DimletKey(DimletType.DIMLET_DIGIT, "2"));
+        craftableDimlets.add(new DimletKey(DimletType.DIMLET_DIGIT, "3"));
+        craftableDimlets.add(new DimletKey(DimletType.DIMLET_DIGIT, "4"));
+        craftableDimlets.add(new DimletKey(DimletType.DIMLET_DIGIT, "5"));
+        craftableDimlets.add(new DimletKey(DimletType.DIMLET_DIGIT, "6"));
+        craftableDimlets.add(new DimletKey(DimletType.DIMLET_DIGIT, "7"));
+        craftableDimlets.add(new DimletKey(DimletType.DIMLET_DIGIT, "8"));
+        craftableDimlets.add(new DimletKey(DimletType.DIMLET_DIGIT, "9"));
+    }
+
+    public static Set<DimletKey> getCraftableDimlets() {
+        if (craftableDimlets.isEmpty()) {
+            registerCraftables();
+        }
+        return craftableDimlets;
     }
 
     public static boolean isSeedDimlet(DimletEntry entry) {

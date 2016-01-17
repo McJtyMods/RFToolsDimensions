@@ -46,7 +46,9 @@ public class DimletKey {
     @Override
     public int hashCode() {
         int result = type.hashCode();
-        result = 31 * result + id.hashCode();
+        if (id != null) {
+            result = 31 * result + id.hashCode();
+        }
         return result;
     }
 

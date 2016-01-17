@@ -19,6 +19,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.input.Keyboard;
 
 import java.util.List;
+import java.util.Set;
 
 public class KnownDimlet extends GenericRFToolsItem {
 
@@ -162,11 +163,16 @@ public class KnownDimlet extends GenericRFToolsItem {
 
     @Override
     public void getSubItems(Item item, CreativeTabs creativeTabs, List<ItemStack> list) {
-        int meta = 0;
-        for (DimletType type : DimletType.values()) {
-            list.add(new ItemStack(this, 1, meta));
-            meta++;
+        Set<DimletKey> dimlets = KnownDimletConfiguration.getCraftableDimlets();
+        for (DimletKey key : dimlets) {
+            list.add(KnownDimletConfiguration.getDimletStack(key));
         }
+//
+//        int meta = 0;
+//        for (DimletType type : DimletType.values()) {
+//            list.add(new ItemStack(this, 1, meta));
+//            meta++;
+//        }
     }
 
 }
