@@ -150,6 +150,17 @@ public class KnownDimlet extends GenericRFToolsItem {
     }
 
     @Override
+    public String getItemStackDisplayName(ItemStack stack) {
+        DimletKey key = KnownDimletConfiguration.getDimletKey(stack);
+        String displayName = super.getItemStackDisplayName(stack);
+        if (key.getId() == null) {
+            return displayName;
+        } else {
+            return displayName + " (" + KnownDimletConfiguration.getDisplayName(key) + ")";
+        }
+    }
+
+    @Override
     public void getSubItems(Item item, CreativeTabs creativeTabs, List<ItemStack> list) {
         int meta = 0;
         for (DimletType type : DimletType.values()) {

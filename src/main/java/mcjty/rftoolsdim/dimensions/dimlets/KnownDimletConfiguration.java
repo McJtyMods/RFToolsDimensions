@@ -30,7 +30,7 @@ public class KnownDimletConfiguration {
         if (tagCompound != null && tagCompound.hasKey("dkey")) {
             return new DimletKey(type, tagCompound.getString("dkey"));
         } else {
-            return new DimletKey(type, "?");
+            return new DimletKey(type, null);
         }
     }
 
