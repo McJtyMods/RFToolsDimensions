@@ -40,7 +40,7 @@ item.DimensionMonitor.name=Dimension Monitor
 item.PhasedFieldGenerator.name=Phased Field Generator
 item.DimensionalShard.name=Dimensional Shard
 item.InfusedDiamond.name=Infused Diamond
-item.DimletTemplate.name=Dimlet Template
+item.dimlet_template.name=Dimlet Template
 item.DimensionModule.name=Dimension Module
 item.DimletModule.name=Dimlet Storage Module
 

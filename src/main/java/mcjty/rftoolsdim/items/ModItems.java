@@ -16,6 +16,7 @@ public class ModItems {
     public static KnownDimlet knownDimletItem;
     public static EmptyDimensionTab emptyDimensionTabItem;
     public static RealizedDimensionTab realizedDimensionTabItem;
+    public static DimletTemplate dimletTemplateItem;
 
     public static void init() {
         dimletBaseItem = new DimletBaseItem();
@@ -28,6 +29,7 @@ public class ModItems {
         knownDimletItem = new KnownDimlet();
         emptyDimensionTabItem = new EmptyDimensionTab();
         realizedDimensionTabItem = new RealizedDimensionTab();
+        dimletTemplateItem = new DimletTemplate();
     }
 
     @SideOnly(Side.CLIENT)
@@ -42,5 +44,6 @@ public class ModItems {
         knownDimletItem.initModel();
         emptyDimensionTabItem.initModel();
         realizedDimensionTabItem.initModel();
+        dimletTemplateItem.initModel();
     }
 }
