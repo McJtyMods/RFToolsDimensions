@@ -111,7 +111,7 @@ public class MobDimletType implements IDimletType {
         // @todo
 
 //
-//        dimlets = DimensionInformation.extractType(DimletType.DIMLET_MOBS, dimlets);
+//        dimlets = DimensionInformation.extractType(DimletType.DIMLET_MOB, dimlets);
 //        if (dimlets.isEmpty()) {
 //            while (random.nextFloat() < DimletConfiguration.randomExtraMobsChance) {
 //                DimletKey key = DimletRandomizer.getRandomMob(random, false);
@@ -161,10 +161,10 @@ public class MobDimletType implements IDimletType {
             return null;
         }
         String mob = stackEssence.getTagCompound().getString("mobName");
-        if (!DimletCraftingTools.matchDimletRecipe(new DimletKey(DimletType.DIMLET_MOBS, mob), stackController, stackMemory, stackEnergy)) {
+        if (!DimletCraftingTools.matchDimletRecipe(new DimletKey(DimletType.DIMLET_MOB, mob), stackController, stackMemory, stackEnergy)) {
             return null;
         }
-        DimletKey mobDimlet = new DimletKey(DimletType.DIMLET_MOBS, mob);
+        DimletKey mobDimlet = new DimletKey(DimletType.DIMLET_MOB, mob);
         return mobDimlet;
     }
 }

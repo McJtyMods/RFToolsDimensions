@@ -136,7 +136,7 @@ public class DimensionInformation {
 
         DimletType.DIMLET_SKY.dimletType.constructDimension(dimlets, random, this);
 
-        DimletType.DIMLET_MOBS.dimletType.constructDimension(dimlets, random, this);
+        DimletType.DIMLET_MOB.dimletType.constructDimension(dimlets, random, this);
         DimletType.DIMLET_SPECIAL.dimletType.constructDimension(dimlets, random, this);
         DimletType.DIMLET_TIME.dimletType.constructDimension(dimlets, random, this);
         DimletType.DIMLET_EFFECT.dimletType.constructDimension(dimlets, random, this);

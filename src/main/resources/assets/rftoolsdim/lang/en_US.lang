@@ -19,8 +19,21 @@ death.dimension.powerfailure=%s dies in a collapsing world!
 
 # Items
 item.RFToolsManualDimension.name=RFTools Dimension Manual
-item.UnknownDimlet.name=Unknown Dimlet
-item.KnownDimlet.name=Known Dimlet
+item.known_dimlet_biome.name=Biome Dimlet
+item.known_dimlet_liquid.name=Liquid Dimlet
+item.known_dimlet_material.name=Material Dimlet
+item.known_dimlet_mob.name=Mob Dimlet
+item.known_dimlet_sky.name=Sky Dimlet
+item.known_dimlet_structure.name=Structure Dimlet
+item.known_dimlet_terrain.name=Terrain Dimlet
+item.known_dimlet_feature.name=Feature Dimlet
+item.known_dimlet_time.name=Time Dimlet
+item.known_dimlet_digit.name=Digit Dimlet
+item.known_dimlet_effect.name=Effect Dimlet
+item.known_dimlet_special.name=Special Dimlet
+item.known_dimlet_controller.name=Controller Dimlet
+item.known_dimlet_weather.name=Weather Dimlet
+item.known_dimlet_patreon.name=Patreon Dimlet
 item.EmptyDimensionTab.name=Empty Dimension Tab
 item.RealizedDimensionTab.name=Realized Dimension Tab
 item.DimensionMonitor.name=Dimension Monitor

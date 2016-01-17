@@ -8,6 +8,8 @@ import mcjty.rftoolsdim.dimensions.dimlets.types.DimletType;
 import mcjty.rftoolsdim.dimensions.types.*;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.BiomeGenBase;
 import org.apache.commons.lang3.StringUtils;
@@ -107,7 +109,8 @@ public class DimletObjectMapping {
     }
 
     public static MobDescriptor getMob(DimletKey dimlet) {
-        if (DimletType.DIMLET_MOBS.equals(dimlet.getType())) {
+        if (DimletType.DIMLET_MOB.equals(dimlet.getType())) {
+            Class<? extends Entity> entityClass = EntityList.stringToClassMapping.get(dimlet.getId());
             // @todo
         }
         return null;

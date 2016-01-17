@@ -7,7 +7,7 @@ public enum DimletType {
     DIMLET_BIOME(new BiomeDimletType()),
     DIMLET_LIQUID(new LiquidDimletType()),
     DIMLET_MATERIAL(new MaterialDimletType()),
-    DIMLET_MOBS(new MobDimletType()),
+    DIMLET_MOB(new MobDimletType()),
     DIMLET_SKY(new SkyDimletType()),
     DIMLET_STRUCTURE(new StructureDimletType()),
     DIMLET_TERRAIN(new TerrainDimletType()),

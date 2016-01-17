@@ -64,6 +64,6 @@ public class DimletRandomizer {
 
     public static DimletKey getRandomMob(Random random, boolean forWorldGen) {
         // @todo
-        return new DimletKey(DimletType.DIMLET_MOBS, "@@@");
+        return new DimletKey(DimletType.DIMLET_MOB, "@@@");
     }
 }
