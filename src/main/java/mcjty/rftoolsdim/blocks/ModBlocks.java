@@ -1,5 +1,6 @@
 package mcjty.rftoolsdim.blocks;
 
+import mcjty.rftoolsdim.blocks.enscriber.DimensionEnscriberBlock;
 import mcjty.rftoolsdim.blocks.shards.*;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -14,6 +15,8 @@ public class ModBlocks {
     public static DimensionalPattern2Block dimensionalPattern2Block;
     public static DimensionalSmallBlocks dimensionalSmallBlocks;
 
+    public static DimensionEnscriberBlock dimensionEnscriberBlock;
+
     public static void init() {
         dimensionalBlankBlock = new DimensionalBlankBlock();
         dimensionalBlock = new DimensionalBlock();
@@ -22,10 +25,12 @@ public class ModBlocks {
         dimensionalPattern1Block = new DimensionalPattern1Block();
         dimensionalPattern2Block = new DimensionalPattern2Block();
         dimensionalSmallBlocks = new DimensionalSmallBlocks();
+
+        dimensionEnscriberBlock = new DimensionEnscriberBlock();
     }
 
     @SideOnly(Side.CLIENT)
     public static void initClient() {
-
+        dimensionEnscriberBlock.initModel();
     }
 }
