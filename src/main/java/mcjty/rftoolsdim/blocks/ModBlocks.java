@@ -13,7 +13,6 @@ public class ModBlocks {
     public static DimensionalPattern1Block dimensionalPattern1Block;
     public static DimensionalPattern2Block dimensionalPattern2Block;
     public static DimensionalSmallBlocks dimensionalSmallBlocks;
-    public static DimensionalShardBlock dimensionalShardBlock;
 
     public static void init() {
         dimensionalBlankBlock = new DimensionalBlankBlock();
@@ -23,7 +22,6 @@ public class ModBlocks {
         dimensionalPattern1Block = new DimensionalPattern1Block();
         dimensionalPattern2Block = new DimensionalPattern2Block();
         dimensionalSmallBlocks = new DimensionalSmallBlocks();
-        dimensionalShardBlock = new DimensionalShardBlock();
     }
 
     @SideOnly(Side.CLIENT)

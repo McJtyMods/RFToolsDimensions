@@ -18,6 +18,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.feature.WorldGenMinable;
 import net.minecraftforge.fml.common.IWorldGenerator;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.util.Random;
 
@@ -38,7 +39,8 @@ public class GenericWorldGenerator implements IWorldGenerator {
             }
         }
 
-        addOreSpawn(ModBlocks.dimensionalShardBlock.getDefaultState(), Blocks.stone.getDefaultState(), world, random, chunkX * 16, chunkZ * 16, 5, 8, 3, 2, 40);
+        Block dimensionalShardBlock = GameRegistry.findBlock("rftools", "dimensional_shard_ore");
+        addOreSpawn(dimensionalShardBlock.getDefaultState(), Blocks.stone.getDefaultState(), world, random, chunkX * 16, chunkZ * 16, 5, 8, 3, 2, 40);
 
         if (information.isPatreonBitSet(Patreons.PATREON_PUPPETEER) && Math.abs(chunkX) <= 1 && Math.abs(chunkZ) <= 1) {
             generateBigSpawnPlatform(world, chunkX, chunkZ, puppeteerSpawnPlatform);
