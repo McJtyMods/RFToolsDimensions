@@ -1,7 +1,6 @@
 package mcjty.rftoolsdim;
 
 import mcjty.rftoolsdim.dimensions.DimletConfiguration;
-import mcjty.rftoolsdim.dimensions.dimlets.DimletKey;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletObjectMapping;
 import mcjty.rftoolsdim.dimensions.dimlets.KnownDimletConfiguration;
 import mcjty.rftoolsdim.dimensions.dimlets.types.DimletType;
@@ -9,12 +8,21 @@ import mcjty.rftoolsdim.items.ModItems;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class ModCrafting {
 
     public static void init() {
+        initDimletRecipes();
+
+        Item dimensionalShard = GameRegistry.findItem("rftools", "dimensional_shard");
+        GameRegistry.addRecipe(new ItemStack(ModItems.emptyDimensionTabItem), "prp", "rpr", "prp", 'p', Items.paper, 'r', Items.redstone);
+        GameRegistry.addRecipe(new ItemStack(ModItems.dimletTemplateItem), "sss", "sps", "sss", 's', dimensionalShard, 'p', Items.paper);
+    }
+
+    private static void initDimletRecipes() {
         Block redstoneTorch = Blocks.redstone_torch;
         addRecipe(DimletType.DIMLET_EFFECT, "None", " r ", "rwr", "ppp", 'r', Items.redstone, 'w', Items.apple, 'p', Items.paper);
         addRecipe(DimletType.DIMLET_FEATURE, "None", " r ", "rwr", "ppp", 'r', Items.redstone, 'w', Items.string, 'p', Items.paper);
