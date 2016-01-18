@@ -38,7 +38,6 @@ item.empty_dimension_tab.name=Empty Dimension Tab
 item.realized_dimension_tab.name=Realized Dimension Tab
 item.DimensionMonitor.name=Dimension Monitor
 item.PhasedFieldGenerator.name=Phased Field Generator
-item.DimensionalShard.name=Dimensional Shard
 item.InfusedDiamond.name=Infused Diamond
 item.dimlet_template.name=Dimlet Template
 item.DimensionModule.name=Dimension Module
