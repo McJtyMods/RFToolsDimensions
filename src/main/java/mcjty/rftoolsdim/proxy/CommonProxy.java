@@ -8,6 +8,7 @@ import mcjty.rftoolsdim.ForgeEventHandlers;
 import mcjty.rftoolsdim.ModCrafting;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.dimensions.ModDimensions;
+import mcjty.rftoolsdim.dimensions.dimlets.KnownDimletConfiguration;
 import mcjty.rftoolsdim.items.ModItems;
 import mcjty.rftoolsdim.network.RFToolsDimMessages;
 import net.minecraftforge.common.MinecraftForge;
@@ -40,6 +41,7 @@ public abstract class CommonProxy {
         ModBlocks.init();
         ModCrafting.init();
         ModDimensions.init();
+        KnownDimletConfiguration.setupChestLoot();
     }
 
     private void readMainConfig() {

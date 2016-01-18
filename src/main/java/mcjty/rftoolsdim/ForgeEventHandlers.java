@@ -5,18 +5,22 @@ import mcjty.rftoolsdim.dimensions.DimensionInformation;
 import mcjty.rftoolsdim.dimensions.DimensionStorage;
 import mcjty.rftoolsdim.dimensions.DimletConfiguration;
 import mcjty.rftoolsdim.dimensions.RfToolsDimensionManager;
+import mcjty.rftoolsdim.dimensions.dimlets.KnownDimletConfiguration;
 import mcjty.rftoolsdim.dimensions.types.EffectType;
 import mcjty.rftoolsdim.dimensions.types.FeatureType;
 import mcjty.rftoolsdim.network.DimensionSyncPacket;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
+import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.IAnimals;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.event.terraingen.ChunkProviderEvent;
 import net.minecraftforge.fml.common.eventhandler.Event;
@@ -26,6 +30,9 @@ import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 import net.minecraftforge.fml.common.network.FMLOutboundHandler;
 import net.minecraftforge.fml.common.network.handshake.NetworkDispatcher;
 import net.minecraftforge.fml.relauncher.Side;
+
+import java.util.List;
+import java.util.Random;
 
 public class ForgeEventHandlers {
 
@@ -145,4 +152,15 @@ public class ForgeEventHandlers {
         }
     }
 
+    private Random random = new Random();
+
+    @SubscribeEvent
+    public void onEntityDrop(LivingDropsEvent event) {
+        if (event.entityLiving instanceof EntityEnderman) {
+            if (random.nextFloat() < DimletConfiguration.endermanDimletPartDrop) {
+                List<List<ItemStack>> list = KnownDimletConfiguration.getRandomPartLists();
+//                event.entityLiving.dropItem(DimletSetup.unknownDimlet, random.nextInt(2)+1);
+            }
+        }
+    }
 }

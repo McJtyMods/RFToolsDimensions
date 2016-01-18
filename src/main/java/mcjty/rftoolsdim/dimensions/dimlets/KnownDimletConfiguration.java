@@ -1,12 +1,17 @@
 package mcjty.rftoolsdim.dimensions.dimlets;
 
+import com.google.common.collect.Lists;
 import mcjty.rftoolsdim.dimensions.DimletConfiguration;
 import mcjty.rftoolsdim.dimensions.dimlets.types.DimletType;
 import mcjty.rftoolsdim.items.ModItems;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.WeightedRandomChestContent;
+import net.minecraftforge.common.ChestGenHooks;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class KnownDimletConfiguration {
@@ -101,4 +106,53 @@ public class KnownDimletConfiguration {
         // @todo
         return key.getId();
     }
+
+    public static void setupChestLoot() {
+        setupChestLoot(ChestGenHooks.DUNGEON_CHEST);
+        setupChestLoot(ChestGenHooks.MINESHAFT_CORRIDOR);
+        setupChestLoot(ChestGenHooks.PYRAMID_DESERT_CHEST);
+        setupChestLoot(ChestGenHooks.PYRAMID_JUNGLE_CHEST);
+        setupChestLoot(ChestGenHooks.STRONGHOLD_CORRIDOR);
+        setupChestLoot(ChestGenHooks.STRONGHOLD_CROSSING);
+        setupChestLoot(ChestGenHooks.STRONGHOLD_LIBRARY);
+        setupChestLoot(ChestGenHooks.VILLAGE_BLACKSMITH);
+        setupChestLoot(ChestGenHooks.NETHER_FORTRESS);
+    }
+
+    private static void setupChestLoot(String category) {
+        List<List<ItemStack>> items = getRandomPartLists();
+
+        ChestGenHooks chest = ChestGenHooks.getInfo(category);
+        for (int i = 0 ; i <= 6 ; i++) {
+            if (DimletConfiguration.dimletPartChestLootRarity[i] > 0) {
+                for (ItemStack stack : items.get(i)) {
+                    chest.addItem(new WeightedRandomChestContent(stack,
+                            DimletConfiguration.dimletPartChestLootMinimum,
+                            DimletConfiguration.dimletPartChestLootMaximum,
+                            DimletConfiguration.dimletPartChestLootRarity[i]));
+                }
+            }
+        }
+    }
+
+    private static List<List<ItemStack>> randomPartLists = null;
+
+    public static List<List<ItemStack>> getRandomPartLists() {
+        if (randomPartLists == null) {
+            randomPartLists = new ArrayList<>();
+            randomPartLists.add(Lists.newArrayList(new ItemStack(ModItems.dimletBaseItem), new ItemStack(ModItems.dimletControlCircuitItem, 1, 0), new ItemStack(ModItems.dimletEnergyModuleItem)));
+            randomPartLists.add(Lists.newArrayList(new ItemStack(ModItems.dimletControlCircuitItem, 1, 1), new ItemStack(ModItems.dimletEnergyModuleItem, 1, 0), new ItemStack(ModItems.dimletMemoryUnitItem, 1, 0)));
+            randomPartLists.add(Lists.newArrayList(new ItemStack(ModItems.dimletControlCircuitItem, 1, 2)));
+            ArrayList<ItemStack> list3 = Lists.newArrayList(new ItemStack(ModItems.dimletControlCircuitItem, 1, 3), new ItemStack(ModItems.dimletEnergyModuleItem, 1, 1), new ItemStack(ModItems.dimletMemoryUnitItem, 1, 1));
+            for (DimletType type : DimletType.values()) {
+                list3.add(new ItemStack(ModItems.dimletTypeControllerItem, 1, type.ordinal()));
+            }
+            randomPartLists.add(list3);
+            randomPartLists.add(Lists.newArrayList(new ItemStack(ModItems.dimletControlCircuitItem, 1, 4)));
+            randomPartLists.add(Lists.newArrayList(new ItemStack(ModItems.dimletControlCircuitItem, 1, 5), new ItemStack(ModItems.dimletEnergyModuleItem, 1, 2), new ItemStack(ModItems.dimletMemoryUnitItem, 1, 2)));
+            randomPartLists.add(Lists.newArrayList(new ItemStack(ModItems.dimletControlCircuitItem, 1, 6)));
+        }
+        return randomPartLists;
+    }
+
 }

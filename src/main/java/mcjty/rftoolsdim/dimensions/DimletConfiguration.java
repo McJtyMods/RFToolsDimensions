@@ -76,10 +76,10 @@ public class DimletConfiguration {
     public static boolean dimensionFolderIsDeletedWithSafeDel = true;
     public static int maxDimensionsPerPlayer = -1;
 
-    public static float endermanUnknownDimletDrop = 0.01f;
-    public static int unknownDimletChestLootMinimum = 1;
-    public static int unknownDimletChestLootMaximum = 3;
-    public static int unknownDimletChestLootRarity = 50;
+    public static float endermanDimletPartDrop = 0.03f;
+    public static int dimletPartChestLootMinimum = 1;
+    public static int dimletPartChestLootMaximum = 2;
+    public static int dimletPartChestLootRarity[] = new int[] { 32, 16, 8, 4, 2, 1, 1 };
 
     public static int dimletStackSize = 16;
 
@@ -196,14 +196,26 @@ public class DimletConfiguration {
         randomControllerChance = (float) cfg.get(CATEGORY_DIMLETS, "randomControllerChance", randomControllerChance,
                 "The chance that a random biome controller is selected").getDouble();
 
-        endermanUnknownDimletDrop = (float) cfg.get(CATEGORY_DIMLETS, "endermanUnknownDimletDrop", endermanUnknownDimletDrop,
-                "The chance that you get an unknown dimlet when killing an enderman. Set to 0 to disable").getDouble();
-        unknownDimletChestLootMinimum = cfg.get(CATEGORY_DIMLETS, "unknownDimletChestLootMinimum", unknownDimletChestLootMinimum,
-                "The minimum amount of unknown dimlets that can be generated in a dungeon chest").getInt();
-        unknownDimletChestLootMaximum = cfg.get(CATEGORY_DIMLETS, "unknownDimletChestLootMaximum", unknownDimletChestLootMaximum,
-                "The maximum amount of unknown dimlets that can be generated in a dungeon chest").getInt();
-        unknownDimletChestLootRarity = cfg.get(CATEGORY_DIMLETS, "unknownDimletChestLootRarity", unknownDimletChestLootRarity,
-                "The rarity of unknown dimlets in dungeon chests (0 means you'll get none, 100 means very common)").getInt();
+        endermanDimletPartDrop = (float) cfg.get(CATEGORY_DIMLETS, "endermanDimletPartDrop", endermanDimletPartDrop,
+                "The chance that you get a dimlet part when killing an enderman. Set to 0 to disable").getDouble();
+        dimletPartChestLootMinimum = cfg.get(CATEGORY_DIMLETS, "dimletPartChestLootMinimum", dimletPartChestLootMinimum,
+                "The minimum amount of dimlet parts that can be generated in a dungeon chest").getInt();
+        dimletPartChestLootMaximum = cfg.get(CATEGORY_DIMLETS, "dimletPartChestLootMaximum", dimletPartChestLootMaximum,
+                "The maximum amount of dimlet parts that can be generated in a dungeon chest").getInt();
+        dimletPartChestLootRarity[0] = cfg.get(CATEGORY_DIMLETS, "dimletPartChestLootRarity0", dimletPartChestLootRarity[0],
+                "The rarity of dimlet parts rarity 0 in dungeon chests (0 means you'll get none, 100 means very common)").getInt();
+        dimletPartChestLootRarity[1] = cfg.get(CATEGORY_DIMLETS, "dimletPartChestLootRarity0", dimletPartChestLootRarity[1],
+                "The rarity of dimlet parts rarity 1 in dungeon chests (0 means you'll get none, 100 means very common)").getInt();
+        dimletPartChestLootRarity[2] = cfg.get(CATEGORY_DIMLETS, "dimletPartChestLootRarity0", dimletPartChestLootRarity[2],
+                "The rarity of dimlet parts rarity 2 in dungeon chests (0 means you'll get none, 100 means very common)").getInt();
+        dimletPartChestLootRarity[3] = cfg.get(CATEGORY_DIMLETS, "dimletPartChestLootRarity0", dimletPartChestLootRarity[3],
+                "The rarity of dimlet parts rarity 3 in dungeon chests (0 means you'll get none, 100 means very common)").getInt();
+        dimletPartChestLootRarity[4] = cfg.get(CATEGORY_DIMLETS, "dimletPartChestLootRarity0", dimletPartChestLootRarity[4],
+                "The rarity of dimlet parts rarity 4 in dungeon chests (0 means you'll get none, 100 means very common)").getInt();
+        dimletPartChestLootRarity[5] = cfg.get(CATEGORY_DIMLETS, "dimletPartChestLootRarity0", dimletPartChestLootRarity[5],
+                "The rarity of dimlet parts rarity 5 in dungeon chests (0 means you'll get none, 100 means very common)").getInt();
+        dimletPartChestLootRarity[6] = cfg.get(CATEGORY_DIMLETS, "dimletPartChestLootRarity0", dimletPartChestLootRarity[6],
+                "The rarity of dimlet parts rarity 6 in dungeon chests (0 means you'll get none, 100 means very common)").getInt();
 
         bedrockLayer = cfg.get(CATEGORY_DIMLETS, "bedrockLayer", bedrockLayer,
                 "The height of the bedrock layer that is generated at the bottom of some world types. Set to 0 to disable this and get default bedrock generation").getInt();
