@@ -9,6 +9,7 @@ import mcjty.rftoolsdim.items.ModItems;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class ModCrafting {
@@ -33,7 +34,16 @@ public class ModCrafting {
         addRecipe(DimletType.DIMLET_TIME, "Normal", " r ", "rwr", "ppp", 'r', Items.redstone, 'w', Items.clock, 'p', ModItems.dimletTemplateItem);
         addRecipe(DimletType.DIMLET_WEATHER, DimletObjectMapping.DEFAULT_ID, " r ", "rwr", "ppp", 'r', Items.redstone, 'w', Items.snowball, 'p', Items.paper);
         addRecipe(DimletType.DIMLET_DIGIT, "0", " r ", "rtr", "ppp", 'r', Items.redstone, 't', redstoneTorch, 'p', Items.paper);
-        // @todo the other digits
+        addRecipe(DimletType.DIMLET_DIGIT, "1", "d", 'd', KnownDimletConfiguration.getDimletStack(DimletType.DIMLET_DIGIT, "0"));
+        addRecipe(DimletType.DIMLET_DIGIT, "2", "d", 'd', KnownDimletConfiguration.getDimletStack(DimletType.DIMLET_DIGIT, "1"));
+        addRecipe(DimletType.DIMLET_DIGIT, "3", "d", 'd', KnownDimletConfiguration.getDimletStack(DimletType.DIMLET_DIGIT, "2"));
+        addRecipe(DimletType.DIMLET_DIGIT, "4", "d", 'd', KnownDimletConfiguration.getDimletStack(DimletType.DIMLET_DIGIT, "3"));
+        addRecipe(DimletType.DIMLET_DIGIT, "5", "d", 'd', KnownDimletConfiguration.getDimletStack(DimletType.DIMLET_DIGIT, "4"));
+        addRecipe(DimletType.DIMLET_DIGIT, "6", "d", 'd', KnownDimletConfiguration.getDimletStack(DimletType.DIMLET_DIGIT, "5"));
+        addRecipe(DimletType.DIMLET_DIGIT, "7", "d", 'd', KnownDimletConfiguration.getDimletStack(DimletType.DIMLET_DIGIT, "6"));
+        addRecipe(DimletType.DIMLET_DIGIT, "8", "d", 'd', KnownDimletConfiguration.getDimletStack(DimletType.DIMLET_DIGIT, "7"));
+        addRecipe(DimletType.DIMLET_DIGIT, "9", "d", 'd', KnownDimletConfiguration.getDimletStack(DimletType.DIMLET_DIGIT, "8"));
+        addRecipe(DimletType.DIMLET_DIGIT, "0", "d", 'd', KnownDimletConfiguration.getDimletStack(DimletType.DIMLET_DIGIT, "9"));
     }
 
     private static void addRecipe(DimletType type, String id, Object... params) {
