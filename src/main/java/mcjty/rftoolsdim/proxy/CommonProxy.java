@@ -1,12 +1,13 @@
 package mcjty.rftoolsdim.proxy;
 
-import mcjty.rftoolsdim.blocks.ModBlocks;
 import mcjty.lib.base.GeneralConfig;
 import mcjty.lib.network.PacketHandler;
 import mcjty.lib.varia.WrenchChecker;
 import mcjty.rftoolsdim.ForgeEventHandlers;
 import mcjty.rftoolsdim.ModCrafting;
 import mcjty.rftoolsdim.RFToolsDim;
+import mcjty.rftoolsdim.blocks.ModBlocks;
+import mcjty.rftoolsdim.dimensions.DimletConfiguration;
 import mcjty.rftoolsdim.dimensions.ModDimensions;
 import mcjty.rftoolsdim.dimensions.dimlets.KnownDimletConfiguration;
 import mcjty.rftoolsdim.items.ModItems;
@@ -39,7 +40,6 @@ public abstract class CommonProxy {
 
         ModItems.init();
         ModBlocks.init();
-        ModCrafting.init();
         ModDimensions.init();
         KnownDimletConfiguration.setupChestLoot();
     }
@@ -48,14 +48,14 @@ public abstract class CommonProxy {
         Configuration cfg = mainConfig;
         try {
             cfg.load();
-//            cfg.addCustomCategoryComment(GeneralConfiguration.CATEGORY_GENERAL, "General settings");
+            cfg.addCustomCategoryComment(DimletConfiguration.CATEGORY_DIMLETS, "Dimension related settings");
 //            cfg.addCustomCategoryComment(CoalGeneratorConfiguration.CATEGORY_COALGEN, "Settings for the coal generator");
 //            cfg.addCustomCategoryComment(CrafterConfiguration.CATEGORY_CRAFTER, "Settings for the crafter");
 //            cfg.addCustomCategoryComment(ModularStorageConfiguration.CATEGORY_STORAGE, "Settings for the modular storage system");
 //            cfg.addCustomCategoryComment(ModularStorageConfiguration.CATEGORY_STORAGE_CONFIG, "Generic item module categories for various items");
 //            cfg.addCustomCategoryComment(ScreenConfiguration.CATEGORY_SCREEN, "Settings for the screen system");
 
-//            GeneralConfiguration.init(cfg);
+            DimletConfiguration.init(cfg);
 //            CoalGeneratorConfiguration.init(cfg);
 //            CrafterConfiguration.init(cfg);
 //            ModularStorageConfiguration.init(cfg);
@@ -72,13 +72,14 @@ public abstract class CommonProxy {
     public void init(FMLInitializationEvent e) {
 //        NetworkRegistry.INSTANCE.registerGuiHandler(RFToolsDim.instance, new GuiProxy());
         MinecraftForge.EVENT_BUS.register(new ForgeEventHandlers());
+        ModCrafting.init();
     }
 
     public void postInit(FMLPostInitializationEvent e) {
 //        MobConfiguration.readModdedMobConfig(mainConfig);
-//        if (mainConfig.hasChanged()) {
-//            mainConfig.save();
-//        }
+        if (mainConfig.hasChanged()) {
+            mainConfig.save();
+        }
 
 
         mainConfig = null;
