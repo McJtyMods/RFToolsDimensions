@@ -7,11 +7,8 @@ import mcjty.rftoolsdim.ForgeEventHandlers;
 import mcjty.rftoolsdim.ModCrafting;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.blocks.ModBlocks;
-import mcjty.rftoolsdim.config.GeneralConfiguration;
-import mcjty.rftoolsdim.config.MachineConfiguration;
-import mcjty.rftoolsdim.config.PowerConfiguration;
+import mcjty.rftoolsdim.config.*;
 import mcjty.rftoolsdim.dimensions.ModDimensions;
-import mcjty.rftoolsdim.config.WorldgenConfiguration;
 import mcjty.rftoolsdim.dimensions.dimlets.KnownDimletConfiguration;
 import mcjty.rftoolsdim.gui.GuiProxy;
 import mcjty.rftoolsdim.items.ModItems;
@@ -57,11 +54,13 @@ public abstract class CommonProxy {
             cfg.addCustomCategoryComment(MachineConfiguration.CATEGORY_MACHINES, "Machine related settings");
             cfg.addCustomCategoryComment(WorldgenConfiguration.CATEGORY_WORLDGEN, "Worldgen related settings");
             cfg.addCustomCategoryComment(PowerConfiguration.CATEGORY_POWER, "Power related settings");
+            cfg.addCustomCategoryComment(DimletConfiguration.CATEGORY_DIMLETS, "Dimlet related settings");
 
             GeneralConfiguration.init(cfg);
             MachineConfiguration.init(cfg);
             WorldgenConfiguration.init(cfg);
             PowerConfiguration.init(cfg);
+            DimletConfiguration.init(cfg);
         } catch (Exception e1) {
             FMLLog.log(Level.ERROR, e1, "Problem loading config file!");
         } finally {

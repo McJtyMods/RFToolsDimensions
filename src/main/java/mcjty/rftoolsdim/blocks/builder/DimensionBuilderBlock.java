@@ -25,10 +25,10 @@ import java.util.List;
 public class DimensionBuilderBlock extends GenericRFToolsBlock<DimensionBuilderTileEntity, DimensionBuilderContainer> implements Infusable {
 
     public static enum OperationType implements IStringSerializable {
-        EMPTY("empty"),
         CHARGING("charging"),
         BUILDING1("building1"),
-        BUILDING2("building2");
+        BUILDING2("building2"),
+        EMPTY("empty");
 
         private final String name;
 

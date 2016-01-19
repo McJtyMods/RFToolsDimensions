@@ -1,12 +1,12 @@
 package mcjty.rftoolsdim;
 
 import mcjty.lib.varia.Logging;
+import mcjty.rftoolsdim.config.GeneralConfiguration;
 import mcjty.rftoolsdim.config.PowerConfiguration;
 import mcjty.rftoolsdim.dimensions.DimensionInformation;
 import mcjty.rftoolsdim.dimensions.DimensionStorage;
-import mcjty.rftoolsdim.config.GeneralConfiguration;
 import mcjty.rftoolsdim.dimensions.RfToolsDimensionManager;
-import mcjty.rftoolsdim.dimensions.dimlets.KnownDimletConfiguration;
+import mcjty.rftoolsdim.dimensions.dimlets.DimletRandomizer;
 import mcjty.rftoolsdim.dimensions.types.EffectType;
 import mcjty.rftoolsdim.dimensions.types.FeatureType;
 import mcjty.rftoolsdim.network.DimensionSyncPacket;
@@ -32,7 +32,6 @@ import net.minecraftforge.fml.common.network.FMLOutboundHandler;
 import net.minecraftforge.fml.common.network.handshake.NetworkDispatcher;
 import net.minecraftforge.fml.relauncher.Side;
 
-import java.util.List;
 import java.util.Random;
 
 public class ForgeEventHandlers {
@@ -159,8 +158,8 @@ public class ForgeEventHandlers {
     public void onEntityDrop(LivingDropsEvent event) {
         if (event.entityLiving instanceof EntityEnderman) {
             if (random.nextFloat() < GeneralConfiguration.endermanDimletPartDrop) {
-                List<List<ItemStack>> list = KnownDimletConfiguration.getRandomPartLists();
-//                event.entityLiving.dropItem(DimletSetup.unknownDimlet, random.nextInt(2)+1);
+                ItemStack stack = DimletRandomizer.getRandomPart(random);
+                event.entityLiving.entityDropItem(stack, 1.05f);
             }
         }
     }
