@@ -53,26 +53,6 @@ public class DimensionEnscriberTileEntity extends GenericTileEntity implements D
     }
 
     @Override
-    public int getSizeInventory() {
-        return inventoryHelper.getCount();
-    }
-
-    @Override
-    public ItemStack getStackInSlot(int index) {
-        return inventoryHelper.getStackInSlot(index);
-    }
-
-    @Override
-    public ItemStack decrStackSize(int index, int amount) {
-        return inventoryHelper.decrStackSize(index, amount);
-    }
-
-    @Override
-    public void setInventorySlotContents(int index, ItemStack stack) {
-        inventoryHelper.setInventorySlotContents(getInventoryStackLimit(), index, stack);
-    }
-
-    @Override
     public int getInventoryStackLimit() {
         return 1;
     }
@@ -80,11 +60,6 @@ public class DimensionEnscriberTileEntity extends GenericTileEntity implements D
     @Override
     public boolean isUseableByPlayer(EntityPlayer player) {
         return canPlayerAccess(player);
-    }
-
-    @Override
-    public boolean isItemValidForSlot(int index, ItemStack stack) {
-        return true;
     }
 
     @Override
