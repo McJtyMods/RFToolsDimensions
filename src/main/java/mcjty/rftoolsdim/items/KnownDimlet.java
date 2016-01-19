@@ -5,6 +5,7 @@ import mcjty.rftoolsdim.dimensions.dimlets.DimletEntry;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletKey;
 import mcjty.rftoolsdim.dimensions.dimlets.KnownDimletConfiguration;
 import mcjty.rftoolsdim.dimensions.dimlets.types.DimletType;
+import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
@@ -41,7 +42,12 @@ public class KnownDimlet extends GenericRFToolsItem {
             meta++;
         }
 
-        ModelLoader.setCustomMeshDefinition(this, stack -> models[stack.getItemDamage()]);
+        ModelLoader.setCustomMeshDefinition(this, new ItemMeshDefinition() {
+            @Override
+            public ModelResourceLocation getModelLocation(ItemStack stack) {
+                return models[stack.getItemDamage()];
+            }
+        });
     }
 
 
