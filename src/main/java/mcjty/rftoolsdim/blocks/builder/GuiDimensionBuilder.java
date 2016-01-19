@@ -1,6 +1,7 @@
 package mcjty.rftoolsdim.blocks.builder;
 
 import mcjty.lib.container.GenericGuiContainer;
+import mcjty.lib.entity.GenericEnergyStorageTileEntity;
 import mcjty.lib.gui.Window;
 import mcjty.lib.gui.events.ChoiceEvent;
 import mcjty.lib.gui.layout.HorizontalAlignment;
@@ -9,11 +10,11 @@ import mcjty.lib.gui.widgets.*;
 import mcjty.lib.gui.widgets.Label;
 import mcjty.lib.gui.widgets.Panel;
 import mcjty.lib.network.Argument;
-import mcjty.rftools.RFTools;
-import mcjty.rftools.blocks.RedstoneMode;
-import mcjty.rftools.network.RFToolsMessages;
+import mcjty.rftoolsdim.RFToolsDim;
+import mcjty.rftoolsdim.network.RFToolsDimMessages;
+import mcjty.rftoolsdim.varia.RedstoneMode;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import java.awt.*;
 
@@ -28,13 +29,13 @@ public class GuiDimensionBuilder extends GenericGuiContainer<DimensionBuilderTil
     private Label error2;
     private ImageChoiceLabel redstoneMode;
 
-    private static final ResourceLocation iconLocation = new ResourceLocation(RFTools.MODID, "textures/gui/dimensionbuilder.png");
-    private static final ResourceLocation iconStages = new ResourceLocation(RFTools.MODID, "textures/gui/dimensionbuilderstages.png");
-    private static final ResourceLocation iconGuiElements = new ResourceLocation(RFTools.MODID, "textures/gui/guielements.png");
+    private static final ResourceLocation iconLocation = new ResourceLocation(RFToolsDim.MODID, "textures/gui/dimensionbuilder.png");
+    private static final ResourceLocation iconStages = new ResourceLocation(RFToolsDim.MODID, "textures/gui/dimensionbuilderstages.png");
+    private static final ResourceLocation iconGuiElements = new ResourceLocation(RFToolsDim.MODID, "textures/gui/guielements.png");
 
     public GuiDimensionBuilder(DimensionBuilderTileEntity dimensionBuilderTileEntity, DimensionBuilderContainer container) {
-        super(RFTools.instance, RFToolsMessages.INSTANCE, dimensionBuilderTileEntity, container, RFTools.GUI_MANUAL_DIMENSION, "builder");
-        dimensionBuilderTileEntity.setCurrentRF(dimensionBuilderTileEntity.getEnergyStored(ForgeDirection.DOWN));
+        super(RFToolsDim.instance, RFToolsDimMessages.INSTANCE, dimensionBuilderTileEntity, container, 0 /*@todo RFTools.GUI_MANUAL_DIMENSION*/, "builder");
+        GenericEnergyStorageTileEntity.setCurrentRF(dimensionBuilderTileEntity.getEnergyStored(EnumFacing.DOWN));
 
         xSize = BUILDER_WIDTH;
         ySize = BUILDER_HEIGHT;
@@ -44,9 +45,9 @@ public class GuiDimensionBuilder extends GenericGuiContainer<DimensionBuilderTil
     public void initGui() {
         super.initGui();
 
-        int maxEnergyStored = tileEntity.getMaxEnergyStored(ForgeDirection.DOWN);
+        int maxEnergyStored = tileEntity.getMaxEnergyStored(EnumFacing.DOWN);
         energyBar = new EnergyBar(mc, this).setVertical().setMaxValue(maxEnergyStored).setLayoutHint(new PositionalLayout.PositionalHint(10, 7, 8, 54)).setShowText(false);
-        energyBar.setValue(tileEntity.getCurrentRF());
+        energyBar.setValue(GenericEnergyStorageTileEntity.getCurrentRF());
 
         stages = new ImageLabel(mc, this).setImage(iconStages, 0, 0);
         stages.setLayoutHint(new PositionalLayout.PositionalHint(61, 9, 48, 48));
@@ -65,7 +66,7 @@ public class GuiDimensionBuilder extends GenericGuiContainer<DimensionBuilderTil
         toplevel.setBounds(new Rectangle(guiLeft, guiTop, xSize, ySize));
 
         window = new Window(this, toplevel);
-        tileEntity.requestRfFromServer(RFToolsMessages.INSTANCE);
+        tileEntity.requestRfFromServer(RFToolsDim.MODID);
         tileEntity.requestBuildingPercentage();
     }
 
@@ -86,13 +87,13 @@ public class GuiDimensionBuilder extends GenericGuiContainer<DimensionBuilderTil
 
     private void changeRedstoneMode() {
         tileEntity.setRedstoneMode(RedstoneMode.values()[redstoneMode.getCurrentChoiceIndex()]);
-        sendServerCommand(RFToolsMessages.INSTANCE, DimensionBuilderTileEntity.CMD_RSMODE, new Argument("rs", RedstoneMode.values()[redstoneMode.getCurrentChoiceIndex()].getDescription()));
+        sendServerCommand(RFToolsDimMessages.INSTANCE, DimensionBuilderTileEntity.CMD_RSMODE, new Argument("rs", RedstoneMode.values()[redstoneMode.getCurrentChoiceIndex()].getDescription()));
     }
 
 
     @Override
     protected void drawGuiContainerBackgroundLayer(float v, int i, int i2) {
-        int pct = tileEntity.getBuildPercentage();
+        int pct = DimensionBuilderTileEntity.getBuildPercentage();
 
         if (pct == DimensionBuilderTileEntity.ERROR_NOOWNER) {
             error1.setText("Builder has");
@@ -113,9 +114,9 @@ public class GuiDimensionBuilder extends GenericGuiContainer<DimensionBuilderTil
 
         drawWindow();
 
-        energyBar.setValue(tileEntity.getCurrentRF());
+        energyBar.setValue(GenericEnergyStorageTileEntity.getCurrentRF());
 
-        tileEntity.requestRfFromServer(RFToolsMessages.INSTANCE);
+        tileEntity.requestRfFromServer(RFToolsDim.MODID);
         tileEntity.requestBuildingPercentage();
     }
 }
