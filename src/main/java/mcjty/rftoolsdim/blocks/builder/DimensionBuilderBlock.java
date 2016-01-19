@@ -26,9 +26,9 @@ public class DimensionBuilderBlock extends GenericRFToolsBlock<DimensionBuilderT
 
     public static enum OperationType implements IStringSerializable {
         CHARGING("charging"),
+        EMPTY("empty"),
         BUILDING1("building1"),
-        BUILDING2("building2"),
-        EMPTY("empty");
+        BUILDING2("building2");
 
         private final String name;
 
