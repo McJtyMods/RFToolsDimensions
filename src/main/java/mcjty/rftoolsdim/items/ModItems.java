@@ -1,5 +1,6 @@
 package mcjty.rftoolsdim.items;
 
+import mcjty.rftoolsdim.items.manual.RFToolsDimensionManualItem;
 import mcjty.rftoolsdim.items.parts.*;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -17,6 +18,8 @@ public class ModItems {
     public static RealizedDimensionTab realizedDimensionTabItem;
     public static DimletTemplate dimletTemplateItem;
 
+    public static RFToolsDimensionManualItem rfToolsDimensionManualItem;
+
     public static void init() {
         dimletBaseItem = new DimletBaseItem();
         dimletControlCircuitItem = new DimletControlCircuitItem();
@@ -28,6 +31,7 @@ public class ModItems {
         emptyDimensionTabItem = new EmptyDimensionTab();
         realizedDimensionTabItem = new RealizedDimensionTab();
         dimletTemplateItem = new DimletTemplate();
+        rfToolsDimensionManualItem = new RFToolsDimensionManualItem();
     }
 
     @SideOnly(Side.CLIENT)
@@ -42,5 +46,6 @@ public class ModItems {
         emptyDimensionTabItem.initModel();
         realizedDimensionTabItem.initModel();
         dimletTemplateItem.initModel();
+        rfToolsDimensionManualItem.initModel();
     }
 }

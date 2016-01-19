@@ -22,6 +22,8 @@ public class ModCrafting {
         Item dimensionalShard = GameRegistry.findItem("rftools", "dimensional_shard");
         GameRegistry.addRecipe(new ItemStack(ModItems.emptyDimensionTabItem), "prp", "rpr", "prp", 'p', Items.paper, 'r', Items.redstone);
         GameRegistry.addRecipe(new ItemStack(ModItems.dimletTemplateItem), "sss", "sps", "sss", 's', dimensionalShard, 'p', Items.paper);
+
+        GameRegistry.addRecipe(new ItemStack(ModItems.rfToolsDimensionManualItem), "r r", " b ", "r r", 'r', Items.redstone, 'b', Items.book);
     }
 
     private static void initBlockRecipes() {

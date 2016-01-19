@@ -18,7 +18,7 @@ achievement.specialOres.desc=Mine dimensional shards
 death.dimension.powerfailure=%s dies in a collapsing world!
 
 # Items
-item.RFToolsManualDimension.name=RFTools Dimension Manual
+item.rftoolsdim_manual.name=RFTools Dimension Manual
 item.known_dimlet_biome.name=Biome Dimlet
 item.known_dimlet_liquid.name=Liquid Dimlet
 item.known_dimlet_material.name=Material Dimlet

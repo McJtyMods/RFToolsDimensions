@@ -34,7 +34,7 @@ public class GuiDimensionBuilder extends GenericGuiContainer<DimensionBuilderTil
     private static final ResourceLocation iconGuiElements = new ResourceLocation(RFToolsDim.MODID, "textures/gui/guielements.png");
 
     public GuiDimensionBuilder(DimensionBuilderTileEntity dimensionBuilderTileEntity, DimensionBuilderContainer container) {
-        super(RFToolsDim.instance, RFToolsDimMessages.INSTANCE, dimensionBuilderTileEntity, container, 0 /*@todo RFTools.GUI_MANUAL_DIMENSION*/, "builder");
+        super(RFToolsDim.instance, RFToolsDimMessages.INSTANCE, dimensionBuilderTileEntity, container, RFToolsDim.GUI_MANUAL_DIMENSION, "builder");
         GenericEnergyStorageTileEntity.setCurrentRF(dimensionBuilderTileEntity.getEnergyStored(EnumFacing.DOWN));
 
         xSize = BUILDER_WIDTH;

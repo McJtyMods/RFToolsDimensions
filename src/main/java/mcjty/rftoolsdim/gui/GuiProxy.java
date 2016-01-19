@@ -1,6 +1,8 @@
 package mcjty.rftoolsdim.gui;
 
 import mcjty.lib.container.GenericBlock;
+import mcjty.rftoolsdim.RFToolsDim;
+import mcjty.rftoolsdim.items.manual.GuiRFToolsManual;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -11,6 +13,10 @@ import net.minecraftforge.fml.common.network.IGuiHandler;
 public class GuiProxy implements IGuiHandler {
     @Override
     public Object getServerGuiElement(int guiid, EntityPlayer entityPlayer, World world, int x, int y, int z) {
+        if (guiid == RFToolsDim.GUI_MANUAL_DIMENSION) {
+            return null;
+        }
+
 //        if (guiid == RFToolsDim.GUI_MANUAL_MAIN || guiid == RFTools.GUI_TELEPORTPROBE || guiid == RFTools.GUI_ADVANCEDPORTER) {
 //            return null;
 //        } else if (guiid == RFTools.GUI_REMOTE_STORAGE_ITEM) {
@@ -33,6 +39,9 @@ public class GuiProxy implements IGuiHandler {
 
     @Override
     public Object getClientGuiElement(int guiid, EntityPlayer entityPlayer, World world, int x, int y, int z) {
+        if (guiid == RFToolsDim.GUI_MANUAL_DIMENSION) {
+            return new GuiRFToolsManual(GuiRFToolsManual.MANUAL_DIMENSION);
+        }
 //        if (guiid == RFTools.GUI_MANUAL_MAIN) {
 //            return new GuiRFToolsManual(GuiRFToolsManual.MANUAL_MAIN);
 //        } else if (guiid == RFTools.GUI_TELEPORTPROBE) {

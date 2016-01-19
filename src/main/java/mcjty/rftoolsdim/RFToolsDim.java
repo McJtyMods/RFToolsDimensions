@@ -8,6 +8,7 @@ import mcjty.rftoolsdim.commands.CommandRftDim;
 import mcjty.rftoolsdim.dimensions.DimensionStorage;
 import mcjty.rftoolsdim.dimensions.ModDimensions;
 import mcjty.rftoolsdim.dimensions.RfToolsDimensionManager;
+import mcjty.rftoolsdim.items.ModItems;
 import mcjty.rftoolsdim.network.DimensionSyncChannelHandler;
 import mcjty.rftoolsdim.proxy.CommonProxy;
 import net.minecraft.creativetab.CreativeTabs;
@@ -56,12 +57,13 @@ public class RFToolsDim implements ModBase {
     private static int modGuiIndex = 0;
     public static final int GUI_DIMENSION_ENSCRIBER = modGuiIndex++;
     public static final int GUI_DIMENSION_BUILDER = modGuiIndex++;
+    public static final int GUI_MANUAL_DIMENSION = modGuiIndex++;
 
     public static CreativeTabs tabRfToolsDim = new CreativeTabs("RfToolsDim") {
         @Override
         @SideOnly(Side.CLIENT)
         public Item getTabIconItem() {
-            return Items.diamond; /*ModItems.rfToolsManualItem;*/
+            return ModItems.realizedDimensionTabItem;
         }
     };
 
