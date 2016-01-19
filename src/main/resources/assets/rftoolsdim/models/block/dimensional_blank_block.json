@@ -1,0 +1,6 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "rftoolsdim:blocks/dimblock_blank_stone"
+  }
+}

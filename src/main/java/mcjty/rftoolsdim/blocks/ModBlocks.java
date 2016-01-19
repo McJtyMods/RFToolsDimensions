@@ -31,6 +31,14 @@ public class ModBlocks {
 
     @SideOnly(Side.CLIENT)
     public static void initClient() {
+        dimensionalBlankBlock.initModel();
+        dimensionalBlock.initModel();
+        dimensionalCross2Block.initModel();
+        dimensionalCrossBlock.initModel();
+        dimensionalPattern1Block.initModel();
+        dimensionalPattern2Block.initModel();
+        dimensionalSmallBlocks.initModel();
+
         dimensionEnscriberBlock.initModel();
     }
 }

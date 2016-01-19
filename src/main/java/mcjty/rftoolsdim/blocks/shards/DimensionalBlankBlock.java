@@ -3,6 +3,12 @@ package mcjty.rftoolsdim.blocks.shards;
 import mcjty.rftoolsdim.RFToolsDim;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.item.Item;
+import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class DimensionalBlankBlock extends Block {
 
@@ -12,11 +18,13 @@ public class DimensionalBlankBlock extends Block {
         setResistance(4.0f);
         setUnlocalizedName("dimensional_blank_block");
         setRegistryName("dimensional_blank_block");
+        setLightLevel(0.6f);
         setCreativeTab(RFToolsDim.tabRfToolsDim);
+        GameRegistry.registerBlock(this);
     }
 
-    @Override
-    public int getLightValue() {
-        return 6;
+    @SideOnly(Side.CLIENT)
+    public void initModel() {
+        ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, new ModelResourceLocation(getRegistryName(), "inventory"));
     }
 }

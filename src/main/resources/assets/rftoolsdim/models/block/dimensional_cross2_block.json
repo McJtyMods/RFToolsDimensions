@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "particle": "rftoolsdim:blocks/dimblock_pattern2",
+    "down": "rftoolsdim:blocks/dimblock_pattern1",
+    "up": "rftoolsdim:blocks/dimblock_pattern1",
+    "east": "rftoolsdim:blocks/dimblock_pattern2",
+    "west": "rftoolsdim:blocks/dimblock_pattern2",
+    "north": "rftoolsdim:blocks/dimblock_pattern4",
+    "south": "rftoolsdim:blocks/dimblock_pattern4"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "rftoolsdim:dimensional_small_blocks"
+  },
+  "variants": {
+    "normal": [{}],
+    "inventory": [{}]
+  }
+}
