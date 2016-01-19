@@ -25,7 +25,7 @@ public class GeneralConfiguration {
     public static boolean dimensionFolderIsDeletedWithSafeDel = true;
     public static int maxDimensionsPerPlayer = -1;
 
-    public static float endermanDimletPartDrop = 0.03f;
+    public static float endermanDimletPartDrop = 0.05f;
 
 	public static void init(Configuration cfg) {
         enableDimensionBuilderRecipe = cfg.get(CATEGORY_GENERAL, "enableDimensionBuilderRecipe", enableDimensionBuilderRecipe,
