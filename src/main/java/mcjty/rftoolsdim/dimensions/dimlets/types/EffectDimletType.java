@@ -1,6 +1,6 @@
 package mcjty.rftoolsdim.dimensions.dimlets.types;
 
-import mcjty.rftoolsdim.dimensions.DimletConfiguration;
+import mcjty.rftoolsdim.config.WorldgenConfiguration;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletKey;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletObjectMapping;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletRandomizer;
@@ -112,7 +112,7 @@ public class EffectDimletType implements IDimletType {
         Set<EffectType> effectTypes = dimensionInformation.getEffectTypes();
         dimlets = DimensionInformation.extractType(DimletType.DIMLET_EFFECT, dimlets);
         if (dimlets.isEmpty()) {
-            while (random.nextFloat() < DimletConfiguration.randomEffectChance) {
+            while (random.nextFloat() < WorldgenConfiguration.randomEffectChance) {
                 DimletKey key = DimletRandomizer.getRandomEffect(random, false);
                 EffectType effectType = DimletObjectMapping.getEffect(key);
                 if (!effectTypes.contains(effectType)) {

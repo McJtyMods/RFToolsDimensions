@@ -1,7 +1,7 @@
 package mcjty.rftoolsdim.dimensions.dimlets.types;
 
 import mcjty.rftoolsdim.dimensions.DimensionInformation;
-import mcjty.rftoolsdim.dimensions.DimletConfiguration;
+import mcjty.rftoolsdim.config.WorldgenConfiguration;
 import mcjty.rftoolsdim.dimensions.description.WeatherDescriptor;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletKey;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletObjectMapping;
@@ -109,7 +109,7 @@ public class WeatherDimletType implements IDimletType {
         dimlets = DimensionInformation.extractType(DimletType.DIMLET_WEATHER, dimlets);
         WeatherDescriptor.Builder builder = new WeatherDescriptor.Builder();
         if (dimlets.isEmpty()) {
-            while (random.nextFloat() > DimletConfiguration.randomWeatherChance) {
+            while (random.nextFloat() > WorldgenConfiguration.randomWeatherChance) {
 //                List<DimletKey> keys = new ArrayList<>(DimletObjectMapping.idToWeatherDescriptor.keySet());
 //                DimletKey key = keys.get(random.nextInt(keys.size()));
 //                dimensionInformation.updateCostFactor(key);

@@ -1,8 +1,8 @@
 package mcjty.rftoolsdim.commands;
 
+import mcjty.rftoolsdim.config.PowerConfiguration;
 import mcjty.rftoolsdim.dimensions.DimensionInformation;
 import mcjty.rftoolsdim.dimensions.DimensionStorage;
-import mcjty.rftoolsdim.dimensions.DimletConfiguration;
 import mcjty.rftoolsdim.dimensions.RfToolsDimensionManager;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.ChatComponentText;
@@ -37,7 +37,7 @@ public class CmdSetPower extends AbstractRfToolsCommand {
             return;
         }
 
-        int rf = fetchInt(sender, args, 1, DimletConfiguration.MAX_DIMENSION_POWER);
+        int rf = fetchInt(sender, args, 1, PowerConfiguration.MAX_DIMENSION_POWER);
 
         World world = sender.getEntityWorld();
         int dim = world.provider.getDimensionId();

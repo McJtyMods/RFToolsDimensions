@@ -2,9 +2,10 @@ package mcjty.rftoolsdim.dimensions.world;
 
 import mcjty.lib.varia.Logging;
 import mcjty.rftoolsdim.api.dimension.RFToolsWorldProvider;
+import mcjty.rftoolsdim.config.PowerConfiguration;
 import mcjty.rftoolsdim.dimensions.DimensionInformation;
 import mcjty.rftoolsdim.dimensions.DimensionStorage;
-import mcjty.rftoolsdim.dimensions.DimletConfiguration;
+import mcjty.rftoolsdim.config.GeneralConfiguration;
 import mcjty.rftoolsdim.dimensions.RfToolsDimensionManager;
 import mcjty.rftoolsdim.dimensions.description.WeatherDescriptor;
 import mcjty.rftoolsdim.dimensions.dimlets.types.Patreons;
@@ -238,16 +239,16 @@ public class GenericWorldProvider extends WorldProvider implements  /*@todo impl
     @Override
     public int getRespawnDimension(EntityPlayerMP player) {
         getDimensionInformation();
-        if (DimletConfiguration.respawnSameDim || (dimensionInformation != null && dimensionInformation.isRespawnHere())) {
+        if (GeneralConfiguration.respawnSameDim || (dimensionInformation != null && dimensionInformation.isRespawnHere())) {
             DimensionStorage dimensionStorage = getStorage();
             int power = dimensionStorage.getEnergyLevel(dimensionId);
             if (power < 1000) {
-                return DimletConfiguration.spawnDimension;
+                return GeneralConfiguration.spawnDimension;
             } else {
                 return dimensionId;
             }
         }
-        return DimletConfiguration.spawnDimension;
+        return GeneralConfiguration.spawnDimension;
     }
 
     @Override
@@ -328,14 +329,14 @@ public class GenericWorldProvider extends WorldProvider implements  /*@todo impl
     private float calculatePowerBlackout(int dim) {
         float factor = 1.0f;
         int power = getStorage().getEnergyLevel(dim);
-        if (power < DimletConfiguration.DIMPOWER_WARN3) {
-            factor = ((float) power) / DimletConfiguration.DIMPOWER_WARN3 * 0.2f;
-        } else  if (power < DimletConfiguration.DIMPOWER_WARN2) {
-            factor = (float) (power - DimletConfiguration.DIMPOWER_WARN3) / (DimletConfiguration.DIMPOWER_WARN2 - DimletConfiguration.DIMPOWER_WARN3) * 0.3f + 0.2f;
-        } else if (power < DimletConfiguration.DIMPOWER_WARN1) {
-            factor = (float) (power - DimletConfiguration.DIMPOWER_WARN2) / (DimletConfiguration.DIMPOWER_WARN1 - DimletConfiguration.DIMPOWER_WARN2) * 0.3f + 0.5f;
-        } else if (power < DimletConfiguration.DIMPOWER_WARN0) {
-            factor = (float) (power - DimletConfiguration.DIMPOWER_WARN1) / (DimletConfiguration.DIMPOWER_WARN0 - DimletConfiguration.DIMPOWER_WARN1) * 0.2f + 0.8f;
+        if (power < PowerConfiguration.DIMPOWER_WARN3) {
+            factor = ((float) power) / PowerConfiguration.DIMPOWER_WARN3 * 0.2f;
+        } else  if (power < PowerConfiguration.DIMPOWER_WARN2) {
+            factor = (float) (power - PowerConfiguration.DIMPOWER_WARN3) / (PowerConfiguration.DIMPOWER_WARN2 - PowerConfiguration.DIMPOWER_WARN3) * 0.3f + 0.2f;
+        } else if (power < PowerConfiguration.DIMPOWER_WARN1) {
+            factor = (float) (power - PowerConfiguration.DIMPOWER_WARN2) / (PowerConfiguration.DIMPOWER_WARN1 - PowerConfiguration.DIMPOWER_WARN2) * 0.3f + 0.5f;
+        } else if (power < PowerConfiguration.DIMPOWER_WARN0) {
+            factor = (float) (power - PowerConfiguration.DIMPOWER_WARN1) / (PowerConfiguration.DIMPOWER_WARN0 - PowerConfiguration.DIMPOWER_WARN1) * 0.2f + 0.8f;
         }
         return factor;
     }

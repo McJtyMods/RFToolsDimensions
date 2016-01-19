@@ -1,9 +1,10 @@
 package mcjty.rftoolsdim;
 
 import mcjty.lib.varia.Logging;
+import mcjty.rftoolsdim.config.PowerConfiguration;
 import mcjty.rftoolsdim.dimensions.DimensionInformation;
 import mcjty.rftoolsdim.dimensions.DimensionStorage;
-import mcjty.rftoolsdim.dimensions.DimletConfiguration;
+import mcjty.rftoolsdim.config.GeneralConfiguration;
 import mcjty.rftoolsdim.dimensions.RfToolsDimensionManager;
 import mcjty.rftoolsdim.dimensions.dimlets.KnownDimletConfiguration;
 import mcjty.rftoolsdim.dimensions.types.EffectType;
@@ -89,7 +90,7 @@ public class ForgeEventHandlers {
         RfToolsDimensionManager dimensionManager = RfToolsDimensionManager.getDimensionManager(world);
         DimensionInformation dimensionInformation = dimensionManager.getDimensionInformation(id);
 
-        if (DimletConfiguration.preventSpawnUnpowered) {
+        if (PowerConfiguration.preventSpawnUnpowered) {
             if (dimensionInformation != null) {
                 // RFTools dimension.
                 DimensionStorage storage = DimensionStorage.getDimensionStorage(world);
@@ -108,9 +109,9 @@ public class ForgeEventHandlers {
                     IAttributeInstance entityAttribute = entityLivingBase.getEntityAttribute(SharedMonsterAttributes.maxHealth);
                     double newMax;
                     if (dimensionInformation.hasEffectType(EffectType.EFFECT_BRUTALMOBS)) {
-                        newMax = entityAttribute.getBaseValue() * DimletConfiguration.brutalMobsFactor;
+                        newMax = entityAttribute.getBaseValue() * GeneralConfiguration.brutalMobsFactor;
                     } else {
-                        newMax = entityAttribute.getBaseValue() * DimletConfiguration.strongMobsFactor;
+                        newMax = entityAttribute.getBaseValue() * GeneralConfiguration.strongMobsFactor;
                     }
                     entityAttribute.setBaseValue(newMax);
                     entityLivingBase.setHealth((float) newMax);
@@ -157,7 +158,7 @@ public class ForgeEventHandlers {
     @SubscribeEvent
     public void onEntityDrop(LivingDropsEvent event) {
         if (event.entityLiving instanceof EntityEnderman) {
-            if (random.nextFloat() < DimletConfiguration.endermanDimletPartDrop) {
+            if (random.nextFloat() < GeneralConfiguration.endermanDimletPartDrop) {
                 List<List<ItemStack>> list = KnownDimletConfiguration.getRandomPartLists();
 //                event.entityLiving.dropItem(DimletSetup.unknownDimlet, random.nextInt(2)+1);
             }

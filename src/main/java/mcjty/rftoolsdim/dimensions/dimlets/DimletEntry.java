@@ -1,6 +1,6 @@
 package mcjty.rftoolsdim.dimensions.dimlets;
 
-import mcjty.rftoolsdim.dimensions.DimletConfiguration;
+import mcjty.rftoolsdim.config.PowerConfiguration;
 
 public class DimletEntry {
     private final DimletKey key;
@@ -37,7 +37,7 @@ public class DimletEntry {
     public int getRfMaintainCost() {
         int cost = rfMaintainCost;
         if (cost > 0) {
-            float factor = DimletConfiguration.maintenanceCostPercentage / 100.0f;
+            float factor = PowerConfiguration.maintenanceCostPercentage / 100.0f;
             if (factor < -0.9f) {
                 factor = -0.9f;
             }

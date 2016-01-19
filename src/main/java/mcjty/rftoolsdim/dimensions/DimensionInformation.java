@@ -4,6 +4,9 @@ import io.netty.buffer.ByteBuf;
 import mcjty.lib.network.NetworkTools;
 import mcjty.lib.varia.BlockPosTools;
 import mcjty.lib.varia.Logging;
+import mcjty.rftoolsdim.config.GeneralConfiguration;
+import mcjty.rftoolsdim.config.PowerConfiguration;
+import mcjty.rftoolsdim.config.WorldgenConfiguration;
 import mcjty.rftoolsdim.dimensions.description.*;
 import mcjty.rftoolsdim.dimensions.dimlets.*;
 import mcjty.rftoolsdim.dimensions.dimlets.types.DimletType;
@@ -104,7 +107,7 @@ public class DimensionInformation {
         this.owner = player;
 
         this.forcedDimensionSeed = descriptor.getForcedSeed();
-        if (DimletConfiguration.randomizeSeed) {
+        if (GeneralConfiguration.randomizeSeed) {
             baseSeed = (long) (Math.random() * 10000 + 1);
         } else {
             baseSeed = world.getSeed();
@@ -1022,7 +1025,7 @@ public class DimensionInformation {
             Logging.logError("Something went wrong for key: " + key);
             return 0;
         }
-        return (int) (dimletEntry.getRfMaintainCost() * DimletConfiguration.afterCreationCostFactor);
+        return (int) (dimletEntry.getRfMaintainCost() * PowerConfiguration.afterCreationCostFactor);
     }
 
     private void addToCost(DimletKey key) {
@@ -1031,7 +1034,7 @@ public class DimensionInformation {
 
         if (rfMaintainCost < 0) {
             int nominalCost = descriptor.calculateNominalCost();
-            int rfMinimum = Math.max(10, nominalCost * DimletConfiguration.minimumCostPercentage / 100);
+            int rfMinimum = Math.max(10, nominalCost * PowerConfiguration.minimumCostPercentage / 100);
 
             actualRfCost = actualRfCost - (actualRfCost * (-rfMaintainCost) / 100);
             if (actualRfCost < rfMinimum) {
@@ -1070,7 +1073,7 @@ public class DimensionInformation {
                 }
             } else {
                 // Nothing was specified. With a relatively big chance we use stone. But there is also a chance that the material will be something else.
-                if (random.nextFloat() < DimletConfiguration.randomFeatureMaterialChance) {
+                if (random.nextFloat() < WorldgenConfiguration.randomFeatureMaterialChance) {
                     DimletKey key = DimletRandomizer.getRandomMaterialBlock(random, true);
                     actualRfCost += calculateCostFactor(key);
                     block = DimletObjectMapping.getBlock(key);

@@ -1,8 +1,7 @@
 package mcjty.rftoolsdim.dimensions.world.terrain;
 
-import mcjty.rftoolsdim.dimensions.DimletConfiguration;
+import mcjty.rftoolsdim.config.WorldgenConfiguration;
 import mcjty.rftoolsdim.dimensions.types.FeatureType;
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.chunk.ChunkPrimer;
@@ -43,7 +42,7 @@ public class FlatTerrainGenerator extends NormalTerrainGenerator {
         for (int x = 0; x < 16; ++x) {
             for (int z = 0; z < 16; ++z) {
                 int height = 0;
-                while (height < DimletConfiguration.bedrockLayer) {
+                while (height < WorldgenConfiguration.bedrockLayer) {
                     primer.setBlockState(index++, Blocks.bedrock.getDefaultState());
                     height++;
                 }

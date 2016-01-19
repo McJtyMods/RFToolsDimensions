@@ -1,6 +1,8 @@
 package mcjty.rftoolsdim.dimensions;
 
 import mcjty.rftoolsdim.RFToolsDim;
+import mcjty.rftoolsdim.config.GeneralConfiguration;
+import mcjty.rftoolsdim.config.PowerConfiguration;
 import mcjty.rftoolsdim.dimensions.description.DimensionDescriptor;
 import mcjty.rftoolsdim.dimensions.dimlets.types.Patreons;
 import mcjty.rftoolsdim.dimensions.types.EffectType;
@@ -80,7 +82,7 @@ public class DimensionTickEvent {
 
     private void handlePower(boolean doEffects, DimensionStorage dimensionStorage, Map.Entry<Integer, DimensionDescriptor> entry, Integer id, DimensionInformation information) {
         int cost = 0;
-        if (DimletConfiguration.dimensionDifficulty != -1) {
+        if (PowerConfiguration.dimensionDifficulty != -1) {
             cost = information.getActualRfCost();
             if (cost == 0) {
                 cost = entry.getValue().getRfMaintainCost();
@@ -336,17 +338,17 @@ public class DimensionTickEvent {
                         // @todo
                     }
                 }
-                if (power < DimletConfiguration.DIMPOWER_WARN3) {
+                if (power < PowerConfiguration.DIMPOWER_WARN3) {
                     // We are VERY low on power. Start bad effects.
                     player.addPotionEffect(new PotionEffect(Potion.moveSlowdown.getId(), EFFECTS_MAX*MAXTICKS, 4, true, true));
                     player.addPotionEffect(new PotionEffect(Potion.digSlowdown.getId(), EFFECTS_MAX*MAXTICKS, 4, true, true));
                     player.addPotionEffect(new PotionEffect(Potion.poison.getId(), EFFECTS_MAX*MAXTICKS, 2, true, true));
                     player.addPotionEffect(new PotionEffect(Potion.hunger.getId(), EFFECTS_MAX*MAXTICKS, 2, true, true));
-                } else if (power < DimletConfiguration.DIMPOWER_WARN2) {
+                } else if (power < PowerConfiguration.DIMPOWER_WARN2) {
                     player.addPotionEffect(new PotionEffect(Potion.moveSlowdown.getId(), EFFECTS_MAX*MAXTICKS, 2, true, true));
                     player.addPotionEffect(new PotionEffect(Potion.digSlowdown.getId(), EFFECTS_MAX*MAXTICKS, 2, true, true));
                     player.addPotionEffect(new PotionEffect(Potion.hunger.getId(), EFFECTS_MAX*MAXTICKS, 1, true, true));
-                } else if (power < DimletConfiguration.DIMPOWER_WARN1) {
+                } else if (power < PowerConfiguration.DIMPOWER_WARN1) {
                     player.addPotionEffect(new PotionEffect(Potion.moveSlowdown.getId(), EFFECTS_MAX*MAXTICKS, 0, true, true));
                     player.addPotionEffect(new PotionEffect(Potion.digSlowdown.getId(), EFFECTS_MAX*MAXTICKS, 0, true, true));
                 }
@@ -361,12 +363,12 @@ public class DimensionTickEvent {
             WorldServer world = DimensionManager.getWorld(id);
             if (world != null) {
                 List<EntityPlayer> players = new ArrayList<EntityPlayer>(world.playerEntities);
-                if (DimletConfiguration.dimensionDifficulty >= 1) {
+                if (PowerConfiguration.dimensionDifficulty >= 1) {
                     for (EntityPlayer player : players) {
                         if (!RfToolsDimensionManager.checkValidPhasedFieldGenerator(player, true, phasedCost)) {
                             player.attackEntityFrom(new DamageSourcePowerLow("powerLow"), 1000000.0f);
                         } else {
-                            if (doEffects && DimletConfiguration.phasedFieldGeneratorDebuf) {
+                            if (doEffects && PowerConfiguration.phasedFieldGeneratorDebuf) {
                                 player.addPotionEffect(new PotionEffect(Potion.moveSlowdown.getId(), EFFECTS_MAX * MAXTICKS, 4, true, true));
                                 player.addPotionEffect(new PotionEffect(Potion.digSlowdown.getId(), EFFECTS_MAX * MAXTICKS, 2, true, true));
                                 player.addPotionEffect(new PotionEffect(Potion.hunger.getId(), EFFECTS_MAX * MAXTICKS, 2, true, true));
@@ -377,7 +379,7 @@ public class DimensionTickEvent {
                     Random random = new Random();
                     for (EntityPlayer player : players) {
                         if (!RfToolsDimensionManager.checkValidPhasedFieldGenerator(player, true, phasedCost)) {
-                            WorldServer worldServerForDimension = MinecraftServer.getServer().worldServerForDimension(DimletConfiguration.spawnDimension);
+                            WorldServer worldServerForDimension = MinecraftServer.getServer().worldServerForDimension(GeneralConfiguration.spawnDimension);
                             int x = random.nextInt(2000) - 1000;
                             int z = random.nextInt(2000) - 1000;
                             int y = worldServerForDimension.getTopSolidOrLiquidBlock(new BlockPos(x, 0, z)).getY();
@@ -385,7 +387,7 @@ public class DimensionTickEvent {
                                 y = 63;
                             }
 
-                            RFToolsDim.teleportationManager.teleportPlayer(player, DimletConfiguration.spawnDimension, new BlockPos(x, y, z));
+                            RFToolsDim.teleportationManager.teleportPlayer(player, GeneralConfiguration.spawnDimension, new BlockPos(x, y, z));
                         } else {
                             if (doEffects) {
                                 player.addPotionEffect(new PotionEffect(Potion.moveSlowdown.getId(), EFFECTS_MAX * MAXTICKS, 4, true, true));

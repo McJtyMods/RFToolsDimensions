@@ -1,6 +1,6 @@
 package mcjty.rftoolsdim.dimensions.dimlets.types;
 
-import mcjty.rftoolsdim.dimensions.DimletConfiguration;
+import mcjty.rftoolsdim.config.WorldgenConfiguration;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletKey;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletObjectMapping;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletRandomizer;
@@ -108,7 +108,7 @@ public class StructureDimletType implements IDimletType {
         Set<String> dimensionTypes = new HashSet<>();
         dimlets = DimensionInformation.extractType(DimletType.DIMLET_STRUCTURE, dimlets);
         if (dimlets.isEmpty()) {
-            while (random.nextFloat() < DimletConfiguration.randomStructureChance) {
+            while (random.nextFloat() < WorldgenConfiguration.randomStructureChance) {
                 DimletKey key = DimletRandomizer.getRandomStructure(random, false);
                 StructureType structureType = DimletObjectMapping.getStructure(key);
                 if (!structureTypes.contains(structureType) || (structureType == StructureType.STRUCTURE_RECURRENTCOMPLEX)) {

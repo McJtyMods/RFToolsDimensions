@@ -1,6 +1,6 @@
 package mcjty.rftoolsdim.dimensions.dimlets.types;
 
-import mcjty.rftoolsdim.dimensions.DimletConfiguration;
+import mcjty.rftoolsdim.config.WorldgenConfiguration;
 import mcjty.rftoolsdim.dimensions.description.SkyDescriptor;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletKey;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletObjectMapping;
@@ -12,7 +12,6 @@ import net.minecraftforge.common.config.Configuration;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -120,7 +119,7 @@ public class SkyDimletType implements IDimletType {
     public void constructDimension(List<Pair<DimletKey, List<DimletKey>>> dimlets, Random random, DimensionInformation dimensionInformation) {
         dimlets = DimensionInformation.extractType(DimletType.DIMLET_SKY, dimlets);
         if (dimlets.isEmpty()) {
-            if (random.nextFloat() < DimletConfiguration.randomSpecialSkyChance) {
+            if (random.nextFloat() < WorldgenConfiguration.randomSpecialSkyChance) {
                 // If nothing was specified then there is random chance we get random sky stuff.
 //                List<DimletKey> skyIds = new ArrayList<>(DimletObjectMapping.idToSkyDescriptor.keySet());
 //                for (int i = 0 ; i < 1+random.nextInt(3) ; i++) {
@@ -131,7 +130,7 @@ public class SkyDimletType implements IDimletType {
                 // @todo
             }
 
-            if (random.nextFloat() < DimletConfiguration.randomSpecialSkyChance) {
+            if (random.nextFloat() < WorldgenConfiguration.randomSpecialSkyChance) {
                 List<DimletKey> bodyKeys = new ArrayList<>();
 //                for (DimletKey key : DimletObjectMapping.idToSkyDescriptor.keySet()) {
 //                    if (DimletObjectMapping.celestialBodies.contains(key)) {

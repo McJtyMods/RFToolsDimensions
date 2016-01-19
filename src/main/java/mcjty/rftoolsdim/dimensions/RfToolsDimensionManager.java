@@ -1,6 +1,7 @@
 package mcjty.rftoolsdim.dimensions;
 
 import mcjty.lib.varia.Logging;
+import mcjty.rftoolsdim.config.PowerConfiguration;
 import mcjty.rftoolsdim.dimensions.description.DimensionDescriptor;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletKey;
 import mcjty.rftoolsdim.dimensions.world.GenericWorldProvider;
@@ -9,9 +10,6 @@ import mcjty.rftoolsdim.network.PacketSyncDimensionInfo;
 import mcjty.rftoolsdim.network.RFToolsDimMessages;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.MinecraftServer;
@@ -130,13 +128,13 @@ public class RfToolsDimensionManager extends WorldSavedData {
     public static void freezeDimension(World world) {
         // First find all players that have a valid PFG.
         List<BlockPos> pfgList = new ArrayList<>();
-        int radius = DimletConfiguration.phasedFieldGeneratorRange;
+        int radius = PowerConfiguration.phasedFieldGeneratorRange;
         if (radius > 0) {
             for (Object ent : world.playerEntities) {
                 EntityPlayer player = (EntityPlayer) ent;
                 // Check if this player has a valid PFG but don't consume energy.
                 int cost = 0;
-                if (DimletConfiguration.dimensionDifficulty != -1) {
+                if (PowerConfiguration.dimensionDifficulty != -1) {
                     RfToolsDimensionManager dimensionManager = RfToolsDimensionManager.getDimensionManager(world);
                     DimensionInformation information = dimensionManager.getDimensionInformation(world.provider.getDimensionId());
                     cost = information.getActualRfCost();

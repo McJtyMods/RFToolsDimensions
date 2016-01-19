@@ -1,7 +1,7 @@
 package mcjty.rftoolsdim.dimensions.dimlets.types;
 
 import mcjty.rftoolsdim.dimensions.DimensionInformation;
-import mcjty.rftoolsdim.dimensions.DimletConfiguration;
+import mcjty.rftoolsdim.config.WorldgenConfiguration;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletKey;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletObjectMapping;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletRandomizer;
@@ -181,7 +181,7 @@ public class TerrainDimletType implements IDimletType {
             } else {
                 // Nothing was specified. With a relatively big chance we use stone. But there is also a chance that the material will be something else.
                 // Note that in this particular case we disallow randomly selecting 'expensive' blocks like glass.
-                if (random.nextFloat() < DimletConfiguration.randomBaseBlockChance) {
+                if (random.nextFloat() < WorldgenConfiguration.randomBaseBlockChance) {
                     DimletKey key = DimletRandomizer.getRandomMaterialBlock(random, false);
                     dimensionInformation.updateCostFactor(key);
                     baseBlockForTerrain = DimletObjectMapping.getBlock(key);
@@ -199,7 +199,7 @@ public class TerrainDimletType implements IDimletType {
                 fluidForTerrain = Blocks.water;         // This is the default.
             }
         } else {
-            if (random.nextFloat() < DimletConfiguration.randomOceanLiquidChance) {
+            if (random.nextFloat() < WorldgenConfiguration.randomOceanLiquidChance) {
                 DimletKey key = DimletRandomizer.getRandomFluidBlock(random, false);
                 dimensionInformation.updateCostFactor(key);
                 fluidForTerrain = DimletObjectMapping.getFluid(key);

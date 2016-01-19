@@ -1,5 +1,6 @@
 package mcjty.rftoolsdim.dimensions;
 
+import mcjty.rftoolsdim.config.PowerConfiguration;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
@@ -54,7 +55,7 @@ public class DimensionStorage extends WorldSavedData {
     public void setEnergyLevel(int id, int energyLevel) {
         int old = getEnergyLevel(id);
         energy.put(id, energyLevel);
-        if (DimletConfiguration.freezeUnpowered) {
+        if (PowerConfiguration.freezeUnpowered) {
             World world = DimensionManager.getWorld(id);
             if (world != null) {
                 if (old == 0 && energyLevel > 0) {

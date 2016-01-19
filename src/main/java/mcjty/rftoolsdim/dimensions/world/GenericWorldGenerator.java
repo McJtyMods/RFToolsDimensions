@@ -4,8 +4,8 @@ import mcjty.rftoolsdim.blocks.ModBlocks;
 import mcjty.lib.varia.Logging;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.dimensions.DimensionInformation;
-import mcjty.rftoolsdim.dimensions.DimletConfiguration;
 import mcjty.rftoolsdim.dimensions.RfToolsDimensionManager;
+import mcjty.rftoolsdim.config.WorldgenConfiguration;
 import mcjty.rftoolsdim.dimensions.dimlets.types.Patreons;
 import mcjty.rftoolsdim.dimensions.types.FeatureType;
 import mcjty.rftoolsdim.dimensions.types.TerrainType;
@@ -40,7 +40,9 @@ public class GenericWorldGenerator implements IWorldGenerator {
         }
 
         Block dimensionalShardBlock = GameRegistry.findBlock("rftools", "dimensional_shard_ore");
-        addOreSpawn(dimensionalShardBlock.getDefaultState(), Blocks.stone.getDefaultState(), world, random, chunkX * 16, chunkZ * 16, 5, 8, 3, 2, 40);
+        addOreSpawn(dimensionalShardBlock.getDefaultState(), Blocks.stone.getDefaultState(), world, random, chunkX * 16, chunkZ * 16,
+                    WorldgenConfiguration.oreMinimumVeinSize, WorldgenConfiguration.oreMaximumVeinSize, WorldgenConfiguration.oreMaximumVeinCount,
+                    WorldgenConfiguration.oreMinimumHeight, WorldgenConfiguration.oreMaximumHeight);
 
         if (information.isPatreonBitSet(Patreons.PATREON_PUPPETEER) && Math.abs(chunkX) <= 1 && Math.abs(chunkZ) <= 1) {
             generateBigSpawnPlatform(world, chunkX, chunkZ, puppeteerSpawnPlatform);
@@ -48,7 +50,7 @@ public class GenericWorldGenerator implements IWorldGenerator {
             generateSpawnPlatform(world);
         } else if ((Math.abs(chunkX) > 6 || Math.abs(chunkZ) > 6) && !information.hasFeatureType(FeatureType.FEATURE_NODIMLETBUILDINGS)) {
             // Not too close to starting platform we possibly generate dungeons.
-            if (random.nextInt(DimletConfiguration.dungeonChance) == 1) {
+            if (random.nextInt(WorldgenConfiguration.dungeonChance) == 1) {
                 generateDimletDungeon(random, chunkX, chunkZ, world);
             }
         }
@@ -66,7 +68,7 @@ public class GenericWorldGenerator implements IWorldGenerator {
         }
 
         if ((Math.abs(chunkX) >= 3 || Math.abs(chunkZ) >= 3) && information.hasFeatureType(FeatureType.FEATURE_VOLCANOES)) {
-            if (random.nextInt(DimletConfiguration.volcanoChance) == 1) {
+            if (random.nextInt(WorldgenConfiguration.volcanoChance) == 1) {
                 generateVolcano(random, chunkX, chunkZ, world);
             }
         }

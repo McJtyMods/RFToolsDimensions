@@ -1,6 +1,6 @@
 package mcjty.rftoolsdim.dimensions.dimlets.types;
 
-import mcjty.rftoolsdim.dimensions.DimletConfiguration;
+import mcjty.rftoolsdim.config.WorldgenConfiguration;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletKey;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletObjectMapping;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletRandomizer;
@@ -10,7 +10,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.config.Configuration;
 import org.apache.commons.lang3.tuple.Pair;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -108,7 +107,7 @@ public class TimeDimletType implements IDimletType {
         Float timeSpeed = null;
         dimlets = DimensionInformation.extractType(DimletType.DIMLET_TIME, dimlets);
         if (dimlets.isEmpty()) {
-            if (random.nextFloat() < DimletConfiguration.randomSpecialTimeChance) {
+            if (random.nextFloat() < WorldgenConfiguration.randomSpecialTimeChance) {
                 celestialAngle = null;      // Default
                 timeSpeed = null;
             } else {

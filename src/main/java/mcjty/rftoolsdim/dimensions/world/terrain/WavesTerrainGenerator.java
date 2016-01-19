@@ -1,6 +1,6 @@
 package mcjty.rftoolsdim.dimensions.world.terrain;
 
-import mcjty.rftoolsdim.dimensions.DimletConfiguration;
+import mcjty.rftoolsdim.config.WorldgenConfiguration;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -27,7 +27,7 @@ public class WavesTerrainGenerator extends NormalTerrainGenerator {
                 double cos = Math.cos((chunkZ * 16 + z) / 16.0f);
                 byte waterLevel = (byte) (63 + sin * cos * 16);
                 int height = 0;
-                while (height < DimletConfiguration.bedrockLayer) {
+                while (height < WorldgenConfiguration.bedrockLayer) {
                     primer.setBlockState(index++, Blocks.bedrock.getDefaultState());
                     height++;
                 }

@@ -7,8 +7,10 @@ import mcjty.lib.network.Argument;
 import mcjty.lib.network.PacketRequestIntegerFromServer;
 import mcjty.lib.varia.Logging;
 import mcjty.rftoolsdim.RFToolsDim;
+import mcjty.rftoolsdim.config.PowerConfiguration;
 import mcjty.rftoolsdim.dimensions.DimensionStorage;
-import mcjty.rftoolsdim.dimensions.DimletConfiguration;
+import mcjty.rftoolsdim.config.GeneralConfiguration;
+import mcjty.rftoolsdim.config.MachineConfiguration;
 import mcjty.rftoolsdim.dimensions.RfToolsDimensionManager;
 import mcjty.rftoolsdim.dimensions.description.DimensionDescriptor;
 import mcjty.rftoolsdim.network.RFToolsDimMessages;
@@ -18,7 +20,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
@@ -50,7 +51,7 @@ public class DimensionBuilderTileEntity extends GenericEnergyReceiverTileEntity 
     private InventoryHelper inventoryHelper = new InventoryHelper(this, DimensionBuilderContainer.factory, 1);
 
     public DimensionBuilderTileEntity() {
-        super(DimletConfiguration.BUILDER_MAXENERGY, DimletConfiguration.BUILDER_RECEIVEPERTICK);
+        super(MachineConfiguration.BUILDER_MAXENERGY, MachineConfiguration.BUILDER_RECEIVEPERTICK);
     }
 
     @Override
@@ -155,12 +156,12 @@ public class DimensionBuilderTileEntity extends GenericEnergyReceiverTileEntity 
             DimensionStorage dimensionStorage = DimensionStorage.getDimensionStorage(worldObj);
             int rf;
             if (isCreative()) {
-                rf = DimletConfiguration.BUILDER_MAXENERGY;
+                rf = MachineConfiguration.BUILDER_MAXENERGY;
             } else {
                 rf = getEnergyStored(EnumFacing.DOWN);
             }
             int energy = dimensionStorage.getEnergyLevel(id);
-            int maxEnergy = DimletConfiguration.MAX_DIMENSION_POWER - energy;      // Max energy the dimension can still get.
+            int maxEnergy = PowerConfiguration.MAX_DIMENSION_POWER - energy;      // Max energy the dimension can still get.
             if (rf > maxEnergy) {
                 rf = maxEnergy;
             }
@@ -182,19 +183,19 @@ public class DimensionBuilderTileEntity extends GenericEnergyReceiverTileEntity 
     private static Random random = new Random();
 
     private int createDimensionTick(NBTTagCompound tagCompound, int ticksLeft) {
-        if (DimletConfiguration.dimensionBuilderNeedsOwner) {
+        if (GeneralConfiguration.dimensionBuilderNeedsOwner) {
             if (getOwnerUUID() == null) {
                 // No valid owner so we don't build the dimension.
                 errorMode = ERROR_NOOWNER;
                 return ticksLeft;
             }
-            if (DimletConfiguration.maxDimensionsPerPlayer >= 0) {
+            if (GeneralConfiguration.maxDimensionsPerPlayer >= 0) {
                 int tickCost = tagCompound.getInteger("tickCost");
                 if (ticksLeft == tickCost || ticksLeft < 5) {
                     // Check if we are allow to make the dimension.
                     RfToolsDimensionManager manager = RfToolsDimensionManager.getDimensionManager(worldObj);
                     int cnt = manager.countOwnedDimensions(getOwnerUUID());
-                    if (cnt >= DimletConfiguration.maxDimensionsPerPlayer) {
+                    if (cnt >= GeneralConfiguration.maxDimensionsPerPlayer) {
                         errorMode = ERROR_TOOMANYDIMENSIONS;
                         return ticksLeft;
                     }

@@ -1,7 +1,8 @@
 package mcjty.rftoolsdim.dimensions.dimlets;
 
 import com.google.common.collect.Lists;
-import mcjty.rftoolsdim.dimensions.DimletConfiguration;
+import mcjty.rftoolsdim.config.GeneralConfiguration;
+import mcjty.rftoolsdim.config.WorldgenConfiguration;
 import mcjty.rftoolsdim.dimensions.dimlets.types.DimletType;
 import mcjty.rftoolsdim.items.ModItems;
 import net.minecraft.item.ItemStack;
@@ -62,7 +63,7 @@ public class KnownDimletConfiguration {
         craftableDimlets.add(new DimletKey(DimletType.DIMLET_FEATURE, "None"));
         craftableDimlets.add(new DimletKey(DimletType.DIMLET_STRUCTURE, "None"));
         craftableDimlets.add(new DimletKey(DimletType.DIMLET_TERRAIN, "Void"));
-        if (!DimletConfiguration.voidOnly) {
+        if (!GeneralConfiguration.voidOnly) {
             craftableDimlets.add(new DimletKey(DimletType.DIMLET_TERRAIN, "Flat"));
         }
         craftableDimlets.add(new DimletKey(DimletType.DIMLET_CONTROLLER, DimletObjectMapping.DEFAULT_ID));
@@ -124,12 +125,12 @@ public class KnownDimletConfiguration {
 
         ChestGenHooks chest = ChestGenHooks.getInfo(category);
         for (int i = 0 ; i <= 6 ; i++) {
-            if (DimletConfiguration.dimletPartChestLootRarity[i] > 0) {
+            if (WorldgenConfiguration.dimletPartChestLootRarity[i] > 0) {
                 for (ItemStack stack : items.get(i)) {
                     chest.addItem(new WeightedRandomChestContent(stack,
-                            DimletConfiguration.dimletPartChestLootMinimum,
-                            DimletConfiguration.dimletPartChestLootMaximum,
-                            DimletConfiguration.dimletPartChestLootRarity[i]));
+                            WorldgenConfiguration.dimletPartChestLootMinimum,
+                            WorldgenConfiguration.dimletPartChestLootMaximum,
+                            WorldgenConfiguration.dimletPartChestLootRarity[i]));
                 }
             }
         }

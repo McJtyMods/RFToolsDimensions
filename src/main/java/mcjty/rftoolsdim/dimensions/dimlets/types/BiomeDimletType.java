@@ -1,6 +1,6 @@
 package mcjty.rftoolsdim.dimensions.dimlets.types;
 
-import mcjty.rftoolsdim.dimensions.DimletConfiguration;
+import mcjty.rftoolsdim.config.WorldgenConfiguration;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletKey;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletObjectMapping;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletRandomizer;
@@ -110,7 +110,7 @@ public class BiomeDimletType implements IDimletType {
 
         // First determine the controller to use.
         if (controllerDimlets.isEmpty()) {
-            if (random.nextFloat() < DimletConfiguration.randomControllerChance) {
+            if (random.nextFloat() < WorldgenConfiguration.randomControllerChance) {
                 DimletKey key = DimletRandomizer.getRandomController(random, true);
                 controllerType = DimletObjectMapping.getController(key);
             } else {

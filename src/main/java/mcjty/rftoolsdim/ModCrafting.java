@@ -1,7 +1,7 @@
 package mcjty.rftoolsdim;
 
 import mcjty.rftoolsdim.blocks.ModBlocks;
-import mcjty.rftoolsdim.dimensions.DimletConfiguration;
+import mcjty.rftoolsdim.config.GeneralConfiguration;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletObjectMapping;
 import mcjty.rftoolsdim.dimensions.dimlets.KnownDimletConfiguration;
 import mcjty.rftoolsdim.dimensions.dimlets.types.DimletType;
@@ -30,7 +30,7 @@ public class ModCrafting {
 
         GameRegistry.addRecipe(new ItemStack(ModBlocks.dimensionEnscriberBlock), "rpr", "bMb", "iii", 'r', Items.redstone, 'p', Items.paper, 'b', inkSac,
                 'M', machineFrame, 'i', Items.iron_ingot);
-        if (DimletConfiguration.enableDimensionBuilderRecipe) {
+        if (GeneralConfiguration.enableDimensionBuilderRecipe) {
             GameRegistry.addRecipe(new ItemStack(ModBlocks.dimensionBuilderBlock), "oEo", "DMD", "ggg", 'o', Items.ender_pearl, 'E', Items.emerald, 'D', Items.diamond,
                                    'M', machineFrame, 'g', Items.gold_ingot);
         }
@@ -57,7 +57,7 @@ public class ModCrafting {
         addRecipe(DimletType.DIMLET_FEATURE, "None", " r ", "rwr", "ppp", 'r', Items.redstone, 'w', Items.string, 'p', Items.paper);
         addRecipe(DimletType.DIMLET_STRUCTURE, "None", " r ", "rwr", "ppp", 'r', Items.redstone, 'w', Items.bone, 'p', Items.paper);
         addRecipe(DimletType.DIMLET_TERRAIN, "Void", " r ", "rwr", "ppp", 'r', Items.redstone, 'w', Items.brick, 'p', Items.paper);
-        if (!DimletConfiguration.voidOnly) {
+        if (!GeneralConfiguration.voidOnly) {
             addRecipe(DimletType.DIMLET_TERRAIN, "Flat", " r ", "rwr", "ppp", 'r', Items.redstone, 'w', Items.brick, 'p', ModItems.dimletTemplateItem);
         }
         addRecipe(DimletType.DIMLET_CONTROLLER, DimletObjectMapping.DEFAULT_ID, " r ", "rwr", "ppp", 'r', Items.redstone, 'w', Items.comparator, 'p', Items.paper);

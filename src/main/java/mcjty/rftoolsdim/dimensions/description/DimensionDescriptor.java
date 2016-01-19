@@ -1,6 +1,6 @@
 package mcjty.rftoolsdim.dimensions.description;
 
-import mcjty.rftoolsdim.dimensions.DimletConfiguration;
+import mcjty.rftoolsdim.config.PowerConfiguration;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletCosts;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletEntry;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletKey;
@@ -46,7 +46,7 @@ public class DimensionDescriptor {
         int rf = calculateMaintenanceRfCost(dimlets);
         int rfGain = calculateBonus(dimlets);
         if (rfGain > 0) {
-            int rfMinimum = Math.max(10, rf * DimletConfiguration.minimumCostPercentage / 100);
+            int rfMinimum = Math.max(10, rf * PowerConfiguration.minimumCostPercentage / 100);
             rf = rf - (rf * rfGain / 100);
             if (rf < rfMinimum) {
                 rf = rfMinimum;        // Never consume less then this

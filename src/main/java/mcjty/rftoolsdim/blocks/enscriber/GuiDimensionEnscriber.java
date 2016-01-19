@@ -14,7 +14,7 @@ import mcjty.lib.network.Argument;
 import mcjty.lib.varia.Counter;
 import mcjty.lib.varia.Logging;
 import mcjty.rftoolsdim.RFToolsDim;
-import mcjty.rftoolsdim.dimensions.DimletConfiguration;
+import mcjty.rftoolsdim.config.GeneralConfiguration;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletKey;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletObjectMapping;
 import mcjty.rftoolsdim.dimensions.dimlets.KnownDimletConfiguration;
@@ -177,7 +177,7 @@ public class GuiDimensionEnscriber extends GenericGuiContainer<DimensionEnscribe
         if (cntOwner > 1) {
             tooltips.add("Using more then one owner dimlet is not useful!");
         }
-        if (DimletConfiguration.ownerDimletsNeeded && cntOwner != 1) {
+        if (GeneralConfiguration.ownerDimletsNeeded && cntOwner != 1) {
             tooltips.add("You cannot make a dimension without an owner dimlet!");
             storeButton.setEnabled(false);
         }

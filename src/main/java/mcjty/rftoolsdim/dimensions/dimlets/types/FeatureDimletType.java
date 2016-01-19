@@ -1,7 +1,7 @@
 package mcjty.rftoolsdim.dimensions.dimlets.types;
 
 import mcjty.rftoolsdim.dimensions.DimensionInformation;
-import mcjty.rftoolsdim.dimensions.DimletConfiguration;
+import mcjty.rftoolsdim.config.WorldgenConfiguration;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletKey;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletObjectMapping;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletRandomizer;
@@ -168,7 +168,7 @@ public class FeatureDimletType implements IDimletType {
         Set<FeatureType> featureTypes = dimensionInformation.getFeatureTypes();
         dimlets = DimensionInformation.extractType(DimletType.DIMLET_FEATURE, dimlets);
         if (dimlets.isEmpty()) {
-            while (random.nextFloat() < DimletConfiguration.randomFeatureChance) {
+            while (random.nextFloat() < WorldgenConfiguration.randomFeatureChance) {
                 DimletKey key = DimletRandomizer.getRandomFeature(random, false);
                 FeatureType featureType = DimletObjectMapping.getFeature(key);
                 if (!featureTypes.contains(featureType) && featureType.isTerrainSupported(terrainType)) {
@@ -210,7 +210,7 @@ public class FeatureDimletType implements IDimletType {
 
             // If no fluids are specified we will usually have default fluid generation (water+lava). Otherwise some random selection.
             if (fluids.isEmpty()) {
-                while (random.nextFloat() < DimletConfiguration.randomLakeFluidChance) {
+                while (random.nextFloat() < WorldgenConfiguration.randomLakeFluidChance) {
                     DimletKey key = DimletRandomizer.getRandomFluidBlock(random, true);
                     dimensionInformation.updateCostFactor(key);
                     fluids.add(DimletObjectMapping.getFluid(key));

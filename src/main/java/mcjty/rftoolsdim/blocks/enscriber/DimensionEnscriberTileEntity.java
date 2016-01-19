@@ -6,7 +6,7 @@ import mcjty.lib.entity.GenericTileEntity;
 import mcjty.lib.network.Argument;
 import mcjty.lib.varia.Logging;
 import mcjty.rftoolsdim.dimensions.DimensionInformation;
-import mcjty.rftoolsdim.dimensions.DimletConfiguration;
+import mcjty.rftoolsdim.config.GeneralConfiguration;
 import mcjty.rftoolsdim.dimensions.RfToolsDimensionManager;
 import mcjty.rftoolsdim.dimensions.description.DimensionDescriptor;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletEntry;
@@ -90,7 +90,7 @@ public class DimensionEnscriberTileEntity extends GenericTileEntity implements D
     }
 
     private void storeDimlets(EntityPlayerMP player) {
-        if (DimletConfiguration.ownerDimletsNeeded) {
+        if (GeneralConfiguration.ownerDimletsNeeded) {
             if (checkOwnerDimlet()) {
                 Logging.warn(player, "You need an owner dimlet to make a dimension!");
                 return;
@@ -175,7 +175,7 @@ public class DimensionEnscriberTileEntity extends GenericTileEntity implements D
             String descriptionString = tagCompound.getString("descriptionString");
             for (DimletKey descriptor : DimensionDescriptor.parseDescriptionString(descriptionString)) {
                 int id = tagCompound.getInteger("id");
-                if (DimletConfiguration.ownerDimletsNeeded && id != 0) {
+                if (GeneralConfiguration.ownerDimletsNeeded && id != 0) {
                     // If we need owner dimlets and the dimension is created we don't extract the owern dimlet.
                     if (descriptor.getType() == DimletType.DIMLET_SPECIAL && DimletObjectMapping.getSpecial(descriptor) == SpecialType.SPECIAL_OWNER) {
                         continue;

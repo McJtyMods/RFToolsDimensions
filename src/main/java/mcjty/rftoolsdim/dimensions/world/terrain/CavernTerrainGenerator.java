@@ -1,6 +1,6 @@
 package mcjty.rftoolsdim.dimensions.world.terrain;
 
-import mcjty.rftoolsdim.dimensions.DimletConfiguration;
+import mcjty.rftoolsdim.config.WorldgenConfiguration;
 import mcjty.rftoolsdim.dimensions.types.TerrainType;
 import mcjty.rftoolsdim.dimensions.world.GenericChunkProvider;
 import net.minecraft.block.Block;
@@ -50,7 +50,7 @@ public class CavernTerrainGenerator implements BaseTerrainGenerator {
 
     public CavernTerrainGenerator(CavernHeight heightsetting) {
         if (heightsetting == null) {
-            int hs = DimletConfiguration.cavernHeightLimit;
+            int hs = WorldgenConfiguration.cavernHeightLimit;
             if (hs < 0) {
                 hs = 0;
             } else if (hs > 3) {
@@ -280,7 +280,7 @@ public class CavernTerrainGenerator implements BaseTerrainGenerator {
                 for (int k1 = 255; k1 >= 0; --k1) {
                     int l1 = (l * 16 + k) * 256 + k1;
 
-                    if (k1 < DimletConfiguration.bedrockLayer) {
+                    if (k1 < WorldgenConfiguration.bedrockLayer) {
                         primer.setBlockState(l1, Blocks.bedrock.getDefaultState());
                     } else if (k1 < 255 - provider.rand.nextInt(5) && k1 > provider.rand.nextInt(5)) {
                         IBlockState block2 = primer.getBlockState(l1);
