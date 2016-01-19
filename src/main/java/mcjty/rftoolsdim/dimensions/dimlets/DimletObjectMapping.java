@@ -1,6 +1,5 @@
 package mcjty.rftoolsdim.dimensions.dimlets;
 
-import com.sun.istack.internal.NotNull;
 import mcjty.rftoolsdim.dimensions.description.MobDescriptor;
 import mcjty.rftoolsdim.dimensions.description.SkyDescriptor;
 import mcjty.rftoolsdim.dimensions.description.WeatherDescriptor;
@@ -19,7 +18,6 @@ public class DimletObjectMapping {
 
     public static String DEFAULT_ID = "Default";
 
-    @NotNull
     public static FeatureType getFeature(DimletKey dimlet) {
         if (DimletType.DIMLET_FEATURE.equals(dimlet.getType())) {
             FeatureType type = FeatureType.getFeatureById(dimlet.getId());
@@ -28,7 +26,6 @@ public class DimletObjectMapping {
         return FeatureType.FEATURE_NONE;
     }
 
-    @NotNull
     public static ControllerType getController(DimletKey dimlet) {
         if (DimletType.DIMLET_CONTROLLER.equals(dimlet.getType())) {
             ControllerType type = ControllerType.getControllerById(dimlet.getId());
@@ -37,7 +34,6 @@ public class DimletObjectMapping {
         return ControllerType.CONTROLLER_DEFAULT;
     }
 
-    @NotNull
     public static EffectType getEffect(DimletKey dimlet) {
         if (DimletType.DIMLET_EFFECT.equals(dimlet.getType())) {
             EffectType type = EffectType.getEffectById(dimlet.getId());
@@ -46,7 +42,6 @@ public class DimletObjectMapping {
         return EffectType.EFFECT_NONE;
     }
 
-    @NotNull
     public static StructureType getStructure(DimletKey dimlet) {
         if (DimletType.DIMLET_STRUCTURE.equals(dimlet.getType())) {
             StructureType type = StructureType.getStructureById(dimlet.getId());
@@ -55,7 +50,6 @@ public class DimletObjectMapping {
         return StructureType.STRUCTURE_NONE;
     }
 
-    @NotNull
     public static TerrainType getTerrain(DimletKey dimlet) {
         if (DimletType.DIMLET_TERRAIN.equals(dimlet.getType())) {
             TerrainType type = TerrainType.getTerrainById(dimlet.getId());
@@ -109,7 +103,6 @@ public class DimletObjectMapping {
         return null;
     }
 
-    @NotNull
     public static String getDigit(DimletKey dimlet) {
         if (DimletType.DIMLET_DIGIT.equals(dimlet.getType())) {
             return dimlet.getId();
