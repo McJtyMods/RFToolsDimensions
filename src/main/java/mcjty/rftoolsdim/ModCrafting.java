@@ -1,5 +1,6 @@
 package mcjty.rftoolsdim;
 
+import mcjty.rftoolsdim.blocks.ModBlocks;
 import mcjty.rftoolsdim.dimensions.DimletConfiguration;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletObjectMapping;
 import mcjty.rftoolsdim.dimensions.dimlets.KnownDimletConfiguration;
@@ -16,10 +17,19 @@ public class ModCrafting {
 
     public static void init() {
         initDimletRecipes();
+        initBlockRecipes();
 
         Item dimensionalShard = GameRegistry.findItem("rftools", "dimensional_shard");
         GameRegistry.addRecipe(new ItemStack(ModItems.emptyDimensionTabItem), "prp", "rpr", "prp", 'p', Items.paper, 'r', Items.redstone);
         GameRegistry.addRecipe(new ItemStack(ModItems.dimletTemplateItem), "sss", "sps", "sss", 's', dimensionalShard, 'p', Items.paper);
+    }
+
+    private static void initBlockRecipes() {
+        Block machineFrame = GameRegistry.findBlock("rftools", "machine_frame");
+        ItemStack inkSac = new ItemStack(Items.dye, 1, 0);
+
+        GameRegistry.addRecipe(new ItemStack(ModBlocks.dimensionEnscriberBlock), "rpr", "bMb", "iii", 'r', Items.redstone, 'p', Items.paper, 'b', inkSac,
+                'M', machineFrame, 'i', Items.iron_ingot);
     }
 
     private static void initDimletRecipes() {

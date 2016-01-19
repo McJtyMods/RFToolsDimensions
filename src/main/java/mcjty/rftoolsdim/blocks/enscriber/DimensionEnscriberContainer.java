@@ -6,6 +6,7 @@ import mcjty.lib.container.SlotDefinition;
 import mcjty.lib.container.SlotType;
 import mcjty.rftoolsdim.items.ModItems;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 
 public class DimensionEnscriberContainer extends GenericContainer {
@@ -24,7 +25,7 @@ public class DimensionEnscriberContainer extends GenericContainer {
         }
     };
 
-    public DimensionEnscriberContainer(EntityPlayer player, DimensionEnscriberTileEntity containerInventory) {
+    public DimensionEnscriberContainer(EntityPlayer player, IInventory containerInventory) {
         super(factory);
         addInventory(CONTAINER_INVENTORY, containerInventory);
         addInventory(ContainerFactory.CONTAINER_PLAYER, player.inventory);

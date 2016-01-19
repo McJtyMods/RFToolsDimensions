@@ -1,5 +1,6 @@
 package mcjty.rftoolsdim.blocks.enscriber;
 
+import mcjty.lib.container.GenericGuiContainer;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.blocks.GenericRFToolsBlock;
 import net.minecraft.block.material.Material;
@@ -12,7 +13,7 @@ import org.lwjgl.input.Keyboard;
 
 import java.util.List;
 
-public class DimensionEnscriberBlock extends GenericRFToolsBlock {
+public class DimensionEnscriberBlock extends GenericRFToolsBlock<DimensionEnscriberTileEntity, DimensionEnscriberContainer> {
 
     public DimensionEnscriberBlock() {
         super(Material.iron, DimensionEnscriberTileEntity.class, DimensionEnscriberContainer.class, "dimension_enscriber", true);
@@ -21,6 +22,12 @@ public class DimensionEnscriberBlock extends GenericRFToolsBlock {
     @Override
     public int getGuiID() {
         return RFToolsDim.GUI_DIMENSION_ENSCRIBER;
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public Class<? extends GenericGuiContainer> getGuiClass() {
+        return GuiDimensionEnscriber.class;
     }
 
     @SideOnly(Side.CLIENT)
