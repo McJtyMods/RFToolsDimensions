@@ -2,16 +2,18 @@ package mcjty.rftoolsdim.blocks.builder;
 
 import mcjty.lib.api.Infusable;
 import mcjty.lib.container.GenericGuiContainer;
-import mcjty.lib.varia.BlockTools;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.blocks.GenericRFToolsBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IStringSerializable;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -21,6 +23,27 @@ import org.lwjgl.input.Keyboard;
 import java.util.List;
 
 public class DimensionBuilderBlock extends GenericRFToolsBlock<DimensionBuilderTileEntity, DimensionBuilderContainer> implements Infusable {
+
+    public static enum OperationType implements IStringSerializable {
+        EMPTY("empty"),
+        CHARGING("charging"),
+        BUILDING1("building1"),
+        BUILDING2("building2");
+
+        private final String name;
+
+        OperationType(String name) {
+            this.name = name;
+        }
+
+        @Override
+        public String getName() {
+            return name;
+        }
+    }
+
+    public static final PropertyEnum<OperationType> OPERATIONTYPE = PropertyEnum.create("operationtype", OperationType.class);
+
 
     public DimensionBuilderBlock(boolean creative) {
         super(Material.iron, DimensionBuilderTileEntity.class, DimensionBuilderContainer.class, "dimension_builder", true);
@@ -59,36 +82,13 @@ public class DimensionBuilderBlock extends GenericRFToolsBlock<DimensionBuilderT
     }
 
     @Override
-    public String getIdentifyingIconName() {
-        if (isCreative()) {
-            return "machineDimensionBuilderC";
-        } else {
-            return "machineDimensionBuilder";
-        }
+    public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
+        DimensionBuilderTileEntity te = (DimensionBuilderTileEntity) world.getTileEntity(pos);
+        return state.withProperty(OPERATIONTYPE, te.getState());
     }
 
     @Override
-    public int getLightValue(IBlockAccess world, BlockPos pos) {
-//        int meta = world.getBlockMetadata(x, y, z);
-//        int state = BlockTools.getState(meta);
-//        if (state == 0) {
-//            return 10;
-//        } else {
-//            return getLightValue();
-//        }
-        // @todo
-        return 15;
+    protected BlockState createBlockState() {
+        return new BlockState(this, FACING, OPERATIONTYPE);
     }
-
-//    @Override
-//    public IIcon getIconInd(IBlockAccess blockAccess, int x, int y, int z, int meta) {
-//        int state = BlockTools.getState(meta);
-//        switch (state) {
-//            case 0: return iconInd;
-//            case 1: return iconFrontEmpty;
-//            case 2: return iconFrontBusy1;
-//            case 3: return iconFrontBusy2;
-//            default: return iconInd;
-//        }
-//    }
 }

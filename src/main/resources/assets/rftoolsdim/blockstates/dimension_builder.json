@@ -1,7 +1,8 @@
 {
   "forge_marker": 1,
   "defaults": {
-    "model": "rftoolsdim:dimension_builder"
+    "model": "rftools:rftoolsblock",
+    "textures": { "front": "rftoolsdim:blocks/machineDimensionBuilder" }
   },
   "variants": {
     "normal": [{}],
@@ -13,6 +14,12 @@
       "east": {"y": 90},
       "up": {"x": -90},
       "down": {"x": 90}
+    },
+    "operationtype": {
+      "empty": { "textures": { "front": "rftoolsdim:blocks/machineDimensionBuilder_empty" } },
+      "charging": { "textures": { "front": "rftoolsdim:blocks/machineDimensionBuilder" } },
+      "building1": { "textures": { "front": "rftoolsdim:blocks/machineDimensionBuilder_busy1" } },
+      "building2": { "textures": { "front": "rftoolsdim:blocks/machineDimensionBuilder_busy2" } }
     }
   }
 }

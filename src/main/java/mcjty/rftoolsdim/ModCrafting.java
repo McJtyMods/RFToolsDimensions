@@ -30,6 +30,10 @@ public class ModCrafting {
 
         GameRegistry.addRecipe(new ItemStack(ModBlocks.dimensionEnscriberBlock), "rpr", "bMb", "iii", 'r', Items.redstone, 'p', Items.paper, 'b', inkSac,
                 'M', machineFrame, 'i', Items.iron_ingot);
+        if (DimletConfiguration.enableDimensionBuilderRecipe) {
+            GameRegistry.addRecipe(new ItemStack(ModBlocks.dimensionBuilderBlock), "oEo", "DMD", "ggg", 'o', Items.ender_pearl, 'E', Items.emerald, 'D', Items.diamond,
+                                   'M', machineFrame, 'g', Items.gold_ingot);
+        }
 
         initCosmeticRecipes();
     }

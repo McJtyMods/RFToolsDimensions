@@ -5,7 +5,6 @@ import mcjty.lib.container.InventoryHelper;
 import mcjty.lib.entity.GenericEnergyReceiverTileEntity;
 import mcjty.lib.network.Argument;
 import mcjty.lib.network.PacketRequestIntegerFromServer;
-import mcjty.lib.varia.BlockTools;
 import mcjty.lib.varia.Logging;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.dimensions.DimensionStorage;
@@ -14,15 +13,15 @@ import mcjty.rftoolsdim.dimensions.RfToolsDimensionManager;
 import mcjty.rftoolsdim.dimensions.description.DimensionDescriptor;
 import mcjty.rftoolsdim.network.RFToolsDimMessages;
 import mcjty.rftoolsdim.varia.RedstoneMode;
-import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
-import net.minecraftforge.common.util.Constants;
 
 import java.util.Map;
 import java.util.Random;
@@ -39,6 +38,7 @@ public class DimensionBuilderTileEntity extends GenericEnergyReceiverTileEntity 
     private static int buildPercentage = 0;
 
     private int creative = -1;      // -1 is unknown
+    private int state = 0;          // For front state
     private RedstoneMode redstoneMode = RedstoneMode.REDSTONE_IGNORED;
     private int powered = 0;
 
@@ -51,6 +51,15 @@ public class DimensionBuilderTileEntity extends GenericEnergyReceiverTileEntity 
 
     public DimensionBuilderTileEntity() {
         super(DimletConfiguration.BUILDER_MAXENERGY, DimletConfiguration.BUILDER_RECEIVEPERTICK);
+    }
+
+    @Override
+    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity packet) {
+        int oldstate = state;
+        super.onDataPacket(net, packet);
+        if (oldstate != state) {
+            worldObj.markBlockRangeForRenderUpdate(getPos(), getPos());
+        }
     }
 
     private boolean isCreative() {
@@ -224,23 +233,25 @@ public class DimensionBuilderTileEntity extends GenericEnergyReceiverTileEntity 
         return ticksLeft;
     }
 
+    public DimensionBuilderBlock.OperationType getState() {
+        return DimensionBuilderBlock.OperationType.values()[state];
+    }
+
     private void setState(int ticksLeft) {
-//        int state = 0;
-//        if (ticksLeft == 0) {
-//            state = 0;
-//        } else if (ticksLeft == -1) {
-//            state = 1;
-//        } else if (((ticksLeft >> 2) & 1) == 0) {
-//            state = 2;
-//        } else {
-//            state = 3;
-//        }
-//        int metadata = worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
-//        int newmeta = BlockTools.setState(metadata, state);
-//        if (newmeta != metadata) {
-//            worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, newmeta, 2);
-//        }
-        // @todo
+        int oldstate = state;
+        state = 0;
+        if (ticksLeft == 0) {
+            state = 0;
+        } else if (ticksLeft == -1) {
+            state = 1;
+        } else if (((ticksLeft >> 2) & 1) == 0) {
+            state = 2;
+        } else {
+            state = 3;
+        }
+        if (oldstate != state) {
+            markDirtyClient();
+        }
     }
 
     @Override
@@ -337,47 +348,28 @@ public class DimensionBuilderTileEntity extends GenericEnergyReceiverTileEntity 
     public void readFromNBT(NBTTagCompound tagCompound) {
         super.readFromNBT(tagCompound);
         powered = tagCompound.getByte("powered");
+        state = tagCompound.getByte("state");
     }
 
     @Override
     public void readRestorableFromNBT(NBTTagCompound tagCompound) {
         super.readRestorableFromNBT(tagCompound);
-        readBufferFromNBT(tagCompound);
+        readBufferFromNBT(tagCompound, inventoryHelper);
         int m = tagCompound.getByte("rsMode");
         redstoneMode = RedstoneMode.values()[m];
-    }
-
-    private void readBufferFromNBT(NBTTagCompound tagCompound) {
-        NBTTagList bufferTagList = tagCompound.getTagList("Items", Constants.NBT.TAG_COMPOUND);
-        for (int i = 0 ; i < bufferTagList.tagCount() ; i++) {
-            NBTTagCompound nbtTagCompound = bufferTagList.getCompoundTagAt(i);
-            inventoryHelper.setStackInSlot(i, ItemStack.loadItemStackFromNBT(nbtTagCompound));
-        }
     }
 
     @Override
     public void writeToNBT(NBTTagCompound tagCompound) {
         super.writeToNBT(tagCompound);
         tagCompound.setByte("powered", (byte) powered);
+        tagCompound.setByte("state", (byte) state);
     }
 
     @Override
     public void writeRestorableToNBT(NBTTagCompound tagCompound) {
         super.writeRestorableToNBT(tagCompound);
-        writeBufferToNBT(tagCompound);
+        writeBufferToNBT(tagCompound, inventoryHelper);
         tagCompound.setByte("rsMode", (byte) redstoneMode.ordinal());
-    }
-
-    private void writeBufferToNBT(NBTTagCompound tagCompound) {
-        NBTTagList bufferTagList = new NBTTagList();
-        for (int i = 0 ; i < inventoryHelper.getCount() ; i++) {
-            ItemStack stack = inventoryHelper.getStackInSlot(i);
-            NBTTagCompound nbtTagCompound = new NBTTagCompound();
-            if (stack != null) {
-                stack.writeToNBT(nbtTagCompound);
-            }
-            bufferTagList.appendTag(nbtTagCompound);
-        }
-        tagCompound.setTag("Items", bufferTagList);
     }
 }

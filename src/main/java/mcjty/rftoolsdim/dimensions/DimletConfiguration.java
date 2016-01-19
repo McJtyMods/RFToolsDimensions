@@ -4,6 +4,9 @@ import net.minecraftforge.common.config.Configuration;
 
 public class DimletConfiguration {
     public static final String CATEGORY_DIMLETS = "dimlets";
+
+    public static boolean enableDimensionBuilderRecipe = true;
+
     public static int EXTRACTOR_MAXENERGY = 50000;
     public static int EXTRACTOR_SENDPERTICK = 1000;
     public static int RESEARCHER_MAXENERGY = 32000;
@@ -86,6 +89,9 @@ public class DimletConfiguration {
     public static boolean dimensionalShardRecipe = false;
 
 	public static void init(Configuration cfg) {
+        enableDimensionBuilderRecipe = cfg.get(CATEGORY_DIMLETS, "enableDimensionBuilderRecipe", enableDimensionBuilderRecipe,
+                                               "Enable the dimension builder recipe.").getBoolean();
+
         EXTRACTOR_MAXENERGY = cfg.get(CATEGORY_DIMLETS, "energyExtractorMaxRF", EXTRACTOR_MAXENERGY,
                 "Maximum RF storage that the energy extractor can hold").getInt();
         EXTRACTOR_SENDPERTICK = cfg.get(CATEGORY_DIMLETS, "energyExtractorRFPerTick", EXTRACTOR_SENDPERTICK,
