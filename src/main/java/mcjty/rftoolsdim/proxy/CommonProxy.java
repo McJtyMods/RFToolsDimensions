@@ -8,6 +8,7 @@ import mcjty.rftoolsdim.ModCrafting;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.blocks.ModBlocks;
 import mcjty.rftoolsdim.config.*;
+import mcjty.rftoolsdim.dimensions.DimensionTickEvent;
 import mcjty.rftoolsdim.dimensions.ModDimensions;
 import mcjty.rftoolsdim.dimensions.dimlets.KnownDimletConfiguration;
 import mcjty.rftoolsdim.gui.GuiProxy;
@@ -73,6 +74,7 @@ public abstract class CommonProxy {
     public void init(FMLInitializationEvent e) {
         NetworkRegistry.INSTANCE.registerGuiHandler(RFToolsDim.instance, new GuiProxy());
         MinecraftForge.EVENT_BUS.register(new ForgeEventHandlers());
+        MinecraftForge.EVENT_BUS.register(new DimensionTickEvent());
         ModCrafting.init();
     }
 
