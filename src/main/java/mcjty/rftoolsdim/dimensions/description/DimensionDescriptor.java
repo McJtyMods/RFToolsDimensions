@@ -170,12 +170,12 @@ public class DimensionDescriptor {
     }
 
     public long calculateSeed(long seed) {
-//        DimletMapping mapping = DimletMapping.getInstance();
-//        List<DimletKey> dimletDescriptors = parseDescriptionString(descriptionString);
-//        for (DimletKey key : dimletDescriptors) {
-//            seed = 31 * seed + mapping.getId(key);
-//        }
-        // @todo
+        List<DimletKey> dimletDescriptors = parseDescriptionString(descriptionString);
+        for (DimletKey key : dimletDescriptors) {
+            if (key.getId() != null) {
+                seed = 31 * seed + key.getId().hashCode();
+            }
+        }
         return seed;
     }
 
