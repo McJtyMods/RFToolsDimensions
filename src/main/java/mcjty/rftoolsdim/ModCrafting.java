@@ -24,6 +24,7 @@ public class ModCrafting {
         GameRegistry.addRecipe(new ItemStack(ModItems.dimletTemplateItem), "sss", "sps", "sss", 's', dimensionalShard, 'p', Items.paper);
 
         GameRegistry.addRecipe(new ItemStack(ModItems.rfToolsDimensionManualItem), "r r", " b ", "r r", 'r', Items.redstone, 'b', Items.book);
+        GameRegistry.addRecipe(new ItemStack(ModItems.dimensionMonitorItem), " u ", "rCr", " r ", 'u', dimensionalShard, 'r', Items.redstone, 'C', Items.comparator);
     }
 
     private static void initBlockRecipes() {
