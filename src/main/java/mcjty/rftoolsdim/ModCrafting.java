@@ -30,6 +30,9 @@ public class ModCrafting {
         Block machineFrame = GameRegistry.findBlock("rftools", "machine_frame");
         ItemStack inkSac = new ItemStack(Items.dye, 1, 0);
 
+        Item dimensionalShard = GameRegistry.findItem("rftools", "dimensional_shard");
+        GameRegistry.addRecipe(new ItemStack(ModBlocks.activityProbeBlock), "sss", "oMo", "sss", 'o', Items.ender_pearl, 's', dimensionalShard,
+                               'M', machineFrame);
         GameRegistry.addRecipe(new ItemStack(ModBlocks.dimensionEnscriberBlock), "rpr", "bMb", "iii", 'r', Items.redstone, 'p', Items.paper, 'b', inkSac,
                 'M', machineFrame, 'i', Items.iron_ingot);
         if (GeneralConfiguration.enableDimensionBuilderRecipe) {
