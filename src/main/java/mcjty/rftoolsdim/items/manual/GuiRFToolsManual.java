@@ -101,12 +101,11 @@ public class GuiRFToolsManual extends GuiScreen {
         window.handleMouseInput();
     }
 
-
-//    @Override
-//    protected void mouseMovedOrUp(int x, int y, int button) {
-//        super.mouseMovedOrUp(x, y, button);
-//        window.mouseMovedOrUp(x, y, button);
-//    }
+    @Override
+    protected void mouseReleased(int mouseX, int mouseY, int state) {
+        super.mouseReleased(mouseX, mouseY, state);
+        window.mouseMovedOrUp(mouseX, mouseY, state);
+    }
 
     @Override
     protected void keyTyped(char typedChar, int keyCode) throws IOException {
