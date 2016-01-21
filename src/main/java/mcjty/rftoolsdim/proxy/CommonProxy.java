@@ -45,6 +45,8 @@ public abstract class CommonProxy {
         ModBlocks.init();
         ModDimensions.init();
         KnownDimletConfiguration.setupChestLoot();
+
+        DimletRules.readRules(modConfigDir);
     }
 
     private void readMainConfig() {
