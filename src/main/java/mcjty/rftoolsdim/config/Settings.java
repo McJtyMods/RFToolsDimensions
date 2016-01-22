@@ -26,6 +26,11 @@ public class Settings {
         return rarity != null && createCost != null && maintainCost != null && tickCost != null && worldgen != null && dimlet != null;
     }
 
+    @Override
+    public String toString() {
+        return "Settings{ R:" + rarity + ", cost:" + createCost + "/" + maintainCost + "/" + tickCost + ", W:" + worldgen + ", D:" + dimlet + " }";
+    }
+
     public JsonElement buildElement() {
         JsonObject jsonObject = new JsonObject();
         if (rarity != null) {
@@ -115,6 +120,28 @@ public class Settings {
             }
             if (dimlet == null) {
                 dimlet = settings.dimlet;
+            }
+            return this;
+        }
+
+        public Builder complete() {
+            if (rarity == null) {
+                rarity = 0;
+            }
+            if (createCost == null) {
+                createCost = 1;
+            }
+            if (maintainCost == null) {
+                maintainCost = 1;
+            }
+            if (tickCost == null) {
+                tickCost = 1;
+            }
+            if (worldgen == null) {
+                worldgen = false;
+            }
+            if (dimlet == null) {
+                dimlet = false;
             }
             return this;
         }

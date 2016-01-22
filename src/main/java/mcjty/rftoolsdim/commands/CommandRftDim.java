@@ -6,6 +6,7 @@ public class CommandRftDim extends DefaultCommand {
         super();
         registerCommand(new CmdCreateDimension());
         registerCommand(new CmdListDimensions());
+        registerCommand(new CmdTestDimlet());
 //        registerCommand(new CmdDelDimension());
 //        registerCommand(new CmdTeleport());
 //        registerCommand(new CmdDumpRarity());

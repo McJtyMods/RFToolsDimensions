@@ -15,7 +15,6 @@ public class DimletRules {
 
     private static List<Pair<Filter, Settings>> rules;
 
-
     public static Settings getSettings(DimletType type, String mod, String name) {
         Settings.Builder builder = new Settings.Builder();
 
@@ -30,7 +29,7 @@ public class DimletRules {
             }
         }
 
-        return builder.build();
+        return builder.complete().build();
     }
 
     public static void readRules(File directory) {
