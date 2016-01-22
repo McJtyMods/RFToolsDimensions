@@ -22,6 +22,10 @@ public class Settings {
         this.dimlet = builder.dimlet;
     }
 
+    public boolean isComplete() {
+        return rarity != null && createCost != null && maintainCost != null && tickCost != null && worldgen != null && dimlet != null;
+    }
+
     public JsonElement buildElement() {
         JsonObject jsonObject = new JsonObject();
         if (rarity != null) {
@@ -92,6 +96,28 @@ public class Settings {
         private Integer tickCost;
         private Boolean worldgen;
         private Boolean dimlet;
+
+        public Builder merge(Settings settings) {
+            if (rarity == null) {
+                rarity = settings.rarity;
+            }
+            if (createCost == null) {
+                createCost = settings.createCost;
+            }
+            if (maintainCost == null) {
+                maintainCost = settings.maintainCost;
+            }
+            if (tickCost == null) {
+                tickCost = settings.tickCost;
+            }
+            if (worldgen == null) {
+                worldgen = settings.worldgen;
+            }
+            if (dimlet == null) {
+                dimlet = settings.dimlet;
+            }
+            return this;
+        }
 
         public Builder rarity(int rarity) {
             this.rarity = rarity;

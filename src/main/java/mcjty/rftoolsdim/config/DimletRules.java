@@ -3,6 +3,7 @@ package mcjty.rftoolsdim.config;
 import com.google.gson.*;
 import mcjty.lib.varia.Logging;
 import mcjty.rftoolsdim.RFToolsDim;
+import mcjty.rftoolsdim.dimensions.dimlets.types.DimletType;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.io.*;
@@ -12,7 +13,25 @@ import java.util.List;
 
 public class DimletRules {
 
-    public static List<Pair<Filter, Settings>> rules;
+    private static List<Pair<Filter, Settings>> rules;
+
+
+    public static Settings getSettings(DimletType type, String mod, String name) {
+        Settings.Builder builder = new Settings.Builder();
+
+        for (Pair<Filter, Settings> pair : rules) {
+            Filter filter = pair.getLeft();
+            if (filter.match(type, mod, name)) {
+                Settings settings = pair.getRight();
+                builder.merge(settings);
+                if (settings.isComplete()) {
+                    break;
+                }
+            }
+        }
+
+        return builder.build();
+    }
 
     public static void readRules(File directory) {
         File file = new File(directory.getPath() + File.separator + "rftools", "dimlets.json");

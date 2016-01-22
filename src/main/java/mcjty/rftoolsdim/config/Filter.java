@@ -8,16 +8,21 @@ import mcjty.rftoolsdim.varia.JsonTools;
 import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Filter {
-    private Set<String> mods;
-    private Set<String> names;
-    private Set<DimletType> types;
+    private final Set<String> mods;
+    private final Set<String> names;
+    private final Set<Pattern> nameRegexps;
+    private final Set<DimletType> types;
 
-    private Filter(Set<String> mods, Set<String> names, Set<DimletType> types) {
+    private Filter(Set<String> mods, Set<String> names, Set<Pattern> nameRegexps, Set<DimletType> types) {
         this.mods = mods;
         this.names = names;
+        this.nameRegexps = nameRegexps;
         this.types = types;
     }
 
@@ -32,23 +37,47 @@ public class Filter {
                 return false;
             }
         }
-        if (names != null) {
-            if (!names.contains(name)) {
-                return false;
+
+        if (names != null || nameRegexps != null) {
+            if (names != null) {
+                if (names.contains(name)) {
+                    return true;
+                }
             }
+            if (nameRegexps != null) {
+                for (Pattern pattern : nameRegexps) {
+                    Matcher matcher = pattern.matcher(name);
+                    if (matcher.matches()) {
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
         return true;
     }
 
-    public static final Filter MATCHALL = new Filter(null, null, null);
+    public static final Filter MATCHALL = new Filter(null, null, null, null);
 
     public JsonElement buildElement() {
-        if (mods == null && names == null && types == null) {
+        if (mods == null && names == null && nameRegexps == null && types == null) {
             return null;
         }
+
         JsonObject jsonObject = new JsonObject();
         JsonTools.addArrayOrSingle(jsonObject, "mod", mods);
-        JsonTools.addArrayOrSingle(jsonObject, "name", names);
+
+        Set<String> namedAndRegexps;
+        if (names == null && nameRegexps == null) {
+            namedAndRegexps = null;
+        } else if (names == null) {
+            namedAndRegexps = nameRegexps.stream().map(p -> p.toString()).collect(Collectors.toSet());
+        } else if (nameRegexps == null) {
+            namedAndRegexps = names;
+        } else {
+            namedAndRegexps = Stream.concat(names.stream(), nameRegexps.stream().map(p -> p.toString())).collect(Collectors.toSet());
+        }
+        JsonTools.addArrayOrSingle(jsonObject, "name", namedAndRegexps);
         JsonTools.addArrayOrSingle(jsonObject, "type", types == null ? null : types.stream().map(t -> t.dimletType.getName().toLowerCase()).collect(Collectors.toList()));
 
         return jsonObject;
@@ -80,6 +109,7 @@ public class Filter {
     public static class Builder {
         private Set<String> mods = null;
         private Set<String> names = null;
+        private Set<Pattern> name_regexps = null;
         private Set<DimletType> types = null;
 
         public Builder mod(String mod) {
@@ -91,10 +121,18 @@ public class Filter {
         }
 
         public Builder name(String name) {
-            if (names == null) {
-                names = new HashSet<>();
+            if (name.contains("*")) {
+                // A regexp
+                if (name_regexps == null) {
+                    name_regexps = new HashSet<>();
+                }
+                name_regexps.add(Pattern.compile(name));
+            } else {
+                if (names == null) {
+                    names = new HashSet<>();
+                }
+                names.add(name);
             }
-            names.add(name);
             return this;
         }
 
@@ -107,7 +145,7 @@ public class Filter {
         }
 
         public Filter build() {
-            return new Filter(mods, names, types);
+            return new Filter(mods, names, name_regexps, types);
         }
     }
 }
