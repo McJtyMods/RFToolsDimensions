@@ -27,7 +27,7 @@ public enum DimletType {
 
     static {
         for (DimletType type : values()) {
-            typeByName.put(type.dimletType.getName(), type);
+            typeByName.put(type.dimletType.getName().toLowerCase(), type);
             typeByOpcode.put(type.dimletType.getOpcode(), type);
         }
     }
@@ -38,7 +38,7 @@ public enum DimletType {
     }
 
     public static DimletType getTypeByName(String name) {
-        return typeByName.get(name);
+        return typeByName.get(name.toLowerCase());
     }
 
     public static DimletType getTypeByOpcode(String opcode) {

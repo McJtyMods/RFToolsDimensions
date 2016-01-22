@@ -1,157 +1,142 @@
 package mcjty.rftoolsdim.config;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
 import mcjty.lib.varia.Logging;
-import mcjty.rftoolsdim.dimensions.dimlets.types.DimletType;
+import mcjty.rftoolsdim.RFToolsDim;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 public class DimletRules {
 
+    public static List<Pair<Filter, Settings>> rules;
+
     public static void readRules(File directory) {
         File file = new File(directory.getPath() + File.separator + "rftools", "dimlets.json");
+        List<Pair<Filter, Settings>> userRules = Collections.emptyList();
         if (file.exists()) {
-            readExistingRules(file);
-        } else {
-            createDefaultRules(file);
+            // Read the existing rules from dimlets.json until we encounter a 'regen' line.
+            Logging.log("Reading dimlets.json from config");
+            userRules = readRulesFromFile(file);
+        }
+
+        Logging.log("Reading default dimlets.json");
+        InputStream inputstream = RFToolsDim.class.getResourceAsStream("/assets/rftoolsdim/text/dimlets.json");
+        List<Pair<Filter, Settings>> builtinRules = readRulesFromFile(inputstream, "Builtin dimlets.json");
+
+        if (file.exists()) {
+            file.delete();
+        }
+        PrintWriter writer;
+        try {
+            writer = new PrintWriter(file);
+        } catch (FileNotFoundException e) {
+            Logging.logError("Error writing dimlets.json!");
+            return;
+        }
+
+        // Check if the last rule is null. In that case we have to append the builtin ruiles.
+        boolean addBuiltin = false;
+        if (userRules.isEmpty()) {
+            addBuiltin = true;
+        } else if (userRules.get(userRules.size()-1) == null) {
+            addBuiltin = true;
+            userRules.remove(userRules.size()-1);       // Remove the null line
+        }
+
+        // Make a dummy array of rules to output with the 'regen' line added.
+        List<Pair<Filter, Settings>> outputRules = new ArrayList<>(userRules);
+        // If the last user rule is a null then we add the builtin stuff. Otherwise we don't
+        if (addBuiltin) {
+            outputRules.add(null);  // Add the regen line but for output only.
+            outputRules.addAll(builtinRules);
+        }
+        writeRules(writer, outputRules);
+        writer.close();
+
+        rules = new ArrayList<>(userRules);
+        if (addBuiltin) {
+            rules.addAll(builtinRules);
         }
     }
 
-    private static void readExistingRules(File file) {
-        BufferedReader br;
+    private static List<Pair<Filter,Settings>> readRulesFromFile(File file) {
+        FileInputStream inputstream;
         try {
-            FileInputStream inputstream = new FileInputStream(file);
-            br = new BufferedReader(new InputStreamReader(inputstream, "UTF-8"));
+            inputstream = new FileInputStream(file);
         } catch (FileNotFoundException e) {
             Logging.logError("Error reading file: " + file.getName());
-            return;
+            return Collections.emptyList();
+        }
+        return readRulesFromFile(inputstream, file.getName());
+    }
+
+    private static List<Pair<Filter,Settings>> readRulesFromFile(InputStream inputstream, String name) {
+        List<Pair<Filter, Settings>> rules = new ArrayList<>();
+        BufferedReader br;
+        try {
+            br = new BufferedReader(new InputStreamReader(inputstream, "UTF-8"));
         } catch (UnsupportedEncodingException e) {
-            Logging.logError("Error reading file: " + file.getName());
-            return;
+            Logging.logError("Error reading file: " + name);
+            return rules;
         }
         JsonParser parser = new JsonParser();
         JsonElement element = parser.parse(br);
         for (JsonElement entry : element.getAsJsonArray()) {
-            if (!readRule(entry)) {
-                return;
+            Pair<Filter, Settings> rule = readRule(entry);
+            if (rule == null) {
+                // We add the null rule so that we know that it was there.
+                rules.add(null);
+                return rules;
             }
+            rules.add(rule);
         }
+        return rules;
     }
 
-    private static boolean readRule(JsonElement ruleElement) {
-        JsonElement rule = ruleElement.getAsJsonObject().get("rule");
-        if (rule == null) {
-            Logging.logError("Error reading dimlets.json: rule is missing");
-            return false;
+    private static Pair<Filter,Settings> readRule(JsonElement ruleElement) {
+        if (ruleElement.isJsonPrimitive()) {
+            // We stop here since this is not a valid rule.
+            // This is useful to stop processing on "regen" line
+            return null;
         }
-
-        JsonElement filter = rule.getAsJsonObject().get("filter");
-        JsonElement settings = rule.getAsJsonObject().get("settings");
+        JsonElement filter = ruleElement.getAsJsonObject().get("filter");
+        JsonElement settings = ruleElement.getAsJsonObject().get("settings");
+        if (settings == null) {
+            Logging.logError("Error reading dimlets.json: settings is missing");
+            return null;
+        }
         return parseRule(filter, settings);
     }
 
-    private static boolean parseRule(JsonElement filterElement, JsonElement settingsElement) {
+    private static Pair<Filter,Settings> parseRule(JsonElement filterElement, JsonElement settingsElement) {
         Filter filter = Filter.parse(filterElement);
-        return true;
+        Settings settings = Settings.parse(settingsElement);
+        return Pair.of(filter, settings);
     }
 
-    private static void createDefaultRules(File file) {
-
-    }
-
-
-    public static class Filter {
-        private static Set<String> mods;
-        private static Set<String> names;
-        private static Set<DimletType> types;
-
-        private Filter(Set<String> mods, Set<String> names, Set<DimletType> types) {
-            this.mods = mods;
-            this.names = names;
-            this.types = types;
-        }
-
-        public static final Filter MATCHALL = new Filter(null, null, null);
-
-        public static Filter parse(JsonElement element) {
-            if (element == null) {
-                return MATCHALL;
+    private static void writeRules(PrintWriter writer, List<Pair<Filter, Settings>> rules) {
+        JsonArray array = new JsonArray();
+        for (Pair<Filter, Settings> rule : rules) {
+            if (rule == null) {
+                array.add(new JsonPrimitive("Everything below this line will be regenerated from defaults every time. Remove this line if you do not want that"));
             } else {
-                Builder builder = new Builder();
-                JsonObject jsonObject = element.getAsJsonObject();
-                JsonElement modElement = jsonObject.get("mod");
-                if (modElement != null) {
-                    if (modElement.isJsonArray()) {
-                        for (JsonElement jsonElement : modElement.getAsJsonArray()) {
-                            builder.mod(jsonElement.getAsString());
-                        }
-                    } else {
-                        builder.mod(modElement.getAsString());
-                    }
+                JsonElement filterElement = rule.getLeft().buildElement();
+                JsonElement settingsElement = rule.getRight().buildElement();
+                JsonObject ruleObject = new JsonObject();
+                if (filterElement != null) {
+                    ruleObject.add("filter", filterElement);
                 }
-                JsonElement nameElement = jsonObject.get("name");
-                if (nameElement != null) {
-                    if (nameElement.isJsonArray()) {
-                        for (JsonElement jsonElement : nameElement.getAsJsonArray()) {
-                            builder.name(jsonElement.getAsString());
-                        }
-                    } else {
-                        builder.mod(nameElement.getAsString());
-                    }
-                }
-                JsonElement typeElement = jsonObject.get("type");
-                if (typeElement != null) {
-                    if (typeElement.isJsonArray()) {
-                        for (JsonElement jsonElement : typeElement.getAsJsonArray()) {
-                            builder.type(DimletType.getTypeByName(jsonElement.getAsString()));
-                        }
-                    } else {
-                        builder.type(DimletType.getTypeByName(typeElement.getAsString()));
-                    }
-                }
-
-                return builder.build();
+                ruleObject.add("settings", settingsElement);
+                array.add(ruleObject);
             }
         }
 
-        public static class Builder {
-            private static Set<String> mods = null;
-            private static Set<String> names = null;
-            private static Set<DimletType> types = null;
-
-            public Builder mod(String mod) {
-                if (mods == null) {
-                    mods = new HashSet<>();
-                }
-                mods.add(mod);
-                return this;
-            }
-
-            public Builder name(String name) {
-                if (names == null) {
-                    names = new HashSet<>();
-                }
-                names.add(name);
-                return this;
-            }
-
-            public Builder type(DimletType type) {
-                if (types == null) {
-                    types = new HashSet<>();
-                }
-                types.add(type);
-                return this;
-            }
-
-            public Filter build() {
-                return new Filter(mods, names, types);
-            }
-        }
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        writer.print(gson.toJson(array));
     }
 
 }
