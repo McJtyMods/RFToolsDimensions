@@ -59,9 +59,9 @@ public class ModCrafting {
 
     private static void initDimletRecipes() {
         Block redstoneTorch = Blocks.redstone_torch;
-        addRecipe(DimletType.DIMLET_EFFECT, "None", " r ", "rwr", "ppp", 'r', Items.redstone, 'w', Items.apple, 'p', Items.paper);
-        addRecipe(DimletType.DIMLET_FEATURE, "None", " r ", "rwr", "ppp", 'r', Items.redstone, 'w', Items.string, 'p', Items.paper);
-        addRecipe(DimletType.DIMLET_STRUCTURE, "None", " r ", "rwr", "ppp", 'r', Items.redstone, 'w', Items.bone, 'p', Items.paper);
+        addRecipe(DimletType.DIMLET_EFFECT, DimletObjectMapping.NONE_ID, " r ", "rwr", "ppp", 'r', Items.redstone, 'w', Items.apple, 'p', Items.paper);
+        addRecipe(DimletType.DIMLET_FEATURE, DimletObjectMapping.NONE_ID, " r ", "rwr", "ppp", 'r', Items.redstone, 'w', Items.string, 'p', Items.paper);
+        addRecipe(DimletType.DIMLET_STRUCTURE, DimletObjectMapping.NONE_ID, " r ", "rwr", "ppp", 'r', Items.redstone, 'w', Items.bone, 'p', Items.paper);
         addRecipe(DimletType.DIMLET_TERRAIN, "Void", " r ", "rwr", "ppp", 'r', Items.redstone, 'w', Items.brick, 'p', Items.paper);
         if (!GeneralConfiguration.voidOnly) {
             addRecipe(DimletType.DIMLET_TERRAIN, "Flat", " r ", "rwr", "ppp", 'r', Items.redstone, 'w', Items.brick, 'p', ModItems.dimletTemplateItem);

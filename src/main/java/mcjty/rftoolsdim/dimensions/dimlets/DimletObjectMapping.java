@@ -16,6 +16,7 @@ import org.apache.commons.lang3.StringUtils;
 
 public class DimletObjectMapping {
 
+    public static final String NONE_ID = "None";
     public static String DEFAULT_ID = "Default";
 
     public static FeatureType getFeature(DimletKey dimlet) {

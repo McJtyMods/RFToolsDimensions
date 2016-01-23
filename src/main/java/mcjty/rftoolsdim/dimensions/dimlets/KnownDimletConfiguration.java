@@ -36,8 +36,12 @@ public class KnownDimletConfiguration {
         return new DimletEntry(key, 10, 1, 10, 1, false, false);
     }
 
+    public static Map<DimletKey, DimletEntry> getKnownDimlets() {
+        initDimlets();
+        return knownDimlets;
+    }
 
-    public static void initDimlets() {
+    private static void initDimlets() {
         if (!knownDimlets.isEmpty()) {
             return;
         }
