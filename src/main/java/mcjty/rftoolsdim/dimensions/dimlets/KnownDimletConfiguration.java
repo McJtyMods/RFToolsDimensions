@@ -87,9 +87,25 @@ public class KnownDimletConfiguration {
 
     public static void dumpDimlets() {
         initDimlets();
-        for (Map.Entry<DimletKey, DimletEntry> entry : knownDimlets.entrySet()) {
-            DimletKey key = entry.getKey();
-            DimletEntry value = entry.getValue();
+        List<DimletKey> keys = new ArrayList<>(knownDimlets.keySet());
+        keys.sort((o1, o2) -> {
+            int i = o1.getType().compareTo(o2.getType());
+            if (i != 0) {
+                return i;
+            }
+            if (o1.getId() != null && o2.getId() != null) {
+                return o1.getId().compareTo(o2.getId());
+            }
+            if (o1.getId() == null && o2.getId() == null) {
+                return 0;
+            }
+            if (o1.getId() == null) {
+                return -1;
+            }
+            return 1;
+        });
+        for (DimletKey key : keys) {
+            DimletEntry value = knownDimlets.get(key);
             Logging.log(key + ": " + value);
         }
 
