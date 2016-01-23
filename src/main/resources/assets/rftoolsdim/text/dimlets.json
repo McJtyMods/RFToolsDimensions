@@ -1,6 +1,36 @@
 [
   {
     "filter": {
+      "type": "material",
+      "feature": "tileentity"
+    },
+    "settings": {
+      "dimlet": false,
+      "worldgen": false
+    }
+  },
+  {
+    "filter": {
+      "type": "material",
+      "feature": "falling"
+    },
+    "settings": {
+      "dimlet": false,
+      "worldgen": false
+    }
+  },
+  {
+    "filter": {
+      "type": "material",
+      "feature": "plantable"
+    },
+    "settings": {
+      "dimlet": false,
+      "worldgen": false
+    }
+  },
+  {
+    "filter": {
       "type": [ "material", "liquid" ]
     },
     "settings": {
