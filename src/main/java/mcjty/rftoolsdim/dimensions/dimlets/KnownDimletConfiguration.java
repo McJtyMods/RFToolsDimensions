@@ -124,6 +124,9 @@ public class KnownDimletConfiguration {
         if (block instanceof IPlantable) {
             features.add(Filter.Feature.PLANTABLE);
         }
+        if (!block.isFullBlock()) {
+            features.add(Filter.Feature.NOFULLBLOCK);
+        }
 
         String mod = Block.blockRegistry.getNameForObject(block).getResourceDomain();
 

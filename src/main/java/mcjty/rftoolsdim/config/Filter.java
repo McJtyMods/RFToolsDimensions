@@ -178,6 +178,7 @@ public class Filter {
         TILEENTITY,
         OREDICT,
         PLANTABLE,
+        NOFULLBLOCK,
         FALLING;
 
         private static final Map<String,Feature> FEATURE_MAP = new HashMap<>();
