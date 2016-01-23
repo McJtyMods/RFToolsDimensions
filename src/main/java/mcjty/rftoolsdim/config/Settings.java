@@ -3,7 +3,7 @@ package mcjty.rftoolsdim.config;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-import mcjty.rftoolsdim.varia.JsonTools;
+import mcjty.rftoolsdim.varia.JSonTools;
 
 public class Settings {
     private final Integer rarity;
@@ -60,12 +60,12 @@ public class Settings {
 
         JsonObject jsonObject = element.getAsJsonObject();
 
-        JsonTools.getElement(jsonObject, "rarity").ifPresent(e -> builder.rarity(e.getAsInt()));
-        JsonTools.getElement(jsonObject, "create").ifPresent(e -> builder.createCost(e.getAsInt()));
-        JsonTools.getElement(jsonObject, "maintain").ifPresent(e -> builder.maintainCost(e.getAsInt()));
-        JsonTools.getElement(jsonObject, "ticks").ifPresent(e -> builder.tickCost(e.getAsInt()));
-        JsonTools.getElement(jsonObject, "worldgen").ifPresent(e -> builder.worldgen(e.getAsBoolean()));
-        JsonTools.getElement(jsonObject, "dimlet").ifPresent(e -> builder.dimlet(e.getAsBoolean()));
+        JSonTools.getElement(jsonObject, "rarity").ifPresent(e -> builder.rarity(e.getAsInt()));
+        JSonTools.getElement(jsonObject, "create").ifPresent(e -> builder.createCost(e.getAsInt()));
+        JSonTools.getElement(jsonObject, "maintain").ifPresent(e -> builder.maintainCost(e.getAsInt()));
+        JSonTools.getElement(jsonObject, "ticks").ifPresent(e -> builder.tickCost(e.getAsInt()));
+        JSonTools.getElement(jsonObject, "worldgen").ifPresent(e -> builder.worldgen(e.getAsBoolean()));
+        JSonTools.getElement(jsonObject, "dimlet").ifPresent(e -> builder.dimlet(e.getAsBoolean()));
 
         return builder.build();
     }

@@ -1,28 +1,136 @@
 package mcjty.rftoolsdim.dimensions.dimlets;
 
 import com.google.common.collect.Lists;
-import mcjty.rftoolsdim.config.GeneralConfiguration;
-import mcjty.rftoolsdim.config.WorldgenConfiguration;
+import mcjty.lib.varia.Logging;
+import mcjty.rftoolsdim.RFToolsDim;
+import mcjty.rftoolsdim.config.*;
 import mcjty.rftoolsdim.dimensions.dimlets.types.DimletType;
+import mcjty.rftoolsdim.dimensions.types.ControllerType;
+import mcjty.rftoolsdim.dimensions.types.EffectType;
+import mcjty.rftoolsdim.dimensions.types.FeatureType;
 import mcjty.rftoolsdim.items.ModItems;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockFalling;
+import net.minecraft.block.BlockLiquid;
+import net.minecraft.client.renderer.block.model.BlockFaceUV;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.WeightedRandomChestContent;
+import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.ChestGenHooks;
+import net.minecraftforge.common.IPlantable;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.oredict.OreDictionary;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class KnownDimletConfiguration {
 
     private static Set<DimletKey> craftableDimlets = new HashSet<>();
+    private static Map<DimletKey, DimletEntry> knownDimlets = new HashMap<>();
 
     public static DimletEntry getEntry(DimletKey key) {
         // @todo
         return new DimletEntry(key, 10, 1, 10, 1, false, false);
     }
+
+
+    public static void initDimlets() {
+        if (!knownDimlets.isEmpty()) {
+            return;
+        }
+
+        for (ControllerType type : ControllerType.values()) {
+            initDimlet(new DimletKey(DimletType.DIMLET_CONTROLLER, type.getId()), RFToolsDim.MODID);
+        }
+        for (FeatureType type : FeatureType.values()) {
+            initDimlet(new DimletKey(DimletType.DIMLET_FEATURE, type.getId()), RFToolsDim.MODID);
+        }
+        for (EffectType type : EffectType.values()) {
+            initDimlet(new DimletKey(DimletType.DIMLET_EFFECT, type.getId()), RFToolsDim.MODID);
+        }
+        for (int i = 0 ; i <= 9 ; i++) {
+            initDimlet(new DimletKey(DimletType.DIMLET_DIGIT, Integer.toString(i)), RFToolsDim.MODID);
+        }
+
+        BiomeGenBase[] biomeGenArray = BiomeGenBase.getBiomeGenArray();
+        for (BiomeGenBase biome : biomeGenArray) {
+            if (biome != null) {
+                String name = biome.biomeName;
+                if (name != null && !name.isEmpty()) {
+                    DimletKey key = new DimletKey(DimletType.DIMLET_BIOME, Integer.toString(biome.biomeID));
+                    initDimlet(key, "minecraft");
+                }
+            }
+        }
+
+        Map<String,Fluid> fluidMap = FluidRegistry.getRegisteredFluids();
+        for (Map.Entry<String,Fluid> me : fluidMap.entrySet()) {
+            if (me.getValue().canBePlacedInWorld()) {
+                String name = me.getKey();
+                if (name != null && !name.isEmpty()) {
+                    Block block = me.getValue().getBlock();
+                    if (block != null) {
+                        ResourceLocation nameForObject = Block.blockRegistry.getNameForObject(block);
+                        String mod = nameForObject.getResourceDomain();
+                        DimletKey key = new DimletKey(DimletType.DIMLET_LIQUID, block.getRegistryName());
+                        initDimlet(key, mod);
+                    }
+                }
+            }
+        }
+
+        Block.blockRegistry.forEach(KnownDimletConfiguration::initMaterialDimlet);
+    }
+
+    public static void dumpDimlets() {
+        initDimlets();
+        for (Map.Entry<DimletKey, DimletEntry> entry : knownDimlets.entrySet()) {
+            DimletKey key = entry.getKey();
+            DimletEntry value = entry.getValue();
+            Logging.log(key + ": " + value);
+        }
+
+    }
+
+    private static void initDimlet(DimletKey key, String mod) {
+        Settings settings = DimletRules.getSettings(key, mod);
+        knownDimlets.put(key, new DimletEntry(key, settings));
+    }
+
+    private static void initMaterialDimlet(Block block) {
+        if (block instanceof BlockLiquid) {
+            return;
+        }
+        DimletKey key = new DimletKey(DimletType.DIMLET_MATERIAL, block.getRegistryName());
+        Set<Filter.Feature> features = EnumSet.noneOf(Filter.Feature.class);
+
+        ItemStack stack = new ItemStack(block, 1, OreDictionary.WILDCARD_VALUE);
+        int[] iDs = null;
+        if (stack.getItem() != null) {
+            iDs = OreDictionary.getOreIDs(stack);
+        }
+        if (iDs != null && iDs.length > 0) {
+            features.add(Filter.Feature.OREDICT);
+        }
+        if (block instanceof BlockFalling) {
+            features.add(Filter.Feature.FALLING);
+        }
+        if (block.hasTileEntity(block.getDefaultState())) {
+            features.add(Filter.Feature.TILEENTITY);
+        }
+        if (block instanceof IPlantable) {
+            features.add(Filter.Feature.PLANTABLE);
+        }
+
+        String mod = Block.blockRegistry.getNameForObject(block).getResourceDomain();
+
+        Settings settings = DimletRules.getSettings(key, mod, features);
+        knownDimlets.put(key, new DimletEntry(key, settings));
+    }
+
 
     public static ItemStack getDimletStack(DimletKey key) {
         ItemStack stack = new ItemStack(ModItems.knownDimletItem, 1, key.getType().ordinal());

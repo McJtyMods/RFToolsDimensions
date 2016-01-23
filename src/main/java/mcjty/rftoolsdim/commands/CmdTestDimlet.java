@@ -7,6 +7,8 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 
+import java.util.Collections;
+
 public class CmdTestDimlet extends AbstractRfToolsCommand {
     @Override
     public String getHelp() {
@@ -44,7 +46,7 @@ public class CmdTestDimlet extends AbstractRfToolsCommand {
             return;
         }
 
-        Settings settings = DimletRules.getSettings(type, mod, name);
+        Settings settings = DimletRules.getSettings(type, mod, name, Collections.emptySet());
         sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GREEN + settings.toString()));
 
     }

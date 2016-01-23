@@ -3,6 +3,7 @@ package mcjty.rftoolsdim.config;
 import com.google.gson.*;
 import mcjty.lib.varia.Logging;
 import mcjty.rftoolsdim.RFToolsDim;
+import mcjty.rftoolsdim.dimensions.dimlets.DimletKey;
 import mcjty.rftoolsdim.dimensions.dimlets.types.DimletType;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -10,17 +11,18 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 public class DimletRules {
 
     private static List<Pair<Filter, Settings>> rules;
 
-    public static Settings getSettings(DimletType type, String mod, String name) {
+    public static Settings getSettings(DimletType type, String mod, String name, Set<Filter.Feature> features) {
         Settings.Builder builder = new Settings.Builder();
 
         for (Pair<Filter, Settings> pair : rules) {
             Filter filter = pair.getLeft();
-            if (filter.match(type, mod, name)) {
+            if (filter.match(type, mod, name, features)) {
                 Settings settings = pair.getRight();
                 builder.merge(settings);
                 if (settings.isComplete()) {
@@ -30,6 +32,14 @@ public class DimletRules {
         }
 
         return builder.complete().build();
+    }
+
+    public static Settings getSettings(DimletKey key, String mod, Set<Filter.Feature> features) {
+        return getSettings(key.getType(), mod, key.getId(), features);
+    }
+
+    public static Settings getSettings(DimletKey key, String mod) {
+        return getSettings(key.getType(), mod, key.getId(), Collections.emptySet());
     }
 
     public static void readRules(File directory) {

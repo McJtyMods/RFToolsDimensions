@@ -9,7 +9,7 @@ import java.util.Collection;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-public class JsonTools {
+public class JSonTools {
 
     public static Optional<JsonElement> getElement(JsonObject element, String name) {
         JsonElement el = element.get(name);
