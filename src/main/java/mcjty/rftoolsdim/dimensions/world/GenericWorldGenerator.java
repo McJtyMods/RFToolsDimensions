@@ -476,21 +476,30 @@ public class GenericWorldGenerator implements IWorldGenerator {
             ItemStack stack = DimletRandomizer.getRandomPart(random);
             chest.setInventorySlotContents(random.nextInt(chest.getSizeInventory()), stack);
         }
-        for (int i = 0 ; i < random.nextInt(2)+1 ; i++) {
-            DimletKey key = DimletRandomizer.getRandomDimlets().select(bestDistribution, random);
-            ItemStack stack = KnownDimletConfiguration.getDimletStack(key);
-            chest.setInventorySlotContents(random.nextInt(chest.getSizeInventory()), stack);
+        if (WorldgenConfiguration.enableDimletsInRFToolsDungeons > 0) {
+            for (int i = 0; i < random.nextInt(WorldgenConfiguration.enableDimletsInRFToolsDungeons); i++) {
+                DimletKey key = DimletRandomizer.getRandomDimlets().select(bestDistribution, random);
+                ItemStack stack = KnownDimletConfiguration.getDimletStack(key);
+                chest.setInventorySlotContents(random.nextInt(chest.getSizeInventory()), stack);
+            }
         }
 
         EntityItemFrame frame1 = spawnItemFrame(world, midx - 1, starty + 2, midz + 2);
-        DimletKey rd1 = DimletRandomizer.getRandomDimlets().select(bestDistribution, random);
-        frame1.setDisplayedItem(KnownDimletConfiguration.getDimletStack(rd1));
         EntityItemFrame frame2 = spawnItemFrame(world, midx, starty + 2, midz + 2);
-        DimletKey rd2 = DimletRandomizer.getRandomDimlets().select(bestDistribution, random);
-        frame2.setDisplayedItem(KnownDimletConfiguration.getDimletStack(rd2));
         EntityItemFrame frame3 = spawnItemFrame(world, midx + 1, starty + 2, midz + 2);
-        DimletKey rd3 = DimletRandomizer.getRandomDimlets().select(bestDistribution, random);
-        frame3.setDisplayedItem(KnownDimletConfiguration.getDimletStack(rd3));
+
+        if (WorldgenConfiguration.enableDimletsInRFToolsFrames) {
+            DimletKey rd1 = DimletRandomizer.getRandomDimlets().select(bestDistribution, random);
+            frame1.setDisplayedItem(KnownDimletConfiguration.getDimletStack(rd1));
+            DimletKey rd2 = DimletRandomizer.getRandomDimlets().select(bestDistribution, random);
+            frame2.setDisplayedItem(KnownDimletConfiguration.getDimletStack(rd2));
+            DimletKey rd3 = DimletRandomizer.getRandomDimlets().select(bestDistribution, random);
+            frame3.setDisplayedItem(KnownDimletConfiguration.getDimletStack(rd3));
+        } else {
+            frame1.setDisplayedItem(DimletRandomizer.getRandomPart(random));
+            frame2.setDisplayedItem(DimletRandomizer.getRandomPart(random));
+            frame3.setDisplayedItem(DimletRandomizer.getRandomPart(random));
+        }
     }
 
     private EntityItemFrame spawnItemFrame(World world, int x, int y, int z) {

@@ -26,82 +26,90 @@ public class WorldgenConfiguration {
     public static boolean normalTerrainInheritsOverworld = false;
     public static int dimletPartChestLootMinimum = 1;
     public static int dimletPartChestLootMaximum = 2;
-    public static int[] dimletPartChestLootRarity = new int[] { 32, 16, 8, 4, 2, 1, 1 };
+    public static int[] dimletPartChestLootRarity = new int[]{32, 16, 8, 4, 2, 1, 1};
     public static int oreMinimumVeinSize = 5;
     public static int oreMaximumVeinSize = 8;
     public static int oreMaximumVeinCount = 3;
     public static int oreMinimumHeight = 2;
     public static int oreMaximumHeight = 40;
 
+    public static int enableDimletsInRFToolsDungeons = 2;
+    public static boolean enableDimletsInRFToolsFrames = true;
+
     public static void init(Configuration cfg) {
         dungeonChance = cfg.get(CATEGORY_WORLDGEN, "dungeonChance", dungeonChance,
-                                                      "The chance for a dungeon to spawn in a chunk. Higher numbers mean less chance (1 in 'dungeonChance' chance)").getInt();
+                "The chance for a dungeon to spawn in a chunk. Higher numbers mean less chance (1 in 'dungeonChance' chance)").getInt();
         volcanoChance = cfg.get(CATEGORY_WORLDGEN, "volcanoChance", volcanoChance,
-                                                      "The chance for a volcano to spawn in a chunk (with the volcano feature dimlet). Higher numbers mean less chance (1 in 'volcanoChance' chance)").getInt();
+                "The chance for a volcano to spawn in a chunk (with the volcano feature dimlet). Higher numbers mean less chance (1 in 'volcanoChance' chance)").getInt();
         cavernHeightLimit = cfg.get(CATEGORY_WORLDGEN, "cavernHeightLimit", cavernHeightLimit,
-                                                          "Maximum height of the caverns. 0=64, 1=128, 2=196, 3=256").getInt();
+                "Maximum height of the caverns. 0=64, 1=128, 2=196, 3=256").getInt();
 
         randomFeatureChance = (float) cfg.get(CATEGORY_WORLDGEN, "randomFeatureChance", randomFeatureChance,
-                                                                    "The chance that every specific feature gets randomly selected in worldgen (tendrils, caves, lakes, oregen, ...)").getDouble();
+                "The chance that every specific feature gets randomly selected in worldgen (tendrils, caves, lakes, oregen, ...)").getDouble();
         randomLakeFluidChance = (float) cfg.get(CATEGORY_WORLDGEN, "randomLakeFluidChance", randomLakeFluidChance,
-                                                                      "The chance that random fluid liquids are selected for lakes").getDouble();
+                "The chance that random fluid liquids are selected for lakes").getDouble();
         randomOrbFluidChance = (float) cfg.get(CATEGORY_WORLDGEN, "randomOrbFluidChance", randomOrbFluidChance,
-                                                                     "The chance that random fluid liquids are selected for liquid orbs").getDouble();
+                "The chance that random fluid liquids are selected for liquid orbs").getDouble();
         randomOregenMaterialChance = (float) cfg.get(CATEGORY_WORLDGEN, "randomOregenMaterialChance", randomOregenMaterialChance,
-                                                                           "The chance that random blocks are selected for extra oregen feature").getDouble();
+                "The chance that random blocks are selected for extra oregen feature").getDouble();
         randomFeatureMaterialChance = (float) cfg.get(CATEGORY_WORLDGEN, "randomFeatureMaterialChance", randomFeatureMaterialChance,
-                                                                            "The chance that random blocks are selected for landscape features (tendrils, canyons, ...)").getDouble();
+                "The chance that random blocks are selected for landscape features (tendrils, canyons, ...)").getDouble();
         randomStructureChance = (float) cfg.get(CATEGORY_WORLDGEN, "randomStructureChance", randomStructureChance,
-                                                                      "The chance that every specific structure gets randomly selected in worldgen (village, nether fortress, ...)").getDouble();
+                "The chance that every specific structure gets randomly selected in worldgen (village, nether fortress, ...)").getDouble();
         randomEffectChance = (float) cfg.get(CATEGORY_WORLDGEN, "randomEffectChance", randomEffectChance,
-                                                                   "The chance that an effect gets randomly selected in worldgen (poison, regeneration, ...)").getDouble();
+                "The chance that an effect gets randomly selected in worldgen (poison, regeneration, ...)").getDouble();
         randomOceanLiquidChance = (float) cfg.get(CATEGORY_WORLDGEN, "randomOceanLiquidChance", randomOceanLiquidChance,
-                                                                        "The chance that a non-water block is selected for oceans and seas").getDouble();
+                "The chance that a non-water block is selected for oceans and seas").getDouble();
         randomBaseBlockChance = (float) cfg.get(CATEGORY_WORLDGEN, "randomBaseBlockChance", randomBaseBlockChance,
-                                                                      "The chance that a non-stone block is selected for the main terrain").getDouble();
+                "The chance that a non-stone block is selected for the main terrain").getDouble();
         randomSpecialSkyChance = (float) cfg.get(CATEGORY_WORLDGEN, "randomSpecialSkyChance", randomSpecialSkyChance,
-                                                                       "The chance that special sky features are selected").getDouble();
+                "The chance that special sky features are selected").getDouble();
         randomExtraMobsChance = (float) cfg.get(CATEGORY_WORLDGEN, "randomExtraMobsChance", randomExtraMobsChance,
-                                                                      "The chance that extra specific mobs will spawn").getDouble();
+                "The chance that extra specific mobs will spawn").getDouble();
         randomSpecialTimeChance = (float) cfg.get(CATEGORY_WORLDGEN, "randomSpecialTimeChance", randomSpecialTimeChance,
-                                                                        "The chance that default time features are selected").getDouble();
+                "The chance that default time features are selected").getDouble();
         randomWeatherChance = (float) cfg.get(CATEGORY_WORLDGEN, "randomWeatherChance", randomWeatherChance,
-                                                                    "The chance that default weather features are selected").getDouble();
+                "The chance that default weather features are selected").getDouble();
         randomControllerChance = (float) cfg.get(CATEGORY_WORLDGEN, "randomControllerChance", randomControllerChance,
-                                                                       "The chance that a random biome controller is selected").getDouble();
+                "The chance that a random biome controller is selected").getDouble();
         dimletPartChestLootMinimum = cfg.get(CATEGORY_WORLDGEN, "dimletPartChestLootMinimum", dimletPartChestLootMinimum,
-                                                                   "The minimum amount of dimlet parts that can be generated in a dungeon chest").getInt();
+                "The minimum amount of dimlet parts that can be generated in a dungeon chest").getInt();
         dimletPartChestLootMaximum = cfg.get(CATEGORY_WORLDGEN, "dimletPartChestLootMaximum", dimletPartChestLootMaximum,
-                                                                   "The maximum amount of dimlet parts that can be generated in a dungeon chest").getInt();
+                "The maximum amount of dimlet parts that can be generated in a dungeon chest").getInt();
         dimletPartChestLootRarity[0] = cfg.get(CATEGORY_WORLDGEN, "dimletPartChestLootRarity0", dimletPartChestLootRarity[0],
-                                                                     "The rarity of dimlet parts rarity 0 in dungeon chests (0 means you'll get none, 100 means very common)").getInt();
+                "The rarity of dimlet parts rarity 0 in dungeon chests (0 means you'll get none, 100 means very common)").getInt();
         dimletPartChestLootRarity[1] = cfg.get(CATEGORY_WORLDGEN, "dimletPartChestLootRarity0", dimletPartChestLootRarity[1],
-                                                                     "The rarity of dimlet parts rarity 1 in dungeon chests (0 means you'll get none, 100 means very common)").getInt();
+                "The rarity of dimlet parts rarity 1 in dungeon chests (0 means you'll get none, 100 means very common)").getInt();
         dimletPartChestLootRarity[2] = cfg.get(CATEGORY_WORLDGEN, "dimletPartChestLootRarity0", dimletPartChestLootRarity[2],
-                                                                     "The rarity of dimlet parts rarity 2 in dungeon chests (0 means you'll get none, 100 means very common)").getInt();
+                "The rarity of dimlet parts rarity 2 in dungeon chests (0 means you'll get none, 100 means very common)").getInt();
         dimletPartChestLootRarity[3] = cfg.get(CATEGORY_WORLDGEN, "dimletPartChestLootRarity0", dimletPartChestLootRarity[3],
-                                                                     "The rarity of dimlet parts rarity 3 in dungeon chests (0 means you'll get none, 100 means very common)").getInt();
+                "The rarity of dimlet parts rarity 3 in dungeon chests (0 means you'll get none, 100 means very common)").getInt();
         dimletPartChestLootRarity[4] = cfg.get(CATEGORY_WORLDGEN, "dimletPartChestLootRarity0", dimletPartChestLootRarity[4],
-                                                                     "The rarity of dimlet parts rarity 4 in dungeon chests (0 means you'll get none, 100 means very common)").getInt();
+                "The rarity of dimlet parts rarity 4 in dungeon chests (0 means you'll get none, 100 means very common)").getInt();
         dimletPartChestLootRarity[5] = cfg.get(CATEGORY_WORLDGEN, "dimletPartChestLootRarity0", dimletPartChestLootRarity[5],
-                                                                     "The rarity of dimlet parts rarity 5 in dungeon chests (0 means you'll get none, 100 means very common)").getInt();
+                "The rarity of dimlet parts rarity 5 in dungeon chests (0 means you'll get none, 100 means very common)").getInt();
         dimletPartChestLootRarity[6] = cfg.get(CATEGORY_WORLDGEN, "dimletPartChestLootRarity0", dimletPartChestLootRarity[6],
-                                                                     "The rarity of dimlet parts rarity 6 in dungeon chests (0 means you'll get none, 100 means very common)").getInt();
+                "The rarity of dimlet parts rarity 6 in dungeon chests (0 means you'll get none, 100 means very common)").getInt();
 
         bedrockLayer = cfg.get(CATEGORY_WORLDGEN, "bedrockLayer", bedrockLayer,
-                                                     "The height of the bedrock layer that is generated at the bottom of some world types. Set to 0 to disable this and get default bedrock generation").getInt();
+                "The height of the bedrock layer that is generated at the bottom of some world types. Set to 0 to disable this and get default bedrock generation").getInt();
         normalTerrainInheritsOverworld = cfg.get(CATEGORY_WORLDGEN, "normalTerrainInheritsOverworld", normalTerrainInheritsOverworld,
-                                                                       "Set this to true if you want terrains with dimlet 'normal' to generate like the overworld (i.e. amplified if the overworld is amplified)").getBoolean();
+                "Set this to true if you want terrains with dimlet 'normal' to generate like the overworld (i.e. amplified if the overworld is amplified)").getBoolean();
         oreMinimumVeinSize = cfg.get(CATEGORY_WORLDGEN, "oreMinimumVeinSize", oreMinimumVeinSize,
-                                                           "Minimum vein size of dimensional shard ores").getInt();
+                "Minimum vein size of dimensional shard ores").getInt();
         oreMaximumVeinSize = cfg.get(CATEGORY_WORLDGEN, "oreMaximumVeinSize", oreMaximumVeinSize,
-                                                           "Maximum vein size of dimensional shard ores").getInt();
+                "Maximum vein size of dimensional shard ores").getInt();
         oreMaximumVeinCount = cfg.get(CATEGORY_WORLDGEN, "oreMaximumVeinCount", oreMaximumVeinCount,
-                                                            "Maximum number of veins for dimensional shard ores").getInt();
+                "Maximum number of veins for dimensional shard ores").getInt();
         oreMinimumHeight = cfg.get(CATEGORY_WORLDGEN, "oreMinimumHeight", oreMinimumHeight,
-                                                         "Minimum y level for dimensional shard ores").getInt();
+                "Minimum y level for dimensional shard ores").getInt();
         oreMaximumHeight = cfg.get(CATEGORY_WORLDGEN, "oreMaximumHeight", oreMaximumHeight,
-                                                         "Maximum y level for dimensional shard ores").getInt();
+                "Maximum y level for dimensional shard ores").getInt();
+
+        enableDimletsInRFToolsDungeons = cfg.get(CATEGORY_WORLDGEN, "enableDimletsInRFToolsDungeons", enableDimletsInRFToolsDungeons,
+                "The maximum number of random dimlets that can be generated in rftools dungeons (set to 0 to disable this)").getInt();
+        enableDimletsInRFToolsFrames = cfg.get(CATEGORY_WORLDGEN, "enableDimletsInRFToolsFrames", enableDimletsInRFToolsFrames,
+                "If true then item frames in rftools dungeons will contain dimlets. Otherwise they will contain dimlet parts").getBoolean();
     }
 
 }
