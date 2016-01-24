@@ -12,12 +12,6 @@ import java.util.List;
 import java.util.Random;
 
 public class LiquidDimletType implements IDimletType {
-    private static final String CATEGORY_TYPE = "type_liquid";
-
-    private static int rarity = DimletRandomizer.RARITY_2;
-    private static int baseCreationCost = 500;
-    private static int baseMaintainCost = 300;
-    private static int baseTickCost = 200;
 
     @Override
     public String getName() {
@@ -36,31 +30,6 @@ public class LiquidDimletType implements IDimletType {
 
     @Override
     public void setupFromConfig(Configuration cfg) {
-        cfg.addCustomCategoryComment(CATEGORY_TYPE, "Settings for the liquid dimlet type. Note that this is a modifier so actual cost depends on terrain/feature you use this with");
-        rarity = cfg.get(CATEGORY_TYPE, "rarity", rarity, "Default rarity for this dimlet type").getInt();
-        baseCreationCost = cfg.get(CATEGORY_TYPE, "creation.cost", baseCreationCost, "Dimlet creation cost (how much power this dimlets adds during creation time of a dimension)").getInt();
-        baseMaintainCost = cfg.get(CATEGORY_TYPE, "maintenance.cost", baseMaintainCost, "Dimlet maintenance cost (how much power this dimlet will use up to keep the dimension running)").getInt();
-        baseTickCost = cfg.get(CATEGORY_TYPE, "tick.cost", baseTickCost, "Dimlet tick cost (how long it takes to make a dimension with this dimlet in it)").getInt();
-    }
-
-    @Override
-    public int getRarity() {
-        return rarity;
-    }
-
-    @Override
-    public int getCreationCost() {
-        return baseCreationCost;
-    }
-
-    @Override
-    public int getMaintenanceCost() {
-        return baseMaintainCost;
-    }
-
-    @Override
-    public int getTickCost() {
-        return baseTickCost;
     }
 
     @Override

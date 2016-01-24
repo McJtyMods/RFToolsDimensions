@@ -21,11 +21,6 @@ import java.util.Random;
 public class TerrainDimletType implements IDimletType {
     private static final String CATEGORY_TYPE = "type_terrain";
 
-    private static int rarity = DimletRandomizer.RARITY_0;
-    private static int baseCreationCost = 100;
-    private static int baseMaintainCost = 1;
-    private static int baseTickCost = 1;
-
     private static float materialCreationCostFactor = 5.0f;
     private static float liquidCreationCostFactor = 5.0f;
     private static float materialMaintenanceCostFactor = 5.0f;
@@ -52,36 +47,12 @@ public class TerrainDimletType implements IDimletType {
     @Override
     public void setupFromConfig(Configuration cfg) {
         cfg.addCustomCategoryComment(CATEGORY_TYPE, "Settings for the terrain dimlet type");
-        rarity = cfg.get(CATEGORY_TYPE, "rarity", rarity, "Default rarity for this dimlet type").getInt();
-        baseCreationCost = cfg.get(CATEGORY_TYPE, "creation.cost", baseCreationCost, "Dimlet creation cost (how much power this dimlets adds during creation time of a dimension)").getInt();
-        baseMaintainCost = cfg.get(CATEGORY_TYPE, "maintenance.cost", baseMaintainCost, "Dimlet maintenance cost (how much power this dimlet will use up to keep the dimension running)").getInt();
-        baseTickCost = cfg.get(CATEGORY_TYPE, "tick.cost", baseTickCost, "Dimlet tick cost (how long it takes to make a dimension with this dimlet in it)").getInt();
         materialCreationCostFactor = (float) cfg.get(CATEGORY_TYPE, "material.creation.factor", materialCreationCostFactor, "The cost factor for a material dimlet modifier when used in combination with this terrain").getDouble();
         liquidCreationCostFactor = (float) cfg.get(CATEGORY_TYPE, "liquid.creation.factor", liquidCreationCostFactor, "The cost factor for a liquid dimlet modifier when used in combination with this terrain").getDouble();
         materialMaintenanceCostFactor = (float) cfg.get(CATEGORY_TYPE, "material.maintenance.factor", materialMaintenanceCostFactor, "The cost factor for a material dimlet modifier when used in combination with this terrain").getDouble();
         liquidMaintenanceCostFactor = (float) cfg.get(CATEGORY_TYPE, "liquid.maintenance.factor", liquidMaintenanceCostFactor, "The cost factor for a liquid dimlet modifier when used in combination with this terrain").getDouble();
         materialTickCostFactor = (float) cfg.get(CATEGORY_TYPE, "material.tick.factor", materialTickCostFactor, "The cost factor for a material dimlet modifier when used in combination with this terrain").getDouble();
         liquidTickCostFactor = (float) cfg.get(CATEGORY_TYPE, "liquid.tick.factor", liquidTickCostFactor, "The cost factor for a liquid dimlet modifier when used in combination with this terrain").getDouble();
-    }
-
-    @Override
-    public int getRarity() {
-        return rarity;
-    }
-
-    @Override
-    public int getCreationCost() {
-        return baseCreationCost;
-    }
-
-    @Override
-    public int getMaintenanceCost() {
-        return baseMaintainCost;
-    }
-
-    @Override
-    public int getTickCost() {
-        return baseTickCost;
     }
 
     @Override

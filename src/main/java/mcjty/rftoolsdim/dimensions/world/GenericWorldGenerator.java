@@ -1,21 +1,27 @@
 package mcjty.rftoolsdim.dimensions.world;
 
 import mcjty.lib.varia.Logging;
+import mcjty.lib.varia.WeightedRandomSelector;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.blocks.ModBlocks;
 import mcjty.rftoolsdim.config.WorldgenConfiguration;
 import mcjty.rftoolsdim.dimensions.DimensionInformation;
 import mcjty.rftoolsdim.dimensions.RfToolsDimensionManager;
+import mcjty.rftoolsdim.dimensions.dimlets.DimletKey;
+import mcjty.rftoolsdim.dimensions.dimlets.DimletObjectMapping;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletRandomizer;
+import mcjty.rftoolsdim.dimensions.dimlets.KnownDimletConfiguration;
 import mcjty.rftoolsdim.dimensions.dimlets.types.Patreons;
 import mcjty.rftoolsdim.dimensions.types.FeatureType;
 import mcjty.rftoolsdim.dimensions.types.TerrainType;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.item.EntityItemFrame;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.feature.WorldGenMinable;
@@ -462,36 +468,37 @@ public class GenericWorldGenerator implements IWorldGenerator {
         world.setBlockState(new BlockPos(midx, starty + 3, midz + 2), Blocks.lever.getStateFromMeta(4), 2);
 
         world.setBlockState(new BlockPos(midx + 2, starty + 1, midz - 2), Blocks.chest.getDefaultState(), 2);
+
+        WeightedRandomSelector.Distribution<Integer> bestDistribution = DimletRandomizer.getRandomDimlets().createDistribution(0.2f);
+
         TileEntityChest chest = (TileEntityChest) world.getTileEntity(new BlockPos(midx+2, starty+1, midz-2));
         for (int i = 0 ; i < random.nextInt(4)+3 ; i++) {
             ItemStack stack = DimletRandomizer.getRandomPart(random);
             chest.setInventorySlotContents(random.nextInt(chest.getSizeInventory()), stack);
         }
+        for (int i = 0 ; i < random.nextInt(2)+1 ; i++) {
+            DimletKey key = DimletRandomizer.getRandomDimlets().select(bestDistribution, random);
+            ItemStack stack = KnownDimletConfiguration.getDimletStack(key);
+            chest.setInventorySlotContents(random.nextInt(chest.getSizeInventory()), stack);
+        }
 
-//        WeightedRandomSelector.Distribution<Integer> bestDistribution = DimletRandomizer.randomDimlets.createDistribution(0.15f);
-//        EntityItemFrame frame1 = spawnItemFrame(world, midx - 1, starty + 2, midz + 2);
-//        DimletKey rd1 = DimletRandomizer.getRandomDimlet(bestDistribution, random);
-//        frame1.setDisplayedItem(KnownDimletConfiguration.makeKnownDimlet(rd1, world));
-//        EntityItemFrame frame2 = spawnItemFrame(world, midx, starty + 2, midz + 2);
-//        DimletKey rd2 = DimletRandomizer.getRandomDimlet(bestDistribution, random);
-//        frame2.setDisplayedItem(KnownDimletConfiguration.makeKnownDimlet(rd2, world));
-//        EntityItemFrame frame3 = spawnItemFrame(world, midx + 1, starty + 2, midz + 2);
-//        DimletKey rd3 = DimletRandomizer.getRandomDimlet(bestDistribution, random);
-//        frame3.setDisplayedItem(KnownDimletConfiguration.makeKnownDimlet(rd3, world));
-        // @todo
+        EntityItemFrame frame1 = spawnItemFrame(world, midx - 1, starty + 2, midz + 2);
+        DimletKey rd1 = DimletRandomizer.getRandomDimlets().select(bestDistribution, random);
+        frame1.setDisplayedItem(KnownDimletConfiguration.getDimletStack(rd1));
+        EntityItemFrame frame2 = spawnItemFrame(world, midx, starty + 2, midz + 2);
+        DimletKey rd2 = DimletRandomizer.getRandomDimlets().select(bestDistribution, random);
+        frame2.setDisplayedItem(KnownDimletConfiguration.getDimletStack(rd2));
+        EntityItemFrame frame3 = spawnItemFrame(world, midx + 1, starty + 2, midz + 2);
+        DimletKey rd3 = DimletRandomizer.getRandomDimlets().select(bestDistribution, random);
+        frame3.setDisplayedItem(KnownDimletConfiguration.getDimletStack(rd3));
     }
 
-//    private EntityItemFrame spawnItemFrame(World world, int x, int y, int z) {
-//        EntityItemFrame frame = new EntityItemFrame(world, new BlockPos(x, y, z+1, 2));
-//        world.spawnEntityInWorld(frame);
-//        frame.setPosition(x, y, z);
-//
-//        frame.field_146063_b = x;
-//        frame.field_146064_c = y;
-//        frame.field_146062_d = z + 1;
-//        frame.setDirection(frame.hangingDirection);
-//        return frame;
-//    }
+    private EntityItemFrame spawnItemFrame(World world, int x, int y, int z) {
+        EntityItemFrame frame = new EntityItemFrame(world, new BlockPos(x, y, z+1), EnumFacing.NORTH);
+        world.spawnEntityInWorld(frame);
+        frame.setPosition(x, y, z);
+        return frame;
+    }
 
     public void addOreSpawn(IBlockState block, IBlockState targetBlock,
                             World world, Random random, int blockXPos, int blockZPos, int minVeinSize, int maxVeinSize, int chancesToSpawn, int minY, int maxY) {

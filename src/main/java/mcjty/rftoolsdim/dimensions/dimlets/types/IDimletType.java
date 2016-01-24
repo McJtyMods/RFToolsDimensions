@@ -21,26 +21,6 @@ public interface IDimletType {
      */
     void setupFromConfig(Configuration cfg);
 
-    /**
-     * Get the default rarity for this type.
-     */
-    int getRarity();
-
-    /**
-     * Get the default creation cost for this type.
-     */
-    int getCreationCost();
-
-    /**
-     * Get the default maintenance cost for this type.
-     */
-    int getMaintenanceCost();
-
-    /**
-     * Get the default tick cost for this type.
-     */
-    int getTickCost();
-
     // Return true if this dimlet is a modifier.
     boolean isModifier();
 

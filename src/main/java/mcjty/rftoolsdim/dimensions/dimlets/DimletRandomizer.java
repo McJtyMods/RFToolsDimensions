@@ -24,14 +24,14 @@ public class DimletRandomizer {
     public static final int RARITY_6 = 6;
 
     // All dimlet ids in a weighted random selector based on rarity.
-    public static WeightedRandomSelector<Integer,DimletKey> randomDimlets;
-    public static WeightedRandomSelector<Integer,DimletKey> randomMaterialDimlets;
-    public static WeightedRandomSelector<Integer,DimletKey> randomLiquidDimlets;
-    public static WeightedRandomSelector<Integer,DimletKey> randomMobDimlets;
-    public static WeightedRandomSelector<Integer,DimletKey> randomStructureDimlets;
-    public static WeightedRandomSelector<Integer,DimletKey> randomEffectDimlets;
-    public static WeightedRandomSelector<Integer,DimletKey> randomFeatureDimlets;
-    public static WeightedRandomSelector<Integer,DimletKey> randomTerrainDimlets;
+    private static WeightedRandomSelector<Integer,DimletKey> randomDimlets;
+    private static WeightedRandomSelector<Integer,DimletKey> randomMaterialDimlets;
+    private static WeightedRandomSelector<Integer,DimletKey> randomLiquidDimlets;
+    private static WeightedRandomSelector<Integer,DimletKey> randomMobDimlets;
+    private static WeightedRandomSelector<Integer,DimletKey> randomStructureDimlets;
+    private static WeightedRandomSelector<Integer,DimletKey> randomEffectDimlets;
+    private static WeightedRandomSelector<Integer,DimletKey> randomFeatureDimlets;
+    private static WeightedRandomSelector<Integer,DimletKey> randomTerrainDimlets;
 
     public static void init() {
         randomDimlets = null;
@@ -178,6 +178,11 @@ public class DimletRandomizer {
     public static DimletKey getRandomMob(Random random, boolean forWorldGen) {
         // @todo
         return new DimletKey(DimletType.DIMLET_MOB, "@@@");
+    }
+
+    public static WeightedRandomSelector<Integer, DimletKey> getRandomDimlets() {
+        setupWeightedRandomList();
+        return randomDimlets;
     }
 
     private static WeightedRandomSelector<Integer, ItemStack> dimletPartDistribution;

@@ -288,6 +288,162 @@
     }
   },
   {
+    "filter": {
+      "type": "mob"
+    },
+    "settings": {
+      "rarity": 2,
+      "create": 300,
+      "maintain": 100,
+      "ticks": 200,
+      "worldgen": true,
+      "dimlet": true
+    }
+  },
+  {
+    "filter": {
+      "type": "patreon"
+    },
+    "settings": {
+      "rarity": 2,
+      "create": 10,
+      "maintain": 0,
+      "ticks": 1,
+      "worldgen": false,
+      "dimlet": true
+    }
+  },
+  {
+    "filter": {
+      "type": "sky"
+    },
+    "settings": {
+      "rarity": 0,
+      "create": 100,
+      "maintain": 1,
+      "ticks": 1,
+      "worldgen": true,
+      "dimlet": true
+    }
+  },
+  {
+    "filter": {
+      "type": "structure"
+    },
+    "settings": {
+      "rarity": 3,
+      "create": 600,
+      "maintain": 100,
+      "ticks": 900,
+      "worldgen": true,
+      "dimlet": true
+    }
+  },
+  {
+    "filter": {
+      "type": "terrain"
+    },
+    "settings": {
+      "rarity": 0,
+      "create": 100,
+      "maintain": 1,
+      "ticks": 1,
+      "worldgen": true,
+      "dimlet": true
+    }
+  },
+  {
+    "filter": {
+      "type": "time"
+    },
+    "settings": {
+      "rarity": 2,
+      "create": 300,
+      "maintain": 20,
+      "ticks": 10,
+      "worldgen": true,
+      "dimlet": true
+    }
+  },
+  {
+    "filter": {
+      "type": "weather"
+    },
+    "settings": {
+      "rarity": 1,
+      "create": 100,
+      "maintain": 50,
+      "ticks": 10,
+      "worldgen": true,
+      "dimlet": true
+    }
+  },
+  {
+    "filter": {
+      "type": "special"
+    },
+    "settings": {
+      "rarity": 5,
+      "create": 1000,
+      "maintain": 1000,
+      "ticks": 1000,
+      "worldgen": false,
+      "dimlet": true
+    }
+  },
+  {
+    "filter": {
+      "type": "feature"
+    },
+    "settings": {
+      "rarity": 0,
+      "create": 100,
+      "maintain": 1,
+      "ticks": 1,
+      "worldgen": true,
+      "dimlet": true
+    }
+  },
+  {
+    "filter": {
+      "type": "effect"
+    },
+    "settings": {
+      "rarity": 3,
+      "create": 200,
+      "maintain": 0,
+      "ticks": 100,
+      "worldgen": true,
+      "dimlet": true
+    }
+  },
+  {
+    "filter": {
+      "type": "biome"
+    },
+    "settings": {
+      "rarity": 1,
+      "create": 100,
+      "maintain": 0,
+      "ticks": 1,
+      "worldgen": true,
+      "dimlet": true
+    }
+  },
+  {
+    "filter": {
+      "type": "controller"
+    },
+    "settings": {
+      "rarity": 1,
+      "create": 100,
+      "maintain": 0,
+      "ticks": 1,
+      "worldgen": true,
+      "dimlet": true
+    }
+  },
+  {
     "settings": {
       "rarity": 0,
       "create": 10,

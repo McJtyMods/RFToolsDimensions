@@ -221,9 +221,6 @@ public class DimensionDescriptor {
         Settings settings = KnownDimletConfiguration.getSettings(key);
         if (settings != null) {
             cost = settings.getCreateCost();
-            if (cost == -1) {
-                cost = type.dimletType.getCreationCost();
-            }
         }
         return cost;
     }
@@ -262,9 +259,6 @@ public class DimensionDescriptor {
         Settings settings = KnownDimletConfiguration.getSettings(key);
         if (settings != null) {
             cost = settings.getMaintainCost();
-            if (cost == -1) {
-                cost = type.dimletType.getMaintenanceCost();
-            }
         }
         return cost;
     }
@@ -330,9 +324,6 @@ public class DimensionDescriptor {
         Settings settings = KnownDimletConfiguration.getSettings(key);
         if (settings != null) {
             cost = settings.getTickCost();
-            if (cost == -1) {
-                cost = type.dimletType.getTickCost();
-            }
         }
         return cost;
     }
