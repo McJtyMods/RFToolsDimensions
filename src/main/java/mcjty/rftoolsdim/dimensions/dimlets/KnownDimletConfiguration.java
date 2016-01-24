@@ -31,14 +31,14 @@ import java.util.*;
 public class KnownDimletConfiguration {
 
     private static Set<DimletKey> craftableDimlets = new HashSet<>();
-    private static Map<DimletKey, DimletEntry> knownDimlets = new HashMap<>();
+    private static Map<DimletKey, Settings> knownDimlets = new HashMap<>();
 
     public static DimletEntry getEntry(DimletKey key) {
         // @todo
         return new DimletEntry(key, 10, 1, 10, 1, false, false);
     }
 
-    public static Map<DimletKey, DimletEntry> getKnownDimlets() {
+    public static Map<DimletKey, Settings> getKnownDimlets() {
         initDimlets();
         return knownDimlets;
     }
@@ -161,7 +161,7 @@ public class KnownDimletConfiguration {
             return 1;
         });
         for (DimletKey key : keys) {
-            DimletEntry value = knownDimlets.get(key);
+            Settings value = knownDimlets.get(key);
             Logging.log(key + ": " + value);
         }
 
@@ -170,7 +170,7 @@ public class KnownDimletConfiguration {
     private static void initDimlet(DimletKey key, String mod) {
         Settings settings = DimletRules.getSettings(key, mod);
         if (!settings.isBlacklisted()) {
-            knownDimlets.put(key, new DimletEntry(key, settings));
+            knownDimlets.put(key, settings);// new DimletEntry(key, settings));
         }
     }
 
@@ -217,7 +217,7 @@ public class KnownDimletConfiguration {
             DimletKey key = new DimletKey(DimletType.DIMLET_MATERIAL, block.getRegistryName() + "@" + meta);
             Settings settings = DimletRules.getSettings(key, mod, features, props);
             if (!settings.isBlacklisted()) {
-                knownDimlets.put(key, new DimletEntry(key, settings));
+                knownDimlets.put(key, settings);//new DimletEntry(key, settings));
             }
         }
     }

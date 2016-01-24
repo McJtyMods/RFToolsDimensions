@@ -2,10 +2,10 @@ package mcjty.rftoolsdim.dimensions.dimlets;
 
 import mcjty.lib.varia.WeightedRandomSelector;
 import mcjty.rftoolsdim.config.DimletConfiguration;
-import mcjty.rftoolsdim.dimensions.description.MobDescriptor;
+import mcjty.rftoolsdim.config.Settings;
 import mcjty.rftoolsdim.dimensions.dimlets.types.DimletType;
-import mcjty.rftoolsdim.dimensions.types.*;
-import net.minecraft.block.Block;
+import mcjty.rftoolsdim.dimensions.types.ControllerType;
+import mcjty.rftoolsdim.dimensions.types.TerrainType;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.biome.BiomeGenBase;
@@ -37,7 +37,7 @@ public class DimletRandomizer {
         if (randomDimlets != null) {
             return;
         }
-        Map<DimletKey, DimletEntry> knownDimlets = KnownDimletConfiguration.getKnownDimlets();
+        Map<DimletKey, Settings> knownDimlets = KnownDimletConfiguration.getKnownDimlets();
         randomDimlets = new WeightedRandomSelector<>();
         float rarity0 = DimletConfiguration.rarity0;
         float rarity1 = DimletConfiguration.rarity1;
@@ -61,9 +61,9 @@ public class DimletRandomizer {
         setupRarity(randomFeatureDimlets, rarity0, rarity1, rarity2, rarity3, rarity4, rarity5, rarity6);
 
 
-        for (Map.Entry<DimletKey, DimletEntry> entry : knownDimlets.entrySet()) {
+        for (Map.Entry<DimletKey, Settings> entry : knownDimlets.entrySet()) {
             randomDimlets.addItem(entry.getValue().getRarity(), entry.getKey());
-            DimletKey key = entry.getValue().getKey();
+            DimletKey key = entry.getKey();
             if (key.getType() == DimletType.DIMLET_MATERIAL) {
                 // Don't add the 'null' material.
                 if (!DimletObjectMapping.DEFAULT_ID.equals(key.getId())) {
