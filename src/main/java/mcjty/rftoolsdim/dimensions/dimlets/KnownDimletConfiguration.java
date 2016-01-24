@@ -169,7 +169,9 @@ public class KnownDimletConfiguration {
 
     private static void initDimlet(DimletKey key, String mod) {
         Settings settings = DimletRules.getSettings(key, mod);
-        knownDimlets.put(key, new DimletEntry(key, settings));
+        if (!settings.isBlacklisted()) {
+            knownDimlets.put(key, new DimletEntry(key, settings));
+        }
     }
 
     private static void initMaterialDimlet(Block block) {
@@ -199,7 +201,8 @@ public class KnownDimletConfiguration {
             features.add(Filter.Feature.NOFULLBLOCK);
         }
 
-        String mod = Block.blockRegistry.getNameForObject(block).getResourceDomain();
+        ResourceLocation nameForObject = Block.blockRegistry.getNameForObject(block);
+        String mod = nameForObject.getResourceDomain();
 
         for (IBlockState state : block.getBlockState().getValidStates()) {
             int meta = state.getBlock().getMetaFromState(state);
@@ -213,7 +216,9 @@ public class KnownDimletConfiguration {
             }
             DimletKey key = new DimletKey(DimletType.DIMLET_MATERIAL, block.getRegistryName() + "@" + meta);
             Settings settings = DimletRules.getSettings(key, mod, features, props);
-            knownDimlets.put(key, new DimletEntry(key, settings));
+            if (!settings.isBlacklisted()) {
+                knownDimlets.put(key, new DimletEntry(key, settings));
+            }
         }
     }
 

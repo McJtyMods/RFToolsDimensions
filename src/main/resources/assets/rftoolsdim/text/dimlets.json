@@ -2,59 +2,127 @@
   {
     "filter": {
       "type": "material",
-      "property": {
-        "color": "orange"
-      }
+      "name": "stained_glass"
     },
     "settings": {
-      "rarity": 0,
-      "create": 666
+      "rarity": 3,
+      "create": 100,
+      "maintain": 100,
+      "ticks": 50,
+      "worldgen": true,
+      "dimlet": true
     }
   },
   {
     "filter": {
       "type": "material",
-      "feature": "tileentity"
+      "name": "stained_hardened_clay"
     },
     "settings": {
-      "dimlet": false,
-      "worldgen": false
+      "rarity": 2,
+      "create": 100,
+      "maintain": 100,
+      "ticks": 50,
+      "worldgen": true,
+      "dimlet": true
     }
   },
   {
     "filter": {
       "type": "material",
-      "feature": "falling"
+      "name": "log2"
     },
     "settings": {
-      "dimlet": false,
-      "worldgen": false
+      "rarity": 2,
+      "create": 100,
+      "maintain": 100,
+      "ticks": 50,
+      "worldgen": true,
+      "dimlet": true
     }
   },
   {
     "filter": {
       "type": "material",
-      "feature": "plantable"
+      "name": "log"
     },
     "settings": {
-      "dimlet": false,
-      "worldgen": false
+      "rarity": 2,
+      "create": 100,
+      "maintain": 100,
+      "ticks": 50,
+      "worldgen": true,
+      "dimlet": true
     }
   },
   {
     "filter": {
-      "type": [ "material", "liquid" ]
+      "mod": "rftoolsdim",
+      "type": "material",
+      "name": "dimensional_.*_block"
+    },
+    "settings": {
+      "rarity": 3,
+      "create": 200,
+      "maintain": 100,
+      "ticks": 50,
+      "worldgen": true,
+      "dimlet": true
+    }
+  },
+  {
+    "filter": {
+      "type": "material",
+      "name": ".*_ore"
     },
     "settings": {
       "rarity": 4,
       "create": 2000,
       "maintain": 1000,
-      "ticks": 500
+      "ticks": 500,
+      "worldgen": true,
+      "dimlet": true
+    }
+  },
+  {
+    "filter": {
+      "type": "material",
+      "name": [ "coal_block", "diamond_block", "gold_block", "iron_block", "lapis_block", "quartz_block" ]
+    },
+    "settings": {
+      "rarity": 5,
+      "create": 3000,
+      "maintain": 2000,
+      "ticks": 1000,
+      "worldgen": true,
+      "dimlet": true
+    }
+  },
+  {
+    "filter": {
+      "type": "material"
+    },
+    "settings": {
+      "worldgen": false,
+      "dimlet": false
+    }
+  },
+  {
+    "filter": {
+      "type": "liquid"
+    },
+    "settings": {
+      "rarity": 4,
+      "create": 2000,
+      "maintain": 1000,
+      "ticks": 500,
+      "worldgen": true,
+      "dimlet": true
     }
   },
   {
     "settings": {
-      "rarity": 6,
+      "rarity": 0,
       "create": 10,
       "maintain": 10,
       "ticks": 10,

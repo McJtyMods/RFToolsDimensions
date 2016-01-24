@@ -36,9 +36,14 @@ public class DimletRules {
         String id = key.getId();
         int meta = 0;
         if (DimletType.DIMLET_MATERIAL.equals(key.getType())) {
+            int firstIndexOf = StringUtils.indexOf(id, ":");
+            id = id.substring(firstIndexOf+1);
             int lastIndexOf = StringUtils.lastIndexOf(id, "@");
             meta = Integer.parseInt(id.substring(lastIndexOf+1));
             id = id.substring(0, lastIndexOf);
+        } else if (DimletType.DIMLET_LIQUID.equals(key.getType())) {
+            int firstIndexOf = StringUtils.indexOf(id, ":");
+            id = id.substring(firstIndexOf+1);
         }
         return getSettings(key.getType(), mod, id, features, meta, properties);
     }
@@ -104,7 +109,12 @@ public class DimletRules {
             Logging.logError("Error reading file: " + file.getName());
             return Collections.emptyList();
         }
-        return readRulesFromFile(inputstream, file.getName());
+        try {
+            return readRulesFromFile(inputstream, file.getName());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Collections.emptyList();
+        }
     }
 
     private static List<Pair<Filter,Settings>> readRulesFromFile(InputStream inputstream, String name) {

@@ -22,6 +22,10 @@ public class Settings {
         this.dimlet = builder.dimlet;
     }
 
+    public boolean isBlacklisted() {
+        return !worldgen && !dimlet;
+    }
+
     public boolean isComplete() {
         return rarity != null && createCost != null && maintainCost != null && tickCost != null && worldgen != null && dimlet != null;
     }
