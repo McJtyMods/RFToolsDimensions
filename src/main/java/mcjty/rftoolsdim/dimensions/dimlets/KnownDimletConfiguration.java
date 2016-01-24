@@ -319,13 +319,14 @@ public class KnownDimletConfiguration {
             case DIMLET_LIQUID:
                 Block fluid = DimletObjectMapping.getFluid(key);
                 if (fluid != null) {
-                    return new ItemStack(fluid).getDisplayName();
+                    return fluid.getLocalizedName();
                 }
                 break;
             case DIMLET_MATERIAL:
                 IBlockState state = DimletObjectMapping.getBlock(key);
                 if (state != null) {
-                    return new ItemStack(state.getBlock(), 1, state.getBlock().getMetaFromState(state)).getDisplayName();
+                    ItemStack stack = new ItemStack(state.getBlock(), 1, state.getBlock().getMetaFromState(state));
+                    return stack.getItem() == null ? "?" : stack.getDisplayName();
                 }
                 break;
             case DIMLET_MOB:
