@@ -15,7 +15,49 @@
   {
     "filter": {
       "type": "material",
-      "name": "stained_glass"
+      "name": [ "dirt", "cobblestone", "sandstone", "nether_brick", "netherrack" ]
+    },
+    "settings": {
+      "rarity": 0,
+      "create": 3,
+      "maintain": 1,
+      "ticks": 10,
+      "worldgen": true,
+      "dimlet": true
+    }
+  },
+  {
+    "filter": {
+      "type": "material",
+      "name": "end_stone"
+    },
+    "settings": {
+      "rarity": 4,
+      "create": 1000,
+      "maintain": 1000,
+      "ticks": 100,
+      "worldgen": true,
+      "dimlet": true
+    }
+  },
+  {
+    "filter": {
+      "type": "material",
+      "name": "bedrock"
+    },
+    "settings": {
+      "rarity": 4,
+      "create": 1000,
+      "maintain": 300,
+      "ticks": 50,
+      "worldgen": true,
+      "dimlet": true
+    }
+  },
+  {
+    "filter": {
+      "type": "material",
+      "name": [ "stained_glass", "glass", "packed_ice" ]
     },
     "settings": {
       "rarity": 3,
@@ -29,7 +71,21 @@
   {
     "filter": {
       "type": "material",
-      "name": "stained_hardened_clay"
+      "name": "wool"
+    },
+    "settings": {
+      "rarity": 4,
+      "create": 300,
+      "maintain": 500,
+      "ticks": 100,
+      "worldgen": true,
+      "dimlet": true
+    }
+  },
+  {
+    "filter": {
+      "type": "material",
+      "name": [ "stained_hardened_clay", "hardened_clay" ]
     },
     "settings": {
       "rarity": 2,
@@ -43,21 +99,21 @@
   {
     "filter": {
       "type": "material",
-      "name": "log2"
+      "name": "slime_block"
     },
     "settings": {
-      "rarity": 2,
-      "create": 100,
-      "maintain": 100,
-      "ticks": 50,
-      "worldgen": true,
+      "rarity": 5,
+      "create": 1000,
+      "maintain": 1000,
+      "ticks": 500,
+      "worldgen": false,
       "dimlet": true
     }
   },
   {
     "filter": {
       "type": "material",
-      "name": "log"
+      "name": [ "log2", "log", "planks" ]
     },
     "settings": {
       "rarity": 2,
@@ -86,6 +142,48 @@
   {
     "filter": {
       "type": "material",
+      "name": [ "diamond_ore", "emerald_ore", "dimensional_shard_ore" ]
+    },
+    "settings": {
+      "rarity": 5,
+      "create": 40000,
+      "maintain": 10000,
+      "ticks": 800,
+      "worldgen": true,
+      "dimlet": true
+    }
+  },
+  {
+    "filter": {
+      "type": "material",
+      "name": [ "gold_ore", "lapis_ore", "quartz_ore" ]
+    },
+    "settings": {
+      "rarity": 4,
+      "create": 20000,
+      "maintain": 3500,
+      "ticks": 400,
+      "worldgen": true,
+      "dimlet": true
+    }
+  },
+  {
+    "filter": {
+      "type": "material",
+      "name": [ "iron_ore", "coal_ore", "redstone_ore" ]
+    },
+    "settings": {
+      "rarity": 3,
+      "create": 8000,
+      "maintain": 1400,
+      "ticks": 300,
+      "worldgen": true,
+      "dimlet": true
+    }
+  },
+  {
+    "filter": {
+      "type": "material",
       "name": ".*_ore"
     },
     "settings": {
@@ -100,13 +198,41 @@
   {
     "filter": {
       "type": "material",
-      "name": [ "coal_block", "diamond_block", "gold_block", "iron_block", "lapis_block", "quartz_block" ]
+      "name": [ "diamond_block", "emerald_block" ]
     },
     "settings": {
       "rarity": 5,
-      "create": 3000,
-      "maintain": 2000,
+      "create": 80000,
+      "maintain": 20000,
       "ticks": 1000,
+      "worldgen": true,
+      "dimlet": true
+    }
+  },
+  {
+    "filter": {
+      "type": "material",
+      "name": [ "gold_block", "lapis_block", "quartz_block", "obsidian" ]
+    },
+    "settings": {
+      "rarity": 5,
+      "create": 30000,
+      "maintain": 9000,
+      "ticks": 500,
+      "worldgen": true,
+      "dimlet": true
+    }
+  },
+  {
+    "filter": {
+      "type": "material",
+      "name": [ "iron_block", "redstone_block", "coal_block", "prismarine" ]
+    },
+    "settings": {
+      "rarity": 4,
+      "create": 15000,
+      "maintain": 6000,
+      "ticks": 300,
       "worldgen": true,
       "dimlet": true
     }
