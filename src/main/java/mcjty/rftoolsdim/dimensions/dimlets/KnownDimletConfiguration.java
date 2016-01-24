@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import mcjty.lib.varia.Logging;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.config.*;
+import mcjty.rftoolsdim.dimensions.description.MobDescriptor;
 import mcjty.rftoolsdim.dimensions.dimlets.types.DimletType;
 import mcjty.rftoolsdim.dimensions.types.ControllerType;
 import mcjty.rftoolsdim.dimensions.types.EffectType;
@@ -308,8 +309,55 @@ public class KnownDimletConfiguration {
     }
 
     public static String getDisplayName(DimletKey key) {
-        // @todo
-        return key.getId();
+        switch (key.getType()) {
+            case DIMLET_BIOME:
+                BiomeGenBase biome = DimletObjectMapping.getBiome(key);
+                if (biome != null) {
+                    return biome.biomeName;
+                }
+                break;
+            case DIMLET_LIQUID:
+                Block fluid = DimletObjectMapping.getFluid(key);
+                if (fluid != null) {
+                    return new ItemStack(fluid).getDisplayName();
+                }
+                break;
+            case DIMLET_MATERIAL:
+                IBlockState state = DimletObjectMapping.getBlock(key);
+                if (state != null) {
+                    return new ItemStack(state.getBlock(), 1, state.getBlock().getMetaFromState(state)).getDisplayName();
+                }
+                break;
+            case DIMLET_MOB:
+                MobDescriptor mob = DimletObjectMapping.getMob(key);
+                if (mob != null) {
+                    return "mob"; //@todo
+                }
+                break;
+            case DIMLET_SKY:
+                return "sky"; //@todo
+            case DIMLET_STRUCTURE:
+                return key.getId();
+            case DIMLET_TERRAIN:
+                return key.getId();
+            case DIMLET_FEATURE:
+                return key.getId();
+            case DIMLET_TIME:
+                return "time";//@todo
+            case DIMLET_DIGIT:
+                return key.getId();
+            case DIMLET_EFFECT:
+                return key.getId();
+            case DIMLET_SPECIAL:
+                return key.getId();
+            case DIMLET_CONTROLLER:
+                return key.getId();
+            case DIMLET_WEATHER:
+                return "weather"; //@todo
+            case DIMLET_PATREON:
+                return key.getId();
+        }
+        return "Unknown";
     }
 
     public static void setupChestLoot() {
