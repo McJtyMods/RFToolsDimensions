@@ -9,6 +9,7 @@ import mcjty.rftoolsdim.dimensions.dimlets.types.DimletType;
 import mcjty.rftoolsdim.dimensions.types.ControllerType;
 import mcjty.rftoolsdim.dimensions.types.EffectType;
 import mcjty.rftoolsdim.dimensions.types.FeatureType;
+import mcjty.rftoolsdim.dimensions.types.StructureType;
 import mcjty.rftoolsdim.items.ModItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
@@ -57,6 +58,9 @@ public class KnownDimletConfiguration {
         for (EffectType type : EffectType.values()) {
             initDimlet(new DimletKey(DimletType.DIMLET_EFFECT, type.getId()), RFToolsDim.MODID);
         }
+        for (StructureType type : StructureType.values()) {
+            initDimlet(new DimletKey(DimletType.DIMLET_STRUCTURE, type.getId()), RFToolsDim.MODID);
+        }
         for (int i = 0 ; i <= 9 ; i++) {
             initDimlet(new DimletKey(DimletType.DIMLET_DIGIT, Integer.toString(i)), RFToolsDim.MODID);
         }
@@ -81,7 +85,7 @@ public class KnownDimletConfiguration {
                     if (block != null) {
                         ResourceLocation nameForObject = Block.blockRegistry.getNameForObject(block);
                         String mod = nameForObject.getResourceDomain();
-                        DimletKey key = new DimletKey(DimletType.DIMLET_LIQUID, block.getRegistryName());
+                        DimletKey key = new DimletKey(DimletType.DIMLET_LIQUID, block.getRegistryName() + "@0");
                         initDimlet(key, mod);
                     }
                 }
