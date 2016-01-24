@@ -2,6 +2,18 @@
   {
     "filter": {
       "type": "material",
+      "property": {
+        "color": "orange"
+      }
+    },
+    "settings": {
+      "rarity": 0,
+      "create": 666
+    }
+  },
+  {
+    "filter": {
+      "type": "material",
       "feature": "tileentity"
     },
     "settings": {
@@ -42,7 +54,7 @@
   },
   {
     "settings": {
-      "rarity": 0,
+      "rarity": 6,
       "create": 10,
       "maintain": 10,
       "ticks": 10,

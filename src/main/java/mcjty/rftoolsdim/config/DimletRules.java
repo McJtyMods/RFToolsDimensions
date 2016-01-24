@@ -5,24 +5,22 @@ import mcjty.lib.varia.Logging;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletKey;
 import mcjty.rftoolsdim.dimensions.dimlets.types.DimletType;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class DimletRules {
 
     private static List<Pair<Filter, Settings>> rules;
 
-    public static Settings getSettings(DimletType type, String mod, String name, Set<Filter.Feature> features) {
+    public static Settings getSettings(DimletType type, String mod, String name, Set<Filter.Feature> features, int meta, Map<String, String> properties) {
         Settings.Builder builder = new Settings.Builder();
 
         for (Pair<Filter, Settings> pair : rules) {
             Filter filter = pair.getLeft();
-            if (filter.match(type, mod, name, features)) {
+            if (filter.match(type, mod, name, meta, properties, features)) {
                 Settings settings = pair.getRight();
                 builder.merge(settings);
                 if (settings.isComplete()) {
@@ -34,12 +32,19 @@ public class DimletRules {
         return builder.complete().build();
     }
 
-    public static Settings getSettings(DimletKey key, String mod, Set<Filter.Feature> features) {
-        return getSettings(key.getType(), mod, key.getId(), features);
+    public static Settings getSettings(DimletKey key, String mod, Set<Filter.Feature> features, Map<String, String> properties) {
+        String id = key.getId();
+        int meta = 0;
+        if (DimletType.DIMLET_MATERIAL.equals(key.getType())) {
+            int lastIndexOf = StringUtils.lastIndexOf(id, "@");
+            meta = Integer.parseInt(id.substring(lastIndexOf+1));
+            id = id.substring(0, lastIndexOf);
+        }
+        return getSettings(key.getType(), mod, id, features, meta, properties);
     }
 
     public static Settings getSettings(DimletKey key, String mod) {
-        return getSettings(key.getType(), mod, key.getId(), Collections.emptySet());
+        return getSettings(key, mod, Collections.emptySet(), Collections.emptyMap());
     }
 
     public static void readRules(File directory) {

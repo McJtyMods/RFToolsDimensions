@@ -46,7 +46,7 @@ public class CmdTestDimlet extends AbstractRfToolsCommand {
             return;
         }
 
-        Settings settings = DimletRules.getSettings(type, mod, name, Collections.emptySet());
+        Settings settings = DimletRules.getSettings(type, mod, name, Collections.emptySet(), 0, Collections.emptyMap());
         sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GREEN + settings.toString()));
 
     }

@@ -18,16 +18,20 @@ public class Filter {
     private final Set<Pattern> nameRegexps;
     private final Set<DimletType> types;
     private final Set<Feature> features;
+    private final Set<Integer> metas;
+    private final Map<String, String> properties;
 
-    private Filter(Set<String> mods, Set<String> names, Set<Pattern> nameRegexps, Set<DimletType> types, Set<Feature> features) {
+    private Filter(Set<String> mods, Set<String> names, Set<Pattern> nameRegexps, Set<DimletType> types, Set<Feature> features, Set<Integer> metas, Map<String, String> properties) {
         this.mods = mods;
         this.names = names;
         this.nameRegexps = nameRegexps;
         this.types = types;
         this.features = features;
+        this.metas = metas;
+        this.properties = properties;
     }
 
-    public boolean match(DimletType type, String mod, String name, Set<Feature> featuresIn) {
+    public boolean match(DimletType type, String mod, String name, int metaIn, Map<String, String> propertiesIn, Set<Feature> featuresIn) {
         if (types != null) {
             if (!types.contains(type)) {
                 return false;
@@ -35,6 +39,12 @@ public class Filter {
         }
         if (mods != null) {
             if (!mods.contains(mod)) {
+                return false;
+            }
+        }
+
+        if (metas != null) {
+            if (!metas.contains(metaIn)) {
                 return false;
             }
         }
@@ -55,6 +65,7 @@ public class Filter {
             }
             return false;
         }
+
         if (features != null) {
             if (featuresIn == null) {
                 return false;
@@ -64,13 +75,32 @@ public class Filter {
             }
         }
 
+        if (properties != null) {
+            if (propertiesIn == null) {
+                return false;
+            }
+            if (!properties.entrySet().stream().allMatch(e -> safeCompare(propertiesIn, e))) {
+                return false;
+            }
+        }
+
         return true;
     }
 
-    public static final Filter MATCHALL = new Filter(null, null, null, null, null);
+    private boolean safeCompare(Map<String, String> propertiesIn, Map.Entry<String, String> e) {
+        if (!propertiesIn.containsKey(e.getKey())) {
+            return false;
+        }
+        if (propertiesIn.get(e.getKey()) == null) {
+            return false;
+        }
+        return propertiesIn.get(e.getKey()).equals(e.getValue());
+    }
+
+    public static final Filter MATCHALL = new Filter(null, null, null, null, null, null, null);
 
     public JsonElement buildElement() {
-        if (mods == null && names == null && nameRegexps == null && types == null && features == null) {
+        if (mods == null && names == null && nameRegexps == null && types == null && features == null && metas == null && properties == null) {
             return null;
         }
 
@@ -88,8 +118,10 @@ public class Filter {
             namedAndRegexps = Stream.concat(names.stream(), nameRegexps.stream().map(Pattern::toString)).collect(Collectors.toSet());
         }
         JSonTools.addArrayOrSingle(jsonObject, "name", namedAndRegexps);
+        JSonTools.addIntArrayOrSingle(jsonObject, "meta", metas);
         JSonTools.addArrayOrSingle(jsonObject, "type", types == null ? null : types.stream().map(t -> t.dimletType.getName().toLowerCase()).collect(Collectors.toList()));
         JSonTools.addArrayOrSingle(jsonObject, "feature", features == null ? null : features.stream().map(t -> t.name().toLowerCase()).collect(Collectors.toList()));
+        JSonTools.addPairs(jsonObject, "property", properties);
 
         return jsonObject;
     }
@@ -116,6 +148,13 @@ public class Filter {
                     .ifPresent(e -> JSonTools.asArrayOrSingle(e)
                             .map(el -> Feature.getFeatureByName(el.getAsString()))
                             .forEach(builder::feature));
+            JSonTools.getElement(jsonObject, "meta")
+                    .ifPresent(e -> JSonTools.asArrayOrSingle(e)
+                            .map(JsonElement::getAsInt)
+                            .forEach(builder::meta));
+            JSonTools.getElement(jsonObject, "property")
+                    .ifPresent(e -> JSonTools.asPairs(e)
+                            .forEach(p -> builder.property(p.getKey(), p.getValue())));
 
             return builder.build();
         }
@@ -127,6 +166,8 @@ public class Filter {
         private Set<Pattern> name_regexps = null;
         private Set<DimletType> types = null;
         private Set<Feature> features = null;
+        private Set<Integer> metas = null;
+        private Map<String, String> properties = null;
 
         public Builder mod(String mod) {
             if (mods == null) {
@@ -168,8 +209,24 @@ public class Filter {
             return this;
         }
 
+        public Builder property(String name, String value) {
+            if (properties == null) {
+                properties = new HashMap<>();
+            }
+            properties.put(name, value);
+            return this;
+        }
+
+        public Builder meta(Integer meta) {
+            if (metas == null) {
+                metas = new HashSet<>();
+            }
+            metas.add(meta);
+            return this;
+        }
+
         public Filter build() {
-            return new Filter(mods, names, name_regexps, types, features);
+            return new Filter(mods, names, name_regexps, types, features, metas, properties);
         }
     }
 
