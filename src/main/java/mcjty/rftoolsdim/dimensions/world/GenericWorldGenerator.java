@@ -1,17 +1,19 @@
 package mcjty.rftoolsdim.dimensions.world;
 
-import mcjty.rftoolsdim.blocks.ModBlocks;
 import mcjty.lib.varia.Logging;
 import mcjty.rftoolsdim.RFToolsDim;
+import mcjty.rftoolsdim.blocks.ModBlocks;
+import mcjty.rftoolsdim.config.WorldgenConfiguration;
 import mcjty.rftoolsdim.dimensions.DimensionInformation;
 import mcjty.rftoolsdim.dimensions.RfToolsDimensionManager;
-import mcjty.rftoolsdim.config.WorldgenConfiguration;
+import mcjty.rftoolsdim.dimensions.dimlets.DimletRandomizer;
 import mcjty.rftoolsdim.dimensions.dimlets.types.Patreons;
 import mcjty.rftoolsdim.dimensions.types.FeatureType;
 import mcjty.rftoolsdim.dimensions.types.TerrainType;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
@@ -461,14 +463,10 @@ public class GenericWorldGenerator implements IWorldGenerator {
 
         world.setBlockState(new BlockPos(midx + 2, starty + 1, midz - 2), Blocks.chest.getDefaultState(), 2);
         TileEntityChest chest = (TileEntityChest) world.getTileEntity(new BlockPos(midx+2, starty+1, midz-2));
-//        for (int i = 0 ; i < random.nextInt(2)+2 ; i++) {
-//            chest.setInventorySlotContents(random.nextInt(chest.getSizeInventory()), new ItemStack(DimletSetup.unknownDimlet, random.nextInt(6) + 3));
-//        }
-//        WeightedRandomSelector.Distribution<Integer> goodDistribution = DimletRandomizer.randomDimlets.createDistribution(0.01f);
-//        for (int i = 0 ; i < random.nextInt(2)+1 ; i++) {
-//            DimletKey randomDimlet = DimletRandomizer.getRandomDimlet(goodDistribution, random);
-//            chest.setInventorySlotContents(random.nextInt(chest.getSizeInventory()), KnownDimletConfiguration.makeKnownDimlet(randomDimlet, world));
-//        }
+        for (int i = 0 ; i < random.nextInt(4)+3 ; i++) {
+            ItemStack stack = DimletRandomizer.getRandomPart(random);
+            chest.setInventorySlotContents(random.nextInt(chest.getSizeInventory()), stack);
+        }
 
 //        WeightedRandomSelector.Distribution<Integer> bestDistribution = DimletRandomizer.randomDimlets.createDistribution(0.15f);
 //        EntityItemFrame frame1 = spawnItemFrame(world, midx - 1, starty + 2, midz + 2);
