@@ -6,6 +6,7 @@ import mcjty.lib.varia.BlockPosTools;
 import mcjty.lib.varia.Logging;
 import mcjty.rftoolsdim.config.GeneralConfiguration;
 import mcjty.rftoolsdim.config.PowerConfiguration;
+import mcjty.rftoolsdim.config.Settings;
 import mcjty.rftoolsdim.config.WorldgenConfiguration;
 import mcjty.rftoolsdim.dimensions.description.*;
 import mcjty.rftoolsdim.dimensions.dimlets.*;
@@ -1020,17 +1021,17 @@ public class DimensionInformation {
     }
 
     private int calculateCostFactor(DimletKey key) {
-        DimletEntry dimletEntry = KnownDimletConfiguration.getEntry(key);
-        if (dimletEntry == null) {
+        Settings settings = KnownDimletConfiguration.getSettings(key);
+        if (settings == null) {
             Logging.logError("Something went wrong for key: " + key);
             return 0;
         }
-        return (int) (dimletEntry.getRfMaintainCost() * PowerConfiguration.afterCreationCostFactor);
+        return (int) (settings.getMaintainCost() * PowerConfiguration.afterCreationCostFactor);
     }
 
     private void addToCost(DimletKey key) {
-        DimletEntry dimletEntry = KnownDimletConfiguration.getEntry(key);
-        int rfMaintainCost = dimletEntry.getRfMaintainCost();
+        Settings settings = KnownDimletConfiguration.getSettings(key);
+        int rfMaintainCost = settings.getMaintainCost();
 
         if (rfMaintainCost < 0) {
             int nominalCost = descriptor.calculateNominalCost();

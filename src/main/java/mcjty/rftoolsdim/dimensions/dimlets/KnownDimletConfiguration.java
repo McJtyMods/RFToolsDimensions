@@ -33,9 +33,9 @@ public class KnownDimletConfiguration {
     private static Set<DimletKey> craftableDimlets = new HashSet<>();
     private static Map<DimletKey, Settings> knownDimlets = new HashMap<>();
 
-    public static DimletEntry getEntry(DimletKey key) {
-        // @todo
-        return new DimletEntry(key, 10, 1, 10, 1, false, false);
+    public static Settings getSettings(DimletKey key) {
+        initDimlets();
+        return knownDimlets.get(key);
     }
 
     public static Map<DimletKey, Settings> getKnownDimlets() {
@@ -294,12 +294,8 @@ public class KnownDimletConfiguration {
         return craftableDimlets;
     }
 
-    public static boolean isSeedDimlet(DimletEntry entry) {
-        if (entry == null) {
-            return false;
-        }
-        // @todo
-        return entry.getKey().getType() == DimletType.DIMLET_SPECIAL && "Seed".equals(entry.getKey().getId());
+    public static boolean isSeedDimlet(DimletKey key) {
+        return key.getType() == DimletType.DIMLET_SPECIAL && "Seed".equals(key.getId());
     }
 
     public static String getDisplayName(DimletKey key) {

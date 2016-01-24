@@ -5,11 +5,11 @@ import mcjty.lib.container.InventoryHelper;
 import mcjty.lib.entity.GenericTileEntity;
 import mcjty.lib.network.Argument;
 import mcjty.lib.varia.Logging;
+import mcjty.rftoolsdim.config.Settings;
 import mcjty.rftoolsdim.dimensions.DimensionInformation;
 import mcjty.rftoolsdim.config.GeneralConfiguration;
 import mcjty.rftoolsdim.dimensions.RfToolsDimensionManager;
 import mcjty.rftoolsdim.dimensions.description.DimensionDescriptor;
-import mcjty.rftoolsdim.dimensions.dimlets.DimletEntry;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletKey;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletObjectMapping;
 import mcjty.rftoolsdim.dimensions.dimlets.KnownDimletConfiguration;
@@ -152,8 +152,8 @@ public class DimensionEnscriberTileEntity extends GenericTileEntity implements D
             ItemStack stack = inventoryHelper.getStackInSlot(i + DimensionEnscriberContainer.SLOT_DIMLETS);
             if (stack != null && stack.stackSize > 0) {
                 DimletKey key = KnownDimletConfiguration.getDimletKey(stack);
-                DimletEntry entry = KnownDimletConfiguration.getEntry(key);
-                if (entry != null) {
+                Settings settings = KnownDimletConfiguration.getSettings(key);
+                if (settings != null) {
                     // Make sure the dimlet is not blacklisted.
                     descriptors.add(key);
                     NBTTagCompound tagCompound = stack.getTagCompound();

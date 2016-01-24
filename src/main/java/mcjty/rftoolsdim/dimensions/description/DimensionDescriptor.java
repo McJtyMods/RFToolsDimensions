@@ -1,8 +1,8 @@
 package mcjty.rftoolsdim.dimensions.description;
 
 import mcjty.rftoolsdim.config.PowerConfiguration;
+import mcjty.rftoolsdim.config.Settings;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletCosts;
-import mcjty.rftoolsdim.dimensions.dimlets.DimletEntry;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletKey;
 import mcjty.rftoolsdim.dimensions.dimlets.KnownDimletConfiguration;
 import mcjty.rftoolsdim.dimensions.dimlets.types.DimletType;
@@ -218,9 +218,9 @@ public class DimensionDescriptor {
 
     private int getCreationCost(DimletType type, DimletKey key) {
         int cost = 0;
-        DimletEntry entry = KnownDimletConfiguration.getEntry(key);
-        if (entry != null) {
-            cost = entry.getRfCreateCost();
+        Settings settings = KnownDimletConfiguration.getSettings(key);
+        if (settings != null) {
+            cost = settings.getCreateCost();
             if (cost == -1) {
                 cost = type.dimletType.getCreationCost();
             }
@@ -259,9 +259,9 @@ public class DimensionDescriptor {
 
     private int getMaintenanceCost(DimletType type, DimletKey key) {
         int cost = 0;
-        DimletEntry entry = KnownDimletConfiguration.getEntry(key);
-        if (entry != null) {
-            cost = entry.getRfMaintainCost();
+        Settings settings = KnownDimletConfiguration.getSettings(key);
+        if (settings != null) {
+            cost = settings.getMaintainCost();
             if (cost == -1) {
                 cost = type.dimletType.getMaintenanceCost();
             }
@@ -327,9 +327,9 @@ public class DimensionDescriptor {
 
     private int getTickCost(DimletType type, DimletKey key) {
         int cost = 0;
-        DimletEntry entry = KnownDimletConfiguration.getEntry(key);
-        if (entry != null) {
-            cost = entry.getTickCost();
+        Settings settings = KnownDimletConfiguration.getSettings(key);
+        if (settings != null) {
+            cost = settings.getTickCost();
             if (cost == -1) {
                 cost = type.dimletType.getTickCost();
             }

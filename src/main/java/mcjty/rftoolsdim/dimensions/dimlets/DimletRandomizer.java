@@ -135,16 +135,16 @@ public class DimletRandomizer {
 
     public static DimletKey getRandomFluidBlock(Random random, boolean forWorldGen) {
         // @todo
-//        setupWeightedRandomList();
-//        return randomLiquidDimlets.select(random);
-        return new DimletKey(DimletType.DIMLET_LIQUID, Blocks.water.getRegistryName()+"@0");
+        setupWeightedRandomList();
+        return randomLiquidDimlets.select(random);
+//        return new DimletKey(DimletType.DIMLET_LIQUID, Blocks.water.getRegistryName()+"@0");
     }
 
     public static DimletKey getRandomMaterialBlock(Random random, boolean forWorldGen) {
         // @todo
-//        setupWeightedRandomList();
-//        return randomMaterialDimlets.select(random);
-        return new DimletKey(DimletType.DIMLET_MATERIAL, Blocks.stone.getRegistryName()+"@0");
+        setupWeightedRandomList();
+        return randomMaterialDimlets.select(random);
+//        return new DimletKey(DimletType.DIMLET_MATERIAL, Blocks.stone.getRegistryName()+"@0");
     }
 
     public static DimletKey getRandomController(Random random, boolean forWorldGen) {

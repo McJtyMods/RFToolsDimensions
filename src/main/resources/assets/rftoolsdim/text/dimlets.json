@@ -109,6 +109,34 @@
   },
   {
     "filter": {
+      "type": "liquid",
+      "name": "water"
+    },
+    "settings": {
+      "rarity": 0,
+      "create": 10,
+      "maintain": 10,
+      "ticks": 10,
+      "worldgen": true,
+      "dimlet": true
+    }
+  },
+  {
+    "filter": {
+      "type": "liquid",
+      "name": "lava"
+    },
+    "settings": {
+      "rarity": 5,
+      "create": 3000,
+      "maintain": 2000,
+      "ticks": 100,
+      "worldgen": true,
+      "dimlet": true
+    }
+  },
+  {
+    "filter": {
       "type": "liquid"
     },
     "settings": {

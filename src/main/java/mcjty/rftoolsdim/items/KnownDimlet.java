@@ -1,7 +1,7 @@
 package mcjty.rftoolsdim.items;
 
 import mcjty.rftoolsdim.RFToolsDim;
-import mcjty.rftoolsdim.dimensions.dimlets.DimletEntry;
+import mcjty.rftoolsdim.config.Settings;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletKey;
 import mcjty.rftoolsdim.dimensions.dimlets.KnownDimletConfiguration;
 import mcjty.rftoolsdim.dimensions.dimlets.types.DimletType;
@@ -99,30 +99,24 @@ public class KnownDimlet extends GenericRFToolsItem {
     public void addInformation(ItemStack itemStack, EntityPlayer player, List<String> list, boolean whatIsThis) {
         super.addInformation(itemStack, player, list, whatIsThis);
         DimletKey key = KnownDimletConfiguration.getDimletKey(itemStack);
-        DimletEntry entry = KnownDimletConfiguration.getEntry(key);
-        if (entry == null) {
-            // Safety. Should not occur.
-            if (KnownDimletConfiguration.isBlacklisted(key)) {
-                list.add(EnumChatFormatting.WHITE + "Dimlet " + key.getType().dimletType.getName() + "." + key.getId());
-                list.add(EnumChatFormatting.RED + "This dimlet is blacklisted!");
-            } else {
-                list.add(EnumChatFormatting.RED + "Something is wrong!");
-                list.add(EnumChatFormatting.RED + "Dimlet with key " + key + " (id " + itemStack.getItemDamage() + ") is missing!");
-            }
+        Settings settings = KnownDimletConfiguration.getSettings(key);
+        if (settings == null) {
+            list.add(EnumChatFormatting.WHITE + "Dimlet " + key.getType().dimletType.getName() + "." + key.getId());
+            list.add(EnumChatFormatting.RED + "This dimlet is blacklisted!");
             return;
         }
 
-        list.add(EnumChatFormatting.BLUE + "Rarity: " + entry.getRarity() + (KnownDimletConfiguration.isCraftable(key) ? " (craftable)" : ""));
-        list.add(EnumChatFormatting.YELLOW + "Create cost: " + entry.getRfCreateCost() + " RF/tick");
-        int maintainCost = entry.getRfMaintainCost();
+        list.add(EnumChatFormatting.BLUE + "Rarity: " + settings.getRarity() + (KnownDimletConfiguration.isCraftable(key) ? " (craftable)" : ""));
+        list.add(EnumChatFormatting.YELLOW + "Create cost: " + settings.getCreateCost() + " RF/tick");
+        int maintainCost = settings.getMaintainCost();
         if (maintainCost < 0) {
             list.add(EnumChatFormatting.YELLOW + "Maintain cost: " + maintainCost + "% RF/tick");
         } else {
             list.add(EnumChatFormatting.YELLOW + "Maintain cost: " + maintainCost + " RF/tick");
         }
-        list.add(EnumChatFormatting.YELLOW + "Tick cost: " + entry.getTickCost() + " ticks");
+        list.add(EnumChatFormatting.YELLOW + "Tick cost: " + settings.getTickCost() + " ticks");
 
-        if (KnownDimletConfiguration.isSeedDimlet(entry)) {
+        if (KnownDimletConfiguration.isSeedDimlet(key)) {
             NBTTagCompound tagCompound = itemStack.getTagCompound();
             if (tagCompound != null && tagCompound.getLong("forcedSeed") != 0) {
                 long forcedSeed = tagCompound.getLong("forcedSeed");
@@ -135,7 +129,7 @@ public class KnownDimlet extends GenericRFToolsItem {
         }
 
         if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
-            for (String info : entry.getKey().getType().dimletType.getInformation()) {
+            for (String info : key.getType().dimletType.getInformation()) {
                 list.add(EnumChatFormatting.WHITE + info);
             }
             // @todo
