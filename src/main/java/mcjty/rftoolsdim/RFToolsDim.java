@@ -8,6 +8,8 @@ import mcjty.rftoolsdim.commands.CommandRftDim;
 import mcjty.rftoolsdim.dimensions.DimensionStorage;
 import mcjty.rftoolsdim.dimensions.ModDimensions;
 import mcjty.rftoolsdim.dimensions.RfToolsDimensionManager;
+import mcjty.rftoolsdim.dimensions.dimlets.DimletRandomizer;
+import mcjty.rftoolsdim.dimensions.dimlets.KnownDimletConfiguration;
 import mcjty.rftoolsdim.items.ModItems;
 import mcjty.rftoolsdim.network.DimensionSyncChannelHandler;
 import mcjty.rftoolsdim.proxy.CommonProxy;
@@ -118,6 +120,8 @@ public class RFToolsDim implements ModBase {
         RfToolsDimensionManager.cleanupDimensionInformation();
         RfToolsDimensionManager.clearInstance();
         DimensionStorage.clearInstance();
+        KnownDimletConfiguration.init();
+        DimletRandomizer.init();
     }
 
     /**

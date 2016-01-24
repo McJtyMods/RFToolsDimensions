@@ -109,7 +109,7 @@ public class StructureDimletType implements IDimletType {
         dimlets = DimensionInformation.extractType(DimletType.DIMLET_STRUCTURE, dimlets);
         if (dimlets.isEmpty()) {
             while (random.nextFloat() < WorldgenConfiguration.randomStructureChance) {
-                DimletKey key = DimletRandomizer.getRandomStructure(random, false);
+                DimletKey key = DimletRandomizer.getRandomStructure(random, true);
                 StructureType structureType = DimletObjectMapping.getStructure(key);
                 if (!structureTypes.contains(structureType) || (structureType == StructureType.STRUCTURE_RECURRENTCOMPLEX)) {
                     dimensionInformation.updateCostFactor(key);

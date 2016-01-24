@@ -44,6 +44,11 @@ public class KnownDimletConfiguration {
         return knownDimlets;
     }
 
+    public static void init() {
+        knownDimlets.clear();
+        craftableDimlets.clear();
+    }
+
     private static void initDimlets() {
         if (!knownDimlets.isEmpty()) {
             return;

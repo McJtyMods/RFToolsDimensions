@@ -4,6 +4,8 @@ import mcjty.lib.varia.Logging;
 import mcjty.rftoolsdim.config.PowerConfiguration;
 import mcjty.rftoolsdim.dimensions.description.DimensionDescriptor;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletKey;
+import mcjty.rftoolsdim.dimensions.dimlets.DimletRandomizer;
+import mcjty.rftoolsdim.dimensions.dimlets.KnownDimletConfiguration;
 import mcjty.rftoolsdim.dimensions.world.GenericWorldProvider;
 import mcjty.rftoolsdim.network.PacketRegisterDimensions;
 import mcjty.rftoolsdim.network.PacketSyncDimensionInfo;
@@ -252,6 +254,8 @@ public class RfToolsDimensionManager extends WorldSavedData {
      * This is executed on the server to the clients.
      */
     public void checkDimletConfig(EntityPlayer player) {
+        KnownDimletConfiguration.init();
+        DimletRandomizer.init();
 //        if (!player.getEntityWorld().isRemote) {
 //            // Send over dimlet configuration to the client so that the client can check that the id's match.
 //            Logging.log("Send validation data to the client");

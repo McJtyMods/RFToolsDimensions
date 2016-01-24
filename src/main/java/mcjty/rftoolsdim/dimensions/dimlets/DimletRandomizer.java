@@ -31,13 +31,25 @@ public class DimletRandomizer {
     public static WeightedRandomSelector<Integer,DimletKey> randomStructureDimlets;
     public static WeightedRandomSelector<Integer,DimletKey> randomEffectDimlets;
     public static WeightedRandomSelector<Integer,DimletKey> randomFeatureDimlets;
+    public static WeightedRandomSelector<Integer,DimletKey> randomTerrainDimlets;
+
+    public static void init() {
+        randomDimlets = null;
+        randomMaterialDimlets = null;
+        randomLiquidDimlets = null;
+        randomMobDimlets = null;
+        randomStructureDimlets = null;
+        randomEffectDimlets = null;
+        randomFeatureDimlets = null;
+        randomTerrainDimlets = null;
+    }
 
     private static void setupWeightedRandomList() {
         if (randomDimlets != null) {
             return;
         }
+
         Map<DimletKey, Settings> knownDimlets = KnownDimletConfiguration.getKnownDimlets();
-        randomDimlets = new WeightedRandomSelector<>();
         float rarity0 = DimletConfiguration.rarity0;
         float rarity1 = DimletConfiguration.rarity1;
         float rarity2 = DimletConfiguration.rarity2;
@@ -45,6 +57,8 @@ public class DimletRandomizer {
         float rarity4 = DimletConfiguration.rarity4;
         float rarity5 = DimletConfiguration.rarity5;
         float rarity6 = DimletConfiguration.rarity6;
+
+        randomDimlets = new WeightedRandomSelector<>();
         setupRarity(randomDimlets, rarity0, rarity1, rarity2, rarity3, rarity4, rarity5, rarity6);
         randomMaterialDimlets = new WeightedRandomSelector<>();
         setupRarity(randomMaterialDimlets, rarity0, rarity1, rarity2, rarity3, rarity4, rarity5, rarity6);
@@ -58,41 +72,35 @@ public class DimletRandomizer {
         setupRarity(randomEffectDimlets, rarity0, rarity1, rarity2, rarity3, rarity4, rarity5, rarity6);
         randomFeatureDimlets = new WeightedRandomSelector<>();
         setupRarity(randomFeatureDimlets, rarity0, rarity1, rarity2, rarity3, rarity4, rarity5, rarity6);
+        randomTerrainDimlets = new WeightedRandomSelector<>();
+        setupRarity(randomTerrainDimlets, rarity0, rarity1, rarity2, rarity3, rarity4, rarity5, rarity6);
 
-
+        // @todo: remove worldgen parameter
         for (Map.Entry<DimletKey, Settings> entry : knownDimlets.entrySet()) {
-            randomDimlets.addItem(entry.getValue().getRarity(), entry.getKey());
             DimletKey key = entry.getKey();
+            Settings settings = KnownDimletConfiguration.getSettings(key);
+            if (settings == null) {
+                continue;
+            }
+            if (!settings.getWorldgen()) {
+                continue;
+            }
+
+            randomDimlets.addItem(entry.getValue().getRarity(), key);
             if (key.getType() == DimletType.DIMLET_MATERIAL) {
-                // Don't add the 'null' material.
-                if (!DimletObjectMapping.DEFAULT_ID.equals(key.getId())) {
-                    randomMaterialDimlets.addItem(entry.getValue().getRarity(), entry.getKey());
-                }
+                randomMaterialDimlets.addItem(entry.getValue().getRarity(), key);
             } else if (key.getType() == DimletType.DIMLET_LIQUID) {
-                // Don't add the 'null' fluid.
-                if (!DimletObjectMapping.DEFAULT_ID.equals(key.getId())) {
-                    randomLiquidDimlets.addItem(entry.getValue().getRarity(), entry.getKey());
-                }
+                randomLiquidDimlets.addItem(entry.getValue().getRarity(), key);
             } else if (key.getType() == DimletType.DIMLET_MOB) {
-                // Don't add the 'null' mob.
-                if (!DimletObjectMapping.DEFAULT_ID.equals(key.getId())) {
-                    randomMobDimlets.addItem(entry.getValue().getRarity(), entry.getKey());
-                }
+                randomMobDimlets.addItem(entry.getValue().getRarity(), key);
             } else if (key.getType() == DimletType.DIMLET_EFFECT) {
-                // Don't add the 'null' effect.
-                if (!DimletObjectMapping.NONE_ID.equals(key.getId())) {
-                    randomEffectDimlets.addItem(entry.getValue().getRarity(), entry.getKey());
-                }
+                randomEffectDimlets.addItem(entry.getValue().getRarity(), key);
             } else if (key.getType() == DimletType.DIMLET_FEATURE) {
-                // Don't add the 'null' feature.
-                if (!DimletObjectMapping.NONE_ID.equals(key.getId())) {
-                    randomFeatureDimlets.addItem(entry.getValue().getRarity(), entry.getKey());
-                }
+                randomFeatureDimlets.addItem(entry.getValue().getRarity(), key);
             } else if (key.getType() == DimletType.DIMLET_STRUCTURE) {
-                // Don't add the 'null' structure.
-                if (!DimletObjectMapping.NONE_ID.equals(key.getId())) {
-                    randomStructureDimlets.addItem(entry.getValue().getRarity(), entry.getKey());
-                }
+                randomStructureDimlets.addItem(entry.getValue().getRarity(), key);
+            } else if (key.getType() == DimletType.DIMLET_TERRAIN) {
+                randomTerrainDimlets.addItem(entry.getValue().getRarity(), key);
             }
         }
     }
@@ -110,8 +118,14 @@ public class DimletRandomizer {
 
     public static DimletKey getRandomTerrain(Random random, boolean forWorldGen) {
         // @todo
-        TerrainType terrainType = TerrainType.values()[random.nextInt(TerrainType.values().length)];
-        return new DimletKey(DimletType.DIMLET_TERRAIN, terrainType.getId());
+        while (true) {
+            TerrainType terrainType = TerrainType.values()[random.nextInt(TerrainType.values().length)];
+            DimletKey key = new DimletKey(DimletType.DIMLET_TERRAIN, terrainType.getId());
+            Settings settings = KnownDimletConfiguration.getSettings(key);
+            if (settings != null && (!forWorldGen || settings.getWorldgen())) {
+                return key;
+            }
+        }
     }
 
     public static DimletKey getRandomFeature(Random random, boolean forWorldGen) {

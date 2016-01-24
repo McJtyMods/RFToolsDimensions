@@ -169,7 +169,7 @@ public class FeatureDimletType implements IDimletType {
         dimlets = DimensionInformation.extractType(DimletType.DIMLET_FEATURE, dimlets);
         if (dimlets.isEmpty()) {
             while (random.nextFloat() < WorldgenConfiguration.randomFeatureChance) {
-                DimletKey key = DimletRandomizer.getRandomFeature(random, false);
+                DimletKey key = DimletRandomizer.getRandomFeature(random, true);
                 FeatureType featureType = DimletObjectMapping.getFeature(key);
                 if (!featureTypes.contains(featureType) && featureType.isTerrainSupported(terrainType)) {
                     dimensionInformation.updateCostFactor(key);
