@@ -1,5 +1,6 @@
 package mcjty.rftoolsdim;
 
+import mcjty.lib.varia.GlobalCoordinate;
 import mcjty.lib.varia.Logging;
 import mcjty.rftoolsdim.config.GeneralConfiguration;
 import mcjty.rftoolsdim.config.PowerConfiguration;
@@ -19,6 +20,7 @@ import net.minecraft.entity.passive.IAnimals;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.NetHandlerPlayServer;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
@@ -118,23 +120,23 @@ public class ForgeEventHandlers {
             }
         }
 
-//        if (event.entity instanceof IMob) {
-//            BlockPos coordinate = new BlockPos((int) event.entity.posX, (int) event.entity.posY, (int) event.entity.posZ);
-//            if (PeacefulAreaManager.isPeaceful(new GlobalCoordinate(coordinate, id))) {
-//                event.setResult(Event.Result.DENY);
-//                Logging.logDebug("Peaceful manager: Prevented a spawn of " + event.entity.getClass().getName());
-//            } else if (dimensionInformation != null && dimensionInformation.isPeaceful()) {
-//                // RFTools dimension.
-//                event.setResult(Event.Result.DENY);
-//                Logging.logDebug("Peaceful dimension: Prevented a spawn of " + event.entity.getClass().getName());
-//            }
-//        } else if (event.entity instanceof IAnimals) {
-//            if (dimensionInformation != null && dimensionInformation.isNoanimals()) {
-//                // RFTools dimension.
-//                event.setResult(Event.Result.DENY);
-//                Logging.logDebug("Noanimals dimension: Prevented a spawn of " + event.entity.getClass().getName());
-//            }
-//        }
+        if (event.entity instanceof IMob) {
+            BlockPos coordinate = new BlockPos((int) event.entity.posX, (int) event.entity.posY, (int) event.entity.posZ);
+            /* if (PeacefulAreaManager.isPeaceful(new GlobalCoordinate(coordinate, id))) {
+                event.setResult(Event.Result.DENY);
+                Logging.logDebug("Peaceful manager: Prevented a spawn of " + event.entity.getClass().getName());
+            } else */ if (dimensionInformation != null && dimensionInformation.isPeaceful()) {
+                // RFTools dimension.
+                event.setResult(Event.Result.DENY);
+                Logging.logDebug("Peaceful dimension: Prevented a spawn of " + event.entity.getClass().getName());
+            }
+        } else if (event.entity instanceof IAnimals) {
+            if (dimensionInformation != null && dimensionInformation.isNoanimals()) {
+                // RFTools dimension.
+                event.setResult(Event.Result.DENY);
+                Logging.logDebug("Noanimals dimension: Prevented a spawn of " + event.entity.getClass().getName());
+            }
+        }
         // @todo
     }
 
