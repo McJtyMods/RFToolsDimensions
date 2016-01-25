@@ -184,7 +184,7 @@ public class DimletWorkbenchTileEntity extends GenericEnergyReceiverTileEntity i
             if (ModItems.knownDimletItem.equals(stack.getItem())) {
                 DimletKey key = KnownDimletConfiguration.getDimletKey(stack);
                 Settings settings = KnownDimletConfiguration.getSettings(key);
-                if (settings != null && settings.getDimlet()) {
+                if (settings != null && settings.isDimlet()) {
                     if (!KnownDimletConfiguration.isCraftable(key)) {
                         extracting = 64;
                         idToExtract = key;

@@ -103,7 +103,7 @@ public class MaterialDimletType implements IDimletType {
         int meta = essenceCompound.getInteger("meta");
         DimletKey key = new DimletKey(DimletType.DIMLET_MATERIAL, block.getRegistryName() + "@" + meta);
         Settings settings = KnownDimletConfiguration.getSettings(key);
-        if (settings == null || !settings.getDimlet()) {
+        if (settings == null || !settings.isDimlet()) {
             return null;
         }
         return key;

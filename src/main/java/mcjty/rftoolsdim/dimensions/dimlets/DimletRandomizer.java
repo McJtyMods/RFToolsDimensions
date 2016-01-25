@@ -5,7 +5,6 @@ import mcjty.rftoolsdim.config.DimletConfiguration;
 import mcjty.rftoolsdim.config.Settings;
 import mcjty.rftoolsdim.dimensions.dimlets.types.DimletType;
 import mcjty.rftoolsdim.dimensions.types.ControllerType;
-import mcjty.rftoolsdim.dimensions.types.TerrainType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.biome.BiomeGenBase;
 
@@ -82,7 +81,7 @@ public class DimletRandomizer {
             if (settings == null) {
                 continue;
             }
-            if (!settings.getWorldgen()) {
+            if (!settings.isWorldgen()) {
                 continue;
             }
 

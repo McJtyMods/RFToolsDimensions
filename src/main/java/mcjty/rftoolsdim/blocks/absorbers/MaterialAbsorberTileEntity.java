@@ -113,7 +113,7 @@ public class MaterialAbsorberTileEntity extends GenericTileEntity implements ITi
         int meta = block.getMetaFromState(state);
         DimletKey key = new DimletKey(DimletType.DIMLET_MATERIAL, block.getRegistryName() + "@" + meta);
         Settings settings = KnownDimletConfiguration.getSettings(key);
-        return settings != null && settings.getDimlet();
+        return settings != null && settings.isDimlet();
     }
 
     @Override

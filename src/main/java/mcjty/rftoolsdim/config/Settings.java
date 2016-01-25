@@ -78,8 +78,8 @@ public class Settings {
         return createCost;
     }
 
-    public Boolean getDimlet() {
-        return dimlet;
+    public boolean isDimlet() {
+        return dimlet == null ? false : dimlet;
     }
 
     public Integer getMaintainCost() {
@@ -94,8 +94,8 @@ public class Settings {
         return tickCost;
     }
 
-    public Boolean getWorldgen() {
-        return worldgen;
+    public boolean isWorldgen() {
+        return worldgen == null ? false : worldgen;
     }
 
     public static class Builder {
