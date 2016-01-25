@@ -1,18 +1,15 @@
 package mcjty.rftoolsdim.dimensions.description;
 
-import net.minecraft.entity.EntityList;
-import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.Entity;
 
 public class MobDescriptor {
-    private final String className;
-    private Class<? extends EntityLiving> entityClass;
+    private Class<? extends Entity> entityClass;
     private final int spawnChance;
     private final int minGroup;
     private final int maxGroup;
     private final int maxLoaded;
 
-    public MobDescriptor(String className, Class<? extends EntityLiving> entityClass, int spawnChance, int minGroup, int maxGroup, int maxLoaded) {
-        this.className = className;
+    public MobDescriptor(Class<? extends Entity> entityClass, int spawnChance, int minGroup, int maxGroup, int maxLoaded) {
         this.entityClass = entityClass;
         this.spawnChance = spawnChance;
         this.minGroup = minGroup;
@@ -20,14 +17,7 @@ public class MobDescriptor {
         this.maxLoaded = maxLoaded;
     }
 
-    public Class<? extends EntityLiving> getEntityClass() {
-        if (entityClass == null) {
-            Class clazz = (Class) EntityList.stringToClassMapping.get(className);
-            if (clazz == null || !EntityLiving.class.isAssignableFrom(clazz)) {
-                return null;
-            }
-            return clazz;
-        }
+    public Class<? extends Entity> getEntityClass() {
         return entityClass;
     }
 

@@ -304,7 +304,7 @@
   {
     "filter": {
       "type": "mob",
-      "name": [ "EntityHorse", "SnowMan", "MushroomCow", "Chicken", "Rabbit", "Squid", "Ozelot", "Cow", "Slime", "Pig", "Bat" ]
+      "name": [ "EntityHorse", "SnowMan", "MushroomCow", "Chicken", "Rabbit", "Squid", "Ozelot", "Cow", "Slime", "Pig", "Bat", "Wolf" ]
     },
     "settings": {
       "rarity": 3,

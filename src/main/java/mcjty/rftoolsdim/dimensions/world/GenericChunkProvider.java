@@ -11,6 +11,7 @@ import mcjty.rftoolsdim.dimensions.world.mapgen.*;
 import mcjty.rftoolsdim.dimensions.world.terrain.*;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.monster.IMob;
@@ -200,8 +201,8 @@ public class GenericChunkProvider implements IChunkProvider {
         extraSpawns = new ArrayList<>();
         extraSpawnsMax = new ArrayList<>();
         for (MobDescriptor mob : dimensionInformation.getExtraMobs()) {
-            Class<? extends EntityLiving> entityClass = mob.getEntityClass();
-            extraSpawns.add(new BiomeGenBase.SpawnListEntry(entityClass, mob.getSpawnChance(), mob.getMinGroup(), mob.getMaxGroup()));
+            Class<? extends Entity> entityClass = mob.getEntityClass();
+            extraSpawns.add(new BiomeGenBase.SpawnListEntry((Class<? extends EntityLiving>) entityClass, mob.getSpawnChance(), mob.getMinGroup(), mob.getMaxGroup()));
             extraSpawnsMax.add(mob.getMaxLoaded());
         }
 

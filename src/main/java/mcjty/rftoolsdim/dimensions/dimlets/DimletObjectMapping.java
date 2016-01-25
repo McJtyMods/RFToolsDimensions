@@ -1,5 +1,6 @@
 package mcjty.rftoolsdim.dimensions.dimlets;
 
+import mcjty.rftoolsdim.config.MobConfiguration;
 import mcjty.rftoolsdim.dimensions.description.MobDescriptor;
 import mcjty.rftoolsdim.dimensions.description.SkyDescriptor;
 import mcjty.rftoolsdim.dimensions.description.WeatherDescriptor;
@@ -7,8 +8,6 @@ import mcjty.rftoolsdim.dimensions.dimlets.types.DimletType;
 import mcjty.rftoolsdim.dimensions.types.*;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityList;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.BiomeGenBase;
@@ -113,8 +112,11 @@ public class DimletObjectMapping {
 
     public static MobDescriptor getMob(DimletKey dimlet) {
         if (DimletType.DIMLET_MOB.equals(dimlet.getType())) {
-            Class<? extends Entity> entityClass = EntityList.stringToClassMapping.get(dimlet.getId());
-            // @todo
+            MobDescriptor descriptor = MobConfiguration.mobClasses.get(dimlet.getId());
+            if (descriptor == null) {
+                return MobConfiguration.defaultDescriptor;
+            }
+            return descriptor;
         }
         return null;
     }
