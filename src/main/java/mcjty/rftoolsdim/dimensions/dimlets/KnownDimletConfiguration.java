@@ -29,6 +29,7 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 
+import java.lang.reflect.Modifier;
 import java.util.*;
 
 public class KnownDimletConfiguration {
@@ -80,7 +81,7 @@ public class KnownDimletConfiguration {
 
     private static void initMobDimlet(Map.Entry<String, Class<? extends Entity>> entry) {
         Class<? extends Entity> entityClass = entry.getValue();
-        if (EntityLivingBase.class.isAssignableFrom(entityClass)) {
+        if (isValidMobClass(entityClass)) {
             DimletKey key = new DimletKey(DimletType.DIMLET_MOB, entry.getKey());
             initDimlet(key, RFToolsTools.findModID(entityClass));
         }
@@ -162,7 +163,7 @@ public class KnownDimletConfiguration {
 
     private static void dumpMob(Map.Entry<String, Class<? extends Entity>> entry) {
         Class<? extends Entity> entityClass = entry.getValue();
-        if (EntityLivingBase.class.isAssignableFrom(entityClass)) {
+        if (isValidMobClass(entityClass)) {
             DimletKey key = new DimletKey(DimletType.DIMLET_MOB, entry.getKey());
             String mod = RFToolsTools.findModID(entityClass);
             Settings settings = DimletRules.getSettings(key, mod);
@@ -173,6 +174,16 @@ public class KnownDimletConfiguration {
             String readableName = StatCollector.translateToLocal("entity." + name + ".name");
             Logging.log(key + " (" + name + ", " + readableName + "): " + settings.toString());
         }
+    }
+
+    private static boolean isValidMobClass(Class<? extends Entity> entityClass) {
+        if (!EntityLivingBase.class.isAssignableFrom(entityClass)) {
+            return false;
+        }
+        if (Modifier.isAbstract(entityClass.getModifiers())) {
+            return false;
+        }
+        return true;
     }
 
     public static void dumpBlocks() {
