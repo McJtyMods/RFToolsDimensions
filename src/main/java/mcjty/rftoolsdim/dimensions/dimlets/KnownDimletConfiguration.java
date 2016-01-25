@@ -9,14 +9,19 @@ import mcjty.rftoolsdim.dimensions.description.MobDescriptor;
 import mcjty.rftoolsdim.dimensions.dimlets.types.DimletType;
 import mcjty.rftoolsdim.dimensions.types.*;
 import mcjty.rftoolsdim.items.ModItems;
+import mcjty.rftoolsdim.varia.RFToolsTools;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityList;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.ChestGenHooks;
@@ -52,53 +57,123 @@ public class KnownDimletConfiguration {
             return;
         }
 
-        for (TerrainType type : TerrainType.values()) {
-            initDimlet(new DimletKey(DimletType.DIMLET_TERRAIN, type.getId()), RFToolsDim.MODID);
-        }
-        for (ControllerType type : ControllerType.values()) {
-            initDimlet(new DimletKey(DimletType.DIMLET_CONTROLLER, type.getId()), RFToolsDim.MODID);
-        }
-        for (FeatureType type : FeatureType.values()) {
-            initDimlet(new DimletKey(DimletType.DIMLET_FEATURE, type.getId()), RFToolsDim.MODID);
-        }
-        for (EffectType type : EffectType.values()) {
-            initDimlet(new DimletKey(DimletType.DIMLET_EFFECT, type.getId()), RFToolsDim.MODID);
-        }
-        for (StructureType type : StructureType.values()) {
-            initDimlet(new DimletKey(DimletType.DIMLET_STRUCTURE, type.getId()), RFToolsDim.MODID);
-        }
         for (int i = 0 ; i <= 9 ; i++) {
             initDimlet(new DimletKey(DimletType.DIMLET_DIGIT, Integer.toString(i)), RFToolsDim.MODID);
         }
-
-        BiomeGenBase[] biomeGenArray = BiomeGenBase.getBiomeGenArray();
-        for (BiomeGenBase biome : biomeGenArray) {
-            if (biome != null) {
-                String name = biome.biomeName;
-                if (name != null && !name.isEmpty()) {
-                    DimletKey key = new DimletKey(DimletType.DIMLET_BIOME, biome.biomeName);
-                    initDimlet(key, "minecraft");
-                }
-            }
-        }
-
-        Map<String,Fluid> fluidMap = FluidRegistry.getRegisteredFluids();
-        for (Map.Entry<String,Fluid> me : fluidMap.entrySet()) {
-            if (me.getValue().canBePlacedInWorld()) {
-                String name = me.getKey();
-                if (name != null && !name.isEmpty()) {
-                    Block block = me.getValue().getBlock();
-                    if (block != null) {
-                        ResourceLocation nameForObject = Block.blockRegistry.getNameForObject(block);
-                        String mod = nameForObject.getResourceDomain();
-                        DimletKey key = new DimletKey(DimletType.DIMLET_LIQUID, block.getRegistryName() + "@0");
-                        initDimlet(key, mod);
-                    }
-                }
-            }
-        }
-
+        Arrays.stream(TerrainType.values()).forEach(t -> initDimlet(new DimletKey(DimletType.DIMLET_TERRAIN, t.getId()), RFToolsDim.MODID));
+        Arrays.stream(ControllerType.values()).forEach(t -> initDimlet(new DimletKey(DimletType.DIMLET_CONTROLLER, t.getId()), RFToolsDim.MODID));
+        Arrays.stream(FeatureType.values()).forEach(t -> initDimlet(new DimletKey(DimletType.DIMLET_FEATURE, t.getId()), RFToolsDim.MODID));
+        Arrays.stream(EffectType.values()).forEach(t -> initDimlet(new DimletKey(DimletType.DIMLET_EFFECT, t.getId()), RFToolsDim.MODID));
+        Arrays.stream(StructureType.values()).forEach(t -> initDimlet(new DimletKey(DimletType.DIMLET_STRUCTURE, t.getId()), RFToolsDim.MODID));
+        Arrays.stream(BiomeGenBase.getBiomeGenArray()).filter(Objects::nonNull).forEach(KnownDimletConfiguration::initBiomeDimlet);
+        EntityList.stringToClassMapping.entrySet().stream().forEach(KnownDimletConfiguration::initMobDimlet);
+        FluidRegistry.getRegisteredFluids().entrySet().stream().forEach(KnownDimletConfiguration::initFluidDimlet);
         Block.blockRegistry.forEach(KnownDimletConfiguration::initMaterialDimlet);
+    }
+
+    private static void initBiomeDimlet(BiomeGenBase biome) {
+        String name = biome.biomeName;
+        if (name != null && !name.isEmpty()) {
+            DimletKey key = new DimletKey(DimletType.DIMLET_BIOME, biome.biomeName);
+            initDimlet(key, RFToolsTools.findModID(biome));
+        }
+    }
+
+    private static void initMobDimlet(Map.Entry<String, Class<? extends Entity>> entry) {
+        Class<? extends Entity> entityClass = entry.getValue();
+        if (entityClass.isInstance(EntityLivingBase.class)) {
+            DimletKey key = new DimletKey(DimletType.DIMLET_MOB, entry.getKey());
+            initDimlet(key, RFToolsTools.findModID(entityClass));
+        }
+    }
+
+    private static void initFluidDimlet(Map.Entry<String, Fluid> me) {
+        if (me.getValue().canBePlacedInWorld()) {
+            String name = me.getKey();
+            if (name != null && !name.isEmpty()) {
+                Block block = me.getValue().getBlock();
+                if (block != null) {
+                    ResourceLocation nameForObject = Block.blockRegistry.getNameForObject(block);
+                    String mod = nameForObject.getResourceDomain();
+                    DimletKey key = new DimletKey(DimletType.DIMLET_LIQUID, block.getRegistryName() + "@0");
+                    initDimlet(key, mod);
+                }
+            }
+        }
+    }
+
+    private static void initDimlet(DimletKey key, String mod) {
+        Settings settings = DimletRules.getSettings(key, mod);
+        if (!settings.isBlacklisted()) {
+            knownDimlets.put(key, settings);// new DimletEntry(key, settings));
+        }
+    }
+
+    private static void initMaterialDimlet(Block block) {
+        if (block instanceof BlockLiquid) {
+            return;
+        }
+        Set<Filter.Feature> features = EnumSet.noneOf(Filter.Feature.class);
+
+        ItemStack stack = new ItemStack(block, 1, OreDictionary.WILDCARD_VALUE);
+        int[] iDs = null;
+        if (stack.getItem() != null) {
+            iDs = OreDictionary.getOreIDs(stack);
+        }
+        if (iDs != null && iDs.length > 0) {
+            features.add(Filter.Feature.OREDICT);
+        }
+        if (block instanceof BlockFalling) {
+            features.add(Filter.Feature.FALLING);
+        }
+        if (block.hasTileEntity(block.getDefaultState())) {
+            features.add(Filter.Feature.TILEENTITY);
+        }
+        if (block instanceof IPlantable) {
+            features.add(Filter.Feature.PLANTABLE);
+        }
+        if (!block.isFullBlock()) {
+            features.add(Filter.Feature.NOFULLBLOCK);
+        }
+
+        ResourceLocation nameForObject = Block.blockRegistry.getNameForObject(block);
+        String mod = nameForObject.getResourceDomain();
+
+        for (IBlockState state : block.getBlockState().getValidStates()) {
+            int meta = state.getBlock().getMetaFromState(state);
+            List<IProperty> propertyNames = new ArrayList<>(state.getPropertyNames());
+            propertyNames.sort((o1, o2) -> o1.getName().compareTo(o2.getName()));
+
+            ImmutableMap<IProperty, Comparable> properties = state.getProperties();
+            Map<String, String> props = new HashMap<>();
+            for (Map.Entry<IProperty, Comparable> entry : properties.entrySet()) {
+                props.put(entry.getKey().getName(), entry.getValue().toString());
+            }
+            DimletKey key = new DimletKey(DimletType.DIMLET_MATERIAL, block.getRegistryName() + "@" + meta);
+            Settings settings = DimletRules.getSettings(key, mod, features, props);
+            if (!settings.isBlacklisted()) {
+                knownDimlets.put(key, settings);
+            }
+        }
+    }
+
+    public static void dumpMobs() {
+        EntityList.stringToClassMapping.entrySet().stream().forEach(KnownDimletConfiguration::dumpMob);
+    }
+
+    private static void dumpMob(Map.Entry<String, Class<? extends Entity>> entry) {
+        Class<? extends Entity> entityClass = entry.getValue();
+        if (entityClass.isInstance(EntityLivingBase.class)) {
+            DimletKey key = new DimletKey(DimletType.DIMLET_MOB, entry.getKey());
+            String mod = RFToolsTools.findModID(entityClass);
+            Settings settings = DimletRules.getSettings(key, mod);
+            String name = EntityList.classToStringMapping.get(entityClass);
+            if (name == null) {
+                name = "generic";
+            }
+            String readableName = StatCollector.translateToLocal("entity." + name + ".name");
+            Logging.log(key + " (" + name + ", " + readableName + "): " + settings.toString());
+        }
     }
 
     public static void dumpBlocks() {
@@ -177,60 +252,6 @@ public class KnownDimletConfiguration {
 
     }
 
-    private static void initDimlet(DimletKey key, String mod) {
-        Settings settings = DimletRules.getSettings(key, mod);
-        if (!settings.isBlacklisted()) {
-            knownDimlets.put(key, settings);// new DimletEntry(key, settings));
-        }
-    }
-
-    private static void initMaterialDimlet(Block block) {
-        if (block instanceof BlockLiquid) {
-            return;
-        }
-        Set<Filter.Feature> features = EnumSet.noneOf(Filter.Feature.class);
-
-        ItemStack stack = new ItemStack(block, 1, OreDictionary.WILDCARD_VALUE);
-        int[] iDs = null;
-        if (stack.getItem() != null) {
-            iDs = OreDictionary.getOreIDs(stack);
-        }
-        if (iDs != null && iDs.length > 0) {
-            features.add(Filter.Feature.OREDICT);
-        }
-        if (block instanceof BlockFalling) {
-            features.add(Filter.Feature.FALLING);
-        }
-        if (block.hasTileEntity(block.getDefaultState())) {
-            features.add(Filter.Feature.TILEENTITY);
-        }
-        if (block instanceof IPlantable) {
-            features.add(Filter.Feature.PLANTABLE);
-        }
-        if (!block.isFullBlock()) {
-            features.add(Filter.Feature.NOFULLBLOCK);
-        }
-
-        ResourceLocation nameForObject = Block.blockRegistry.getNameForObject(block);
-        String mod = nameForObject.getResourceDomain();
-
-        for (IBlockState state : block.getBlockState().getValidStates()) {
-            int meta = state.getBlock().getMetaFromState(state);
-            List<IProperty> propertyNames = new ArrayList<>(state.getPropertyNames());
-            propertyNames.sort((o1, o2) -> o1.getName().compareTo(o2.getName()));
-
-            ImmutableMap<IProperty, Comparable> properties = state.getProperties();
-            Map<String, String> props = new HashMap<>();
-            for (Map.Entry<IProperty, Comparable> entry : properties.entrySet()) {
-                props.put(entry.getKey().getName(), entry.getValue().toString());
-            }
-            DimletKey key = new DimletKey(DimletType.DIMLET_MATERIAL, block.getRegistryName() + "@" + meta);
-            Settings settings = DimletRules.getSettings(key, mod, features, props);
-            if (!settings.isBlacklisted()) {
-                knownDimlets.put(key, settings);//new DimletEntry(key, settings));
-            }
-        }
-    }
 
 
     public static ItemStack getDimletStack(DimletKey key) {
@@ -326,11 +347,11 @@ public class KnownDimletConfiguration {
                 }
                 break;
             case DIMLET_MOB:
-                MobDescriptor mob = DimletObjectMapping.getMob(key);
-                if (mob != null) {
-                    return "mob"; //@todo
+                Class<? extends Entity> entityClass = EntityList.stringToClassMapping.get(key.getId());
+                if (entityClass == null) {
+                    return "<Unknown>";
                 }
-                break;
+                return StatCollector.translateToLocal("entity." + key.getId() + ".name");
             case DIMLET_SKY:
                 return "sky"; //@todo
             case DIMLET_STRUCTURE:

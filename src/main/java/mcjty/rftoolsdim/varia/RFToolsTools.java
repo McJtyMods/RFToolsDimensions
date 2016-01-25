@@ -6,7 +6,14 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.play.server.S29PacketSoundEffect;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.ModContainer;
 import org.apache.commons.lang3.StringUtils;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.util.HashMap;
+import java.util.Map;
 
 public class RFToolsTools {
     // Server side: play a sound to all nearby players
@@ -67,5 +74,42 @@ public class RFToolsTools {
         if (!first) {
             buffer.append("\n");
         }
+    }
+
+    public static Map<String, String> modSourceID = null;
+
+    public static String findModID(Object obj) {
+        if (modSourceID == null) {
+            modSourceID = new HashMap<>();
+            for (ModContainer mod : Loader.instance().getModList()) {
+                modSourceID.put(mod.getSource().getName(), mod.getModId());
+            }
+
+            modSourceID.put("1.8.0.jar", "minecraft");
+            modSourceID.put("1.8.8.jar", "minecraft");
+            modSourceID.put("1.8.9.jar", "minecraft");
+            modSourceID.put("Forge", "minecraft");
+        }
+
+
+        String path = obj.getClass().getProtectionDomain().getCodeSource().getLocation().toString();
+        try {
+            path = URLDecoder.decode(path, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            return "<Unknown>";
+        }
+        String modName = "<Unknown>";
+        for (String s : modSourceID.keySet()) {
+            if (path.contains(s)) {
+                modName = modSourceID.get(s);
+                break;
+            }
+        }
+
+        if (modName.equals("Minecraft Coder Pack")) {
+            modName = "minecraft";
+        }
+
+        return modName;
     }
 }

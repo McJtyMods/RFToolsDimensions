@@ -1,5 +1,6 @@
 package mcjty.rftoolsdim.dimensions.dimlets.types;
 
+import mcjty.rftoolsdim.config.WorldgenConfiguration;
 import mcjty.rftoolsdim.dimensions.DimensionInformation;
 import mcjty.rftoolsdim.dimensions.description.MobDescriptor;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletKey;
@@ -76,32 +77,32 @@ public class MobDimletType implements IDimletType {
 
     @Override
     public void constructDimension(List<Pair<DimletKey, List<DimletKey>>> dimlets, Random random, DimensionInformation dimensionInformation) {
-//        List<MobDescriptor> extraMobs = dimensionInformation.getExtraMobs();
-        // @todo
+        List<MobDescriptor> extraMobs = dimensionInformation.getExtraMobs();
 
-//
-//        dimlets = DimensionInformation.extractType(DimletType.DIMLET_MOB, dimlets);
-//        if (dimlets.isEmpty()) {
-//            while (random.nextFloat() < DimletConfiguration.randomExtraMobsChance) {
-//                DimletKey key = DimletRandomizer.getRandomMob(random, false);
-//                dimensionInformation.updateCostFactor(key);
-//                extraMobs.add(DimletObjectMapping.getMob(key));
-//            }
-//        } else {
-//            DimletKey key = dimlets.get(0).getLeft();
-//            MobDescriptor mobDescriptor = DimletObjectMapping.getMob(key);
-//            if (dimlets.size() == 1 && (mobDescriptor == null || mobDescriptor.getEntityClass() == null)) {
-//                // Just default.
-//            } else {
-//                for (Pair<DimletKey, List<DimletKey>> dimletWithModifiers : dimlets) {
-//                    DimletKey modifierKey = dimletWithModifiers.getLeft();
-//                    MobDescriptor descriptor = DimletObjectMapping.getMob(modifierKey);
-//                    if (descriptor != null && descriptor.getEntityClass() != null) {
-//                        extraMobs.add(descriptor);
-//                    }
-//                }
-//            }
-//        }
+        dimlets = DimensionInformation.extractType(DimletType.DIMLET_MOB, dimlets);
+        if (dimlets.isEmpty()) {
+            while (random.nextFloat() < WorldgenConfiguration.randomExtraMobsChance) {
+                DimletKey key = DimletRandomizer.getRandomMob(random, false);
+                if (key != null) {
+                    dimensionInformation.updateCostFactor(key);
+                    extraMobs.add(DimletObjectMapping.getMob(key));
+                }
+            }
+        } else {
+            DimletKey key = dimlets.get(0).getLeft();
+            MobDescriptor mobDescriptor = DimletObjectMapping.getMob(key);
+            if (dimlets.size() == 1 && (mobDescriptor == null || mobDescriptor.getEntityClass() == null)) {
+                // Just default.
+            } else {
+                for (Pair<DimletKey, List<DimletKey>> dimletWithModifiers : dimlets) {
+                    DimletKey modifierKey = dimletWithModifiers.getLeft();
+                    MobDescriptor descriptor = DimletObjectMapping.getMob(modifierKey);
+                    if (descriptor != null && descriptor.getEntityClass() != null) {
+                        extraMobs.add(descriptor);
+                    }
+                }
+            }
+        }
     }
 
     @Override

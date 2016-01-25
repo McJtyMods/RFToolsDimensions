@@ -292,9 +292,9 @@
       "type": "mob"
     },
     "settings": {
-      "rarity": 2,
-      "create": 300,
-      "maintain": 100,
+      "rarity": 4,
+      "create": 500,
+      "maintain": 1000,
       "ticks": 200,
       "worldgen": true,
       "dimlet": true
