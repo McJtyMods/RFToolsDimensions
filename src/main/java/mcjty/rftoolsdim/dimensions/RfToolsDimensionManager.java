@@ -1,17 +1,18 @@
 package mcjty.rftoolsdim.dimensions;
 
 import mcjty.lib.varia.Logging;
+import mcjty.rftoolsdim.config.DimletRules;
 import mcjty.rftoolsdim.config.PowerConfiguration;
 import mcjty.rftoolsdim.dimensions.description.DimensionDescriptor;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletKey;
-import mcjty.rftoolsdim.dimensions.dimlets.DimletRandomizer;
-import mcjty.rftoolsdim.dimensions.dimlets.KnownDimletConfiguration;
 import mcjty.rftoolsdim.dimensions.world.GenericWorldProvider;
+import mcjty.rftoolsdim.network.PackedSyncRules;
 import mcjty.rftoolsdim.network.PacketRegisterDimensions;
 import mcjty.rftoolsdim.network.PacketSyncDimensionInfo;
 import mcjty.rftoolsdim.network.RFToolsDimMessages;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.MinecraftServer;
@@ -254,20 +255,12 @@ public class RfToolsDimensionManager extends WorldSavedData {
      * This is executed on the server to the clients.
      */
     public void checkDimletConfig(EntityPlayer player) {
-        KnownDimletConfiguration.init();
-        DimletRandomizer.init();
-//        if (!player.getEntityWorld().isRemote) {
-//            // Send over dimlet configuration to the client so that the client can check that the id's match.
-//            Logging.log("Send validation data to the client");
-//            DimletMapping mapping = DimletMapping.getDimletMapping(player.getEntityWorld());
-//            Map<Integer, DimletKey> dimlets = new HashMap<Integer, DimletKey>();
-//            for (Integer id : mapping.getIds()) {
-//                dimlets.put(id, mapping.getKey(id));
-//            }
-//
-//            RFToolsMessages.INSTANCE.sendTo(new PacketCheckDimletConfig(dimlets), (EntityPlayerMP) player);
-//        }
-        // @todo
+        if (!player.getEntityWorld().isRemote) {
+            // Send over dimlet configuration to the client so that the client can check that the id's match.
+            Logging.log("Send dimlet rules to the client");
+//            RFToolsDimMessages.INSTANCE.sendTo(new PackedSyncRules(DimletRules.getRules()), (EntityPlayerMP) player);
+            //@todo
+        }
     }
 
     /**

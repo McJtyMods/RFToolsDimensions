@@ -1,6 +1,5 @@
 package mcjty.rftoolsdim;
 
-import mcjty.lib.varia.GlobalCoordinate;
 import mcjty.lib.varia.Logging;
 import mcjty.rftoolsdim.config.GeneralConfiguration;
 import mcjty.rftoolsdim.config.PowerConfiguration;

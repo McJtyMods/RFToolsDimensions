@@ -52,6 +52,10 @@ public class DimletRules {
         return getSettings(key, mod, Collections.emptySet(), Collections.emptyMap());
     }
 
+    public static List<Pair<Filter, Settings>> getRules() {
+        return rules;
+    }
+
     public static void readRules(File directory) {
         File file = new File(directory.getPath() + File.separator + "rftools", "dimlets.json");
         List<Pair<Filter, Settings>> userRules = Collections.emptyList();

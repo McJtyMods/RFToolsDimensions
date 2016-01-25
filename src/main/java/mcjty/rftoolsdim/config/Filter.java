@@ -2,6 +2,8 @@ package mcjty.rftoolsdim.config;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import io.netty.buffer.ByteBuf;
+import mcjty.lib.network.NetworkTools;
 import mcjty.rftoolsdim.dimensions.dimlets.types.DimletType;
 import mcjty.rftoolsdim.varia.JSonTools;
 
@@ -29,6 +31,42 @@ public class Filter {
         this.features = features;
         this.metas = metas;
         this.properties = properties;
+    }
+
+    public void toBytes(ByteBuf buf) {
+        writeSetAsStrings(buf, mods);
+        writeSetAsStrings(buf, names);
+        writeSetAsStrings(buf, nameRegexps);
+        writeSetAsEnums(buf, types);
+        writeSetAsEnums(buf, features);
+        writeSetAsInts(buf, metas);
+    }
+
+    private static <T> void writeSetAsStrings(ByteBuf buf, Set<T> s) {
+        if (s == null) {
+            buf.writeInt(-1);
+        } else {
+            buf.writeInt(s.size());
+            s.stream().forEach(p -> NetworkTools.writeString(buf, p.toString()));
+        }
+    }
+
+    private static <T extends Enum> void writeSetAsEnums(ByteBuf buf, Set<T> s) {
+        if (s == null) {
+            buf.writeInt(-1);
+        } else {
+            buf.writeInt(s.size());
+            s.stream().forEach(p -> buf.writeInt(p.ordinal()));
+        }
+    }
+
+    private static void writeSetAsInts(ByteBuf buf, Set<Integer> s) {
+        if (s == null) {
+            buf.writeInt(-1);
+        } else {
+            buf.writeInt(s.size());
+            s.stream().forEach(p -> buf.writeInt(p));
+        }
     }
 
     public boolean match(DimletType type, String mod, String name, int metaIn, Map<String, String> propertiesIn, Set<Feature> featuresIn) {
