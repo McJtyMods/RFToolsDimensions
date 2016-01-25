@@ -419,6 +419,20 @@
   },
   {
     "filter": {
+      "type": "biome",
+      "name": "The End"
+    },
+    "settings": {
+      "rarity": 5,
+      "create": 5000,
+      "maintain": 10000,
+      "ticks": 100,
+      "worldgen": false,
+      "dimlet": true
+    }
+  },
+  {
+    "filter": {
       "type": "biome"
     },
     "settings": {
