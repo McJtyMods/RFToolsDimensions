@@ -82,7 +82,7 @@ public class MobDimletType implements IDimletType {
         dimlets = DimensionInformation.extractType(DimletType.DIMLET_MOB, dimlets);
         if (dimlets.isEmpty()) {
             while (random.nextFloat() < WorldgenConfiguration.randomExtraMobsChance) {
-                DimletKey key = DimletRandomizer.getRandomMob(random, false);
+                DimletKey key = DimletRandomizer.getRandomMob(random);
                 if (key != null) {
                     dimensionInformation.updateCostFactor(key);
                     extraMobs.add(DimletObjectMapping.getMob(key));

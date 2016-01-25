@@ -116,50 +116,42 @@ public class DimletRandomizer {
     }
 
 
-    public static DimletKey getRandomTerrain(Random random, boolean forWorldGen) {
-        // @todo
+    public static DimletKey getRandomTerrain(Random random) {
         setupWeightedRandomList();
         return randomTerrainDimlets.select(random);
     }
 
-    public static DimletKey getRandomFeature(Random random, boolean forWorldGen) {
-        // @todo
+    public static DimletKey getRandomFeature(Random random) {
         setupWeightedRandomList();
         return randomFeatureDimlets.select(random);
     }
 
-    public static DimletKey getRandomEffect(Random random, boolean forWorldGen) {
-        // @todo
+    public static DimletKey getRandomEffect(Random random) {
         setupWeightedRandomList();
         return randomEffectDimlets.select(random);
     }
 
-    public static DimletKey getRandomStructure(Random random, boolean forWorldGen) {
-        // @todo
+    public static DimletKey getRandomStructure(Random random) {
         setupWeightedRandomList();
         return randomStructureDimlets.select(random);
     }
 
-    public static DimletKey getRandomFluidBlock(Random random, boolean forWorldGen) {
-        // @todo
+    public static DimletKey getRandomFluidBlock(Random random) {
         setupWeightedRandomList();
         return randomLiquidDimlets.select(random);
-//        return new DimletKey(DimletType.DIMLET_LIQUID, Blocks.water.getRegistryName()+"@0");
     }
 
-    public static DimletKey getRandomMaterialBlock(Random random, boolean forWorldGen) {
-        // @todo
+    public static DimletKey getRandomMaterialBlock(Random random) {
         setupWeightedRandomList();
         return randomMaterialDimlets.select(random);
-//        return new DimletKey(DimletType.DIMLET_MATERIAL, Blocks.stone.getRegistryName()+"@0");
     }
 
-    public static DimletKey getRandomController(Random random, boolean forWorldGen) {
+    public static DimletKey getRandomController(Random random) {
         ControllerType type = ControllerType.values()[random.nextInt(ControllerType.values().length)];
         return new DimletKey(DimletType.DIMLET_CONTROLLER, type.getId());
     }
 
-    public static DimletKey getRandomBiome(Random random, boolean forWorldGen) {
+    public static DimletKey getRandomBiome(Random random) {
         BiomeGenBase[] biomes = BiomeGenBase.getBiomeGenArray();
         while(true) {
             BiomeGenBase biome = biomes[random.nextInt(biomes.length)];
@@ -169,7 +161,8 @@ public class DimletRandomizer {
         }
     }
 
-    public static DimletKey getRandomMob(Random random, boolean forWorldGen) {
+    public static DimletKey getRandomMob(Random random) {
+        setupWeightedRandomList();
         return randomMobDimlets.select(random);
     }
 

@@ -140,14 +140,16 @@ public class FeatureDimletType implements IDimletType {
         dimlets = DimensionInformation.extractType(DimletType.DIMLET_FEATURE, dimlets);
         if (dimlets.isEmpty()) {
             while (random.nextFloat() < WorldgenConfiguration.randomFeatureChance) {
-                DimletKey key = DimletRandomizer.getRandomFeature(random, true);
-                FeatureType featureType = DimletObjectMapping.getFeature(key);
-                if (!featureTypes.contains(featureType) && featureType.isTerrainSupported(terrainType)) {
-                    dimensionInformation.updateCostFactor(key);
-                    featureTypes.add(featureType);
-                    List<DimletKey> modifiers = Collections.emptyList();
-                    // @todo randomize those?
-                    dimlets.add(Pair.of(key, modifiers));
+                DimletKey key = DimletRandomizer.getRandomFeature(random);
+                if (key != null) {
+                    FeatureType featureType = DimletObjectMapping.getFeature(key);
+                    if (!featureTypes.contains(featureType) && featureType.isTerrainSupported(terrainType)) {
+                        dimensionInformation.updateCostFactor(key);
+                        featureTypes.add(featureType);
+                        List<DimletKey> modifiers = Collections.emptyList();
+                        // @todo randomize those?
+                        dimlets.add(Pair.of(key, modifiers));
+                    }
                 }
             }
         }
@@ -182,9 +184,11 @@ public class FeatureDimletType implements IDimletType {
             // If no fluids are specified we will usually have default fluid generation (water+lava). Otherwise some random selection.
             if (fluids.isEmpty()) {
                 while (random.nextFloat() < WorldgenConfiguration.randomLakeFluidChance) {
-                    DimletKey key = DimletRandomizer.getRandomFluidBlock(random, true);
-                    dimensionInformation.updateCostFactor(key);
-                    fluids.add(DimletObjectMapping.getFluid(key));
+                    DimletKey key = DimletRandomizer.getRandomFluidBlock(random);
+                    if (key != null) {
+                        dimensionInformation.updateCostFactor(key);
+                        fluids.add(DimletObjectMapping.getFluid(key));
+                    }
                 }
             } else if (fluids.size() == 1 && fluids.get(0) == null) {
                 fluids.clear();
@@ -216,11 +220,13 @@ public class FeatureDimletType implements IDimletType {
             if (blocks.isEmpty()) {
                 float chance = 1.1f;
                 while (random.nextFloat() < chance) {
-                    DimletKey key = DimletRandomizer.getRandomMaterialBlock(random, true);
-                    IBlockState bm = DimletObjectMapping.getBlock(key);
-                    if (bm != null) {
-                        blocks.add(bm);
-                        chance = chance * 0.80f;
+                    DimletKey key = DimletRandomizer.getRandomMaterialBlock(random);
+                    if (key != null) {
+                        IBlockState bm = DimletObjectMapping.getBlock(key);
+                        if (bm != null) {
+                            blocks.add(bm);
+                            chance = chance * 0.80f;
+                        }
                     }
                 }
             }

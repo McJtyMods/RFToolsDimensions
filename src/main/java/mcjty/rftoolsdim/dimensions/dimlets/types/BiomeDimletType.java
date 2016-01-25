@@ -79,8 +79,12 @@ public class BiomeDimletType implements IDimletType {
         // First determine the controller to use.
         if (controllerDimlets.isEmpty()) {
             if (random.nextFloat() < WorldgenConfiguration.randomControllerChance) {
-                DimletKey key = DimletRandomizer.getRandomController(random, true);
-                controllerType = DimletObjectMapping.getController(key);
+                DimletKey key = DimletRandomizer.getRandomController(random);
+                if (key != null) {
+                    controllerType = DimletObjectMapping.getController(key);
+                } else {
+                    controllerType = ControllerType.CONTROLLER_DEFAULT;
+                }
             } else {
                 if (biomeDimlets.isEmpty()) {
                     controllerType = ControllerType.CONTROLLER_DEFAULT;
@@ -113,9 +117,9 @@ public class BiomeDimletType implements IDimletType {
         }
 
         while (biomeKeys.size() < neededBiomes) {
-            DimletKey key = DimletRandomizer.getRandomBiome(random, true);
-            while (biomeKeys.contains(key)) {
-                key = DimletRandomizer.getRandomBiome(random, true);
+            DimletKey key = DimletRandomizer.getRandomBiome(random);
+            while (key == null || biomeKeys.contains(key)) {
+                key = DimletRandomizer.getRandomBiome(random);
             }
             biomeKeys.add(key);
         }

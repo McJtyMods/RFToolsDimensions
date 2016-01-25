@@ -1081,9 +1081,13 @@ public class DimensionInformation {
             } else {
                 // Nothing was specified. With a relatively big chance we use stone. But there is also a chance that the material will be something else.
                 if (random.nextFloat() < WorldgenConfiguration.randomFeatureMaterialChance) {
-                    DimletKey key = DimletRandomizer.getRandomMaterialBlock(random, true);
-                    actualRfCost += calculateCostFactor(key);
-                    block = DimletObjectMapping.getBlock(key);
+                    DimletKey key = DimletRandomizer.getRandomMaterialBlock(random);
+                    if (key != null) {
+                        actualRfCost += calculateCostFactor(key);
+                        block = DimletObjectMapping.getBlock(key);
+                    } else {
+                        block = Blocks.stone.getDefaultState();
+                    }
                 } else {
                     block = Blocks.stone.getDefaultState();
                 }

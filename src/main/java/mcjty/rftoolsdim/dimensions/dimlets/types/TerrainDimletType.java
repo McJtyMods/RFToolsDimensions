@@ -122,7 +122,7 @@ public class TerrainDimletType implements IDimletType {
         if (dimlets.isEmpty()) {
             // Pick a random terrain type with a seed that is generated from all the
             // dimlets so we always get the same random value for these dimlets.
-            DimletKey key = DimletRandomizer.getRandomTerrain(random, true);
+            DimletKey key = DimletRandomizer.getRandomTerrain(random);
             dimensionInformation.updateCostFactor(key);
             terrainType = DimletObjectMapping.getTerrain(key);
             modifiers = Collections.emptyList();
@@ -153,9 +153,13 @@ public class TerrainDimletType implements IDimletType {
                 // Nothing was specified. With a relatively big chance we use stone. But there is also a chance that the material will be something else.
                 // Note that in this particular case we disallow randomly selecting 'expensive' blocks like glass.
                 if (random.nextFloat() < WorldgenConfiguration.randomBaseBlockChance) {
-                    DimletKey key = DimletRandomizer.getRandomMaterialBlock(random, false);
-                    dimensionInformation.updateCostFactor(key);
-                    baseBlockForTerrain = DimletObjectMapping.getBlock(key);
+                    DimletKey key = DimletRandomizer.getRandomMaterialBlock(random);
+                    if (key != null) {
+                        dimensionInformation.updateCostFactor(key);
+                        baseBlockForTerrain = DimletObjectMapping.getBlock(key);
+                    } else {
+                        baseBlockForTerrain = Blocks.stone.getDefaultState();
+                    }
                 } else {
                     baseBlockForTerrain = Blocks.stone.getDefaultState();
                 }
@@ -171,9 +175,13 @@ public class TerrainDimletType implements IDimletType {
             }
         } else {
             if (random.nextFloat() < WorldgenConfiguration.randomOceanLiquidChance) {
-                DimletKey key = DimletRandomizer.getRandomFluidBlock(random, false);
-                dimensionInformation.updateCostFactor(key);
-                fluidForTerrain = DimletObjectMapping.getFluid(key);
+                DimletKey key = DimletRandomizer.getRandomFluidBlock(random);
+                if (key != null) {
+                    dimensionInformation.updateCostFactor(key);
+                    fluidForTerrain = DimletObjectMapping.getFluid(key);
+                } else {
+                    fluidForTerrain = Blocks.water;
+                }
             } else {
                 fluidForTerrain = Blocks.water;
             }

@@ -78,15 +78,17 @@ public class StructureDimletType implements IDimletType {
         dimlets = DimensionInformation.extractType(DimletType.DIMLET_STRUCTURE, dimlets);
         if (dimlets.isEmpty()) {
             while (random.nextFloat() < WorldgenConfiguration.randomStructureChance) {
-                DimletKey key = DimletRandomizer.getRandomStructure(random, true);
-                StructureType structureType = DimletObjectMapping.getStructure(key);
-                if (!structureTypes.contains(structureType) || (structureType == StructureType.STRUCTURE_RECURRENTCOMPLEX)) {
-                    dimensionInformation.updateCostFactor(key);
-                    structureTypes.add(structureType);
-//                    if (structureType == StructureType.STRUCTURE_RECURRENTCOMPLEX) {
-//                        dimensionTypes.add(DimletObjectMapping.idToRecurrentComplexType.get(key));
-//                    }
-                    // @todo
+                DimletKey key = DimletRandomizer.getRandomStructure(random);
+                if (key != null) {
+                    StructureType structureType = DimletObjectMapping.getStructure(key);
+                    if (!structureTypes.contains(structureType) || (structureType == StructureType.STRUCTURE_RECURRENTCOMPLEX)) {
+                        dimensionInformation.updateCostFactor(key);
+                        structureTypes.add(structureType);
+                        //                    if (structureType == StructureType.STRUCTURE_RECURRENTCOMPLEX) {
+                        //                        dimensionTypes.add(DimletObjectMapping.idToRecurrentComplexType.get(key));
+                        //                    }
+                        // @todo
+                    }
                 }
             }
         } else {

@@ -82,11 +82,13 @@ public class EffectDimletType implements IDimletType {
         dimlets = DimensionInformation.extractType(DimletType.DIMLET_EFFECT, dimlets);
         if (dimlets.isEmpty()) {
             while (random.nextFloat() < WorldgenConfiguration.randomEffectChance) {
-                DimletKey key = DimletRandomizer.getRandomEffect(random, true);
-                EffectType effectType = DimletObjectMapping.getEffect(key);
-                if (!effectTypes.contains(effectType)) {
-                    dimensionInformation.updateCostFactor(key);
-                    effectTypes.add(effectType);
+                DimletKey key = DimletRandomizer.getRandomEffect(random);
+                if (key != null) {
+                    EffectType effectType = DimletObjectMapping.getEffect(key);
+                    if (!effectTypes.contains(effectType)) {
+                        dimensionInformation.updateCostFactor(key);
+                        effectTypes.add(effectType);
+                    }
                 }
             }
         } else {
