@@ -76,7 +76,7 @@ public class KnownDimletConfiguration {
             if (biome != null) {
                 String name = biome.biomeName;
                 if (name != null && !name.isEmpty()) {
-                    DimletKey key = new DimletKey(DimletType.DIMLET_BIOME, Integer.toString(biome.biomeID));
+                    DimletKey key = new DimletKey(DimletType.DIMLET_BIOME, biome.biomeName);
                     initDimlet(key, "minecraft");
                 }
             }
@@ -311,11 +311,7 @@ public class KnownDimletConfiguration {
     public static String getDisplayName(DimletKey key) {
         switch (key.getType()) {
             case DIMLET_BIOME:
-                BiomeGenBase biome = DimletObjectMapping.getBiome(key);
-                if (biome != null) {
-                    return biome.biomeName;
-                }
-                break;
+                return key.getId();
             case DIMLET_LIQUID:
                 Block fluid = DimletObjectMapping.getFluid(key);
                 if (fluid != null) {

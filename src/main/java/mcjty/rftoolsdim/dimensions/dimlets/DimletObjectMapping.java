@@ -99,7 +99,7 @@ public class DimletObjectMapping {
 
     public static BiomeGenBase getBiome(DimletKey dimlet) {
         if (DimletType.DIMLET_BIOME.equals(dimlet.getType())) {
-            return BiomeGenBase.getBiome(Integer.parseInt(dimlet.getId()));
+            return BiomeGenBase.BIOME_ID_MAP.get(dimlet.getId());
         }
         return null;
     }

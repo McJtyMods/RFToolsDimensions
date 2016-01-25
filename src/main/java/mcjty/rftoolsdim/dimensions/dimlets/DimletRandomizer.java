@@ -164,7 +164,7 @@ public class DimletRandomizer {
         while(true) {
             BiomeGenBase biome = biomes[random.nextInt(biomes.length)];
             if (biome != null) {
-                return new DimletKey(DimletType.DIMLET_BIOME, Integer.toString(biome.biomeID));
+                return new DimletKey(DimletType.DIMLET_BIOME, biome.biomeName);
             }
         }
     }
