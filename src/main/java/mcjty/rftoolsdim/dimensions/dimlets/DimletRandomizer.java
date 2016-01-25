@@ -118,14 +118,8 @@ public class DimletRandomizer {
 
     public static DimletKey getRandomTerrain(Random random, boolean forWorldGen) {
         // @todo
-        while (true) {
-            TerrainType terrainType = TerrainType.values()[random.nextInt(TerrainType.values().length)];
-            DimletKey key = new DimletKey(DimletType.DIMLET_TERRAIN, terrainType.getId());
-            Settings settings = KnownDimletConfiguration.getSettings(key);
-            if (settings != null && (!forWorldGen || settings.getWorldgen())) {
-                return key;
-            }
-        }
+        setupWeightedRandomList();
+        return randomTerrainDimlets.select(random);
     }
 
     public static DimletKey getRandomFeature(Random random, boolean forWorldGen) {

@@ -123,16 +123,22 @@ public class DimensionInformation {
     }
 
     private void setupFromDescriptor(long seed) {
+        System.out.println("DimensionInformation.setupFromDescriptor : 1");
         List<Pair<DimletKey,List<DimletKey>>> dimlets = descriptor.getDimletsWithModifiers();
+        System.out.println("DimensionInformation.setupFromDescriptor : 2");
 
         Random random = new Random(descriptor.calculateSeed(seed));
+        System.out.println("DimensionInformation.setupFromDescriptor : 3");
 
         actualRfCost = 0;
 
         DimletType.DIMLET_PATREON.dimletType.constructDimension(dimlets, random, this);
+        System.out.println("DimensionInformation.setupFromDescriptor : 4");
 
         DimletType.DIMLET_TERRAIN.dimletType.constructDimension(dimlets, random, this);
+        System.out.println("DimensionInformation.setupFromDescriptor : 5");
         DimletType.DIMLET_FEATURE.dimletType.constructDimension(dimlets, random, this);
+        System.out.println("DimensionInformation.setupFromDescriptor : 6");
 
         DimletType.DIMLET_STRUCTURE.dimletType.constructDimension(dimlets, random, this);
         DimletType.DIMLET_BIOME.dimletType.constructDimension(dimlets, random, this);

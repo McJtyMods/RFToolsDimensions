@@ -403,11 +403,18 @@ public class RfToolsDimensionManager extends WorldSavedData {
         registerDimensionToServerAndClient(id);
         Logging.log("id = " + id + " for " + name + ", descriptor = " + descriptor.getDescriptionString());
 
+
         dimensions.put(id, descriptor);
         dimensionToID.put(descriptor, id);
 
-        DimensionInformation dimensionInfo = new DimensionInformation(name, descriptor, world, playerName, player);
-        dimensionInformation.put(id, dimensionInfo);
+
+        try {
+            DimensionInformation dimensionInfo = new DimensionInformation(name, descriptor, world, playerName, player);
+            dimensionInformation.put(id, dimensionInfo);
+        } catch (Exception e) {
+            Logging.logError("Something went wrong during creation of the dimension!");
+            e.printStackTrace();
+        }
 
         save(world);
 

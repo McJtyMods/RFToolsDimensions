@@ -7,10 +7,7 @@ import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.config.*;
 import mcjty.rftoolsdim.dimensions.description.MobDescriptor;
 import mcjty.rftoolsdim.dimensions.dimlets.types.DimletType;
-import mcjty.rftoolsdim.dimensions.types.ControllerType;
-import mcjty.rftoolsdim.dimensions.types.EffectType;
-import mcjty.rftoolsdim.dimensions.types.FeatureType;
-import mcjty.rftoolsdim.dimensions.types.StructureType;
+import mcjty.rftoolsdim.dimensions.types.*;
 import mcjty.rftoolsdim.items.ModItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
@@ -55,6 +52,9 @@ public class KnownDimletConfiguration {
             return;
         }
 
+        for (TerrainType type : TerrainType.values()) {
+            initDimlet(new DimletKey(DimletType.DIMLET_TERRAIN, type.getId()), RFToolsDim.MODID);
+        }
         for (ControllerType type : ControllerType.values()) {
             initDimlet(new DimletKey(DimletType.DIMLET_CONTROLLER, type.getId()), RFToolsDim.MODID);
         }
