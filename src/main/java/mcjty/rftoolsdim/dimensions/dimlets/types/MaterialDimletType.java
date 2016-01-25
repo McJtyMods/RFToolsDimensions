@@ -1,10 +1,15 @@
 package mcjty.rftoolsdim.dimensions.dimlets.types;
 
-import mcjty.rftoolsdim.dimensions.dimlets.DimletKey;
-import mcjty.rftoolsdim.dimensions.dimlets.DimletRandomizer;
+import mcjty.lib.varia.BlockTools;
+import mcjty.rftoolsdim.blocks.ModBlocks;
+import mcjty.rftoolsdim.config.Settings;
 import mcjty.rftoolsdim.dimensions.DimensionInformation;
+import mcjty.rftoolsdim.dimensions.dimlets.DimletKey;
+import mcjty.rftoolsdim.dimensions.dimlets.KnownDimletConfiguration;
+import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.config.Configuration;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -78,34 +83,30 @@ public class MaterialDimletType implements IDimletType {
     }
 
     private static boolean isValidMaterialEssence(ItemStack stackEssence, NBTTagCompound essenceCompound) {
-//        Block essenceBlock = BlockTools.getBlock(stackEssence);
-//
-//        if (essenceBlock != DimletConstructionSetup.materialAbsorberBlock) {
-//            return false;
-//        }
-//        if (essenceCompound == null) {
-//            return false;
-//        }
-//        int absorbing = essenceCompound.getInteger("absorbing");
-//        int blockID = essenceCompound.getInteger("block");
-//        if (absorbing > 0 || blockID == -1) {
-//            return false;
-//        }
+        Block essenceBlock = BlockTools.getBlock(stackEssence);
+
+        if (essenceBlock != ModBlocks.materialAbsorberBlock) {
+            return false;
+        }
+        if (essenceCompound == null) {
+            return false;
+        }
+        int absorbing = essenceCompound.getInteger("absorbing");
+        if (absorbing > 0 || !essenceCompound.hasKey("block")) {
+            return false;
+        }
         return true;
     }
 
     private static DimletKey findMaterialDimlet(NBTTagCompound essenceCompound) {
-//        int blockID = essenceCompound.getInteger("block");
-//        int meta = essenceCompound.getInteger("meta");
-//        for (Map.Entry<DimletKey, BlockMeta> entry : DimletObjectMapping.idToBlock.entrySet()) {
-//            if (entry.getValue() != null) {
-//                int id = Block.blockRegistry.getIDForObject(entry.getValue().getBlock());
-//                if (blockID == id && meta == entry.getValue().getMeta()) {
-//                    return entry.getKey();
-//                }
-//            }
-//        }
-        return null;
+        Block block = Block.blockRegistry.getObject(new ResourceLocation(essenceCompound.getString("block")));
+        int meta = essenceCompound.getInteger("meta");
+        DimletKey key = new DimletKey(DimletType.DIMLET_MATERIAL, block.getRegistryName() + "@" + meta);
+        Settings settings = KnownDimletConfiguration.getSettings(key);
+        if (settings == null || !settings.getDimlet()) {
+            return null;
+        }
+        return key;
     }
 
     @Override

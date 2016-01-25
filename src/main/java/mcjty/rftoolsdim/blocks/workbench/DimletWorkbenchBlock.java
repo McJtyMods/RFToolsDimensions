@@ -20,7 +20,7 @@ import org.lwjgl.input.Keyboard;
 
 import java.util.List;
 
-public class DimletWorkbenchBlock extends GenericRFToolsBlock implements Infusable {
+public class DimletWorkbenchBlock extends GenericRFToolsBlock<DimletWorkbenchTileEntity, DimletWorkbenchContainer> implements Infusable {
 
     public DimletWorkbenchBlock() {
         super(Material.iron, DimletWorkbenchTileEntity.class, DimletWorkbenchContainer.class, "dimlet_workbench", true);
