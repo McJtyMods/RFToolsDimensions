@@ -1,23 +1,16 @@
 package mcjty.rftoolsdim.network;
 
 import io.netty.buffer.ByteBuf;
-import mcjty.lib.network.NetworkTools;
 import mcjty.rftoolsdim.config.Filter;
 import mcjty.rftoolsdim.config.Settings;
-import mcjty.rftoolsdim.dimensions.DimensionInformation;
-import mcjty.rftoolsdim.dimensions.description.DimensionDescriptor;
 import net.minecraft.client.Minecraft;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import org.apache.commons.lang3.tuple.Pair;
 
-import java.io.IOException;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Sync dimlet rules from server to client.
@@ -28,14 +21,25 @@ public class PackedSyncRules implements IMessage {
 
     @Override
     public void fromBytes(ByteBuf buf) {
+        int size = buf.readInt();
+        rules = new ArrayList<>(size);
+        for (int i = 0 ; i < size ; i++) {
+            Filter filter = new Filter(buf);
+            Settings settings = new Settings(buf);
+            rules.add(Pair.of(filter, settings));
+        }
     }
 
     @Override
     public void toBytes(ByteBuf buf) {
         buf.writeInt(rules.size());
-        for (int i = 0 ; i < rules.size() ; i++) {
-
+        for (Pair<Filter, Settings> rule : rules) {
+            Filter filter = rule.getLeft();
+            Settings settings = rule.getRight();
+            filter.toBytes(buf);
+            settings.toBytes(buf);
         }
+        System.out.println("buf.array().length = " + buf.array().length);
     }
 
     public PackedSyncRules() {

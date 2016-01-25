@@ -3,6 +3,7 @@ package mcjty.rftoolsdim.config;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
+import io.netty.buffer.ByteBuf;
 import mcjty.rftoolsdim.varia.JSonTools;
 
 public class Settings {
@@ -20,6 +21,24 @@ public class Settings {
         this.tickCost = builder.tickCost;
         this.worldgen = builder.worldgen;
         this.dimlet = builder.dimlet;
+    }
+
+    public void toBytes(ByteBuf buf) {
+        buf.writeByte(rarity);
+        buf.writeInt(createCost);
+        buf.writeInt(maintainCost);
+        buf.writeInt(tickCost);
+        buf.writeBoolean(worldgen);
+        buf.writeBoolean(dimlet);
+    }
+
+    public Settings(ByteBuf buf) {
+        rarity = (int) buf.readByte();
+        createCost = buf.readInt();
+        maintainCost = buf.readInt();
+        tickCost = buf.readInt();
+        worldgen = buf.readBoolean();
+        dimlet = buf.readBoolean();
     }
 
     public boolean isBlacklisted() {

@@ -3,8 +3,8 @@ package mcjty.rftoolsdim.config;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import io.netty.buffer.ByteBuf;
-import mcjty.lib.network.NetworkTools;
 import mcjty.rftoolsdim.dimensions.dimlets.types.DimletType;
+import mcjty.rftoolsdim.network.ByteBufTools;
 import mcjty.rftoolsdim.varia.JSonTools;
 
 import java.util.*;
@@ -34,39 +34,23 @@ public class Filter {
     }
 
     public void toBytes(ByteBuf buf) {
-        writeSetAsStrings(buf, mods);
-        writeSetAsStrings(buf, names);
-        writeSetAsStrings(buf, nameRegexps);
-        writeSetAsEnums(buf, types);
-        writeSetAsEnums(buf, features);
-        writeSetAsInts(buf, metas);
+        ByteBufTools.writeSetAsStrings(buf, mods);
+        ByteBufTools.writeSetAsStrings(buf, names);
+        ByteBufTools.writeSetAsStrings(buf, nameRegexps);
+        ByteBufTools.writeSetAsEnums(buf, types);
+        ByteBufTools.writeSetAsEnums(buf, features);
+        ByteBufTools.writeSetAsShorts(buf, metas);
+        ByteBufTools.writeMapAsStrings(buf, properties);
     }
 
-    private static <T> void writeSetAsStrings(ByteBuf buf, Set<T> s) {
-        if (s == null) {
-            buf.writeInt(-1);
-        } else {
-            buf.writeInt(s.size());
-            s.stream().forEach(p -> NetworkTools.writeString(buf, p.toString()));
-        }
-    }
-
-    private static <T extends Enum> void writeSetAsEnums(ByteBuf buf, Set<T> s) {
-        if (s == null) {
-            buf.writeInt(-1);
-        } else {
-            buf.writeInt(s.size());
-            s.stream().forEach(p -> buf.writeInt(p.ordinal()));
-        }
-    }
-
-    private static void writeSetAsInts(ByteBuf buf, Set<Integer> s) {
-        if (s == null) {
-            buf.writeInt(-1);
-        } else {
-            buf.writeInt(s.size());
-            s.stream().forEach(p -> buf.writeInt(p));
-        }
+    public Filter(ByteBuf buf) {
+        mods = ByteBufTools.readSetFromStrings(buf);
+        names = ByteBufTools.readSetFromStrings(buf);
+        nameRegexps = ByteBufTools.readSetFromStringsWithMapper(buf, p -> Pattern.compile(p));
+        types = ByteBufTools.readSetFromShortsWithMapper(buf, p -> DimletType.values()[p]);
+        features = ByteBufTools.readSetFromShortsWithMapper(buf, p -> Feature.values()[p]);
+        metas = ByteBufTools.readSetFromShorts(buf);
+        properties = ByteBufTools.readMapFromStrings(buf);
     }
 
     public boolean match(DimletType type, String mod, String name, int metaIn, Map<String, String> propertiesIn, Set<Feature> featuresIn) {
