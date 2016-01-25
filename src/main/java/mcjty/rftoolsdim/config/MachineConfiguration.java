@@ -11,6 +11,9 @@ public class MachineConfiguration {
     public static int BUILDER_RECEIVEPERTICK = 50000;
     public static int EDITOR_MAXENERGY = 5000000;
     public static int EDITOR_RECEIVEPERTICK = 50000;
+    public static int WORKBENCH_MAXENERGY = 32000;
+    public static int WORKBENCH_RECEIVEPERTICK = 80;
+    public static int workbenchRfPerDimlet = 200;
 
 
     public static void init(Configuration cfg) {
@@ -27,6 +30,12 @@ public class MachineConfiguration {
                                                         "Maximum RF storage that the dimension editor can hold").getInt();
         EDITOR_RECEIVEPERTICK = cfg.get(CATEGORY_MACHINES, "dimensionEditorRFPerTick", MachineConfiguration.EDITOR_RECEIVEPERTICK,
                                                              "RF per tick that the dimension editor can receive").getInt();
+        WORKBENCH_MAXENERGY = cfg.get(CATEGORY_MACHINES, "dimletWorkbenchMaxRF", WORKBENCH_MAXENERGY,
+                                      "Maximum RF storage that the dimlet workbench can hold").getInt();
+        WORKBENCH_RECEIVEPERTICK = cfg.get(CATEGORY_MACHINES, "dimletWorkbenchRFPerTick", WORKBENCH_RECEIVEPERTICK,
+                                           "RF per tick that the the dimlet workbench can receive").getInt();
+        workbenchRfPerDimlet = cfg.get(CATEGORY_MACHINES, "dimletWorkbenchRFPerOperation", workbenchRfPerDimlet,
+                                     "RF that the dimlet workbench needs for extracting one dimlet").getInt();
     }
 
 }

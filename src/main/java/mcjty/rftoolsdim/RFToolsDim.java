@@ -61,6 +61,7 @@ public class RFToolsDim implements ModBase {
     public static final int GUI_DIMENSION_ENSCRIBER = modGuiIndex++;
     public static final int GUI_DIMENSION_BUILDER = modGuiIndex++;
     public static final int GUI_MANUAL_DIMENSION = modGuiIndex++;
+    public static final int GUI_DIMLET_WORKBENCH = modGuiIndex++;
 
     public static CreativeTabs tabRfToolsDim = new CreativeTabs("RfToolsDim") {
         @Override

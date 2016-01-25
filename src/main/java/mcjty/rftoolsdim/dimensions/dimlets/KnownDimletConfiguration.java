@@ -287,8 +287,7 @@ public class KnownDimletConfiguration {
     }
 
     public static boolean isBlacklisted(DimletKey key) {
-        // @todo
-        return false;
+        return KnownDimletConfiguration.getSettings(key) == null;
     }
 
     public static boolean isCraftable(DimletKey key) {

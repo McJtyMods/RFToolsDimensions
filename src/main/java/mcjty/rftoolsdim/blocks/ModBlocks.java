@@ -4,6 +4,7 @@ import mcjty.rftoolsdim.blocks.builder.DimensionBuilderBlock;
 import mcjty.rftoolsdim.blocks.enscriber.DimensionEnscriberBlock;
 import mcjty.rftoolsdim.blocks.probe.ActivityProbeBlock;
 import mcjty.rftoolsdim.blocks.shards.*;
+import mcjty.rftoolsdim.blocks.workbench.DimletWorkbenchBlock;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -19,6 +20,7 @@ public class ModBlocks {
 
     public static DimensionEnscriberBlock dimensionEnscriberBlock;
     public static DimensionBuilderBlock dimensionBuilderBlock;
+    public static DimletWorkbenchBlock dimletWorkbenchBlock;
     public static ActivityProbeBlock activityProbeBlock;
 
     public static void init() {
@@ -32,6 +34,7 @@ public class ModBlocks {
 
         dimensionEnscriberBlock = new DimensionEnscriberBlock();
         dimensionBuilderBlock = new DimensionBuilderBlock(false);
+        dimletWorkbenchBlock = new DimletWorkbenchBlock();
         activityProbeBlock = new ActivityProbeBlock();
     }
 
@@ -47,6 +50,7 @@ public class ModBlocks {
 
         dimensionEnscriberBlock.initModel();
         dimensionBuilderBlock.initModel();
+        dimletWorkbenchBlock.initModel();
         activityProbeBlock.initModel();
     }
 }

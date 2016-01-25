@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "particle": "rftools:blocks/machineSide",
+    "down": "rftoolsdim:blocks/machineDimletWorkbenchSide",
+    "up": "rftoolsdim:blocks/machineDimletWorkbenchTop",
+    "north": "rftoolsdim:blocks/machineDimletWorkbenchSide",
+    "east": "rftoolsdim:blocks/machineDimletWorkbenchSide",
+    "south": "rftoolsdim:blocks/machineDimletWorkbenchSide",
+    "west": "rftoolsdim:blocks/machineDimletWorkbenchSide"
+  }
+}
