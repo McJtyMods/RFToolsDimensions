@@ -36,6 +36,8 @@ public class ModCrafting {
                                'M', machineFrame);
         GameRegistry.addRecipe(new ItemStack(ModBlocks.dimensionEnscriberBlock), "rpr", "bMb", "iii", 'r', Items.redstone, 'p', Items.paper, 'b', inkSac,
                 'M', machineFrame, 'i', Items.iron_ingot);
+        GameRegistry.addRecipe(new ItemStack(ModBlocks.dimletWorkbenchBlock), "gug", "cMc", "grg", 'M', machineFrame, 'u', ModItems.dimletBaseItem, 'c', Blocks.crafting_table,
+                               'r', Items.redstone, 'g', Items.gold_nugget);
         if (GeneralConfiguration.enableDimensionBuilderRecipe) {
             GameRegistry.addRecipe(new ItemStack(ModBlocks.dimensionBuilderBlock), "oEo", "DMD", "ggg", 'o', Items.ender_pearl, 'E', Items.emerald, 'D', Items.diamond,
                                    'M', machineFrame, 'g', Items.gold_ingot);
