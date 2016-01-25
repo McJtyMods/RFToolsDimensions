@@ -289,11 +289,95 @@
   },
   {
     "filter": {
-      "type": "mob"
+      "type": "mob",
+      "name": [ "Spider", "Skeleton", "Zombie", "CaveSpider", "LavaSlime", "Endermite", "Creeper", "Silverfish" ]
+    },
+    "settings": {
+      "rarity": 2,
+      "create": 300,
+      "maintain": 100,
+      "ticks": 200,
+      "worldgen": true,
+      "dimlet": true
+    }
+  },
+  {
+    "filter": {
+      "type": "mob",
+      "name": [ "EntityHorse", "SnowMan", "MushroomCow", "Chicken", "Rabbit", "Squid", "Ozelot", "Cow", "Slime", "Pig", "Bat" ]
+    },
+    "settings": {
+      "rarity": 3,
+      "create": 500,
+      "maintain": 200,
+      "ticks": 300,
+      "worldgen": true,
+      "dimlet": true
+    }
+  },
+  {
+    "filter": {
+      "type": "mob",
+      "name": [ "Blaze", "Ghast", "PigZombie", "Witch" ]
+    },
+    "settings": {
+      "rarity": 3,
+      "create": 6000,
+      "maintain": 3000,
+      "ticks": 700,
+      "worldgen": true,
+      "dimlet": true
+    }
+  },
+  {
+    "filter": {
+      "type": "mob",
+      "name": [ "Enderman", "VillagerGolem", "Villager", "Guardian" ]
     },
     "settings": {
       "rarity": 4,
-      "create": 500,
+      "create": 10000,
+      "maintain": 5000,
+      "ticks": 800,
+      "worldgen": true,
+      "dimlet": true
+    }
+  },
+  {
+    "filter": {
+      "type": "mob",
+      "name": "WitherBoss"
+    },
+    "settings": {
+      "rarity": 6,
+      "create": 8000,
+      "maintain": 8000,
+      "ticks": 900,
+      "worldgen": true,
+      "dimlet": true
+    }
+  },
+  {
+    "filter": {
+      "type": "mob",
+      "name": "EnderDragon"
+    },
+    "settings": {
+      "rarity": 6,
+      "create": 10000,
+      "maintain": 10000,
+      "ticks": 900,
+      "worldgen": false,
+      "dimlet": true
+    }
+  },
+  {
+    "filter": {
+      "type": "mob"
+    },
+    "settings": {
+      "rarity": 5,
+      "create": 1000,
       "maintain": 1000,
       "ticks": 200,
       "worldgen": true,

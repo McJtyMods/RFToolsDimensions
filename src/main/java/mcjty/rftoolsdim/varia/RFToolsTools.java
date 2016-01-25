@@ -92,7 +92,12 @@ public class RFToolsTools {
         }
 
 
-        String path = obj.getClass().getProtectionDomain().getCodeSource().getLocation().toString();
+        String path;
+        if (obj instanceof Class) {
+            path = ((Class) obj).getProtectionDomain().getCodeSource().getLocation().toString();
+        } else {
+            path = obj.getClass().getProtectionDomain().getCodeSource().getLocation().toString();
+        }
         try {
             path = URLDecoder.decode(path, "UTF-8");
         } catch (UnsupportedEncodingException e) {

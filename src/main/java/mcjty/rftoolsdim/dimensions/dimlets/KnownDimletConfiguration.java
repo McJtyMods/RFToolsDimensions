@@ -5,7 +5,6 @@ import com.google.common.collect.Lists;
 import mcjty.lib.varia.Logging;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.config.*;
-import mcjty.rftoolsdim.dimensions.description.MobDescriptor;
 import mcjty.rftoolsdim.dimensions.dimlets.types.DimletType;
 import mcjty.rftoolsdim.dimensions.types.*;
 import mcjty.rftoolsdim.items.ModItems;
@@ -81,7 +80,7 @@ public class KnownDimletConfiguration {
 
     private static void initMobDimlet(Map.Entry<String, Class<? extends Entity>> entry) {
         Class<? extends Entity> entityClass = entry.getValue();
-        if (entityClass.isInstance(EntityLivingBase.class)) {
+        if (EntityLivingBase.class.isAssignableFrom(entityClass)) {
             DimletKey key = new DimletKey(DimletType.DIMLET_MOB, entry.getKey());
             initDimlet(key, RFToolsTools.findModID(entityClass));
         }
@@ -105,7 +104,7 @@ public class KnownDimletConfiguration {
     private static void initDimlet(DimletKey key, String mod) {
         Settings settings = DimletRules.getSettings(key, mod);
         if (!settings.isBlacklisted()) {
-            knownDimlets.put(key, settings);// new DimletEntry(key, settings));
+            knownDimlets.put(key, settings);
         }
     }
 
@@ -163,7 +162,7 @@ public class KnownDimletConfiguration {
 
     private static void dumpMob(Map.Entry<String, Class<? extends Entity>> entry) {
         Class<? extends Entity> entityClass = entry.getValue();
-        if (entityClass.isInstance(EntityLivingBase.class)) {
+        if (EntityLivingBase.class.isAssignableFrom(entityClass)) {
             DimletKey key = new DimletKey(DimletType.DIMLET_MOB, entry.getKey());
             String mod = RFToolsTools.findModID(entityClass);
             Settings settings = DimletRules.getSettings(key, mod);
