@@ -4,7 +4,7 @@ import mcjty.lib.base.ModBase;
 import mcjty.lib.compat.MainCompatHandler;
 import mcjty.lib.varia.Logging;
 import mcjty.rftools.api.teleportation.ITeleportationManager;
-import mcjty.rftoolsdim.commands.CommandRftDbg;
+import mcjty.rftoolsdim.commands.CommandRftDb;
 import mcjty.rftoolsdim.commands.CommandRftDim;
 import mcjty.rftoolsdim.dimensions.DimensionStorage;
 import mcjty.rftoolsdim.dimensions.ModDimensions;
@@ -16,7 +16,6 @@ import mcjty.rftoolsdim.network.DimensionSyncChannelHandler;
 import mcjty.rftoolsdim.proxy.CommonProxy;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -28,7 +27,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.util.EnumMap;
-import java.util.function.Function;
 
 @Mod(modid = RFToolsDim.MODID, name="RFTools Dimensions", dependencies =
         "required-after:Forge@["+ RFToolsDim.MIN_FORGE_VER+
@@ -105,7 +103,7 @@ public class RFToolsDim implements ModBase {
     @Mod.EventHandler
     public void serverLoad(FMLServerStartingEvent event) {
         event.registerServerCommand(new CommandRftDim());
-        event.registerServerCommand(new CommandRftDbg());
+        event.registerServerCommand(new CommandRftDb());
 //        event.registerServerCommand(new CommandRftTp());
 //        event.registerServerCommand(new CommandRftCfg());
     }

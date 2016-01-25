@@ -1,6 +1,6 @@
 package mcjty.rftoolsdim.commands;
 
-import mcjty.rftoolsdim.dimensions.dimlets.KnownDimletConfiguration;
+import mcjty.rftoolsdim.dimensions.dimlets.DimletDebug;
 import net.minecraft.command.ICommandSender;
 
 public class CmdListBlocks extends AbstractRfToolsCommand {
@@ -27,7 +27,7 @@ public class CmdListBlocks extends AbstractRfToolsCommand {
     @Override
     public void execute(ICommandSender sender, String[] args) {
         try {
-            KnownDimletConfiguration.dumpBlocks();
+            DimletDebug.dumpBlocks();
         } catch (Exception e) {
             e.printStackTrace();
         }

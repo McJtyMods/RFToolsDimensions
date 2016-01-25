@@ -3,7 +3,7 @@ package mcjty.rftoolsdim.commands;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletDebug;
 import net.minecraft.command.ICommandSender;
 
-public class CmdListDimlets extends AbstractRfToolsCommand {
+public class CmdListLiquids extends AbstractRfToolsCommand {
     @Override
     public String getHelp() {
         return "";
@@ -11,7 +11,7 @@ public class CmdListDimlets extends AbstractRfToolsCommand {
 
     @Override
     public String getCommand() {
-        return "listdimlets";
+        return "listliquids";
     }
 
     @Override
@@ -27,7 +27,7 @@ public class CmdListDimlets extends AbstractRfToolsCommand {
     @Override
     public void execute(ICommandSender sender, String[] args) {
         try {
-            DimletDebug.dumpDimlets();
+            DimletDebug.dumpLiquids();
         } catch (Exception e) {
             e.printStackTrace();
         }
