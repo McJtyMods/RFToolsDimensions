@@ -66,7 +66,7 @@ public class DimletObjectMapping {
             }
             int lastIndexOf = StringUtils.lastIndexOf(id, "@");
             String blockid = id.substring(0, lastIndexOf);
-            int meta = Integer.parseInt(id.substring(lastIndexOf+1));
+            int meta = Integer.parseInt(id.substring(lastIndexOf + 1));
 
             Block block = Block.blockRegistry.getObject(new ResourceLocation(blockid));
             if (block == null) {

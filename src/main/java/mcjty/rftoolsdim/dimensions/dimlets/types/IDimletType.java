@@ -67,11 +67,11 @@ public interface IDimletType {
     String[] getInformation();
 
     /**
-     * Is this item a valid essence for this type.
+     * Is this item a valid essence for this type and return the right dimletkey for it
      * @param essenceStack
      * @return
      */
-    default boolean isValidEssence(ItemStack essenceStack) { return false; }
+    default DimletKey isValidEssence(ItemStack essenceStack) { return null; }
 
     /**
      * Attempt to craft a dimlet of this type given a controller, a memory part, an energy part and an essence item.

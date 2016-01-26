@@ -252,11 +252,11 @@ public class DimletWorkbenchTileEntity extends GenericEnergyReceiverTileEntity i
         int rarity = entry.getRarity();
         int level = DimletCraftingTools.calculateItemLevelFromRarity(rarity);
         tryPlaceIfPossible(playerMP, DimletWorkbenchContainer.SLOT_BASE, new ItemStack(ModItems.dimletBaseItem, 1));
-        tryPlaceIfPossible(playerMP, DimletWorkbenchContainer.SLOT_TYPE_CONTROLLER, new ItemStack(ModItems.dimletTypeControllerItem, 1, idToExtract.getType().ordinal()));
+        tryPlaceIfPossible(playerMP, DimletWorkbenchContainer.SLOT_TYPE_CONTROLLER, new ItemStack(ModItems.dimletTypeControllerItem, 1, key.getType().ordinal()));
         tryPlaceIfPossible(playerMP, DimletWorkbenchContainer.SLOT_MEMORY, new ItemStack(ModItems.dimletMemoryUnitItem, 1, level));
         tryPlaceIfPossible(playerMP, DimletWorkbenchContainer.SLOT_ENERGY, new ItemStack(ModItems.dimletEnergyModuleItem, 1, level));
         tryPlaceIfPossible(playerMP, DimletWorkbenchContainer.SLOT_CONTROLLER, new ItemStack(ModItems.dimletControlCircuitItem, 1, rarity));
-        tryPlaceEssenceIfPossible(playerMP, DimletWorkbenchContainer.SLOT_CONTROLLER, key.getType().dimletType);
+        tryPlaceEssenceIfPossible(playerMP, DimletWorkbenchContainer.SLOT_ESSENCE, key, key.getType().dimletType);
         markDirtyClient();
     }
 
@@ -282,7 +282,7 @@ public class DimletWorkbenchTileEntity extends GenericEnergyReceiverTileEntity i
         for (int i = DimletWorkbenchContainer.SLOT_BUFFER ; i < DimletWorkbenchContainer.SLOT_BUFFER + DimletWorkbenchContainer.SIZE_BUFFER ; i++) {
             ItemStack stack = inventoryHelper.getStackInSlot(i);
             if (stack != null && stack.isItemEqual(part)) {
-                ItemStack partStack = inventoryHelper.decrStackSize(slot, 1);
+                ItemStack partStack = inventoryHelper.decrStackSize(i, 1);
                 if (partStack != null) {
                     inventoryHelper.setInventorySlotContents(64, slot, partStack);
                     return;
@@ -290,9 +290,9 @@ public class DimletWorkbenchTileEntity extends GenericEnergyReceiverTileEntity i
             }
         }
         for (int i = 0 ; i < playerMP.inventory.getSizeInventory() ; i++) {
-            ItemStack stack = inventoryHelper.getStackInSlot(i);
+            ItemStack stack = playerMP.inventory.getStackInSlot(i);
             if (stack != null && stack.isItemEqual(part)) {
-                ItemStack partStack = inventoryHelper.decrStackSize(slot, 1);
+                ItemStack partStack = playerMP.inventory.decrStackSize(i, 1);
                 if (partStack != null) {
                     inventoryHelper.setInventorySlotContents(64, slot, partStack);
                     playerMP.openContainer.detectAndSendChanges();
@@ -302,14 +302,14 @@ public class DimletWorkbenchTileEntity extends GenericEnergyReceiverTileEntity i
         }
     }
 
-    private void tryPlaceEssenceIfPossible(EntityPlayerMP playerMP, int slot, IDimletType type) {
+    private void tryPlaceEssenceIfPossible(EntityPlayerMP playerMP, int slot, DimletKey key, IDimletType type) {
         if (inventoryHelper.containsItem(slot)) {
             return;
         }
         for (int i = DimletWorkbenchContainer.SLOT_BUFFER ; i < DimletWorkbenchContainer.SLOT_BUFFER + DimletWorkbenchContainer.SIZE_BUFFER ; i++) {
             ItemStack stack = inventoryHelper.getStackInSlot(i);
-            if (stack != null && type.isValidEssence(stack)) {
-                ItemStack partStack = inventoryHelper.decrStackSize(slot, 1);
+            if (stack != null && key.equals(type.isValidEssence(stack))) {
+                ItemStack partStack = inventoryHelper.decrStackSize(i, 1);
                 if (partStack != null) {
                     inventoryHelper.setInventorySlotContents(64, slot, partStack);
                     return;
@@ -317,9 +317,9 @@ public class DimletWorkbenchTileEntity extends GenericEnergyReceiverTileEntity i
             }
         }
         for (int i = 0 ; i < playerMP.inventory.getSizeInventory() ; i++) {
-            ItemStack stack = inventoryHelper.getStackInSlot(i);
-            if (stack != null && type.isValidEssence(stack)) {
-                ItemStack partStack = inventoryHelper.decrStackSize(slot, 1);
+            ItemStack stack = playerMP.inventory.getStackInSlot(i);
+            if (stack != null && key.equals(type.isValidEssence(stack))) {
+                ItemStack partStack = playerMP.inventory.decrStackSize(i, 1);
                 if (partStack != null) {
                     inventoryHelper.setInventorySlotContents(64, slot, partStack);
                     playerMP.openContainer.detectAndSendChanges();

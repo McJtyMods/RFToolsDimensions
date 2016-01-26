@@ -83,21 +83,21 @@ public class MaterialDimletType implements IDimletType {
     }
 
     @Override
-    public boolean isValidEssence(ItemStack stackEssence) {
+    public DimletKey isValidEssence(ItemStack stackEssence) {
         Block essenceBlock = BlockTools.getBlock(stackEssence);
 
         if (essenceBlock != ModBlocks.materialAbsorberBlock) {
-            return false;
+            return null;
         }
         NBTTagCompound essenceCompound = stackEssence.getTagCompound();
         if (essenceCompound == null) {
-            return false;
+            return null;
         }
         int absorbing = essenceCompound.getInteger("absorbing");
         if (absorbing > 0 || !essenceCompound.hasKey("block")) {
-            return false;
+            return null;
         }
-        return true;
+        return findMaterialDimlet(essenceCompound);
     }
 
     private static DimletKey findMaterialDimlet(NBTTagCompound essenceCompound) {
@@ -113,10 +113,7 @@ public class MaterialDimletType implements IDimletType {
 
     @Override
     public DimletKey attemptDimletCrafting(ItemStack stackController, ItemStack stackMemory, ItemStack stackEnergy, ItemStack stackEssence) {
-        if (!isValidEssence(stackEssence)) {
-            return null;
-        }
-        DimletKey materialDimlet = findMaterialDimlet(stackEssence.getTagCompound());
+        DimletKey materialDimlet = isValidEssence(stackEssence);
         if (materialDimlet == null) {
             return null;
         }

@@ -83,21 +83,21 @@ public class LiquidDimletType implements IDimletType {
     }
 
     @Override
-    public boolean isValidEssence(ItemStack stackEssence) {
+    public DimletKey isValidEssence(ItemStack stackEssence) {
         Block essenceBlock = BlockTools.getBlock(stackEssence);
 
         if (essenceBlock != ModBlocks.liquidAbsorberBlock) {
-            return false;
+            return null;
         }
         NBTTagCompound essenceCompound = stackEssence.getTagCompound();
         if (essenceCompound == null) {
-            return false;
+            return null;
         }
         int absorbing = essenceCompound.getInteger("absorbing");
         if (absorbing > 0 || essenceCompound.hasKey("liquid")) {
-            return false;
+            return null;
         }
-        return true;
+        return findLiquidDimlet(essenceCompound);
     }
 
     private static DimletKey findLiquidDimlet(NBTTagCompound essenceCompound) {
@@ -112,10 +112,7 @@ public class LiquidDimletType implements IDimletType {
 
     @Override
     public DimletKey attemptDimletCrafting(ItemStack stackController, ItemStack stackMemory, ItemStack stackEnergy, ItemStack stackEssence) {
-        if (!isValidEssence(stackEssence)) {
-            return null;
-        }
-        DimletKey liquidDimlet = findLiquidDimlet(stackEssence.getTagCompound());
+        DimletKey liquidDimlet = isValidEssence(stackEssence);
         if (liquidDimlet == null) {
             return null;
         }

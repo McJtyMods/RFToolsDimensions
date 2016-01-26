@@ -2,6 +2,7 @@ package mcjty.rftoolsdim.blocks.workbench;
 
 import mcjty.lib.base.StyleConfig;
 import mcjty.lib.container.GenericGuiContainer;
+import mcjty.lib.entity.GenericEnergyStorageTileEntity;
 import mcjty.lib.gui.Window;
 import mcjty.lib.gui.events.ButtonEvent;
 import mcjty.lib.gui.events.SelectionEvent;
@@ -9,21 +10,24 @@ import mcjty.lib.gui.layout.HorizontalAlignment;
 import mcjty.lib.gui.layout.HorizontalLayout;
 import mcjty.lib.gui.layout.PositionalLayout;
 import mcjty.lib.gui.widgets.*;
+import mcjty.lib.gui.widgets.Button;
+import mcjty.lib.gui.widgets.Label;
+import mcjty.lib.gui.widgets.Panel;
+import mcjty.lib.gui.widgets.TextField;
 import mcjty.lib.network.Argument;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.config.Settings;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletKey;
 import mcjty.rftoolsdim.dimensions.dimlets.KnownDimletConfiguration;
-import mcjty.rftoolsdim.dimensions.dimlets.types.DimletType;
 import mcjty.rftoolsdim.items.ModItems;
 import mcjty.rftoolsdim.network.RFToolsDimMessages;
-import net.minecraft.init.Blocks;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.input.Mouse;
 
-import java.awt.Rectangle;
+import java.awt.*;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -56,8 +60,8 @@ public class GuiDimletWorkbench extends GenericGuiContainer<DimletWorkbenchTileE
     public void initGui() {
         super.initGui();
 
-        searchBar = new TextField(mc, this).setLayoutHint(new PositionalLayout.PositionalHint(145, 7, 112, 18)).addTextEvent((widget,string) -> { listDirty = true; });
-        itemList = new WidgetList(mc, this).setLayoutHint(new PositionalLayout.PositionalHint(145, 25, 100, 108)).setNoSelectionMode(true).setUserObject(new Integer(-1)).
+        searchBar = new TextField(mc, this).setLayoutHint(new PositionalLayout.PositionalHint(138, 7, 110, 16)).addTextEvent((widget,string) -> { itemList.setSelected(-1); listDirty = true; });
+        itemList = new WidgetList(mc, this).setLayoutHint(new PositionalLayout.PositionalHint(138, 25, 100, 108)).
                 setLeftMargin(0).setRowheight(-1).addSelectionEvent(new SelectionEvent() {
             @Override
             public void select(Widget widget, int i) {
@@ -68,22 +72,18 @@ public class GuiDimletWorkbench extends GenericGuiContainer<DimletWorkbenchTileE
                 suggestParts();
             }
         });
-        slider = new Slider(mc, this).setLayoutHint(new PositionalLayout.PositionalHint(246, 25, 11, 108)).setDesiredWidth(11).setVertical().setScrollable(itemList);
+        slider = new Slider(mc, this).setLayoutHint(new PositionalLayout.PositionalHint(239, 25, 9, 108)).setDesiredWidth(11).setVertical().setScrollable(itemList);
 
         int maxEnergyStored = tileEntity.getMaxEnergyStored(EnumFacing.DOWN);
-        energyBar = new EnergyBar(mc, this).setVertical().setMaxValue(maxEnergyStored).setLayoutHint(new PositionalLayout.PositionalHint(8, 142, 8, 54)).setShowText(false);
-        energyBar.setValue(tileEntity.getCurrentRF());
+        energyBar = new EnergyBar(mc, this).setVertical().setMaxValue(maxEnergyStored).setLayoutHint(new PositionalLayout.PositionalHint(85, 9, 50, 10)).setShowText(false)
+            .setHorizontal();
+        energyBar.setValue(GenericEnergyStorageTileEntity.getCurrentRF());
 
         progressIcon = new ImageLabel(mc, this).setImage(iconGuiElements, 4 * 16, 16);
         progressIcon.setLayoutHint(new PositionalLayout.PositionalHint(135, 6, 16, 16));
 
-        extractButton = new Button(mc, this).setText("Extract").setLayoutHint(new PositionalLayout.PositionalHint(36, 7, 55, 14)).addButtonEvent(
-                new ButtonEvent() {
-                    @Override
-                    public void buttonClicked(Widget parent) {
-                        extractDimlet();
-                    }
-                }
+        extractButton = new Button(mc, this).setText("Extract").setLayoutHint(new PositionalLayout.PositionalHint(32, 7, 50, 14)).addButtonEvent(
+                parent -> extractDimlet()
         ).setTooltips("Deconstruct a dimlet into its parts");
 
         Widget toplevel = new Panel(mc, this).setBackground(iconLocation).setLayout(new PositionalLayout())
@@ -115,7 +115,7 @@ public class GuiDimletWorkbench extends GenericGuiContainer<DimletWorkbenchTileE
         itemList.removeChildren();
         Map<DimletKey, Settings> dimlets = KnownDimletConfiguration.getKnownDimlets();
         String filter = searchBar.getText().toLowerCase();
-        List<DimletKey> keys = dimlets.keySet().stream().filter(key -> key.getId().toLowerCase().contains(filter)).collect(Collectors.toList());
+        List<DimletKey> keys = dimlets.keySet().stream().filter(key -> KnownDimletConfiguration.getDisplayName(key).toLowerCase().contains(filter)).collect(Collectors.toList());
         keys.sort((a, b) -> {
             int rc = a.getType().compareTo(b.getType());
             if (rc == 0) {
@@ -124,17 +124,20 @@ public class GuiDimletWorkbench extends GenericGuiContainer<DimletWorkbenchTileE
                 return rc;
             }
         });
-        keys.stream().forEach(key -> addItemToList(new DimletKey(DimletType.DIMLET_MATERIAL, Blocks.diamond_block.getRegistryName()), itemList));
+        keys.stream().forEach(key -> addItemToList(key, itemList));
     }
 
     private void addItemToList(DimletKey key, WidgetList itemList) {
-        Panel panel = new Panel(mc, this).setLayout(new HorizontalLayout().setSpacing(5)).setDesiredHeight(12).setUserObject(new Integer(-1)).setDesiredHeight(16);
+        Panel panel = new Panel(mc, this).setLayout(new PositionalLayout()).setDesiredWidth(98).setDesiredHeight(16);
         panel.setUserObject(key);
         itemList.addChild(panel);
-        BlockRender blockRender = new BlockRender(mc, this).setRenderItem(KnownDimletConfiguration.getDimletStack(key)).setOffsetX(-1).setOffsetY(-1);
+        BlockRender blockRender = new BlockRender(mc, this).setRenderItem(KnownDimletConfiguration.getDimletStack(key)).setLayoutHint(new PositionalLayout.PositionalHint(1, 0, 16, 16))
+                .setUserObject(key);
         panel.addChild(blockRender);
         String displayName = KnownDimletConfiguration.getDisplayName(key);
-        AbstractWidget label = new Label(mc, this).setText(displayName).setColor(StyleConfig.colorTextInListNormal).setHorizontalAlignment(HorizontalAlignment.ALIGH_LEFT).setDesiredWidth(80).setUserObject(new Integer(-1));
+        AbstractWidget label = new Label(mc, this).setText(displayName).setColor(StyleConfig.colorTextInListNormal).setHorizontalAlignment(HorizontalAlignment.ALIGH_LEFT)
+                .setLayoutHint(new PositionalLayout.PositionalHint(20, 0, 77, 16))
+                .setUserObject(key);
         panel.addChild(label);
     }
 
@@ -180,10 +183,25 @@ public class GuiDimletWorkbench extends GenericGuiContainer<DimletWorkbenchTileE
             progressIcon.setImage(iconGuiElements, (extracting % 4) * 16, 16);
         }
 
+        int selected = itemList.getSelected();
+        itemList.setTooltips("All known dimlets");
+        if (selected >= 0) {
+            int x = Mouse.getEventX() * this.width / this.mc.displayWidth;
+            int y = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
+            Widget widget = window.getToplevel().getWidgetAtPosition(x, y);
+//            Widget child = itemList.getChild(selected);
+            Object userObject = widget.getUserObject();
+            if (userObject instanceof DimletKey) {
+                DimletKey key = (DimletKey) userObject;
+                Settings settings = KnownDimletConfiguration.getSettings(key);
+                widget.setTooltips("Type: " + key.getType().dimletType.getName(), "Rarity: " + settings.getRarity());
+            }
+        }
+
         updateList();
         drawWindow();
 
-        energyBar.setValue(tileEntity.getCurrentRF());
+        energyBar.setValue(GenericEnergyStorageTileEntity.getCurrentRF());
 
         tileEntity.requestRfFromServer(RFToolsDim.MODID);
         tileEntity.requestExtractingFromServer();
