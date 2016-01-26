@@ -239,40 +239,43 @@ public class DimletWorkbenchTileEntity extends GenericEnergyReceiverTileEntity i
         return worldObj.rand.nextFloat() <= (0.61f + factor * 0.4f);
     }
 
-    private void suggestParts(DimletKey key) {
+    private void suggestParts(EntityPlayerMP playerMP, DimletKey key) {
         // First try to remove all items currently in the slots
-        setAsideIfPossible(DimletWorkbenchContainer.SLOT_BASE);
-        setAsideIfPossible(DimletWorkbenchContainer.SLOT_CONTROLLER);
-        setAsideIfPossible(DimletWorkbenchContainer.SLOT_ENERGY);
-        setAsideIfPossible(DimletWorkbenchContainer.SLOT_MEMORY);
-        setAsideIfPossible(DimletWorkbenchContainer.SLOT_TYPE_CONTROLLER);
-        setAsideIfPossible(DimletWorkbenchContainer.SLOT_ESSENCE);
+        setAsideIfPossible(playerMP, DimletWorkbenchContainer.SLOT_BASE);
+        setAsideIfPossible(playerMP, DimletWorkbenchContainer.SLOT_CONTROLLER);
+        setAsideIfPossible(playerMP, DimletWorkbenchContainer.SLOT_ENERGY);
+        setAsideIfPossible(playerMP, DimletWorkbenchContainer.SLOT_MEMORY);
+        setAsideIfPossible(playerMP, DimletWorkbenchContainer.SLOT_TYPE_CONTROLLER);
+        setAsideIfPossible(playerMP, DimletWorkbenchContainer.SLOT_ESSENCE);
         // Place the correct ones back;
         Settings entry = KnownDimletConfiguration.getSettings(key);
         int rarity = entry.getRarity();
         int level = DimletCraftingTools.calculateItemLevelFromRarity(rarity);
-        tryPlaceIfPossible(DimletWorkbenchContainer.SLOT_BASE, new ItemStack(ModItems.dimletBaseItem, 1));
-        tryPlaceIfPossible(DimletWorkbenchContainer.SLOT_TYPE_CONTROLLER, new ItemStack(ModItems.dimletTypeControllerItem, 1, idToExtract.getType().ordinal()));
-        tryPlaceIfPossible(DimletWorkbenchContainer.SLOT_MEMORY, new ItemStack(ModItems.dimletMemoryUnitItem, 1, level));
-        tryPlaceIfPossible(DimletWorkbenchContainer.SLOT_ENERGY, new ItemStack(ModItems.dimletEnergyModuleItem, 1, level));
-        tryPlaceIfPossible(DimletWorkbenchContainer.SLOT_CONTROLLER, new ItemStack(ModItems.dimletControlCircuitItem, 1, rarity));
-        tryPlaceEssenceIfPossible(DimletWorkbenchContainer.SLOT_CONTROLLER, key.getType().dimletType);
+        tryPlaceIfPossible(playerMP, DimletWorkbenchContainer.SLOT_BASE, new ItemStack(ModItems.dimletBaseItem, 1));
+        tryPlaceIfPossible(playerMP, DimletWorkbenchContainer.SLOT_TYPE_CONTROLLER, new ItemStack(ModItems.dimletTypeControllerItem, 1, idToExtract.getType().ordinal()));
+        tryPlaceIfPossible(playerMP, DimletWorkbenchContainer.SLOT_MEMORY, new ItemStack(ModItems.dimletMemoryUnitItem, 1, level));
+        tryPlaceIfPossible(playerMP, DimletWorkbenchContainer.SLOT_ENERGY, new ItemStack(ModItems.dimletEnergyModuleItem, 1, level));
+        tryPlaceIfPossible(playerMP, DimletWorkbenchContainer.SLOT_CONTROLLER, new ItemStack(ModItems.dimletControlCircuitItem, 1, rarity));
+        tryPlaceEssenceIfPossible(playerMP, DimletWorkbenchContainer.SLOT_CONTROLLER, key.getType().dimletType);
         markDirtyClient();
     }
 
-    private void setAsideIfPossible(int slot) {
+    private void setAsideIfPossible(EntityPlayerMP playerMP, int slot) {
         ItemStack stack = inventoryHelper.getStackInSlot(slot);
         if (stack != null) {
             int result = InventoryHelper.mergeItemStack(this, false, stack, DimletWorkbenchContainer.SLOT_BUFFER, DimletWorkbenchContainer.SLOT_BUFFER + DimletWorkbenchContainer.SIZE_BUFFER, null);
             if (result > 0) {
                 stack.stackSize = result;
+                if (playerMP.inventory.addItemStackToInventory(stack)) {
+                    inventoryHelper.setInventorySlotContents(64, slot, null);
+                }
             } else {
                 inventoryHelper.setInventorySlotContents(64, slot, null);
             }
         }
     }
 
-    private void tryPlaceIfPossible(int slot, ItemStack part) {
+    private void tryPlaceIfPossible(EntityPlayerMP playerMP, int slot, ItemStack part) {
         if (inventoryHelper.containsItem(slot)) {
             return;
         }
@@ -286,9 +289,20 @@ public class DimletWorkbenchTileEntity extends GenericEnergyReceiverTileEntity i
                 }
             }
         }
+        for (int i = 0 ; i < playerMP.inventory.getSizeInventory() ; i++) {
+            ItemStack stack = inventoryHelper.getStackInSlot(i);
+            if (stack != null && stack.isItemEqual(part)) {
+                ItemStack partStack = inventoryHelper.decrStackSize(slot, 1);
+                if (partStack != null) {
+                    inventoryHelper.setInventorySlotContents(64, slot, partStack);
+                    playerMP.openContainer.detectAndSendChanges();
+                    return;
+                }
+            }
+        }
     }
 
-    private void tryPlaceEssenceIfPossible(int slot, IDimletType type) {
+    private void tryPlaceEssenceIfPossible(EntityPlayerMP playerMP, int slot, IDimletType type) {
         if (inventoryHelper.containsItem(slot)) {
             return;
         }
@@ -298,6 +312,17 @@ public class DimletWorkbenchTileEntity extends GenericEnergyReceiverTileEntity i
                 ItemStack partStack = inventoryHelper.decrStackSize(slot, 1);
                 if (partStack != null) {
                     inventoryHelper.setInventorySlotContents(64, slot, partStack);
+                    return;
+                }
+            }
+        }
+        for (int i = 0 ; i < playerMP.inventory.getSizeInventory() ; i++) {
+            ItemStack stack = inventoryHelper.getStackInSlot(i);
+            if (stack != null && type.isValidEssence(stack)) {
+                ItemStack partStack = inventoryHelper.decrStackSize(slot, 1);
+                if (partStack != null) {
+                    inventoryHelper.setInventorySlotContents(64, slot, partStack);
+                    playerMP.openContainer.detectAndSendChanges();
                     return;
                 }
             }
@@ -358,7 +383,7 @@ public class DimletWorkbenchTileEntity extends GenericEnergyReceiverTileEntity i
         } else if (CMD_SUGGESTPARTS.equals(command)) {
             String type = args.get("type").getString();
             String id = args.get("id").getString();
-            suggestParts(new DimletKey(DimletType.getTypeByName(type), id));
+            suggestParts(playerMP, new DimletKey(DimletType.getTypeByName(type), id));
             return true;
         }
         return false;
