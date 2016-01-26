@@ -29,20 +29,15 @@ public class DimletWorkbenchTileEntity extends GenericEnergyReceiverTileEntity i
     public static final String CMD_STARTEXTRACT = "startExtract";
     public static final String CMD_GETEXTRACTING = "getExtracting";
     public static final String CLIENTCMD_GETEXTRACTING = "getExtracting";
-    public static final String CMD_SETAUTOEXTRACT = "setAutoExtract";
 
     private InventoryHelper inventoryHelper = new InventoryHelper(this, DimletWorkbenchContainer.factory, DimletWorkbenchContainer.SIZE_BUFFER + 9);
 
     private int extracting = 0;
     private DimletKey idToExtract = null;
     private int inhibitCrafting = 0;
-    private boolean autoExtract = false;
 
     public int getExtracting() {
         return extracting;
-    }
-
-    public boolean isAutoExtract() {return autoExtract;
     }
 
     public DimletWorkbenchTileEntity() {
@@ -121,8 +116,6 @@ public class DimletWorkbenchTileEntity extends GenericEnergyReceiverTileEntity i
                 }
             }
             markDirty();
-        } else if (autoExtract) {
-            startExtracting();
         }
     }
 
@@ -269,7 +262,6 @@ public class DimletWorkbenchTileEntity extends GenericEnergyReceiverTileEntity i
         } else {
             idToExtract = null;
         }
-        autoExtract = tagCompound.getBoolean("autoExtract");
     }
 
     @Override
@@ -286,7 +278,6 @@ public class DimletWorkbenchTileEntity extends GenericEnergyReceiverTileEntity i
             tagCompound.setString("extKtype", idToExtract.getType().dimletType.getOpcode());
             tagCompound.setString("extDkey", idToExtract.getId());
         }
-        tagCompound.setBoolean("autoExtract", autoExtract);
     }
 
     @Override
@@ -297,10 +288,6 @@ public class DimletWorkbenchTileEntity extends GenericEnergyReceiverTileEntity i
         }
         if (CMD_STARTEXTRACT.equals(command)) {
             startExtracting();
-            return true;
-        } else if (CMD_SETAUTOEXTRACT.equals(command)) {
-            autoExtract = args.get("auto").getBoolean();
-            markDirty();
             return true;
         }
         return false;

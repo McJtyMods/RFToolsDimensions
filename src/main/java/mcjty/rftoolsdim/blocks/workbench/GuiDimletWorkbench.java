@@ -26,7 +26,6 @@ public class GuiDimletWorkbench extends GenericGuiContainer<DimletWorkbenchTileE
 
     private EnergyBar energyBar;
     private Button extractButton;
-    private ToggleButton autoExtract;
     private ImageLabel progressIcon;
 
     private static final ResourceLocation iconLocation = new ResourceLocation(RFToolsDim.MODID, "textures/gui/dimletworkbench.png");
@@ -59,21 +58,10 @@ public class GuiDimletWorkbench extends GenericGuiContainer<DimletWorkbenchTileE
                 }
         ).setTooltips("Deconstruct a dimlet into its parts");
 
-        autoExtract = new ToggleButton(mc, this).setText("Auto").setLayoutHint(new PositionalLayout.PositionalHint(94, 7, 42, 14)).addButtonEvent(new ButtonEvent() {
-            @Override
-            public void buttonClicked(Widget parent) {
-                setAutoExtract();
-            }
-        }).setTooltips("Automatically extract").setCheckMarker(true);
-
-        Widget toplevel = new Panel(mc, this).setBackground(iconLocation).setLayout(new PositionalLayout()).addChild(extractButton).addChild(energyBar).addChild(progressIcon).addChild(autoExtract);
+        Widget toplevel = new Panel(mc, this).setBackground(iconLocation).setLayout(new PositionalLayout()).addChild(extractButton).addChild(energyBar).addChild(progressIcon);
         toplevel.setBounds(new Rectangle(guiLeft, guiTop, xSize, ySize));
 
         window = new Window(this, toplevel);
-    }
-
-    private void setAutoExtract() {
-        sendServerCommand(RFToolsDimMessages.INSTANCE, DimletWorkbenchTileEntity.CMD_SETAUTOEXTRACT, new Argument("auto", autoExtract.isPressed()));
     }
 
     private void extractDimlet() {
