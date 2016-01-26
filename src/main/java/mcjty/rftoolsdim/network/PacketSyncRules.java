@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * Sync dimlet rules from server to client.
  */
-public class PackedSyncRules implements IMessage {
+public class PacketSyncRules implements IMessage {
 
     private List<Pair<Filter, Settings>> rules;
 
@@ -42,16 +42,16 @@ public class PackedSyncRules implements IMessage {
         System.out.println("buf.array().length = " + buf.array().length);
     }
 
-    public PackedSyncRules() {
+    public PacketSyncRules() {
     }
 
-    public PackedSyncRules(List<Pair<Filter, Settings>> rules) {
+    public PacketSyncRules(List<Pair<Filter, Settings>> rules) {
         this.rules = rules;
     }
 
-    public static class Handler implements IMessageHandler<PackedSyncRules, IMessage> {
+    public static class Handler implements IMessageHandler<PacketSyncRules, IMessage> {
         @Override
-        public IMessage onMessage(PackedSyncRules message, MessageContext ctx) {
+        public IMessage onMessage(PacketSyncRules message, MessageContext ctx) {
             Minecraft.getMinecraft().addScheduledTask(() -> SyncRulesHelper.syncRulesFromServer(message));
             return null;
         }

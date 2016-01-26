@@ -9,7 +9,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class SyncRulesHelper {
 
-    public static void syncRulesFromServer(PackedSyncRules message) {
+    public static void syncRulesFromServer(PacketSyncRules message) {
         World world = Minecraft.getMinecraft().theWorld;
         Logging.log("Received dimlet rules from server");
 //        RfToolsDimensionManager dimensionManager = RfToolsDimensionManager.getDimensionManager(world);

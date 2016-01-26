@@ -24,21 +24,75 @@ public class Settings {
     }
 
     public void toBytes(ByteBuf buf) {
-        buf.writeByte(rarity);
-        buf.writeInt(createCost);
-        buf.writeInt(maintainCost);
-        buf.writeInt(tickCost);
-        buf.writeBoolean(worldgen);
-        buf.writeBoolean(dimlet);
+        if (rarity == null) {
+            buf.writeByte(127);
+        } else {
+            buf.writeByte(rarity);
+        }
+        if (createCost == null) {
+            buf.writeBoolean(false);
+        } else {
+            buf.writeBoolean(true);
+            buf.writeInt(createCost);
+        }
+        if (maintainCost == null) {
+            buf.writeBoolean(false);
+        } else {
+            buf.writeBoolean(true);
+            buf.writeInt(maintainCost);
+        }
+        if (tickCost == null) {
+            buf.writeBoolean(false);
+        } else {
+            buf.writeBoolean(true);
+            buf.writeInt(tickCost);
+        }
+        if (worldgen == null) {
+            buf.writeByte(127);
+        } else {
+            buf.writeByte(worldgen ? 1 : 0);
+        }
+        if (dimlet == null) {
+            buf.writeByte(127);
+        } else {
+            buf.writeByte(dimlet ? 1 : 0);
+        }
     }
 
     public Settings(ByteBuf buf) {
-        rarity = (int) buf.readByte();
-        createCost = buf.readInt();
-        maintainCost = buf.readInt();
-        tickCost = buf.readInt();
-        worldgen = buf.readBoolean();
-        dimlet = buf.readBoolean();
+        byte b = buf.readByte();
+        if (b == 127) {
+            rarity = null;
+        } else {
+            rarity = (int) b;
+        }
+        if (buf.readBoolean()) {
+            createCost = buf.readInt();
+        } else {
+            createCost = null;
+        }
+        if (buf.readBoolean()) {
+            maintainCost = buf.readInt();
+        } else {
+            maintainCost = null;
+        }
+        if (buf.readBoolean()) {
+            tickCost = buf.readInt();
+        } else {
+            tickCost = null;
+        }
+        b = buf.readByte();
+        if (b == 127) {
+            worldgen = null;
+        } else {
+            worldgen = b == 1;
+        }
+        b = buf.readByte();
+        if (b == 127) {
+            dimlet = null;
+        } else {
+            dimlet = b == 1;
+        }
     }
 
     public boolean isBlacklisted() {
