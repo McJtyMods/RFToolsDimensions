@@ -15,6 +15,179 @@
   {
     "filter": {
       "type": "material",
+      "mod": "tconstruct",
+      "name": [ "ore", "metal" ],
+      "property": {
+        "type": "COBALT"
+      }
+    },
+    "settings": {
+      "rarity": 5,
+      "create": 80000,
+      "maintain": 20000,
+      "ticks": 1000,
+      "worldgen": true,
+      "dimlet": true
+    }
+  },
+  {
+    "filter": {
+      "type": "material",
+      "mod": "tconstruct",
+      "name": [ "ore", "metal" ],
+      "property": {
+        "type": "ARDITE"
+      }
+    },
+    "settings": {
+      "rarity": 5,
+      "create": 80000,
+      "maintain": 20000,
+      "ticks": 1000,
+      "worldgen": true,
+      "dimlet": true
+    }
+  },
+  {
+    "filter": {
+      "type": "material",
+      "mod": "tconstruct",
+      "name": "metal",
+      "property": {
+        "type": "KNIGHTSLIME"
+      }
+    },
+    "settings": {
+      "worldgen": false,
+      "dimlet": false
+    }
+  },
+  {
+    "filter": {
+      "type": "material",
+      "mod": "tconstruct",
+      "name": "metal",
+      "property": {
+        "type": "MANYULLYN"
+      }
+    },
+    "settings": {
+      "rarity": 5,
+      "create": 80000,
+      "maintain": 20000,
+      "ticks": 1000,
+      "worldgen": true,
+      "dimlet": true
+    }
+  },
+  {
+    "filter": {
+      "type": "material",
+      "mod": "tconstruct",
+      "name": [ "ore", "metal" ]
+    },
+    "settings": {
+      "rarity": 4,
+      "create": 30000,
+      "maintain": 10000,
+      "ticks": 500,
+      "worldgen": true,
+      "dimlet": true
+    }
+  },
+  {
+    "filter": {
+      "type": "material",
+      "mod": "biomesoplenty",
+      "name": [ "ash_block", "stone", "mud", "sand", "dirt", "ash_stone", "crag_rock", "dried_dirt", "hard_dirt", "hard_ice", "hard_sand", "log_0", "log_1", "log_2", "log_3", "planks_0" ]
+    },
+    "settings": {
+      "rarity": 2,
+      "create": 100,
+      "maintain": 30,
+      "ticks": 10,
+      "worldgen": true,
+      "dimlet": true
+    }
+  },
+  {
+    "filter": {
+      "type": "material",
+      "mod": "flatcoloredblocks",
+      "name": "flatcoloredblock_glowing.*"
+    },
+    "settings": {
+      "rarity": 4,
+      "create": 500,
+      "maintain": 500,
+      "ticks": 100,
+      "worldgen": true,
+      "dimlet": true
+    }
+  },
+  {
+    "filter": {
+      "type": "material",
+      "mod": "flatcoloredblocks",
+      "name": "flatcoloredblock.*"
+    },
+    "settings": {
+      "rarity": 2,
+      "create": 100,
+      "maintain": 50,
+      "ticks": 10,
+      "worldgen": true,
+      "dimlet": true
+    }
+  },
+  {
+    "filter": {
+      "type": "material",
+      "mod": "biomesoplenty",
+      "name": [ "gem_block", "gem_ore" ]
+    },
+    "settings": {
+      "rarity": 3,
+      "create": 2000,
+      "maintain": 1000,
+      "ticks": 90,
+      "worldgen": true,
+      "dimlet": true
+    }
+  },
+  {
+    "filter": {
+      "type": "material",
+      "mod": "thaumcraft",
+      "name": [ "ore_amber", "ore_cinnabar" ]
+    },
+    "settings": {
+      "rarity": 3,
+      "create": 2000,
+      "maintain": 1000,
+      "ticks": 90,
+      "worldgen": true,
+      "dimlet": true
+    }
+  },
+  {
+    "filter": {
+      "type": "material",
+      "mod": "thaumcraft",
+      "name": [ "log", "stone", "translucent" ]
+    },
+    "settings": {
+      "rarity": 4,
+      "create": 4000,
+      "maintain": 3000,
+      "ticks": 200,
+      "worldgen": true,
+      "dimlet": true
+    }
+  },
+  {
+    "filter": {
+      "type": "material",
       "name": [ "dirt", "cobblestone", "sandstone", "nether_brick", "netherrack" ]
     },
     "settings": {
@@ -263,6 +436,74 @@
   {
     "filter": {
       "type": "liquid",
+      "mod": "tconstruct",
+      "name": [ "molten_knightslime", "purpleslime" ]
+    },
+    "settings": {
+      "worldgen": false,
+      "dimlet": false
+    }
+  },
+  {
+    "filter": {
+      "type": "liquid",
+      "mod": [ "pneumaticcraft", "buildcraft|energy", "tconstruct" ]
+    },
+    "settings": {
+      "rarity": 5,
+      "create": 3000,
+      "maintain": 3000,
+      "ticks": 100,
+      "worldgen": true,
+      "dimlet": true
+    }
+  },
+  {
+    "filter": {
+      "type": "liquid",
+      "mod": "thaumcraft",
+      "name": "purifying_fluid"
+    },
+    "settings": {
+      "rarity": 5,
+      "create": 4000,
+      "maintain": 4000,
+      "ticks": 500,
+      "worldgen": false,
+      "dimlet": true
+    }
+  },
+  {
+    "filter": {
+      "type": "liquid",
+      "mod": "thaumcraft"
+    },
+    "settings": {
+      "rarity": 3,
+      "create": 1000,
+      "maintain": 800,
+      "ticks": 50,
+      "worldgen": true,
+      "dimlet": true
+    }
+  },
+  {
+    "filter": {
+      "type": "liquid",
+      "mod": "biomesoplenty"
+    },
+    "settings": {
+      "rarity": 3,
+      "create": 1000,
+      "maintain": 500,
+      "ticks": 50,
+      "worldgen": true,
+      "dimlet": true
+    }
+  },
+  {
+    "filter": {
+      "type": "liquid",
       "name": "lava"
     },
     "settings": {
@@ -279,10 +520,88 @@
       "type": "liquid"
     },
     "settings": {
-      "rarity": 4,
+      "rarity": 6,
+      "create": 10000,
+      "maintain": 10000,
+      "ticks": 1000,
+      "worldgen": false,
+      "dimlet": true
+    }
+  },
+  {
+    "filter": {
+      "type": "mob",
+      "mod": "BiomesOPlenty"
+    },
+    "settings": {
+      "rarity": 3,
       "create": 2000,
       "maintain": 1000,
-      "ticks": 500,
+      "ticks": 400,
+      "worldgen": true,
+      "dimlet": true
+    }
+  },
+  {
+    "filter": {
+      "type": "mob",
+      "mod": "tconstruct"
+    },
+    "settings": {
+      "rarity": 5,
+      "create": 2000,
+      "maintain": 1000,
+      "ticks": 400,
+      "worldgen": true,
+      "dimlet": true
+    }
+  },
+  {
+    "filter": {
+      "type": "mob",
+      "mod": [ "PneumaticCraft", "BuildCraft|Robotics" ]
+    },
+    "settings": {
+      "worldgen": false,
+      "dimlet": false
+    }
+  },
+  {
+    "filter": {
+      "type": "mob",
+      "mod": "Thaumcraft",
+      "name": "Turret.*"
+    },
+    "settings": {
+      "worldgen": false,
+      "dimlet": false
+    }
+  },
+  {
+    "filter": {
+      "type": "mob",
+      "mod": "Thaumcraft",
+      "name": [ "BrainyZombie", "Tainted.*"]
+    },
+    "settings": {
+      "rarity": 4,
+      "create": 4000,
+      "maintain": 5000,
+      "ticks": 700,
+      "worldgen": true,
+      "dimlet": true
+    }
+  },
+  {
+    "filter": {
+      "type": "mob",
+      "mod": "Thaumcraft"
+    },
+    "settings": {
+      "rarity": 5,
+      "create": 4000,
+      "maintain": 5000,
+      "ticks": 700,
       "worldgen": true,
       "dimlet": true
     }

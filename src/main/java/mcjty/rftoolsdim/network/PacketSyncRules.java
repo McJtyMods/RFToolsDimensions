@@ -1,6 +1,7 @@
 package mcjty.rftoolsdim.network;
 
 import io.netty.buffer.ByteBuf;
+import mcjty.lib.varia.Logging;
 import mcjty.rftoolsdim.config.Filter;
 import mcjty.rftoolsdim.config.Settings;
 import net.minecraft.client.Minecraft;
@@ -39,7 +40,8 @@ public class PacketSyncRules implements IMessage {
             filter.toBytes(buf);
             settings.toBytes(buf);
         }
-        System.out.println("buf.array().length = " + buf.array().length);
+
+        Logging.log("Rules packet size: " + buf.writerIndex() + " of " + buf.array().length);
     }
 
     public List<Pair<Filter, Settings>> getRules() {

@@ -60,7 +60,7 @@ public class Filter {
             }
         }
         if (mods != null) {
-            if (!mods.contains(mod)) {
+            if (!mods.contains(mod.toLowerCase())) {
                 return false;
             }
         }
@@ -73,13 +73,13 @@ public class Filter {
 
         if (names != null || nameRegexps != null) {
             if (names != null) {
-                if (names.contains(name)) {
+                if (names.contains(name.toLowerCase())) {
                     return true;
                 }
             }
             if (nameRegexps != null) {
                 for (Pattern pattern : nameRegexps) {
-                    Matcher matcher = pattern.matcher(name);
+                    Matcher matcher = pattern.matcher(name.toLowerCase());
                     if (matcher.matches()) {
                         return true;
                     }
@@ -195,7 +195,7 @@ public class Filter {
             if (mods == null) {
                 mods = new HashSet<>();
             }
-            mods.add(mod);
+            mods.add(mod.toLowerCase());
             return this;
         }
 
@@ -210,7 +210,7 @@ public class Filter {
                 if (names == null) {
                     names = new HashSet<>();
                 }
-                names.add(name);
+                names.add(name.toLowerCase());
             }
             return this;
         }
