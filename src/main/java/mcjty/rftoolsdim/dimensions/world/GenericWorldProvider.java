@@ -74,7 +74,12 @@ public class GenericWorldProvider extends WorldProvider implements  /*@todo impl
         return dimensionInformation;
     }
 
-//    @Override
+    @Override
+    public String getSaveFolder() {
+        return "RFTOOLS" + dimensionId;
+    }
+
+    //    @Override
 //    @Optional.Method(modid = "reccomplex")
 //    public Set<String> getDimensionTypes() {
 //        getDimensionInformation();
