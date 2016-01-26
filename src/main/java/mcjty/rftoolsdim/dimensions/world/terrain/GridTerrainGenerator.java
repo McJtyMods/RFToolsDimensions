@@ -36,7 +36,7 @@ public class GridTerrainGenerator extends NormalTerrainGenerator {
                 boolean filled = (x == borderx) && (z == borderz);
                 if (filled) {
                     for (int y = 0 ; y < 128 ; y++) {
-                        primer.setBlockState(index, baseBlock);
+                        primer.setBlockState(index++, baseBlock);
                         // @todo support for 127
 //                        if (baseMeta == 127) {
 //                            realMeta = (byte)(y & 0xf);
