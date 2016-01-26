@@ -1,10 +1,15 @@
 package mcjty.rftoolsdim.dimensions.dimlets.types;
 
-import mcjty.rftoolsdim.dimensions.dimlets.DimletKey;
-import mcjty.rftoolsdim.dimensions.dimlets.DimletRandomizer;
+import mcjty.lib.varia.BlockTools;
+import mcjty.rftoolsdim.blocks.ModBlocks;
+import mcjty.rftoolsdim.config.Settings;
 import mcjty.rftoolsdim.dimensions.DimensionInformation;
+import mcjty.rftoolsdim.dimensions.dimlets.DimletKey;
+import mcjty.rftoolsdim.dimensions.dimlets.KnownDimletConfiguration;
+import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.config.Configuration;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -78,33 +83,30 @@ public class LiquidDimletType implements IDimletType {
     }
 
     private static boolean isValidLiquidEssence(ItemStack stackEssence, NBTTagCompound essenceCompound) {
-//        Block essenceBlock = BlockTools.getBlock(stackEssence);
-//
-//        if (essenceBlock != DimletConstructionSetup.liquidAbsorberBlock) {
-//            return false;
-//        }
-//        if (essenceCompound == null) {
-//            return false;
-//        }
-//        int absorbing = essenceCompound.getInteger("absorbing");
-//        int blockID = essenceCompound.getInteger("liquid");
-//        if (absorbing > 0 || blockID == -1) {
-//            return false;
-//        }
+        Block essenceBlock = BlockTools.getBlock(stackEssence);
+
+        if (essenceBlock != ModBlocks.liquidAbsorberBlock) {
+            return false;
+        }
+        if (essenceCompound == null) {
+            return false;
+        }
+        int absorbing = essenceCompound.getInteger("absorbing");
+        if (absorbing > 0 || essenceCompound.hasKey("liquid")) {
+            return false;
+        }
         return true;
     }
 
     private static DimletKey findLiquidDimlet(NBTTagCompound essenceCompound) {
-//        int blockID = essenceCompound.getInteger("liquid");
-//        for (Map.Entry<DimletKey, Block> entry : DimletObjectMapping.idToFluid.entrySet()) {
-//            if (entry.getValue() != null) {
-//                int id = Block.blockRegistry.getIDForObject(entry.getValue());
-//                if (blockID == id) {
-//                    return entry.getKey();
-//                }
-//            }
-//        }
-        return null;
+        int blockID = essenceCompound.getInteger("liquid");
+        Block block = Block.blockRegistry.getObject(new ResourceLocation(essenceCompound.getString("liquid")));
+        DimletKey key = new DimletKey(DimletType.DIMLET_LIQUID, block.getRegistryName() + "@0");
+        Settings settings = KnownDimletConfiguration.getSettings(key);
+        if (settings == null || !settings.isDimlet()) {
+            return null;
+        }
+        return key;
     }
 
     @Override
