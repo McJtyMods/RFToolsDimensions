@@ -16,13 +16,13 @@ public class CommandRftDim extends DefaultCommand {
         registerCommand(new CmdSetPower());
         registerCommand(new CmdInfo());
 //        registerCommand(new CmdReclaim());
-//        registerCommand(new CmdSafeDelete());
+        registerCommand(new CmdSafeDelete());
 //        registerCommand(new CmdCreateTab());
 //        registerCommand(new CmdRecover());
 //        registerCommand(new CmdSaveDims());
 //        registerCommand(new CmdSaveDim());
 //        registerCommand(new CmdLoadDim());
-//        registerCommand(new CmdSetOwner());
+        registerCommand(new CmdSetOwner());
     }
 
     @Override
