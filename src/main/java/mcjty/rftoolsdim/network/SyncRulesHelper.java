@@ -1,6 +1,7 @@
 package mcjty.rftoolsdim.network;
 
 import mcjty.lib.varia.Logging;
+import mcjty.rftoolsdim.config.DimletRules;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -12,10 +13,7 @@ public class SyncRulesHelper {
     public static void syncRulesFromServer(PacketSyncRules message) {
         World world = Minecraft.getMinecraft().theWorld;
         Logging.log("Received dimlet rules from server");
-//        RfToolsDimensionManager dimensionManager = RfToolsDimensionManager.getDimensionManager(world);
-//
-//        dimensionManager.syncFromServer(message.getDimensions(), message.getDimensionInformation());
-//        dimensionManager.save(world);
+        DimletRules.syncRules(message.getRules());
     }
 
 }

@@ -42,6 +42,10 @@ public class PacketSyncRules implements IMessage {
         System.out.println("buf.array().length = " + buf.array().length);
     }
 
+    public List<Pair<Filter, Settings>> getRules() {
+        return rules;
+    }
+
     public PacketSyncRules() {
     }
 

@@ -4,6 +4,8 @@ import com.google.gson.*;
 import mcjty.lib.varia.Logging;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletKey;
+import mcjty.rftoolsdim.dimensions.dimlets.DimletRandomizer;
+import mcjty.rftoolsdim.dimensions.dimlets.KnownDimletConfiguration;
 import mcjty.rftoolsdim.dimensions.dimlets.types.DimletType;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
@@ -54,6 +56,12 @@ public class DimletRules {
 
     public static List<Pair<Filter, Settings>> getRules() {
         return rules;
+    }
+
+    public static void syncRules(List<Pair<Filter, Settings>> rules) {
+        DimletRules.rules = rules;
+        KnownDimletConfiguration.init();
+        DimletRandomizer.init();
     }
 
     public static void readRules(File directory) {
