@@ -60,6 +60,14 @@ public class MaterialAbsorberTileEntity extends GenericTileEntity implements ITi
         return worldObj.getBlockState(c).equals(blockState);
     }
 
+    public int getAbsorbing() {
+        return absorbing;
+    }
+
+    public IBlockState getBlockState() {
+        return blockState;
+    }
+
     private IBlockState isValidSourceBlock(BlockPos coordinate) {
         IBlockState state = worldObj.getBlockState(coordinate);
         return isValidDimletBlock(state) ? state : null;

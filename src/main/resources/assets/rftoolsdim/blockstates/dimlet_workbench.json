@@ -1,7 +1,7 @@
 {
   "forge_marker": 1,
   "defaults": {
-    "model": "rftools:dimlet_workbench"
+    "model": "rftoolsdim:dimlet_workbench"
   },
   "variants": {
     "normal": [{}],

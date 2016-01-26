@@ -29,8 +29,8 @@ public class DimletMemoryUnitItem extends GenericRFToolsItem {
     @Override
     @SideOnly(Side.CLIENT)
     public void initModel() {
-        ModelResourceLocation models[] = new ModelResourceLocation[7];
-        for (int i = 0 ; i <= 3 ; i++) {
+        ModelResourceLocation models[] = new ModelResourceLocation[3];
+        for (int i = 0 ; i < 3 ; i++) {
             models[i] = new ModelResourceLocation(getRegistryName() + i, "inventory");
             ModelBakery.registerItemVariants(this, models[i]);
         }

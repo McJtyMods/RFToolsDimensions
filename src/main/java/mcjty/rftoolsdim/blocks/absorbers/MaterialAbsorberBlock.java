@@ -15,8 +15,11 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.EnumWorldBlockLayer;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -34,18 +37,13 @@ public class MaterialAbsorberBlock extends GenericRFToolsBlock<MaterialAbsorberT
     @Override
     public List<String> getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currenttip, accessor, config);
-        NBTTagCompound tagCompound = accessor.getNBTData();
-        if (tagCompound != null) {
-            int blockID = tagCompound.getInteger("block");
-            if (blockID != -1) {
-                Block block = (Block) Block.blockRegistry.getObjectById(blockID);
-                if (block != null) {
-                    int meta = tagCompound.getInteger("meta");
-                    int absorbing = tagCompound.getInteger("absorbing");
-                    int pct = ((DimletConstructionConfiguration.maxBlockAbsorbtion - absorbing) * 100) / DimletConstructionConfiguration.maxBlockAbsorbtion;
-                    currenttip.add(EnumChatFormatting.GREEN + "Block: " + new ItemStack(block, 1, meta).getDisplayName() + " (" + pct + "%)");
-                }
-            }
+        MaterialAbsorberTileEntity tileEntity = (MaterialAbsorberTileEntity) accessor.getTileEntity();
+        if (tileEntity != null && tileEntity.getBlockState() != null) {
+            Block block = tileEntity.getBlockState().getBlock();
+            int meta = block.getMetaFromState(tileEntity.getBlockState());
+            int absorbing = tileEntity.getAbsorbing();
+            int pct = ((DimletConstructionConfiguration.maxBlockAbsorbtion - absorbing) * 100) / DimletConstructionConfiguration.maxBlockAbsorbtion;
+            currenttip.add(EnumChatFormatting.GREEN + "Block: " + new ItemStack(block, 1, meta).getDisplayName() + " (" + pct + "%)");
         }
         return currenttip;
     }
@@ -56,17 +54,14 @@ public class MaterialAbsorberBlock extends GenericRFToolsBlock<MaterialAbsorberT
         super.addInformation(itemStack, player, list, whatIsThis);
 
         NBTTagCompound tagCompound = itemStack.getTagCompound();
-        if (tagCompound != null) {
-            int blockID = tagCompound.getInteger("block");
-            if (blockID != -1) {
-                Block block = (Block) Block.blockRegistry.getObjectById(blockID);
-                if (block != null) {
-                    int meta = tagCompound.getInteger("meta");
-                    list.add(EnumChatFormatting.GREEN + "Block: " + new ItemStack(block, 1, meta).getDisplayName());
-                    int absorbing = tagCompound.getInteger("absorbing");
-                    int pct = ((DimletConstructionConfiguration.maxBlockAbsorbtion - absorbing) * 100) / DimletConstructionConfiguration.maxBlockAbsorbtion;
-                    list.add(EnumChatFormatting.GREEN + "Absorbed: " + pct + "%");
-                }
+        if (tagCompound != null && tagCompound.hasKey("block")) {
+            Block block = Block.blockRegistry.getObject(new ResourceLocation(tagCompound.getString("block")));
+            if (block != null) {
+                int meta = tagCompound.getInteger("meta");
+                list.add(EnumChatFormatting.GREEN + "Block: " + new ItemStack(block, 1, meta).getDisplayName());
+                int absorbing = tagCompound.getInteger("absorbing");
+                int pct = ((DimletConstructionConfiguration.maxBlockAbsorbtion - absorbing) * 100) / DimletConstructionConfiguration.maxBlockAbsorbtion;
+                list.add(EnumChatFormatting.GREEN + "Absorbed: " + pct + "%");
             }
         }
 
@@ -77,6 +72,12 @@ public class MaterialAbsorberBlock extends GenericRFToolsBlock<MaterialAbsorberT
         } else {
             list.add(EnumChatFormatting.WHITE + RFToolsDim.SHIFT_MESSAGE);
         }
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public EnumWorldBlockLayer getBlockLayer() {
+        return EnumWorldBlockLayer.CUTOUT;
     }
 
     @Override
