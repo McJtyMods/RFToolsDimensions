@@ -64,7 +64,14 @@ public interface IDimletType {
     void constructDimension(List<Pair<DimletKey, List<DimletKey>>> dimlets, Random random, DimensionInformation dimensionInformation);
 
 
-    public String[] getInformation();
+    String[] getInformation();
+
+    /**
+     * Is this item a valid essence for this type.
+     * @param essenceStack
+     * @return
+     */
+    default boolean isValidEssence(ItemStack essenceStack) { return false; }
 
     /**
      * Attempt to craft a dimlet of this type given a controller, a memory part, an energy part and an essence item.

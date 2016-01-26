@@ -82,12 +82,14 @@ public class MaterialDimletType implements IDimletType {
         return new String[] { "This is a modifier for terrain, tendrils, canyons, orbs,", "liquid orbs, or oregen.", "Put these dimlets BEFORE the thing you want", "to change." };
     }
 
-    private static boolean isValidMaterialEssence(ItemStack stackEssence, NBTTagCompound essenceCompound) {
+    @Override
+    public boolean isValidEssence(ItemStack stackEssence) {
         Block essenceBlock = BlockTools.getBlock(stackEssence);
 
         if (essenceBlock != ModBlocks.materialAbsorberBlock) {
             return false;
         }
+        NBTTagCompound essenceCompound = stackEssence.getTagCompound();
         if (essenceCompound == null) {
             return false;
         }
@@ -111,7 +113,7 @@ public class MaterialDimletType implements IDimletType {
 
     @Override
     public DimletKey attemptDimletCrafting(ItemStack stackController, ItemStack stackMemory, ItemStack stackEnergy, ItemStack stackEssence) {
-        if (!isValidMaterialEssence(stackEssence, stackEssence.getTagCompound())) {
+        if (!isValidEssence(stackEssence)) {
             return null;
         }
         DimletKey materialDimlet = findMaterialDimlet(stackEssence.getTagCompound());

@@ -39,7 +39,7 @@ public class RFToolsDim implements ModBase {
     public static final String VERSION = "4.20beta14";
     public static final String MIN_FORGE_VER = "11.15.0.1686";
 //    public static final String MIN_COFHLIB_VER = "1.0.3";
-    public static final String MIN_MCJTYLIB_VER = "1.8.9-1.8.1beta4";
+    public static final String MIN_MCJTYLIB_VER = "1.8.9-1.8.1beta5";
     public static final String MIN_RFTOOLS_VER = "1.8.9-4.20beta10";
 
     @SidedProxy(clientSide="mcjty.rftoolsdim.proxy.ClientProxy", serverSide="mcjty.rftoolsdim.proxy.ServerProxy")

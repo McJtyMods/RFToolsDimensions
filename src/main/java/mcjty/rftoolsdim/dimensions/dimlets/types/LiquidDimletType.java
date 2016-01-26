@@ -82,12 +82,14 @@ public class LiquidDimletType implements IDimletType {
         return new String[] { "This is a modifier for terrain, lake, or liquid orbs.", "Put these dimlets BEFORE the thing you want", "to change." };
     }
 
-    private static boolean isValidLiquidEssence(ItemStack stackEssence, NBTTagCompound essenceCompound) {
+    @Override
+    public boolean isValidEssence(ItemStack stackEssence) {
         Block essenceBlock = BlockTools.getBlock(stackEssence);
 
         if (essenceBlock != ModBlocks.liquidAbsorberBlock) {
             return false;
         }
+        NBTTagCompound essenceCompound = stackEssence.getTagCompound();
         if (essenceCompound == null) {
             return false;
         }
@@ -99,7 +101,6 @@ public class LiquidDimletType implements IDimletType {
     }
 
     private static DimletKey findLiquidDimlet(NBTTagCompound essenceCompound) {
-        int blockID = essenceCompound.getInteger("liquid");
         Block block = Block.blockRegistry.getObject(new ResourceLocation(essenceCompound.getString("liquid")));
         DimletKey key = new DimletKey(DimletType.DIMLET_LIQUID, block.getRegistryName() + "@0");
         Settings settings = KnownDimletConfiguration.getSettings(key);
@@ -111,7 +112,7 @@ public class LiquidDimletType implements IDimletType {
 
     @Override
     public DimletKey attemptDimletCrafting(ItemStack stackController, ItemStack stackMemory, ItemStack stackEnergy, ItemStack stackEssence) {
-        if (!isValidLiquidEssence(stackEssence, stackEssence.getTagCompound())) {
+        if (!isValidEssence(stackEssence)) {
             return null;
         }
         DimletKey liquidDimlet = findLiquidDimlet(stackEssence.getTagCompound());
