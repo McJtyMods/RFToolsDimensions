@@ -4,10 +4,8 @@ import mcjty.lib.base.StyleConfig;
 import mcjty.lib.container.GenericGuiContainer;
 import mcjty.lib.entity.GenericEnergyStorageTileEntity;
 import mcjty.lib.gui.Window;
-import mcjty.lib.gui.events.ButtonEvent;
 import mcjty.lib.gui.events.SelectionEvent;
 import mcjty.lib.gui.layout.HorizontalAlignment;
-import mcjty.lib.gui.layout.HorizontalLayout;
 import mcjty.lib.gui.layout.PositionalLayout;
 import mcjty.lib.gui.widgets.*;
 import mcjty.lib.gui.widgets.Button;
@@ -39,7 +37,6 @@ public class GuiDimletWorkbench extends GenericGuiContainer<DimletWorkbenchTileE
 
     private EnergyBar energyBar;
     private Button extractButton;
-    private ImageLabel progressIcon;
 
     private TextField searchBar;
 
@@ -80,15 +77,12 @@ public class GuiDimletWorkbench extends GenericGuiContainer<DimletWorkbenchTileE
             .setHorizontal();
         energyBar.setValue(GenericEnergyStorageTileEntity.getCurrentRF());
 
-        progressIcon = new ImageLabel(mc, this).setImage(iconGuiElements, 4 * 16, 16);
-        progressIcon.setLayoutHint(new PositionalLayout.PositionalHint(135, 6, 16, 16));
-
         extractButton = new Button(mc, this).setText("Extract").setLayoutHint(new PositionalLayout.PositionalHint(30, 7, 48, 14)).addButtonEvent(
                 parent -> extractDimlet()
         ).setTooltips("Deconstruct a dimlet into its parts");
 
         Widget toplevel = new Panel(mc, this).setBackground(iconLocation).setLayout(new PositionalLayout())
-                .addChild(extractButton).addChild(energyBar).addChild(progressIcon).addChild(itemList).addChild(slider).addChild(searchBar);
+                .addChild(extractButton).addChild(energyBar).addChild(itemList).addChild(slider).addChild(searchBar);
         toplevel.setBounds(new Rectangle(guiLeft, guiTop, xSize, ySize));
 
         listDirty = true;
@@ -179,9 +173,15 @@ public class GuiDimletWorkbench extends GenericGuiContainer<DimletWorkbenchTileE
 
         int extracting = tileEntity.getExtracting();
         if (extracting == 0) {
-            progressIcon.setImage(iconGuiElements, 4 * 16, 16);
+            extractButton.setText("Extract");
         } else {
-            progressIcon.setImage(iconGuiElements, (extracting % 4) * 16, 16);
+            switch (extracting % 4) {
+                case 0: extractButton.setText("."); break;
+                case 1: extractButton.setText(".."); break;
+                case 2: extractButton.setText("..."); break;
+                case 3: extractButton.setText("...."); break;
+            }
+            extractButton.setEnabled(false);
         }
 
         setDimletTooltip();
