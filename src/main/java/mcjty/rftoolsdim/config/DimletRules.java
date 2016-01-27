@@ -46,6 +46,9 @@ public class DimletRules {
         } else if (DimletType.DIMLET_LIQUID.equals(key.getType())) {
             int firstIndexOf = StringUtils.indexOf(id, ":");
             id = id.substring(firstIndexOf+1);
+            int lastIndexOf = StringUtils.lastIndexOf(id, "@");
+            meta = Integer.parseInt(id.substring(lastIndexOf+1));
+            id = id.substring(0, lastIndexOf);
         }
         return getSettings(key.getType(), mod, id, features, meta, properties);
     }

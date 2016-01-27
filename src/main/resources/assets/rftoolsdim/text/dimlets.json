@@ -517,10 +517,24 @@
   },
   {
     "filter": {
+      "type": "liquid",
+      "name": "water"
+    },
+    "settings": {
+      "rarity": 0,
+      "create": 10,
+      "maintain": 5,
+      "ticks": 5,
+      "worldgen": true,
+      "dimlet": true
+    }
+  },
+  {
+    "filter": {
       "type": "liquid"
     },
     "settings": {
-      "rarity": 6,
+      "rarity": 5,
       "create": 10000,
       "maintain": 10000,
       "ticks": 1000,
