@@ -284,7 +284,12 @@ public class KnownDimletConfiguration {
                 IBlockState state = DimletObjectMapping.getBlock(key);
                 if (state != null) {
                     ItemStack stack = new ItemStack(state.getBlock(), 1, state.getBlock().getMetaFromState(state));
-                    return stack.getItem() == null ? "?" : stack.getDisplayName();
+                    try {
+                        return stack.getItem() == null ? "?" : stack.getDisplayName();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        return "<Bug>";
+                    }
                 }
                 break;
             case DIMLET_MOB:
