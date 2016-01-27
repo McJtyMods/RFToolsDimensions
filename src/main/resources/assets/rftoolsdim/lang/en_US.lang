@@ -83,8 +83,6 @@ item.mediocre_efficiency_essence.name=Mediocre Efficiency Essence
 
 # Blocks
 tile.dimletFilterBlock.name=Dimlet Filter
-tile.dimletResearcherBlock.name=Dimlet Researcher
-tile.dimletScramblerBlock.name=Dimlet Scrambler
 tile.dimlet_workbench.name=Dimlet Workbench
 tile.dimension_enscriber.name=Dimension Enscriber
 tile.dimension_builder.name=Dimension Builder
@@ -107,9 +105,9 @@ tile.dimensional_blank_block.name=Dimensional Blank Block
 tile.dimensional_block.name=Dimensional Block
 tile.dimensional_small_blocks.name=Dimensional Small Blocks
 tile.dimensional_cross_block.name=Dimensional Cross Block
-tile.dimensionalCross2Block.name=Dimensional Cross 2 Block
-tile.dimensionalPattern1Block.name=Dimensional Pattern 1 Block
-tile.dimensionalPattern2Block.name=Dimensional Pattern 2 Block
+tile.dimensional_cross2_block.name=Dimensional Cross 2 Block
+tile.dimensional_pattern1_block.name=Dimensional Pattern 1 Block
+tile.dimensional_pattern2_block.name=Dimensional Pattern 2 Block
 
 # Creative Tabs
 itemGroup.RfToolsDim=RFTools Dimensions
