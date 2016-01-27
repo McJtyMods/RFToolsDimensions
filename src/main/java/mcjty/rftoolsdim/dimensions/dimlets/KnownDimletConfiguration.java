@@ -113,6 +113,31 @@ public class KnownDimletConfiguration {
         if (block instanceof BlockLiquid) {
             return;
         }
+
+        Set<Filter.Feature> features = getBlockFeatures(block);
+
+        ResourceLocation nameForObject = Block.blockRegistry.getNameForObject(block);
+        String mod = nameForObject.getResourceDomain();
+
+        for (IBlockState state : block.getBlockState().getValidStates()) {
+            int meta = state.getBlock().getMetaFromState(state);
+            List<IProperty> propertyNames = new ArrayList<>(state.getPropertyNames());
+            propertyNames.sort((o1, o2) -> o1.getName().compareTo(o2.getName()));
+
+            ImmutableMap<IProperty, Comparable> properties = state.getProperties();
+            Map<String, String> props = new HashMap<>();
+            for (Map.Entry<IProperty, Comparable> entry : properties.entrySet()) {
+                props.put(entry.getKey().getName(), entry.getValue().toString());
+            }
+            DimletKey key = new DimletKey(DimletType.DIMLET_MATERIAL, block.getRegistryName() + "@" + meta);
+            Settings settings = DimletRules.getSettings(key, mod, features, props);
+            if (!settings.isBlacklisted()) {
+                knownDimlets.put(key, settings);
+            }
+        }
+    }
+
+    public static Set<Filter.Feature> getBlockFeatures(Block block) {
         Set<Filter.Feature> features = EnumSet.noneOf(Filter.Feature.class);
 
         ItemStack stack = new ItemStack(block, 1, OreDictionary.WILDCARD_VALUE);
@@ -135,26 +160,7 @@ public class KnownDimletConfiguration {
         if (!block.isFullBlock()) {
             features.add(Filter.Feature.NOFULLBLOCK);
         }
-
-        ResourceLocation nameForObject = Block.blockRegistry.getNameForObject(block);
-        String mod = nameForObject.getResourceDomain();
-
-        for (IBlockState state : block.getBlockState().getValidStates()) {
-            int meta = state.getBlock().getMetaFromState(state);
-            List<IProperty> propertyNames = new ArrayList<>(state.getPropertyNames());
-            propertyNames.sort((o1, o2) -> o1.getName().compareTo(o2.getName()));
-
-            ImmutableMap<IProperty, Comparable> properties = state.getProperties();
-            Map<String, String> props = new HashMap<>();
-            for (Map.Entry<IProperty, Comparable> entry : properties.entrySet()) {
-                props.put(entry.getKey().getName(), entry.getValue().toString());
-            }
-            DimletKey key = new DimletKey(DimletType.DIMLET_MATERIAL, block.getRegistryName() + "@" + meta);
-            Settings settings = DimletRules.getSettings(key, mod, features, props);
-            if (!settings.isBlacklisted()) {
-                knownDimlets.put(key, settings);
-            }
-        }
+        return features;
     }
 
     public static void dumpMobs() {

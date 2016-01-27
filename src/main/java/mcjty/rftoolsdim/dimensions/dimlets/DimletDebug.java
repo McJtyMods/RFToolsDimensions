@@ -7,16 +7,12 @@ import mcjty.rftoolsdim.config.Filter;
 import mcjty.rftoolsdim.config.Settings;
 import mcjty.rftoolsdim.dimensions.dimlets.types.DimletType;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockFalling;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.*;
 
@@ -45,29 +41,8 @@ public class DimletDebug {
         if (block instanceof BlockLiquid) {
             return;
         }
-        Set<Filter.Feature> features = EnumSet.noneOf(Filter.Feature.class);
 
-        ItemStack stack = new ItemStack(block, 1, OreDictionary.WILDCARD_VALUE);
-        int[] iDs = null;
-        if (stack.getItem() != null) {
-            iDs = OreDictionary.getOreIDs(stack);
-        }
-        if (iDs != null && iDs.length > 0) {
-            features.add(Filter.Feature.OREDICT);
-        }
-        if (block instanceof BlockFalling) {
-            features.add(Filter.Feature.FALLING);
-        }
-        if (block.hasTileEntity(block.getDefaultState())) {
-            features.add(Filter.Feature.TILEENTITY);
-        }
-        if (block instanceof IPlantable) {
-            features.add(Filter.Feature.PLANTABLE);
-        }
-        if (!block.isFullBlock()) {
-            features.add(Filter.Feature.NOFULLBLOCK);
-        }
-
+        Set<Filter.Feature> features = KnownDimletConfiguration.getBlockFeatures(block);
         String mod = Block.blockRegistry.getNameForObject(block).getResourceDomain();
 
         for (IBlockState state : block.getBlockState().getValidStates()) {
