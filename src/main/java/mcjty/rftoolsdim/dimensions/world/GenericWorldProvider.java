@@ -1,7 +1,7 @@
 package mcjty.rftoolsdim.dimensions.world;
 
 import mcjty.lib.varia.Logging;
-import mcjty.rftoolsdim.api.dimension.RFToolsWorldProvider;
+import mcjty.rftoolsdim.api.dimension.IRFToolsWorldProvider;
 import mcjty.rftoolsdim.config.PowerConfiguration;
 import mcjty.rftoolsdim.dimensions.DimensionInformation;
 import mcjty.rftoolsdim.dimensions.DimensionStorage;
@@ -29,7 +29,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.Set;
 
 //@Optional.InterfaceList(@Optional.Interface(iface = "ivorius.reccomplex.dimensions.DimensionDictionary$Handler", modid = "reccomplex"))
-public class GenericWorldProvider extends WorldProvider implements  /*@todo implements DimensionDictionary.Handler,*/ RFToolsWorldProvider {
+public class GenericWorldProvider extends WorldProvider implements  /*@todo implements DimensionDictionary.Handler,*/ IRFToolsWorldProvider {
 
     public static final String RFTOOLS_DIMENSION = "rftools dimension";
 

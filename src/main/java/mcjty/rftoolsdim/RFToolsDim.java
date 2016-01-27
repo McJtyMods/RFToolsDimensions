@@ -1,9 +1,13 @@
 package mcjty.rftoolsdim;
 
+import com.google.common.base.Function;
+import com.google.common.base.Optional;
 import mcjty.lib.base.ModBase;
 import mcjty.lib.compat.MainCompatHandler;
 import mcjty.lib.varia.Logging;
 import mcjty.rftools.api.teleportation.ITeleportationManager;
+import mcjty.rftoolsdim.api.dimlet.IDimletConfigurationManager;
+import mcjty.rftoolsdim.apiimpl.DimletConfigurationManager;
 import mcjty.rftoolsdim.commands.CommandRftDb;
 import mcjty.rftoolsdim.commands.CommandRftDim;
 import mcjty.rftoolsdim.dimensions.DimensionStorage;
@@ -71,10 +75,6 @@ public class RFToolsDim implements ModBase {
 
     public static final String SHIFT_MESSAGE = "<Press Shift>";
 
-    /** Set our custom inventory Gui index to the next available Gui index */
-//    public static final int GUI_MANUAL_MAIN = modGuiIndex++;
-
-
     /**
      * Run before anything else. Read your config, create blocks, items, etc, and
      * register them with the GameRegistry.
@@ -85,6 +85,18 @@ public class RFToolsDim implements ModBase {
         MainCompatHandler.registerWaila();
 
         FMLInterModComms.sendFunctionMessage("rftools", "getApi", "mcjty.rftoolsdim.RFToolsDim$GetTeleportationManager");
+    }
+
+    @Mod.EventHandler
+    public void imcCallback(FMLInterModComms.IMCEvent event) {
+        for (FMLInterModComms.IMCMessage message : event.getMessages()) {
+            if ("getDimletConfigurationManager".equalsIgnoreCase(message.key)) {
+                Optional<Function<IDimletConfigurationManager, Void>> value = message.getFunctionValue(IDimletConfigurationManager.class, Void.class);
+                String mod = message.getSender();
+                Logging.log("Received RFTools Dimensions dimlet reconfiguration request from mod '" + mod + "'");
+                value.get().apply(new DimletConfigurationManager(mod));
+            }
+        }
     }
 
     /**

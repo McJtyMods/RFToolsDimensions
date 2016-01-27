@@ -5,7 +5,7 @@ package mcjty.rftoolsdim.api.dimension;
  * about this dimension:
  *     (RFToolsWorldProvider)(world.provider)
  */
-public interface RFToolsWorldProvider {
+public interface IRFToolsWorldProvider {
     /**
      * Get the amount of RF left in this dimension (only works server-side).
      */

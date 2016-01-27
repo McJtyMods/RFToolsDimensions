@@ -3,6 +3,7 @@ package mcjty.rftoolsdim.config;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import io.netty.buffer.ByteBuf;
+import mcjty.rftoolsdim.api.dimlet.IFilterBuilder;
 import mcjty.rftoolsdim.dimensions.dimlets.types.DimletType;
 import mcjty.rftoolsdim.network.ByteBufTools;
 import mcjty.rftoolsdim.varia.JSonTools;
@@ -182,7 +183,7 @@ public class Filter {
         }
     }
 
-    public static class Builder {
+    public static class Builder implements IFilterBuilder {
         private Set<String> mods = null;
         private Set<String> names = null;
         private Set<Pattern> name_regexps = null;
@@ -191,6 +192,7 @@ public class Filter {
         private Set<Integer> metas = null;
         private Map<String, String> properties = null;
 
+        @Override
         public Builder mod(String mod) {
             if (mods == null) {
                 mods = new HashSet<>();
@@ -199,6 +201,7 @@ public class Filter {
             return this;
         }
 
+        @Override
         public Builder name(String name) {
             if (name.contains("*")) {
                 // A regexp
@@ -213,6 +216,11 @@ public class Filter {
                 names.add(name.toLowerCase());
             }
             return this;
+        }
+
+        @Override
+        public IFilterBuilder type(String type) {
+            return type(DimletType.getTypeByName(type));
         }
 
         public Builder type(DimletType type) {
@@ -231,6 +239,7 @@ public class Filter {
             return this;
         }
 
+        @Override
         public Builder property(String name, String value) {
             if (properties == null) {
                 properties = new HashMap<>();
@@ -239,6 +248,7 @@ public class Filter {
             return this;
         }
 
+        @Override
         public Builder meta(Integer meta) {
             if (metas == null) {
                 metas = new HashSet<>();

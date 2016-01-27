@@ -13,7 +13,7 @@ public class SyncRulesHelper {
     public static void syncRulesFromServer(PacketSyncRules message) {
         World world = Minecraft.getMinecraft().theWorld;
         Logging.log("Received dimlet rules from server");
-        DimletRules.syncRules(message.getRules());
+        DimletRules.syncRulesFromServer(message.getRules());
     }
 
 }

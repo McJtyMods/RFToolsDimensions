@@ -3,6 +3,8 @@ package mcjty.rftoolsdim.config;
 import com.google.gson.*;
 import mcjty.lib.varia.Logging;
 import mcjty.rftoolsdim.RFToolsDim;
+import mcjty.rftoolsdim.api.dimlet.IDimletConfigurationManager;
+import mcjty.rftoolsdim.apiimpl.DimletConfigurationManager;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletKey;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletRandomizer;
 import mcjty.rftoolsdim.dimensions.dimlets.KnownDimletConfiguration;
@@ -12,21 +14,33 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import java.io.*;
 import java.util.*;
+import java.util.stream.Stream;
 
 public class DimletRules {
 
     private static List<Pair<Filter, Settings>> rules;
 
+    private static List<List<Pair<Filter, Settings>>> getCompleteRules() {
+        List<List<Pair<Filter, Settings>>> completeRules = new ArrayList<>();
+        for (Map.Entry<String, DimletConfigurationManager> entry : DimletConfigurationManager.getConfigurationManagers().entrySet()) {
+            completeRules.add(entry.getValue().getRules());
+        }
+        completeRules.add(rules);
+        return completeRules;
+    }
+
     public static Settings getSettings(DimletType type, String mod, String name, Set<Filter.Feature> features, int meta, Map<String, String> properties) {
         Settings.Builder builder = new Settings.Builder();
 
-        for (Pair<Filter, Settings> pair : rules) {
-            Filter filter = pair.getLeft();
-            if (filter.match(type, mod, name, meta, properties, features)) {
-                Settings settings = pair.getRight();
-                builder.merge(settings);
-                if (settings.isComplete()) {
-                    break;
+        for (List<Pair<Filter, Settings>> ruleList : getCompleteRules()) {
+            for (Pair<Filter, Settings> pair : ruleList) {
+                Filter filter = pair.getLeft();
+                if (filter.match(type, mod, name, meta, properties, features)) {
+                    Settings settings = pair.getRight();
+                    builder.merge(settings);
+                    if (settings.isComplete()) {
+                        break;
+                    }
                 }
             }
         }
@@ -61,7 +75,7 @@ public class DimletRules {
         return rules;
     }
 
-    public static void syncRules(List<Pair<Filter, Settings>> rules) {
+    public static void syncRulesFromServer(List<Pair<Filter, Settings>> rules) {
         DimletRules.rules = rules;
         KnownDimletConfiguration.init();
         DimletRandomizer.init();

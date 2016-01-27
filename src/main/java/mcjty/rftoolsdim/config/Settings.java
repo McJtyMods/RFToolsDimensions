@@ -4,6 +4,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import io.netty.buffer.ByteBuf;
+import mcjty.rftoolsdim.api.dimlet.ISettingsBuilder;
 import mcjty.rftoolsdim.varia.JSonTools;
 
 public class Settings {
@@ -171,7 +172,7 @@ public class Settings {
         return worldgen == null ? false : worldgen;
     }
 
-    public static class Builder {
+    public static class Builder implements ISettingsBuilder {
         private Integer rarity;
         private Integer createCost;
         private Integer maintainCost;
@@ -223,31 +224,37 @@ public class Settings {
             return this;
         }
 
+        @Override
         public Builder rarity(int rarity) {
             this.rarity = rarity;
             return this;
         }
 
+        @Override
         public Builder createCost(int createCost) {
             this.createCost = createCost;
             return this;
         }
 
+        @Override
         public Builder maintainCost(int maintainCost) {
             this.maintainCost = maintainCost;
             return this;
         }
 
+        @Override
         public Builder tickCost(int tickCost) {
             this.tickCost = tickCost;
             return this;
         }
 
+        @Override
         public Builder worldgen(boolean worldgen) {
             this.worldgen = worldgen;
             return this;
         }
 
+        @Override
         public Builder dimlet(boolean dimlet) {
             this.dimlet = dimlet;
             return this;
