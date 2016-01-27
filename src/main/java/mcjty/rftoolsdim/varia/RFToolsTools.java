@@ -110,8 +110,9 @@ public class RFToolsTools {
                 break;
             }
         }
-
         if (modName.equals("Minecraft Coder Pack")) {
+            modName = "minecraft";
+        } else if (modName.equals("Forge")) {
             modName = "minecraft";
         }
 
