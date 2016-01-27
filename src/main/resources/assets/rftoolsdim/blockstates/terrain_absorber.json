@@ -1,0 +1,10 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "rftoolsdim:terrain_absorber"
+  },
+  "variants": {
+    "normal": [{}],
+    "inventory": [{}]
+  }
+}

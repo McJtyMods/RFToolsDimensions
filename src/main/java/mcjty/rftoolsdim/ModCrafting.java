@@ -48,6 +48,8 @@ public class ModCrafting {
 
     private static void initAbsorberRecipes() {
         Block machineFrame = GameRegistry.findBlock("rftools", "machine_frame");
+        GameRegistry.addRecipe(new ItemStack(ModBlocks.terrainAbsorberBlock), "dws", "wMw", "swd", 'M', machineFrame, 'd', Blocks.stone, 's', Blocks.dirt, 'w', Blocks.wool);
+        GameRegistry.addShapelessRecipe(new ItemStack(ModBlocks.terrainAbsorberBlock), new ItemStack(ModBlocks.terrainAbsorberBlock));
         GameRegistry.addRecipe(new ItemStack(ModBlocks.biomeAbsorberBlock), "dws", "wMw", "swd", 'M', machineFrame, 'd', Blocks.dirt, 's', Blocks.sapling, 'w', Blocks.wool);
         GameRegistry.addShapelessRecipe(new ItemStack(ModBlocks.biomeAbsorberBlock), new ItemStack(ModBlocks.biomeAbsorberBlock));
         GameRegistry.addRecipe(new ItemStack(ModBlocks.materialAbsorberBlock), "dwc", "wMw", "swg", 'M', machineFrame, 'd', Blocks.dirt, 'c', Blocks.cobblestone, 's', Blocks.sand,

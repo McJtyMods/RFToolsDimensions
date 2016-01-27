@@ -95,6 +95,7 @@ tile.machineInfuserBlock.name=Machine Infuser
 tile.activity_probe.name=Activity Probe
 tile.energyExtractorBlock.name=Energy Extractor
 tile.biome_absorber.name=Biome Absorber
+tile.terrain_absorber.name=Terrain Absorber
 tile.material_absorber.name=Material Absorber
 tile.liquid_absorber.name=Liquid Absorber
 tile.timeAbsorberBlock.name=Time Absorber
