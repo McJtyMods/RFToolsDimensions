@@ -10,6 +10,7 @@ public class DimletConstructionConfiguration {
     public static int rfExtractOperation = 200;
     public static int maxBiomeAbsorbtion = 5000;    // Amount of ticks before a biome absorber is ready
     public static int maxTerrainAbsorbtion = 5000;  // Amount of ticks before a terrain absorber is ready
+    public static int maxFeatureAbsorbtion = 5000;  // Amount of ticks before a feature absorber is ready
     public static int maxBlockAbsorbtion = 128;     // Amount of blocks to absorbe
     public static int maxTimeAbsorbtion = 10;       // Amount of time ticks to absorbe
     public static int maxLiquidAbsorbtion = 128;    // Amount of liquid blocks to absorbe
@@ -26,7 +27,9 @@ public class DimletConstructionConfiguration {
         maxBiomeAbsorbtion = cfg.get(CATEGORY_DIMLET_CONSTRUCTION, "maxBiomeAbsorbtion", maxBiomeAbsorbtion,
                                      "Amount of ticks needed to fully absorb a biome essence").getInt();
         maxTerrainAbsorbtion = cfg.get(CATEGORY_DIMLET_CONSTRUCTION, "maxTerrainAbsorbtion", maxTerrainAbsorbtion,
-                                     "Amount of ticks needed to fully absorb a terrain essence").getInt();
+                                       "Amount of ticks needed to fully absorb a terrain essence").getInt();
+        maxFeatureAbsorbtion = cfg.get(CATEGORY_DIMLET_CONSTRUCTION, "maxFeatureAbsorbtion", maxFeatureAbsorbtion,
+                                       "Amount of ticks needed to fully absorb a feature essence").getInt();
         maxBlockAbsorbtion = cfg.get(CATEGORY_DIMLET_CONSTRUCTION, "maxBlockAbsorbtion", maxBlockAbsorbtion,
                 "Amount of blocks needed to fully absorb material essence").getInt();
         maxLiquidAbsorbtion = cfg.get(CATEGORY_DIMLET_CONSTRUCTION, "maxLiquidAbsorbtion", maxLiquidAbsorbtion,

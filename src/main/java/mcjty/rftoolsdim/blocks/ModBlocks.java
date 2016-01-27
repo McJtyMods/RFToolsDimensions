@@ -1,9 +1,6 @@
 package mcjty.rftoolsdim.blocks;
 
-import mcjty.rftoolsdim.blocks.absorbers.BiomeAbsorberBlock;
-import mcjty.rftoolsdim.blocks.absorbers.LiquidAbsorberBlock;
-import mcjty.rftoolsdim.blocks.absorbers.MaterialAbsorberBlock;
-import mcjty.rftoolsdim.blocks.absorbers.TerrainAbsorberBlock;
+import mcjty.rftoolsdim.blocks.absorbers.*;
 import mcjty.rftoolsdim.blocks.builder.DimensionBuilderBlock;
 import mcjty.rftoolsdim.blocks.enscriber.DimensionEnscriberBlock;
 import mcjty.rftoolsdim.blocks.probe.ActivityProbeBlock;
@@ -31,6 +28,7 @@ public class ModBlocks {
     public static LiquidAbsorberBlock liquidAbsorberBlock;
     public static BiomeAbsorberBlock biomeAbsorberBlock;
     public static TerrainAbsorberBlock terrainAbsorberBlock;
+    public static FeatureAbsorberBlock featureAbsorberBlock;
 
     public static void init() {
         dimensionalBlankBlock = new DimensionalBlankBlock();
@@ -50,6 +48,7 @@ public class ModBlocks {
         liquidAbsorberBlock = new LiquidAbsorberBlock();
         biomeAbsorberBlock = new BiomeAbsorberBlock();
         terrainAbsorberBlock = new TerrainAbsorberBlock();
+        featureAbsorberBlock = new FeatureAbsorberBlock();
     }
 
     @SideOnly(Side.CLIENT)
@@ -71,5 +70,6 @@ public class ModBlocks {
         liquidAbsorberBlock.initModel();
         biomeAbsorberBlock.initModel();
         terrainAbsorberBlock.initModel();
+        featureAbsorberBlock.initModel();
     }
 }

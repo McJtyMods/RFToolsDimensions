@@ -1,16 +1,21 @@
 package mcjty.rftoolsdim.dimensions.dimlets.types;
 
-import mcjty.rftoolsdim.dimensions.DimensionInformation;
+import mcjty.lib.varia.BlockTools;
+import mcjty.rftoolsdim.blocks.ModBlocks;
+import mcjty.rftoolsdim.config.Settings;
 import mcjty.rftoolsdim.config.WorldgenConfiguration;
+import mcjty.rftoolsdim.dimensions.DimensionInformation;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletKey;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletObjectMapping;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletRandomizer;
+import mcjty.rftoolsdim.dimensions.dimlets.KnownDimletConfiguration;
 import mcjty.rftoolsdim.dimensions.types.FeatureType;
 import mcjty.rftoolsdim.dimensions.types.TerrainType;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.config.Configuration;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -252,7 +257,48 @@ public class FeatureDimletType implements IDimletType {
     }
 
     @Override
+    public DimletKey isValidEssence(ItemStack stackEssence) {
+        Block essenceBlock = BlockTools.getBlock(stackEssence);
+
+        if (essenceBlock != ModBlocks.featureAbsorberBlock) {
+            return null;
+        }
+        NBTTagCompound essenceCompound = stackEssence.getTagCompound();
+        if (essenceCompound == null) {
+            return null;
+        }
+        int absorbing = essenceCompound.getInteger("absorbing");
+        String feature = essenceCompound.getString("feature");
+        if (absorbing > 0 || feature == null) {
+            return null;
+        }
+        return findFeatureDimlet(essenceCompound);
+    }
+
+    @Override
+    public ItemStack getDefaultEssence() {
+        return new ItemStack(ModBlocks.featureAbsorberBlock);
+    }
+
+    private static DimletKey findFeatureDimlet(NBTTagCompound essenceCompound) {
+        String feature = essenceCompound.getString("feature");
+        DimletKey key = new DimletKey(DimletType.DIMLET_FEATURE, feature);
+        Settings settings = KnownDimletConfiguration.getSettings(key);
+        if (settings == null || !settings.isDimlet()) {
+            return null;
+        }
+        return key;
+    }
+
+    @Override
     public DimletKey attemptDimletCrafting(ItemStack stackController, ItemStack stackMemory, ItemStack stackEnergy, ItemStack stackEssence) {
-        return null;
+        DimletKey featureDimlet = isValidEssence(stackEssence);
+        if (featureDimlet == null) {
+            return null;
+        }
+        if (!DimletCraftingTools.matchDimletRecipe(featureDimlet, stackController, stackMemory, stackEnergy)) {
+            return null;
+        }
+        return featureDimlet;
     }
 }
