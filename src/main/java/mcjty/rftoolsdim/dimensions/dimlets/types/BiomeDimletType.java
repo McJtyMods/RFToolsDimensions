@@ -1,18 +1,26 @@
 package mcjty.rftoolsdim.dimensions.dimlets.types;
 
+import mcjty.lib.varia.BlockTools;
+import mcjty.rftoolsdim.blocks.ModBlocks;
+import mcjty.rftoolsdim.config.Settings;
 import mcjty.rftoolsdim.config.WorldgenConfiguration;
+import mcjty.rftoolsdim.dimensions.DimensionInformation;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletKey;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletObjectMapping;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletRandomizer;
-import mcjty.rftoolsdim.dimensions.DimensionInformation;
+import mcjty.rftoolsdim.dimensions.dimlets.KnownDimletConfiguration;
 import mcjty.rftoolsdim.dimensions.types.ControllerType;
+import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.config.Configuration;
 import org.apache.commons.lang3.tuple.Pair;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Random;
+import java.util.Set;
 
 public class BiomeDimletType implements IDimletType {
     @Override
@@ -136,39 +144,43 @@ public class BiomeDimletType implements IDimletType {
         return new String[] { "This dimlet controls the biomes that can generate in a dimension", "The controller specifies how they can be used." };
     }
 
-    private static boolean isValidBiomeEssence(ItemStack stackEssence, NBTTagCompound essenceCompound) {
-//        Block essenceBlock = BlockTools.getBlock(stackEssence);
-//
-//        if (essenceBlock != DimletConstructionSetup.biomeAbsorberBlock) {
-//            return false;
-//        }
-//        if (essenceCompound == null) {
-//            return false;
-//        }
-//        int absorbing = essenceCompound.getInteger("absorbing");
-//        int biome = essenceCompound.getInteger("biome");
-//        if (absorbing > 0 || biome == -1) {
-//            return false;
-//        }
-        return true;
+    @Override
+    public DimletKey isValidEssence(ItemStack stackEssence) {
+        Block essenceBlock = BlockTools.getBlock(stackEssence);
+
+        if (essenceBlock != ModBlocks.biomeAbsorberBlock) {
+            return null;
+        }
+        NBTTagCompound essenceCompound = stackEssence.getTagCompound();
+        if (essenceCompound == null) {
+            return null;
+        }
+        int absorbing = essenceCompound.getInteger("absorbing");
+        String biome = essenceCompound.getString("biome");
+        if (absorbing > 0 || biome == null) {
+            return null;
+        }
+        return findBiomeDimlet(essenceCompound);
+    }
+
+    @Override
+    public ItemStack getDefaultEssence() {
+        return new ItemStack(ModBlocks.biomeAbsorberBlock);
     }
 
     private static DimletKey findBiomeDimlet(NBTTagCompound essenceCompound) {
-//        int biomeID = essenceCompound.getInteger("biome");
-//        for (Map.Entry<DimletKey, BiomeGenBase> entry : DimletObjectMapping.idToBiome.entrySet()) {
-//            if (entry.getValue().biomeID == biomeID) {
-//                return entry.getKey();
-//            }
-//        }
-        return null;
+        String biome = essenceCompound.getString("biome");
+        DimletKey key = new DimletKey(DimletType.DIMLET_BIOME, biome);
+        Settings settings = KnownDimletConfiguration.getSettings(key);
+        if (settings == null || !settings.isDimlet()) {
+            return null;
+        }
+        return key;
     }
 
     @Override
     public DimletKey attemptDimletCrafting(ItemStack stackController, ItemStack stackMemory, ItemStack stackEnergy, ItemStack stackEssence) {
-        if (!isValidBiomeEssence(stackEssence, stackEssence.getTagCompound())) {
-            return null;
-        }
-        DimletKey biomeDimlet = findBiomeDimlet(stackEssence.getTagCompound());
+        DimletKey biomeDimlet = isValidEssence(stackEssence);
         if (biomeDimlet == null) {
             return null;
         }
