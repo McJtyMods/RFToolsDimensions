@@ -73,6 +73,8 @@ public interface IDimletType {
      */
     default DimletKey isValidEssence(ItemStack essenceStack) { return null; }
 
+    default ItemStack getDefaultEssence() { return null; }
+
     /**
      * Attempt to craft a dimlet of this type given a controller, a memory part, an energy part and an essence item.
      *

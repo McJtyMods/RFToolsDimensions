@@ -100,6 +100,11 @@ public class LiquidDimletType implements IDimletType {
         return findLiquidDimlet(essenceCompound);
     }
 
+    @Override
+    public ItemStack getDefaultEssence() {
+        return new ItemStack(ModBlocks.liquidAbsorberBlock);
+    }
+
     private static DimletKey findLiquidDimlet(NBTTagCompound essenceCompound) {
         Block block = Block.blockRegistry.getObject(new ResourceLocation(essenceCompound.getString("liquid")));
         DimletKey key = new DimletKey(DimletType.DIMLET_LIQUID, block.getRegistryName() + "@0");

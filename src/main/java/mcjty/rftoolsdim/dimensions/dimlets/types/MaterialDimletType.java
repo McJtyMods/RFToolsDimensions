@@ -100,6 +100,11 @@ public class MaterialDimletType implements IDimletType {
         return findMaterialDimlet(essenceCompound);
     }
 
+    @Override
+    public ItemStack getDefaultEssence() {
+        return new ItemStack(ModBlocks.materialAbsorberBlock);
+    }
+
     private static DimletKey findMaterialDimlet(NBTTagCompound essenceCompound) {
         Block block = Block.blockRegistry.getObject(new ResourceLocation(essenceCompound.getString("block")));
         int meta = essenceCompound.getInteger("meta");
