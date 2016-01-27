@@ -43,7 +43,7 @@ public class ForgeEventHandlers {
         EntityPlayer player = event.player;
         RfToolsDimensionManager manager = RfToolsDimensionManager.getDimensionManager(player.getEntityWorld());
         manager.syncDimInfoToClients(player.getEntityWorld());
-        manager.checkDimletConfig(player);
+        manager.syncDimletRules(player);
     }
 
     @SubscribeEvent

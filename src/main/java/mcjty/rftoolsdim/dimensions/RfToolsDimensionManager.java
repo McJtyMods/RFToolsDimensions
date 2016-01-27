@@ -4,7 +4,6 @@ import mcjty.lib.varia.Logging;
 import mcjty.rftoolsdim.config.DimletRules;
 import mcjty.rftoolsdim.config.PowerConfiguration;
 import mcjty.rftoolsdim.dimensions.description.DimensionDescriptor;
-import mcjty.rftoolsdim.dimensions.dimlets.DimletKey;
 import mcjty.rftoolsdim.dimensions.world.GenericWorldProvider;
 import mcjty.rftoolsdim.network.PacketRegisterDimensions;
 import mcjty.rftoolsdim.network.PacketSyncDimensionInfo;
@@ -251,30 +250,15 @@ public class RfToolsDimensionManager extends WorldSavedData {
     }
 
     /**
-     * Check if the client dimlet id's match with the server.
-     * This is executed on the server to the clients.
+     * Sync dimlet rules to the client
      */
-    public void checkDimletConfig(EntityPlayer player) {
+    public void syncDimletRules(EntityPlayer player) {
         if (!player.getEntityWorld().isRemote) {
             // Send over dimlet configuration to the client so that the client can check that the id's match.
             Logging.log("Send dimlet rules to the client");
             RFToolsDimMessages.INSTANCE.sendTo(new PacketSyncRules(DimletRules.getRules()), (EntityPlayerMP) player);
         }
     }
-
-    /**
-     * Here the information from the server arrives. This code is executed on the client.
-     */
-    public void checkDimletConfigFromServer(Map<Integer, DimletKey> dimlets, World world) {
-//        Logging.log("Getting dimlet mapping from server");
-//        DimletMapping mapping = DimletMapping.getDimletMapping(world);
-//        mapping.overrideServerMapping(dimlets);
-//
-//        KnownDimletConfiguration.init(world, false);
-//        KnownDimletConfiguration.initCrafting(world);
-        // @todo
-    }
-
 
     public void syncDimInfoToClients(World world) {
         if (!world.isRemote) {
