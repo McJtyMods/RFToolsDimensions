@@ -19,33 +19,33 @@ public class GenLayerFiltered extends GenLayer {
     }
 
     private Map<Integer, Integer> getFilterFromType() {
-//        switch (type) {
-//            case CONTROLLER_DEFAULT:
-//            case CONTROLLER_SINGLE:
-//            case CONTROLLER_CHECKERBOARD:
-//                // Cannot happen
-//                return null;
-//            case CONTROLLER_COLD:
-//                return BiomeControllerMapping.coldBiomeReplacements;
-//            case CONTROLLER_MEDIUM:
-//                return BiomeControllerMapping.mediumBiomeReplacements;
-//            case CONTROLLER_WARM:
-//                return BiomeControllerMapping.warmBiomeReplacements;
-//            case CONTROLLER_DRY:
-//                return BiomeControllerMapping.dryBiomeReplacements;
-//            case CONTROLLER_WET:
-//                return BiomeControllerMapping.wetBiomeReplacements;
-//            case CONTROLLER_FIELDS:
-//                return BiomeControllerMapping.fieldsBiomeReplacements;
-//            case CONTROLLER_MOUNTAINS:
-//                return BiomeControllerMapping.mountainsBiomeReplacements;
-//            case CONTROLLER_MAGICAL:
-//                return BiomeControllerMapping.magicalBiomeReplacements;
-//            case CONTROLLER_FOREST:
-//                return BiomeControllerMapping.forestBiomeReplacements;
-//            case CONTROLLER_FILTERED:
-//                return chunkManager.getDimensionInformation().getBiomeMapping();
-//        }
+        switch (type) {
+            case CONTROLLER_DEFAULT:
+            case CONTROLLER_SINGLE:
+            case CONTROLLER_CHECKERBOARD:
+                // Cannot happen
+                return null;
+            case CONTROLLER_COLD:
+                return BiomeControllerMapping.coldBiomeReplacements;
+            case CONTROLLER_MEDIUM:
+                return BiomeControllerMapping.mediumBiomeReplacements;
+            case CONTROLLER_WARM:
+                return BiomeControllerMapping.warmBiomeReplacements;
+            case CONTROLLER_DRY:
+                return BiomeControllerMapping.dryBiomeReplacements;
+            case CONTROLLER_WET:
+                return BiomeControllerMapping.wetBiomeReplacements;
+            case CONTROLLER_FIELDS:
+                return BiomeControllerMapping.fieldsBiomeReplacements;
+            case CONTROLLER_MOUNTAINS:
+                return BiomeControllerMapping.mountainsBiomeReplacements;
+            case CONTROLLER_MAGICAL:
+                return BiomeControllerMapping.magicalBiomeReplacements;
+            case CONTROLLER_FOREST:
+                return BiomeControllerMapping.forestBiomeReplacements;
+            case CONTROLLER_FILTERED:
+                return chunkManager.getDimensionInformation().getBiomeMapping();
+        }
         // @todo
         return null;
     }

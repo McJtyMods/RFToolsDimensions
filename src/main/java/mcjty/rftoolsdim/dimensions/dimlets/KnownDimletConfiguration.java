@@ -7,6 +7,7 @@ import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.config.*;
 import mcjty.rftoolsdim.dimensions.dimlets.types.DimletType;
 import mcjty.rftoolsdim.dimensions.types.*;
+import mcjty.rftoolsdim.dimensions.world.BiomeControllerMapping;
 import mcjty.rftoolsdim.items.ModItems;
 import mcjty.rftoolsdim.varia.RFToolsTools;
 import net.minecraft.block.Block;
@@ -69,6 +70,8 @@ public class KnownDimletConfiguration {
         EntityList.stringToClassMapping.entrySet().stream().forEach(KnownDimletConfiguration::initMobDimlet);
         FluidRegistry.getRegisteredFluids().entrySet().stream().forEach(KnownDimletConfiguration::initFluidDimlet);
         Block.blockRegistry.forEach(KnownDimletConfiguration::initMaterialDimlet);
+
+        BiomeControllerMapping.setupControllerBiomes();
     }
 
     private static void initBiomeDimlet(BiomeGenBase biome) {

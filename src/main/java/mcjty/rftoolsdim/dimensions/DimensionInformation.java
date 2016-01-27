@@ -14,6 +14,7 @@ import mcjty.rftoolsdim.dimensions.dimlets.types.DimletType;
 import mcjty.rftoolsdim.dimensions.dimlets.types.IDimletType;
 import mcjty.rftoolsdim.dimensions.dimlets.types.Patreons;
 import mcjty.rftoolsdim.dimensions.types.*;
+import mcjty.rftoolsdim.dimensions.world.BiomeControllerMapping;
 import mcjty.rftoolsdim.varia.RFToolsTools;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -1123,8 +1124,7 @@ public class DimensionInformation {
                     return calculateBiomeDistance(a, b, false, false, false);
                 }
             };
-//            BiomeControllerMapping.makeFilteredBiomeMap(biomeGenArray, biomeMapping, biomeFilter);
-            //@todo
+            BiomeControllerMapping.makeFilteredBiomeMap(biomeGenArray, biomeMapping, biomeFilter);
         }
     }
 

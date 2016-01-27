@@ -74,7 +74,6 @@ public class DimletRandomizer {
         randomTerrainDimlets = new WeightedRandomSelector<>();
         setupRarity(randomTerrainDimlets, rarity0, rarity1, rarity2, rarity3, rarity4, rarity5, rarity6);
 
-        // @todo: remove worldgen parameter
         for (Map.Entry<DimletKey, Settings> entry : knownDimlets.entrySet()) {
             DimletKey key = entry.getKey();
             Settings settings = KnownDimletConfiguration.getSettings(key);
