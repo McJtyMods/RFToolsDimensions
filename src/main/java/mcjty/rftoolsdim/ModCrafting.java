@@ -17,7 +17,9 @@ public class ModCrafting {
 
     public static void init() {
         initDimletRecipes();
-        initBlockRecipes();
+        initMachineRecipes();
+        initCosmeticRecipes();
+        initAbsorberRecipes();
 
         Item dimensionalShard = GameRegistry.findItem("rftools", "dimensional_shard");
         GameRegistry.addRecipe(new ItemStack(ModItems.emptyDimensionTabItem), "prp", "rpr", "prp", 'p', Items.paper, 'r', Items.redstone);
@@ -27,7 +29,7 @@ public class ModCrafting {
         GameRegistry.addRecipe(new ItemStack(ModItems.dimensionMonitorItem), " u ", "rCr", " r ", 'u', dimensionalShard, 'r', Items.redstone, 'C', Items.comparator);
     }
 
-    private static void initBlockRecipes() {
+    private static void initMachineRecipes() {
         Block machineFrame = GameRegistry.findBlock("rftools", "machine_frame");
         ItemStack inkSac = new ItemStack(Items.dye, 1, 0);
 
@@ -42,8 +44,17 @@ public class ModCrafting {
             GameRegistry.addRecipe(new ItemStack(ModBlocks.dimensionBuilderBlock), "oEo", "DMD", "ggg", 'o', Items.ender_pearl, 'E', Items.emerald, 'D', Items.diamond,
                                    'M', machineFrame, 'g', Items.gold_ingot);
         }
+    }
 
-        initCosmeticRecipes();
+    private static void initAbsorberRecipes() {
+        Block machineFrame = GameRegistry.findBlock("rftools", "machine_frame");
+        GameRegistry.addRecipe(new ItemStack(ModBlocks.biomeAbsorberBlock), "dws", "wMw", "swd", 'M', machineFrame, 'd', Blocks.dirt, 's', Blocks.sapling, 'w', Blocks.wool);
+        GameRegistry.addShapelessRecipe(new ItemStack(ModBlocks.biomeAbsorberBlock), new ItemStack(ModBlocks.biomeAbsorberBlock));
+        GameRegistry.addRecipe(new ItemStack(ModBlocks.materialAbsorberBlock), "dwc", "wMw", "swg", 'M', machineFrame, 'd', Blocks.dirt, 'c', Blocks.cobblestone, 's', Blocks.sand,
+                               'g', Blocks.gravel, 'w', Blocks.wool);
+        GameRegistry.addShapelessRecipe(new ItemStack(ModBlocks.materialAbsorberBlock), new ItemStack(ModBlocks.materialAbsorberBlock));
+        GameRegistry.addRecipe(new ItemStack(ModBlocks.liquidAbsorberBlock), "bwb", "wMw", "bwb", 'M', machineFrame, 'b', Items.bucket, 'w', Blocks.wool);
+        GameRegistry.addShapelessRecipe(new ItemStack(ModBlocks.liquidAbsorberBlock), new ItemStack(ModBlocks.liquidAbsorberBlock));
     }
 
     private static void initCosmeticRecipes() {
