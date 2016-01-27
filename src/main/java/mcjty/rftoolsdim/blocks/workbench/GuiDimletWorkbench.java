@@ -120,6 +120,9 @@ public class GuiDimletWorkbench extends GenericGuiContainer<DimletWorkbenchTileE
             }
         });
         keys.stream().forEach(key -> addItemToList(key, itemList));
+        if (itemList.getFirstSelected() >= itemList.getChildCount()) {
+            itemList.setFirstSelected(0);
+        }
     }
 
     private void addItemToList(DimletKey key, WidgetList itemList) {

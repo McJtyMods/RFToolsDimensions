@@ -65,16 +65,6 @@ public class DimletWorkbenchTileEntity extends GenericEnergyReceiverTileEntity i
         return inventoryHelper;
     }
 
-    @Override
-    public void setInventorySlotContents(int index, ItemStack stack) {
-        inventoryHelper.setInventorySlotContents(getInventoryStackLimit(), index, stack);
-        if (index < DimletWorkbenchContainer.SLOT_BASE || index > DimletWorkbenchContainer.SLOT_ESSENCE) {
-            return;
-        }
-
-        checkCrafting();
-    }
-
     private void checkCrafting() {
         if (inhibitCrafting == 0) {
             if (!checkDimletCrafting()) {
@@ -154,6 +144,23 @@ public class DimletWorkbenchTileEntity extends GenericEnergyReceiverTileEntity i
             return true;
         }
         return false;
+    }
+
+    @Override
+    public ItemStack decrStackSize(int index, int amount) {
+        ItemStack s = inventoryHelper.decrStackSize(index, amount);
+        checkCrafting();
+        return s;
+    }
+
+    @Override
+    public void setInventorySlotContents(int index, ItemStack stack) {
+        inventoryHelper.setInventorySlotContents(getInventoryStackLimit(), index, stack);
+        if (index < DimletWorkbenchContainer.SLOT_BASE || index > DimletWorkbenchContainer.SLOT_ESSENCE) {
+            return;
+        }
+
+        checkCrafting();
     }
 
     public void craftDimlet() {
@@ -258,6 +265,7 @@ public class DimletWorkbenchTileEntity extends GenericEnergyReceiverTileEntity i
         tryPlaceIfPossible(playerMP, DimletWorkbenchContainer.SLOT_CONTROLLER, new ItemStack(ModItems.dimletControlCircuitItem, 1, rarity));
         tryPlaceEssenceIfPossible(playerMP, DimletWorkbenchContainer.SLOT_ESSENCE, key, key.getType().dimletType);
         markDirtyClient();
+        checkCrafting();
     }
 
     private void setAsideIfPossible(EntityPlayerMP playerMP, int slot) {
