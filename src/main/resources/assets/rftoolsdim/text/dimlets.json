@@ -637,7 +637,7 @@
   {
     "filter": {
       "type": "mob",
-      "name": [ "EntityHorse", "SnowMan", "MushroomCow", "Chicken", "Rabbit", "Squid", "Ozelot", "Cow", "Slime", "Pig", "Bat", "Wolf" ]
+      "name": [ "EntityHorse", "SnowMan", "MushroomCow", "Chicken", "Rabbit", "Squid", "Ozelot", "Cow", "Slime", "Pig", "Bat", "Wolf", "Sheep" ]
     },
     "settings": {
       "rarity": 3,
@@ -713,7 +713,7 @@
       "create": 1000,
       "maintain": 1000,
       "ticks": 200,
-      "worldgen": true,
+      "worldgen": false,
       "dimlet": true
     }
   },
