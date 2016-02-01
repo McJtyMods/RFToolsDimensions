@@ -8,6 +8,7 @@ import mcjty.rftoolsdim.dimensions.RfToolsDimensionManager;
 import mcjty.rftoolsdim.network.PacketGetDimensionEnergy;
 import mcjty.rftoolsdim.network.RFToolsDimMessages;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.client.resources.model.ModelResourceLocation;
@@ -34,15 +35,14 @@ public class DimensionMonitorItem extends GenericRFToolsItem {
     public void initModel() {
         for (int i = 0 ; i <= 8 ; i++) {
             ModelBakery.addVariantName(this, getRegistryName() + i);
-//            ModelBakery.addVariantName(this, "l" + i);
         }
 
         ModelLoader.setCustomMeshDefinition(this, new ItemMeshDefinition() {
             @Override
             public ModelResourceLocation getModelLocation(ItemStack stack) {
-                EntityPlayer player = Minecraft.getMinecraft().thePlayer;
-                int id = player.worldObj.provider.getDimensionId();
-                DimensionStorage storage = DimensionStorage.getDimensionStorage(player.worldObj);
+                WorldClient world = Minecraft.getMinecraft().theWorld;
+                int id = world.provider.getDimensionId();
+                DimensionStorage storage = DimensionStorage.getDimensionStorage(world);
                 int energyLevel = storage.getEnergyLevel(id);
                 int level = (9*energyLevel) / PowerConfiguration.MAX_DIMENSION_POWER;
                 if (level < 0) {
