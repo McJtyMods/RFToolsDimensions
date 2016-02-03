@@ -97,9 +97,11 @@ public class KnownDimletConfiguration {
                 Block block = me.getValue().getBlock();
                 if (block != null) {
                     ResourceLocation nameForObject = Block.blockRegistry.getNameForObject(block);
-                    String mod = nameForObject.getResourceDomain();
-                    DimletKey key = new DimletKey(DimletType.DIMLET_LIQUID, block.getRegistryName() + "@0");
-                    initDimlet(key, mod);
+                    if (nameForObject != null) {
+                        String mod = nameForObject.getResourceDomain();
+                        DimletKey key = new DimletKey(DimletType.DIMLET_LIQUID, block.getRegistryName() + "@0");
+                        initDimlet(key, mod);
+                    }
                 }
             }
         }
