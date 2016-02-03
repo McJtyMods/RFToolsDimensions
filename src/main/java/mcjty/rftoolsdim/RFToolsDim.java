@@ -6,7 +6,9 @@ import mcjty.lib.base.ModBase;
 import mcjty.lib.compat.MainCompatHandler;
 import mcjty.lib.varia.Logging;
 import mcjty.rftools.api.teleportation.ITeleportationManager;
+import mcjty.rftoolsdim.api.dimension.IDimensionManager;
 import mcjty.rftoolsdim.api.dimlet.IDimletConfigurationManager;
+import mcjty.rftoolsdim.apiimpl.DimensionManager;
 import mcjty.rftoolsdim.apiimpl.DimletConfigurationManager;
 import mcjty.rftoolsdim.commands.CommandRftDb;
 import mcjty.rftoolsdim.commands.CommandRftDim;
@@ -95,6 +97,11 @@ public class RFToolsDim implements ModBase {
                 String mod = message.getSender();
                 Logging.log("Received RFTools Dimensions dimlet reconfiguration request from mod '" + mod + "'");
                 value.get().apply(new DimletConfigurationManager(mod));
+            } else if ("getDimensionManager".equalsIgnoreCase(message.key)) {
+                Optional<Function<IDimensionManager, Void>> value = message.getFunctionValue(IDimensionManager.class, Void.class);
+                String mod = message.getSender();
+                Logging.log("Received RFTools dimension manager request from mod '" + mod + "'");
+                value.get().apply(new DimensionManager());
             }
         }
     }

@@ -3,7 +3,6 @@ package mcjty.rftoolsdim.api.dimlet;
 /**
  * Get a reference to an implementation of this interface by calling:
  *         FMLInterModComms.sendFunctionMessage("rftoolsdim", "getDimletConfigurationManager", "<whatever>.YourClass$GetDimletConfigurationManager");
- *
  */
 public interface IDimletConfigurationManager {
 

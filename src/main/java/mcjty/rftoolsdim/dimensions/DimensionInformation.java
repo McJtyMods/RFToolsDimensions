@@ -4,6 +4,7 @@ import io.netty.buffer.ByteBuf;
 import mcjty.lib.network.NetworkTools;
 import mcjty.lib.varia.BlockPosTools;
 import mcjty.lib.varia.Logging;
+import mcjty.rftoolsdim.api.dimension.IDimensionInformation;
 import mcjty.rftoolsdim.config.GeneralConfiguration;
 import mcjty.rftoolsdim.config.PowerConfiguration;
 import mcjty.rftoolsdim.config.Settings;
@@ -38,7 +39,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
 
-public class DimensionInformation {
+public class DimensionInformation implements IDimensionInformation {
     private final DimensionDescriptor descriptor;
     private String name;
     private String ownerName;
@@ -1136,6 +1137,7 @@ public class DimensionInformation {
         return ownerName;
     }
 
+    @Override
     public UUID getOwner() {
         return owner;
     }
@@ -1149,6 +1151,7 @@ public class DimensionInformation {
         this.name = name;
     }
 
+    @Override
     public String getName() {
         return name;
     }
