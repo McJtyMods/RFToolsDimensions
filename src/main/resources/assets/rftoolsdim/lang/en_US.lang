@@ -71,6 +71,7 @@ item.dimlet_type_controller_special.name=Dimlet Special Type Controller
 item.dimlet_type_controller_terrain.name=Dimlet Terrain Type Controller
 item.dimlet_type_controller_time.name=Dimlet Time Type Controller
 item.dimlet_type_controller_weather.name=Dimlet Weather Type Controller
+item.dimlet_type_controller_patreon.name=Dimlet Patreon Type Controller
 item.peace_essence.name=Peace Essence
 item.structure_essence_none.name=Structure None Essence
 item.structure_essence_village.name=Structure Village Essence
