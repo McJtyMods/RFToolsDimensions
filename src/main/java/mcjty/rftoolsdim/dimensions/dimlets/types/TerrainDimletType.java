@@ -3,8 +3,8 @@ package mcjty.rftoolsdim.dimensions.dimlets.types;
 import mcjty.lib.varia.BlockTools;
 import mcjty.rftoolsdim.blocks.ModBlocks;
 import mcjty.rftoolsdim.config.Settings;
-import mcjty.rftoolsdim.dimensions.DimensionInformation;
 import mcjty.rftoolsdim.config.WorldgenConfiguration;
+import mcjty.rftoolsdim.dimensions.DimensionInformation;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletKey;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletObjectMapping;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletRandomizer;
@@ -157,7 +157,10 @@ public class TerrainDimletType implements IDimletType {
             } else {
                 // Nothing was specified. With a relatively big chance we use stone. But there is also a chance that the material will be something else.
                 // Note that in this particular case we disallow randomly selecting 'expensive' blocks like glass.
-                if (random.nextFloat() < WorldgenConfiguration.randomBaseBlockChance) {
+                // If the terrain type is void we always pick stone as a random material.
+                if (terrainType == TerrainType.TERRAIN_VOID) {
+                    baseBlockForTerrain = Blocks.stone.getDefaultState();
+                } else if (random.nextFloat() < WorldgenConfiguration.randomBaseBlockChance) {
                     DimletKey key = DimletRandomizer.getRandomMaterialBlock(random);
                     if (key != null) {
                         dimensionInformation.updateCostFactor(key);
@@ -179,7 +182,10 @@ public class TerrainDimletType implements IDimletType {
                 fluidForTerrain = Blocks.water;         // This is the default.
             }
         } else {
-            if (random.nextFloat() < WorldgenConfiguration.randomOceanLiquidChance) {
+            // If the terrain type is void we always pick water as the random liquid.
+            if (terrainType == TerrainType.TERRAIN_VOID) {
+                fluidForTerrain = Blocks.water;
+            } else if (random.nextFloat() < WorldgenConfiguration.randomOceanLiquidChance) {
                 DimletKey key = DimletRandomizer.getRandomFluidBlock(random);
                 if (key != null) {
                     dimensionInformation.updateCostFactor(key);
