@@ -17,6 +17,7 @@ public class ModItems {
     public static EmptyDimensionTab emptyDimensionTabItem;
     public static RealizedDimensionTab realizedDimensionTabItem;
     public static DimletTemplate dimletTemplateItem;
+    public static DimletParcelItem dimletParcelItem;
 
     public static RFToolsDimensionManualItem rfToolsDimensionManualItem;
     public static DimensionMonitorItem dimensionMonitorItem;
@@ -32,6 +33,7 @@ public class ModItems {
         emptyDimensionTabItem = new EmptyDimensionTab();
         realizedDimensionTabItem = new RealizedDimensionTab();
         dimletTemplateItem = new DimletTemplate();
+        dimletParcelItem = new DimletParcelItem();
         rfToolsDimensionManualItem = new RFToolsDimensionManualItem();
         dimensionMonitorItem = new DimensionMonitorItem();
     }
@@ -48,6 +50,7 @@ public class ModItems {
         emptyDimensionTabItem.initModel();
         realizedDimensionTabItem.initModel();
         dimletTemplateItem.initModel();
+        dimletParcelItem.initModel();
         rfToolsDimensionManualItem.initModel();
         dimensionMonitorItem.initModel();
     }

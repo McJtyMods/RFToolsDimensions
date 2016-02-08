@@ -342,16 +342,7 @@ public class KnownDimletConfiguration {
         List<List<ItemStack>> items = getRandomPartLists();
 
         ChestGenHooks chest = ChestGenHooks.getInfo(category);
-        for (int i = 0 ; i <= 6 ; i++) {
-            if (WorldgenConfiguration.dimletPartChestLootRarity[i] > 0) {
-                for (ItemStack stack : items.get(i)) {
-                    chest.addItem(new WeightedRandomChestContent(stack,
-                            WorldgenConfiguration.dimletPartChestLootMinimum,
-                            WorldgenConfiguration.dimletPartChestLootMaximum,
-                            WorldgenConfiguration.dimletPartChestLootRarity[i]));
-                }
-            }
-        }
+        chest.addItem(new WeightedRandomChestContent(ModItems.dimletParcelItem, 0, 1, 2, WorldgenConfiguration.dimletParcelRarity));
     }
 
     private static List<List<ItemStack>> randomPartLists = null;

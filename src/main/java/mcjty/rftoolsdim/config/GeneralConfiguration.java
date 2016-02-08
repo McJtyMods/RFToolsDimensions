@@ -25,7 +25,9 @@ public class GeneralConfiguration {
     public static boolean dimensionFolderIsDeletedWithSafeDel = true;
     public static int maxDimensionsPerPlayer = -1;
 
-    public static float endermanDimletPartDrop = 0.05f;
+    public static float endermanDimletPartDrop = 0.02f;
+    public static int minParcelContents = 3;
+    public static int maxParcelContents = 6;
 
 	public static void init(Configuration cfg) {
         enableDimensionBuilderRecipe = cfg.get(CATEGORY_GENERAL, "enableDimensionBuilderRecipe", enableDimensionBuilderRecipe,
@@ -37,7 +39,12 @@ public class GeneralConfiguration {
                 "If this flag is true the player will respawn in the rftools dimension when he dies (unless power runs out)").getBoolean();
 
         endermanDimletPartDrop = (float) cfg.get(CATEGORY_GENERAL, "endermanDimletPartDrop", endermanDimletPartDrop,
-                "The chance that you get a dimlet part when killing an enderman. Set to 0 to disable").getDouble();
+                "The chance that you get a dimlet parcel when killing an enderman. Set to 0 to disable").getDouble();
+        minParcelContents = cfg.get(CATEGORY_GENERAL, "minParcelContents", minParcelContents,
+                                    "The minimum amount of dimlet parts you get out of a dimlet parcel").getInt();
+        maxParcelContents = cfg.get(CATEGORY_GENERAL, "maxParcelContents", maxParcelContents,
+                                    "The maximum amount of dimlet parts you get out of a dimlet parcel").getInt();
+
         bedBehaviour = cfg.get(CATEGORY_GENERAL, "bedBehaviour", bedBehaviour,
                 "Behaviour when sleeping in an RFTools dimension: 0 = do nothing, 1 = explode, 2 = set spawn").getInt();
 

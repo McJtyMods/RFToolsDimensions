@@ -24,9 +24,7 @@ public class WorldgenConfiguration {
     public static float randomControllerChance = 0.4f;
     public static int bedrockLayer = 1;
     public static boolean normalTerrainInheritsOverworld = false;
-    public static int dimletPartChestLootMinimum = 1;
-    public static int dimletPartChestLootMaximum = 2;
-    public static int[] dimletPartChestLootRarity = new int[]{32, 16, 8, 4, 2, 1, 1};
+    public static int dimletParcelRarity = 5;
     public static int oreMinimumVeinSize = 5;
     public static int oreMaximumVeinSize = 8;
     public static int oreMaximumVeinCount = 3;
@@ -72,24 +70,8 @@ public class WorldgenConfiguration {
                 "The chance that default weather features are selected").getDouble();
         randomControllerChance = (float) cfg.get(CATEGORY_WORLDGEN, "randomControllerChance", randomControllerChance,
                 "The chance that a random biome controller is selected").getDouble();
-        dimletPartChestLootMinimum = cfg.get(CATEGORY_WORLDGEN, "dimletPartChestLootMinimum", dimletPartChestLootMinimum,
-                "The minimum amount of dimlet parts that can be generated in a dungeon chest").getInt();
-        dimletPartChestLootMaximum = cfg.get(CATEGORY_WORLDGEN, "dimletPartChestLootMaximum", dimletPartChestLootMaximum,
-                "The maximum amount of dimlet parts that can be generated in a dungeon chest").getInt();
-        dimletPartChestLootRarity[0] = cfg.get(CATEGORY_WORLDGEN, "dimletPartChestLootRarity0", dimletPartChestLootRarity[0],
-                "The rarity of dimlet parts rarity 0 in dungeon chests (0 means you'll get none, 100 means very common)").getInt();
-        dimletPartChestLootRarity[1] = cfg.get(CATEGORY_WORLDGEN, "dimletPartChestLootRarity0", dimletPartChestLootRarity[1],
-                "The rarity of dimlet parts rarity 1 in dungeon chests (0 means you'll get none, 100 means very common)").getInt();
-        dimletPartChestLootRarity[2] = cfg.get(CATEGORY_WORLDGEN, "dimletPartChestLootRarity0", dimletPartChestLootRarity[2],
-                "The rarity of dimlet parts rarity 2 in dungeon chests (0 means you'll get none, 100 means very common)").getInt();
-        dimletPartChestLootRarity[3] = cfg.get(CATEGORY_WORLDGEN, "dimletPartChestLootRarity0", dimletPartChestLootRarity[3],
-                "The rarity of dimlet parts rarity 3 in dungeon chests (0 means you'll get none, 100 means very common)").getInt();
-        dimletPartChestLootRarity[4] = cfg.get(CATEGORY_WORLDGEN, "dimletPartChestLootRarity0", dimletPartChestLootRarity[4],
-                "The rarity of dimlet parts rarity 4 in dungeon chests (0 means you'll get none, 100 means very common)").getInt();
-        dimletPartChestLootRarity[5] = cfg.get(CATEGORY_WORLDGEN, "dimletPartChestLootRarity0", dimletPartChestLootRarity[5],
-                "The rarity of dimlet parts rarity 5 in dungeon chests (0 means you'll get none, 100 means very common)").getInt();
-        dimletPartChestLootRarity[6] = cfg.get(CATEGORY_WORLDGEN, "dimletPartChestLootRarity0", dimletPartChestLootRarity[6],
-                "The rarity of dimlet parts rarity 6 in dungeon chests (0 means you'll get none, 100 means very common)").getInt();
+        dimletParcelRarity = cfg.get(CATEGORY_WORLDGEN, "dimletParcelRarity", dimletParcelRarity,
+                "The chance that you get a dimlet parcel in a dungeon chest").getInt();
 
         bedrockLayer = cfg.get(CATEGORY_WORLDGEN, "bedrockLayer", bedrockLayer,
                 "The height of the bedrock layer that is generated at the bottom of some world types. Set to 0 to disable this and get default bedrock generation").getInt();

@@ -8,12 +8,12 @@ import mcjty.rftoolsdim.config.WorldgenConfiguration;
 import mcjty.rftoolsdim.dimensions.DimensionInformation;
 import mcjty.rftoolsdim.dimensions.RfToolsDimensionManager;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletKey;
-import mcjty.rftoolsdim.dimensions.dimlets.DimletObjectMapping;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletRandomizer;
 import mcjty.rftoolsdim.dimensions.dimlets.KnownDimletConfiguration;
 import mcjty.rftoolsdim.dimensions.dimlets.types.Patreons;
 import mcjty.rftoolsdim.dimensions.types.FeatureType;
 import mcjty.rftoolsdim.dimensions.types.TerrainType;
+import mcjty.rftoolsdim.items.ModItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItemFrame;
@@ -482,6 +482,9 @@ public class GenericWorldGenerator implements IWorldGenerator {
                 ItemStack stack = KnownDimletConfiguration.getDimletStack(key);
                 chest.setInventorySlotContents(random.nextInt(chest.getSizeInventory()), stack);
             }
+        }
+        for (int i = 0 ; i < random.nextInt(2) ; i++) {
+            chest.setInventorySlotContents(random.nextInt(chest.getSizeInventory()), new ItemStack(ModItems.dimletParcelItem));
         }
 
         EntityItemFrame frame1 = spawnItemFrame(world, midx - 1, starty + 2, midz + 2);

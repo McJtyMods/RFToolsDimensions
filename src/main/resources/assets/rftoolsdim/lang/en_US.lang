@@ -42,6 +42,7 @@ item.InfusedDiamond.name=Infused Diamond
 item.dimlet_template.name=Dimlet Template
 item.DimensionModule.name=Dimension Module
 item.DimletModule.name=Dimlet Storage Module
+item.dimlet_parcel.name=Dimlet Parcel
 
 item.dimlet_base.name=Dimlet Base Part
 item.dimlet_control_circuit0.name=Dimlet Control Circuit Rarity 0

@@ -6,9 +6,9 @@ import mcjty.rftoolsdim.config.PowerConfiguration;
 import mcjty.rftoolsdim.dimensions.DimensionInformation;
 import mcjty.rftoolsdim.dimensions.DimensionStorage;
 import mcjty.rftoolsdim.dimensions.RfToolsDimensionManager;
-import mcjty.rftoolsdim.dimensions.dimlets.DimletRandomizer;
 import mcjty.rftoolsdim.dimensions.types.EffectType;
 import mcjty.rftoolsdim.dimensions.types.FeatureType;
+import mcjty.rftoolsdim.items.ModItems;
 import mcjty.rftoolsdim.network.DimensionSyncPacket;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -159,8 +159,7 @@ public class ForgeEventHandlers {
     public void onEntityDrop(LivingDropsEvent event) {
         if (event.entityLiving instanceof EntityEnderman) {
             if (random.nextFloat() < GeneralConfiguration.endermanDimletPartDrop) {
-                ItemStack stack = DimletRandomizer.getRandomPart(random);
-                event.entityLiving.entityDropItem(stack, 1.05f);
+                event.entityLiving.entityDropItem(new ItemStack(ModItems.dimletParcelItem), 1.05f);
             }
         }
     }
