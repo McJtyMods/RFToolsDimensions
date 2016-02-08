@@ -45,6 +45,7 @@ public class DimletParcelItem extends GenericRFToolsItem {
     public void addInformation(ItemStack itemStack, EntityPlayer player, List<String> list, boolean whatIsThis) {
         super.addInformation(itemStack, player, list, whatIsThis);
         list.add(EnumChatFormatting.GREEN + "A present for you! Use it well");
+        list.add(EnumChatFormatting.GREEN + "Right click to get the gifts");
     }
 
 }
