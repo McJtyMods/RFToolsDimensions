@@ -18,6 +18,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
@@ -70,6 +71,9 @@ public class KnownDimletConfiguration {
         EntityList.stringToClassMapping.entrySet().stream().forEach(KnownDimletConfiguration::initMobDimlet);
         FluidRegistry.getRegisteredFluids().entrySet().stream().forEach(KnownDimletConfiguration::initFluidDimlet);
         Block.blockRegistry.forEach(KnownDimletConfiguration::initMaterialDimlet);
+
+        initDimlet(new DimletKey(DimletType.DIMLET_MATERIAL, Blocks.stone.getRegistryName() + "@0"), "minecraft");
+        initDimlet(new DimletKey(DimletType.DIMLET_LIQUID, Blocks.water.getRegistryName() + "@0"), "minecraft");
 
         BiomeControllerMapping.setupControllerBiomes();
     }
@@ -241,8 +245,8 @@ public class KnownDimletConfiguration {
         }
         craftableDimlets.add(new DimletKey(DimletType.DIMLET_CONTROLLER, DimletObjectMapping.DEFAULT_ID));
         craftableDimlets.add(new DimletKey(DimletType.DIMLET_CONTROLLER, "Single"));
-        craftableDimlets.add(new DimletKey(DimletType.DIMLET_MATERIAL, DimletObjectMapping.DEFAULT_ID));
-        craftableDimlets.add(new DimletKey(DimletType.DIMLET_LIQUID, DimletObjectMapping.DEFAULT_ID));
+        craftableDimlets.add(new DimletKey(DimletType.DIMLET_MATERIAL, Blocks.stone.getRegistryName() + "@0"));
+        craftableDimlets.add(new DimletKey(DimletType.DIMLET_LIQUID, Blocks.water.getRegistryName() + "@0"));
         craftableDimlets.add(new DimletKey(DimletType.DIMLET_SKY, "Normal"));
         craftableDimlets.add(new DimletKey(DimletType.DIMLET_SKY, "Normal Day"));
         craftableDimlets.add(new DimletKey(DimletType.DIMLET_SKY, "Normal Night"));

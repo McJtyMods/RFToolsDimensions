@@ -61,6 +61,7 @@ public class DimletObjectMapping {
     public static IBlockState getBlock(DimletKey dimlet) {
         if (DimletType.DIMLET_MATERIAL.equals(dimlet.getType())) {
             String id = dimlet.getId();
+            // @todo temporary for people who accidently got an old Default dimlet
             if (DimletObjectMapping.DEFAULT_ID.equals(id)) {
                 return Blocks.stone.getDefaultState();
             }
@@ -80,6 +81,7 @@ public class DimletObjectMapping {
     public static Block getFluid(DimletKey dimlet) {
         if (DimletType.DIMLET_LIQUID.equals(dimlet.getType())) {
             String id = dimlet.getId();
+            // @todo temporary for people who accidently got an old Default dimlet
             if (DimletObjectMapping.DEFAULT_ID.equals(id)) {
                 return Blocks.water;
             }
