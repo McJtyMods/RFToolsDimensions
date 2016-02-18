@@ -114,7 +114,7 @@ public class GenericChunkProvider implements IChunkProvider {
     }
 
     @Override
-    public boolean func_177460_a(IChunkProvider p_177460_1_, Chunk p_177460_2_, int p_177460_3_, int p_177460_4_) {
+    public boolean populateChunk(IChunkProvider chunkProvider, Chunk p_177460_2_, int x, int z) {
         return false;
     }
 
@@ -566,7 +566,7 @@ public class GenericChunkProvider implements IChunkProvider {
                     return this.genNetherBridge.getSpawnList();
                 }
 
-                if (this.genNetherBridge.func_175796_a(this.worldObj, pos) && this.worldObj.getBlockState(pos.down()).getBlock() == Blocks.nether_brick) {
+                if (this.genNetherBridge.isPositionInStructure(this.worldObj, pos) && this.worldObj.getBlockState(pos.down()).getBlock() == Blocks.nether_brick) {
                     return this.genNetherBridge.getSpawnList();
                 }
             }
