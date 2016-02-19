@@ -82,6 +82,7 @@ item.structure_essence_mineshaft.name=Structure Mineshaft Essence
 item.structure_essence_scattered.name=Structure Scattered Essence
 item.efficiency_essence.name=Efficiency Essence
 item.mediocre_efficiency_essence.name=Mediocre Efficiency Essence
+item.dimension_module.name=Dimension Module
 
 # Blocks
 tile.dimletFilterBlock.name=Dimlet Filter

@@ -16,6 +16,8 @@ public class GeneralConfiguration {
 
 	public static boolean randomizeSeed = false;
 
+    public static int DIMENSIONMODULE_RFPERTICK = 6;
+
     // Server owner configs
     public static boolean voidOnly = false;
     public static boolean ownerDimletsNeeded = false;
@@ -71,6 +73,9 @@ public class GeneralConfiguration {
                 "How much stronger mobs should be if spawned in a dimension with the brutal mobs dimlet").getDouble();
         strongMobsFactor = cfg.get(CATEGORY_GENERAL, "strongMobsFactor", strongMobsFactor,
                 "How much stronger mobs should be if spawned in a dimension with the strong mobs dimlet").getDouble();
+
+        DIMENSIONMODULE_RFPERTICK = cfg.get(CATEGORY_GENERAL, "dimensionRFPerTick", DIMENSIONMODULE_RFPERTICK,
+                                      "RF per tick/per block for the dimension screen module").getInt();
     }
 
 }
