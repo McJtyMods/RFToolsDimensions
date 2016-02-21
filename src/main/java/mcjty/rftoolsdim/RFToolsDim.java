@@ -86,7 +86,7 @@ public class RFToolsDim implements ModBase {
         this.proxy.preInit(e);
         MainCompatHandler.registerWaila();
 
-        FMLInterModComms.sendFunctionMessage("rftools", "getApi", "mcjty.rftoolsdim.RFToolsDim$GetTeleportationManager");
+        FMLInterModComms.sendFunctionMessage("rftools", "getTeleportationManager", "mcjty.rftoolsdim.RFToolsDim$GetTeleportationManager");
     }
 
     @Mod.EventHandler

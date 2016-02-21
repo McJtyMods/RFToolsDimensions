@@ -4,12 +4,14 @@ import mcjty.rftools.api.screens.FormatStyle;
 import mcjty.rftools.api.screens.IClientScreenModule;
 import mcjty.rftools.api.screens.IModuleGuiBuilder;
 import mcjty.rftools.api.screens.IModuleRenderHelper;
+import mcjty.rftools.api.screens.data.IModuleDataContents;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
 
-public class DimensionClientScreenModule implements IClientScreenModule {
+public class DimensionClientScreenModule implements IClientScreenModule<IModuleDataContents> {
     private String line = "";
     private int color = 0xffffff;
     private int rfcolor = 0xffffff;
@@ -31,7 +33,7 @@ public class DimensionClientScreenModule implements IClientScreenModule {
     }
 
     @Override
-    public void render(IModuleRenderHelper helper, FontRenderer fontRenderer, int currenty, Object[] screenData, float factor) {
+    public void render(IModuleRenderHelper helper, FontRenderer fontRenderer, int currenty, IModuleDataContents screenData, float factor) {
         GL11.glDisable(GL11.GL_LIGHTING);
         int xoffset;
         if (!line.isEmpty()) {
@@ -59,7 +61,7 @@ public class DimensionClientScreenModule implements IClientScreenModule {
     }
 
     @Override
-    public void setupFromNBT(NBTTagCompound tagCompound, int dim, int x, int y, int z) {
+    public void setupFromNBT(NBTTagCompound tagCompound, int dim, BlockPos pos) {
         if (tagCompound != null) {
             line = tagCompound.getString("text");
             if (tagCompound.hasKey("color")) {
