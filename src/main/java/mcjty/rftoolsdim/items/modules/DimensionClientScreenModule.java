@@ -56,7 +56,7 @@ public class DimensionClientScreenModule implements IClientScreenModule<IModuleD
         guiBuilder.
                 label("Label:").text("text", "Label text").color("color", "Color for the label").nl().
                 label("RF+:").color("rfcolor", "Color for the RF text").label("RF-:").color("rfcolor_neg", "Color for the negative", "RF/tick ratio").nl().
-                toggleNegative("hidebar", "Bar", "Toggle visibility of the", "energy bar").mode("RF").format().nl().
+                toggleNegative("hidebar", "Bar", "Toggle visibility of the", "energy bar").mode("RF").format("format").nl().
                 label("Dimension:").integer("dim", "The id of the dimension", "to monitor").nl();
     }
 
