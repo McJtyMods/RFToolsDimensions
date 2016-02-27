@@ -42,16 +42,18 @@ public class LiquidAbsorberBlock extends GenericRFToolsBlock<LiquidAbsorberTileE
         if (tileEntity != null && tileEntity.getBlock() != null) {
             Block block = tileEntity.getBlock();
             Fluid fluid = FluidRegistry.lookupFluidForBlock(block);
-            int absorbing = tileEntity.getAbsorbing();
-            int pct = ((DimletConstructionConfiguration.maxBlockAbsorbtion - absorbing) * 100) / DimletConstructionConfiguration.maxBlockAbsorbtion;
-            currenttip.add(EnumChatFormatting.GREEN + "Liquid: " + new FluidStack(fluid, 1).getLocalizedName() + " (" + pct + "%)");
+            if (fluid != null) {
+                int absorbing = tileEntity.getAbsorbing();
+                int pct = ((DimletConstructionConfiguration.maxBlockAbsorbtion - absorbing) * 100) / DimletConstructionConfiguration.maxBlockAbsorbtion;
+                currenttip.add(EnumChatFormatting.GREEN + "Liquid: " + new FluidStack(fluid, 1).getLocalizedName() + " (" + pct + "%)");
+            }
         }
         return currenttip;
     }
 
     @SideOnly(Side.CLIENT)
     @Override
-    public void addInformation(ItemStack itemStack, EntityPlayer player, List list, boolean whatIsThis) {
+    public void addInformation(ItemStack itemStack, EntityPlayer player, List<String> list, boolean whatIsThis) {
         super.addInformation(itemStack, player, list, whatIsThis);
 
         NBTTagCompound tagCompound = itemStack.getTagCompound();
@@ -59,10 +61,12 @@ public class LiquidAbsorberBlock extends GenericRFToolsBlock<LiquidAbsorberTileE
             Block block = Block.blockRegistry.getObject(new ResourceLocation(tagCompound.getString("block")));
             if (block != null) {
                 Fluid fluid = FluidRegistry.lookupFluidForBlock(block);
-                list.add(EnumChatFormatting.GREEN + "Liquid: " + new FluidStack(fluid, 1).getLocalizedName());
-                int absorbing = tagCompound.getInteger("absorbing");
-                int pct = ((DimletConstructionConfiguration.maxLiquidAbsorbtion - absorbing) * 100) / DimletConstructionConfiguration.maxLiquidAbsorbtion;
-                list.add(EnumChatFormatting.GREEN + "Absorbed: " + pct + "%");
+                if (fluid != null) {
+                    list.add(EnumChatFormatting.GREEN + "Liquid: " + new FluidStack(fluid, 1).getLocalizedName());
+                    int absorbing = tagCompound.getInteger("absorbing");
+                    int pct = ((DimletConstructionConfiguration.maxLiquidAbsorbtion - absorbing) * 100) / DimletConstructionConfiguration.maxLiquidAbsorbtion;
+                    list.add(EnumChatFormatting.GREEN + "Absorbed: " + pct + "%");
+                }
             }
         }
 
