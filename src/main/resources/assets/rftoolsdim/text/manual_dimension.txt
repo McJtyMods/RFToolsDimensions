@@ -4,7 +4,7 @@ Table of Contents:
 {l:intro}Introduction to Dimension Building
 {l:theory}Dimension Theory
 {l:unknown}Dimlets - Coding the World
-{l:researcher}Dimlet Researcher - Revealing Dimlets
+{l:create}Dimlet Crafting
 {l:enscriber}Enscriber - Coding your Dimension
 {l:builder}Builder - Creating your Dimension
 {l:teleport}Getting There
@@ -15,9 +15,6 @@ Table of Contents:
 
 {l:shards}Shards of the World
 {l:infuser}Machine Infuser
-{l:scrambler}Dimlet Scrambler
-{l:filter}Dimlet Filter
-{l:create}Dimlet Crafting
 {l:probe}Activity Probe
 {l:extractor}Energy Extractor
 {l:editor}Dimension Editor
@@ -63,11 +60,11 @@ of creating a good world, chances are it won't work out in your favour.
 
 However, you can control your world with objects called Dimlets.
 Scattered throughout the world, in dungeons and other chests, or just
-obtained by killing Endermen, you have a chance of finding 'Unknown
-Dimlets.' These small items were made a long time ago with forgotten
-technology. These dimlets are similar to code - imagine each dimlet
-as its own line of code; modifying the next dimlet or defining
-something about the world.
+obtained by killing Endermen, you have a chance of finding dimlet
+parts. These small items were made a long time ago with forgotten
+technology and can be used to construct dimlets. These dimlets are
+similar to code - imagine each dimlet as its own line of code;
+modifying the next dimlet or defining something about the world.
 {-------------------------------------------------------------}
 Dimlets are complicated devices, filled with advanced circuitry
 and powerful essences. These things can literally define how a
@@ -119,13 +116,12 @@ very valuable dimlets in there.
     Weather Dimlets: Control the weather in your dimension with these
         dimlets.
     Effect Dimlets: These dimlets add various special effects. Negative 
-		effects generally help reduce maintenance power.
+        effects generally help reduce maintenance power.
 {-------------------------------------------------------------}
     Special dimlets: These are special dimlets that are usually
         extremely rare.
 
 {b}There are currently five special dimlets:
-
     Peaceful Dimlet: This dimlet prevents hostile mobs from
         spawning in your dimension (except for mobs that you
         manually add using mob dimlets). It is an expensive
@@ -147,38 +143,77 @@ very valuable dimlets in there.
     Seed Dimlet: A very specialized dimlet to control the seed
         of the random world generation for a dimension.
 {-------------------------------------------------------------}
-{b}Dimlet Researcher - Revealing Your Dimlets
-{n:researcher}
-Now that you know what each type of dimlet does, the next step will be to
-determine what type your Unknown Dimlets are. For that, you'll need
-a Dimlet Researcher.
-{rb:dimletResearcherBlock}
+{b}Dimlet Crafting
+{n:create}
 
-Simply place the Unknown Dimlet into the slot on the left and, when it
-is provided with power, it will be turned into a usable dimlet on the
-right.
+Now that you have your dimlet parts you need a way to make
+dimlets. Using the Dimlet Workbench you can deconstruct
+dimlets into their technical components and then reconstruct
+them into new dimlets.
+
+The workbench can be crafted as follows:
+{rb:dimlet_workbench}
 {-------------------------------------------------------------}
-Certain dimlets are more valuable and rare than others, so it is likely
-you will not obtain the dimlet you want right away. Just keep on
-researching, and you'll find them eventually.
+Every dimlet is made out of six parts:
+    - Dimlet Base item
+    - Dimlet Control Circuit
+    - Dimlet Energy Module
+    - Dimlet Memory Module
+    - Dimlet Type Controller
+    - Essence item
 
-Most dimlets require you to research them or use another machine to
-find them, but certain simpler dimlets can be easily crafted in any
+You need the right tier of every part to make a dimlet.
+There is one control circuit for every rarity (0 to 6) and there
+are three levels of the energy and memory modules.
+{-------------------------------------------------------------}
+When extracting dimlets into parts there is a 40% chance for
+every part that you get nothing. To avoid this it is recommended
+that you infuse the workbench. A maximum infused workbench will
+guarantee that you get all parts back.
+
+Extracting a dimlet will never give you an essence item. You
+always have to make that.
+{-------------------------------------------------------------}
+There are various kinds of essence items depending on the type
+of dimlet that you want to make:
+    - Biome Absorber for biome dimlets
+    - Material Absorber for material dimlets
+    - Liquid Absorber for liquid dimlets
+    - Time Absorber for time dimlets
+    - Syringe for mob dimlets
+    - Peaceful essence (made out of 9 filled syringes of a
+      specific type) for the peaceful dimlet
+    - Efficiency/mediocre efficiency items for the corresponding
+      efficiency dimlets
+    - Structure Essence (from villagers) for structure dimlets
+{-------------------------------------------------------------}
+So, if you wanted to create a Biome: Forest dimlet, you would
+place the Biome Absorber within a Forest Biome. Slowly, the
+Biome Absorber will fill up with the essence of the Forest Biome.
+You can then place it in the last slot of the Dimlet Workbench
+along with the other pieces of the dimlet to build your Biome:
+Forest dimlet, now ready to be used in any dimensions!
+
+For the Time Absorber you need to give the absorber a redstone
+signal at approximately the right time. This has to be done
+10 times before it has fully absorbed the time.
+{-------------------------------------------------------------}
+Note that some dimlets can be crafted using the regular crafting
 table.
-{-------------------------------------------------------------}
+
 You may notice that some of these craftable dimlets require a
 weird item. This is a Dimlet Template which can be crafted as
 follows:
-{ri:dimletTemplate}
+{ri:dimlet_template}
 
 To craft this you actually need dimensional shards.
 {-------------------------------------------------------------}
 {b}Dimension Enscriber
 {n:enscriber}
 The Dimension Enscriber is what is used to actually code your dimensions.
-{rb:dimensionEnscriberBlock}
+{rb:dimension_enscriber}
 In addition, you will also need a Empty Dimension Tab
-{ri:emptyDimensionTab}
+{ri:empty_dimension_tab}
 {-------------------------------------------------------------}
 To use the Dimension Enscriber, you must first insert the Empty
 Dimension Tab into the slot on the lower left. To make a completely
@@ -229,7 +264,7 @@ it easier to maintain an already created world.
 {n:builder}
 The Dimension Builder is what is used to create dimensions and maintain
 them based on the Realised Tab
-{rb:dimensionBuilderBlock}
+{rb:dimension_builder}
 
 Depending on the complexity of the dimension it will use power and need
 some time to actually construct the dimension. If there is not enough
@@ -327,7 +362,7 @@ will return at your spawn point (but without your inventory of course).
 If you are in the dimension then there is one handy tool that you
 can bring with you to monitor the power status of the dimension
 and that's the Dimension Monitor that you can craft like this:
-{ri:dimensionMonitorItem}
+{ri:dimension_monitor}
 
 Right clicking with this tool will show you the amount of power
 still left in the dimension. The tool also gives a visual indication
@@ -339,7 +374,7 @@ What if you just died in an unpowered dimension? How can you get your
 stuff back? Sometimes you really need to go back to a dimension that
 has no power. The Phased Field Generator allows you to do just that:
 
-{ri:phasedFieldGeneratorItem}
+{ri:phased_field_generator}
 
 This item has be charged first. While it has enough power it will protect you
 from the hazards of an unpowered dimension. But be fast (as fast as you can
@@ -381,91 +416,13 @@ It is also very useful to infuse your Matter Transmitter and Matter
 Receiver blocks as that way they will work faster and use a lot less
 energy (making them safer to use).
 {-------------------------------------------------------------}
-{b}Dimlet Scrambler
-{n:scrambler}
-Sometimes you collect a lot of dimlets that you don't find particularly
-useful. In that case the dimlet scrambler may be a useful machine for you.
-You can craft it as follows:
-{rb:dimletScramblerBlock}
-
-This machine takes three dimlets (two should be non-craftable) of any type
-and recycles their components to create a new random dimlet. In contrast
-with the dimlet researcher this machine has a better chance of giving back
-rare dimlets. This depends on the rarity of the dimlets that you scramble.
-{-------------------------------------------------------------}
-{b}Dimlet Filter
-{n:filter}
-With the Dimlet Filter you can easily sort all the dimlets you get
-from the researcher or scrambler. It has six configurable sides and
-you can filter based on dimlet type, rarity as well as craftability.
-You can craft it as follows:
-{rb:dimletFilterBlock}
-
-Note that dimlets can only be extracted from the most-matching side.
-So if a dimlet matches with more then one side the side which matches
-most rules (or most specific rules) will be selected for output.
-{-------------------------------------------------------------}
-{b}Dimlet Crafting
-{n:create}
-
-Dimlet Crafting is a subject for the experienced dimension builder.
-Using the Dimlet Workbench you can deconstruct dimlets into their
-technical components and then reconstruct them into new dimlets.
-
-The workbench can be crafted as follows:
-{rb:dimletWorkbenchBlock}
-{-------------------------------------------------------------}
-Every dimlet is made out of six parts:
-    - Dimlet Base item
-    - Dimlet Control Circuit
-    - Dimlet Energy Module
-    - Dimlet Memory Module
-    - Dimlet Type Controller
-    - Essence item
-
-You need the right tier of every part to make a dimlet.
-There is one control circuit for every rarity (0 to 6) and there
-are three levels of the energy and memory modules.
-{-------------------------------------------------------------}
-When extracting dimlets into parts there is a 40% chance for
-every part that you get nothing. To avoid this it is recommended
-that you infuse the workbench. A maximum infused workbench will
-guarantee that you get all parts back.
-
-Extracting a dimlet will never give you an essence item. You
-always have to make that.
-{-------------------------------------------------------------}
-There are various kinds of essence items depending on the type
-of dimlet that you want to make:
-    - Biome Absorber for biome dimlets
-    - Material Absorber for material dimlets
-    - Liquid Absorber for liquid dimlets
-    - Time Absorber for time dimlets
-    - Syringe for mob dimlets
-    - Peaceful essence (made out of 9 filled syringes of a
-      specific type) for the peaceful dimlet
-    - Efficiency/mediocre efficiency items for the corresponding
-      efficiency dimlets
-    - Structure Essence (from villagers) for structure dimlets
-{-------------------------------------------------------------}
-So, if you wanted to create a Biome: Forest dimlet, you would
-place the Biome Absorber within a Forest Biome. Slowly, the
-Biome Absorber will fill up with the essence of the Forest Biome.
-You can then place it in the last slot of the Dimlet Workbench
-along with the other pieces of the dimlet to build your Biome:
-Forest dimlet, now ready to be used in any dimensions!
-
-For the Time Absorber you need to give the absorber a redstone
-signal at approximately the right time. This has to be done
-10 times before it has fully absorbed the time.
-{-------------------------------------------------------------}
 {b}Activity Probe
 {n:probe}
 
 Normally dimensions use power constantly - even when nobody is in
 them. It is possible to make this a bit more efficient by making
 an Activity Probe. You can craft this block as follows:
-{rb:activityProbeBlock}
+{rb:activity_probe}
 {-------------------------------------------------------------}
 This device is passive. It doesn't use any power and it has no user
 interface either. You simply place it in an RFTools dimension (it
@@ -484,14 +441,14 @@ use the dimension or perhaps you have a central hub where you
 pump a lot of energy in your dimension and then you can use this
 block to distribute power everywhere. Be careful to not let
 the dimension run dry!
-{rb:energyExtractorBlock}
+{rb:energy_extractor}
 {-------------------------------------------------------------}
 {b}Dimension Editor
 {n:editor}
 
 With the Dimension Editor you can alter already created dimensions
 by inserting some types of dimlets. It can be crafted as follows:
-{rb:dimensionEditorBlock}
+{rb:dimension_editor}
 
 Note that inserted dimlets are lost during this process (you will not get
 it back even if you deconstruct the dimension tab) and you pay the full
@@ -512,5 +469,5 @@ Besides the dimension monitor item there is also a dimension monitor
 block which sends out a redstone signal as soon as the power in
 the current dimension goes below a certain level. It can be
 crafted as follows:
-{rb:dimensionMonitorBlock}
+{rb:dimension_monitor}
 {-------------------------------------------------------------}
