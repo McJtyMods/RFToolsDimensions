@@ -27,6 +27,7 @@ public class ModCrafting {
 
         GameRegistry.addRecipe(new ItemStack(ModItems.rfToolsDimensionManualItem), "r r", " b ", "r r", 'r', Items.redstone, 'b', Items.book);
         GameRegistry.addRecipe(new ItemStack(ModItems.dimensionMonitorItem), " u ", "rCr", " r ", 'u', dimensionalShard, 'r', Items.redstone, 'C', Items.comparator);
+        GameRegistry.addRecipe(new ItemStack(ModItems.phasedFieldGeneratorItem), "rsr", "sEs", "rsr", 'E', Items.ender_eye, 'r', Items.redstone, 's', dimensionalShard);
 
         ItemStack inkSac = new ItemStack(Items.dye, 1, 0);
         GameRegistry.addRecipe(new ItemStack(ModItems.dimensionModuleItem), " c ", "rir", " b ", 'c', Items.ender_pearl, 'r', Items.redstone, 'i', Items.iron_ingot,

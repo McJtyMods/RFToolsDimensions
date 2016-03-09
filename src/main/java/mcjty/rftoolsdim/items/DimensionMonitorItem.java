@@ -34,7 +34,8 @@ public class DimensionMonitorItem extends GenericRFToolsItem {
     @SideOnly(Side.CLIENT)
     public void initModel() {
         for (int i = 0 ; i <= 8 ; i++) {
-            ModelBakery.addVariantName(this, getRegistryName() + i);
+            ModelBakery.registerItemVariants(this, new ModelResourceLocation(getRegistryName() + i, "inventory"));
+//            ModelBakery.addVariantName(this, getRegistryName() + i);
         }
 
         ModelLoader.setCustomMeshDefinition(this, new ItemMeshDefinition() {

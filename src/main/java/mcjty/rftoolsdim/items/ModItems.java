@@ -23,6 +23,7 @@ public class ModItems {
     public static RFToolsDimensionManualItem rfToolsDimensionManualItem;
     public static DimensionMonitorItem dimensionMonitorItem;
     public static DimensionModuleItem dimensionModuleItem;
+    public static PhasedFieldGeneratorItem phasedFieldGeneratorItem;
 
     public static void init() {
         dimletBaseItem = new DimletBaseItem();
@@ -39,6 +40,7 @@ public class ModItems {
         rfToolsDimensionManualItem = new RFToolsDimensionManualItem();
         dimensionMonitorItem = new DimensionMonitorItem();
         dimensionModuleItem = new DimensionModuleItem();
+        phasedFieldGeneratorItem = new PhasedFieldGeneratorItem();
     }
 
     @SideOnly(Side.CLIENT)
@@ -57,5 +59,6 @@ public class ModItems {
         rfToolsDimensionManualItem.initModel();
         dimensionMonitorItem.initModel();
         dimensionModuleItem.initModel();
+        phasedFieldGeneratorItem.initModel();
     }
 }

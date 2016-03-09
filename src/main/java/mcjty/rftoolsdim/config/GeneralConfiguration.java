@@ -6,6 +6,8 @@ public class GeneralConfiguration {
     public static final String CATEGORY_GENERAL = "general";
 
     public static boolean enableDimensionBuilderRecipe = true;
+    public static boolean enableDynamicPhaseCost = false;
+    public static float dynamicPhaseCostAmount = 0.05f;
 
     public static int spawnDimension = 0;           // Dimension to return too when power runs out
     public static boolean respawnSameDim = false;   // If true we first try to respawn in rftools dimension unless power is low.
@@ -34,6 +36,10 @@ public class GeneralConfiguration {
 	public static void init(Configuration cfg) {
         enableDimensionBuilderRecipe = cfg.get(CATEGORY_GENERAL, "enableDimensionBuilderRecipe", enableDimensionBuilderRecipe,
                                                "Enable the dimension builder recipe.").getBoolean();
+        enableDynamicPhaseCost = cfg.get(CATEGORY_GENERAL, "enableDynamicPhaseCost", enableDynamicPhaseCost,
+                                         "Enable dynamic scaling of the Phase Field Generator cost based on world tick cost").getBoolean();
+        dynamicPhaseCostAmount = (float) cfg.get(CATEGORY_GENERAL, "dynamicPhaseCostAmount", dynamicPhaseCostAmount,
+                                                 "How much of the tick cost of the world is applied to the PFG cost, as a ratio from 0 to 1").getDouble();
 
         spawnDimension = cfg.get(CATEGORY_GENERAL, "spawnDimension", spawnDimension,
                 "Dimension to respawn in after you get kicked out of an RFTools dimension").getInt();

@@ -2,9 +2,12 @@ package mcjty.rftoolsdim.dimensions;
 
 import mcjty.lib.varia.Logging;
 import mcjty.rftoolsdim.config.DimletRules;
+import mcjty.rftoolsdim.config.GeneralConfiguration;
 import mcjty.rftoolsdim.config.PowerConfiguration;
 import mcjty.rftoolsdim.dimensions.description.DimensionDescriptor;
 import mcjty.rftoolsdim.dimensions.world.GenericWorldProvider;
+import mcjty.rftoolsdim.items.ModItems;
+import mcjty.rftoolsdim.items.PhasedFieldGeneratorItem;
 import mcjty.rftoolsdim.network.PacketRegisterDimensions;
 import mcjty.rftoolsdim.network.PacketSyncDimensionInfo;
 import mcjty.rftoolsdim.network.PacketSyncRules;
@@ -12,6 +15,8 @@ import mcjty.rftoolsdim.network.RFToolsDimMessages;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.MinecraftServer;
@@ -226,27 +231,26 @@ public class RfToolsDimensionManager extends WorldSavedData {
     }
 
     public static boolean checkValidPhasedFieldGenerator(EntityPlayer player, boolean consume, int tickCost) {
-//        InventoryPlayer inventory = player.inventory;
-//        for (int i = 0 ; i < inventory.getHotbarSize() ; i++) {
-//            ItemStack slot = inventory.getStackInSlot(i);
-//            if (slot != null && slot.getItem() == DimletSetup.phasedFieldGeneratorItem) {
-//                PhasedFieldGeneratorItem pfg = (PhasedFieldGeneratorItem) slot.getItem();
-//                int energyStored = pfg.getEnergyStored(slot);
-//                int toConsume;
-//                if (GeneralConfiguration.enableDynamicPhaseCost) {
-//                    toConsume = (int) (DimensionTickEvent.MAXTICKS * tickCost * GeneralConfiguration.dynamicPhaseCostAmount);
-//                } else {
-//                    toConsume = DimensionTickEvent.MAXTICKS * DimletConfiguration.PHASEDFIELD_CONSUMEPERTICK;
-//                }
-//                if (energyStored >= toConsume) {
-//                    if (consume) {
-//                        pfg.extractEnergy(slot, toConsume, false);
-//                    }
-//                    return true;
-//                }
-//            }
-//        }
-        //@todo
+        InventoryPlayer inventory = player.inventory;
+        for (int i = 0 ; i < inventory.getHotbarSize() ; i++) {
+            ItemStack slot = inventory.getStackInSlot(i);
+            if (slot != null && slot.getItem() == ModItems.phasedFieldGeneratorItem) {
+                PhasedFieldGeneratorItem pfg = (PhasedFieldGeneratorItem) slot.getItem();
+                int energyStored = pfg.getEnergyStored(slot);
+                int toConsume;
+                if (GeneralConfiguration.enableDynamicPhaseCost) {
+                    toConsume = (int) (DimensionTickEvent.MAXTICKS * tickCost * GeneralConfiguration.dynamicPhaseCostAmount);
+                } else {
+                    toConsume = DimensionTickEvent.MAXTICKS * PowerConfiguration.PHASEDFIELD_CONSUMEPERTICK;
+                }
+                if (energyStored >= toConsume) {
+                    if (consume) {
+                        pfg.extractEnergy(slot, toConsume, false);
+                    }
+                    return true;
+                }
+            }
+        }
         return false;
     }
 
