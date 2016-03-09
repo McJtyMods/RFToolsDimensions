@@ -217,7 +217,8 @@ public class RfToolsDimensionManager extends WorldSavedData {
     }
 
     public static void unfreezeChunk(Chunk chunk) {
-        chunk.setChunkLoaded(true);
+//        chunk.setChunkLoaded(true);
+        chunk.isChunkLoaded = true;
         chunk.getWorld().addTileEntities(chunk.getTileEntityMap().values());
         for (ClassInheritanceMultiMap<Entity> entityList : chunk.getEntityLists()) {
             chunk.getWorld().loadedEntityList.addAll(entityList);
