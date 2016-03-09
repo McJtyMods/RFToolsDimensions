@@ -187,8 +187,8 @@ public class GuiDimletWorkbench extends GenericGuiContainer<DimletWorkbenchTileE
             extractButton.setEnabled(false);
         }
 
-        setDimletTooltip();
         updateList();
+        setDimletTooltip();
         drawWindow();
 
         energyBar.setValue(GenericEnergyStorageTileEntity.getCurrentRF());
