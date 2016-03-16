@@ -930,15 +930,17 @@ public class DimensionInformation implements IDimensionInformation {
         size = buf.readInt();
         for (int i = 0 ; i < size ; i++) {
             String className = NetworkTools.readString(buf);
+            int chance = buf.readInt();
+            int minGroup = buf.readInt();
+            int maxGroup = buf.readInt();
+            int maxLoaded = buf.readInt();
+
             try {
                 Class<? extends EntityLiving> c = (Class<? extends EntityLiving>) Class.forName(className);
-                int chance = buf.readInt();
-                int minGroup = buf.readInt();
-                int maxGroup = buf.readInt();
-                int maxLoaded = buf.readInt();
                 MobDescriptor mob = new MobDescriptor(c, chance, minGroup, maxGroup, maxLoaded);
                 extraMobs.add(mob);
             } catch (ClassNotFoundException e) {
+                Logging.logError("Cannot find class: " + className + "!");
                 e.printStackTrace();
             }
         }
