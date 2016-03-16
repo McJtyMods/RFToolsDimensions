@@ -816,7 +816,15 @@ public class DimensionInformation implements IDimensionInformation {
 
         buf.writeLong(patreon1);
 
-        buf.writeInt(extraMobs.size());
+        int mobsize = 0;
+        for (MobDescriptor mob : extraMobs) {
+            if (mob != null) {
+                if (mob.getEntityClass() != null) {
+                    mobsize++;
+                }
+            }
+        }
+        buf.writeInt(mobsize);
         for (MobDescriptor mob : extraMobs) {
             if (mob != null) {
                 if (mob.getEntityClass() != null) {
