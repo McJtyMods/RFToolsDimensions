@@ -93,10 +93,14 @@ public class RFToolsTools {
 
 
         String path;
-        if (obj instanceof Class) {
-            path = ((Class) obj).getProtectionDomain().getCodeSource().getLocation().toString();
-        } else {
-            path = obj.getClass().getProtectionDomain().getCodeSource().getLocation().toString();
+        try {
+            if (obj instanceof Class) {
+                path = ((Class) obj).getProtectionDomain().getCodeSource().getLocation().toString();
+            } else {
+                path = obj.getClass().getProtectionDomain().getCodeSource().getLocation().toString();
+            }
+        } catch (Exception e) {
+            return "<Unknown>";
         }
         try {
             path = URLDecoder.decode(path, "UTF-8");
