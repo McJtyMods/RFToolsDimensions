@@ -7,13 +7,14 @@ import mcjty.lib.network.Argument;
 import mcjty.lib.network.PacketRequestIntegerFromServer;
 import mcjty.lib.varia.Logging;
 import mcjty.rftoolsdim.RFToolsDim;
-import mcjty.rftoolsdim.config.PowerConfiguration;
-import mcjty.rftoolsdim.dimensions.DimensionStorage;
 import mcjty.rftoolsdim.config.GeneralConfiguration;
 import mcjty.rftoolsdim.config.MachineConfiguration;
+import mcjty.rftoolsdim.config.PowerConfiguration;
+import mcjty.rftoolsdim.dimensions.DimensionStorage;
 import mcjty.rftoolsdim.dimensions.RfToolsDimensionManager;
 import mcjty.rftoolsdim.dimensions.description.DimensionDescriptor;
 import mcjty.rftoolsdim.network.RFToolsDimMessages;
+import mcjty.rftoolsdim.varia.CustomSidedInvWrapper;
 import mcjty.rftoolsdim.varia.RedstoneMode;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -26,7 +27,6 @@ import net.minecraft.util.ITickable;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.wrapper.InvWrapper;
 
 import java.util.Map;
 import java.util.Random;
@@ -378,7 +378,7 @@ public class DimensionBuilderTileEntity extends GenericEnergyReceiverTileEntity 
         tagCompound.setByte("rsMode", (byte) redstoneMode.ordinal());
     }
 
-    private IItemHandler invHandler = new InvWrapper(this);
+    private IItemHandler invHandler = new CustomSidedInvWrapper(this);
 
     @Override
     public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
