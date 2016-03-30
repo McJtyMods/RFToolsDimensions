@@ -16,7 +16,7 @@ public class VoidTerrainGenerator implements BaseTerrainGenerator {
     @Override
     public void generate(int chunkX, int chunkZ, ChunkPrimer primer) {
         for (int i = 0 ; i < 65536 ; i++) {
-            primer.setBlockState(i, Blocks.air.getDefaultState());
+            BaseTerrainGenerator.setBlockState(primer, i, Blocks.air.getDefaultState());
         }
     }
 

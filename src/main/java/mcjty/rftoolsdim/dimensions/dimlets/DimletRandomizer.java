@@ -6,7 +6,6 @@ import mcjty.rftoolsdim.config.Settings;
 import mcjty.rftoolsdim.dimensions.dimlets.types.DimletType;
 import mcjty.rftoolsdim.dimensions.types.ControllerType;
 import net.minecraft.item.ItemStack;
-import net.minecraft.world.biome.BiomeGenBase;
 
 import java.util.List;
 import java.util.Map;
@@ -150,13 +149,15 @@ public class DimletRandomizer {
     }
 
     public static DimletKey getRandomBiome(Random random) {
-        BiomeGenBase[] biomes = BiomeGenBase.getBiomeGenArray();
-        while(true) {
-            BiomeGenBase biome = biomes[random.nextInt(biomes.length)];
-            if (biome != null) {
-                return new DimletKey(DimletType.DIMLET_BIOME, biome.biomeName);
-            }
-        }
+//        BiomeGenBase[] biomes = BiomeGenBase.getBiomeGenArray();
+//        while(true) {
+//            BiomeGenBase biome = biomes[random.nextInt(biomes.length)];
+//            if (biome != null) {
+//                return new DimletKey(DimletType.DIMLET_BIOME, biome.biomeName);
+//            }
+//        }
+        //@todo
+        return null;
     }
 
     public static DimletKey getRandomMob(Random random) {

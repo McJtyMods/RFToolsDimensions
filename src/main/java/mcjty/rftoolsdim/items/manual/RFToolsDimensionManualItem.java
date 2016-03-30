@@ -4,6 +4,9 @@ import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.items.GenericRFToolsItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 
 public class RFToolsDimensionManualItem extends GenericRFToolsItem {
@@ -19,12 +22,12 @@ public class RFToolsDimensionManualItem extends GenericRFToolsItem {
     }
 
     @Override
-    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
+    public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
         if (world.isRemote) {
             player.openGui(RFToolsDim.instance, RFToolsDim.GUI_MANUAL_DIMENSION, player.worldObj, (int) player.posX, (int) player.posY, (int) player.posZ);
-            return stack;
+            return new ActionResult<>(EnumActionResult.SUCCESS, stack);
         }
-        return stack;
+        return new ActionResult<>(EnumActionResult.SUCCESS, stack);
     }
 
 }

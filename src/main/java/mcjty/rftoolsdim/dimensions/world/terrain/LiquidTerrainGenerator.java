@@ -26,15 +26,15 @@ public class LiquidTerrainGenerator implements BaseTerrainGenerator {
             for (int z = 0; z < 16; ++z) {
                 int height = 0;
                 while (height < 1) {
-                    primer.setBlockState(index++, Blocks.bedrock.getDefaultState());
+                    BaseTerrainGenerator.setBlockState(primer, index++, Blocks.bedrock.getDefaultState());
                     height++;
                 }
                 while (height < waterLevel) {
-                    primer.setBlockState(index++, baseLiquid.getDefaultState());
+                    BaseTerrainGenerator.setBlockState(primer, index++, baseLiquid.getDefaultState());
                     height++;
                 }
                 while (height < 256) {
-                    primer.setBlockState(index++, Blocks.air.getDefaultState());
+                    BaseTerrainGenerator.setBlockState(primer, index++, Blocks.air.getDefaultState());
                     height++;
                 }
             }

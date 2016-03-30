@@ -1,6 +1,7 @@
 package mcjty.rftoolsdim.dimensions.world;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -20,13 +21,15 @@ public class WorldGenerationTools {
         }
 
 
-        Block block = world.getBlockState(new BlockPos(x, y + 1, z)).getBlock();
-        while (block.getMaterial().isLiquid()) {
+        IBlockState state = world.getBlockState(new BlockPos(x, y + 1, z));
+        Block block = state.getBlock();
+        while (block.getMaterial(state).isLiquid()) {
             y++;
             if (y > world.getHeight()-10) {
                 return -1;
             }
-            block = world.getBlockState(new BlockPos(x, y + 1, z)).getBlock();
+            state = world.getBlockState(new BlockPos(x, y + 1, z));
+            block = state.getBlock();
         }
 
         return y;
@@ -37,8 +40,9 @@ public class WorldGenerationTools {
         if (world.isAirBlock(new BlockPos(x, y, z))) {
             return false;
         }
-        Block block = world.getBlockState(new BlockPos(x, y, z)).getBlock();
-        return block.getMaterial().blocksMovement();
+        IBlockState state = world.getBlockState(new BlockPos(x, y, z));
+        Block block = state.getBlock();
+        return block.getMaterial(state).blocksMovement();
     }
 
     // Return true if this block is solid.
