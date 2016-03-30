@@ -28,12 +28,12 @@ public class WavesTerrainGenerator extends NormalTerrainGenerator {
                 byte waterLevel = (byte) (63 + sin * cos * 16);
                 int height = 0;
                 while (height < WorldgenConfiguration.bedrockLayer) {
-                    primer.setBlockState(index++, Blocks.bedrock.getDefaultState());
+                    BaseTerrainGenerator.setBlockState(primer, index++, Blocks.bedrock.getDefaultState());
                     height++;
                 }
                 if (baseMeta == 127) {
                     while (height < waterLevel) {
-                        primer.setBlockState(index++, baseBlock);
+                        BaseTerrainGenerator.setBlockState(primer, index++, baseBlock);
                         // @todo this can't work this way! We need the 127 meta information here another way
 //                        aBlock[index] = baseBlock;
 //                        abyte[index++] = (byte) ((height/2 + x/2 + z/2) & 0xf);
@@ -41,18 +41,18 @@ public class WavesTerrainGenerator extends NormalTerrainGenerator {
                     }
                 } else {
                     while (height < waterLevel) {
-                        primer.setBlockState(index++, baseBlock);
+                        BaseTerrainGenerator.setBlockState(primer, index++, baseBlock);
                         height++;
                     }
                 }
                 if (filled) {
                     while (height < 63) {
-                        primer.setBlockState(index++, baseFluid.getDefaultState()); // @todo support meta for fluid?
+                        BaseTerrainGenerator.setBlockState(primer, index++, baseFluid.getDefaultState()); // @todo support meta for fluid?
                         height++;
                     }
                 }
                 while (height < 256) {
-                    primer.setBlockState(index++, Blocks.air.getDefaultState());
+                    BaseTerrainGenerator.setBlockState(primer, index++, Blocks.air.getDefaultState());
                     height++;
                 }
             }

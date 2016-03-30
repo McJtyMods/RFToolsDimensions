@@ -20,9 +20,10 @@ import net.minecraft.entity.item.EntityItemFrame;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityChest;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.IChunkGenerator;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.feature.WorldGenMinable;
 import net.minecraftforge.fml.common.IWorldGenerator;
@@ -33,13 +34,13 @@ import java.util.Random;
 public class GenericWorldGenerator implements IWorldGenerator {
 
     @Override
-    public void generate(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider) {
+    public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
         RfToolsDimensionManager manager = RfToolsDimensionManager.getDimensionManager(world);
-        if (manager.getDimensionDescriptor(world.provider.getDimensionId()) == null) {
+        if (manager.getDimensionDescriptor(world.provider.getDimension()) == null) {
             return; // Not an RFTools dimension
         }
 
-        DimensionInformation information = manager.getDimensionInformation(world.provider.getDimensionId());
+        DimensionInformation information = manager.getDimensionInformation(world.provider.getDimension());
         IBlockState baseBlock = information.getBaseBlockForTerrain();
         if (information.hasFeatureType(FeatureType.FEATURE_OREGEN)) {
             for (IBlockState block : information.getExtraOregen()) {
@@ -218,7 +219,7 @@ public class GenericWorldGenerator implements IWorldGenerator {
 
     private void generateBigSpawnPlatform(World world, int chunkX, int chunkZ, int[][] platform) {
         RfToolsDimensionManager dimensionManager = RfToolsDimensionManager.getDimensionManager(world);
-        DimensionInformation information = dimensionManager.getDimensionInformation(world.provider.getDimensionId());
+        DimensionInformation information = dimensionManager.getDimensionInformation(world.provider.getDimension());
 
         int midx = 8;
         int midz = 8;
@@ -265,7 +266,7 @@ public class GenericWorldGenerator implements IWorldGenerator {
 
     private void generateSpawnPlatform(World world) {
         RfToolsDimensionManager dimensionManager = RfToolsDimensionManager.getDimensionManager(world);
-        DimensionInformation information = dimensionManager.getDimensionInformation(world.provider.getDimensionId());
+        DimensionInformation information = dimensionManager.getDimensionInformation(world.provider.getDimension());
 
         int midx = 8;
         int midz = 8;

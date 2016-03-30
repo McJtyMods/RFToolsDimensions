@@ -4,8 +4,8 @@ import mcjty.rftoolsdim.dimensions.DimensionInformation;
 import mcjty.rftoolsdim.dimensions.RfToolsDimensionManager;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.TextComponentString;
-import net.minecraft.util.TextFormatting;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
 public class CmdInfo extends AbstractRfToolsCommand {
@@ -40,7 +40,7 @@ public class CmdInfo extends AbstractRfToolsCommand {
             sender.addChatMessage(new TextComponentString(TextFormatting.RED + "Too many parameters!"));
             return;
         } else {
-            dim = world.provider.getDimensionId();
+            dim = world.provider.getDimension();
         }
 
         RfToolsDimensionManager dimensionManager = RfToolsDimensionManager.getDimensionManager(world);

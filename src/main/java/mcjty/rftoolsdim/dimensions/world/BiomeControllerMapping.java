@@ -20,7 +20,7 @@ public class BiomeControllerMapping {
 
 
     public static void setupControllerBiomes() {
-        BiomeGenBase[] biomeGenArray = BiomeGenBase.getBiomeGenArray();
+        BiomeGenBase[] biomeGenArray = null;//@todoBiomeGenBase.getBiomeGenArray();
 
         makeFilteredBiomeMap(biomeGenArray, coldBiomeReplacements, ControllerType.CONTROLLER_COLD);
         makeFilteredBiomeMap(biomeGenArray, warmBiomeReplacements, ControllerType.CONTROLLER_WARM);
@@ -55,16 +55,16 @@ public class BiomeControllerMapping {
             // No biomes found! We just map every biome to itself as a fallback.
             for (BiomeGenBase biome : biomeGenArray) {
                 if (biome != null) {
-                    map.put(biome.biomeID, biome.biomeID);
+                    map.put(BiomeGenBase.getIdForBiome(biome), BiomeGenBase.getIdForBiome(biome));
                 }
             }
         } else {
             for (BiomeGenBase biome : biomeGenArray) {
                 if (biome != null) {
                     if (filter.match(biome)) {
-                        map.put(biome.biomeID, biome.biomeID);
+                        map.put(BiomeGenBase.getIdForBiome(biome), BiomeGenBase.getIdForBiome(biome));
                     } else {
-                        map.put(biome.biomeID, findSuitableBiomes(biomeGenArray, biome, filter));
+                        map.put(BiomeGenBase.getIdForBiome(biome), findSuitableBiomes(biomeGenArray, biome, filter));
                     }
                 }
             }
@@ -80,13 +80,13 @@ public class BiomeControllerMapping {
                 // This 'base' could be a replacement. Check if it is close enough.
                 if (biome.getBiomeClass() == base.getBiomeClass()) {
                     // Same class, that's good enough for me.
-                    return base.biomeID;
+                    return BiomeGenBase.getIdForBiome(base);
                 }
 
                 double dist = filter.calculateBiomeDistance(biome, base);
                 if (dist < bestdist) {
                     bestdist = dist;
-                    bestidx = base.biomeID;
+                    bestidx = BiomeGenBase.getIdForBiome(base);
                 }
             }
         }

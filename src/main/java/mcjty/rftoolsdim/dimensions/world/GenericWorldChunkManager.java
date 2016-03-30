@@ -6,7 +6,7 @@ import net.minecraft.world.WorldType;
 import net.minecraft.world.gen.layer.GenLayer;
 import net.minecraft.world.gen.layer.GenLayerVoronoiZoom;
 
-public class GenericWorldChunkManager {/* @todo extends WorldChunkManager {
+public class GenericWorldChunkManager /*extends WorldChunkManager*/ {
     private DimensionInformation dimensionInformation = null;
 
     public static DimensionInformation hackyDimensionInformation;       // Hack to get the dimension information here before 'super'.
@@ -16,16 +16,16 @@ public class GenericWorldChunkManager {/* @todo extends WorldChunkManager {
     }
 
     public GenericWorldChunkManager(long seed, WorldType worldType, DimensionInformation dimensionInformation) {
-        super(seed, worldType, ""); // @todo json settings?
+//        super(seed, worldType, ""); // @todo json settings?
         this.dimensionInformation = dimensionInformation;
     }
 
-    @Override
+//    @Override
     public GenLayer[] getModdedBiomeGenerators(WorldType worldType, long seed, GenLayer[] original) {
         if (dimensionInformation == null) {
             dimensionInformation = hackyDimensionInformation;
         }
-        GenLayer[] layer = super.getModdedBiomeGenerators(worldType, seed, original);
+        GenLayer[] layer = null;//@todosuper.getModdedBiomeGenerators(worldType, seed, original);
         GenLayer rflayer = null;
         ControllerType type;
         DimensionInformation di = dimensionInformation;
@@ -59,5 +59,5 @@ public class GenericWorldChunkManager {/* @todo extends WorldChunkManager {
         GenLayerVoronoiZoom zoomLayer = new GenLayerVoronoiZoom(10L, rflayer);
         zoomLayer.initWorldGenSeed(seed);
         return new GenLayer[] {rflayer, zoomLayer, rflayer};
-    }*/
+    }
 }

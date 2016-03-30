@@ -4,13 +4,14 @@ import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.dimensions.DimensionInformation;
 import mcjty.rftoolsdim.dimensions.RfToolsDimensionManager;
 import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -25,7 +26,7 @@ public class ActivityProbeBlock extends Block {
         setRegistryName("activity_probe");
         setCreativeTab(RFToolsDim.tabRfToolsDim);
         setHardness(2.0f);
-        setStepSound(soundTypeMetal);
+        setSoundType(SoundType.METAL);
         setHarvestLevel("pickaxe", 0);
         GameRegistry.registerBlock(this);
     }
@@ -40,7 +41,7 @@ public class ActivityProbeBlock extends Block {
         IBlockState state = super.onBlockPlaced(world, pos, facing, hitX, hitY, hitZ, meta, placer);
         if (!world.isRemote) {
             RfToolsDimensionManager dimensionManager = RfToolsDimensionManager.getDimensionManager(world);
-            DimensionInformation information = dimensionManager.getDimensionInformation(world.provider.getDimensionId());
+            DimensionInformation information = dimensionManager.getDimensionInformation(world.provider.getDimension());
             if (information != null) {
                 information.addProbe();
             }
@@ -54,7 +55,7 @@ public class ActivityProbeBlock extends Block {
         super.breakBlock(world, pos, state);
         if (!world.isRemote) {
             RfToolsDimensionManager dimensionManager = RfToolsDimensionManager.getDimensionManager(world);
-            DimensionInformation information = dimensionManager.getDimensionInformation(world.provider.getDimensionId());
+            DimensionInformation information = dimensionManager.getDimensionInformation(world.provider.getDimension());
             if (information != null) {
                 information.removeProbe();
             }

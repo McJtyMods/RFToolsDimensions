@@ -2,6 +2,7 @@ package mcjty.rftoolsdim.dimensions.world.mapgen;
 
 import mcjty.lib.varia.BlockMeta;
 import mcjty.rftoolsdim.dimensions.world.GenericChunkProvider;
+import mcjty.rftoolsdim.dimensions.world.terrain.BaseTerrainGenerator;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -43,7 +44,7 @@ public class MapGenPyramids {
                 for (int dx = -i ; dx <= i-1 ; dx++) {
                     for (int dz = -i ; dz <= i-1 ; dz++) {
                         int index = ((x+dx) * 16 + (z+dz)) * 256;
-                        primer.setBlockState(index+y, block);
+                        BaseTerrainGenerator.setBlockState(primer, index + y, block);
                     }
                 }
                 y++;
@@ -75,7 +76,7 @@ public class MapGenPyramids {
     private int findTopSolid(ChunkPrimer primer, int x, int z) {
         int index = (x * 16 + z) * 256;
         int y = 255;
-        while (y >= 5 && (primer.getBlockState(index+y) == null || primer.getBlockState(index+y).getBlock().getMaterial() == Material.air)) {
+        while (y >= 5 && (BaseTerrainGenerator.getBlockState(primer, index+y) == null || BaseTerrainGenerator.getBlockState(primer, index+y).getBlock().getMaterial(BaseTerrainGenerator.getBlockState(primer, index+y)) == Material.air)) {
             y--;
         }
         return y;

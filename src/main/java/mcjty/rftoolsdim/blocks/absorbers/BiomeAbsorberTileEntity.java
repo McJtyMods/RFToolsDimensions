@@ -42,7 +42,7 @@ public class BiomeAbsorberTileEntity extends GenericTileEntity implements ITicka
     protected void checkStateServer() {
         if (absorbing > 0) {
             BiomeGenBase biomeGenBase = worldObj.getBiomeGenForCoords(getPos());
-            if (biomeGenBase == null || !biomeGenBase.biomeName.equals(biomeName)) {
+            if (biomeGenBase == null || !biomeGenBase.getBiomeName().equals(biomeName)) {
                 return;
             }
 
@@ -65,8 +65,8 @@ public class BiomeAbsorberTileEntity extends GenericTileEntity implements ITicka
             if (biomeGenBase == null) {
                 biomeName = null;
                 absorbing = 0;
-            } else if (!biomeGenBase.biomeName.equals(biomeName)) {
-                biomeName = biomeGenBase.biomeName;
+            } else if (!biomeGenBase.getBiomeName().equals(biomeName)) {
+                biomeName = biomeGenBase.getBiomeName();
                 absorbing = DimletConstructionConfiguration.maxBiomeAbsorbtion;
             }
             markDirty();

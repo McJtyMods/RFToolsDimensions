@@ -14,12 +14,11 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import java.util.*;
@@ -33,9 +32,11 @@ public class DimensionTickEvent {
 
     private static Random random = new Random();
 
-    @SubscribeEvent
-    public void onServerTick(TickEvent.ServerTickEvent evt) {
+    public void onWorldTick(TickEvent.WorldTickEvent evt) {
         if (evt.phase == TickEvent.Phase.START) {
+            return;
+        }
+        if (evt.world.provider.getDimension() != 0) {
             return;
         }
         counter--;
@@ -48,12 +49,11 @@ public class DimensionTickEvent {
                 counterEffects = EFFECTS_MAX;
                 doEffects = true;
             }
-            serverTick(doEffects);
+            serverTick(evt.world, doEffects);
         }
     }
 
-    private void serverTick(boolean doEffects) {
-        World entityWorld = MinecraftServer.getServer().getEntityWorld();
+    private void serverTick(World entityWorld, boolean doEffects) {
         RfToolsDimensionManager dimensionManager = RfToolsDimensionManager.getDimensionManager(entityWorld);
 
         if (!dimensionManager.getDimensions().isEmpty()) {
@@ -140,7 +140,8 @@ public class DimensionTickEvent {
     private void playHowl(WorldServer world) {
         for (Object playerEntity : world.playerEntities) {
             EntityPlayer player = (EntityPlayer) playerEntity;
-            world.playSoundEffect(player.posX, player.posY, player.posZ, RFToolsDim.MODID+":wolfhowl", 1.0f, 1.0f);
+            //@todo
+//            world.playSound(player.posX, player.posY, player.posZ, RFToolsDim.MODID+":wolfhowl", 1.0f, 1.0f);
         }
     }
 
@@ -209,124 +210,176 @@ public class DimensionTickEvent {
         return explosion;
     }
 
-    static final Map<EffectType,Integer> effectsMap = new HashMap<>();
+    public static Potion harm;
+    public static Potion hunger;
+    public static Potion digSlowdown;
+    public static Potion digSpeed;
+    public static Potion moveSlowdown;
+    public static Potion moveSpeed;
+    public static Potion weakness;
+    public static Potion poison;
+    public static Potion wither;
+    public static Potion regeneration;
+    public static Potion damageBoost;
+    public static Potion heal;
+    public static Potion jump;
+    public static Potion confusion;
+    public static Potion resistance;
+    public static Potion fireResistance;
+    public static Potion waterBreathing;
+    public static Potion invisibility;
+    public static Potion blindness;
+    public static Potion nightVision;
+    public static Potion healthBoost;
+    public static Potion absorption;
+    public static Potion saturation;
+
+    static final Map<EffectType,Potion> effectsMap = new HashMap<>();
     static final Map<EffectType,Integer> effectAmplifierMap = new HashMap<>();
 
-    static {
-        effectsMap.put(EffectType.EFFECT_POISON, Potion.poison.getId());
-        effectsMap.put(EffectType.EFFECT_POISON2, Potion.poison.getId());
-        effectAmplifierMap.put(EffectType.EFFECT_POISON2, 1);
-        effectsMap.put(EffectType.EFFECT_POISON3, Potion.poison.getId());
-        effectAmplifierMap.put(EffectType.EFFECT_POISON3, 2);
+    private static void getPotions() {
+        if (harm == null) {
+            harm = Potion.potionRegistry.getObject(new ResourceLocation("instant_damage"));
+            hunger = Potion.potionRegistry.getObject(new ResourceLocation("hunger"));
+            digSpeed = Potion.potionRegistry.getObject(new ResourceLocation("haste"));
+            digSlowdown = Potion.potionRegistry.getObject(new ResourceLocation("mining_fatigue"));
+            moveSlowdown = Potion.potionRegistry.getObject(new ResourceLocation("slowness"));
+            moveSpeed = Potion.potionRegistry.getObject(new ResourceLocation("speed"));
+            weakness = Potion.potionRegistry.getObject(new ResourceLocation("weakness"));
+            poison = Potion.potionRegistry.getObject(new ResourceLocation("poison"));
+            wither = Potion.potionRegistry.getObject(new ResourceLocation("wither"));
+            regeneration = Potion.potionRegistry.getObject(new ResourceLocation("regeneration"));
+            damageBoost = Potion.potionRegistry.getObject(new ResourceLocation("strength"));
+            heal = Potion.potionRegistry.getObject(new ResourceLocation("instant_health"));
+            jump = Potion.potionRegistry.getObject(new ResourceLocation("jump_boost"));
+            confusion = Potion.potionRegistry.getObject(new ResourceLocation("nausea"));
+            resistance = Potion.potionRegistry.getObject(new ResourceLocation("resistance"));
+            fireResistance = Potion.potionRegistry.getObject(new ResourceLocation("fire_resistance"));
+            waterBreathing = Potion.potionRegistry.getObject(new ResourceLocation("water_breathing"));
+            invisibility = Potion.potionRegistry.getObject(new ResourceLocation("invisibility"));
+            blindness = Potion.potionRegistry.getObject(new ResourceLocation("blindness"));
+            nightVision = Potion.potionRegistry.getObject(new ResourceLocation("night_vision"));
+            healthBoost = Potion.potionRegistry.getObject(new ResourceLocation("health_boost"));
+            absorption = Potion.potionRegistry.getObject(new ResourceLocation("absorption"));
+            saturation = Potion.potionRegistry.getObject(new ResourceLocation("saturation"));
 
-        effectsMap.put(EffectType.EFFECT_REGENERATION, Potion.regeneration.getId());
-        effectsMap.put(EffectType.EFFECT_REGENERATION2, Potion.regeneration.getId());
-        effectAmplifierMap.put(EffectType.EFFECT_REGENERATION2, 1);
-        effectsMap.put(EffectType.EFFECT_REGENERATION3, Potion.regeneration.getId());
-        effectAmplifierMap.put(EffectType.EFFECT_REGENERATION3, 2);
+            effectsMap.put(EffectType.EFFECT_POISON, poison);
+            effectsMap.put(EffectType.EFFECT_POISON2, poison);
+            effectAmplifierMap.put(EffectType.EFFECT_POISON2, 1);
+            effectsMap.put(EffectType.EFFECT_POISON3, poison);
+            effectAmplifierMap.put(EffectType.EFFECT_POISON3, 2);
 
-        effectsMap.put(EffectType.EFFECT_MOVESLOWDOWN, Potion.moveSlowdown.getId());
-        effectsMap.put(EffectType.EFFECT_MOVESLOWDOWN2, Potion.moveSlowdown.getId());
-        effectAmplifierMap.put(EffectType.EFFECT_MOVESLOWDOWN2, 1);
-        effectsMap.put(EffectType.EFFECT_MOVESLOWDOWN3, Potion.moveSlowdown.getId());
-        effectAmplifierMap.put(EffectType.EFFECT_MOVESLOWDOWN3, 2);
-        effectsMap.put(EffectType.EFFECT_MOVESLOWDOWN4, Potion.moveSlowdown.getId());
-        effectAmplifierMap.put(EffectType.EFFECT_MOVESLOWDOWN4, 3);
+            effectsMap.put(EffectType.EFFECT_REGENERATION, regeneration);
+            effectsMap.put(EffectType.EFFECT_REGENERATION2, regeneration);
+            effectAmplifierMap.put(EffectType.EFFECT_REGENERATION2, 1);
+            effectsMap.put(EffectType.EFFECT_REGENERATION3, regeneration);
+            effectAmplifierMap.put(EffectType.EFFECT_REGENERATION3, 2);
 
-        effectsMap.put(EffectType.EFFECT_MOVESPEED, Potion.moveSpeed.getId());
-        effectsMap.put(EffectType.EFFECT_MOVESPEED2, Potion.moveSpeed.getId());
-        effectAmplifierMap.put(EffectType.EFFECT_MOVESPEED2, 1);
-        effectsMap.put(EffectType.EFFECT_MOVESPEED3, Potion.moveSpeed.getId());
-        effectAmplifierMap.put(EffectType.EFFECT_MOVESPEED3, 2);
+            effectsMap.put(EffectType.EFFECT_MOVESLOWDOWN, moveSlowdown);
+            effectsMap.put(EffectType.EFFECT_MOVESLOWDOWN2, moveSlowdown);
+            effectAmplifierMap.put(EffectType.EFFECT_MOVESLOWDOWN2, 1);
+            effectsMap.put(EffectType.EFFECT_MOVESLOWDOWN3, moveSlowdown);
+            effectAmplifierMap.put(EffectType.EFFECT_MOVESLOWDOWN3, 2);
+            effectsMap.put(EffectType.EFFECT_MOVESLOWDOWN4, moveSlowdown);
+            effectAmplifierMap.put(EffectType.EFFECT_MOVESLOWDOWN4, 3);
 
-        effectsMap.put(EffectType.EFFECT_DIGSLOWDOWN, Potion.digSlowdown.getId());
-        effectsMap.put(EffectType.EFFECT_DIGSLOWDOWN2, Potion.digSlowdown.getId());
-        effectAmplifierMap.put(EffectType.EFFECT_DIGSLOWDOWN2, 1);
-        effectsMap.put(EffectType.EFFECT_DIGSLOWDOWN3, Potion.digSlowdown.getId());
-        effectAmplifierMap.put(EffectType.EFFECT_DIGSLOWDOWN3, 2);
-        effectsMap.put(EffectType.EFFECT_DIGSLOWDOWN4, Potion.digSlowdown.getId());
-        effectAmplifierMap.put(EffectType.EFFECT_DIGSLOWDOWN4, 3);
+            effectsMap.put(EffectType.EFFECT_MOVESPEED, moveSpeed);
+            effectsMap.put(EffectType.EFFECT_MOVESPEED2, moveSpeed);
+            effectAmplifierMap.put(EffectType.EFFECT_MOVESPEED2, 1);
+            effectsMap.put(EffectType.EFFECT_MOVESPEED3, moveSpeed);
+            effectAmplifierMap.put(EffectType.EFFECT_MOVESPEED3, 2);
 
-        effectsMap.put(EffectType.EFFECT_DIGSPEED, Potion.digSpeed.getId());
-        effectsMap.put(EffectType.EFFECT_DIGSPEED2, Potion.digSpeed.getId());
-        effectAmplifierMap.put(EffectType.EFFECT_DIGSPEED2, 1);
-        effectsMap.put(EffectType.EFFECT_DIGSPEED3, Potion.digSpeed.getId());
-        effectAmplifierMap.put(EffectType.EFFECT_DIGSPEED3, 2);
+            effectsMap.put(EffectType.EFFECT_DIGSLOWDOWN, digSlowdown);
+            effectsMap.put(EffectType.EFFECT_DIGSLOWDOWN2, digSlowdown);
+            effectAmplifierMap.put(EffectType.EFFECT_DIGSLOWDOWN2, 1);
+            effectsMap.put(EffectType.EFFECT_DIGSLOWDOWN3, digSlowdown);
+            effectAmplifierMap.put(EffectType.EFFECT_DIGSLOWDOWN3, 2);
+            effectsMap.put(EffectType.EFFECT_DIGSLOWDOWN4, digSlowdown);
+            effectAmplifierMap.put(EffectType.EFFECT_DIGSLOWDOWN4, 3);
 
-        effectsMap.put(EffectType.EFFECT_DAMAGEBOOST, Potion.damageBoost.getId());
-        effectsMap.put(EffectType.EFFECT_DAMAGEBOOST2, Potion.damageBoost.getId());
-        effectAmplifierMap.put(EffectType.EFFECT_DAMAGEBOOST2, 1);
-        effectsMap.put(EffectType.EFFECT_DAMAGEBOOST3, Potion.damageBoost.getId());
-        effectAmplifierMap.put(EffectType.EFFECT_DAMAGEBOOST3, 2);
+            effectsMap.put(EffectType.EFFECT_DIGSPEED, digSpeed);
+            effectsMap.put(EffectType.EFFECT_DIGSPEED2, digSpeed);
+            effectAmplifierMap.put(EffectType.EFFECT_DIGSPEED2, 1);
+            effectsMap.put(EffectType.EFFECT_DIGSPEED3, digSpeed);
+            effectAmplifierMap.put(EffectType.EFFECT_DIGSPEED3, 2);
 
-        effectsMap.put(EffectType.EFFECT_INSTANTHEALTH, Potion.heal.getId());
-        effectsMap.put(EffectType.EFFECT_HARM, Potion.harm.getId());
+            effectsMap.put(EffectType.EFFECT_DAMAGEBOOST, damageBoost);
+            effectsMap.put(EffectType.EFFECT_DAMAGEBOOST2, damageBoost);
+            effectAmplifierMap.put(EffectType.EFFECT_DAMAGEBOOST2, 1);
+            effectsMap.put(EffectType.EFFECT_DAMAGEBOOST3, damageBoost);
+            effectAmplifierMap.put(EffectType.EFFECT_DAMAGEBOOST3, 2);
 
-        effectsMap.put(EffectType.EFFECT_JUMP, Potion.jump.getId());
-        effectsMap.put(EffectType.EFFECT_JUMP2, Potion.jump.getId());
-        effectAmplifierMap.put(EffectType.EFFECT_JUMP2, 1);
-        effectsMap.put(EffectType.EFFECT_JUMP3, Potion.jump.getId());
-        effectAmplifierMap.put(EffectType.EFFECT_JUMP3, 2);
+            effectsMap.put(EffectType.EFFECT_INSTANTHEALTH, heal);
+            effectsMap.put(EffectType.EFFECT_HARM, harm);
 
-        effectsMap.put(EffectType.EFFECT_CONFUSION, Potion.confusion.getId());
+            effectsMap.put(EffectType.EFFECT_JUMP, jump);
+            effectsMap.put(EffectType.EFFECT_JUMP2, jump);
+            effectAmplifierMap.put(EffectType.EFFECT_JUMP2, 1);
+            effectsMap.put(EffectType.EFFECT_JUMP3, jump);
+            effectAmplifierMap.put(EffectType.EFFECT_JUMP3, 2);
 
-        effectsMap.put(EffectType.EFFECT_RESISTANCE, Potion.resistance.getId());
-        effectsMap.put(EffectType.EFFECT_RESISTANCE2, Potion.resistance.getId());
-        effectAmplifierMap.put(EffectType.EFFECT_RESISTANCE2, 1);
-        effectsMap.put(EffectType.EFFECT_RESISTANCE3, Potion.resistance.getId());
-        effectAmplifierMap.put(EffectType.EFFECT_RESISTANCE3, 2);
+            effectsMap.put(EffectType.EFFECT_CONFUSION, confusion);
 
-        effectsMap.put(EffectType.EFFECT_FIRERESISTANCE, Potion.fireResistance.getId());
-        effectsMap.put(EffectType.EFFECT_WATERBREATHING, Potion.waterBreathing.getId());
-        effectsMap.put(EffectType.EFFECT_INVISIBILITY, Potion.invisibility.getId());
-        effectsMap.put(EffectType.EFFECT_BLINDNESS, Potion.blindness.getId());
-        effectsMap.put(EffectType.EFFECT_NIGHTVISION, Potion.nightVision.getId());
+            effectsMap.put(EffectType.EFFECT_RESISTANCE, resistance);
+            effectsMap.put(EffectType.EFFECT_RESISTANCE2, resistance);
+            effectAmplifierMap.put(EffectType.EFFECT_RESISTANCE2, 1);
+            effectsMap.put(EffectType.EFFECT_RESISTANCE3, resistance);
+            effectAmplifierMap.put(EffectType.EFFECT_RESISTANCE3, 2);
 
-        effectsMap.put(EffectType.EFFECT_HUNGER, Potion.hunger.getId());
-        effectsMap.put(EffectType.EFFECT_HUNGER2, Potion.hunger.getId());
-        effectAmplifierMap.put(EffectType.EFFECT_HUNGER2, 1);
-        effectsMap.put(EffectType.EFFECT_HUNGER3, Potion.hunger.getId());
-        effectAmplifierMap.put(EffectType.EFFECT_HUNGER3, 2);
+            effectsMap.put(EffectType.EFFECT_FIRERESISTANCE, fireResistance);
+            effectsMap.put(EffectType.EFFECT_WATERBREATHING, waterBreathing);
+            effectsMap.put(EffectType.EFFECT_INVISIBILITY, invisibility);
+            effectsMap.put(EffectType.EFFECT_BLINDNESS, blindness);
+            effectsMap.put(EffectType.EFFECT_NIGHTVISION, nightVision);
 
-        effectsMap.put(EffectType.EFFECT_WEAKNESS, Potion.weakness.getId());
-        effectsMap.put(EffectType.EFFECT_WEAKNESS2, Potion.weakness.getId());
-        effectAmplifierMap.put(EffectType.EFFECT_WEAKNESS2, 1);
-        effectsMap.put(EffectType.EFFECT_WEAKNESS3, Potion.weakness.getId());
-        effectAmplifierMap.put(EffectType.EFFECT_WEAKNESS3, 2);
+            effectsMap.put(EffectType.EFFECT_HUNGER, hunger);
+            effectsMap.put(EffectType.EFFECT_HUNGER2, hunger);
+            effectAmplifierMap.put(EffectType.EFFECT_HUNGER2, 1);
+            effectsMap.put(EffectType.EFFECT_HUNGER3, hunger);
+            effectAmplifierMap.put(EffectType.EFFECT_HUNGER3, 2);
 
-        effectsMap.put(EffectType.EFFECT_WITHER, Potion.wither.getId());
-        effectsMap.put(EffectType.EFFECT_WITHER2, Potion.wither.getId());
-        effectAmplifierMap.put(EffectType.EFFECT_WITHER2, 1);
-        effectsMap.put(EffectType.EFFECT_WITHER3, Potion.wither.getId());
-        effectAmplifierMap.put(EffectType.EFFECT_WITHER3, 2);
+            effectsMap.put(EffectType.EFFECT_WEAKNESS, weakness);
+            effectsMap.put(EffectType.EFFECT_WEAKNESS2, weakness);
+            effectAmplifierMap.put(EffectType.EFFECT_WEAKNESS2, 1);
+            effectsMap.put(EffectType.EFFECT_WEAKNESS3, weakness);
+            effectAmplifierMap.put(EffectType.EFFECT_WEAKNESS3, 2);
 
-        effectsMap.put(EffectType.EFFECT_HEALTHBOOST, Potion.healthBoost.getId());
-        effectsMap.put(EffectType.EFFECT_HEALTHBOOST2, Potion.healthBoost.getId());
-        effectAmplifierMap.put(EffectType.EFFECT_HEALTHBOOST2, 1);
-        effectsMap.put(EffectType.EFFECT_HEALTHBOOST3, Potion.healthBoost.getId());
-        effectAmplifierMap.put(EffectType.EFFECT_HEALTHBOOST3, 2);
+            effectsMap.put(EffectType.EFFECT_WITHER, wither);
+            effectsMap.put(EffectType.EFFECT_WITHER2, wither);
+            effectAmplifierMap.put(EffectType.EFFECT_WITHER2, 1);
+            effectsMap.put(EffectType.EFFECT_WITHER3, wither);
+            effectAmplifierMap.put(EffectType.EFFECT_WITHER3, 2);
 
-        effectsMap.put(EffectType.EFFECT_ABSORPTION, Potion.absorption.getId());
-        effectsMap.put(EffectType.EFFECT_ABSORPTION2, Potion.absorption.getId());
-        effectAmplifierMap.put(EffectType.EFFECT_ABSORPTION2, 1);
-        effectsMap.put(EffectType.EFFECT_ABSORPTION3, Potion.absorption.getId());
-        effectAmplifierMap.put(EffectType.EFFECT_ABSORPTION3, 2);
+            effectsMap.put(EffectType.EFFECT_HEALTHBOOST, healthBoost);
+            effectsMap.put(EffectType.EFFECT_HEALTHBOOST2, healthBoost);
+            effectAmplifierMap.put(EffectType.EFFECT_HEALTHBOOST2, 1);
+            effectsMap.put(EffectType.EFFECT_HEALTHBOOST3, healthBoost);
+            effectAmplifierMap.put(EffectType.EFFECT_HEALTHBOOST3, 2);
 
-        effectsMap.put(EffectType.EFFECT_SATURATION, Potion.saturation.getId());
-        effectsMap.put(EffectType.EFFECT_SATURATION2, Potion.saturation.getId());
-        effectAmplifierMap.put(EffectType.EFFECT_SATURATION2, 1);
-        effectsMap.put(EffectType.EFFECT_SATURATION3, Potion.saturation.getId());
-        effectAmplifierMap.put(EffectType.EFFECT_SATURATION3, 2);
+            effectsMap.put(EffectType.EFFECT_ABSORPTION, absorption);
+            effectsMap.put(EffectType.EFFECT_ABSORPTION2, absorption);
+            effectAmplifierMap.put(EffectType.EFFECT_ABSORPTION2, 1);
+            effectsMap.put(EffectType.EFFECT_ABSORPTION3, absorption);
+            effectAmplifierMap.put(EffectType.EFFECT_ABSORPTION3, 2);
+
+            effectsMap.put(EffectType.EFFECT_SATURATION, saturation);
+            effectsMap.put(EffectType.EFFECT_SATURATION2, saturation);
+            effectAmplifierMap.put(EffectType.EFFECT_SATURATION2, 1);
+            effectsMap.put(EffectType.EFFECT_SATURATION3, saturation);
+            effectAmplifierMap.put(EffectType.EFFECT_SATURATION3, 2);
+        }
     }
 
+
     private void handleEffectsForDimension(int power, int id, DimensionInformation information) {
+        getPotions();
         WorldServer world = DimensionManager.getWorld(id);
         if (world != null) {
             Set<EffectType> effects = information.getEffectTypes();
             List<EntityPlayer> players = new ArrayList<EntityPlayer>(world.playerEntities);
             for (EntityPlayer player : players) {
                 for (EffectType effect : effects) {
-                    Integer potionEffect = effectsMap.get(effect);
+                    Potion potionEffect = effectsMap.get(effect);
                     if (potionEffect != null) {
                         Integer amplifier = effectAmplifierMap.get(effect);
                         if (amplifier == null) {
@@ -340,17 +393,17 @@ public class DimensionTickEvent {
                 }
                 if (power < PowerConfiguration.DIMPOWER_WARN3) {
                     // We are VERY low on power. Start bad effects.
-                    player.addPotionEffect(new PotionEffect(Potion.moveSlowdown.getId(), EFFECTS_MAX*MAXTICKS, 4, true, true));
-                    player.addPotionEffect(new PotionEffect(Potion.digSlowdown.getId(), EFFECTS_MAX*MAXTICKS, 4, true, true));
-                    player.addPotionEffect(new PotionEffect(Potion.poison.getId(), EFFECTS_MAX*MAXTICKS, 2, true, true));
-                    player.addPotionEffect(new PotionEffect(Potion.hunger.getId(), EFFECTS_MAX*MAXTICKS, 2, true, true));
+                    player.addPotionEffect(new PotionEffect(moveSlowdown, EFFECTS_MAX*MAXTICKS, 4, true, true));
+                    player.addPotionEffect(new PotionEffect(digSlowdown, EFFECTS_MAX*MAXTICKS, 4, true, true));
+                    player.addPotionEffect(new PotionEffect(poison, EFFECTS_MAX*MAXTICKS, 2, true, true));
+                    player.addPotionEffect(new PotionEffect(hunger, EFFECTS_MAX*MAXTICKS, 2, true, true));
                 } else if (power < PowerConfiguration.DIMPOWER_WARN2) {
-                    player.addPotionEffect(new PotionEffect(Potion.moveSlowdown.getId(), EFFECTS_MAX*MAXTICKS, 2, true, true));
-                    player.addPotionEffect(new PotionEffect(Potion.digSlowdown.getId(), EFFECTS_MAX*MAXTICKS, 2, true, true));
-                    player.addPotionEffect(new PotionEffect(Potion.hunger.getId(), EFFECTS_MAX*MAXTICKS, 1, true, true));
+                    player.addPotionEffect(new PotionEffect(moveSlowdown, EFFECTS_MAX*MAXTICKS, 2, true, true));
+                    player.addPotionEffect(new PotionEffect(digSlowdown, EFFECTS_MAX*MAXTICKS, 2, true, true));
+                    player.addPotionEffect(new PotionEffect(hunger, EFFECTS_MAX*MAXTICKS, 1, true, true));
                 } else if (power < PowerConfiguration.DIMPOWER_WARN1) {
-                    player.addPotionEffect(new PotionEffect(Potion.moveSlowdown.getId(), EFFECTS_MAX*MAXTICKS, 0, true, true));
-                    player.addPotionEffect(new PotionEffect(Potion.digSlowdown.getId(), EFFECTS_MAX*MAXTICKS, 0, true, true));
+                    player.addPotionEffect(new PotionEffect(moveSlowdown, EFFECTS_MAX*MAXTICKS, 0, true, true));
+                    player.addPotionEffect(new PotionEffect(digSlowdown, EFFECTS_MAX*MAXTICKS, 0, true, true));
                 }
             }
 
@@ -358,6 +411,7 @@ public class DimensionTickEvent {
     }
 
     private void handleLowPower(Integer id, int power, boolean doEffects, int phasedCost) {
+        getPotions();
         if (power <= 0) {
             // We ran out of power!
             WorldServer world = DimensionManager.getWorld(id);
@@ -369,9 +423,9 @@ public class DimensionTickEvent {
                             player.attackEntityFrom(new DamageSourcePowerLow("powerLow"), 1000000.0f);
                         } else {
                             if (doEffects && PowerConfiguration.phasedFieldGeneratorDebuf) {
-                                player.addPotionEffect(new PotionEffect(Potion.moveSlowdown.getId(), EFFECTS_MAX * MAXTICKS, 4, true, true));
-                                player.addPotionEffect(new PotionEffect(Potion.digSlowdown.getId(), EFFECTS_MAX * MAXTICKS, 2, true, true));
-                                player.addPotionEffect(new PotionEffect(Potion.hunger.getId(), EFFECTS_MAX * MAXTICKS, 2, true, true));
+                                player.addPotionEffect(new PotionEffect(moveSlowdown, EFFECTS_MAX * MAXTICKS, 4, true, true));
+                                player.addPotionEffect(new PotionEffect(digSlowdown, EFFECTS_MAX * MAXTICKS, 2, true, true));
+                                player.addPotionEffect(new PotionEffect(hunger, EFFECTS_MAX * MAXTICKS, 2, true, true));
                             }
                         }
                     }
@@ -379,7 +433,7 @@ public class DimensionTickEvent {
                     Random random = new Random();
                     for (EntityPlayer player : players) {
                         if (!RfToolsDimensionManager.checkValidPhasedFieldGenerator(player, true, phasedCost)) {
-                            WorldServer worldServerForDimension = MinecraftServer.getServer().worldServerForDimension(GeneralConfiguration.spawnDimension);
+                            WorldServer worldServerForDimension = player.getEntityWorld().getMinecraftServer().worldServerForDimension(GeneralConfiguration.spawnDimension);
                             int x = random.nextInt(2000) - 1000;
                             int z = random.nextInt(2000) - 1000;
                             int y = worldServerForDimension.getTopSolidOrLiquidBlock(new BlockPos(x, 0, z)).getY();
@@ -390,9 +444,9 @@ public class DimensionTickEvent {
                             RFToolsDim.teleportationManager.teleportPlayer(player, GeneralConfiguration.spawnDimension, new BlockPos(x, y, z));
                         } else {
                             if (doEffects) {
-                                player.addPotionEffect(new PotionEffect(Potion.moveSlowdown.getId(), EFFECTS_MAX * MAXTICKS, 4, true, true));
-                                player.addPotionEffect(new PotionEffect(Potion.digSlowdown.getId(), EFFECTS_MAX * MAXTICKS, 4, true, true));
-                                player.addPotionEffect(new PotionEffect(Potion.hunger.getId(), EFFECTS_MAX * MAXTICKS, 2, true, true));
+                                player.addPotionEffect(new PotionEffect(moveSlowdown, EFFECTS_MAX * MAXTICKS, 4, true, true));
+                                player.addPotionEffect(new PotionEffect(digSlowdown, EFFECTS_MAX * MAXTICKS, 4, true, true));
+                                player.addPotionEffect(new PotionEffect(hunger, EFFECTS_MAX * MAXTICKS, 2, true, true));
                             }
                         }
                     }

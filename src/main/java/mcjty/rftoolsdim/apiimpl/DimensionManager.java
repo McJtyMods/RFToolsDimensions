@@ -10,25 +10,22 @@ import net.minecraft.world.World;
 public class DimensionManager implements IDimensionManager {
 
     @Override
-    public int getCurrentRF(int id) {
-        if (!isRFToolsDimension(id)) {
+    public int getCurrentRF(World world, int id) {
+        if (!isRFToolsDimension(world, id)) {
             return -1;
         }
-        World world = MinecraftServer.getServer().getEntityWorld();
         DimensionStorage storage = DimensionStorage.getDimensionStorage(world);
         return storage.getEnergyLevel(id);
     }
 
     @Override
-    public boolean isRFToolsDimension(int id) {
-        World world = MinecraftServer.getServer().getEntityWorld();
+    public boolean isRFToolsDimension(World world, int id) {
         RfToolsDimensionManager dimensionManager = RfToolsDimensionManager.getDimensionManager(world);
         return dimensionManager.getDimensionInformation(id) != null;
     }
 
     @Override
-    public IDimensionInformation getDimensionInformation(int id) {
-        World world = MinecraftServer.getServer().getEntityWorld();
+    public IDimensionInformation getDimensionInformation(World world, int id) {
         RfToolsDimensionManager dimensionManager = RfToolsDimensionManager.getDimensionManager(world);
         return dimensionManager.getDimensionInformation(id);
     }

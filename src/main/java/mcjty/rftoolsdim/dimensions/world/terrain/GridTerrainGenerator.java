@@ -30,13 +30,13 @@ public class GridTerrainGenerator extends NormalTerrainGenerator {
                 // Clear the bedrock
                 for (int y = 0 ; y < 10 ; y++) {
                     // @todo optimize references to air/defaultstate
-                    primer.setBlockState(index+y, Blocks.air.getDefaultState());
+                    BaseTerrainGenerator.setBlockState(primer, index+y, Blocks.air.getDefaultState());
                 }
 
                 boolean filled = (x == borderx) && (z == borderz);
                 if (filled) {
                     for (int y = 0 ; y < 128 ; y++) {
-                        primer.setBlockState(index++, baseBlock);
+                        BaseTerrainGenerator.setBlockState(primer, index++, baseBlock);
                         // @todo support for 127
 //                        if (baseMeta == 127) {
 //                            realMeta = (byte)(y & 0xf);
@@ -45,12 +45,12 @@ public class GridTerrainGenerator extends NormalTerrainGenerator {
                 } else if (x == borderx || z == borderz) {
                     for (int y = 0 ; y < 128 ; y+=32) {
                         if (y > 0) {
-                            primer.setBlockState(index-1, baseBlock);
+                            BaseTerrainGenerator.setBlockState(primer, index-1, baseBlock);
                             // @todo support for 127
 //                            if (baseMeta == 127) {
 //                                realMeta = (byte)((y/2 + x/2 + z/2) & 0xf);
                         }
-                        primer.setBlockState(index, baseBlock);
+                        BaseTerrainGenerator.setBlockState(primer, index, baseBlock);
                         // @todo support for 127
 //                        if (baseMeta == 127) {
 //                            realMeta = (byte)((y/2 + x/2 + z/2) & 0xf);

@@ -3,6 +3,7 @@ package mcjty.rftoolsdim.blocks.workbench;
 import mcjty.lib.container.*;
 import mcjty.rftoolsdim.items.ModItems;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.ClickType;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 
@@ -46,7 +47,7 @@ public class DimletWorkbenchContainer extends GenericContainer {
     }
 
     @Override
-    public ItemStack slotClick(int index, int button, int mode, EntityPlayer player) {
+    public ItemStack slotClick(int index, int button, ClickType mode, EntityPlayer player) {
 //        if (index == SLOT_OUTPUT) {
 //            if (getSlot(index).getHasStack()) {
 //                Achievements.trigger(player, Achievements.dimletMaster);

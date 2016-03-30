@@ -2,8 +2,8 @@ package mcjty.rftoolsdim.network;
 
 import io.netty.buffer.ByteBuf;
 import mcjty.rftoolsdim.dimensions.DimensionStorage;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
@@ -31,7 +31,7 @@ public class PacketGetDimensionEnergy implements IMessage {
     public static class Handler implements IMessageHandler<PacketGetDimensionEnergy, PacketReturnEnergy> {
         @Override
         public PacketReturnEnergy onMessage(PacketGetDimensionEnergy message, MessageContext ctx) {
-            MinecraftServer.getServer().addScheduledTask(() -> handle(message, ctx));
+            FMLCommonHandler.instance().getWorldThread(ctx.netHandler).addScheduledTask(() -> handle(message, ctx));
             return null;
         }
 

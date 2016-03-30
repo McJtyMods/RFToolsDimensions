@@ -79,7 +79,7 @@ public class MapGenRuinedCities {
         int lowestNonair = 256;
         for (int y = 255 ; y >= 0 ; y--) {
             Block block = ablock[index+y];
-            if (!(block == null || block.getMaterial() == Material.air || block == Blocks.bedrock)) {
+            if (!(block == null || block.getMaterial(block.getDefaultState()) == Material.air || block == Blocks.bedrock)) {
                 if (bestSpan == null || bestSpan.isLarger(y + 1, lowestNonair - 1)) {
                     bestSpan = new Span(y+1, lowestNonair-1);
                 }

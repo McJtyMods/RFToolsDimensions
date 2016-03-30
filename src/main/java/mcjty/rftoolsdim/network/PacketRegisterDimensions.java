@@ -45,8 +45,9 @@ public class PacketRegisterDimensions implements IMessage {
                 Logging.log("Client side, already registered dimension: " + message.getId());
             } else {
                 Logging.log("Client side, register dimension: " + message.getId());
-                DimensionManager.registerProviderType(message.getId(), GenericWorldProvider.class, false);
-                DimensionManager.registerDimension(message.getId(), message.getId());
+//                DimensionManager.registerProviderType(message.getId(), GenericWorldProvider.class, false);
+//                DimensionManager.registerDimension(message.getId(), message.getId());
+                //@todo
             }
         }
 

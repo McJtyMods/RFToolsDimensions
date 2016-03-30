@@ -1,7 +1,7 @@
 package mcjty.rftoolsdim.dimensions.world.mapgen;
 
-import mcjty.lib.varia.BlockMeta;
 import mcjty.rftoolsdim.dimensions.world.GenericChunkProvider;
+import mcjty.rftoolsdim.dimensions.world.terrain.BaseTerrainGenerator;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -69,9 +69,9 @@ public class MapGenLiquidOrbs {
                     double dydy = (y-centery) * (y-centery);
                     double sqdist = dxdx + dydy + dzdz;
                     if (sqdist < liquidradius) {
-                        primer.setBlockState(index + y, fluid.getDefaultState());
+                        BaseTerrainGenerator.setBlockState(primer, index + y, fluid.getDefaultState());
                     } else if (sqdist <= sqradius) {
-                        primer.setBlockState(index + y, block);
+                        BaseTerrainGenerator.setBlockState(primer, index + y, block);
                     }
                 }
             }

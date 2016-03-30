@@ -33,8 +33,9 @@ public class DimensionSyncPacket {
         for (int id : dimensions) {
             Logging.log("DimensionSyncPacket: Registering id: id = " + id);
             if (!DimensionManager.isDimensionRegistered(id)) {
-                DimensionManager.registerProviderType(id, GenericWorldProvider.class, false);
-                DimensionManager.registerDimension(id, id);
+//                DimensionManager.registerProviderType(id, GenericWorldProvider.class, false);
+//                DimensionManager.registerDimension(id, id);
+                //@todo
             }
         }
     }

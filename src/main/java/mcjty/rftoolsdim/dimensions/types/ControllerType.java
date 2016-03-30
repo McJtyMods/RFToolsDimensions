@@ -46,7 +46,7 @@ public enum ControllerType {
     CONTROLLER_DRY("Dry", 0, new BiomeFilter() {
         @Override
         public boolean match(BiomeGenBase biome) {
-            return biome.rainfall < 0.1;
+            return biome.getRainfall() < 0.1;
         }
 
         @Override
@@ -68,8 +68,8 @@ public enum ControllerType {
     CONTROLLER_FIELDS("Fields", 0, new BiomeFilter() {
         @Override
         public boolean match(BiomeGenBase biome) {
-            float rootHeight = biome.minHeight;
-            float heightVariation = biome.maxHeight;
+            float rootHeight = biome.getBaseHeight();
+            float heightVariation = biome.getHeightVariation();
             return heightVariation < 0.11 && rootHeight < 0.25f;
         }
 
@@ -81,7 +81,7 @@ public enum ControllerType {
     CONTROLLER_MOUNTAINS("Mountains", 0, new BiomeFilter() {
         @Override
         public boolean match(BiomeGenBase biome) {
-            float heightVariation = biome.maxHeight;
+            float heightVariation = biome.getHeightVariation();
             return heightVariation > 0.45f;
         }
 
@@ -165,17 +165,17 @@ public enum ControllerType {
         public abstract double calculateBiomeDistance(BiomeGenBase a, BiomeGenBase b);
 
         public double calculateBiomeDistance(BiomeGenBase a, BiomeGenBase b, boolean ignoreRain, boolean ignoreTemperature, boolean ignoreHeight) {
-            float dr = a.rainfall - b.rainfall;
+            float dr = a.getRainfall() - b.getRainfall();
             if (ignoreRain) {
                 dr = 0.0f;
             }
-            float dt = a.temperature - b.temperature;
+            float dt = a.getTemperature() - b.getTemperature();
             if (ignoreTemperature) {
                 dt = 0.0f;
             }
 
-            float dv = a.maxHeight - b.maxHeight;
-            float dh = a.minHeight - b.minHeight;
+            float dv = a.getHeightVariation() - b.getHeightVariation();
+            float dh = a.getBaseHeight() - b.getBaseHeight();
             if (ignoreHeight) {
                 dv = 0.0f;
                 dh = 0.0f;

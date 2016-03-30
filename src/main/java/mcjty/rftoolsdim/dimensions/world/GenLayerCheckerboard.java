@@ -24,9 +24,9 @@ public class GenLayerCheckerboard extends GenLayer {
         int[] aint = IntCache.getIntCache(width * length);
         for (int i = 0; i < width * length; ++i) {
             if (b) {
-                aint[i] = biomes.get(0).biomeID;
+                aint[i] = BiomeGenBase.getIdForBiome(biomes.get(0));
             } else {
-                aint[i] = biomes.get(1).biomeID;
+                aint[i] = BiomeGenBase.getIdForBiome(biomes.get(1));
             }
         }
         return aint;

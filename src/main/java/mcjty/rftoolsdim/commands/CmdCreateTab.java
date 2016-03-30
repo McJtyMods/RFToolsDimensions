@@ -7,8 +7,8 @@ import mcjty.rftoolsdim.dimensions.description.DimensionDescriptor;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.TextComponentString;
-import net.minecraft.util.TextFormatting;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
 public class CmdCreateTab extends AbstractRfToolsCommand {

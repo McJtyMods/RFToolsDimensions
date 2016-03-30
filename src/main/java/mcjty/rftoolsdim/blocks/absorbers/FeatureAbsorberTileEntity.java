@@ -46,7 +46,7 @@ public class FeatureAbsorberTileEntity extends GenericTileEntity implements ITic
 
     protected void checkStateServer() {
         if (absorbing > 0) {
-            int dim = worldObj.provider.getDimensionId();
+            int dim = worldObj.provider.getDimension();
             DimensionInformation information = RfToolsDimensionManager.getDimensionManager(worldObj).getDimensionInformation(dim);
             if (information == null || !information.hasFeatureType(FeatureType.getFeatureById(featureName))) {
                 return;
@@ -80,7 +80,7 @@ public class FeatureAbsorberTileEntity extends GenericTileEntity implements ITic
 
     public void placeDown() {
         if (featureName == null) {
-            int dim = worldObj.provider.getDimensionId();
+            int dim = worldObj.provider.getDimension();
             String feature = getRandomFeature(dim);
             if (feature == null) {
                 featureName = null;

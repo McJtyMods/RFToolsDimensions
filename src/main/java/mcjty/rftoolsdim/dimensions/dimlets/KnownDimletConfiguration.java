@@ -4,7 +4,10 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import mcjty.lib.varia.Logging;
 import mcjty.rftoolsdim.RFToolsDim;
-import mcjty.rftoolsdim.config.*;
+import mcjty.rftoolsdim.config.DimletRules;
+import mcjty.rftoolsdim.config.Filter;
+import mcjty.rftoolsdim.config.GeneralConfiguration;
+import mcjty.rftoolsdim.config.Settings;
 import mcjty.rftoolsdim.dimensions.dimlets.types.DimletType;
 import mcjty.rftoolsdim.dimensions.types.*;
 import mcjty.rftoolsdim.dimensions.world.BiomeControllerMapping;
@@ -15,6 +18,7 @@ import net.minecraft.block.BlockFalling;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
@@ -22,7 +26,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.fluids.Fluid;
@@ -133,9 +136,9 @@ public class KnownDimletConfiguration {
             List<IProperty> propertyNames = new ArrayList<>(state.getPropertyNames());
             propertyNames.sort((o1, o2) -> o1.getName().compareTo(o2.getName()));
 
-            ImmutableMap<IProperty, Comparable> properties = state.getProperties();
+            ImmutableMap<IProperty<?>, Comparable<?>> properties = state.getProperties();
             Map<String, String> props = new HashMap<>();
-            for (Map.Entry<IProperty, Comparable> entry : properties.entrySet()) {
+            for (Map.Entry<IProperty<?>, Comparable<?>> entry : properties.entrySet()) {
                 props.put(entry.getKey().getName(), entry.getValue().toString());
             }
             DimletKey key = new DimletKey(DimletType.DIMLET_MATERIAL, block.getRegistryName() + "@" + meta);
@@ -166,7 +169,7 @@ public class KnownDimletConfiguration {
         if (block instanceof IPlantable) {
             features.add(Filter.Feature.PLANTABLE);
         }
-        if (!block.isFullBlock()) {
+        if (!block.isFullBlock(block.getDefaultState())) {
             features.add(Filter.Feature.NOFULLBLOCK);
         }
         return features;
@@ -186,7 +189,7 @@ public class KnownDimletConfiguration {
             if (name == null) {
                 name = "generic";
             }
-            String readableName = StatCollector.translateToLocal("entity." + name + ".name");
+            String readableName = I18n.format("entity." + name + ".name");
             Logging.log(key + " (" + name + ", " + readableName + "): " + settings.toString());
         }
     }
@@ -303,7 +306,7 @@ public class KnownDimletConfiguration {
                 if (entityClass == null) {
                     return "<Unknown>";
                 }
-                return StatCollector.translateToLocal("entity." + key.getId() + ".name");
+                return I18n.format("entity." + key.getId() + ".name");
             case DIMLET_SKY:
                 return "sky"; //@todo
             case DIMLET_STRUCTURE:
@@ -331,24 +334,25 @@ public class KnownDimletConfiguration {
     }
 
     public static void setupChestLoot() {
-        setupChestLoot(ChestGenHooks.DUNGEON_CHEST);
-        setupChestLoot(ChestGenHooks.MINESHAFT_CORRIDOR);
-        setupChestLoot(ChestGenHooks.PYRAMID_DESERT_CHEST);
-        setupChestLoot(ChestGenHooks.PYRAMID_JUNGLE_CHEST);
-        setupChestLoot(ChestGenHooks.STRONGHOLD_CORRIDOR);
-        setupChestLoot(ChestGenHooks.STRONGHOLD_CROSSING);
-        setupChestLoot(ChestGenHooks.STRONGHOLD_LIBRARY);
-        setupChestLoot(ChestGenHooks.VILLAGE_BLACKSMITH);
-        setupChestLoot(ChestGenHooks.NETHER_FORTRESS);
+        //@todo
+//        setupChestLoot(ChestGenHooks.DUNGEON_CHEST);
+//        setupChestLoot(ChestGenHooks.MINESHAFT_CORRIDOR);
+//        setupChestLoot(ChestGenHooks.PYRAMID_DESERT_CHEST);
+//        setupChestLoot(ChestGenHooks.PYRAMID_JUNGLE_CHEST);
+//        setupChestLoot(ChestGenHooks.STRONGHOLD_CORRIDOR);
+//        setupChestLoot(ChestGenHooks.STRONGHOLD_CROSSING);
+//        setupChestLoot(ChestGenHooks.STRONGHOLD_LIBRARY);
+//        setupChestLoot(ChestGenHooks.VILLAGE_BLACKSMITH);
+//        setupChestLoot(ChestGenHooks.NETHER_FORTRESS);
     }
 
-    private static void setupChestLoot(String category) {
-        List<List<ItemStack>> items = getRandomPartLists();
-
-        ChestGenHooks chest = ChestGenHooks.getInfo(category);
-        chest.addItem(new WeightedRandomChestContent(ModItems.dimletParcelItem, 0, 1, 2, WorldgenConfiguration.dimletParcelRarity));
-    }
-
+//    private static void setupChestLoot(String category) {
+//        List<List<ItemStack>> items = getRandomPartLists();
+//
+//        ChestGenHooks chest = ChestGenHooks.getInfo(category);
+//        chest.addItem(new WeightedRandomChestContent(ModItems.dimletParcelItem, 0, 1, 2, WorldgenConfiguration.dimletParcelRarity));
+//    }
+//
     private static List<List<ItemStack>> randomPartLists = null;
 
     public static List<List<ItemStack>> getRandomPartLists() {

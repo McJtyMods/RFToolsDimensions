@@ -16,11 +16,12 @@ import mcjty.rftoolsdim.network.RFToolsDimMessages;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.biome.BiomeGenBase;
-import net.minecraft.world.biome.WorldChunkManager;
+import net.minecraft.world.chunk.IChunkGenerator;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fml.relauncher.Side;
@@ -46,10 +47,17 @@ public class GenericWorldProvider extends WorldProvider implements  /*@todo impl
         return worldObj;
     }
 
+
     @Override
-    public String getInternalNameSuffix() {
-        return "_rftools";
+    public DimensionType getDimensionType() {
+        //@todo
+        return null;
     }
+
+//    @Override
+//    public String getInternalNameSuffix() {
+//        return "_rftools";
+//    }
 
     @Override
     public long getSeed() {
@@ -62,7 +70,7 @@ public class GenericWorldProvider extends WorldProvider implements  /*@todo impl
 
     private DimensionInformation getDimensionInformation() {
         if (dimensionInformation == null) {
-            int dim = worldObj.provider.getDimensionId();
+            int dim = worldObj.provider.getDimension();
             dimensionInformation = RfToolsDimensionManager.getDimensionManager(worldObj).getDimensionInformation(dim);
             if (dimensionInformation == null) {
                 Logging.log("Dimension information for dimension " + dim + " is missing!");
@@ -76,7 +84,7 @@ public class GenericWorldProvider extends WorldProvider implements  /*@todo impl
 
     @Override
     public String getSaveFolder() {
-        return "RFTOOLS" + dimensionId;
+        return "RFTOOLS" + getDimension();
     }
 
     //    @Override
@@ -158,26 +166,28 @@ public class GenericWorldProvider extends WorldProvider implements  /*@todo impl
         return storage;
     }
 
-    @Override
-    public void registerWorldChunkManager() {
-        getDimensionInformation();
-        setupProviderInfo();
-    }
+
+//    @Override
+//    public void registerWorldChunkManager() {
+//        getDimensionInformation();
+//        setupProviderInfo();
+//    }
 
     private void setupProviderInfo() {
         if (dimensionInformation != null) {
             ControllerType type = dimensionInformation.getControllerType();
             if (type == ControllerType.CONTROLLER_SINGLE) {
 //                worldChunkMgr = new SingleBiomeWorldChunkManager(worldObj, worldObj.getSeed(), terrainType);
-                worldChunkMgr = new SingleBiomeWorldChunkManager(worldObj, worldObj.getSeed(), worldObj.getWorldType());
+//                worldChunkMgr = new SingleBiomeWorldChunkManager(worldObj, worldObj.getSeed(), worldObj.getWorldType());
             } else if (type == ControllerType.CONTROLLER_DEFAULT) {
-                worldChunkMgr = new WorldChunkManager(seed, worldObj.getWorldInfo().getTerrainType(), ""); // @todo
+//                worldChunkMgr = new WorldChunkManager(seed, worldObj.getWorldInfo().getTerrainType(), ""); // @todo
             } else {
-                GenericWorldChunkManager.hackyDimensionInformation = dimensionInformation;      // Hack to get the dimension information in the superclass.
-                worldChunkMgr = new GenericWorldChunkManager(seed, worldObj.getWorldInfo().getTerrainType(), dimensionInformation);
+//                GenericWorldChunkManager.hackyDimensionInformation = dimensionInformation;      // Hack to get the dimension information in the superclass.
+//                worldChunkMgr = new GenericWorldChunkManager(seed, worldObj.getWorldInfo().getTerrainType(), dimensionInformation);
             }
         } else {
-            worldChunkMgr = new WorldChunkManager(seed, worldObj.getWorldInfo().getTerrainType(), ""); //@todo
+//@todo
+//            worldChunkMgr = new WorldChunkManager(seed, worldObj.getWorldInfo().getTerrainType(), ""); //@todo
         }
 
         if (dimensionInformation != null) {
@@ -226,10 +236,10 @@ public class GenericWorldProvider extends WorldProvider implements  /*@todo impl
         return dimensionInformation.getTerrainType().hasSky();
     }
 
-    @Override
-    public String getDimensionName() {
-        return RFTOOLS_DIMENSION;
-    }
+//    @Override
+//    public String getDimensionName() {
+//        return RFTOOLS_DIMENSION;
+//    }
 
     @Override
     public String getWelcomeMessage() {
@@ -246,21 +256,23 @@ public class GenericWorldProvider extends WorldProvider implements  /*@todo impl
         getDimensionInformation();
         if (GeneralConfiguration.respawnSameDim || (dimensionInformation != null && dimensionInformation.isRespawnHere())) {
             DimensionStorage dimensionStorage = getStorage();
-            int power = dimensionStorage.getEnergyLevel(dimensionId);
+            int power = dimensionStorage.getEnergyLevel(getDimension());
             if (power < 1000) {
                 return GeneralConfiguration.spawnDimension;
             } else {
-                return dimensionId;
+                return getDimension();
             }
         }
         return GeneralConfiguration.spawnDimension;
     }
 
     @Override
-    public IChunkProvider createChunkGenerator() {
-        int dim = worldObj.provider.getDimensionId();
+    public IChunkGenerator createChunkGenerator() {
+        int dim = worldObj.provider.getDimension();
         setSeed(dim);
-        return new GenericChunkProvider(worldObj, seed);
+//        return new GenericChunkProvider(worldObj, seed);
+        return null;
+        //@todo
     }
 
     @Override
@@ -277,8 +289,8 @@ public class GenericWorldProvider extends WorldProvider implements  /*@todo impl
 
     @Override
     @SideOnly(Side.CLIENT)
-    public Vec3 getFogColor(float angle, float dt) {
-        int dim = worldObj.provider.getDimensionId();
+    public Vec3d getFogColor(float angle, float dt) {
+        int dim = worldObj.provider.getDimension();
         if (System.currentTimeMillis() - lastFogTime > 1000) {
             lastFogTime = System.currentTimeMillis();
             RFToolsDimMessages.INSTANCE.sendToServer(new PacketGetDimensionEnergy(dim));
@@ -298,16 +310,16 @@ public class GenericWorldProvider extends WorldProvider implements  /*@todo impl
             b = dimensionInformation.getSkyDescriptor().getFogColorFactorB() * factor;
         }
 
-        Vec3 color = super.getFogColor(angle, dt);
-        return new Vec3(color.xCoord * r, color.yCoord * g, color.zCoord * b);
+        Vec3d color = super.getFogColor(angle, dt);
+        return new Vec3d(color.xCoord * r, color.yCoord * g, color.zCoord * b);
     }
 
     private static long lastTime = 0;
 
     @Override
     @SideOnly(Side.CLIENT)
-    public Vec3 getSkyColor(Entity cameraEntity, float partialTicks) {
-        int dim = worldObj.provider.getDimensionId();
+    public Vec3d getSkyColor(Entity cameraEntity, float partialTicks) {
+        int dim = worldObj.provider.getDimension();
         if (System.currentTimeMillis() - lastTime > 1000) {
             lastTime = System.currentTimeMillis();
             RFToolsDimMessages.INSTANCE.sendToServer(new PacketGetDimensionEnergy(dim));
@@ -327,8 +339,8 @@ public class GenericWorldProvider extends WorldProvider implements  /*@todo impl
             b = dimensionInformation.getSkyDescriptor().getSkyColorFactorB() * factor;
         }
 
-        Vec3 skyColor = super.getSkyColor(cameraEntity, partialTicks);
-        return new Vec3(skyColor.xCoord * r, skyColor.yCoord * g, skyColor.zCoord * b);
+        Vec3d skyColor = super.getSkyColor(cameraEntity, partialTicks);
+        return new Vec3d(skyColor.xCoord * r, skyColor.yCoord * g, skyColor.zCoord * b);
     }
 
     private float calculatePowerBlackout(int dim) {
@@ -353,7 +365,7 @@ public class GenericWorldProvider extends WorldProvider implements  /*@todo impl
         if (dimensionInformation == null) {
             return super.getSunBrightness(par1);
         }
-        int dim = worldObj.provider.getDimensionId();
+        int dim = worldObj.provider.getDimension();
         float factor = calculatePowerBlackout(dim);
         return super.getSunBrightness(par1) * dimensionInformation.getSkyDescriptor().getSunBrightnessFactor() * factor;
     }
@@ -426,6 +438,6 @@ public class GenericWorldProvider extends WorldProvider implements  /*@todo impl
     @Override
     public int getCurrentRF() {
 //        DimensionStorage dimensionStorage = DimensionStorage.getDimensionStorage(worldObj);
-        return getStorage().getEnergyLevel(dimensionId);
+        return getStorage().getEnergyLevel(getDimension());
     }
 }

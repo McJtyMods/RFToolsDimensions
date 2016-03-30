@@ -50,9 +50,9 @@ public class DimletDebug {
             List<IProperty> propertyNames = new ArrayList<>(state.getPropertyNames());
             propertyNames.sort((o1, o2) -> o1.getName().compareTo(o2.getName()));
 
-            ImmutableMap<IProperty, Comparable> properties = state.getProperties();
+            ImmutableMap<IProperty<?>, Comparable<?>> properties = state.getProperties();
             Map<String, String> props = new HashMap<>();
-            for (Map.Entry<IProperty, Comparable> entry : properties.entrySet()) {
+            for (Map.Entry<IProperty<?>, Comparable<?>> entry : properties.entrySet()) {
                 props.put(entry.getKey().getName(), entry.getValue().toString());
             }
             DimletKey key = new DimletKey(DimletType.DIMLET_MATERIAL, block.getRegistryName() + "@" + meta);

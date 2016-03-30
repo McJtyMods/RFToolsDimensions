@@ -5,7 +5,7 @@ import mcjty.rftoolsdim.dimensions.DimensionStorage;
 import mcjty.rftoolsdim.dimensions.RfToolsDimensionManager;
 import mcjty.rftoolsdim.dimensions.description.DimensionDescriptor;
 import net.minecraft.command.ICommandSender;
-import net.minecraft.util.TextComponentString;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
 
@@ -36,8 +36,8 @@ public class CmdListDimensions extends AbstractRfToolsCommand {
     public void execute(ICommandSender sender, String[] args) {
         WorldServer[] worlds = DimensionManager.getWorlds();
         for (WorldServer world : worlds) {
-            int id = world.provider.getDimensionId();
-            String dimName = world.provider.getDimensionName();
+            int id = world.provider.getDimension();
+            String dimName = world.provider.getDimensionType().getName();
             sender.addChatMessage(new TextComponentString("    Loaded: id:" + id + ", " + dimName));
         }
 

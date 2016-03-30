@@ -4,9 +4,8 @@ import mcjty.rftoolsdim.dimensions.DimensionInformation;
 import mcjty.rftoolsdim.dimensions.RfToolsDimensionManager;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.TextComponentString;
-import net.minecraft.util.TextFormatting;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
 public class CmdSetOwner extends AbstractRfToolsCommand {
@@ -50,8 +49,7 @@ public class CmdSetOwner extends AbstractRfToolsCommand {
             return;
         }
 
-        for (Object o : MinecraftServer.getServer().getConfigurationManager().playerEntityList) {
-            EntityPlayerMP entityPlayerMP = (EntityPlayerMP) o;
+        for (EntityPlayerMP entityPlayerMP : world.getMinecraftServer().getPlayerList().getPlayerList()) {
             if (playerName.equals(entityPlayerMP.getDisplayName())) {
                 DimensionInformation information = dimensionManager.getDimensionInformation(dim);
                 information.setOwner(playerName, entityPlayerMP.getGameProfile().getId());

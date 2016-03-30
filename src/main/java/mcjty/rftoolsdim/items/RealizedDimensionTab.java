@@ -13,7 +13,10 @@ import mcjty.rftoolsdim.network.RFToolsDimMessages;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.TextFormatting;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -32,7 +35,7 @@ public class RealizedDimensionTab extends GenericRFToolsItem {
     }
 
     @Override
-    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
+    public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
         if ((!world.isRemote) && player.isSneaking()) {
             NBTTagCompound tagCompound = stack.getTagCompound();
             Logging.message(player, tagCompound.getString("descriptionString"));
@@ -45,7 +48,7 @@ public class RealizedDimensionTab extends GenericRFToolsItem {
                 }
             }
         }
-        return stack;
+        return new ActionResult<>(EnumActionResult.SUCCESS, stack);
     }
 
     @SideOnly(Side.CLIENT)

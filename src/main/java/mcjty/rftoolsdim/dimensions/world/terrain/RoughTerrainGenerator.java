@@ -29,7 +29,7 @@ public class RoughTerrainGenerator extends NormalTerrainGenerator {
                 byte waterLevel = (byte) (63 + random.nextFloat() * 32 - 16);
                 int height = 0;
                 while (height < WorldgenConfiguration.bedrockLayer) {
-                    primer.setBlockState(index++, Blocks.bedrock.getDefaultState());
+                    BaseTerrainGenerator.setBlockState(primer, index++, Blocks.bedrock.getDefaultState());
                     height++;
                 }
                 // @todo how to support 127
@@ -41,18 +41,18 @@ public class RoughTerrainGenerator extends NormalTerrainGenerator {
 //                    }
 //                } else {
                     while (height < waterLevel) {
-                        primer.setBlockState(index++, baseBlock);
+                        BaseTerrainGenerator.setBlockState(primer, index++, baseBlock);
                         height++;
                     }
 //                }
                 if (filled) {
                     while (height < 63) {
-                        primer.setBlockState(index++, baseFluid.getDefaultState());
+                        BaseTerrainGenerator.setBlockState(primer, index++, baseFluid.getDefaultState());
                         height++;
                     }
                 }
                 while (height < 256) {
-                    primer.setBlockState(index++, Blocks.air.getDefaultState());
+                    BaseTerrainGenerator.setBlockState(primer, index++, Blocks.air.getDefaultState());
                     height++;
                 }
             }

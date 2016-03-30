@@ -6,6 +6,7 @@ import mcjty.lib.container.SlotDefinition;
 import mcjty.lib.container.SlotType;
 import mcjty.rftoolsdim.items.ModItems;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.ClickType;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 
@@ -33,7 +34,7 @@ public class DimensionEnscriberContainer extends GenericContainer {
     }
 
     @Override
-    public ItemStack slotClick(int index, int button, int mode, EntityPlayer player) {
+    public ItemStack slotClick(int index, int button, ClickType mode, EntityPlayer player) {
         if (index == SLOT_TAB) {
 //            Achievements.trigger(player, Achievements.firstDimension);
         }

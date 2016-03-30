@@ -1,8 +1,7 @@
 package mcjty.rftoolsdim.dimensions.world.mapgen;
 
-import mcjty.lib.varia.BlockMeta;
 import mcjty.rftoolsdim.dimensions.world.GenericChunkProvider;
-import net.minecraft.block.Block;
+import mcjty.rftoolsdim.dimensions.world.terrain.BaseTerrainGenerator;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
@@ -61,7 +60,7 @@ public class MapGenOrbs {
                     double dydy = (y-centery) * (y-centery);
                     double sqdist = dxdx + dydy + dzdz;
                     if (sqdist <= sqradius) {
-                        primer.setBlockState(index+y, block);
+                        BaseTerrainGenerator.setBlockState(primer, index + y, block);
                     }
                 }
             }

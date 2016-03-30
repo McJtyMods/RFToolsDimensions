@@ -43,7 +43,7 @@ public class FlatTerrainGenerator extends NormalTerrainGenerator {
             for (int z = 0; z < 16; ++z) {
                 int height = 0;
                 while (height < WorldgenConfiguration.bedrockLayer) {
-                    primer.setBlockState(index++, Blocks.bedrock.getDefaultState());
+                    BaseTerrainGenerator.setBlockState(primer, index++, Blocks.bedrock.getDefaultState());
                     height++;
                 }
                 // @todo support 127
@@ -55,12 +55,12 @@ public class FlatTerrainGenerator extends NormalTerrainGenerator {
 //                    }
 //                } else {
                     while (height < waterLevel) {
-                        primer.setBlockState(index++, baseBlock);
+                        BaseTerrainGenerator.setBlockState(primer, index++, baseBlock);
                         height++;
                     }
 //                }
                 while (height < 256) {
-                    primer.setBlockState(index++, Blocks.air.getDefaultState());
+                    BaseTerrainGenerator.setBlockState(primer, index++, Blocks.air.getDefaultState());
                     height++;
                 }
             }

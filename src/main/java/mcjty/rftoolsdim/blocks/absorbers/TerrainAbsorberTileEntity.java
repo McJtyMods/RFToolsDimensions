@@ -43,7 +43,7 @@ public class TerrainAbsorberTileEntity extends GenericTileEntity implements ITic
 
     protected void checkStateServer() {
         if (absorbing > 0) {
-            int dim = worldObj.provider.getDimensionId();
+            int dim = worldObj.provider.getDimension();
             String terrain = getCurrentTerrain(dim);
             if (!terrain.equals(terrainName)) {
                 return;
@@ -83,7 +83,7 @@ public class TerrainAbsorberTileEntity extends GenericTileEntity implements ITic
 
     public void placeDown() {
         if (terrainName == null) {
-            int dim = worldObj.provider.getDimensionId();
+            int dim = worldObj.provider.getDimension();
             String terrain = getCurrentTerrain(dim);
             if (terrain == null) {
                 terrainName = null;
