@@ -19,12 +19,12 @@ import net.minecraft.entity.passive.IAnimals;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.NetHandlerPlayServer;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
-import net.minecraftforge.event.terraingen.ChunkProviderEvent;
+import net.minecraftforge.event.terraingen.ChunkGeneratorEvent;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
@@ -51,7 +51,7 @@ public class ForgeEventHandlers {
         Logging.log("SMP: Sync dimensions to client");
         DimensionSyncPacket packet = new DimensionSyncPacket();
 
-        EntityPlayer player = ((NetHandlerPlayServer) event.handler).playerEntity;
+        EntityPlayer player = ((NetHandlerPlayServer) event.getHandler()).playerEntity;
         RfToolsDimensionManager manager = RfToolsDimensionManager.getDimensionManager(player.getEntityWorld());
         for (Integer id : manager.getDimensions().keySet()) {
             Logging.log("Sending over dimension " + id + " to the client");
@@ -59,33 +59,33 @@ public class ForgeEventHandlers {
         }
 
         RFToolsDim.channels.get(Side.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.DISPATCHER);
-        RFToolsDim.channels.get(Side.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGETARGS).set(event.manager.channel().attr(NetworkDispatcher.FML_DISPATCHER).get());
+        RFToolsDim.channels.get(Side.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGETARGS).set(event.getManager().channel().attr(NetworkDispatcher.FML_DISPATCHER).get());
         RFToolsDim.channels.get(Side.SERVER).writeOutbound(packet);
     }
 
     @SubscribeEvent
     public void onEntityJoinWorldEvent(EntityJoinWorldEvent event) {
-        World world = event.world;
+        World world = event.getWorld();
         if (world.isRemote) {
             return;
         }
-        int id = world.provider.getDimensionId();
+        int id = world.provider.getDimension();
 
         RfToolsDimensionManager dimensionManager = RfToolsDimensionManager.getDimensionManager(world);
         DimensionInformation dimensionInformation = dimensionManager.getDimensionInformation(id);
 
         if (dimensionInformation != null && dimensionInformation.isNoanimals()) {
-            if (event.entity instanceof IAnimals && !(event.entity instanceof IMob)) {
+            if (event.getEntity() instanceof IAnimals && !(event.getEntity() instanceof IMob)) {
                 event.setCanceled(true);
-                Logging.logDebug("Noanimals dimension: Prevented a spawn of " + event.entity.getClass().getName());
+                Logging.logDebug("Noanimals dimension: Prevented a spawn of " + event.getEntity().getClass().getName());
             }
         }
     }
 
     @SubscribeEvent
     public void onEntitySpawnEvent(LivingSpawnEvent.CheckSpawn event) {
-        World world = event.world;
-        int id = world.provider.getDimensionId();
+        World world = event.getWorld();
+        int id = world.provider.getDimension();
 
         RfToolsDimensionManager dimensionManager = RfToolsDimensionManager.getDimensionManager(world);
         DimensionInformation dimensionInformation = dimensionManager.getDimensionInformation(id);
@@ -97,16 +97,16 @@ public class ForgeEventHandlers {
                 int energy = storage.getEnergyLevel(id);
                 if (energy <= 0) {
                     event.setResult(Event.Result.DENY);
-                    Logging.logDebug("Dimension power low: Prevented a spawn of " + event.entity.getClass().getName());
+                    Logging.logDebug("Dimension power low: Prevented a spawn of " + event.getEntity().getClass().getName());
                 }
             }
         }
 
         if (dimensionInformation != null) {
             if (dimensionInformation.hasEffectType(EffectType.EFFECT_STRONGMOBS) || dimensionInformation.hasEffectType(EffectType.EFFECT_BRUTALMOBS)) {
-                if (event.entity instanceof EntityLivingBase) {
-                    EntityLivingBase entityLivingBase = (EntityLivingBase) event.entity;
-                    IAttributeInstance entityAttribute = entityLivingBase.getEntityAttribute(SharedMonsterAttributes.maxHealth);
+                if (event.getEntity() instanceof EntityLivingBase) {
+                    EntityLivingBase entityLivingBase = (EntityLivingBase) event.getEntity();
+                    IAttributeInstance entityAttribute = entityLivingBase.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH);
                     double newMax;
                     if (dimensionInformation.hasEffectType(EffectType.EFFECT_BRUTALMOBS)) {
                         newMax = entityAttribute.getBaseValue() * GeneralConfiguration.brutalMobsFactor;
@@ -119,33 +119,35 @@ public class ForgeEventHandlers {
             }
         }
 
-        if (event.entity instanceof IMob) {
-            BlockPos coordinate = new BlockPos((int) event.entity.posX, (int) event.entity.posY, (int) event.entity.posZ);
+        if (event.getEntity() instanceof IMob) {
+            BlockPos coordinate = new BlockPos((int) event.getEntity().posX, (int) event.getEntity().posY, (int) event.getEntity().posZ);
             /* if (PeacefulAreaManager.isPeaceful(new GlobalCoordinate(coordinate, id))) {
                 event.setResult(Event.Result.DENY);
                 Logging.logDebug("Peaceful manager: Prevented a spawn of " + event.entity.getClass().getName());
             } else */ if (dimensionInformation != null && dimensionInformation.isPeaceful()) {
                 // RFTools dimension.
                 event.setResult(Event.Result.DENY);
-                Logging.logDebug("Peaceful dimension: Prevented a spawn of " + event.entity.getClass().getName());
+                Logging.logDebug("Peaceful dimension: Prevented a spawn of " + event.getEntity().getClass().getName());
             }
-        } else if (event.entity instanceof IAnimals) {
+        } else if (event.getEntity() instanceof IAnimals) {
             if (dimensionInformation != null && dimensionInformation.isNoanimals()) {
                 // RFTools dimension.
                 event.setResult(Event.Result.DENY);
-                Logging.logDebug("Noanimals dimension: Prevented a spawn of " + event.entity.getClass().getName());
+                Logging.logDebug("Noanimals dimension: Prevented a spawn of " + event.getEntity().getClass().getName());
             }
         }
         // @todo
     }
 
+
+
     @SubscribeEvent
-    public void onReplaceBiomeBlocks(ChunkProviderEvent.ReplaceBiomeBlocks event) {
-        World world = event.world;
+    public void onReplaceBiomeBlocks(ChunkGeneratorEvent.ReplaceBiomeBlocks event) {
+        World world = event.getWorld();
         if (world == null) {
             return;
         }
-        int id = world.provider.getDimensionId();
+        int id = world.provider.getDimension();
         RfToolsDimensionManager dimensionManager = RfToolsDimensionManager.getDimensionManager(world);
         DimensionInformation information = dimensionManager.getDimensionInformation(id);
         if (information != null && information.hasFeatureType(FeatureType.FEATURE_CLEAN)) {
@@ -157,9 +159,9 @@ public class ForgeEventHandlers {
 
     @SubscribeEvent
     public void onEntityDrop(LivingDropsEvent event) {
-        if (event.entityLiving instanceof EntityEnderman) {
+        if (event.getEntityLiving() instanceof EntityEnderman) {
             if (random.nextFloat() < GeneralConfiguration.endermanDimletPartDrop) {
-                event.entityLiving.entityDropItem(new ItemStack(ModItems.dimletParcelItem), 1.05f);
+                event.getEntityLiving().entityDropItem(new ItemStack(ModItems.dimletParcelItem), 1.05f);
             }
         }
     }

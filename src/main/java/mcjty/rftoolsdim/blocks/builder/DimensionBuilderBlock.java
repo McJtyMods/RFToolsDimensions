@@ -11,8 +11,8 @@ import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.TextFormatting;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -67,12 +67,12 @@ public class DimensionBuilderBlock extends GenericRFToolsBlock<DimensionBuilderT
         super.addInformation(itemStack, player, list, whatIsThis);
 
         if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
-            list.add(EnumChatFormatting.WHITE + "This builds a dimension and powers it when");
-            list.add(EnumChatFormatting.WHITE + "the dimension is ready.");
-            list.add(EnumChatFormatting.YELLOW + "Infusing bonus: reduced power consumption and");
-            list.add(EnumChatFormatting.YELLOW + "faster dimension creation speed.");
+            list.add(TextFormatting.WHITE + "This builds a dimension and powers it when");
+            list.add(TextFormatting.WHITE + "the dimension is ready.");
+            list.add(TextFormatting.YELLOW + "Infusing bonus: reduced power consumption and");
+            list.add(TextFormatting.YELLOW + "faster dimension creation speed.");
         } else {
-            list.add(EnumChatFormatting.WHITE + RFToolsDim.SHIFT_MESSAGE);
+            list.add(TextFormatting.WHITE + RFToolsDim.SHIFT_MESSAGE);
         }
     }
 

@@ -8,7 +8,7 @@ import mcjty.rftoolsdim.items.GenericRFToolsItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.TextFormatting;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -45,11 +45,11 @@ public class DimensionModuleItem extends GenericRFToolsItem implements IModulePr
     @Override
     public void addInformation(ItemStack itemStack, EntityPlayer player, List list, boolean whatIsThis) {
         super.addInformation(itemStack, player, list, whatIsThis);
-        list.add(EnumChatFormatting.GREEN + "Uses " + GeneralConfiguration.DIMENSIONMODULE_RFPERTICK + " RF/tick");
+        list.add(TextFormatting.GREEN + "Uses " + GeneralConfiguration.DIMENSIONMODULE_RFPERTICK + " RF/tick");
         NBTTagCompound tagCompound = itemStack.getTagCompound();
         if (tagCompound != null) {
-            list.add(EnumChatFormatting.YELLOW + "Label: " + tagCompound.getString("text"));
-            list.add(EnumChatFormatting.YELLOW + "Dimension: " + tagCompound.getInteger("dim"));
+            list.add(TextFormatting.YELLOW + "Label: " + tagCompound.getString("text"));
+            list.add(TextFormatting.YELLOW + "Dimension: " + tagCompound.getInteger("dim"));
         }
     }
 

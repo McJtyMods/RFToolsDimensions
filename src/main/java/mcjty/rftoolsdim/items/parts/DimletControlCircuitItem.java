@@ -9,7 +9,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.TextFormatting;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -48,14 +48,14 @@ public class DimletControlCircuitItem extends GenericRFToolsItem {
     public void addInformation(ItemStack itemStack, EntityPlayer player, List<String> list, boolean whatIsThis) {
         super.addInformation(itemStack, player, list, whatIsThis);
         if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
-            list.add(EnumChatFormatting.WHITE + "Every dimlet needs one control circuit. You can get");
-            list.add(EnumChatFormatting.WHITE + "this by deconstructing other dimlets in the Dimlet");
-            list.add(EnumChatFormatting.WHITE + "Workbench. In that same workbench you can also use");
-            list.add(EnumChatFormatting.WHITE + "this item to make new dimlets. Note that you need a");
-            list.add(EnumChatFormatting.WHITE + "control circuit of the right rarity in order to make");
-            list.add(EnumChatFormatting.WHITE + "a dimlet of that rarity.");
+            list.add(TextFormatting.WHITE + "Every dimlet needs one control circuit. You can get");
+            list.add(TextFormatting.WHITE + "this by deconstructing other dimlets in the Dimlet");
+            list.add(TextFormatting.WHITE + "Workbench. In that same workbench you can also use");
+            list.add(TextFormatting.WHITE + "this item to make new dimlets. Note that you need a");
+            list.add(TextFormatting.WHITE + "control circuit of the right rarity in order to make");
+            list.add(TextFormatting.WHITE + "a dimlet of that rarity.");
         } else {
-            list.add(EnumChatFormatting.WHITE + RFToolsDim.SHIFT_MESSAGE);
+            list.add(TextFormatting.WHITE + RFToolsDim.SHIFT_MESSAGE);
         }
     }
 

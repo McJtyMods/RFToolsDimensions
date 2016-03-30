@@ -7,7 +7,7 @@ import mcjty.rftoolsdim.dimensions.world.GenericChunkProvider;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldType;
 import net.minecraft.world.biome.BiomeGenBase;
@@ -16,7 +16,7 @@ import net.minecraft.world.gen.NoiseGenerator;
 import net.minecraft.world.gen.NoiseGeneratorOctaves;
 import net.minecraft.world.gen.NoiseGeneratorPerlin;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.terraingen.ChunkProviderEvent;
+import net.minecraftforge.event.terraingen.ChunkGeneratorEvent;
 import net.minecraftforge.event.terraingen.TerrainGen;
 import net.minecraftforge.fml.common.eventhandler.Event;
 
@@ -115,7 +115,7 @@ public class NormalTerrainGenerator implements BaseTerrainGenerator {
         }
 
         if (provider.biomesForGeneration == null) {
-            Logging.log("Dimension " + world.provider.getDimensionId() + " has a problem! Ignoring for now.");
+            Logging.log("Dimension " + world.provider.getDimension() + " has a problem! Ignoring for now.");
             return;
         }
 
@@ -132,8 +132,8 @@ public class NormalTerrainGenerator implements BaseTerrainGenerator {
                         BiomeGenBase biomegenbase1 = provider.biomesForGeneration[j1 + l1 + 2 + (k1 + i2 + 2) * 10];
 //                        float f3 = biomegenbase1.rootHeight;
 //                        float f4 = biomegenbase1.heightVariation;
-                        float f3 = provider.getSettings().biomeDepthOffSet + biomegenbase1.minHeight * provider.getSettings().biomeDepthWeight;
-                        float f4 = provider.getSettings().biomeScaleOffset + biomegenbase1.maxHeight * provider.getSettings().biomeScaleWeight;
+                        float f3 = provider.getSettings().biomeDepthOffSet + biomegenbase1.getBaseHeight() * provider.getSettings().biomeDepthWeight;
+                        float f4 = provider.getSettings().biomeScaleOffset + biomegenbase1.getHeightVariation() * provider.getSettings().biomeScaleWeight;
 
                         if (domaze || donearlands) {
                             if (f3 > 0.0F && elevated) {
@@ -161,7 +161,7 @@ public class NormalTerrainGenerator implements BaseTerrainGenerator {
 
                         float f5 = parabolicField[l1 + 2 + (i2 + 2) * 5] / (f3 + 2.0F);
 
-                        if (biomegenbase1.minHeight > biomegenbase.minHeight) {
+                        if (biomegenbase1.getBaseHeight() > biomegenbase.getBaseHeight()) {
                             f5 /= 2.0F;
                         }
 
@@ -280,7 +280,7 @@ public class NormalTerrainGenerator implements BaseTerrainGenerator {
                             for (int z = 0; z < 4; ++z) {
                                 index += maxheight;
                                 if ((d15 += d16) > 0.0D) {
-                                    primer.setBlockState(index, baseBlock);
+                                    setBlockState(primer, index, baseBlock);
                                     // @todo find a way to support this 127 feature
 //                                    if (baseMeta == 127) {
 //                                        realMeta = (byte)((height/2 + x/2 + z/2) & 0xf);
@@ -288,9 +288,9 @@ public class NormalTerrainGenerator implements BaseTerrainGenerator {
 //                                        realMeta = baseMeta;
 //                                    }
                                 } else if (height < waterLevel) {
-                                    primer.setBlockState(index, baseLiquid.getDefaultState());
+                                    setBlockState(primer, index, baseLiquid.getDefaultState());
                                 } else {
-                                    primer.setBlockState(index, Blocks.air.getDefaultState());
+                                    setBlockState(primer, index, Blocks.air.getDefaultState());
                                 }
                             }
 
@@ -310,7 +310,7 @@ public class NormalTerrainGenerator implements BaseTerrainGenerator {
 
     @Override
     public void replaceBlocksForBiome(int chunkX, int chunkZ, ChunkPrimer primer, BiomeGenBase[] biomeGenBases) {
-        ChunkProviderEvent.ReplaceBiomeBlocks event = new ChunkProviderEvent.ReplaceBiomeBlocks(provider, chunkX, chunkZ, primer, world);
+        ChunkGeneratorEvent.ReplaceBiomeBlocks event = new ChunkGeneratorEvent.ReplaceBiomeBlocks(provider, chunkX, chunkZ, primer, world);
         MinecraftForge.EVENT_BUS.post(event);
         if (event.getResult() == Event.Result.DENY) {
             return;

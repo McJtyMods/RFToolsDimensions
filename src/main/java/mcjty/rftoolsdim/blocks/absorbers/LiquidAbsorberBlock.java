@@ -11,7 +11,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.TextFormatting;
 import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
@@ -45,7 +45,7 @@ public class LiquidAbsorberBlock extends GenericRFToolsBlock<LiquidAbsorberTileE
             if (fluid != null) {
                 int absorbing = tileEntity.getAbsorbing();
                 int pct = ((DimletConstructionConfiguration.maxBlockAbsorbtion - absorbing) * 100) / DimletConstructionConfiguration.maxBlockAbsorbtion;
-                currenttip.add(EnumChatFormatting.GREEN + "Liquid: " + new FluidStack(fluid, 1).getLocalizedName() + " (" + pct + "%)");
+                currenttip.add(TextFormatting.GREEN + "Liquid: " + new FluidStack(fluid, 1).getLocalizedName() + " (" + pct + "%)");
             }
         }
         return currenttip;
@@ -62,20 +62,20 @@ public class LiquidAbsorberBlock extends GenericRFToolsBlock<LiquidAbsorberTileE
             if (block != null) {
                 Fluid fluid = FluidRegistry.lookupFluidForBlock(block);
                 if (fluid != null) {
-                    list.add(EnumChatFormatting.GREEN + "Liquid: " + new FluidStack(fluid, 1).getLocalizedName());
+                    list.add(TextFormatting.GREEN + "Liquid: " + new FluidStack(fluid, 1).getLocalizedName());
                     int absorbing = tagCompound.getInteger("absorbing");
                     int pct = ((DimletConstructionConfiguration.maxLiquidAbsorbtion - absorbing) * 100) / DimletConstructionConfiguration.maxLiquidAbsorbtion;
-                    list.add(EnumChatFormatting.GREEN + "Absorbed: " + pct + "%");
+                    list.add(TextFormatting.GREEN + "Absorbed: " + pct + "%");
                 }
             }
         }
 
         if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
-            list.add(EnumChatFormatting.WHITE + "Place this block on top of a liquid and it will");
-            list.add(EnumChatFormatting.WHITE + "gradually absorb all this liquid in the area.");
-            list.add(EnumChatFormatting.WHITE + "You can use the end result in the Dimlet Workbench.");
+            list.add(TextFormatting.WHITE + "Place this block on top of a liquid and it will");
+            list.add(TextFormatting.WHITE + "gradually absorb all this liquid in the area.");
+            list.add(TextFormatting.WHITE + "You can use the end result in the Dimlet Workbench.");
         } else {
-            list.add(EnumChatFormatting.WHITE + RFToolsDim.SHIFT_MESSAGE);
+            list.add(TextFormatting.WHITE + RFToolsDim.SHIFT_MESSAGE);
         }
     }
 

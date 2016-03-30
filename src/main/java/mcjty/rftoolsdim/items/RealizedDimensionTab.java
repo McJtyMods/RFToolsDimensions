@@ -13,7 +13,7 @@ import mcjty.rftoolsdim.network.RFToolsDimMessages;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -59,9 +59,9 @@ public class RealizedDimensionTab extends GenericRFToolsItem {
             if (name != null) {
                 id = tagCompound.getInteger("id");
                 if (id == 0) {
-                    list.add(EnumChatFormatting.BLUE + "Name: " + name);
+                    list.add(TextFormatting.BLUE + "Name: " + name);
                 } else {
-                    list.add(EnumChatFormatting.BLUE + "Name: " + name + " (Id " + id + ")");
+                    list.add(TextFormatting.BLUE + "Name: " + name + " (Id " + id + ")");
                 }
             }
 
@@ -72,15 +72,15 @@ public class RealizedDimensionTab extends GenericRFToolsItem {
             if (ticksLeft == 0) {
                 DimensionInformation information = RfToolsDimensionManager.getDimensionManager(player.getEntityWorld()).getDimensionInformation(id);
                 if (information == null) {
-                    list.add(EnumChatFormatting.RED + "Dimension information Missing!");
+                    list.add(TextFormatting.RED + "Dimension information Missing!");
                 } else {
-                    list.add(EnumChatFormatting.BLUE + "Dimension ready!");
+                    list.add(TextFormatting.BLUE + "Dimension ready!");
                     int maintainCost = tagCompound.getInteger("rfMaintainCost");
                     int actualCost = information.getActualRfCost();
                     if (actualCost == maintainCost || actualCost == 0) {
-                        list.add(EnumChatFormatting.YELLOW + "    Maintenance cost: " + maintainCost + " RF/tick");
+                        list.add(TextFormatting.YELLOW + "    Maintenance cost: " + maintainCost + " RF/tick");
                     } else {
-                        list.add(EnumChatFormatting.YELLOW + "    Maintenance cost: " + actualCost + " RF/tick (Specified: " + maintainCost + " RF/tick)");
+                        list.add(TextFormatting.YELLOW + "    Maintenance cost: " + actualCost + " RF/tick (Specified: " + maintainCost + " RF/tick)");
                     }
                     if (id != 0) {
                         if (System.currentTimeMillis() - lastTime > 500) {
@@ -90,7 +90,7 @@ public class RealizedDimensionTab extends GenericRFToolsItem {
 
                         DimensionStorage storage = DimensionStorage.getDimensionStorage(player.getEntityWorld());
                         int power = storage.getEnergyLevel(id);
-                        list.add(EnumChatFormatting.YELLOW + "    Current power: " + power + " RF");
+                        list.add(TextFormatting.YELLOW + "    Current power: " + power + " RF");
                     }
                 }
             } else {
@@ -98,10 +98,10 @@ public class RealizedDimensionTab extends GenericRFToolsItem {
                 int maintainCost = tagCompound.getInteger("rfMaintainCost");
                 int tickCost = tagCompound.getInteger("tickCost");
                 int percentage = (tickCost - ticksLeft) * 100 / tickCost;
-                list.add(EnumChatFormatting.BLUE + "Dimension progress: " + percentage + "%");
-                list.add(EnumChatFormatting.YELLOW + "    Creation cost: " + createCost + " RF/tick");
-                list.add(EnumChatFormatting.YELLOW + "    Maintenance cost: " + maintainCost + " RF/tick");
-                list.add(EnumChatFormatting.YELLOW + "    Tick cost: " + tickCost + " ticks");
+                list.add(TextFormatting.BLUE + "Dimension progress: " + percentage + "%");
+                list.add(TextFormatting.YELLOW + "    Creation cost: " + createCost + " RF/tick");
+                list.add(TextFormatting.YELLOW + "    Maintenance cost: " + maintainCost + " RF/tick");
+                list.add(TextFormatting.YELLOW + "    Tick cost: " + tickCost + " ticks");
             }
         }
     }
@@ -125,12 +125,12 @@ public class RealizedDimensionTab extends GenericRFToolsItem {
                     for (DimletKey key : keys) {
                         digitString += DimletObjectMapping.getDigit(key);
                     }
-                    list.add(EnumChatFormatting.GREEN + "Digits " + digitString);
+                    list.add(TextFormatting.GREEN + "Digits " + digitString);
                 } else {
                     if (keys.size() == 1) {
-                        list.add(EnumChatFormatting.GREEN + type.dimletType.getName() + " 1 dimlet");
+                        list.add(TextFormatting.GREEN + type.dimletType.getName() + " 1 dimlet");
                     } else {
-                        list.add(EnumChatFormatting.GREEN + type.dimletType.getName() + " " + keys.size() + " dimlets");
+                        list.add(TextFormatting.GREEN + type.dimletType.getName() + " " + keys.size() + " dimlets");
                     }
                 }
             }

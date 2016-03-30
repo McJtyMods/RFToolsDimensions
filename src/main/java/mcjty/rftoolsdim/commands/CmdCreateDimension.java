@@ -9,7 +9,7 @@ import mcjty.rftoolsdim.dimensions.types.TerrainType;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.TextFormatting;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,10 +38,10 @@ public class CmdCreateDimension extends AbstractRfToolsCommand {
     @Override
     public void execute(ICommandSender sender, String[] args) {
         if (args.length < 3) {
-            sender.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "The name and terrain parameters are missing!"));
+            sender.addChatMessage(new ChatComponentText(TextFormatting.RED + "The name and terrain parameters are missing!"));
             return;
         } else if (args.length > 3) {
-            sender.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "Too many parameters!"));
+            sender.addChatMessage(new ChatComponentText(TextFormatting.RED + "Too many parameters!"));
             return;
         }
 
@@ -50,12 +50,12 @@ public class CmdCreateDimension extends AbstractRfToolsCommand {
         String terrainName = fetchString(sender, args, 2, "Void");
         TerrainType terrainType = TerrainType.getTerrainById(terrainName);
         if (terrainType == null) {
-            sender.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "Unknown terrain type!"));
+            sender.addChatMessage(new ChatComponentText(TextFormatting.RED + "Unknown terrain type!"));
             return;
         }
 
         if (!(sender instanceof EntityPlayer)) {
-            sender.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "You must be a player to use this command!"));
+            sender.addChatMessage(new ChatComponentText(TextFormatting.RED + "You must be a player to use this command!"));
             return;
         }
 
@@ -72,7 +72,7 @@ public class CmdCreateDimension extends AbstractRfToolsCommand {
             e.printStackTrace();
             throw new RuntimeException(e);
         }
-        sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GREEN + "Created dimension: " + dim));
+        sender.addChatMessage(new ChatComponentText(TextFormatting.GREEN + "Created dimension: " + dim));
 
         dimensionManager.save(sender.getEntityWorld());
     }

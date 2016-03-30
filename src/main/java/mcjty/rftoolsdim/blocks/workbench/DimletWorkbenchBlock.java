@@ -7,7 +7,7 @@ import mcjty.rftoolsdim.blocks.GenericRFToolsBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.TextFormatting;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.input.Keyboard;
@@ -38,13 +38,13 @@ public class DimletWorkbenchBlock extends GenericRFToolsBlock<DimletWorkbenchTil
         super.addInformation(itemStack, player, list, whatIsThis);
 
         if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
-            list.add(EnumChatFormatting.WHITE + "With this workbench you can deconstruct dimlets");
-            list.add(EnumChatFormatting.WHITE + "into individual parts and also reconstruct new dimlets");
-            list.add(EnumChatFormatting.WHITE + "out of these parts.");
-            list.add(EnumChatFormatting.YELLOW + "Infusing bonus: increased chance of getting");
-            list.add(EnumChatFormatting.YELLOW + "all parts out of the deconstructed dimlet.");
+            list.add(TextFormatting.WHITE + "With this workbench you can deconstruct dimlets");
+            list.add(TextFormatting.WHITE + "into individual parts and also reconstruct new dimlets");
+            list.add(TextFormatting.WHITE + "out of these parts.");
+            list.add(TextFormatting.YELLOW + "Infusing bonus: increased chance of getting");
+            list.add(TextFormatting.YELLOW + "all parts out of the deconstructed dimlet.");
         } else {
-            list.add(EnumChatFormatting.WHITE + RFToolsDim.SHIFT_MESSAGE);
+            list.add(TextFormatting.WHITE + RFToolsDim.SHIFT_MESSAGE);
         }
     }
 

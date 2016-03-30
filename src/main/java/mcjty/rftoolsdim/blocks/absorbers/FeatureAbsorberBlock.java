@@ -12,8 +12,8 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.TextFormatting;
 import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -41,7 +41,7 @@ public class FeatureAbsorberBlock extends GenericRFToolsBlock<FeatureAbsorberTil
         if (tileEntity != null && tileEntity.getFeatureName() != null) {
             int absorbing = tileEntity.getAbsorbing();
             int pct = ((DimletConstructionConfiguration.maxFeatureAbsorbtion - absorbing) * 100) / DimletConstructionConfiguration.maxFeatureAbsorbtion;
-            currenttip.add(EnumChatFormatting.GREEN + "Unknown feature (" + pct + "%)");
+            currenttip.add(TextFormatting.GREEN + "Unknown feature (" + pct + "%)");
         }
         return currenttip;
     }
@@ -53,19 +53,19 @@ public class FeatureAbsorberBlock extends GenericRFToolsBlock<FeatureAbsorberTil
 
         NBTTagCompound tagCompound = itemStack.getTagCompound();
         if (tagCompound != null && tagCompound.hasKey("feature")) {
-            list.add(EnumChatFormatting.GREEN + "Unknown Feature");
+            list.add(TextFormatting.GREEN + "Unknown Feature");
             int absorbing = tagCompound.getInteger("absorbing");
             int pct = ((DimletConstructionConfiguration.maxFeatureAbsorbtion - absorbing) * 100) / DimletConstructionConfiguration.maxFeatureAbsorbtion;
-            list.add(EnumChatFormatting.GREEN + "Absorbed: " + pct + "%");
+            list.add(TextFormatting.GREEN + "Absorbed: " + pct + "%");
         }
 
         if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
-            list.add(EnumChatFormatting.WHITE + "Place this block in an area and it will");
-            list.add(EnumChatFormatting.WHITE + "gradually absorb the essence of a random feature of");
-            list.add(EnumChatFormatting.WHITE + "this dimension.");
-            list.add(EnumChatFormatting.WHITE + "You can use the end result in the Dimlet Workbench.");
+            list.add(TextFormatting.WHITE + "Place this block in an area and it will");
+            list.add(TextFormatting.WHITE + "gradually absorb the essence of a random feature of");
+            list.add(TextFormatting.WHITE + "this dimension.");
+            list.add(TextFormatting.WHITE + "You can use the end result in the Dimlet Workbench.");
         } else {
-            list.add(EnumChatFormatting.WHITE + RFToolsDim.SHIFT_MESSAGE);
+            list.add(TextFormatting.WHITE + RFToolsDim.SHIFT_MESSAGE);
         }
     }
 

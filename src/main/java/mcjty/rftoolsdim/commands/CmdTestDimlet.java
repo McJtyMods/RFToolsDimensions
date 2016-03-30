@@ -5,7 +5,7 @@ import mcjty.rftoolsdim.config.Settings;
 import mcjty.rftoolsdim.dimensions.dimlets.types.DimletType;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.TextFormatting;
 
 import java.util.Collections;
 
@@ -33,7 +33,7 @@ public class CmdTestDimlet extends AbstractRfToolsCommand {
     @Override
     public void execute(ICommandSender sender, String[] args) {
         if (args.length != 4) {
-            sender.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "Bad parameters!"));
+            sender.addChatMessage(new ChatComponentText(TextFormatting.RED + "Bad parameters!"));
             return;
         }
 
@@ -42,11 +42,11 @@ public class CmdTestDimlet extends AbstractRfToolsCommand {
         String name = fetchString(sender, args, 3, "");
         DimletType type = DimletType.getTypeByName(typeString);
         if (type == null) {
-            sender.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "Bad type!"));
+            sender.addChatMessage(new ChatComponentText(TextFormatting.RED + "Bad type!"));
             return;
         }
 
         Settings settings = DimletRules.getSettings(type, mod, name, Collections.emptySet(), 0, Collections.emptyMap());
-        sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GREEN + settings.toString()));
+        sender.addChatMessage(new ChatComponentText(TextFormatting.GREEN + settings.toString()));
     }
 }

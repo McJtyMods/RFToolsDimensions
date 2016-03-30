@@ -13,7 +13,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.TextFormatting;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -69,14 +69,14 @@ public class KnownDimlet extends GenericRFToolsItem {
 //
 //                boolean locked = tagCompound.getBoolean("locked");
 //                if (locked) {
-//                    Logging.message(player, EnumChatFormatting.YELLOW + "This seed dimlet is locked. You cannot modify it!");
+//                    Logging.message(player, TextFormatting.YELLOW + "This seed dimlet is locked. You cannot modify it!");
 //                    return stack;
 //                }
 //
 //                long forcedSeed = tagCompound.getLong("forcedSeed");
 //                if (player.isSneaking()) {
 //                    if (forcedSeed == 0) {
-//                        Logging.message(player, EnumChatFormatting.YELLOW + "This dimlet has no seed. You cannot lock it!");
+//                        Logging.message(player, TextFormatting.YELLOW + "This dimlet has no seed. You cannot lock it!");
 //                        return stack;
 //                    }
 //                    tagCompound.setBoolean("locked", true);
@@ -101,46 +101,46 @@ public class KnownDimlet extends GenericRFToolsItem {
         DimletKey key = KnownDimletConfiguration.getDimletKey(itemStack);
         Settings settings = KnownDimletConfiguration.getSettings(key);
         if (settings == null) {
-            list.add(EnumChatFormatting.WHITE + "Dimlet " + key.getType().dimletType.getName() + "." + key.getId());
-            list.add(EnumChatFormatting.RED + "This dimlet is blacklisted!");
+            list.add(TextFormatting.WHITE + "Dimlet " + key.getType().dimletType.getName() + "." + key.getId());
+            list.add(TextFormatting.RED + "This dimlet is blacklisted!");
             return;
         }
 
-        list.add(EnumChatFormatting.BLUE + "Rarity: " + settings.getRarity() + (KnownDimletConfiguration.isCraftable(key) ? " (craftable)" : ""));
-        list.add(EnumChatFormatting.YELLOW + "Create cost: " + settings.getCreateCost() + " RF/tick");
+        list.add(TextFormatting.BLUE + "Rarity: " + settings.getRarity() + (KnownDimletConfiguration.isCraftable(key) ? " (craftable)" : ""));
+        list.add(TextFormatting.YELLOW + "Create cost: " + settings.getCreateCost() + " RF/tick");
         int maintainCost = settings.getMaintainCost();
         if (maintainCost < 0) {
-            list.add(EnumChatFormatting.YELLOW + "Maintain cost: " + maintainCost + "% RF/tick");
+            list.add(TextFormatting.YELLOW + "Maintain cost: " + maintainCost + "% RF/tick");
         } else {
-            list.add(EnumChatFormatting.YELLOW + "Maintain cost: " + maintainCost + " RF/tick");
+            list.add(TextFormatting.YELLOW + "Maintain cost: " + maintainCost + " RF/tick");
         }
-        list.add(EnumChatFormatting.YELLOW + "Tick cost: " + settings.getTickCost() + " ticks");
+        list.add(TextFormatting.YELLOW + "Tick cost: " + settings.getTickCost() + " ticks");
 
         if (KnownDimletConfiguration.isSeedDimlet(key)) {
             NBTTagCompound tagCompound = itemStack.getTagCompound();
             if (tagCompound != null && tagCompound.getLong("forcedSeed") != 0) {
                 long forcedSeed = tagCompound.getLong("forcedSeed");
                 boolean locked = tagCompound.getBoolean("locked");
-                list.add(EnumChatFormatting.BLUE + "Forced seed: " + forcedSeed + (locked ? " [LOCKED]" : ""));
+                list.add(TextFormatting.BLUE + "Forced seed: " + forcedSeed + (locked ? " [LOCKED]" : ""));
             } else {
-                list.add(EnumChatFormatting.BLUE + "Right click to copy seed from dimension.");
-                list.add(EnumChatFormatting.BLUE + "Shift-Right click to lock copied seed.");
+                list.add(TextFormatting.BLUE + "Right click to copy seed from dimension.");
+                list.add(TextFormatting.BLUE + "Shift-Right click to lock copied seed.");
             }
         }
 
         if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
             for (String info : key.getType().dimletType.getInformation()) {
-                list.add(EnumChatFormatting.WHITE + info);
+                list.add(TextFormatting.WHITE + info);
             }
             // @todo
 //            List<String> extra = KnownDimletConfiguration.idToExtraInformation.get(entry.getKey());
 //            if (extra != null) {
 //                for (String info : extra) {
-//                    list.add(EnumChatFormatting.YELLOW + info);
+//                    list.add(TextFormatting.YELLOW + info);
 //                }
 //            }
         } else {
-            list.add(EnumChatFormatting.WHITE + RFToolsDim.SHIFT_MESSAGE);
+            list.add(TextFormatting.WHITE + RFToolsDim.SHIFT_MESSAGE);
         }
     }
 

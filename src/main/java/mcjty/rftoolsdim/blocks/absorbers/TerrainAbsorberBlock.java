@@ -12,8 +12,8 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.TextFormatting;
 import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -42,7 +42,7 @@ public class TerrainAbsorberBlock extends GenericRFToolsBlock<TerrainAbsorberTil
             String terrainName = tileEntity.getTerrainName();
             int absorbing = tileEntity.getAbsorbing();
             int pct = ((DimletConstructionConfiguration.maxTerrainAbsorbtion - absorbing) * 100) / DimletConstructionConfiguration.maxTerrainAbsorbtion;
-            currenttip.add(EnumChatFormatting.GREEN + "Terrain: " + terrainName + " (" + pct + "%)");
+            currenttip.add(TextFormatting.GREEN + "Terrain: " + terrainName + " (" + pct + "%)");
         }
         return currenttip;
     }
@@ -55,18 +55,18 @@ public class TerrainAbsorberBlock extends GenericRFToolsBlock<TerrainAbsorberTil
         NBTTagCompound tagCompound = itemStack.getTagCompound();
         if (tagCompound != null && tagCompound.hasKey("terrain")) {
             String terrainName = tagCompound.getString("terrain");
-            list.add(EnumChatFormatting.GREEN + "Terrain: " + terrainName);
+            list.add(TextFormatting.GREEN + "Terrain: " + terrainName);
             int absorbing = tagCompound.getInteger("absorbing");
             int pct = ((DimletConstructionConfiguration.maxTerrainAbsorbtion - absorbing) * 100) / DimletConstructionConfiguration.maxTerrainAbsorbtion;
-            list.add(EnumChatFormatting.GREEN + "Absorbed: " + pct + "%");
+            list.add(TextFormatting.GREEN + "Absorbed: " + pct + "%");
         }
 
         if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
-            list.add(EnumChatFormatting.WHITE + "Place this block in an area and it will");
-            list.add(EnumChatFormatting.WHITE + "gradually absorb the essence of the terrain it is in.");
-            list.add(EnumChatFormatting.WHITE + "You can use the end result in the Dimlet Workbench.");
+            list.add(TextFormatting.WHITE + "Place this block in an area and it will");
+            list.add(TextFormatting.WHITE + "gradually absorb the essence of the terrain it is in.");
+            list.add(TextFormatting.WHITE + "You can use the end result in the Dimlet Workbench.");
         } else {
-            list.add(EnumChatFormatting.WHITE + RFToolsDim.SHIFT_MESSAGE);
+            list.add(TextFormatting.WHITE + RFToolsDim.SHIFT_MESSAGE);
         }
     }
 

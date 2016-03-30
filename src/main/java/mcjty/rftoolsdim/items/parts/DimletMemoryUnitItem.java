@@ -9,7 +9,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.TextFormatting;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -48,14 +48,14 @@ public class DimletMemoryUnitItem extends GenericRFToolsItem {
     public void addInformation(ItemStack itemStack, EntityPlayer player, List<String> list, boolean whatIsThis) {
         super.addInformation(itemStack, player, list, whatIsThis);
         if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
-            list.add(EnumChatFormatting.WHITE + "Every dimlet needs a memory unit. You can get");
-            list.add(EnumChatFormatting.WHITE + "this by deconstructing other dimlets in the Dimlet");
-            list.add(EnumChatFormatting.WHITE + "Workbench. In that same workbench you can also use");
-            list.add(EnumChatFormatting.WHITE + "this item to make new dimlets. The basic memory unit");
-            list.add(EnumChatFormatting.WHITE + "is used for dimlets of rarity 0 and 1, the regular for");
-            list.add(EnumChatFormatting.WHITE + "rarity 2 and 3 and the advanced for the higher rarities.");
+            list.add(TextFormatting.WHITE + "Every dimlet needs a memory unit. You can get");
+            list.add(TextFormatting.WHITE + "this by deconstructing other dimlets in the Dimlet");
+            list.add(TextFormatting.WHITE + "Workbench. In that same workbench you can also use");
+            list.add(TextFormatting.WHITE + "this item to make new dimlets. The basic memory unit");
+            list.add(TextFormatting.WHITE + "is used for dimlets of rarity 0 and 1, the regular for");
+            list.add(TextFormatting.WHITE + "rarity 2 and 3 and the advanced for the higher rarities.");
         } else {
-            list.add(EnumChatFormatting.WHITE + RFToolsDim.SHIFT_MESSAGE);
+            list.add(TextFormatting.WHITE + RFToolsDim.SHIFT_MESSAGE);
         }
     }
 

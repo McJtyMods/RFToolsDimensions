@@ -11,7 +11,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.TextFormatting;
 import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
@@ -41,7 +41,7 @@ public class MaterialAbsorberBlock extends GenericRFToolsBlock<MaterialAbsorberT
             int meta = block.getMetaFromState(tileEntity.getBlockState());
             int absorbing = tileEntity.getAbsorbing();
             int pct = ((DimletConstructionConfiguration.maxBlockAbsorbtion - absorbing) * 100) / DimletConstructionConfiguration.maxBlockAbsorbtion;
-            currenttip.add(EnumChatFormatting.GREEN + "Block: " + new ItemStack(block, 1, meta).getDisplayName() + " (" + pct + "%)");
+            currenttip.add(TextFormatting.GREEN + "Block: " + new ItemStack(block, 1, meta).getDisplayName() + " (" + pct + "%)");
         }
         return currenttip;
     }
@@ -56,19 +56,19 @@ public class MaterialAbsorberBlock extends GenericRFToolsBlock<MaterialAbsorberT
             Block block = Block.blockRegistry.getObject(new ResourceLocation(tagCompound.getString("block")));
             if (block != null) {
                 int meta = tagCompound.getInteger("meta");
-                list.add(EnumChatFormatting.GREEN + "Block: " + new ItemStack(block, 1, meta).getDisplayName());
+                list.add(TextFormatting.GREEN + "Block: " + new ItemStack(block, 1, meta).getDisplayName());
                 int absorbing = tagCompound.getInteger("absorbing");
                 int pct = ((DimletConstructionConfiguration.maxBlockAbsorbtion - absorbing) * 100) / DimletConstructionConfiguration.maxBlockAbsorbtion;
-                list.add(EnumChatFormatting.GREEN + "Absorbed: " + pct + "%");
+                list.add(TextFormatting.GREEN + "Absorbed: " + pct + "%");
             }
         }
 
         if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
-            list.add(EnumChatFormatting.WHITE + "Place this block on top of another block and it will");
-            list.add(EnumChatFormatting.WHITE + "gradually absorb all identical blocks in the area.");
-            list.add(EnumChatFormatting.WHITE + "You can use the end result in the Dimlet Workbench.");
+            list.add(TextFormatting.WHITE + "Place this block on top of another block and it will");
+            list.add(TextFormatting.WHITE + "gradually absorb all identical blocks in the area.");
+            list.add(TextFormatting.WHITE + "You can use the end result in the Dimlet Workbench.");
         } else {
-            list.add(EnumChatFormatting.WHITE + RFToolsDim.SHIFT_MESSAGE);
+            list.add(TextFormatting.WHITE + RFToolsDim.SHIFT_MESSAGE);
         }
     }
 

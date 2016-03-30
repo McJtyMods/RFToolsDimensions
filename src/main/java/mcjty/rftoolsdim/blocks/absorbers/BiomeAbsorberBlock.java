@@ -12,8 +12,8 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.TextFormatting;
 import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
@@ -43,7 +43,7 @@ public class BiomeAbsorberBlock extends GenericRFToolsBlock<BiomeAbsorberTileEnt
             String biomeName = tileEntity.getBiomeName();
             int absorbing = tileEntity.getAbsorbing();
             int pct = ((DimletConstructionConfiguration.maxBiomeAbsorbtion - absorbing) * 100) / DimletConstructionConfiguration.maxBiomeAbsorbtion;
-            currenttip.add(EnumChatFormatting.GREEN + "Biome: " + biomeName + " (" + pct + "%)");
+            currenttip.add(TextFormatting.GREEN + "Biome: " + biomeName + " (" + pct + "%)");
         }
         return currenttip;
     }
@@ -56,18 +56,18 @@ public class BiomeAbsorberBlock extends GenericRFToolsBlock<BiomeAbsorberTileEnt
         NBTTagCompound tagCompound = itemStack.getTagCompound();
         if (tagCompound != null && tagCompound.hasKey("biome")) {
             String biomeName = tagCompound.getString("biome");
-            list.add(EnumChatFormatting.GREEN + "Biome: " + biomeName);
+            list.add(TextFormatting.GREEN + "Biome: " + biomeName);
             int absorbing = tagCompound.getInteger("absorbing");
             int pct = ((DimletConstructionConfiguration.maxBiomeAbsorbtion - absorbing) * 100) / DimletConstructionConfiguration.maxBiomeAbsorbtion;
-            list.add(EnumChatFormatting.GREEN + "Absorbed: " + pct + "%");
+            list.add(TextFormatting.GREEN + "Absorbed: " + pct + "%");
         }
 
         if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
-            list.add(EnumChatFormatting.WHITE + "Place this block in an area and it will");
-            list.add(EnumChatFormatting.WHITE + "gradually absorb the essence of the biome it is in.");
-            list.add(EnumChatFormatting.WHITE + "You can use the end result in the Dimlet Workbench.");
+            list.add(TextFormatting.WHITE + "Place this block in an area and it will");
+            list.add(TextFormatting.WHITE + "gradually absorb the essence of the biome it is in.");
+            list.add(TextFormatting.WHITE + "You can use the end result in the Dimlet Workbench.");
         } else {
-            list.add(EnumChatFormatting.WHITE + RFToolsDim.SHIFT_MESSAGE);
+            list.add(TextFormatting.WHITE + RFToolsDim.SHIFT_MESSAGE);
         }
     }
 

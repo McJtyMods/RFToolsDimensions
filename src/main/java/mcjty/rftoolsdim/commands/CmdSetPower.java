@@ -6,7 +6,7 @@ import mcjty.rftoolsdim.dimensions.DimensionStorage;
 import mcjty.rftoolsdim.dimensions.RfToolsDimensionManager;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.TextFormatting;
 import net.minecraft.world.World;
 
 public class CmdSetPower extends AbstractRfToolsCommand {
@@ -33,7 +33,7 @@ public class CmdSetPower extends AbstractRfToolsCommand {
     @Override
     public void execute(ICommandSender sender, String[] args) {
         if (args.length > 2) {
-            sender.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "Too many parameters!"));
+            sender.addChatMessage(new ChatComponentText(TextFormatting.RED + "Too many parameters!"));
             return;
         }
 
@@ -44,7 +44,7 @@ public class CmdSetPower extends AbstractRfToolsCommand {
         RfToolsDimensionManager dimensionManager = RfToolsDimensionManager.getDimensionManager(world);
         DimensionInformation information = dimensionManager.getDimensionInformation(dim);
         if (information == null) {
-            sender.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "Not an RFTools dimension!"));
+            sender.addChatMessage(new ChatComponentText(TextFormatting.RED + "Not an RFTools dimension!"));
             return;
         }
 

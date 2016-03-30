@@ -10,7 +10,10 @@ import mcjty.rftoolsdim.config.PowerConfiguration;
 import mcjty.rftoolsdim.config.Settings;
 import mcjty.rftoolsdim.config.WorldgenConfiguration;
 import mcjty.rftoolsdim.dimensions.description.*;
-import mcjty.rftoolsdim.dimensions.dimlets.*;
+import mcjty.rftoolsdim.dimensions.dimlets.DimletKey;
+import mcjty.rftoolsdim.dimensions.dimlets.DimletObjectMapping;
+import mcjty.rftoolsdim.dimensions.dimlets.DimletRandomizer;
+import mcjty.rftoolsdim.dimensions.dimlets.KnownDimletConfiguration;
 import mcjty.rftoolsdim.dimensions.dimlets.types.DimletType;
 import mcjty.rftoolsdim.dimensions.dimlets.types.IDimletType;
 import mcjty.rftoolsdim.dimensions.dimlets.types.Patreons;
@@ -24,8 +27,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.*;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.util.Constants;
@@ -566,7 +570,7 @@ public class DimensionInformation implements IDimensionInformation {
         if (player == null) {
             Logging.log(message);
         } else {
-            Logging.message(player, EnumChatFormatting.YELLOW + message);
+            Logging.message(player, TextFormatting.YELLOW + message);
         }
     }
 
@@ -655,7 +659,7 @@ public class DimensionInformation implements IDimensionInformation {
         logDebug(player, "    Biome controller: " + (controllerType == null ? "<null>" : controllerType.name()));
         for (BiomeGenBase biome : getBiomes()) {
             if (biome != null) {
-                logDebug(player, "    Biome: " + biome.biomeName);
+                logDebug(player, "    Biome: " + biome.getBiomeName());
             }
         }
         for (FeatureType featureType : getFeatureTypes()) {
@@ -768,9 +772,9 @@ public class DimensionInformation implements IDimensionInformation {
         buf.writeInt(biomes.size());
         for (BiomeGenBase entry : biomes) {
             if (entry != null) {
-                buf.writeInt(entry.biomeID);
+                buf.writeInt(BiomeGenBase.getIdForBiome(entry));
             } else {
-                buf.writeInt(BiomeGenBase.plains.biomeID);
+                buf.writeInt(1);    // @todo: hardcoded plains
             }
         }
         NetworkTools.writeEnum(buf, controllerType, ControllerType.CONTROLLER_DEFAULT);
@@ -882,7 +886,7 @@ public class DimensionInformation implements IDimensionInformation {
             if (biome != null) {
                 biomes.add(biome);
             } else {
-                biomes.add(BiomeGenBase.plains);
+                biomes.add(BiomeGenBase.biomeRegistry.getObject(new ResourceLocation("plains")));
             }
         }
         controllerType = NetworkTools.readEnum(buf, ControllerType.values());

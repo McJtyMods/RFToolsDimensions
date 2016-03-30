@@ -6,7 +6,7 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.TextFormatting;
 import net.minecraft.world.World;
 
 public class CmdSetOwner extends AbstractRfToolsCommand {
@@ -33,10 +33,10 @@ public class CmdSetOwner extends AbstractRfToolsCommand {
     @Override
     public void execute(ICommandSender sender, String[] args) {
         if (args.length < 3) {
-            sender.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "The dimension and player parameters are missing!"));
+            sender.addChatMessage(new ChatComponentText(TextFormatting.RED + "The dimension and player parameters are missing!"));
             return;
         } else if (args.length > 3) {
-            sender.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "Too many parameters!"));
+            sender.addChatMessage(new ChatComponentText(TextFormatting.RED + "Too many parameters!"));
             return;
         }
 
@@ -46,7 +46,7 @@ public class CmdSetOwner extends AbstractRfToolsCommand {
         World world = sender.getEntityWorld();
         RfToolsDimensionManager dimensionManager = RfToolsDimensionManager.getDimensionManager(world);
         if (dimensionManager.getDimensionDescriptor(dim) == null) {
-            sender.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "Not an RFTools dimension!"));
+            sender.addChatMessage(new ChatComponentText(TextFormatting.RED + "Not an RFTools dimension!"));
             return;
         }
 
@@ -55,11 +55,11 @@ public class CmdSetOwner extends AbstractRfToolsCommand {
             if (playerName.equals(entityPlayerMP.getDisplayName())) {
                 DimensionInformation information = dimensionManager.getDimensionInformation(dim);
                 information.setOwner(playerName, entityPlayerMP.getGameProfile().getId());
-                sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GREEN + "Owner of dimension changed!"));
+                sender.addChatMessage(new ChatComponentText(TextFormatting.GREEN + "Owner of dimension changed!"));
                 dimensionManager.save(world);
                 return;
             }
         }
-        sender.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "Could not find player!"));
+        sender.addChatMessage(new ChatComponentText(TextFormatting.RED + "Could not find player!"));
     }
 }

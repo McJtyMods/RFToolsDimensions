@@ -10,11 +10,14 @@ import mcjty.rftoolsdim.network.RFToolsDimMessages;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.ItemMeshDefinition;
-import net.minecraft.client.resources.model.ModelBakery;
-import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.client.renderer.block.model.ModelBakery;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
@@ -42,7 +45,7 @@ public class DimensionMonitorItem extends GenericRFToolsItem {
             @Override
             public ModelResourceLocation getModelLocation(ItemStack stack) {
                 WorldClient world = Minecraft.getMinecraft().theWorld;
-                int id = world.provider.getDimensionId();
+                int id = world.provider.getDimension();
                 DimensionStorage storage = DimensionStorage.getDimensionStorage(world);
                 int energyLevel = storage.getEnergyLevel(id);
                 int level = (9*energyLevel) / PowerConfiguration.MAX_DIMENSION_POWER;
@@ -62,9 +65,9 @@ public class DimensionMonitorItem extends GenericRFToolsItem {
     }
 
     @Override
-    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
+    public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
         if (!world.isRemote) {
-            int id = player.worldObj.provider.getDimensionId();
+            int id = player.worldObj.provider.getDimension();
             RfToolsDimensionManager dimensionManager = RfToolsDimensionManager.getDimensionManager(player.worldObj);
             DimensionInformation dimensionInformation = dimensionManager.getDimensionInformation(id);
             if (dimensionInformation == null) {
@@ -74,15 +77,15 @@ public class DimensionMonitorItem extends GenericRFToolsItem {
                 DimensionStorage storage = DimensionStorage.getDimensionStorage(player.getEntityWorld());
                 int power = storage != null ? storage.getEnergyLevel(id) : 0;
 
-                Logging.message(player, EnumChatFormatting.BLUE + "Name: " + name + " (Id " + id + ")" + EnumChatFormatting.YELLOW + "    Power: " + power + " RF");
+                Logging.message(player, TextFormatting.BLUE + "Name: " + name + " (Id " + id + ")" + TextFormatting.YELLOW + "    Power: " + power + " RF");
                 if (player.isSneaking()) {
-                    Logging.message(player, EnumChatFormatting.RED + "Description: " + dimensionInformation.getDescriptor().getDescriptionString());
+                    Logging.message(player, TextFormatting.RED + "Description: " + dimensionInformation.getDescriptor().getDescriptionString());
                     System.out.println("Description:  = " + dimensionInformation.getDescriptor().getDescriptionString());
                 }
             }
-            return stack;
+            return new ActionResult<>(EnumActionResult.SUCCESS, stack);
         }
-        return stack;
+        return new ActionResult<>(EnumActionResult.SUCCESS, stack);
     }
 
 //    @SideOnly(Side.CLIENT)
@@ -104,7 +107,7 @@ public class DimensionMonitorItem extends GenericRFToolsItem {
     @Override
     public void addInformation(ItemStack itemStack, EntityPlayer player, List list, boolean whatIsThis) {
         super.addInformation(itemStack, player, list, whatIsThis);
-        int id = player.worldObj.provider.getDimensionId();
+        int id = player.worldObj.provider.getDimension();
         RfToolsDimensionManager dimensionManager = RfToolsDimensionManager.getDimensionManager(player.worldObj);
         DimensionInformation dimensionInformation = dimensionManager.getDimensionInformation(id);
         if (dimensionInformation == null) {
@@ -118,8 +121,8 @@ public class DimensionMonitorItem extends GenericRFToolsItem {
             DimensionStorage storage = DimensionStorage.getDimensionStorage(player.getEntityWorld());
             int power = storage != null ? storage.getEnergyLevel(id) : 0;
 
-            list.add(EnumChatFormatting.BLUE + "Name: " + name + " (Id " + id + ")");
-            list.add(EnumChatFormatting.YELLOW + "Power: " + power + " RF");
+            list.add(TextFormatting.BLUE + "Name: " + name + " (Id " + id + ")");
+            list.add(TextFormatting.YELLOW + "Power: " + power + " RF");
         }
     }
 

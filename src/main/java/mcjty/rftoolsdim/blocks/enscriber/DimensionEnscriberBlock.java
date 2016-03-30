@@ -6,7 +6,7 @@ import mcjty.rftoolsdim.blocks.GenericRFToolsBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.TextFormatting;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.input.Keyboard;
@@ -36,12 +36,12 @@ public class DimensionEnscriberBlock extends GenericRFToolsBlock<DimensionEnscri
         super.addInformation(itemStack, player, list, whatIsThis);
 
         if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
-            list.add(EnumChatFormatting.WHITE + "With this device you can construct your dimensions");
-            list.add(EnumChatFormatting.WHITE + "by combining specific dimlets into an empty dimension.");
-            list.add(EnumChatFormatting.WHITE + "tab. You can also deconstruct dimension tabs to get the");
-            list.add(EnumChatFormatting.WHITE + "original dimlets back.");
+            list.add(TextFormatting.WHITE + "With this device you can construct your dimensions");
+            list.add(TextFormatting.WHITE + "by combining specific dimlets into an empty dimension.");
+            list.add(TextFormatting.WHITE + "tab. You can also deconstruct dimension tabs to get the");
+            list.add(TextFormatting.WHITE + "original dimlets back.");
         } else {
-            list.add(EnumChatFormatting.WHITE + RFToolsDim.SHIFT_MESSAGE);
+            list.add(TextFormatting.WHITE + RFToolsDim.SHIFT_MESSAGE);
         }
     }
 }

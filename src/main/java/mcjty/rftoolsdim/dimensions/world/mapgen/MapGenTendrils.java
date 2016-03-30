@@ -1,11 +1,10 @@
 package mcjty.rftoolsdim.dimensions.world.mapgen;
 
-import mcjty.lib.varia.BlockMeta;
 import mcjty.rftoolsdim.dimensions.world.GenericChunkProvider;
-import net.minecraft.block.Block;
+import mcjty.rftoolsdim.dimensions.world.terrain.BaseTerrainGenerator;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.ChunkPrimer;
 
@@ -130,10 +129,10 @@ public class MapGenTendrils {
                                     double d12 = (l3 + 0.5D - p_151541_8_) / d7;
 
                                     if (d12 > -0.7D && d13 * d13 + d12 * d12 + d14 * d14 < 1.0D) {
-                                        IBlockState block = primer.getBlockState(k3);
+                                        IBlockState block = BaseTerrainGenerator.getBlockState(primer, k3);
 
                                         if (block.getBlock() == Blocks.air || block == null) {
-                                            primer.setBlockState(k3, baseBlock);
+                                            BaseTerrainGenerator.setBlockState(primer, k3, baseBlock);
                                         }
                                     }
 
