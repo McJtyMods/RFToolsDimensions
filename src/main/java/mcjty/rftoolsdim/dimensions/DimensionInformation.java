@@ -1116,8 +1116,9 @@ public class DimensionInformation implements IDimensionInformation {
 
     private void setupBiomeMapping() {
         biomeMapping.clear();
-//@todo
         if (controllerType == ControllerType.CONTROLLER_FILTERED) {
+            //@todo
+//            BiomeGenBase.biomeRegistry.iterator()
 //            BiomeGenBase[] biomeGenArray = BiomeGenBase.getBiomeGenArray();
 //            final Set<Integer> ids = new HashSet<Integer>();
 //            for (BiomeGenBase biome : biomes) {
