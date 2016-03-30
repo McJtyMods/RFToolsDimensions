@@ -7,7 +7,7 @@ import mcjty.rftoolsdim.dimensions.description.DimensionDescriptor;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.TextComponentString;
 import net.minecraft.util.TextFormatting;
 import net.minecraft.world.World;
 
@@ -35,10 +35,10 @@ public class CmdCreateTab extends AbstractRfToolsCommand {
     @Override
     public void execute(ICommandSender sender, String[] args) {
         if (args.length < 2) {
-            sender.addChatMessage(new ChatComponentText(TextFormatting.RED + "The dimension parameter is missing!"));
+            sender.addChatMessage(new TextComponentString(TextFormatting.RED + "The dimension parameter is missing!"));
             return;
         } else if (args.length > 2) {
-            sender.addChatMessage(new ChatComponentText(TextFormatting.RED + "Too many parameters!"));
+            sender.addChatMessage(new TextComponentString(TextFormatting.RED + "Too many parameters!"));
             return;
         }
 
@@ -48,7 +48,7 @@ public class CmdCreateTab extends AbstractRfToolsCommand {
         RfToolsDimensionManager dimensionManager = RfToolsDimensionManager.getDimensionManager(world);
         DimensionDescriptor dimensionDescriptor = dimensionManager.getDimensionDescriptor(dim);
         if (dimensionDescriptor == null) {
-            sender.addChatMessage(new ChatComponentText(TextFormatting.RED + "Not an RFTools dimension!"));
+            sender.addChatMessage(new TextComponentString(TextFormatting.RED + "Not an RFTools dimension!"));
             return;
         }
 
@@ -57,7 +57,7 @@ public class CmdCreateTab extends AbstractRfToolsCommand {
             ItemStack tab = DimensionEnscriberTileEntity.createRealizedTab(dimensionDescriptor, sender.getEntityWorld());
             InventoryHelper.mergeItemStack(player.inventory, false, tab, 0, 35, null);
         } else {
-            sender.addChatMessage(new ChatComponentText(TextFormatting.RED + "This command only works as a player!"));
+            sender.addChatMessage(new TextComponentString(TextFormatting.RED + "This command only works as a player!"));
         }
     }
 }

@@ -3,11 +3,10 @@ package mcjty.rftoolsdim.dimensions.world;
 import mcjty.rftoolsdim.dimensions.DimensionInformation;
 import mcjty.rftoolsdim.dimensions.types.ControllerType;
 import net.minecraft.world.WorldType;
-import net.minecraft.world.biome.WorldChunkManager;
 import net.minecraft.world.gen.layer.GenLayer;
 import net.minecraft.world.gen.layer.GenLayerVoronoiZoom;
 
-public class GenericWorldChunkManager extends WorldChunkManager {
+public class GenericWorldChunkManager {/* @todo extends WorldChunkManager {
     private DimensionInformation dimensionInformation = null;
 
     public static DimensionInformation hackyDimensionInformation;       // Hack to get the dimension information here before 'super'.
@@ -60,5 +59,5 @@ public class GenericWorldChunkManager extends WorldChunkManager {
         GenLayerVoronoiZoom zoomLayer = new GenLayerVoronoiZoom(10L, rflayer);
         zoomLayer.initWorldGenSeed(seed);
         return new GenLayer[] {rflayer, zoomLayer, rflayer};
-    }
+    }*/
 }

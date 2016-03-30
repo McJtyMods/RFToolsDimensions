@@ -11,7 +11,11 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.*;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.ITickable;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 
 import java.util.HashSet;
 import java.util.Iterator;
@@ -76,7 +80,7 @@ public class LiquidAbsorberTileEntity extends GenericTileEntity implements ITick
     private Block isValidSourceBlock(BlockPos coordinate) {
         IBlockState state = worldObj.getBlockState(coordinate);
         Block block = state.getBlock();
-        if (block == null || block.getMaterial() == Material.air) {
+        if (block == null || block.getMaterial(state) == Material.air) {
             return null;
         }
 
@@ -121,10 +125,12 @@ public class LiquidAbsorberTileEntity extends GenericTileEntity implements ITick
                     checkBlock(c, EnumFacing.NORTH);
 
                     if (blockMatches(c)) {
-                        RFToolsTools.playSound(worldObj, block.stepSound.getBreakSound(), getPos().getX(), getPos().getY(), getPos().getZ(), 1.0f, 1.0f);
+                        // @todo check getBreakSound() client-side!
+                        RFToolsTools.playSound(worldObj, block.getSoundType().getBreakSound(), getPos().getX(), getPos().getY(), getPos().getZ(), 1.0f, 1.0f);
                         worldObj.setBlockToAir(c);
                         absorbing--;
-                        worldObj.markBlockForUpdate(c);
+                        IBlockState state = worldObj.getBlockState(c);
+                        worldObj.notifyBlockUpdate(c, state, state, 3);
                     }
                 }
             }

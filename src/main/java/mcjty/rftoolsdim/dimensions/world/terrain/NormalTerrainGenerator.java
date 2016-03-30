@@ -17,7 +17,6 @@ import net.minecraft.world.gen.NoiseGeneratorOctaves;
 import net.minecraft.world.gen.NoiseGeneratorPerlin;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.terraingen.ChunkGeneratorEvent;
-import net.minecraftforge.event.terraingen.TerrainGen;
 import net.minecraftforge.fml.common.eventhandler.Event;
 
 import java.util.Random;
@@ -71,7 +70,8 @@ public class NormalTerrainGenerator implements BaseTerrainGenerator {
         NoiseGeneratorOctaves mobSpawnerNoise = new NoiseGeneratorOctaves(provider.rand, 8);
 
         NoiseGenerator[] noiseGens = {noiseGen1, noiseGen2, noiseGen3, noiseGen4, noiseGen5, noiseGen6, mobSpawnerNoise};
-        noiseGens = TerrainGen.getModdedNoiseGenerators(world, provider.rand, noiseGens);
+        //@todo
+//        noiseGens = TerrainGen.getModdedNoiseGenerators(world, provider.rand, noiseGens);
         this.noiseGen1 = (NoiseGeneratorOctaves) noiseGens[0];
         this.noiseGen2 = (NoiseGeneratorOctaves) noiseGens[1];
         this.noiseGen3 = (NoiseGeneratorOctaves) noiseGens[2];
@@ -280,7 +280,7 @@ public class NormalTerrainGenerator implements BaseTerrainGenerator {
                             for (int z = 0; z < 4; ++z) {
                                 index += maxheight;
                                 if ((d15 += d16) > 0.0D) {
-                                    setBlockState(primer, index, baseBlock);
+                                    BaseTerrainGenerator.setBlockState(primer, index, baseBlock);
                                     // @todo find a way to support this 127 feature
 //                                    if (baseMeta == 127) {
 //                                        realMeta = (byte)((height/2 + x/2 + z/2) & 0xf);
@@ -288,9 +288,9 @@ public class NormalTerrainGenerator implements BaseTerrainGenerator {
 //                                        realMeta = baseMeta;
 //                                    }
                                 } else if (height < waterLevel) {
-                                    setBlockState(primer, index, baseLiquid.getDefaultState());
+                                    BaseTerrainGenerator.setBlockState(primer, index, baseLiquid.getDefaultState());
                                 } else {
-                                    setBlockState(primer, index, Blocks.air.getDefaultState());
+                                    BaseTerrainGenerator.setBlockState(primer, index, Blocks.air.getDefaultState());
                                 }
                             }
 
@@ -310,11 +310,12 @@ public class NormalTerrainGenerator implements BaseTerrainGenerator {
 
     @Override
     public void replaceBlocksForBiome(int chunkX, int chunkZ, ChunkPrimer primer, BiomeGenBase[] biomeGenBases) {
-        ChunkGeneratorEvent.ReplaceBiomeBlocks event = new ChunkGeneratorEvent.ReplaceBiomeBlocks(provider, chunkX, chunkZ, primer, world);
-        MinecraftForge.EVENT_BUS.post(event);
-        if (event.getResult() == Event.Result.DENY) {
-            return;
-        }
+//        ChunkGeneratorEvent.ReplaceBiomeBlocks event = new ChunkGeneratorEvent.ReplaceBiomeBlocks(provider, chunkX, chunkZ, primer, world);
+//        MinecraftForge.EVENT_BUS.post(event);
+//        if (event.getResult() == Event.Result.DENY) {
+//            return;
+//        }
+        //@todo
 
         double d0 = 0.03125D;
         this.stoneNoise = this.noiseGen4.func_151599_a(this.stoneNoise, (chunkX * 16), (chunkZ * 16), 16, 16, d0 * 2.0D, d0 * 2.0D, 1.0D);

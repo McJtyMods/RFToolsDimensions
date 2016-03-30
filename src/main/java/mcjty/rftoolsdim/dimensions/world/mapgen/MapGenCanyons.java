@@ -1,11 +1,10 @@
 package mcjty.rftoolsdim.dimensions.world.mapgen;
 
-import mcjty.lib.varia.BlockMeta;
 import mcjty.rftoolsdim.dimensions.world.GenericChunkProvider;
-import net.minecraft.block.Block;
+import mcjty.rftoolsdim.dimensions.world.terrain.BaseTerrainGenerator;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.ChunkPrimer;
 
@@ -128,10 +127,10 @@ public class MapGenCanyons {
                                     double d11 = (l3 + 0.5D - p_151540_8_) / d6;
 
                                     if ((d13 * d13 + d14 * d14) * this.field_75046_d[l3] + d11 * d11 / 6.0D < 1.0D) {
-                                        IBlockState block = primer.getBlockState(k3);
+                                        IBlockState block = BaseTerrainGenerator.getBlockState(primer, k3);
 
                                         if (block.getBlock() == Blocks.air || block == null) {
-                                            primer.setBlockState(k3, baseBlock);
+                                            BaseTerrainGenerator.setBlockState(primer, k3, baseBlock);
                                         }
                                     }
 

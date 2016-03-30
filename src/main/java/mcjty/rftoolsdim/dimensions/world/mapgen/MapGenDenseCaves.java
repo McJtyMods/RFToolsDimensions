@@ -1,13 +1,11 @@
 package mcjty.rftoolsdim.dimensions.world.mapgen;
 
 import com.google.common.base.Objects;
-import mcjty.lib.varia.BlockMeta;
 import mcjty.rftoolsdim.dimensions.world.GenericChunkProvider;
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.chunk.ChunkPrimer;
@@ -212,9 +210,10 @@ public class MapGenDenseCaves extends MapGenCaves {
 
     //Exception biomes to make sure we generate like vanilla
     private boolean isExceptionBiome(BiomeGenBase biome) {
-        if (biome == BiomeGenBase.mushroomIsland) return true;
-        if (biome == BiomeGenBase.beach) return true;
-        if (biome == BiomeGenBase.desert) return true;
+//        if (biome == BiomeGenBase.mushroomIsland) return true;
+//        if (biome == BiomeGenBase.beach) return true;
+//        if (biome == BiomeGenBase.desert) return true;
+        //@todo
         return false;
     }
 

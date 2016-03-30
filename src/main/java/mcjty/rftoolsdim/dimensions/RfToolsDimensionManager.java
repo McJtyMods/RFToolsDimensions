@@ -20,9 +20,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.ClassInheritanceMultiMap;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldSavedData;
 import net.minecraft.world.WorldServer;
@@ -104,7 +104,7 @@ public class RfToolsDimensionManager extends WorldSavedData {
                     Logging.log("        Could not unregister dimension: " + id);
                 }
                 try {
-                    DimensionManager.unregisterProviderType(id);
+                    DimensionManager.unregisterDimension(id);
                 } catch (Exception e) {
                     // We ignore this error.
                     Logging.log("        Could not unregister provider: " + id);
@@ -143,10 +143,10 @@ public class RfToolsDimensionManager extends WorldSavedData {
                 int cost = 0;
                 if (PowerConfiguration.dimensionDifficulty != -1) {
                     RfToolsDimensionManager dimensionManager = RfToolsDimensionManager.getDimensionManager(world);
-                    DimensionInformation information = dimensionManager.getDimensionInformation(world.provider.getDimensionId());
+                    DimensionInformation information = dimensionManager.getDimensionInformation(world.provider.getDimension());
                     cost = information.getActualRfCost();
                     if (cost == 0) {
-                        DimensionDescriptor descriptor = dimensionManager.getDimensionDescriptor(world.provider.getDimensionId());
+                        DimensionDescriptor descriptor = dimensionManager.getDimensionDescriptor(world.provider.getDimension());
                         cost = descriptor.getRfMaintainCost();
                     }
                 }
@@ -178,7 +178,8 @@ public class RfToolsDimensionManager extends WorldSavedData {
 
         for (int i1 = i; i1 <= j; ++i1) {
             for (int j1 = k; j1 <= l; ++j1) {
-                if (world.getChunkProvider().chunkExists(i1, j1)) {
+                // @todo fix like in RFTools
+                if (world.getChunkProvider().getLoadedChunk(i1, j1) != null) {
                     Chunk chunk = world.getChunkFromChunkCoords(i1, j1);
                     getEntitiesInSphere(chunk, c, radius, tokeep);
                 }
@@ -215,10 +216,12 @@ public class RfToolsDimensionManager extends WorldSavedData {
 
     public static void unfreezeDimension(World world) {
         WorldServer worldServer = (WorldServer) world;
-        for (Object chunk : worldServer.theChunkProviderServer.loadedChunks) {
-            Chunk c = (Chunk) chunk;
-            unfreezeChunk(c);
-        }
+
+        //@todo
+//        for (Object chunk : worldServer.theChunkProviderServer.loadedChunks) {
+//            Chunk c = (Chunk) chunk;
+//            unfreezeChunk(c);
+//        }
     }
 
     public static void unfreezeChunk(Chunk chunk) {
@@ -288,8 +291,9 @@ public class RfToolsDimensionManager extends WorldSavedData {
 
     private void registerDimensionToServerAndClient(int id) {
         if (!DimensionManager.isDimensionRegistered(id)) {
-            DimensionManager.registerProviderType(id, GenericWorldProvider.class, false);
-            DimensionManager.registerDimension(id, id);
+//            DimensionManager.registerProviderType(id, GenericWorldProvider.class, false);
+            // @todo
+//            DimensionManager.registerDimension(id, id);
         }
         RFToolsDimMessages.INSTANCE.sendToAll(new PacketRegisterDimensions(id));
     }
@@ -320,10 +324,10 @@ public class RfToolsDimensionManager extends WorldSavedData {
     /**
      * Get a world for a dimension, possibly loading it from the configuration manager.
      */
-    public static World getWorldForDimension(int id) {
+    public static World getWorldForDimension(World world, int id) {
         World w = DimensionManager.getWorld(id);
         if (w == null) {
-            w = MinecraftServer.getServer().getConfigurationManager().getServerInstance().worldServerForDimension(id);
+            w = world.getMinecraftServer().worldServerForDimension(id);
         }
         return w;
     }
@@ -336,7 +340,7 @@ public class RfToolsDimensionManager extends WorldSavedData {
         if (DimensionManager.isDimensionRegistered(id)) {
             DimensionManager.unregisterDimension(id);
         }
-        DimensionManager.unregisterProviderType(id);
+        DimensionManager.unregisterDimension(id);
     }
 
     public void recoverDimension(World world, int id, DimensionDescriptor descriptor, String name, String playerName, UUID player) {
@@ -406,20 +410,21 @@ public class RfToolsDimensionManager extends WorldSavedData {
     private void touchSpawnChunk(int id) {
         // Make sure world generation kicks in for at least one chunk so that our matter receiver
         // is generated and registered.
-        WorldServer worldServerForDimension = MinecraftServer.getServer().worldServerForDimension(id);
-        ChunkProviderServer providerServer = worldServerForDimension.theChunkProviderServer;
-        if (!providerServer.chunkExists(0, 0)) {
-            try {
-                providerServer.loadChunk(0, 0);
-                providerServer.populate(providerServer, 0, 0);
-//                providerServer.unloadChunksIfNotNearSpawn(0, 0);
-                providerServer.unloadAllChunks();
-            } catch (Exception e) {
-                Logging.logError("Something went wrong during creation of the dimension!");
-                e.printStackTrace();
-                // We catch this exception to make sure our dimension tab is at least ok.
-            }
-        }
+//@todo
+//        WorldServer worldServerForDimension = MinecraftServer.getServer().worldServerForDimension(id);
+//        ChunkProviderServer providerServer = worldServerForDimension.theChunkProviderServer;
+//        if (!providerServer.chunkExists(0, 0)) {
+//            try {
+//                providerServer.loadChunk(0, 0);
+//                providerServer.populate(providerServer, 0, 0);
+////                providerServer.unloadChunksIfNotNearSpawn(0, 0);
+//                providerServer.unloadAllChunks();
+//            } catch (Exception e) {
+//                Logging.logError("Something went wrong during creation of the dimension!");
+//                e.printStackTrace();
+//                // We catch this exception to make sure our dimension tab is at least ok.
+//            }
+//        }
     }
 
     @Override

@@ -13,7 +13,6 @@ import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.gen.NoiseGenerator;
 import net.minecraft.world.gen.NoiseGeneratorOctaves;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.terraingen.ChunkProviderEvent;
 import net.minecraftforge.event.terraingen.TerrainGen;
 import net.minecraftforge.fml.common.eventhandler.Event;
 
@@ -77,7 +76,8 @@ public class CavernTerrainGenerator implements BaseTerrainGenerator {
         this.netherNoiseGen7 = new NoiseGeneratorOctaves(provider.rand, 16);
 
         NoiseGenerator[] noiseGens = {netherNoiseGen1, netherNoiseGen2, netherNoiseGen3, slowsandGravelNoiseGen, netherrackExculsivityNoiseGen, netherNoiseGen6, netherNoiseGen7};
-        noiseGens = TerrainGen.getModdedNoiseGenerators(world, provider.rand, noiseGens);
+//        noiseGens = TerrainGen.getModdedNoiseGenerators(world, provider.rand, noiseGens);
+        //@todo
         this.netherNoiseGen1 = (NoiseGeneratorOctaves)noiseGens[0];
         this.netherNoiseGen2 = (NoiseGeneratorOctaves)noiseGens[1];
         this.netherNoiseGen3 = (NoiseGeneratorOctaves)noiseGens[2];
@@ -91,11 +91,12 @@ public class CavernTerrainGenerator implements BaseTerrainGenerator {
      * size.
      */
     private double[] initializeNoiseField(double[] noiseField, int x, int y, int z, int sx, int sy, int sz) {
-        ChunkProviderEvent.InitNoiseField event = new ChunkProviderEvent.InitNoiseField(provider, noiseField, x, y, z, sx, sy, sz);
-        MinecraftForge.EVENT_BUS.post(event);
-        if (event.getResult() == Event.Result.DENY) {
-            return event.noisefield;
-        }
+//        ChunkProviderEvent.InitNoiseField event = new ChunkProviderEvent.InitNoiseField(provider, noiseField, x, y, z, sx, sy, sz);
+//        MinecraftForge.EVENT_BUS.post(event);
+//        if (event.getResult() == Event.Result.DENY) {
+//            return event.noisefield;
+//        }
+        //@todo
 
         int syr = cavernheight[heightsetting.ordinal()];
 
@@ -226,14 +227,14 @@ public class CavernTerrainGenerator implements BaseTerrainGenerator {
 
                             for (int z = 0; z < 4; ++z) {
                                 if (d15 > 0.0D) {
-                                    primer.setBlockState(index, baseBlock);
+                                    BaseTerrainGenerator.setBlockState(primer, index, baseBlock);
                                     // @todo support 127
 //                                    if (baseMeta == 127) {
 //                                        realMeta = (byte)((height/2 + x/2 + z/2) & 0xf);
                                 } else if (height < liquidlevel) {
-                                    primer.setBlockState(index, baseLiquid.getDefaultState());
+                                    BaseTerrainGenerator.setBlockState(primer, index, baseLiquid.getDefaultState());
                                 } else {
-                                    primer.setBlockState(index, Blocks.air.getDefaultState());
+                                    BaseTerrainGenerator.setBlockState(primer, index, Blocks.air.getDefaultState());
                                 }
 
                                 index += maxheight;
@@ -258,11 +259,12 @@ public class CavernTerrainGenerator implements BaseTerrainGenerator {
 
     @Override
     public void replaceBlocksForBiome(int chunkX, int chunkZ, ChunkPrimer primer, BiomeGenBase[] biomeGenBases) {
-        ChunkProviderEvent.ReplaceBiomeBlocks event = new ChunkProviderEvent.ReplaceBiomeBlocks(provider, chunkX, chunkZ, primer, world);
-        MinecraftForge.EVENT_BUS.post(event);
-        if (event.getResult() == Event.Result.DENY) {
-            return;
-        }
+//        ChunkProviderEvent.ReplaceBiomeBlocks event = new ChunkProviderEvent.ReplaceBiomeBlocks(provider, chunkX, chunkZ, primer, world);
+//        MinecraftForge.EVENT_BUS.post(event);
+//        if (event.getResult() == Event.Result.DENY) {
+//            return;
+//        }
+        //@todo
 
         IBlockState baseBlock = provider.dimensionInformation.getBaseBlockForTerrain();
         Block baseLiquid = provider.dimensionInformation.getFluidForTerrain();
@@ -281,11 +283,11 @@ public class CavernTerrainGenerator implements BaseTerrainGenerator {
                     int l1 = (l * 16 + k) * 256 + k1;
 
                     if (k1 < WorldgenConfiguration.bedrockLayer) {
-                        primer.setBlockState(l1, Blocks.bedrock.getDefaultState());
+                        BaseTerrainGenerator.setBlockState(primer, l1, Blocks.bedrock.getDefaultState());
                     } else if (k1 < 255 - provider.rand.nextInt(5) && k1 > provider.rand.nextInt(5)) {
-                        IBlockState block2 = primer.getBlockState(l1);
+                        IBlockState block2 = BaseTerrainGenerator.getBlockState(primer, l1);
 
-                        if (block2 != null && block2.getBlock().getMaterial() != Material.air) {
+                        if (block2 != null && block2.getBlock().getMaterial(block2) != Material.air) {
                             if (block2 == baseBlock) {
                                 if (j1 == -1) {
                                     if (i1 <= 0) {
@@ -294,21 +296,21 @@ public class CavernTerrainGenerator implements BaseTerrainGenerator {
                                         block = baseBlock;
                                     }
 
-                                    if (k1 < b0 && (block == null || block.getBlock().getMaterial() == Material.air)) {
+                                    if (k1 < b0 && (block == null || block.getBlock().getMaterial(block) == Material.air)) {
                                         block = baseLiquid.getDefaultState();
                                     }
 
                                     j1 = i1;
 
                                     if (k1 >= b0 - 1) {
-                                        primer.setBlockState(l1, block);
+                                        BaseTerrainGenerator.setBlockState(primer, l1, block);
                                     } else {
-                                        primer.setBlockState(l1, baseBlock);
+                                        BaseTerrainGenerator.setBlockState(primer, l1, baseBlock);
                                     }
                                 }
                                 else if (j1 > 0) {
                                     --j1;
-                                    primer.setBlockState(l1, baseBlock);
+                                    BaseTerrainGenerator.setBlockState(primer, l1, baseBlock);
                                 }
                             }
                         }
@@ -317,7 +319,7 @@ public class CavernTerrainGenerator implements BaseTerrainGenerator {
                         }
                     } else if (heightsetting == CavernHeight.HEIGHT_256) {
                         // Only use a bedrock ceiling if the height is 256.
-                        primer.setBlockState(l1, Blocks.bedrock.getDefaultState());
+                        BaseTerrainGenerator.setBlockState(primer, l1, Blocks.bedrock.getDefaultState());
                     }
                 }
             }

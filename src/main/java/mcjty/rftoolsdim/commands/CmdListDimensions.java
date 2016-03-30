@@ -5,7 +5,7 @@ import mcjty.rftoolsdim.dimensions.DimensionStorage;
 import mcjty.rftoolsdim.dimensions.RfToolsDimensionManager;
 import mcjty.rftoolsdim.dimensions.description.DimensionDescriptor;
 import net.minecraft.command.ICommandSender;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.TextComponentString;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
 
@@ -38,7 +38,7 @@ public class CmdListDimensions extends AbstractRfToolsCommand {
         for (WorldServer world : worlds) {
             int id = world.provider.getDimensionId();
             String dimName = world.provider.getDimensionName();
-            sender.addChatMessage(new ChatComponentText("    Loaded: id:" + id + ", " + dimName));
+            sender.addChatMessage(new TextComponentString("    Loaded: id:" + id + ", " + dimName));
         }
 
         RfToolsDimensionManager dimensionManager = RfToolsDimensionManager.getDimensionManager(sender.getEntityWorld());
@@ -50,9 +50,9 @@ public class CmdListDimensions extends AbstractRfToolsCommand {
             int energy = dimensionStorage.getEnergyLevel(id);
             String ownerName = dimensionInformation.getOwnerName();
             if (ownerName != null && !ownerName.isEmpty()) {
-                sender.addChatMessage(new ChatComponentText("    RfTools: id:" + id + ", " + dimName + " (power " + energy + ") (owner " + ownerName + ")"));
+                sender.addChatMessage(new TextComponentString("    RfTools: id:" + id + ", " + dimName + " (power " + energy + ") (owner " + ownerName + ")"));
             } else {
-                sender.addChatMessage(new ChatComponentText("    RfTools: id:" + id + ", " + dimName + " (power " + energy + ")"));
+                sender.addChatMessage(new TextComponentString("    RfTools: id:" + id + ", " + dimName + " (power " + energy + ")"));
             }
         }
     }

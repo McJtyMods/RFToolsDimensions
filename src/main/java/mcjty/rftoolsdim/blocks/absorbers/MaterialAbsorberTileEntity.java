@@ -11,6 +11,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.*;
+import net.minecraft.util.math.BlockPos;
 
 import java.util.HashSet;
 import java.util.Iterator;
@@ -105,10 +106,11 @@ public class MaterialAbsorberTileEntity extends GenericTileEntity implements ITi
                     checkBlock(c, EnumFacing.NORTH);
 
                     if (blockMatches(c)) {
-                        RFToolsTools.playSound(worldObj, blockState.getBlock().stepSound.getBreakSound(), getPos().getX(), getPos().getY(), getPos().getZ(), 1.0f, 1.0f);
+                        RFToolsTools.playSound(worldObj, blockState.getBlock().getSoundType().getBreakSound(), getPos().getX(), getPos().getY(), getPos().getZ(), 1.0f, 1.0f);
                         worldObj.setBlockToAir(c);
                         absorbing--;
-                        worldObj.markBlockForUpdate(c);
+                        IBlockState state = worldObj.getBlockState(c);
+                        worldObj.notifyBlockUpdate(c, state, state, 3);
                     }
                 }
             }

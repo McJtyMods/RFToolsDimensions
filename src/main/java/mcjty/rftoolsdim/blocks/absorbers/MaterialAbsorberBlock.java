@@ -4,16 +4,15 @@ import mcjty.lib.container.EmptyContainer;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.blocks.GenericRFToolsBlock;
 import mcjty.rftoolsdim.config.DimletConstructionConfiguration;
-import mcp.mobius.waila.api.IWailaConfigHandler;
-import mcp.mobius.waila.api.IWailaDataAccessor;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.TextFormatting;
-import net.minecraft.util.EnumWorldBlockLayer;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.input.Keyboard;
@@ -31,20 +30,21 @@ public class MaterialAbsorberBlock extends GenericRFToolsBlock<MaterialAbsorberT
         return true;
     }
 
-    @SideOnly(Side.CLIENT)
-    @Override
-    public List<String> getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
-        super.getWailaBody(itemStack, currenttip, accessor, config);
-        MaterialAbsorberTileEntity tileEntity = (MaterialAbsorberTileEntity) accessor.getTileEntity();
-        if (tileEntity != null && tileEntity.getBlockState() != null) {
-            Block block = tileEntity.getBlockState().getBlock();
-            int meta = block.getMetaFromState(tileEntity.getBlockState());
-            int absorbing = tileEntity.getAbsorbing();
-            int pct = ((DimletConstructionConfiguration.maxBlockAbsorbtion - absorbing) * 100) / DimletConstructionConfiguration.maxBlockAbsorbtion;
-            currenttip.add(TextFormatting.GREEN + "Block: " + new ItemStack(block, 1, meta).getDisplayName() + " (" + pct + "%)");
-        }
-        return currenttip;
-    }
+    //@todo
+//    @SideOnly(Side.CLIENT)
+//    @Override
+//    public List<String> getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
+//        super.getWailaBody(itemStack, currenttip, accessor, config);
+//        MaterialAbsorberTileEntity tileEntity = (MaterialAbsorberTileEntity) accessor.getTileEntity();
+//        if (tileEntity != null && tileEntity.getBlockState() != null) {
+//            Block block = tileEntity.getBlockState().getBlock();
+//            int meta = block.getMetaFromState(tileEntity.getBlockState());
+//            int absorbing = tileEntity.getAbsorbing();
+//            int pct = ((DimletConstructionConfiguration.maxBlockAbsorbtion - absorbing) * 100) / DimletConstructionConfiguration.maxBlockAbsorbtion;
+//            currenttip.add(TextFormatting.GREEN + "Block: " + new ItemStack(block, 1, meta).getDisplayName() + " (" + pct + "%)");
+//        }
+//        return currenttip;
+//    }
 
     @SideOnly(Side.CLIENT)
     @Override
@@ -74,17 +74,17 @@ public class MaterialAbsorberBlock extends GenericRFToolsBlock<MaterialAbsorberT
 
     @SideOnly(Side.CLIENT)
     @Override
-    public EnumWorldBlockLayer getBlockLayer() {
-        return EnumWorldBlockLayer.CUTOUT;
+    public BlockRenderLayer getBlockLayer() {
+        return BlockRenderLayer.CUTOUT;
     }
 
     @Override
-    public boolean isBlockNormalCube() {
+    public boolean isBlockNormalCube(IBlockState state) {
         return false;
     }
 
     @Override
-    public boolean isOpaqueCube() {
+    public boolean isOpaqueCube(IBlockState state) {
         return false;
     }
 

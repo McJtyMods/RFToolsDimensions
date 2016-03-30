@@ -4,7 +4,7 @@ import mcjty.rftoolsdim.dimensions.DimensionInformation;
 import mcjty.rftoolsdim.dimensions.RfToolsDimensionManager;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.TextComponentString;
 import net.minecraft.util.TextFormatting;
 import net.minecraft.world.World;
 
@@ -37,7 +37,7 @@ public class CmdInfo extends AbstractRfToolsCommand {
         if (args.length == 2) {
             dim = fetchInt(sender, args, 1, 0);
         } else if (args.length > 2) {
-            sender.addChatMessage(new ChatComponentText(TextFormatting.RED + "Too many parameters!"));
+            sender.addChatMessage(new TextComponentString(TextFormatting.RED + "Too many parameters!"));
             return;
         } else {
             dim = world.provider.getDimensionId();
@@ -46,14 +46,14 @@ public class CmdInfo extends AbstractRfToolsCommand {
         RfToolsDimensionManager dimensionManager = RfToolsDimensionManager.getDimensionManager(world);
         DimensionInformation information = dimensionManager.getDimensionInformation(dim);
         if (information == null) {
-            sender.addChatMessage(new ChatComponentText(TextFormatting.RED + "Not an RFTools dimension!"));
+            sender.addChatMessage(new TextComponentString(TextFormatting.RED + "Not an RFTools dimension!"));
             return;
         }
-        sender.addChatMessage(new ChatComponentText(TextFormatting.YELLOW + "Dimension ID " + dim));
-        sender.addChatMessage(new ChatComponentText(TextFormatting.YELLOW + "Description string " + information.getDescriptor().getDescriptionString()));
+        sender.addChatMessage(new TextComponentString(TextFormatting.YELLOW + "Dimension ID " + dim));
+        sender.addChatMessage(new TextComponentString(TextFormatting.YELLOW + "Description string " + information.getDescriptor().getDescriptionString()));
         String ownerName = information.getOwnerName();
         if (ownerName != null && !ownerName.isEmpty()) {
-            sender.addChatMessage(new ChatComponentText(TextFormatting.YELLOW + "Owned by: " + ownerName));
+            sender.addChatMessage(new TextComponentString(TextFormatting.YELLOW + "Owned by: " + ownerName));
         }
         if (sender instanceof EntityPlayer) {
             information.dump((EntityPlayer) sender);

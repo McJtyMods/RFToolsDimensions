@@ -22,10 +22,8 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraft.world.biome.BiomeGenBase;
-import net.minecraftforge.common.ChestGenHooks;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -67,7 +65,8 @@ public class KnownDimletConfiguration {
         Arrays.stream(FeatureType.values()).forEach(t -> initDimlet(new DimletKey(DimletType.DIMLET_FEATURE, t.getId()), RFToolsDim.MODID));
         Arrays.stream(EffectType.values()).forEach(t -> initDimlet(new DimletKey(DimletType.DIMLET_EFFECT, t.getId()), RFToolsDim.MODID));
         Arrays.stream(StructureType.values()).forEach(t -> initDimlet(new DimletKey(DimletType.DIMLET_STRUCTURE, t.getId()), RFToolsDim.MODID));
-        Arrays.stream(BiomeGenBase.getBiomeGenArray()).filter(Objects::nonNull).forEach(KnownDimletConfiguration::initBiomeDimlet);
+//        Arrays.stream(BiomeGenBase.getBiomeGenArray()).filter(Objects::nonNull).forEach(KnownDimletConfiguration::initBiomeDimlet);
+        // @todo
         EntityList.stringToClassMapping.entrySet().stream().forEach(KnownDimletConfiguration::initMobDimlet);
         FluidRegistry.getRegisteredFluids().entrySet().stream().forEach(KnownDimletConfiguration::initFluidDimlet);
         Block.blockRegistry.forEach(KnownDimletConfiguration::initMaterialDimlet);
@@ -79,11 +78,12 @@ public class KnownDimletConfiguration {
     }
 
     private static void initBiomeDimlet(BiomeGenBase biome) {
-        String name = biome.biomeName;
-        if (name != null && !name.isEmpty()) {
-            DimletKey key = new DimletKey(DimletType.DIMLET_BIOME, biome.biomeName);
-            initDimlet(key, RFToolsTools.findModID(biome));
-        }
+//        String name = biome.biomeName;
+//        if (name != null && !name.isEmpty()) {
+//            DimletKey key = new DimletKey(DimletType.DIMLET_BIOME, biome.biomeName);
+//            initDimlet(key, RFToolsTools.findModID(biome));
+//        }
+        //@todo
     }
 
     private static void initMobDimlet(Map.Entry<String, Class<? extends Entity>> entry) {

@@ -7,16 +7,13 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.gen.NoiseGenerator;
 import net.minecraft.world.gen.NoiseGeneratorOctaves;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.terraingen.ChunkProviderEvent;
 import net.minecraftforge.event.terraingen.TerrainGen;
-import net.minecraftforge.fml.common.eventhandler.Event;
 
 import java.util.Random;
 
@@ -84,7 +81,8 @@ public class IslandTerrainGenerator implements BaseTerrainGenerator {
         this.noiseGen5 = new NoiseGeneratorOctaves(provider.rand, 16);
 
         NoiseGenerator[] noiseGens = {noiseGen1, noiseGen2, noiseGen3, noiseGen4, noiseGen5};
-        noiseGens = TerrainGen.getModdedNoiseGenerators(world, provider.rand, noiseGens);
+        //@todo
+//        noiseGens = TerrainGen.getModdedNoiseGenerators(world, provider.rand, noiseGens);
         this.noiseGen1 = (NoiseGeneratorOctaves)noiseGens[0];
         this.noiseGen2 = (NoiseGeneratorOctaves)noiseGens[1];
         this.noiseGen3 = (NoiseGeneratorOctaves)noiseGens[2];
@@ -97,11 +95,12 @@ public class IslandTerrainGenerator implements BaseTerrainGenerator {
      * size.
      */
     private double[] initializeNoiseField(double[] densities, int chunkX2, int chunkY2, int chunkZ2, int sizeX, int sizeY, int sizeZ) {
-        ChunkProviderEvent.InitNoiseField event = new ChunkProviderEvent.InitNoiseField(provider, densities, chunkX2, chunkY2, chunkZ2, sizeX, sizeY, sizeZ);
-        MinecraftForge.EVENT_BUS.post(event);
-        if (event.getResult() == Event.Result.DENY) {
-            return event.noisefield;
-        }
+//@todo
+//        ChunkGeneratorEvent.InitNoiseField event = new ChunkGeneratorEvent.InitNoiseField(provider, densities, chunkX2, chunkY2, chunkZ2, sizeX, sizeY, sizeZ);
+//        MinecraftForge.EVENT_BUS.post(event);
+//        if (event.getResult() == Event.Result.DENY) {
+//            return event.noisefield;
+//        }
 
         if (densities == null) {
             densities = new double[sizeX * sizeY * sizeZ];
@@ -247,7 +246,7 @@ public class IslandTerrainGenerator implements BaseTerrainGenerator {
 
                             for (int z = 0; z < 8; ++z) {
                                 if (d15 > 0.0D) {
-                                    primer.setBlockState(index, baseBlock);
+                                    BaseTerrainGenerator.setBlockState(primer, index, baseBlock);
                                     // @todo support 127
 //                                    if (baseMeta == 127) {
 //                                        realMeta = (byte)((height/2 + x/2 + z/2) & 0xf);
@@ -255,7 +254,7 @@ public class IslandTerrainGenerator implements BaseTerrainGenerator {
 //                                        realMeta = baseMeta;
 //                                    }
                                 } else {
-                                    primer.setBlockState(index, Blocks.air.getDefaultState());
+                                    BaseTerrainGenerator.setBlockState(primer, index, Blocks.air.getDefaultState());
                                 }
 
                                 index += maxheight;
@@ -319,21 +318,22 @@ public class IslandTerrainGenerator implements BaseTerrainGenerator {
 
             if (height <= 2) {
                 if (shallowOcean) {
-                    primer.setBlockState(index, Blocks.bedrock.getDefaultState());
+                    BaseTerrainGenerator.setBlockState(primer, index, Blocks.bedrock.getDefaultState());
                 } else {
-                    primer.setBlockState(index, Blocks.air.getDefaultState());
+                    BaseTerrainGenerator.setBlockState(primer, index, Blocks.air.getDefaultState());
                 }
             } else {
-                IBlockState currentBlock = primer.getBlockState(index);
+                IBlockState currentBlock = BaseTerrainGenerator.getBlockState(primer, index);
                 if (currentBlock.getBlock() == Blocks.bedrock && height <= 12) {
                     if (shallowOcean) {
-                        primer.setBlockState(index, baseLiquid.getDefaultState());
+                        BaseTerrainGenerator.setBlockState(primer, index, baseLiquid.getDefaultState());
+
                     } else {
-                        primer.setBlockState(index, Blocks.air.getDefaultState());
+                        BaseTerrainGenerator.setBlockState(primer, index, Blocks.air.getDefaultState());
                     }
                     k = -1;
                 } else {
-                    if (currentBlock != null && currentBlock.getBlock().getMaterial() != Material.air) {
+                    if (currentBlock != null && currentBlock.getBlock().getMaterial(currentBlock) != Material.air) {
                         if (currentBlock == baseBlock) {
                             if (k == -1) {
                                 if (l <= 0) {
@@ -344,7 +344,7 @@ public class IslandTerrainGenerator implements BaseTerrainGenerator {
                                     block1 = baseBlock; //biomegenbase.fillerBlock;
                                 }
 
-                                if (height < 63 && (block == null || block.getBlock().getMaterial() == Material.air)) {
+                                if (height < 63 && (block == null || block.getBlock().getMaterial(block) == Material.air)) {
                                     if (biomegenbase.getFloatTemperature(new BlockPos(x, height, z)) < 0.15F) {
                                         block = Blocks.ice.getDefaultState();
                                     } else {
@@ -355,17 +355,17 @@ public class IslandTerrainGenerator implements BaseTerrainGenerator {
                                 k = l;
 
                                 if (height >= 62) {
-                                    primer.setBlockState(index, block);
+                                    BaseTerrainGenerator.setBlockState(primer, index, block);
                                 } else if (height < 56 - l) {
                                     block = null;
                                     block1 = baseBlock; //Blocks.stone;
-                                    primer.setBlockState(index, biomegenbase.fillerBlock);
+                                    BaseTerrainGenerator.setBlockState(primer, index, biomegenbase.fillerBlock);
                                 } else {
-                                    primer.setBlockState(index, block1);
+                                    BaseTerrainGenerator.setBlockState(primer, index, block1);
                                 }
                             } else if (k > 0) {
                                 --k;
-                                primer.setBlockState(index, block1);
+                                BaseTerrainGenerator.setBlockState(primer, index, block1);
 
                                 if (k == 0 && block1 == Blocks.sand) {
                                     k = provider.rand.nextInt(4) + Math.max(0, height - 63);
@@ -375,7 +375,7 @@ public class IslandTerrainGenerator implements BaseTerrainGenerator {
                         }
                     } else {
                         if (shallowOcean && height <= shallowWaterY) {
-                            primer.setBlockState(index, baseLiquid.getDefaultState());
+                            BaseTerrainGenerator.setBlockState(primer, index, baseLiquid.getDefaultState());
                         }
                         k = -1;
                     }
