@@ -261,12 +261,11 @@ public class CavernTerrainGenerator implements BaseTerrainGenerator {
 
     @Override
     public void replaceBlocksForBiome(int chunkX, int chunkZ, ChunkPrimer primer, BiomeGenBase[] biomeGenBases) {
-//        ChunkProviderEvent.ReplaceBiomeBlocks event = new ChunkProviderEvent.ReplaceBiomeBlocks(provider, chunkX, chunkZ, primer, world);
-//        MinecraftForge.EVENT_BUS.post(event);
-//        if (event.getResult() == Event.Result.DENY) {
-//            return;
-//        }
-        //@todo
+        ChunkGeneratorEvent.ReplaceBiomeBlocks event = new ChunkGeneratorEvent.ReplaceBiomeBlocks(provider, chunkX, chunkZ, primer, world);
+        MinecraftForge.EVENT_BUS.post(event);
+        if (event.getResult() == Event.Result.DENY) {
+            return;
+        }
 
         IBlockState baseBlock = provider.dimensionInformation.getBaseBlockForTerrain();
         Block baseLiquid = provider.dimensionInformation.getFluidForTerrain();
