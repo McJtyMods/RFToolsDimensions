@@ -2,13 +2,12 @@ package mcjty.rftoolsdim.dimensions.world;
 
 import mcjty.lib.varia.Logging;
 import mcjty.rftoolsdim.api.dimension.IRFToolsWorldProvider;
+import mcjty.rftoolsdim.config.GeneralConfiguration;
 import mcjty.rftoolsdim.config.PowerConfiguration;
 import mcjty.rftoolsdim.dimensions.DimensionInformation;
 import mcjty.rftoolsdim.dimensions.DimensionStorage;
-import mcjty.rftoolsdim.config.GeneralConfiguration;
 import mcjty.rftoolsdim.dimensions.RfToolsDimensionManager;
 import mcjty.rftoolsdim.dimensions.description.WeatherDescriptor;
-import mcjty.rftoolsdim.dimensions.dimlets.types.DimletType;
 import mcjty.rftoolsdim.dimensions.dimlets.types.Patreons;
 import mcjty.rftoolsdim.dimensions.types.ControllerType;
 import mcjty.rftoolsdim.dimensions.types.SkyType;
@@ -22,8 +21,9 @@ import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.BiomeProvider;
+import net.minecraft.world.biome.BiomeProviderSingle;
 import net.minecraft.world.chunk.IChunkGenerator;
-import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -167,6 +167,47 @@ public class GenericWorldProvider extends WorldProvider implements  /*@todo impl
 //        getDimensionInformation();
 //        setupProviderInfo();
 //    }
+
+
+    @Override
+    protected void createBiomeProvider() {
+        if (dimensionInformation != null) {
+            ControllerType type = dimensionInformation.getControllerType();
+            if (type == ControllerType.CONTROLLER_SINGLE) {
+                this.biomeProvider = new BiomeProviderSingle(dimensionInformation.getBiomes().get(0));
+            } else if (type == ControllerType.CONTROLLER_DEFAULT) {
+                this.biomeProvider = new BiomeProvider(worldObj.getWorldInfo());
+            } else {
+                GenericBiomeProvider.hackyDimensionInformation = dimensionInformation;      // Hack to get the dimension information in the superclass.
+                this.biomeProvider = new GenericBiomeProvider(seed, worldObj.getWorldInfo(), dimensionInformation);
+            }
+        } else {
+            this.biomeProvider = new BiomeProvider(worldObj.getWorldInfo());
+        }
+
+        if (dimensionInformation != null) {
+            hasNoSky = !dimensionInformation.getTerrainType().hasSky();
+
+            if (worldObj.isRemote) {
+                // Only on client!
+                SkyType skyType = dimensionInformation.getSkyDescriptor().getSkyType();
+                if (hasNoSky) {
+                    SkyRenderer.registerNoSky(this);
+                } else if (skyType == SkyType.SKY_ENDER) {
+                    SkyRenderer.registerEnderSky(this);
+                } else if (skyType == SkyType.SKY_INFERNO || skyType == SkyType.SKY_STARS1 || skyType == SkyType.SKY_STARS2 || skyType == SkyType.SKY_STARS3) {
+                    SkyRenderer.registerSkybox(this, skyType);
+                } else {
+                    SkyRenderer.registerSky(this, dimensionInformation);
+                }
+
+                if (dimensionInformation.getSkyDescriptor().isCloudColorGiven() || dimensionInformation.isPatreonBitSet(Patreons.PATREON_KENNEY)) {
+                    SkyRenderer.registerCloudRenderer(this, dimensionInformation);
+                }
+            }
+        }
+
+    }
 
     private void setupProviderInfo() {
         if (dimensionInformation != null) {

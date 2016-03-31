@@ -7,7 +7,6 @@ import mcjty.rftoolsdim.dimensions.description.MobDescriptor;
 import mcjty.rftoolsdim.dimensions.types.FeatureType;
 import mcjty.rftoolsdim.dimensions.types.StructureType;
 import mcjty.rftoolsdim.dimensions.types.TerrainType;
-import mcjty.rftoolsdim.dimensions.world.mapgen.*;
 import mcjty.rftoolsdim.dimensions.world.terrain.*;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.entity.Entity;

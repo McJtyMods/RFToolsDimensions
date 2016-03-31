@@ -3,10 +3,12 @@ package mcjty.rftoolsdim.dimensions.world;
 import mcjty.rftoolsdim.dimensions.DimensionInformation;
 import mcjty.rftoolsdim.dimensions.types.ControllerType;
 import net.minecraft.world.WorldType;
+import net.minecraft.world.biome.BiomeProvider;
 import net.minecraft.world.gen.layer.GenLayer;
 import net.minecraft.world.gen.layer.GenLayerVoronoiZoom;
+import net.minecraft.world.storage.WorldInfo;
 
-public class GenericWorldChunkManager /*extends WorldChunkManager*/ {
+public class GenericBiomeProvider extends BiomeProvider {
     private DimensionInformation dimensionInformation = null;
 
     public static DimensionInformation hackyDimensionInformation;       // Hack to get the dimension information here before 'super'.
@@ -15,12 +17,12 @@ public class GenericWorldChunkManager /*extends WorldChunkManager*/ {
         return dimensionInformation;
     }
 
-    public GenericWorldChunkManager(long seed, WorldType worldType, DimensionInformation dimensionInformation) {
-//        super(seed, worldType, ""); // @todo json settings?
+    public GenericBiomeProvider(long seed, WorldInfo worldInfo, DimensionInformation dimensionInformation) {
+        super(worldInfo);
         this.dimensionInformation = dimensionInformation;
     }
 
-//    @Override
+    @Override
     public GenLayer[] getModdedBiomeGenerators(WorldType worldType, long seed, GenLayer[] original) {
         if (dimensionInformation == null) {
             dimensionInformation = hackyDimensionInformation;

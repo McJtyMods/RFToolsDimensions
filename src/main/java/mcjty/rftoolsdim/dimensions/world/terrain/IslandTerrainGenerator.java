@@ -2,7 +2,6 @@ package mcjty.rftoolsdim.dimensions.world.terrain;
 
 import mcjty.rftoolsdim.dimensions.types.FeatureType;
 import mcjty.rftoolsdim.dimensions.world.GenericChunkGenerator;
-import mcjty.rftoolsdim.dimensions.world.GenericChunkProvider;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -14,7 +13,10 @@ import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.gen.NoiseGenerator;
 import net.minecraft.world.gen.NoiseGeneratorOctaves;
-import net.minecraftforge.event.terraingen.TerrainGen;
+import net.minecraft.world.gen.NoiseGeneratorSimplex;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.terraingen.ChunkGeneratorEvent;
+import net.minecraftforge.fml.common.eventhandler.Event;
 
 import java.util.Random;
 
@@ -35,6 +37,7 @@ public class IslandTerrainGenerator implements BaseTerrainGenerator {
     private double[] noiseData3;
     private double[] noiseData4;
     private double[] noiseData5;
+    private NoiseGeneratorSimplex islandNoise;          // @todo unusued for now
 
     public static final int NORMAL = 0;
     public static final int CHAOTIC = 1;
@@ -80,15 +83,18 @@ public class IslandTerrainGenerator implements BaseTerrainGenerator {
         this.noiseGen3 = new NoiseGeneratorOctaves(provider.rand, 8);
         this.noiseGen4 = new NoiseGeneratorOctaves(provider.rand, 10);
         this.noiseGen5 = new NoiseGeneratorOctaves(provider.rand, 16);
+        this.islandNoise = new NoiseGeneratorSimplex(provider.rand);
 
-        NoiseGenerator[] noiseGens = {noiseGen1, noiseGen2, noiseGen3, noiseGen4, noiseGen5};
-        //@todo
-//        noiseGens = TerrainGen.getModdedNoiseGenerators(world, provider.rand, noiseGens);
-        this.noiseGen1 = (NoiseGeneratorOctaves)noiseGens[0];
-        this.noiseGen2 = (NoiseGeneratorOctaves)noiseGens[1];
-        this.noiseGen3 = (NoiseGeneratorOctaves)noiseGens[2];
-        this.noiseGen4 = (NoiseGeneratorOctaves)noiseGens[3];
-        this.noiseGen5 = (NoiseGeneratorOctaves)noiseGens[4];
+        net.minecraftforge.event.terraingen.InitNoiseGensEvent.ContextEnd ctx =
+                new net.minecraftforge.event.terraingen.InitNoiseGensEvent.ContextEnd(noiseGen1, noiseGen2, noiseGen3, noiseGen4, noiseGen5, islandNoise);
+        ctx = net.minecraftforge.event.terraingen.TerrainGen.getModdedNoiseGenerators(world, provider.rand, ctx);
+
+        this.noiseGen1 = ctx.getLPerlin1();
+        this.noiseGen2 = ctx.getLPerlin2();
+        this.noiseGen3 = ctx.getPerlin();
+        this.noiseGen4 = ctx.getDepth();
+        this.noiseGen5 = ctx.getScale();
+        this.islandNoise = ctx.getIsland();
     }
 
     /**
@@ -96,12 +102,11 @@ public class IslandTerrainGenerator implements BaseTerrainGenerator {
      * size.
      */
     private double[] initializeNoiseField(double[] densities, int chunkX2, int chunkY2, int chunkZ2, int sizeX, int sizeY, int sizeZ) {
-//@todo
-//        ChunkGeneratorEvent.InitNoiseField event = new ChunkGeneratorEvent.InitNoiseField(provider, densities, chunkX2, chunkY2, chunkZ2, sizeX, sizeY, sizeZ);
-//        MinecraftForge.EVENT_BUS.post(event);
-//        if (event.getResult() == Event.Result.DENY) {
-//            return event.noisefield;
-//        }
+        ChunkGeneratorEvent.InitNoiseField event = new ChunkGeneratorEvent.InitNoiseField(provider, densities, chunkX2, chunkY2, chunkZ2, sizeX, sizeY, sizeZ);
+        MinecraftForge.EVENT_BUS.post(event);
+        if (event.getResult() == Event.Result.DENY) {
+            return event.getNoisefield();
+        }
 
         if (densities == null) {
             densities = new double[sizeX * sizeY * sizeZ];

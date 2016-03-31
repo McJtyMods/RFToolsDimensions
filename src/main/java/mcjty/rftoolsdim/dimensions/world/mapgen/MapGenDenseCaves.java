@@ -2,8 +2,8 @@ package mcjty.rftoolsdim.dimensions.world.mapgen;
 
 import com.google.common.base.Objects;
 import mcjty.rftoolsdim.dimensions.world.GenericChunkGenerator;
-import mcjty.rftoolsdim.dimensions.world.GenericChunkProvider;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Biomes;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -211,10 +211,9 @@ public class MapGenDenseCaves extends MapGenCaves {
 
     //Exception biomes to make sure we generate like vanilla
     private boolean isExceptionBiome(BiomeGenBase biome) {
-//        if (biome == BiomeGenBase.mushroomIsland) return true;
-//        if (biome == BiomeGenBase.beach) return true;
-//        if (biome == BiomeGenBase.desert) return true;
-        //@todo
+        if (biome == Biomes.mushroomIsland) return true;
+        if (biome == Biomes.beach) return true;
+        if (biome == Biomes.desert) return true;
         return false;
     }
 

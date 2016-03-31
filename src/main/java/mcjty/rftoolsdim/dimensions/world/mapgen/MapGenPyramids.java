@@ -1,10 +1,7 @@
 package mcjty.rftoolsdim.dimensions.world.mapgen;
 
-import mcjty.lib.varia.BlockMeta;
 import mcjty.rftoolsdim.dimensions.world.GenericChunkGenerator;
-import mcjty.rftoolsdim.dimensions.world.GenericChunkProvider;
 import mcjty.rftoolsdim.dimensions.world.terrain.BaseTerrainGenerator;
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;

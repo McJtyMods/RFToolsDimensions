@@ -8,9 +8,9 @@ import java.util.List;
 
 public class GenLayerCheckerboard extends GenLayer {
 
-    private final GenericWorldChunkManager chunkManager;
+    private final GenericBiomeProvider chunkManager;
 
-    public GenLayerCheckerboard(GenericWorldChunkManager chunkManager, long seed, GenLayer parent) {
+    public GenLayerCheckerboard(GenericBiomeProvider chunkManager, long seed, GenLayer parent) {
         super(seed);
         this.parent = parent;
         this.chunkManager = chunkManager;

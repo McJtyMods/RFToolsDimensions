@@ -11,11 +11,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
+@Deprecated
 public class SingleBiomeWorldChunkManager /*@todo extends WorldChunkManager*/ {
     private BiomeGenBase biomeGenBase;
 
     public SingleBiomeWorldChunkManager(World world, long seed, WorldType worldType) {
-//        super(seed, worldType, ""); // @todo
+//        super(seed, worlTdype, ""); // @todo
         DimensionInformation dimensionInformation = RfToolsDimensionManager.getDimensionManager(world).getDimensionInformation(world.provider.getDimension());
         biomeGenBase = dimensionInformation.getBiomes().get(0);
     }

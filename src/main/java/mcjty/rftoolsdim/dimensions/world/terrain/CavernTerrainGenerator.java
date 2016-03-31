@@ -3,7 +3,6 @@ package mcjty.rftoolsdim.dimensions.world.terrain;
 import mcjty.rftoolsdim.config.WorldgenConfiguration;
 import mcjty.rftoolsdim.dimensions.types.TerrainType;
 import mcjty.rftoolsdim.dimensions.world.GenericChunkGenerator;
-import mcjty.rftoolsdim.dimensions.world.GenericChunkProvider;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -14,6 +13,7 @@ import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.gen.NoiseGenerator;
 import net.minecraft.world.gen.NoiseGeneratorOctaves;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.terraingen.ChunkGeneratorEvent;
 import net.minecraftforge.event.terraingen.TerrainGen;
 import net.minecraftforge.fml.common.eventhandler.Event;
 
@@ -76,15 +76,17 @@ public class CavernTerrainGenerator implements BaseTerrainGenerator {
         this.netherNoiseGen6 = new NoiseGeneratorOctaves(provider.rand, 10);
         this.netherNoiseGen7 = new NoiseGeneratorOctaves(provider.rand, 16);
 
-        NoiseGenerator[] noiseGens = {netherNoiseGen1, netherNoiseGen2, netherNoiseGen3, slowsandGravelNoiseGen, netherrackExculsivityNoiseGen, netherNoiseGen6, netherNoiseGen7};
-//        noiseGens = TerrainGen.getModdedNoiseGenerators(world, provider.rand, noiseGens);
-        //@todo
-        this.netherNoiseGen1 = (NoiseGeneratorOctaves)noiseGens[0];
-        this.netherNoiseGen2 = (NoiseGeneratorOctaves)noiseGens[1];
-        this.netherNoiseGen3 = (NoiseGeneratorOctaves)noiseGens[2];
-        this.netherrackExculsivityNoiseGen = (NoiseGeneratorOctaves)noiseGens[4];
-        this.netherNoiseGen6 = (NoiseGeneratorOctaves)noiseGens[5];
-        this.netherNoiseGen7 = (NoiseGeneratorOctaves)noiseGens[6];
+        net.minecraftforge.event.terraingen.InitNoiseGensEvent.ContextHell ctx =
+                new net.minecraftforge.event.terraingen.InitNoiseGensEvent.ContextHell(netherNoiseGen1, netherNoiseGen2, netherNoiseGen3,
+                        slowsandGravelNoiseGen, netherrackExculsivityNoiseGen, netherNoiseGen6, netherNoiseGen7);
+        ctx = net.minecraftforge.event.terraingen.TerrainGen.getModdedNoiseGenerators(world, provider.rand, ctx);
+        this.netherNoiseGen1 = ctx.getLPerlin1();
+        this.netherNoiseGen2 = ctx.getLPerlin2();
+        this.netherNoiseGen3 = ctx.getPerlin();
+        slowsandGravelNoiseGen = ctx.getPerlin2();
+        this.netherrackExculsivityNoiseGen = ctx.getPerlin3();
+        this.netherNoiseGen6 = ctx.getScale();
+        this.netherNoiseGen7 = ctx.getDepth();
     }
 
     /**
@@ -92,12 +94,11 @@ public class CavernTerrainGenerator implements BaseTerrainGenerator {
      * size.
      */
     private double[] initializeNoiseField(double[] noiseField, int x, int y, int z, int sx, int sy, int sz) {
-//        ChunkProviderEvent.InitNoiseField event = new ChunkProviderEvent.InitNoiseField(provider, noiseField, x, y, z, sx, sy, sz);
-//        MinecraftForge.EVENT_BUS.post(event);
-//        if (event.getResult() == Event.Result.DENY) {
-//            return event.noisefield;
-//        }
-        //@todo
+        ChunkGeneratorEvent.InitNoiseField event = new ChunkGeneratorEvent.InitNoiseField(provider, noiseField, x, y, z, sx, sy, sz);
+        MinecraftForge.EVENT_BUS.post(event);
+        if (event.getResult() == Event.Result.DENY) {
+            return event.getNoisefield();
+        }
 
         int syr = cavernheight[heightsetting.ordinal()];
 

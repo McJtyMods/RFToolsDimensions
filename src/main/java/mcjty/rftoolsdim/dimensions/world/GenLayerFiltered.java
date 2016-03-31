@@ -8,10 +8,10 @@ import java.util.Map;
 
 public class GenLayerFiltered extends GenLayer {
 
-    private final GenericWorldChunkManager chunkManager;
+    private final GenericBiomeProvider chunkManager;
     private final ControllerType type;
 
-    public GenLayerFiltered(GenericWorldChunkManager chunkManager, long seed, GenLayer parent, ControllerType type) {
+    public GenLayerFiltered(GenericBiomeProvider chunkManager, long seed, GenLayer parent, ControllerType type) {
         super(seed);
         this.parent = parent;
         this.chunkManager = chunkManager;

@@ -1,9 +1,8 @@
 package mcjty.rftoolsdim.dimensions.world.mapgen;
 
-import mcjty.rftoolsdim.blocks.ModBlocks;
 import mcjty.lib.varia.BlockMeta;
+import mcjty.rftoolsdim.blocks.ModBlocks;
 import mcjty.rftoolsdim.dimensions.world.GenericChunkGenerator;
-import mcjty.rftoolsdim.dimensions.world.GenericChunkProvider;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;

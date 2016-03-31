@@ -68,8 +68,9 @@ public class KnownDimletConfiguration {
         Arrays.stream(FeatureType.values()).forEach(t -> initDimlet(new DimletKey(DimletType.DIMLET_FEATURE, t.getId()), RFToolsDim.MODID));
         Arrays.stream(EffectType.values()).forEach(t -> initDimlet(new DimletKey(DimletType.DIMLET_EFFECT, t.getId()), RFToolsDim.MODID));
         Arrays.stream(StructureType.values()).forEach(t -> initDimlet(new DimletKey(DimletType.DIMLET_STRUCTURE, t.getId()), RFToolsDim.MODID));
-//        Arrays.stream(BiomeGenBase.getBiomeGenArray()).filter(Objects::nonNull).forEach(KnownDimletConfiguration::initBiomeDimlet);
-        // @todo
+
+        BiomeGenBase.biomeRegistry.iterator().forEachRemaining(KnownDimletConfiguration::initBiomeDimlet);
+
         EntityList.stringToClassMapping.entrySet().stream().forEach(KnownDimletConfiguration::initMobDimlet);
         FluidRegistry.getRegisteredFluids().entrySet().stream().forEach(KnownDimletConfiguration::initFluidDimlet);
         Block.blockRegistry.forEach(KnownDimletConfiguration::initMaterialDimlet);
@@ -81,12 +82,11 @@ public class KnownDimletConfiguration {
     }
 
     private static void initBiomeDimlet(BiomeGenBase biome) {
-//        String name = biome.biomeName;
-//        if (name != null && !name.isEmpty()) {
-//            DimletKey key = new DimletKey(DimletType.DIMLET_BIOME, biome.biomeName);
-//            initDimlet(key, RFToolsTools.findModID(biome));
-//        }
-        //@todo
+        String name = biome.getBiomeName();
+        if (name != null && !name.isEmpty()) {
+            DimletKey key = new DimletKey(DimletType.DIMLET_BIOME, biome.getBiomeName());
+            initDimlet(key, RFToolsTools.findModID(biome));
+        }
     }
 
     private static void initMobDimlet(Map.Entry<String, Class<? extends Entity>> entry) {

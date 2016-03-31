@@ -4,7 +4,6 @@ import mcjty.lib.varia.Logging;
 import mcjty.rftoolsdim.dimensions.types.FeatureType;
 import mcjty.rftoolsdim.dimensions.types.TerrainType;
 import mcjty.rftoolsdim.dimensions.world.GenericChunkGenerator;
-import mcjty.rftoolsdim.dimensions.world.GenericChunkProvider;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -70,14 +69,16 @@ public class NormalTerrainGenerator implements BaseTerrainGenerator {
         this.noiseGen6 = new NoiseGeneratorOctaves(provider.rand, 16);
         NoiseGeneratorOctaves mobSpawnerNoise = new NoiseGeneratorOctaves(provider.rand, 8);
 
-        NoiseGenerator[] noiseGens = {noiseGen1, noiseGen2, noiseGen3, noiseGen4, noiseGen5, noiseGen6, mobSpawnerNoise};
-        //@todo
-//        noiseGens = TerrainGen.getModdedNoiseGenerators(world, provider.rand, noiseGens);
-        this.noiseGen1 = (NoiseGeneratorOctaves) noiseGens[0];
-        this.noiseGen2 = (NoiseGeneratorOctaves) noiseGens[1];
-        this.noiseGen3 = (NoiseGeneratorOctaves) noiseGens[2];
-        this.noiseGen4 = (NoiseGeneratorPerlin) noiseGens[3];
-        this.noiseGen6 = (NoiseGeneratorOctaves) noiseGens[5];
+        net.minecraftforge.event.terraingen.InitNoiseGensEvent.ContextOverworld ctx =
+                new net.minecraftforge.event.terraingen.InitNoiseGensEvent.ContextOverworld(noiseGen1, noiseGen2, noiseGen3, noiseGen4, noiseGen5, noiseGen6, mobSpawnerNoise);
+        ctx = net.minecraftforge.event.terraingen.TerrainGen.getModdedNoiseGenerators(world, provider.rand, ctx);
+        this.noiseGen1 = ctx.getLPerlin1();
+        this.noiseGen2 = ctx.getLPerlin2();
+        this.noiseGen3 = ctx.getPerlin();
+        this.noiseGen4 = ctx.getHeight();
+//        this.field_185983_b = ctx.getScale();
+        this.noiseGen6 = ctx.getDepth();
+//        this.field_185985_d = ctx.getForest();
     }
 
     private void func_147423_a(int chunkX4, int chunkY4, int chunkZ4) {
@@ -311,12 +312,11 @@ public class NormalTerrainGenerator implements BaseTerrainGenerator {
 
     @Override
     public void replaceBlocksForBiome(int chunkX, int chunkZ, ChunkPrimer primer, BiomeGenBase[] biomeGenBases) {
-//        ChunkGeneratorEvent.ReplaceBiomeBlocks event = new ChunkGeneratorEvent.ReplaceBiomeBlocks(provider, chunkX, chunkZ, primer, world);
-//        MinecraftForge.EVENT_BUS.post(event);
-//        if (event.getResult() == Event.Result.DENY) {
-//            return;
-//        }
-        //@todo
+        ChunkGeneratorEvent.ReplaceBiomeBlocks event = new ChunkGeneratorEvent.ReplaceBiomeBlocks(provider, chunkX, chunkZ, primer, world);
+        MinecraftForge.EVENT_BUS.post(event);
+        if (event.getResult() == Event.Result.DENY) {
+            return;
+        }
 
         double d0 = 0.03125D;
         this.stoneNoise = this.noiseGen4.func_151599_a(this.stoneNoise, (chunkX * 16), (chunkZ * 16), 16, 16, d0 * 2.0D, d0 * 2.0D, 1.0D);
