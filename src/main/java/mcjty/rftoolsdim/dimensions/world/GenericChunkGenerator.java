@@ -9,84 +9,82 @@ import mcjty.rftoolsdim.dimensions.types.StructureType;
 import mcjty.rftoolsdim.dimensions.types.TerrainType;
 import mcjty.rftoolsdim.dimensions.world.mapgen.*;
 import mcjty.rftoolsdim.dimensions.world.terrain.*;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.IAnimals;
+import net.minecraft.init.Biomes;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.LongHashMap;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldEntitySpawner;
 import net.minecraft.world.WorldType;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkPrimer;
-import net.minecraft.world.chunk.IChunkProvider;
+import net.minecraft.world.chunk.IChunkGenerator;
 import net.minecraft.world.gen.ChunkProviderSettings;
 import net.minecraft.world.gen.MapGenBase;
 import net.minecraft.world.gen.MapGenCaves;
 import net.minecraft.world.gen.MapGenRavine;
+import net.minecraft.world.gen.feature.WorldGenDungeons;
+import net.minecraft.world.gen.feature.WorldGenLakes;
 import net.minecraft.world.gen.structure.*;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 import net.minecraftforge.event.terraingen.TerrainGen;
 
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
 
 import static net.minecraftforge.event.terraingen.InitMapGenEvent.EventType.*;
 
-@Deprecated
-public class GenericChunkProvider implements IChunkProvider {
+public class GenericChunkGenerator implements IChunkGenerator {
+
     public Random rand;
     public long seed;
 
     private World worldObj;
     public DimensionInformation dimensionInformation;
-    private List<BiomeGenBase.SpawnListEntry> extraSpawns;
-    private List<Integer> extraSpawnsMax;
+    public WorldType worldType;
+    private final BaseTerrainGenerator terrainGenerator;
 
     // @todo, examine and consider customizing
     private ChunkProviderSettings settings = new ChunkProviderSettings.Factory().func_177864_b();
 
-    private final BaseTerrainGenerator terrainGenerator;
+    private List<BiomeGenBase.SpawnListEntry> extraSpawns;
+    private List<Integer> extraSpawnsMax;
 
-    // Are map structures going to be generated (e.g. strongholds)
-    public WorldType worldType;
+    public BiomeGenBase[] biomesForGeneration;
 
     private MapGenBase caveGenerator = new MapGenCaves();
 
     // RFTools specific features.
-//    private MapGenTendrils tendrilGenerator = new MapGenTendrils(this);
-//    private MapGenCanyons canyonGenerator = new MapGenCanyons(this);
-//    private MapGenPyramids pyramidGenerator = new MapGenPyramids(this);
-//    private MapGenOrbs sphereGenerator = new MapGenOrbs(this, false);
-//    private MapGenOrbs hugeSphereGenerator = new MapGenOrbs(this, true);
-//    private MapGenRuinedCities ruinedCitiesGenerator = new MapGenRuinedCities(this);
-//    private MapGenLiquidOrbs liquidSphereGenerator = new MapGenLiquidOrbs(this, false);
-//    private MapGenLiquidOrbs hugeLiquidSphereGenerator = new MapGenLiquidOrbs(this, true);
-//    private MapGenBase denseCaveGenerator = new MapGenDenseCaves(this);
+    private MapGenTendrils tendrilGenerator = new MapGenTendrils(this);
+    private MapGenCanyons canyonGenerator = new MapGenCanyons(this);
+    private MapGenPyramids pyramidGenerator = new MapGenPyramids(this);
+    private MapGenOrbs sphereGenerator = new MapGenOrbs(this, false);
+    private MapGenOrbs hugeSphereGenerator = new MapGenOrbs(this, true);
+    private MapGenRuinedCities ruinedCitiesGenerator = new MapGenRuinedCities(this);
+    private MapGenLiquidOrbs liquidSphereGenerator = new MapGenLiquidOrbs(this, false);
+    private MapGenLiquidOrbs hugeLiquidSphereGenerator = new MapGenLiquidOrbs(this, true);
+    private MapGenBase denseCaveGenerator = new MapGenDenseCaves(this);
 
-    // Holds Stronghold Generator
     private MapGenStronghold strongholdGenerator = new MapGenStronghold();
-
-    // Holds Village Generator
+    private StructureOceanMonument oceanMonumentGenerator = new StructureOceanMonument();
     private MapGenVillage villageGenerator = new MapGenVillage();
-
-    // Holds Mineshaft Generator
     private MapGenMineshaft mineshaftGenerator = new MapGenMineshaft();
-
-    // For nether fortresses
     public MapGenNetherBridge genNetherBridge = new MapGenNetherBridge();
-
     private MapGenScatteredFeature scatteredFeatureGenerator = new MapGenScatteredFeature();
 
     // Holds ravine generator
     private MapGenBase ravineGenerator = new MapGenRavine();
-
-    // The biomes that are used to generate the chunk
-    public BiomeGenBase[] biomesForGeneration;
 
     {
         caveGenerator = TerrainGen.getModdedMapGen(caveGenerator, CAVE);
@@ -99,24 +97,15 @@ public class GenericChunkProvider implements IChunkProvider {
         scatteredFeatureGenerator = (MapGenScatteredFeature) TerrainGen.getModdedMapGen(scatteredFeatureGenerator, SCATTERED_FEATURE);
         ravineGenerator = TerrainGen.getModdedMapGen(ravineGenerator, RAVINE);
         genNetherBridge = (MapGenNetherBridge) TerrainGen.getModdedMapGen(genNetherBridge, NETHER_BRIDGE);
+        oceanMonumentGenerator = (StructureOceanMonument) net.minecraftforge.event.terraingen.TerrainGen.getModdedMapGen(oceanMonumentGenerator, net.minecraftforge.event.terraingen.InitMapGenEvent.EventType.OCEAN_MONUMENT);
     }
 
     public ChunkProviderSettings getSettings() {
         return settings;
     }
 
-    public final LongHashMap<Chunk> id2ChunkMap = new LongHashMap();
-    private final Set<Long> droppedChunksSet = Collections.<Long>newSetFromMap(new ConcurrentHashMap());
 
-    @Override
-    public Chunk getLoadedChunk(int x, int z) {
-        long i = ChunkCoordIntPair.chunkXZ2Int(x, z);
-        Chunk chunk = this.id2ChunkMap.getValueByKey(i);
-        this.droppedChunksSet.remove(Long.valueOf(i));
-        return chunk;
-    }
-
-    public GenericChunkProvider(World world, long seed) {
+    public GenericChunkGenerator(World world, long seed) {
         this.worldObj = world;
 
         dimensionInformation = RfToolsDimensionManager.getDimensionManager(world).getDimensionInformation(world.provider.getDimension());
@@ -194,7 +183,7 @@ public class GenericChunkProvider implements IChunkProvider {
                 break;
         }
 
-//        terrainGenerator.setup(world, this);
+        terrainGenerator.setup(world, this);
 
         extraSpawns = new ArrayList<>();
         extraSpawnsMax = new ArrayList<>();
@@ -206,110 +195,41 @@ public class GenericChunkProvider implements IChunkProvider {
 
     }
 
-//    public void setBlocksInChunk(int chunkX, int chunkZ, ChunkPrimer primer) {
-//        this.biomesForGeneration = this.worldObj.getWorldChunkManager().getBiomesForGeneration(this.biomesForGeneration, chunkX * 4 - 2, chunkZ * 4 - 2, 10, 10);
-//        this.func_147423_a(chunkX * 4, 0, chunkZ * 4);
-//
-//        for (int i = 0; i < 4; ++i) {
-//            int j = i * 5;
-//            int k = (i + 1) * 5;
-//
-//            for (int l = 0; l < 4; ++l) {
-//                int i1 = (j + l) * 33;
-//                int j1 = (j + l + 1) * 33;
-//                int k1 = (k + l) * 33;
-//                int l1 = (k + l + 1) * 33;
-//
-//                for (int i2 = 0; i2 < 32; ++i2) {
-//                    double d0 = 0.125D;
-//                    double d1 = this.field_147434_q[i1 + i2];
-//                    double d2 = this.field_147434_q[j1 + i2];
-//                    double d3 = this.field_147434_q[k1 + i2];
-//                    double d4 = this.field_147434_q[l1 + i2];
-//                    double d5 = (this.field_147434_q[i1 + i2 + 1] - d1) * d0;
-//                    double d6 = (this.field_147434_q[j1 + i2 + 1] - d2) * d0;
-//                    double d7 = (this.field_147434_q[k1 + i2 + 1] - d3) * d0;
-//                    double d8 = (this.field_147434_q[l1 + i2 + 1] - d4) * d0;
-//
-//                    for (int j2 = 0; j2 < 8; ++j2) {
-//                        double d9 = 0.25D;
-//                        double d10 = d1;
-//                        double d11 = d2;
-//                        double d12 = (d3 - d1) * d9;
-//                        double d13 = (d4 - d2) * d9;
-//
-//                        for (int k2 = 0; k2 < 4; ++k2) {
-//                            double d14 = 0.25D;
-//                            double d16 = (d11 - d10) * d14;
-//                            double lvt_45_1_ = d10 - d16;
-//
-//                            for (int l2 = 0; l2 < 4; ++l2) {
-//                                if ((lvt_45_1_ += d16) > 0.0D) {
-//                                    primer.setBlockState(i * 4 + k2, i2 * 8 + j2, l * 4 + l2, Blocks.stone.getDefaultState());
-//                                } else if (i2 * 8 + j2 < this.settings.seaLevel) {
-//                                    primer.setBlockState(i * 4 + k2, i2 * 8 + j2, l * 4 + l2, this.field_177476_s.getDefaultState());
-//                                }
-//                            }
-//
-//                            d10 += d12;
-//                            d11 += d13;
-//                        }
-//
-//                        d1 += d5;
-//                        d2 += d6;
-//                        d3 += d7;
-//                        d4 += d8;
-//                    }
-//                }
-//            }
-//        }
-//    }
-//
-
-
-    /**
-     * Will return back a chunk, if it doesn't exist and its not a MP client it will generates all the blocks for the
-     * specified chunk from the map seed and chunk seed
-     */
     @Override
     public Chunk provideChunk(int chunkX, int chunkZ) {
-        this.rand.setSeed(chunkX * 341873128712L + chunkZ * 132897987541L + 123456);
-
+        this.rand.setSeed((long) chunkX * 341873128712L + (long) chunkZ * 132897987541L);
         ChunkPrimer chunkprimer = new ChunkPrimer();
-//        this.setBlocksInChunk(chunkX, chunkZ, chunkprimer);
-//        this.biomesForGeneration = this.worldObj.getWorldChunkManager().getBiomesForGeneration(this.biomesForGeneration, chunkX * 4 - 2, chunkZ * 4 - 2, 10, 10);
-
         terrainGenerator.generate(chunkX, chunkZ, chunkprimer);
-//        this.biomesForGeneration = this.worldObj.getWorldChunkManager().loadBlockGeneratorData(this.biomesForGeneration, chunkX * 16, chunkZ * 16, 16, 16);
+        this.biomesForGeneration = this.worldObj.getBiomeProvider().loadBlockGeneratorData(this.biomesForGeneration, chunkX * 16, chunkZ * 16, 16, 16);
         terrainGenerator.replaceBlocksForBiome(chunkX, chunkZ, chunkprimer, this.biomesForGeneration);
 
-//        if (dimensionInformation.hasFeatureType(FeatureType.FEATURE_TENDRILS)) {
-//            this.tendrilGenerator.generate(this.worldObj, chunkX, chunkZ, chunkprimer);
-//        }
-//        if (dimensionInformation.hasFeatureType(FeatureType.FEATURE_CANYONS)) {
-//            this.canyonGenerator.generate(this.worldObj, chunkX, chunkZ, chunkprimer);
-//        }
-//        if (dimensionInformation.hasFeatureType(FeatureType.FEATURE_PYRAMIDS)) {
-//            this.pyramidGenerator.generate(this.worldObj, chunkX, chunkZ, chunkprimer);
-//        }
-//        if (dimensionInformation.hasFeatureType(FeatureType.FEATURE_ORBS)) {
-//            this.sphereGenerator.generate(this.worldObj, chunkX, chunkZ, chunkprimer);
-//        }
-//        if (dimensionInformation.hasFeatureType(FeatureType.FEATURE_HUGEORBS)) {
-//            this.hugeSphereGenerator.generate(this.worldObj, chunkX, chunkZ, chunkprimer);
-//        }
-//        if (dimensionInformation.hasFeatureType(FeatureType.FEATURE_LIQUIDORBS)) {
-//            this.liquidSphereGenerator.generate(this.worldObj, chunkX, chunkZ, chunkprimer);
-//        }
-//        if (dimensionInformation.hasFeatureType(FeatureType.FEATURE_HUGELIQUIDORBS)) {
-//            this.hugeLiquidSphereGenerator.generate(this.worldObj, chunkX, chunkZ, chunkprimer);
-//        }
-//        if (dimensionInformation.hasFeatureType(FeatureType.FEATURE_CAVES)) {
-//            this.caveGenerator.generate(this.worldObj, chunkX, chunkZ, chunkprimer);
-//        }
-//        if (dimensionInformation.hasFeatureType(FeatureType.FEATURE_DENSE_CAVES)) {
-//            this.denseCaveGenerator.generate(this.worldObj, chunkX, chunkZ, chunkprimer);
-//        }
+        if (dimensionInformation.hasFeatureType(FeatureType.FEATURE_TENDRILS)) {
+            this.tendrilGenerator.generate(this.worldObj, chunkX, chunkZ, chunkprimer);
+        }
+        if (dimensionInformation.hasFeatureType(FeatureType.FEATURE_CANYONS)) {
+            this.canyonGenerator.generate(this.worldObj, chunkX, chunkZ, chunkprimer);
+        }
+        if (dimensionInformation.hasFeatureType(FeatureType.FEATURE_PYRAMIDS)) {
+            this.pyramidGenerator.generate(this.worldObj, chunkX, chunkZ, chunkprimer);
+        }
+        if (dimensionInformation.hasFeatureType(FeatureType.FEATURE_ORBS)) {
+            this.sphereGenerator.generate(this.worldObj, chunkX, chunkZ, chunkprimer);
+        }
+        if (dimensionInformation.hasFeatureType(FeatureType.FEATURE_HUGEORBS)) {
+            this.hugeSphereGenerator.generate(this.worldObj, chunkX, chunkZ, chunkprimer);
+        }
+        if (dimensionInformation.hasFeatureType(FeatureType.FEATURE_LIQUIDORBS)) {
+            this.liquidSphereGenerator.generate(this.worldObj, chunkX, chunkZ, chunkprimer);
+        }
+        if (dimensionInformation.hasFeatureType(FeatureType.FEATURE_HUGELIQUIDORBS)) {
+            this.hugeLiquidSphereGenerator.generate(this.worldObj, chunkX, chunkZ, chunkprimer);
+        }
+        if (dimensionInformation.hasFeatureType(FeatureType.FEATURE_CAVES)) {
+            this.caveGenerator.generate(this.worldObj, chunkX, chunkZ, chunkprimer);
+        }
+        if (dimensionInformation.hasFeatureType(FeatureType.FEATURE_DENSE_CAVES)) {
+            this.denseCaveGenerator.generate(this.worldObj, chunkX, chunkZ, chunkprimer);
+        }
         if (dimensionInformation.hasFeatureType(FeatureType.FEATURE_RAVINES)) {
             this.ravineGenerator.generate(this.worldObj, chunkX, chunkZ, chunkprimer);
         }
@@ -330,25 +250,26 @@ public class GenericChunkProvider implements IChunkProvider {
             this.scatteredFeatureGenerator.generate(this.worldObj, chunkX, chunkZ, chunkprimer);
         }
 
+        //@todo
+        if (true) {
+            this.oceanMonumentGenerator.generate(this.worldObj, chunkX, chunkZ, chunkprimer);
+        }
+
 //        this.ruinedCitiesGenerator.generate(this.worldObj, chunkX, chunkZ, ablock, abyte);
 
         Chunk chunk = new Chunk(this.worldObj, chunkprimer, chunkX, chunkZ);
-        byte[] abyte1 = chunk.getBiomeArray();
+        byte[] abyte = chunk.getBiomeArray();
 
-        //@todo
-//        for (int k = 0; k < abyte1.length; ++k) {
-//            abyte1[k] = (byte) this.biomesForGeneration[k].biomeID;
-//        }
+        for (int i = 0; i < abyte.length; ++i) {
+            abyte[i] = (byte) BiomeGenBase.getIdForBiome(this.biomesForGeneration[i]);
+        }
 
         chunk.generateSkylightMap();
-
         return chunk;
     }
 
-    /**
-     * Populates chunk with ores etc etc
-     */
-    public void populate(IChunkProvider chunkProvider, int chunkX, int chunkZ) {
+    @Override
+    public void populate(int chunkX, int chunkZ) {
         BlockFalling.fallInstantly = true;
         int x = chunkX * 16;
         int z = chunkZ * 16;
@@ -388,58 +309,56 @@ public class GenericChunkProvider implements IChunkProvider {
         if (dimensionInformation.hasFeatureType(FeatureType.FEATURE_LAKES)) {
             if (dimensionInformation.getFluidsForLakes().length == 0) {
                 // No specific liquid dimlets specified: we generate default lakes (water and lava were appropriate).
-//                if (biomegenbase != BiomeGenBase.desert && biomegenbase != BiomeGenBase.desertHills && !flag && this.rand.nextInt(4) == 0
-//                        && TerrainGen.populate(chunkProvider, worldObj, rand, chunkX, chunkZ, flag, LAKE)) {
-//                    k1 = x + this.rand.nextInt(16) + 8;
-//                    l1 = this.rand.nextInt(256);
-//                    i2 = z + this.rand.nextInt(16) + 8;
-//                    (new WorldGenLakes(Blocks.water)).generate(this.worldObj, this.rand, new BlockPos(k1, l1, i2));
-//                }
+                if (biomegenbase != Biomes.desert && biomegenbase != Biomes.desertHills && !flag && this.rand.nextInt(4) == 0
+                        && TerrainGen.populate(this, worldObj, rand, chunkX, chunkZ, flag, PopulateChunkEvent.Populate.EventType.LAKE)) {
+                    k1 = x + this.rand.nextInt(16) + 8;
+                    l1 = this.rand.nextInt(256);
+                    i2 = z + this.rand.nextInt(16) + 8;
+                    (new WorldGenLakes(Blocks.water)).generate(this.worldObj, this.rand, new BlockPos(k1, l1, i2));
+                }
 
-//                if (TerrainGen.populate(chunkProvider, worldObj, rand, chunkX, chunkZ, flag, LAVA) && !flag && this.rand.nextInt(8) == 0) {
-//                    k1 = x + this.rand.nextInt(16) + 8;
-//                    l1 = this.rand.nextInt(this.rand.nextInt(248) + 8);
-//                    i2 = z + this.rand.nextInt(16) + 8;
-//
-//                    if (l1 < 63 || this.rand.nextInt(10) == 0) {
-//                        (new WorldGenLakes(Blocks.lava)).generate(this.worldObj, this.rand, new BlockPos(k1, l1, i2));
-//                    }
-//                }
+                if (TerrainGen.populate(this, worldObj, rand, chunkX, chunkZ, flag, PopulateChunkEvent.Populate.EventType.LAVA) && !flag && this.rand.nextInt(8) == 0) {
+                    k1 = x + this.rand.nextInt(16) + 8;
+                    l1 = this.rand.nextInt(this.rand.nextInt(248) + 8);
+                    i2 = z + this.rand.nextInt(16) + 8;
+
+                    if (l1 < 63 || this.rand.nextInt(10) == 0) {
+                        (new WorldGenLakes(Blocks.lava)).generate(this.worldObj, this.rand, new BlockPos(k1, l1, i2));
+                    }
+                }
             } else {
                 // Generate lakes for the specified biomes.
-// @todo
-//                for (Block liquid : dimensionInformation.getFluidsForLakes()) {
-//                    if (!flag && this.rand.nextInt(4) == 0
-//                            && TerrainGen.populate(chunkProvider, worldObj, rand, chunkX, chunkZ, flag, LAKE)) {
-//                        k1 = x + this.rand.nextInt(16) + 8;
-//                        l1 = this.rand.nextInt(256);
-//                        i2 = z + this.rand.nextInt(16) + 8;
-//                        (new WorldGenLakes(liquid)).generate(this.worldObj, this.rand, new BlockPos(k1, l1, i2));
-//                    }
-//                }
+                for (Block liquid : dimensionInformation.getFluidsForLakes()) {
+                    if (!flag && this.rand.nextInt(4) == 0
+                            && TerrainGen.populate(this, worldObj, rand, chunkX, chunkZ, flag, PopulateChunkEvent.Populate.EventType.LAKE)) {
+                        k1 = x + this.rand.nextInt(16) + 8;
+                        l1 = this.rand.nextInt(256);
+                        i2 = z + this.rand.nextInt(16) + 8;
+                        (new WorldGenLakes(liquid)).generate(this.worldObj, this.rand, new BlockPos(k1, l1, i2));
+                    }
+                }
             }
         }
 
         boolean doGen = false;
         if (dimensionInformation.hasStructureType(StructureType.STRUCTURE_DUNGEON)) {
-//@todo
-//            doGen = TerrainGen.populate(chunkProvider, worldObj, rand, chunkX, chunkZ, flag, DUNGEON);
-//            for (k1 = 0; doGen && k1 < 8; ++k1) {
-//                l1 = x + this.rand.nextInt(16) + 8;
-//                i2 = this.rand.nextInt(256);
-//                int j2 = z + this.rand.nextInt(16) + 8;
-//                (new WorldGenDungeons()).generate(this.worldObj, this.rand, new BlockPos(l1, i2, j2));
-//            }
+            doGen = TerrainGen.populate(this, worldObj, rand, chunkX, chunkZ, flag, PopulateChunkEvent.Populate.EventType.DUNGEON);
+            for (k1 = 0; doGen && k1 < 8; ++k1) {
+                l1 = x + this.rand.nextInt(16) + 8;
+                i2 = this.rand.nextInt(256);
+                int j2 = z + this.rand.nextInt(16) + 8;
+                (new WorldGenDungeons()).generate(this.worldObj, this.rand, new BlockPos(l1, i2, j2));
+            }
         }
 
         biomegenbase.decorate(this.worldObj, this.rand, new BlockPos(x, 0, z));
-//        if (TerrainGen.populate(chunkProvider, worldObj, rand, chunkX, chunkZ, flag, ANIMALS)) {
-//            SpawnerAnimals.performWorldGenSpawning(this.worldObj, biomegenbase, x + 8, z + 8, 16, 16, this.rand);
-//        }
+        if (TerrainGen.populate(this, worldObj, rand, chunkX, chunkZ, flag, PopulateChunkEvent.Populate.EventType.ANIMALS)) {
+            WorldEntitySpawner.performWorldGenSpawning(this.worldObj, biomegenbase, x + 8, z + 8, 16, 16, this.rand);
+        }
         x += 8;
         z += 8;
 
-//        doGen = TerrainGen.populate(chunkProvider, worldObj, rand, chunkX, chunkZ, flag, ICE);
+        doGen = TerrainGen.populate(this, worldObj, rand, chunkX, chunkZ, flag, PopulateChunkEvent.Populate.EventType.ICE);
         for (k1 = 0; doGen && k1 < 16; ++k1) {
             for (l1 = 0; l1 < 16; ++l1) {
                 i2 = this.worldObj.getPrecipitationHeight(new BlockPos(x + k1, 0, z + l1)).getY();
@@ -454,33 +373,25 @@ public class GenericChunkProvider implements IChunkProvider {
             }
         }
 
-//        MinecraftForge.EVENT_BUS.post(new PopulateChunkEvent.Post(chunkProvider, worldObj, rand, chunkX, chunkZ, flag));
+        MinecraftForge.EVENT_BUS.post(new PopulateChunkEvent.Post(this, worldObj, rand, chunkX, chunkZ, flag));
 
         BlockFalling.fallInstantly = false;
+
     }
 
-    /**
-     * Unloads chunks that are marked to be unloaded. This is not guaranteed to unload every such chunk.
-     */
     @Override
-    public boolean unloadQueuedChunks() {
-        return false;
+    public boolean generateStructures(Chunk chunkIn, int x, int z) {
+        boolean flag = false;
+
+        boolean mapFeaturesEnabled = true;  //@todo configurable!
+        if (this.settings.useMonuments && mapFeaturesEnabled && chunkIn.getInhabitedTime() < 3600L) {
+            flag |= this.oceanMonumentGenerator.generateStructure(this.worldObj, this.rand, new ChunkCoordIntPair(x, z));
+        }
+
+        return flag;
     }
 
-    /**
-     * Converts the instance data to a readable string.
-     */
     @Override
-    public String makeString() {
-        return "RandomLevelSource";
-    }
-
-
-
-    /**
-     * Returns a list of creatures of the specified type that can spawn at the given location.
-     */
-//    @Override
     public List<BiomeGenBase.SpawnListEntry> getPossibleCreatures(EnumCreatureType creatureType, BlockPos pos) {
         List creatures = getDefaultCreatures(creatureType, pos);
         if (extraSpawns.isEmpty()) {
@@ -489,7 +400,7 @@ public class GenericChunkProvider implements IChunkProvider {
 
         if (creatureType == EnumCreatureType.AMBIENT) {
             creatures = new ArrayList(creatures);
-            for (int i = 0 ; i < extraSpawns.size() ; i++) {
+            for (int i = 0; i < extraSpawns.size(); i++) {
                 Class entityClass = extraSpawns.get(i).entityClass;
                 if (IAnimals.class.isAssignableFrom(entityClass)) {
                     int count = worldObj.countEntities(entityClass);
@@ -500,7 +411,7 @@ public class GenericChunkProvider implements IChunkProvider {
             }
         } else if (creatureType == EnumCreatureType.MONSTER) {
             creatures = new ArrayList(creatures);
-            for (int i = 0 ; i < extraSpawns.size() ; i++) {
+            for (int i = 0; i < extraSpawns.size(); i++) {
                 Class entityClass = extraSpawns.get(i).entityClass;
                 if (IMob.class.isAssignableFrom(entityClass)) {
                     int count = worldObj.countEntities(entityClass);
@@ -543,5 +454,36 @@ public class GenericChunkProvider implements IChunkProvider {
         }
 
         return biomegenbase.getSpawnableList(creatureType);
+    }
+
+    @Override
+    public BlockPos getStrongholdGen(World worldIn, String structureName, BlockPos position) {
+        return "Stronghold".equals(structureName) && this.strongholdGenerator != null ? this.strongholdGenerator.getClosestStrongholdPos(worldIn, position) : null;
+    }
+
+    @Override
+    public void recreateStructures(Chunk chunkIn, int x, int z) {
+        boolean mapFeaturesEnabled = true;  //@todo configurable!
+        if (mapFeaturesEnabled) {
+            if (this.settings.useMineShafts) {
+                this.mineshaftGenerator.generate(this.worldObj, x, z, null);
+            }
+
+            if (this.settings.useVillages) {
+                this.villageGenerator.generate(this.worldObj, x, z, null);
+            }
+
+            if (this.settings.useStrongholds) {
+                this.strongholdGenerator.generate(this.worldObj, x, z, null);
+            }
+
+            if (this.settings.useTemples) {
+                this.scatteredFeatureGenerator.generate(this.worldObj, x, z, null);
+            }
+
+            if (this.settings.useMonuments) {
+                this.oceanMonumentGenerator.generate(this.worldObj, x, z, null);
+            }
+        }
     }
 }

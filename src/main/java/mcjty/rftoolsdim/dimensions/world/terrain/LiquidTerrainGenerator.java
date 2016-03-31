@@ -1,5 +1,6 @@
 package mcjty.rftoolsdim.dimensions.world.terrain;
 
+import mcjty.rftoolsdim.dimensions.world.GenericChunkGenerator;
 import mcjty.rftoolsdim.dimensions.world.GenericChunkProvider;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -8,10 +9,10 @@ import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.chunk.ChunkPrimer;
 
 public class LiquidTerrainGenerator implements BaseTerrainGenerator {
-    protected GenericChunkProvider provider;
+    protected GenericChunkGenerator provider;
 
     @Override
-    public void setup(World world, GenericChunkProvider provider) {
+    public void setup(World world, GenericChunkGenerator provider) {
         this.provider = provider;
     }
 

@@ -1,6 +1,7 @@
 package mcjty.rftoolsdim.dimensions.world.terrain;
 
 import mcjty.rftoolsdim.dimensions.types.FeatureType;
+import mcjty.rftoolsdim.dimensions.world.GenericChunkGenerator;
 import mcjty.rftoolsdim.dimensions.world.GenericChunkProvider;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -18,7 +19,7 @@ import net.minecraftforge.event.terraingen.TerrainGen;
 import java.util.Random;
 
 public class IslandTerrainGenerator implements BaseTerrainGenerator {
-    private GenericChunkProvider provider;
+    private GenericChunkGenerator provider;
 
     private double[] densities;
 
@@ -71,7 +72,7 @@ public class IslandTerrainGenerator implements BaseTerrainGenerator {
     }
 
     @Override
-    public void setup(World world, GenericChunkProvider provider) {
+    public void setup(World world, GenericChunkGenerator provider) {
         this.provider = provider;
 
         this.noiseGen1 = new NoiseGeneratorOctaves(provider.rand, 16);

@@ -2,6 +2,7 @@ package mcjty.rftoolsdim.dimensions.world.mapgen;
 
 import mcjty.rftoolsdim.blocks.ModBlocks;
 import mcjty.lib.varia.BlockMeta;
+import mcjty.rftoolsdim.dimensions.world.GenericChunkGenerator;
 import mcjty.rftoolsdim.dimensions.world.GenericChunkProvider;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -13,9 +14,9 @@ import java.util.Map;
 import java.util.Random;
 
 public class MapGenRuinedCities {
-    private final GenericChunkProvider provider;
+    private final GenericChunkGenerator provider;
 
-    public MapGenRuinedCities(GenericChunkProvider provider) {
+    public MapGenRuinedCities(GenericChunkGenerator provider) {
         this.provider = provider;
     }
 

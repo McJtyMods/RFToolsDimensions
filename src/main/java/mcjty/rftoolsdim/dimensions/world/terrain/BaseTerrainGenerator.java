@@ -1,5 +1,6 @@
 package mcjty.rftoolsdim.dimensions.world.terrain;
 
+import mcjty.rftoolsdim.dimensions.world.GenericChunkGenerator;
 import mcjty.rftoolsdim.dimensions.world.GenericChunkProvider;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -12,7 +13,7 @@ import net.minecraft.world.chunk.ChunkPrimer;
  * The base terrain generator.
  */
 public interface BaseTerrainGenerator {
-    void setup(World world, GenericChunkProvider provider);
+    void setup(World world, GenericChunkGenerator generator);
 
     void generate(int chunkX, int chunkZ, ChunkPrimer chunkPrimer);
 

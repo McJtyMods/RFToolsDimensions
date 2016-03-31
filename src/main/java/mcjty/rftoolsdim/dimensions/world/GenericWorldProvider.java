@@ -8,6 +8,7 @@ import mcjty.rftoolsdim.dimensions.DimensionStorage;
 import mcjty.rftoolsdim.config.GeneralConfiguration;
 import mcjty.rftoolsdim.dimensions.RfToolsDimensionManager;
 import mcjty.rftoolsdim.dimensions.description.WeatherDescriptor;
+import mcjty.rftoolsdim.dimensions.dimlets.types.DimletType;
 import mcjty.rftoolsdim.dimensions.dimlets.types.Patreons;
 import mcjty.rftoolsdim.dimensions.types.ControllerType;
 import mcjty.rftoolsdim.dimensions.types.SkyType;
@@ -50,14 +51,8 @@ public class GenericWorldProvider extends WorldProvider implements  /*@todo impl
 
     @Override
     public DimensionType getDimensionType() {
-        //@todo
-        return null;
+        return DimensionType.getById(getDimension());
     }
-
-//    @Override
-//    public String getInternalNameSuffix() {
-//        return "_rftools";
-//    }
 
     @Override
     public long getSeed() {
@@ -270,8 +265,8 @@ public class GenericWorldProvider extends WorldProvider implements  /*@todo impl
     public IChunkGenerator createChunkGenerator() {
         int dim = worldObj.provider.getDimension();
         setSeed(dim);
+        return new GenericChunkGenerator(worldObj, seed);
 //        return new GenericChunkProvider(worldObj, seed);
-        return null;
         //@todo
     }
 

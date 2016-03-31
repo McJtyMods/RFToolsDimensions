@@ -3,6 +3,7 @@ package mcjty.rftoolsdim.dimensions.world.terrain;
 import mcjty.lib.varia.Logging;
 import mcjty.rftoolsdim.dimensions.types.FeatureType;
 import mcjty.rftoolsdim.dimensions.types.TerrainType;
+import mcjty.rftoolsdim.dimensions.world.GenericChunkGenerator;
 import mcjty.rftoolsdim.dimensions.world.GenericChunkProvider;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -23,7 +24,7 @@ import java.util.Random;
 
 public class NormalTerrainGenerator implements BaseTerrainGenerator {
     private World world;
-    protected GenericChunkProvider provider;
+    protected GenericChunkGenerator provider;
 
     private final double[] noiseField;
     private double[] noiseData1;
@@ -57,7 +58,7 @@ public class NormalTerrainGenerator implements BaseTerrainGenerator {
 
 
     @Override
-    public void setup(World world, GenericChunkProvider provider) {
+    public void setup(World world, GenericChunkGenerator provider) {
         this.world = world;
         this.provider = provider;
 

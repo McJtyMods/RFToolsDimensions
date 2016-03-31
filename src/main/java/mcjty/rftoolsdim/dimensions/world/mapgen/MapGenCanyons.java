@@ -1,5 +1,6 @@
 package mcjty.rftoolsdim.dimensions.world.mapgen;
 
+import mcjty.rftoolsdim.dimensions.world.GenericChunkGenerator;
 import mcjty.rftoolsdim.dimensions.world.GenericChunkProvider;
 import mcjty.rftoolsdim.dimensions.world.terrain.BaseTerrainGenerator;
 import net.minecraft.block.state.IBlockState;
@@ -11,13 +12,13 @@ import net.minecraft.world.chunk.ChunkPrimer;
 import java.util.Random;
 
 public class MapGenCanyons {
-    private final GenericChunkProvider provider;
+    private final GenericChunkGenerator provider;
     private int range = 8;
     private Random rand = new Random();
 
     private float[] field_75046_d = new float[1024];
 
-    public MapGenCanyons(GenericChunkProvider provider) {
+    public MapGenCanyons(GenericChunkGenerator provider) {
         this.provider = provider;
     }
 

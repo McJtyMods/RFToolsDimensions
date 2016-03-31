@@ -1,6 +1,7 @@
 package mcjty.rftoolsdim.dimensions.world.mapgen;
 
 import com.google.common.base.Objects;
+import mcjty.rftoolsdim.dimensions.world.GenericChunkGenerator;
 import mcjty.rftoolsdim.dimensions.world.GenericChunkProvider;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -14,9 +15,9 @@ import net.minecraft.world.gen.MapGenCaves;
 import java.util.Random;
 
 public class MapGenDenseCaves extends MapGenCaves {
-    private final GenericChunkProvider provider;
+    private final GenericChunkGenerator provider;
 
-    public MapGenDenseCaves(GenericChunkProvider provider) {
+    public MapGenDenseCaves(GenericChunkGenerator provider) {
         this.provider = provider;
     }
 

@@ -2,6 +2,7 @@ package mcjty.rftoolsdim.dimensions.world.terrain;
 
 import mcjty.rftoolsdim.config.WorldgenConfiguration;
 import mcjty.rftoolsdim.dimensions.types.TerrainType;
+import mcjty.rftoolsdim.dimensions.world.GenericChunkGenerator;
 import mcjty.rftoolsdim.dimensions.world.GenericChunkProvider;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -18,7 +19,7 @@ import net.minecraftforge.fml.common.eventhandler.Event;
 
 public class CavernTerrainGenerator implements BaseTerrainGenerator {
     private World world;
-    private GenericChunkProvider provider;
+    private GenericChunkGenerator provider;
 
     public enum CavernHeight {
         HEIGHT_64,
@@ -62,7 +63,7 @@ public class CavernTerrainGenerator implements BaseTerrainGenerator {
     }
 
     @Override
-    public void setup(World world, GenericChunkProvider provider) {
+    public void setup(World world, GenericChunkGenerator provider) {
         this.world = world;
         this.provider = provider;
 

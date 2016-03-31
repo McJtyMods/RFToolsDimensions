@@ -1,6 +1,7 @@
 package mcjty.rftoolsdim.dimensions.world.mapgen;
 
 import mcjty.lib.varia.BlockMeta;
+import mcjty.rftoolsdim.dimensions.world.GenericChunkGenerator;
 import mcjty.rftoolsdim.dimensions.world.GenericChunkProvider;
 import mcjty.rftoolsdim.dimensions.world.terrain.BaseTerrainGenerator;
 import net.minecraft.block.Block;
@@ -13,9 +14,9 @@ import net.minecraft.world.chunk.ChunkPrimer;
 import java.util.Random;
 
 public class MapGenPyramids {
-    private final GenericChunkProvider provider;
+    private final GenericChunkGenerator provider;
 
-    public MapGenPyramids(GenericChunkProvider provider) {
+    public MapGenPyramids(GenericChunkGenerator provider) {
         this.provider = provider;
     }
 

@@ -1,5 +1,6 @@
 package mcjty.rftoolsdim.dimensions.world.mapgen;
 
+import mcjty.rftoolsdim.dimensions.world.GenericChunkGenerator;
 import mcjty.rftoolsdim.dimensions.world.GenericChunkProvider;
 import mcjty.rftoolsdim.dimensions.world.terrain.BaseTerrainGenerator;
 import net.minecraft.block.Block;
@@ -11,11 +12,11 @@ import net.minecraft.world.chunk.ChunkPrimer;
 import java.util.Random;
 
 public class MapGenLiquidOrbs {
-    private final GenericChunkProvider provider;
+    private final GenericChunkGenerator provider;
     private final boolean large;
     private final int r;
 
-    public MapGenLiquidOrbs(GenericChunkProvider provider, boolean large) {
+    public MapGenLiquidOrbs(GenericChunkGenerator provider, boolean large) {
         this.provider = provider;
         this.large = large;
         r = large ? 2 : 1;
