@@ -249,9 +249,7 @@ public class GenericChunkGenerator implements IChunkGenerator {
         if (dimensionInformation.hasStructureType(StructureType.STRUCTURE_SCATTERED)) {
             this.scatteredFeatureGenerator.generate(this.worldObj, chunkX, chunkZ, chunkprimer);
         }
-
-        //@todo
-        if (true) {
+        if (dimensionInformation.hasStructureType(StructureType.STRUCTURE_OCEAN_MONUMENT)) {
             this.oceanMonumentGenerator.generate(this.worldObj, chunkX, chunkZ, chunkprimer);
         }
 
@@ -298,6 +296,9 @@ public class GenericChunkGenerator implements IChunkGenerator {
         }
         if (dimensionInformation.hasStructureType(StructureType.STRUCTURE_SCATTERED)) {
             this.scatteredFeatureGenerator.generateStructure(this.worldObj, this.rand, cp);
+        }
+        if (dimensionInformation.hasStructureType(StructureType.STRUCTURE_OCEAN_MONUMENT)) {
+            this.oceanMonumentGenerator.generateStructure(this.worldObj, this.rand, cp);
         }
 
         int k1;
@@ -382,8 +383,7 @@ public class GenericChunkGenerator implements IChunkGenerator {
     public boolean generateStructures(Chunk chunkIn, int x, int z) {
         boolean flag = false;
 
-        boolean mapFeaturesEnabled = true;  //@todo configurable!
-        if (this.settings.useMonuments && mapFeaturesEnabled && chunkIn.getInhabitedTime() < 3600L) {
+        if (dimensionInformation.hasStructureType(StructureType.STRUCTURE_OCEAN_MONUMENT) && chunkIn.getInhabitedTime() < 3600L) {
             flag |= this.oceanMonumentGenerator.generateStructure(this.worldObj, this.rand, new ChunkCoordIntPair(x, z));
         }
 
@@ -446,6 +446,9 @@ public class GenericChunkGenerator implements IChunkGenerator {
                     return this.genNetherBridge.getSpawnList();
                 }
             }
+            if (dimensionInformation.hasStructureType(StructureType.STRUCTURE_OCEAN_MONUMENT) && this.oceanMonumentGenerator.isPositionInStructure(this.worldObj, pos)) {
+                return this.oceanMonumentGenerator.getScatteredFeatureSpawnList();
+            }
         } else if (creatureType == EnumCreatureType.AMBIENT) {
             if (dimensionInformation.isNoanimals()) {
                 return Collections.emptyList();
@@ -462,27 +465,28 @@ public class GenericChunkGenerator implements IChunkGenerator {
 
     @Override
     public void recreateStructures(Chunk chunkIn, int x, int z) {
-        boolean mapFeaturesEnabled = true;  //@todo configurable!
-        if (mapFeaturesEnabled) {
-            if (this.settings.useMineShafts) {
-                this.mineshaftGenerator.generate(this.worldObj, x, z, null);
-            }
+        if (dimensionInformation.hasStructureType(StructureType.STRUCTURE_FORTRESS)) {
+            this.genNetherBridge.generate(this.worldObj, x, z, null);
+        }
 
-            if (this.settings.useVillages) {
-                this.villageGenerator.generate(this.worldObj, x, z, null);
-            }
+        if (dimensionInformation.hasStructureType(StructureType.STRUCTURE_MINESHAFT)) {
+            this.mineshaftGenerator.generate(this.worldObj, x, z, null);
+        }
 
-            if (this.settings.useStrongholds) {
-                this.strongholdGenerator.generate(this.worldObj, x, z, null);
-            }
+        if (dimensionInformation.hasStructureType(StructureType.STRUCTURE_VILLAGE)) {
+            this.villageGenerator.generate(this.worldObj, x, z, null);
+        }
 
-            if (this.settings.useTemples) {
-                this.scatteredFeatureGenerator.generate(this.worldObj, x, z, null);
-            }
+        if (dimensionInformation.hasStructureType(StructureType.STRUCTURE_STRONGHOLD)) {
+            this.strongholdGenerator.generate(this.worldObj, x, z, null);
+        }
 
-            if (this.settings.useMonuments) {
-                this.oceanMonumentGenerator.generate(this.worldObj, x, z, null);
-            }
+        if (dimensionInformation.hasStructureType(StructureType.STRUCTURE_SCATTERED)) {
+            this.scatteredFeatureGenerator.generate(this.worldObj, x, z, null);
+        }
+
+        if (dimensionInformation.hasStructureType(StructureType.STRUCTURE_OCEAN_MONUMENT)) {
+            this.oceanMonumentGenerator.generate(this.worldObj, x, z, null);
         }
     }
 }
