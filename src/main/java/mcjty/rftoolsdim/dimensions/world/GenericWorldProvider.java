@@ -35,7 +35,7 @@ import java.util.Set;
 //@Optional.InterfaceList(@Optional.Interface(iface = "ivorius.reccomplex.dimensions.DimensionDictionary$Handler", modid = "reccomplex"))
 public class GenericWorldProvider extends WorldProvider implements  /*@todo implements DimensionDictionary.Handler,*/ IRFToolsWorldProvider {
 
-    public static final String RFTOOLS_DIMENSION = "rftools dimension";
+    public static final String RFTOOLS_DIMENSION = "rftools_dimension";
 
     private DimensionInformation dimensionInformation;
     private DimensionStorage storage;

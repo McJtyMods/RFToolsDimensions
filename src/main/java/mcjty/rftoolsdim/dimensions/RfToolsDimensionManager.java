@@ -287,7 +287,7 @@ public class RfToolsDimensionManager extends WorldSavedData {
 
     private void registerDimensionToServerAndClient(int id) {
         if (!DimensionManager.isDimensionRegistered(id)) {
-            DimensionType type = DimensionType.register("rftools dimension" + id, "_rftools", id, GenericWorldProvider.class, false);
+            DimensionType type = DimensionType.register("rftools_dimension" + id, "_rftools", id, GenericWorldProvider.class, false);
             DimensionManager.registerDimension(id, type);
         }
         RFToolsDimMessages.INSTANCE.sendToAll(new PacketRegisterDimensions(id));
