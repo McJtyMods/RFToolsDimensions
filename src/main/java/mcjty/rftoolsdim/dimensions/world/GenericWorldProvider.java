@@ -13,6 +13,8 @@ import mcjty.rftoolsdim.dimensions.types.ControllerType;
 import mcjty.rftoolsdim.dimensions.types.SkyType;
 import mcjty.rftoolsdim.network.PacketGetDimensionEnergy;
 import mcjty.rftoolsdim.network.RFToolsDimMessages;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.math.BlockPos;
@@ -75,6 +77,19 @@ public class GenericWorldProvider extends WorldProvider implements  /*@todo impl
             }
         }
         return dimensionInformation;
+    }
+
+    @Override
+    public int getDimension() {
+        int id = super.getDimension();
+        if (id == 0) {
+            // @todo HACK ALERT!!! Remove once WorldClient constructor calls setDimension()
+            EntityPlayerSP thePlayer = Minecraft.getMinecraft().thePlayer;
+            if (thePlayer != null) {
+                setDimension(thePlayer.dimension);
+            }
+        }
+        return super.getDimension();
     }
 
     @Override
