@@ -65,13 +65,13 @@ public class GenericWorldProvider extends WorldProvider implements  /*@todo impl
 
     private DimensionInformation getDimensionInformation() {
         if (dimensionInformation == null) {
-            int dim = worldObj.provider.getDimension();
+            int dim = getDimension();
             dimensionInformation = RfToolsDimensionManager.getDimensionManager(worldObj).getDimensionInformation(dim);
             if (dimensionInformation == null) {
                 Logging.log("Dimension information for dimension " + dim + " is missing!");
             } else {
                 setSeed(dim);
-                setupProviderInfo();
+//                setupProviderInfo();
             }
         }
         return dimensionInformation;
@@ -304,11 +304,9 @@ public class GenericWorldProvider extends WorldProvider implements  /*@todo impl
 
     @Override
     public IChunkGenerator createChunkGenerator() {
-        int dim = worldObj.provider.getDimension();
+        int dim = getDimension();
         setSeed(dim);
         return new GenericChunkGenerator(worldObj, seed);
-//        return new GenericChunkProvider(worldObj, seed);
-        //@todo
     }
 
     @Override
@@ -326,7 +324,7 @@ public class GenericWorldProvider extends WorldProvider implements  /*@todo impl
     @Override
     @SideOnly(Side.CLIENT)
     public Vec3d getFogColor(float angle, float dt) {
-        int dim = worldObj.provider.getDimension();
+        int dim = getDimension();
         if (System.currentTimeMillis() - lastFogTime > 1000) {
             lastFogTime = System.currentTimeMillis();
             RFToolsDimMessages.INSTANCE.sendToServer(new PacketGetDimensionEnergy(dim));
@@ -355,7 +353,7 @@ public class GenericWorldProvider extends WorldProvider implements  /*@todo impl
     @Override
     @SideOnly(Side.CLIENT)
     public Vec3d getSkyColor(Entity cameraEntity, float partialTicks) {
-        int dim = worldObj.provider.getDimension();
+        int dim = getDimension();
         if (System.currentTimeMillis() - lastTime > 1000) {
             lastTime = System.currentTimeMillis();
             RFToolsDimMessages.INSTANCE.sendToServer(new PacketGetDimensionEnergy(dim));
@@ -401,7 +399,7 @@ public class GenericWorldProvider extends WorldProvider implements  /*@todo impl
         if (dimensionInformation == null) {
             return super.getSunBrightness(par1);
         }
-        int dim = worldObj.provider.getDimension();
+        int dim = getDimension();
         float factor = calculatePowerBlackout(dim);
         return super.getSunBrightness(par1) * dimensionInformation.getSkyDescriptor().getSunBrightnessFactor() * factor;
     }

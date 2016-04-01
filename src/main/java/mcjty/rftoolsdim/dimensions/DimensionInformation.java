@@ -18,11 +18,13 @@ import mcjty.rftoolsdim.dimensions.dimlets.types.DimletType;
 import mcjty.rftoolsdim.dimensions.dimlets.types.IDimletType;
 import mcjty.rftoolsdim.dimensions.dimlets.types.Patreons;
 import mcjty.rftoolsdim.dimensions.types.*;
+import mcjty.rftoolsdim.dimensions.world.BiomeControllerMapping;
 import mcjty.rftoolsdim.varia.RFToolsTools;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Biomes;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.*;
@@ -441,7 +443,7 @@ public class DimensionInformation implements IDimensionInformation {
             if (t != null) {
                 c.add(BiomeGenBase.getIdForBiome(t));
             } else {
-                c.add(1);   // @todo hardcoded plains
+                c.add(BiomeGenBase.getIdForBiome(Biomes.plains));
             }
         }
         tagCompound.setIntArray("biomes", ArrayUtils.toPrimitive(c.toArray(new Integer[c.size()])));
@@ -773,7 +775,7 @@ public class DimensionInformation implements IDimensionInformation {
             if (entry != null) {
                 buf.writeInt(BiomeGenBase.getIdForBiome(entry));
             } else {
-                buf.writeInt(1);    // @todo: hardcoded plains
+                buf.writeInt(BiomeGenBase.getIdForBiome(Biomes.plains));
             }
         }
         NetworkTools.writeEnum(buf, controllerType, ControllerType.CONTROLLER_DEFAULT);
@@ -1117,30 +1119,27 @@ public class DimensionInformation implements IDimensionInformation {
     private void setupBiomeMapping() {
         biomeMapping.clear();
         if (controllerType == ControllerType.CONTROLLER_FILTERED) {
-            //@todo
-//            BiomeGenBase.biomeRegistry.iterator()
-//            BiomeGenBase[] biomeGenArray = BiomeGenBase.getBiomeGenArray();
-//            final Set<Integer> ids = new HashSet<Integer>();
-//            for (BiomeGenBase biome : biomes) {
-//                if (biome != null) {
-//                    ids.add(biome.biomeID);
-//                } else {
-//                    ids.add(BiomeGenBase.plains.biomeID);
-//                }
-//            }
-//
-//            ControllerType.BiomeFilter biomeFilter = new ControllerType.BiomeFilter() {
-//                @Override
-//                public boolean match(BiomeGenBase biome) {
-//                    return ids.contains(biome.biomeID);
-//                }
-//
-//                @Override
-//                public double calculateBiomeDistance(BiomeGenBase a, BiomeGenBase b) {
-//                    return calculateBiomeDistance(a, b, false, false, false);
-//                }
-//            };
-//            BiomeControllerMapping.makeFilteredBiomeMap(biomeGenArray, biomeMapping, biomeFilter);
+            final Set<Integer> ids = new HashSet<>();
+            for (BiomeGenBase biome : BiomeGenBase.biomeRegistry) {
+                if (biome != null) {
+                    ids.add(BiomeGenBase.getIdForBiome(biome));
+                } else {
+                    ids.add(BiomeGenBase.getIdForBiome(Biomes.plains));
+                }
+            }
+
+            ControllerType.BiomeFilter biomeFilter = new ControllerType.BiomeFilter() {
+                @Override
+                public boolean match(BiomeGenBase biome) {
+                    return ids.contains(BiomeGenBase.getIdForBiome(biome));
+                }
+
+                @Override
+                public double calculateBiomeDistance(BiomeGenBase a, BiomeGenBase b) {
+                    return calculateBiomeDistance(a, b, false, false, false);
+                }
+            };
+            BiomeControllerMapping.makeFilteredBiomeMap(biomeMapping, biomeFilter);
         }
     }
 

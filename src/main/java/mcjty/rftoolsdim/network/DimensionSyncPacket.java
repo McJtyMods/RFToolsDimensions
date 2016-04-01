@@ -4,6 +4,7 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import mcjty.lib.varia.Logging;
 import mcjty.rftoolsdim.dimensions.world.GenericWorldProvider;
+import net.minecraft.world.DimensionType;
 import net.minecraftforge.common.DimensionManager;
 
 public class DimensionSyncPacket {
@@ -33,11 +34,9 @@ public class DimensionSyncPacket {
         for (int id : dimensions) {
             Logging.log("DimensionSyncPacket: Registering id: id = " + id);
             if (!DimensionManager.isDimensionRegistered(id)) {
-//                DimensionManager.registerProviderType(id, GenericWorldProvider.class, false);
-//                DimensionManager.registerDimension(id, id);
-                //@todo
+                DimensionType type = DimensionType.register("rftools dimension", "_rftools", id, GenericWorldProvider.class, false);
+                DimensionManager.registerDimension(id, type);
             }
         }
     }
-
 }

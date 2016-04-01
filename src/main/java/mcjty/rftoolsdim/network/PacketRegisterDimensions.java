@@ -4,6 +4,7 @@ import io.netty.buffer.ByteBuf;
 import mcjty.lib.varia.Logging;
 import mcjty.rftoolsdim.dimensions.world.GenericWorldProvider;
 import net.minecraft.client.Minecraft;
+import net.minecraft.world.DimensionType;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -41,13 +42,13 @@ public class PacketRegisterDimensions implements IMessage {
         }
 
         private void handle(PacketRegisterDimensions message) {
-            if (DimensionManager.isDimensionRegistered(message.getId())) {
-                Logging.log("Client side, already registered dimension: " + message.getId());
+            int id = message.getId();
+            if (DimensionManager.isDimensionRegistered(id)) {
+                Logging.log("Client side, already registered dimension: " + id);
             } else {
-                Logging.log("Client side, register dimension: " + message.getId());
-//                DimensionManager.registerProviderType(message.getId(), GenericWorldProvider.class, false);
-//                DimensionManager.registerDimension(message.getId(), message.getId());
-                //@todo
+                Logging.log("Client side, register dimension: " + id);
+                DimensionType type = DimensionType.register("rftools dimension", "_rftools", id, GenericWorldProvider.class, false);
+                DimensionManager.registerDimension(id, type);
             }
         }
 

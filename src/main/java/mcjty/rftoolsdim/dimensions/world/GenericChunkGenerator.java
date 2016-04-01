@@ -280,8 +280,7 @@ public class GenericChunkGenerator implements IChunkGenerator {
         this.rand.setSeed(chunkX * i1 + chunkZ * j1 ^ this.worldObj.getSeed());
         boolean flag = false;
 
-        //@todo
-//        MinecraftForge.EVENT_BUS.post(new PopulateChunkEvent.Pre(chunkProvider, worldObj, rand, chunkX, chunkZ, flag));
+        MinecraftForge.EVENT_BUS.post(new PopulateChunkEvent.Pre(this, worldObj, rand, chunkX, chunkZ, flag));
 
         ChunkCoordIntPair cp = new ChunkCoordIntPair(chunkX, chunkZ);
 
