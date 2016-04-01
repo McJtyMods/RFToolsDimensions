@@ -1,10 +1,10 @@
 package mcjty.rftoolsdim.dimensions.dimlets.types;
 
 import mcjty.rftoolsdim.config.WorldgenConfiguration;
+import mcjty.rftoolsdim.dimensions.DimensionInformation;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletKey;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletObjectMapping;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletRandomizer;
-import mcjty.rftoolsdim.dimensions.DimensionInformation;
 import mcjty.rftoolsdim.dimensions.types.StructureType;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.config.Configuration;
@@ -81,13 +81,12 @@ public class StructureDimletType implements IDimletType {
                 DimletKey key = DimletRandomizer.getRandomStructure(random);
                 if (key != null) {
                     StructureType structureType = DimletObjectMapping.getStructure(key);
-                    if (!structureTypes.contains(structureType) || (structureType == StructureType.STRUCTURE_RECURRENTCOMPLEX)) {
+                    if (!structureTypes.contains(structureType)) { //  || (structureType == StructureType.STRUCTURE_RECURRENTCOMPLEX)) {
                         dimensionInformation.updateCostFactor(key);
                         structureTypes.add(structureType);
-                        //                    if (structureType == StructureType.STRUCTURE_RECURRENTCOMPLEX) {
-                        //                        dimensionTypes.add(DimletObjectMapping.idToRecurrentComplexType.get(key));
-                        //                    }
-                        // @todo
+//                        if (structureType == StructureType.STRUCTURE_RECURRENTCOMPLEX) {
+//                            dimensionTypes.add(DimletObjectMapping.idToRecurrentComplexType.get(key));
+//                        }
                     }
                 }
             }

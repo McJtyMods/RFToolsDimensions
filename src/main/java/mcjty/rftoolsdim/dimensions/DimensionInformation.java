@@ -687,11 +687,11 @@ public class DimensionInformation implements IDimensionInformation {
         for (StructureType structureType : getStructureTypes()) {
             logDebug(player, "    Structure: " + structureType.toString());
         }
-        if (structureTypes.contains(StructureType.STRUCTURE_RECURRENTCOMPLEX)) {
-            for (String type : dimensionTypes) {
-                logDebug(player, "    RR DimensionType: " + type);
-            }
-        }
+//        if (structureTypes.contains(StructureType.STRUCTURE_RECURRENTCOMPLEX)) {
+//            for (String type : dimensionTypes) {
+//                logDebug(player, "    RR DimensionType: " + type);
+//            }
+//        }
         for (EffectType effectType : getEffectTypes()) {
             logDebug(player, "    Effect: " + effectType.toString());
         }

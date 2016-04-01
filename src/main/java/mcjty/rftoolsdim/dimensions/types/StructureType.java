@@ -10,8 +10,8 @@ public enum StructureType {
     STRUCTURE_DUNGEON("Dungeon"),
     STRUCTURE_FORTRESS("Fortress"),
     STRUCTURE_MINESHAFT("Mineshaft"),
-    STRUCTURE_SCATTERED("Scattered"),
-    STRUCTURE_RECURRENTCOMPLEX("RecurrentComplex");
+    STRUCTURE_SCATTERED("Scattered");
+//    STRUCTURE_RECURRENTCOMPLEX("RecurrentComplex");
 
     private static final Map<String,StructureType> STRUCTURE_TYPE_MAP = new HashMap<>();
 
