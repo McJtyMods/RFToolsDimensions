@@ -29,6 +29,8 @@ public class GeneralConfiguration {
     public static boolean dimensionFolderIsDeletedWithSafeDel = true;
     public static int maxDimensionsPerPlayer = -1;
 
+    public static int rftoolsProviderId = -1;
+
     public static float endermanDimletPartDrop = 0.02f;
     public static int minParcelContents = 3;
     public static int maxParcelContents = 6;
@@ -40,6 +42,9 @@ public class GeneralConfiguration {
                                          "Enable dynamic scaling of the Phase Field Generator cost based on world tick cost").getBoolean();
         dynamicPhaseCostAmount = (float) cfg.get(CATEGORY_GENERAL, "dynamicPhaseCostAmount", dynamicPhaseCostAmount,
                                                  "How much of the tick cost of the world is applied to the PFG cost, as a ratio from 0 to 1").getDouble();
+
+        rftoolsProviderId = cfg.get(CATEGORY_GENERAL, "rftoolsProviderId", rftoolsProviderId,
+                "The RFTools dimension provider id (-1 means try to find one automatically)").getInt();
 
         spawnDimension = cfg.get(CATEGORY_GENERAL, "spawnDimension", spawnDimension,
                 "Dimension to respawn in after you get kicked out of an RFTools dimension").getInt();

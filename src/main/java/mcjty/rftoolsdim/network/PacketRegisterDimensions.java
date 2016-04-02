@@ -2,6 +2,7 @@ package mcjty.rftoolsdim.network;
 
 import io.netty.buffer.ByteBuf;
 import mcjty.lib.varia.Logging;
+import mcjty.rftoolsdim.dimensions.ModDimensions;
 import mcjty.rftoolsdim.dimensions.world.GenericWorldProvider;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.DimensionType;
@@ -47,8 +48,8 @@ public class PacketRegisterDimensions implements IMessage {
                 Logging.log("Client side, already registered dimension: " + id);
             } else {
                 Logging.log("Client side, register dimension: " + id);
-                DimensionType type = DimensionType.register("rftools_dimension" + id, "_rftools", id, GenericWorldProvider.class, false);
-                DimensionManager.registerDimension(id, type);
+//                DimensionType type = DimensionType.register("rftools_dimension" + id, "_rftools", id, GenericWorldProvider.class, false);
+                DimensionManager.registerDimension(id, ModDimensions.rftoolsType);
             }
         }
 

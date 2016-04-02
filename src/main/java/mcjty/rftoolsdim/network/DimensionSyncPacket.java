@@ -3,6 +3,7 @@ package mcjty.rftoolsdim.network;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import mcjty.lib.varia.Logging;
+import mcjty.rftoolsdim.dimensions.ModDimensions;
 import mcjty.rftoolsdim.dimensions.world.GenericWorldProvider;
 import net.minecraft.world.DimensionType;
 import net.minecraftforge.common.DimensionManager;
@@ -34,8 +35,8 @@ public class DimensionSyncPacket {
         for (int id : dimensions) {
             Logging.log("DimensionSyncPacket: Registering id: id = " + id);
             if (!DimensionManager.isDimensionRegistered(id)) {
-                DimensionType type = DimensionType.register("rftools_dimension" + id, "_rftools", id, GenericWorldProvider.class, false);
-                DimensionManager.registerDimension(id, type);
+//                DimensionType type = DimensionType.register("rftools_dimension" + id, "_rftools", id, GenericWorldProvider.class, false);
+                DimensionManager.registerDimension(id, ModDimensions.rftoolsType);
             }
         }
     }

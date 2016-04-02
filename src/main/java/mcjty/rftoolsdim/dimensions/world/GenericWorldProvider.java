@@ -6,6 +6,7 @@ import mcjty.rftoolsdim.config.GeneralConfiguration;
 import mcjty.rftoolsdim.config.PowerConfiguration;
 import mcjty.rftoolsdim.dimensions.DimensionInformation;
 import mcjty.rftoolsdim.dimensions.DimensionStorage;
+import mcjty.rftoolsdim.dimensions.ModDimensions;
 import mcjty.rftoolsdim.dimensions.RfToolsDimensionManager;
 import mcjty.rftoolsdim.dimensions.description.WeatherDescriptor;
 import mcjty.rftoolsdim.dimensions.dimlets.types.Patreons;
@@ -53,7 +54,7 @@ public class GenericWorldProvider extends WorldProvider implements  /*@todo impl
 
     @Override
     public DimensionType getDimensionType() {
-        return DimensionType.getById(getDimension());
+        return ModDimensions.rftoolsType;
     }
 
     @Override
