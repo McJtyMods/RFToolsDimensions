@@ -149,7 +149,7 @@ public class MaterialAbsorberTileEntity extends GenericTileEntity implements ITi
         super.writeRestorableToNBT(tagCompound);
         tagCompound.setInteger("absorbing", absorbing);
         if (blockState != null) {
-            tagCompound.setString("block", blockState.getBlock().getRegistryName());
+            tagCompound.setString("block", blockState.getBlock().getRegistryName().getResourcePath());
             tagCompound.setInteger("meta", blockState.getBlock().getMetaFromState(blockState));
         }
     }

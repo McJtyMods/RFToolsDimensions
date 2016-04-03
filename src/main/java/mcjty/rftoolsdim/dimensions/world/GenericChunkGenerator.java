@@ -56,7 +56,7 @@ public class GenericChunkGenerator implements IChunkGenerator {
     private final BaseTerrainGenerator terrainGenerator;
 
     // @todo, examine and consider customizing
-    private ChunkProviderSettings settings = new ChunkProviderSettings.Factory().func_177864_b();
+    private ChunkProviderSettings settings = new ChunkProviderSettings.Factory().build();
 
     private List<BiomeGenBase.SpawnListEntry> extraSpawns;
     private List<Integer> extraSpawnsMax;

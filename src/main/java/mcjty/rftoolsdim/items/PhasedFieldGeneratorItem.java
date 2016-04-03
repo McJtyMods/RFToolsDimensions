@@ -9,6 +9,7 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
@@ -35,7 +36,9 @@ public class PhasedFieldGeneratorItem extends GenericRFToolsItem implements IEne
     @SideOnly(Side.CLIENT)
     public void initModel() {
         for (int i = 0 ; i <= 8 ; i++) {
-            ModelBakery.registerItemVariants(this, new ModelResourceLocation(getRegistryName() + i, "inventory"));
+            ResourceLocation registryName = getRegistryName();
+            registryName = new ResourceLocation(registryName.getResourceDomain(), registryName.getResourcePath() + i);
+            ModelBakery.registerItemVariants(this, new ModelResourceLocation(registryName, "inventory"));
 //            ModelBakery.addVariantName(this, getRegistryName() + i);
         }
 
@@ -53,7 +56,9 @@ public class PhasedFieldGeneratorItem extends GenericRFToolsItem implements IEne
                 } else if (level > 8) {
                     level = 8;
                 }
-                return new ModelResourceLocation(getRegistryName() + (8 - level), "inventory");
+                ResourceLocation registryName = getRegistryName();
+                registryName = new ResourceLocation(registryName.getResourceDomain(), registryName.getResourcePath() + (8 - level));
+                return new ModelResourceLocation(registryName, "inventory");
             }
         });
     }

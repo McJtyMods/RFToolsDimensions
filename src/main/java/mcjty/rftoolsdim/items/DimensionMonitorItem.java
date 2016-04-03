@@ -17,6 +17,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
@@ -37,7 +38,9 @@ public class DimensionMonitorItem extends GenericRFToolsItem {
     @SideOnly(Side.CLIENT)
     public void initModel() {
         for (int i = 0 ; i <= 8 ; i++) {
-            ModelBakery.registerItemVariants(this, new ModelResourceLocation(getRegistryName() + i, "inventory"));
+            ResourceLocation registryName = getRegistryName();
+            registryName = new ResourceLocation(registryName.getResourceDomain(), registryName.getResourcePath() + i);
+            ModelBakery.registerItemVariants(this, new ModelResourceLocation(registryName, "inventory"));
 //            ModelBakery.addVariantName(this, getRegistryName() + i);
         }
 
@@ -54,7 +57,9 @@ public class DimensionMonitorItem extends GenericRFToolsItem {
                 } else if (level > 8) {
                     level = 8;
                 }
-                return new ModelResourceLocation(getRegistryName() + (8 - level), "inventory");
+                ResourceLocation registryName = getRegistryName();
+                registryName = new ResourceLocation(registryName.getResourceDomain(), registryName.getResourcePath() + (8 - level));
+                return new ModelResourceLocation(registryName, "inventory");
             }
         });
     }

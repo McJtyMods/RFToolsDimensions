@@ -9,6 +9,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
@@ -31,7 +32,9 @@ public class DimletControlCircuitItem extends GenericRFToolsItem {
     public void initModel() {
         ModelResourceLocation models[] = new ModelResourceLocation[7];
         for (int i = 0 ; i <= 6 ; i++) {
-            models[i] = new ModelResourceLocation(getRegistryName() + i, "inventory");
+            ResourceLocation registryName = getRegistryName();
+            registryName = new ResourceLocation(registryName.getResourceDomain(), registryName.getResourcePath() + i);
+            models[i] = new ModelResourceLocation(registryName, "inventory");
             ModelBakery.registerItemVariants(this, models[i]);
         }
 
