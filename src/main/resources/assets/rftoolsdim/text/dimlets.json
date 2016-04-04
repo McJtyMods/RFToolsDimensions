@@ -852,7 +852,7 @@
   {
     "filter": {
       "type": "biome",
-      "name": "The End"
+      "name": "minecraft:sky"
     },
     "settings": {
       "rarity": 5,

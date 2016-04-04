@@ -25,7 +25,6 @@ import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.biome.BiomeProvider;
 import net.minecraft.world.biome.BiomeProviderSingle;
 import net.minecraft.world.chunk.IChunkGenerator;
-import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -172,6 +171,7 @@ public class GenericWorldProvider extends WorldProvider implements  /*@todo impl
 
     @Override
     protected void createBiomeProvider() {
+        getDimensionInformation();
         if (dimensionInformation != null) {
             ControllerType type = dimensionInformation.getControllerType();
             if (type == ControllerType.CONTROLLER_SINGLE) {
@@ -208,50 +208,6 @@ public class GenericWorldProvider extends WorldProvider implements  /*@todo impl
             }
         }
 
-    }
-
-    private void setupProviderInfo() {
-        if (dimensionInformation != null) {
-            ControllerType type = dimensionInformation.getControllerType();
-            if (type == ControllerType.CONTROLLER_SINGLE) {
-//                worldChunkMgr = new SingleBiomeWorldChunkManager(worldObj, worldObj.getSeed(), terrainType);
-//                worldChunkMgr = new SingleBiomeWorldChunkManager(worldObj, worldObj.getSeed(), worldObj.getWorldType());
-            } else if (type == ControllerType.CONTROLLER_DEFAULT) {
-//                worldChunkMgr = new WorldChunkManager(seed, worldObj.getWorldInfo().getTerrainType(), ""); // @todo
-            } else {
-//                GenericWorldChunkManager.hackyDimensionInformation = dimensionInformation;      // Hack to get the dimension information in the superclass.
-//                worldChunkMgr = new GenericWorldChunkManager(seed, worldObj.getWorldInfo().getTerrainType(), dimensionInformation);
-            }
-        } else {
-//@todo
-//            worldChunkMgr = new WorldChunkManager(seed, worldObj.getWorldInfo().getTerrainType(), ""); //@todo
-        }
-
-        if (dimensionInformation != null) {
-            hasNoSky = !dimensionInformation.getTerrainType().hasSky();
-
-            if (worldObj.isRemote) {
-                // Only on client!
-                SkyType skyType = dimensionInformation.getSkyDescriptor().getSkyType();
-                if (hasNoSky) {
-                    SkyRenderer.registerNoSky(this);
-                } else if (skyType == SkyType.SKY_ENDER) {
-                    SkyRenderer.registerEnderSky(this);
-                } else if (skyType == SkyType.SKY_INFERNO || skyType == SkyType.SKY_STARS1 || skyType == SkyType.SKY_STARS2 || skyType == SkyType.SKY_STARS3) {
-                    SkyRenderer.registerSkybox(this, skyType);
-                } else {
-                    SkyRenderer.registerSky(this, dimensionInformation);
-                }
-
-                if (dimensionInformation.getSkyDescriptor().isCloudColorGiven() || dimensionInformation.isPatreonBitSet(Patreons.PATREON_KENNEY)) {
-                    SkyRenderer.registerCloudRenderer(this, dimensionInformation);
-                }
-            }
-        }
-    }
-
-    public static WorldProvider getProviderForDimension(int id) {
-        return DimensionManager.createProviderFor(id);
     }
 
     @Override

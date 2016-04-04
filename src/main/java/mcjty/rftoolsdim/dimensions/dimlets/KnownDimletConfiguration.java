@@ -84,7 +84,7 @@ public class KnownDimletConfiguration {
     private static void initBiomeDimlet(BiomeGenBase biome) {
         String name = biome.getBiomeName();
         if (name != null && !name.isEmpty()) {
-            DimletKey key = new DimletKey(DimletType.DIMLET_BIOME, biome.getBiomeName());
+            DimletKey key = new DimletKey(DimletType.DIMLET_BIOME, biome.getRegistryName().toString());
             initDimlet(key, RFToolsTools.findModID(biome));
         }
     }
@@ -282,7 +282,8 @@ public class KnownDimletConfiguration {
     public static String getDisplayName(DimletKey key) {
         switch (key.getType()) {
             case DIMLET_BIOME:
-                return key.getId();
+                BiomeGenBase biome = BiomeGenBase.biomeRegistry.getObject(new ResourceLocation(key.getId()));
+                return biome == null ? "<invalid>" : biome.getBiomeName();
             case DIMLET_LIQUID:
                 Block fluid = DimletObjectMapping.getFluid(key);
                 if (fluid != null) {

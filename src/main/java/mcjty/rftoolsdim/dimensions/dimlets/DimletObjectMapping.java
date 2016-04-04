@@ -100,7 +100,8 @@ public class DimletObjectMapping {
 
     public static BiomeGenBase getBiome(DimletKey dimlet) {
         if (DimletType.DIMLET_BIOME.equals(dimlet.getType())) {
-            return BiomeGenBase.biomeRegistry.getObject(new ResourceLocation(dimlet.getId()));
+            BiomeGenBase biome = BiomeGenBase.biomeRegistry.getObject(new ResourceLocation(dimlet.getId()));
+            return biome;
         }
         return null;
     }

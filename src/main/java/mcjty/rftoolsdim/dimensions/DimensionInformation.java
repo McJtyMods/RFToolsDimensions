@@ -28,7 +28,6 @@ import net.minecraft.init.Biomes;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.*;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
@@ -130,22 +129,12 @@ public class DimensionInformation implements IDimensionInformation {
     }
 
     private void setupFromDescriptor(long seed) {
-        System.out.println("DimensionInformation.setupFromDescriptor : 1");
         List<Pair<DimletKey,List<DimletKey>>> dimlets = descriptor.getDimletsWithModifiers();
-        System.out.println("DimensionInformation.setupFromDescriptor : 2");
-
         Random random = new Random(descriptor.calculateSeed(seed));
-        System.out.println("DimensionInformation.setupFromDescriptor : 3");
-
         actualRfCost = 0;
-
         DimletType.DIMLET_PATREON.dimletType.constructDimension(dimlets, random, this);
-        System.out.println("DimensionInformation.setupFromDescriptor : 4");
-
         DimletType.DIMLET_TERRAIN.dimletType.constructDimension(dimlets, random, this);
-        System.out.println("DimensionInformation.setupFromDescriptor : 5");
         DimletType.DIMLET_FEATURE.dimletType.constructDimension(dimlets, random, this);
-        System.out.println("DimensionInformation.setupFromDescriptor : 6");
 
         DimletType.DIMLET_STRUCTURE.dimletType.constructDimension(dimlets, random, this);
         DimletType.DIMLET_BIOME.dimletType.constructDimension(dimlets, random, this);
@@ -279,7 +268,7 @@ public class DimensionInformation implements IDimensionInformation {
             } else {
                 // Protect against deleted biomes (i.e. a mod with biomes gets removed and this dimension still uses it).
                 // We will pick a replacement biome here.
-                biomes.add(BiomeGenBase.biomeRegistry.getObject(new ResourceLocation("plains")));
+                biomes.add(Biomes.plains);
             }
         }
         if (tagCompound.hasKey("controller")) {
@@ -773,7 +762,8 @@ public class DimensionInformation implements IDimensionInformation {
         buf.writeInt(biomes.size());
         for (BiomeGenBase entry : biomes) {
             if (entry != null) {
-                buf.writeInt(BiomeGenBase.getIdForBiome(entry));
+                int id = BiomeGenBase.getIdForBiome(entry);
+                buf.writeInt(id);
             } else {
                 buf.writeInt(BiomeGenBase.getIdForBiome(Biomes.plains));
             }
@@ -883,11 +873,12 @@ public class DimensionInformation implements IDimensionInformation {
         biomes.clear();
         int size = buf.readInt();
         for (int i = 0 ; i < size ; i++) {
-            BiomeGenBase biome = BiomeGenBase.getBiome(buf.readInt());
+            int id = buf.readInt();
+            BiomeGenBase biome = BiomeGenBase.getBiome(id);
             if (biome != null) {
                 biomes.add(biome);
             } else {
-                biomes.add(BiomeGenBase.biomeRegistry.getObject(new ResourceLocation("plains")));
+                biomes.add(Biomes.plains);
             }
         }
         controllerType = NetworkTools.readEnum(buf, ControllerType.values());
