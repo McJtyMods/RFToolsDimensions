@@ -27,7 +27,7 @@ public class GenericBiomeProvider extends BiomeProvider {
         if (dimensionInformation == null) {
             dimensionInformation = hackyDimensionInformation;
         }
-        GenLayer[] layer = null;//@todosuper.getModdedBiomeGenerators(worldType, seed, original);
+        GenLayer[] layer = super.getModdedBiomeGenerators(worldType, seed, original);
         GenLayer rflayer = null;
         ControllerType type;
         DimensionInformation di = dimensionInformation;
