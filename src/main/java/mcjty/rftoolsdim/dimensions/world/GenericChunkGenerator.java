@@ -77,8 +77,71 @@ public class GenericChunkGenerator implements IChunkGenerator {
     private MapGenBase denseCaveGenerator = new MapGenDenseCaves(this);
 
     private MapGenStronghold strongholdGenerator = new MapGenStronghold();
-    private StructureOceanMonument oceanMonumentGenerator = new StructureOceanMonument();
-    private MapGenVillage villageGenerator = new MapGenVillage();
+    private StructureOceanMonument oceanMonumentGenerator = new StructureOceanMonument() {
+        @Override
+        protected boolean canSpawnStructureAtCoords(int chunkX, int chunkZ) {
+            int i = chunkX;
+            int j = chunkZ;
+
+            int spacing = 32;
+            int separation = 5;
+
+            if (chunkX < 0) {
+                chunkX -= spacing - 1;
+            }
+
+            if (chunkZ < 0) {
+                chunkZ -= spacing - 1;
+            }
+
+            int k = chunkX / spacing;
+            int l = chunkZ / spacing;
+            Random random = this.worldObj.setRandomSeed(k, l, 10387313);
+            k = k * spacing;
+            l = l * spacing;
+            k = k + (random.nextInt(spacing - separation) + random.nextInt(spacing - separation)) / 2;
+            l = l + (random.nextInt(spacing - separation) + random.nextInt(spacing - separation)) / 2;
+
+            if (i == k && j == l) {
+                return true;
+            }
+
+            return false;
+        }
+    };
+    private MapGenVillage villageGenerator = new MapGenVillage() {
+        @Override
+        protected boolean canSpawnStructureAtCoords(int chunkX, int chunkZ) {
+            int i = chunkX;
+            int j = chunkZ;
+
+            int distance = 32;
+            int seperation = 4;
+
+            if (chunkX < 0) {
+                chunkX -= distance - 1;
+            }
+
+            if (chunkZ < 0) {
+                chunkZ -= distance - 1;
+            }
+
+            int k = chunkX / distance;
+            int l = chunkZ / distance;
+            Random random = this.worldObj.setRandomSeed(k, l, 10387312);
+            k = k * distance;
+            l = l * distance;
+            k = k + random.nextInt(distance - seperation);
+            l = l + random.nextInt(distance - seperation);
+
+            if (i == k && j == l) {
+                System.out.println("chunkX = " + chunkX + ", chunkZ = " + chunkZ);
+                return true;
+            }
+
+            return false;
+        }
+    };
     private MapGenMineshaft mineshaftGenerator = new MapGenMineshaft();
     public MapGenNetherBridge genNetherBridge = new MapGenNetherBridge();
     private MapGenScatteredFeature scatteredFeatureGenerator = new MapGenScatteredFeature();
@@ -86,26 +149,31 @@ public class GenericChunkGenerator implements IChunkGenerator {
     // Holds ravine generator
     private MapGenBase ravineGenerator = new MapGenRavine();
 
-    {
-        caveGenerator = TerrainGen.getModdedMapGen(caveGenerator, CAVE);
-//        tendrilGenerator = TerrainGen.getModdedMapGen(tendrilGenerator, CAVE);
-//        canyonGenerator = TerrainGen.getModdedMapGen(canyonGenerator, RAVINE);
-//        sphereGenerator = TerrainGen.getModdedMapGen(sphereGenerator, RAVINE);
-        strongholdGenerator = (MapGenStronghold) TerrainGen.getModdedMapGen(strongholdGenerator, STRONGHOLD);
-        villageGenerator = (MapGenVillage) TerrainGen.getModdedMapGen(villageGenerator, VILLAGE);
-        mineshaftGenerator = (MapGenMineshaft) TerrainGen.getModdedMapGen(mineshaftGenerator, MINESHAFT);
-        scatteredFeatureGenerator = (MapGenScatteredFeature) TerrainGen.getModdedMapGen(scatteredFeatureGenerator, SCATTERED_FEATURE);
-        ravineGenerator = TerrainGen.getModdedMapGen(ravineGenerator, RAVINE);
-        genNetherBridge = (MapGenNetherBridge) TerrainGen.getModdedMapGen(genNetherBridge, NETHER_BRIDGE);
-        oceanMonumentGenerator = (StructureOceanMonument) net.minecraftforge.event.terraingen.TerrainGen.getModdedMapGen(oceanMonumentGenerator, net.minecraftforge.event.terraingen.InitMapGenEvent.EventType.OCEAN_MONUMENT);
-    }
-
     public ChunkProviderSettings getSettings() {
         return settings;
     }
 
 
     public GenericChunkGenerator(World world, long seed) {
+
+        {
+            caveGenerator = TerrainGen.getModdedMapGen(caveGenerator, CAVE);
+//        tendrilGenerator = TerrainGen.getModdedMapGen(tendrilGenerator, CAVE);
+//        canyonGenerator = TerrainGen.getModdedMapGen(canyonGenerator, RAVINE);
+//        sphereGenerator = TerrainGen.getModdedMapGen(sphereGenerator, RAVINE);
+            strongholdGenerator = (MapGenStronghold) TerrainGen.getModdedMapGen(strongholdGenerator, STRONGHOLD);
+
+            strongholdGenerator.field_151546_e.add(Biomes.deepOcean);
+
+            villageGenerator = (MapGenVillage) TerrainGen.getModdedMapGen(villageGenerator, VILLAGE);
+            mineshaftGenerator = (MapGenMineshaft) TerrainGen.getModdedMapGen(mineshaftGenerator, MINESHAFT);
+            scatteredFeatureGenerator = (MapGenScatteredFeature) TerrainGen.getModdedMapGen(scatteredFeatureGenerator, SCATTERED_FEATURE);
+            ravineGenerator = TerrainGen.getModdedMapGen(ravineGenerator, RAVINE);
+            genNetherBridge = (MapGenNetherBridge) TerrainGen.getModdedMapGen(genNetherBridge, NETHER_BRIDGE);
+            oceanMonumentGenerator = (StructureOceanMonument) net.minecraftforge.event.terraingen.TerrainGen.getModdedMapGen(oceanMonumentGenerator, net.minecraftforge.event.terraingen.InitMapGenEvent.EventType.OCEAN_MONUMENT);
+        }
+
+
         this.worldObj = world;
 
         dimensionInformation = RfToolsDimensionManager.getDimensionManager(world).getDimensionInformation(world.provider.getDimension());
