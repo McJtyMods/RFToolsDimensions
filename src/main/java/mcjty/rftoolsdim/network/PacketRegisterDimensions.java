@@ -48,7 +48,6 @@ public class PacketRegisterDimensions implements IMessage {
                 Logging.log("Client side, already registered dimension: " + id);
             } else {
                 Logging.log("Client side, register dimension: " + id);
-//                DimensionType type = DimensionType.register("rftools_dimension" + id, "_rftools", id, GenericWorldProvider.class, false);
                 DimensionManager.registerDimension(id, ModDimensions.rftoolsType);
             }
         }

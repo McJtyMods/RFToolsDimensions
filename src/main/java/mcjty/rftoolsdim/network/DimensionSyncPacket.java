@@ -35,7 +35,6 @@ public class DimensionSyncPacket {
         for (int id : dimensions) {
             Logging.log("DimensionSyncPacket: Registering id: id = " + id);
             if (!DimensionManager.isDimensionRegistered(id)) {
-//                DimensionType type = DimensionType.register("rftools_dimension" + id, "_rftools", id, GenericWorldProvider.class, false);
                 DimensionManager.registerDimension(id, ModDimensions.rftoolsType);
             }
         }
