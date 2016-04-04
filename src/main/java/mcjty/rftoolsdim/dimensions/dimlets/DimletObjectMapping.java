@@ -66,8 +66,15 @@ public class DimletObjectMapping {
                 return Blocks.stone.getDefaultState();
             }
             int lastIndexOf = StringUtils.lastIndexOf(id, "@");
-            String blockid = id.substring(0, lastIndexOf);
-            int meta = Integer.parseInt(id.substring(lastIndexOf + 1));
+            String blockid;
+            int meta;
+            if (lastIndexOf == -1) {
+                blockid = id;
+                meta = 0;
+            } else {
+                blockid = id.substring(0, lastIndexOf);
+                meta = Integer.parseInt(id.substring(lastIndexOf + 1));
+            }
 
             Block block = Block.blockRegistry.getObject(new ResourceLocation(blockid));
             if (block == null) {
