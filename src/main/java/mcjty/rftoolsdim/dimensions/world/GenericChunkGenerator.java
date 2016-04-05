@@ -96,6 +96,10 @@ public class GenericChunkGenerator implements IChunkGenerator {
     };
     private MapGenMineshaft mineshaftGenerator = new MapGenMineshaft();
     private MapGenNetherBridge genNetherBridge = new MapGenNetherBridge();
+    private MapGenSwampHut genSwampHut = new MapGenSwampHut();
+    private MapGenDesertTemple genDesertTemple = new MapGenDesertTemple();
+    private MapGenJungleTemple genJungleTemple = new MapGenJungleTemple();
+    private MapGenIgloo genIgloo = new MapGenIgloo();
     private MapGenScatteredFeature scatteredFeatureGenerator = new MapGenScatteredFeature() {
         @Override
         protected boolean canSpawnStructureAtCoords(int chunkX, int chunkZ) {
@@ -106,24 +110,21 @@ public class GenericChunkGenerator implements IChunkGenerator {
         protected StructureStart getStructureStart(int chunkX, int chunkZ) {
             StructureStart start = super.getStructureStart(chunkX, chunkZ);
             if (start.getComponents().isEmpty()) {
-                switch (rand.nextInt(4)) {
+                switch (super.rand.nextInt(4)) {
                     case 0:
-                        ComponentScatteredFeaturePieces.SwampHut componentscatteredfeaturepieces$swamphut = new ComponentScatteredFeaturePieces.SwampHut(rand, chunkX * 16, chunkZ * 16);
-                        start.getComponents().add(componentscatteredfeaturepieces$swamphut);
+                        start.getComponents().add(new ComponentScatteredFeaturePieces.SwampHut(super.rand, chunkX * 16, chunkZ * 16));
                         break;
                     case 1:
-                        ComponentScatteredFeaturePieces.Igloo componentscatteredfeaturepieces$igloo = new ComponentScatteredFeaturePieces.Igloo(rand, chunkX * 16, chunkZ * 16);
-                        start.getComponents().add(componentscatteredfeaturepieces$igloo);
+                        start.getComponents().add(new ComponentScatteredFeaturePieces.Igloo(super.rand, chunkX * 16, chunkZ * 16));
                         break;
                     case 2:
-                        ComponentScatteredFeaturePieces.DesertPyramid componentscatteredfeaturepieces$desertpyramid = new ComponentScatteredFeaturePieces.DesertPyramid(rand, chunkX * 16, chunkZ * 16);
-                        start.getComponents().add(componentscatteredfeaturepieces$desertpyramid);
+                        start.getComponents().add(new ComponentScatteredFeaturePieces.DesertPyramid(super.rand, chunkX * 16, chunkZ * 16));
                         break;
                     case 3:
-                        ComponentScatteredFeaturePieces.JunglePyramid componentscatteredfeaturepieces$junglepyramid = new ComponentScatteredFeaturePieces.JunglePyramid(rand, chunkX * 16, chunkZ * 16);
-                        start.getComponents().add(componentscatteredfeaturepieces$junglepyramid);
+                        start.getComponents().add(new ComponentScatteredFeaturePieces.JunglePyramid(super.rand, chunkX * 16, chunkZ * 16));
                         break;
                 }
+                start.updateBoundingBox();
             }
             return start;
         }
@@ -133,8 +134,8 @@ public class GenericChunkGenerator implements IChunkGenerator {
         int i = chunkX;
         int j = chunkZ;
 
-        int distance = 8;
-        int seperation = 2;
+        int distance = 16;
+        int seperation = 8;
 
         if (chunkX < 0) {
             chunkX -= distance - 1;
@@ -176,8 +177,6 @@ public class GenericChunkGenerator implements IChunkGenerator {
 //        canyonGenerator = TerrainGen.getModdedMapGen(canyonGenerator, RAVINE);
 //        sphereGenerator = TerrainGen.getModdedMapGen(sphereGenerator, RAVINE);
             strongholdGenerator = (MapGenStronghold) TerrainGen.getModdedMapGen(strongholdGenerator, STRONGHOLD);
-
-            strongholdGenerator.field_151546_e.add(Biomes.deepOcean);
 
             villageGenerator = (MapGenVillage) TerrainGen.getModdedMapGen(villageGenerator, VILLAGE);
             mineshaftGenerator = (MapGenMineshaft) TerrainGen.getModdedMapGen(mineshaftGenerator, MINESHAFT);
@@ -331,6 +330,18 @@ public class GenericChunkGenerator implements IChunkGenerator {
         if (dimensionInformation.hasStructureType(StructureType.STRUCTURE_SCATTERED)) {
             this.scatteredFeatureGenerator.generate(this.worldObj, chunkX, chunkZ, chunkprimer);
         }
+        if (dimensionInformation.hasStructureType(StructureType.STRUCTURE_SWAMPHUT)) {
+            this.genSwampHut.generate(this.worldObj, chunkX, chunkZ, chunkprimer);
+        }
+        if (dimensionInformation.hasStructureType(StructureType.STRUCTURE_DESERTTEMPLE)) {
+            this.genDesertTemple.generate(this.worldObj, chunkX, chunkZ, chunkprimer);
+        }
+        if (dimensionInformation.hasStructureType(StructureType.STRUCTURE_JUNGLETEMPLE)) {
+            this.genJungleTemple.generate(this.worldObj, chunkX, chunkZ, chunkprimer);
+        }
+        if (dimensionInformation.hasStructureType(StructureType.STRUCTURE_IGLOO)) {
+            this.genIgloo.generate(this.worldObj, chunkX, chunkZ, chunkprimer);
+        }
         if (dimensionInformation.hasStructureType(StructureType.STRUCTURE_OCEAN_MONUMENT)) {
             this.oceanMonumentGenerator.generate(this.worldObj, chunkX, chunkZ, chunkprimer);
         }
@@ -378,6 +389,18 @@ public class GenericChunkGenerator implements IChunkGenerator {
         }
         if (dimensionInformation.hasStructureType(StructureType.STRUCTURE_SCATTERED)) {
             this.scatteredFeatureGenerator.generateStructure(this.worldObj, this.rand, cp);
+        }
+        if (dimensionInformation.hasStructureType(StructureType.STRUCTURE_SWAMPHUT)) {
+            this.genSwampHut.generateStructure(this.worldObj, this.rand, cp);
+        }
+        if (dimensionInformation.hasStructureType(StructureType.STRUCTURE_DESERTTEMPLE)) {
+            this.genDesertTemple.generateStructure(this.worldObj, this.rand, cp);
+        }
+        if (dimensionInformation.hasStructureType(StructureType.STRUCTURE_JUNGLETEMPLE)) {
+            this.genJungleTemple.generateStructure(this.worldObj, this.rand, cp);
+        }
+        if (dimensionInformation.hasStructureType(StructureType.STRUCTURE_IGLOO)) {
+            this.genIgloo.generateStructure(this.worldObj, this.rand, cp);
         }
         if (dimensionInformation.hasStructureType(StructureType.STRUCTURE_OCEAN_MONUMENT)) {
             this.oceanMonumentGenerator.generateStructure(this.worldObj, this.rand, cp);
@@ -518,6 +541,26 @@ public class GenericChunkGenerator implements IChunkGenerator {
                     return this.scatteredFeatureGenerator.getScatteredFeatureSpawnList();
                 }
             }
+            if (dimensionInformation.hasStructureType(StructureType.STRUCTURE_SWAMPHUT)) {
+                if (this.genSwampHut.func_175798_a(pos)) {
+                    return this.genSwampHut.getScatteredFeatureSpawnList();
+                }
+            }
+            if (dimensionInformation.hasStructureType(StructureType.STRUCTURE_DESERTTEMPLE)) {
+                if (this.genDesertTemple.func_175798_a(pos)) {
+                    return this.genDesertTemple.getScatteredFeatureSpawnList();
+                }
+            }
+            if (dimensionInformation.hasStructureType(StructureType.STRUCTURE_JUNGLETEMPLE)) {
+                if (this.genJungleTemple.func_175798_a(pos)) {
+                    return this.genJungleTemple.getScatteredFeatureSpawnList();
+                }
+            }
+            if (dimensionInformation.hasStructureType(StructureType.STRUCTURE_IGLOO)) {
+                if (this.genIgloo.func_175798_a(pos)) {
+                    return this.genIgloo.getScatteredFeatureSpawnList();
+                }
+            }
 
             if (dimensionInformation.hasStructureType(StructureType.STRUCTURE_FORTRESS)) {
                 if (this.genNetherBridge.func_175795_b(pos)) {
@@ -565,6 +608,19 @@ public class GenericChunkGenerator implements IChunkGenerator {
 
         if (dimensionInformation.hasStructureType(StructureType.STRUCTURE_SCATTERED)) {
             this.scatteredFeatureGenerator.generate(this.worldObj, x, z, null);
+        }
+
+        if (dimensionInformation.hasStructureType(StructureType.STRUCTURE_SWAMPHUT)) {
+            this.genSwampHut.generate(this.worldObj, x, z, null);
+        }
+        if (dimensionInformation.hasStructureType(StructureType.STRUCTURE_DESERTTEMPLE)) {
+            this.genDesertTemple.generate(this.worldObj, x, z, null);
+        }
+        if (dimensionInformation.hasStructureType(StructureType.STRUCTURE_JUNGLETEMPLE)) {
+            this.genJungleTemple.generate(this.worldObj, x, z, null);
+        }
+        if (dimensionInformation.hasStructureType(StructureType.STRUCTURE_IGLOO)) {
+            this.genIgloo.generate(this.worldObj, x, z, null);
         }
 
         if (dimensionInformation.hasStructureType(StructureType.STRUCTURE_OCEAN_MONUMENT)) {
