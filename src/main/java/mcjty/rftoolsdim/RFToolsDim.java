@@ -36,17 +36,15 @@ import java.util.EnumMap;
 
 @Mod(modid = RFToolsDim.MODID, name="RFTools Dimensions", dependencies =
         "required-after:Forge@["+ RFToolsDim.MIN_FORGE_VER+
-//                ",);required-after:CoFHLib@["+RFTools.MIN_COFHLIB_VER+
         ",);required-after:rftools@["+RFToolsDim.MIN_RFTOOLS_VER+
         ",);required-after:McJtyLib@["+ RFToolsDim.MIN_MCJTYLIB_VER+",)",
         version = RFToolsDim.VERSION)
 public class RFToolsDim implements ModBase {
     public static final String MODID = "rftoolsdim";
     public static final String VERSION = "4.22beta31";
-    public static final String MIN_FORGE_VER = "11.15.1.1722";
-//    public static final String MIN_COFHLIB_VER = "1.0.3";
-    public static final String MIN_MCJTYLIB_VER = "1.8.9-1.8.1beta10";
-    public static final String MIN_RFTOOLS_VER = "1.8.9-4.22beta25";
+    public static final String MIN_FORGE_VER = "12.16.0.1835";
+    public static final String MIN_MCJTYLIB_VER = "1.9.0-1.8.1beta13";
+    public static final String MIN_RFTOOLS_VER = "1.9.0-4.23beta39";
 
     @SidedProxy(clientSide="mcjty.rftoolsdim.proxy.ClientProxy", serverSide="mcjty.rftoolsdim.proxy.ServerProxy")
     public static CommonProxy proxy;
@@ -123,8 +121,6 @@ public class RFToolsDim implements ModBase {
     public void serverLoad(FMLServerStartingEvent event) {
         event.registerServerCommand(new CommandRftDim());
         event.registerServerCommand(new CommandRftDb());
-//        event.registerServerCommand(new CommandRftTp());
-//        event.registerServerCommand(new CommandRftCfg());
     }
 
     @Mod.EventHandler
