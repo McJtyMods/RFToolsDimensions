@@ -1,5 +1,5 @@
 {
-  "parent": "rftools:block/dimlet_workbench",
+  "parent": "rftoolsdim:block/dimlet_workbench",
   "display": {
     "thirdperson": {
       "rotation": [ 10, -45, 170 ],
