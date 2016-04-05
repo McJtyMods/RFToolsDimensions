@@ -22,7 +22,7 @@ public class MapGenDesertTemple extends MapGenStructure {
 
     @Override
     public String getStructureName() {
-        return "DesertTemple";
+        return "RFTDesertTemple";
     }
 
     @Override
@@ -74,6 +74,9 @@ public class MapGenDesertTemple extends MapGenStructure {
     }
 
     public static class Start extends StructureStart {
+        public Start() {
+        }
+
         public Start(Random random, int chunkX, int chunkZ) {
             super(chunkX, chunkZ);
 

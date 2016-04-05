@@ -4,8 +4,13 @@ import mcjty.lib.varia.Logging;
 import mcjty.rftoolsdim.config.GeneralConfiguration;
 import mcjty.rftoolsdim.dimensions.world.GenericWorldGenerator;
 import mcjty.rftoolsdim.dimensions.world.GenericWorldProvider;
+import mcjty.rftoolsdim.dimensions.world.mapgen.MapGenDesertTemple;
+import mcjty.rftoolsdim.dimensions.world.mapgen.MapGenIgloo;
+import mcjty.rftoolsdim.dimensions.world.mapgen.MapGenJungleTemple;
+import mcjty.rftoolsdim.dimensions.world.mapgen.MapGenSwampHut;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.WorldServer;
+import net.minecraft.world.gen.structure.MapGenStructureIO;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
@@ -27,6 +32,11 @@ public class ModDimensions {
         rftoolsType = DimensionType.register("rftools_dimension", "_rftools", id, GenericWorldProvider.class, false);
 
         GameRegistry.registerWorldGenerator(new GenericWorldGenerator(), 1000);
+
+        MapGenStructureIO.registerStructure(MapGenDesertTemple.Start.class, "RFTDesertTemple");
+        MapGenStructureIO.registerStructure(MapGenJungleTemple.Start.class, "RFTJungleTemple");
+        MapGenStructureIO.registerStructure(MapGenSwampHut.Start.class, "RFTSwampHut");
+        MapGenStructureIO.registerStructure(MapGenIgloo.Start.class, "RFTIgloo");
     }
 
     public static void initDimensions() {

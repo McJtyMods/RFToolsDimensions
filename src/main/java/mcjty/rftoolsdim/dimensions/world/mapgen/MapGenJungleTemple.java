@@ -22,7 +22,7 @@ public class MapGenJungleTemple extends MapGenStructure {
 
     @Override
     public String getStructureName() {
-        return "JugnleTemple";
+        return "RFTJugnleTemple";
     }
 
     @Override
@@ -74,6 +74,9 @@ public class MapGenJungleTemple extends MapGenStructure {
     }
 
     public static class Start extends StructureStart {
+        public Start() {
+        }
+
         public Start(Random random, int chunkX, int chunkZ) {
             super(chunkX, chunkZ);
 

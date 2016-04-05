@@ -24,7 +24,7 @@ public class MapGenSwampHut extends MapGenStructure {
 
     @Override
     public String getStructureName() {
-        return "SwampHut";
+        return "RFTSwampHut";
     }
 
     @Override
@@ -76,6 +76,9 @@ public class MapGenSwampHut extends MapGenStructure {
     }
 
     public static class Start extends StructureStart {
+        public Start() {
+        }
+
         public Start(Random random, int chunkX, int chunkZ) {
             super(chunkX, chunkZ);
 
