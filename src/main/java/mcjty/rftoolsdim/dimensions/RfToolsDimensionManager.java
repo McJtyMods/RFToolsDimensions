@@ -12,6 +12,7 @@ import mcjty.rftoolsdim.network.PacketRegisterDimensions;
 import mcjty.rftoolsdim.network.PacketSyncDimensionInfo;
 import mcjty.rftoolsdim.network.PacketSyncRules;
 import mcjty.rftoolsdim.network.RFToolsDimMessages;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -30,6 +31,7 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.ChunkProviderServer;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.util.*;
 
@@ -102,12 +104,6 @@ public class RfToolsDimensionManager extends WorldSavedData {
                 } catch (Exception e) {
                     // We ignore this error.
                     Logging.log("        Could not unregister dimension: " + id);
-                }
-                try {
-                    DimensionManager.unregisterDimension(id);
-                } catch (Exception e) {
-                    // We ignore this error.
-                    Logging.log("        Could not unregister provider: " + id);
                 }
             } else {
                 Logging.log("    Already unregistered! Dimension: " + id);
@@ -409,8 +405,7 @@ public class RfToolsDimensionManager extends WorldSavedData {
         if (!providerServer.chunkExists(0, 0)) {
             try {
                 providerServer.provideChunk(0, 0);
-//                providerServer.populate(providerServer, 0, 0);
-                providerServer.unloadAllChunks();
+                providerServer.chunkGenerator.populate(0, 0);
             } catch (Exception e) {
                 Logging.logError("Something went wrong during creation of the dimension!");
                 e.printStackTrace();
