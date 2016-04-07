@@ -4,6 +4,8 @@ import mcjty.lib.container.EmptyContainer;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.blocks.GenericRFToolsBlock;
 import mcjty.rftoolsdim.config.DimletConstructionConfiguration;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -31,19 +33,18 @@ public class FeatureAbsorberBlock extends GenericRFToolsBlock<FeatureAbsorberTil
         return true;
     }
 
-    //@todo
-//    @SideOnly(Side.CLIENT)
-//    @Override
-//    public List<String> getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
-//        super.getWailaBody(itemStack, currenttip, accessor, config);
-//        FeatureAbsorberTileEntity tileEntity = (FeatureAbsorberTileEntity) accessor.getTileEntity();
-//        if (tileEntity != null && tileEntity.getFeatureName() != null) {
-//            int absorbing = tileEntity.getAbsorbing();
-//            int pct = ((DimletConstructionConfiguration.maxFeatureAbsorbtion - absorbing) * 100) / DimletConstructionConfiguration.maxFeatureAbsorbtion;
-//            currenttip.add(TextFormatting.GREEN + "Unknown feature (" + pct + "%)");
-//        }
-//        return currenttip;
-//    }
+    @SideOnly(Side.CLIENT)
+    @Override
+    public List<String> getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
+        super.getWailaBody(itemStack, currenttip, accessor, config);
+        FeatureAbsorberTileEntity tileEntity = (FeatureAbsorberTileEntity) accessor.getTileEntity();
+        if (tileEntity != null && tileEntity.getFeatureName() != null) {
+            int absorbing = tileEntity.getAbsorbing();
+            int pct = ((DimletConstructionConfiguration.maxFeatureAbsorbtion - absorbing) * 100) / DimletConstructionConfiguration.maxFeatureAbsorbtion;
+            currenttip.add(TextFormatting.GREEN + "Unknown feature (" + pct + "%)");
+        }
+        return currenttip;
+    }
 
     @SideOnly(Side.CLIENT)
     @Override

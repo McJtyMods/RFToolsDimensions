@@ -4,6 +4,8 @@ import mcjty.lib.container.EmptyContainer;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.blocks.GenericRFToolsBlock;
 import mcjty.rftoolsdim.config.DimletConstructionConfiguration;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -33,23 +35,22 @@ public class LiquidAbsorberBlock extends GenericRFToolsBlock<LiquidAbsorberTileE
         return true;
     }
 
-    //@todo
-//    @SideOnly(Side.CLIENT)
-//    @Override
-//    public List<String> getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
-//        super.getWailaBody(itemStack, currenttip, accessor, config);
-//        LiquidAbsorberTileEntity tileEntity = (LiquidAbsorberTileEntity) accessor.getTileEntity();
-//        if (tileEntity != null && tileEntity.getBlock() != null) {
-//            Block block = tileEntity.getBlock();
-//            Fluid fluid = FluidRegistry.lookupFluidForBlock(block);
-//            if (fluid != null) {
-//                int absorbing = tileEntity.getAbsorbing();
-//                int pct = ((DimletConstructionConfiguration.maxBlockAbsorbtion - absorbing) * 100) / DimletConstructionConfiguration.maxBlockAbsorbtion;
-//                currenttip.add(TextFormatting.GREEN + "Liquid: " + new FluidStack(fluid, 1).getLocalizedName() + " (" + pct + "%)");
-//            }
-//        }
-//        return currenttip;
-//    }
+    @SideOnly(Side.CLIENT)
+    @Override
+    public List<String> getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
+        super.getWailaBody(itemStack, currenttip, accessor, config);
+        LiquidAbsorberTileEntity tileEntity = (LiquidAbsorberTileEntity) accessor.getTileEntity();
+        if (tileEntity != null && tileEntity.getBlock() != null) {
+            Block block = tileEntity.getBlock();
+            Fluid fluid = FluidRegistry.lookupFluidForBlock(block);
+            if (fluid != null) {
+                int absorbing = tileEntity.getAbsorbing();
+                int pct = ((DimletConstructionConfiguration.maxBlockAbsorbtion - absorbing) * 100) / DimletConstructionConfiguration.maxBlockAbsorbtion;
+                currenttip.add(TextFormatting.GREEN + "Liquid: " + new FluidStack(fluid, 1).getLocalizedName() + " (" + pct + "%)");
+            }
+        }
+        return currenttip;
+    }
 
     @SideOnly(Side.CLIENT)
     @Override

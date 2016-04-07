@@ -4,6 +4,8 @@ import mcjty.lib.container.EmptyContainer;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.blocks.GenericRFToolsBlock;
 import mcjty.rftoolsdim.config.DimletConstructionConfiguration;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -31,20 +33,19 @@ public class BiomeAbsorberBlock extends GenericRFToolsBlock<BiomeAbsorberTileEnt
         return true;
     }
 
-    //@todo
-//    @SideOnly(Side.CLIENT)
-//    @Override
-//    public List<String> getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
-//        super.getWailaBody(itemStack, currenttip, accessor, config);
-//        BiomeAbsorberTileEntity tileEntity = (BiomeAbsorberTileEntity) accessor.getTileEntity();
-//        if (tileEntity != null && tileEntity.getBiomeName() != null) {
-//            String biomeName = tileEntity.getBiomeName();
-//            int absorbing = tileEntity.getAbsorbing();
-//            int pct = ((DimletConstructionConfiguration.maxBiomeAbsorbtion - absorbing) * 100) / DimletConstructionConfiguration.maxBiomeAbsorbtion;
-//            currenttip.add(TextFormatting.GREEN + "Biome: " + biomeName + " (" + pct + "%)");
-//        }
-//        return currenttip;
-//    }
+    @SideOnly(Side.CLIENT)
+    @Override
+    public List<String> getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
+        super.getWailaBody(itemStack, currenttip, accessor, config);
+        BiomeAbsorberTileEntity tileEntity = (BiomeAbsorberTileEntity) accessor.getTileEntity();
+        if (tileEntity != null && tileEntity.getBiomeName() != null) {
+            String biomeName = tileEntity.getBiomeName();
+            int absorbing = tileEntity.getAbsorbing();
+            int pct = ((DimletConstructionConfiguration.maxBiomeAbsorbtion - absorbing) * 100) / DimletConstructionConfiguration.maxBiomeAbsorbtion;
+            currenttip.add(TextFormatting.GREEN + "Biome: " + biomeName + " (" + pct + "%)");
+        }
+        return currenttip;
+    }
 
     @SideOnly(Side.CLIENT)
     @Override
