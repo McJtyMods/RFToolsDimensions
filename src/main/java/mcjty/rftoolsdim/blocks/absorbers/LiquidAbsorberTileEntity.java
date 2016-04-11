@@ -1,12 +1,12 @@
 package mcjty.rftoolsdim.blocks.absorbers;
 
 import mcjty.lib.entity.GenericTileEntity;
+import mcjty.lib.varia.SoundTools;
 import mcjty.rftoolsdim.config.DimletConstructionConfiguration;
 import mcjty.rftoolsdim.config.Settings;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletKey;
 import mcjty.rftoolsdim.dimensions.dimlets.KnownDimletConfiguration;
 import mcjty.rftoolsdim.dimensions.dimlets.types.DimletType;
-import mcjty.rftoolsdim.varia.RFToolsTools;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -126,7 +126,7 @@ public class LiquidAbsorberTileEntity extends GenericTileEntity implements ITick
 
                     if (blockMatches(c)) {
                         // @todo check getBreakSound() client-side!
-                        RFToolsTools.playSound(worldObj, block.getSoundType().getBreakSound(), getPos().getX(), getPos().getY(), getPos().getZ(), 1.0f, 1.0f);
+                        SoundTools.playSound(worldObj, block.getSoundType().getBreakSound(), getPos().getX(), getPos().getY(), getPos().getZ(), 1.0f, 1.0f);
                         worldObj.setBlockToAir(c);
                         absorbing--;
                         IBlockState state = worldObj.getBlockState(c);

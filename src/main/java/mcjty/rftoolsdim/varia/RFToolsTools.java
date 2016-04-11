@@ -1,12 +1,8 @@
 package mcjty.rftoolsdim.varia;
 
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.network.play.server.SPacketSoundEffect;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.Loader;
@@ -22,23 +18,6 @@ public class RFToolsTools {
 
     public static boolean chunkLoaded(World world, BlockPos pos) {
         return world.getChunkProvider().getLoadedChunk(pos.getX() >> 4, pos.getZ() >> 4) != null && world.getChunkFromBlockCoords(pos).isLoaded();
-    }
-
-    // Server side: play a sound to all nearby players
-    public static void playSound(World worldObj, SoundEvent soundName, double x, double y, double z, double volume, double pitch) {
-        SPacketSoundEffect soundEffect = new SPacketSoundEffect(soundName, SoundCategory.BLOCKS, x, y, z, (float) volume, (float) pitch);
-
-        for (int j = 0; j < worldObj.playerEntities.size(); ++j) {
-            EntityPlayerMP entityplayermp = (EntityPlayerMP)worldObj.playerEntities.get(j);
-            double d7 = x - entityplayermp.posX;
-            double d8 = y - entityplayermp.posY;
-            double d9 = z - entityplayermp.posZ;
-            double d10 = d7 * d7 + d8 * d8 + d9 * d9;
-
-            if (d10 <= 256.0D) {
-                entityplayermp.playerNetServerHandler.sendPacket(soundEffect);
-            }
-        }
     }
 
     public static StringBuffer appendIndent(StringBuffer buffer, int indent) {

@@ -1,16 +1,19 @@
 package mcjty.rftoolsdim.blocks.absorbers;
 
 import mcjty.lib.entity.GenericTileEntity;
+import mcjty.lib.varia.SoundTools;
 import mcjty.rftoolsdim.config.DimletConstructionConfiguration;
 import mcjty.rftoolsdim.config.Settings;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletKey;
 import mcjty.rftoolsdim.dimensions.dimlets.KnownDimletConfiguration;
 import mcjty.rftoolsdim.dimensions.dimlets.types.DimletType;
-import mcjty.rftoolsdim.varia.RFToolsTools;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.*;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.ITickable;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 
 import java.util.HashSet;
@@ -106,7 +109,7 @@ public class MaterialAbsorberTileEntity extends GenericTileEntity implements ITi
                     checkBlock(c, EnumFacing.NORTH);
 
                     if (blockMatches(c)) {
-                        RFToolsTools.playSound(worldObj, blockState.getBlock().getSoundType().getBreakSound(), getPos().getX(), getPos().getY(), getPos().getZ(), 1.0f, 1.0f);
+                        SoundTools.playSound(worldObj, blockState.getBlock().getSoundType().getBreakSound(), getPos().getX(), getPos().getY(), getPos().getZ(), 1.0f, 1.0f);
                         worldObj.setBlockToAir(c);
                         absorbing--;
                         IBlockState state = worldObj.getBlockState(c);
