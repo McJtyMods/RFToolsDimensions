@@ -30,7 +30,7 @@ public class GridTerrainGenerator extends NormalTerrainGenerator {
                 // Clear the bedrock
                 for (int y = 0 ; y < 10 ; y++) {
                     // @todo optimize references to air/defaultstate
-                    BaseTerrainGenerator.setBlockState(primer, index+y, Blocks.air.getDefaultState());
+                    BaseTerrainGenerator.setBlockState(primer, index+y, Blocks.AIR.getDefaultState());
                 }
 
                 boolean filled = (x == borderx) && (z == borderz);

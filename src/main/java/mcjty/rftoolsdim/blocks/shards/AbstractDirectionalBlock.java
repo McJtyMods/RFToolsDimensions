@@ -25,7 +25,7 @@ public abstract class AbstractDirectionalBlock extends Block {
 
 
     public AbstractDirectionalBlock(String name) {
-        super(Material.rock);
+        super(Material.ROCK);
         setUnlocalizedName(name);
         setRegistryName(name);
         setCreativeTab(RFToolsDim.tabRfToolsDim);

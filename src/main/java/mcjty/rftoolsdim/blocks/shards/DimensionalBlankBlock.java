@@ -14,7 +14,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class DimensionalBlankBlock extends Block {
 
     public DimensionalBlankBlock() {
-        super(Material.rock);
+        super(Material.ROCK);
         setHardness(2.0f);
         setResistance(4.0f);
         setUnlocalizedName("dimensional_blank_block");

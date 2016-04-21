@@ -292,7 +292,7 @@ public class NormalTerrainGenerator implements BaseTerrainGenerator {
                                 } else if (height < waterLevel) {
                                     BaseTerrainGenerator.setBlockState(primer, index, baseLiquid.getDefaultState());
                                 } else {
-                                    BaseTerrainGenerator.setBlockState(primer, index, Blocks.air.getDefaultState());
+                                    BaseTerrainGenerator.setBlockState(primer, index, Blocks.AIR.getDefaultState());
                                 }
                             }
 
@@ -319,7 +319,7 @@ public class NormalTerrainGenerator implements BaseTerrainGenerator {
         }
 
         double d0 = 0.03125D;
-        this.stoneNoise = this.noiseGen4.func_151599_a(this.stoneNoise, (chunkX * 16), (chunkZ * 16), 16, 16, d0 * 2.0D, d0 * 2.0D, 1.0D);
+        this.stoneNoise = this.noiseGen4.getRegion(this.stoneNoise, (chunkX * 16), (chunkZ * 16), 16, 16, d0 * 2.0D, d0 * 2.0D, 1.0D);
 
         for (int k = 0; k < 16; ++k) {
             for (int l = 0; l < 16; ++l) {

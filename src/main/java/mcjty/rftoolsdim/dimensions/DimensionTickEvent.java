@@ -170,7 +170,7 @@ public class DimensionTickEvent {
             double posX = random.nextFloat() * (maxPosX - minPosX + 60.0f) + minPosX - 30.0f;
             double posZ = random.nextFloat() * (maxPosZ - minPosZ + 60.0f) + minPosZ - 30.0f;
 
-            ItemStack fireworkStack = new ItemStack(Items.fireworks);
+            ItemStack fireworkStack = new ItemStack(Items.FIREWORKS);
             NBTTagCompound tag = new NBTTagCompound();
 
             NBTTagCompound fireworks = new NBTTagCompound();
@@ -239,29 +239,29 @@ public class DimensionTickEvent {
 
     private static void getPotions() {
         if (harm == null) {
-            harm = Potion.potionRegistry.getObject(new ResourceLocation("instant_damage"));
-            hunger = Potion.potionRegistry.getObject(new ResourceLocation("hunger"));
-            digSpeed = Potion.potionRegistry.getObject(new ResourceLocation("haste"));
-            digSlowdown = Potion.potionRegistry.getObject(new ResourceLocation("mining_fatigue"));
-            moveSlowdown = Potion.potionRegistry.getObject(new ResourceLocation("slowness"));
-            moveSpeed = Potion.potionRegistry.getObject(new ResourceLocation("speed"));
-            weakness = Potion.potionRegistry.getObject(new ResourceLocation("weakness"));
-            poison = Potion.potionRegistry.getObject(new ResourceLocation("poison"));
-            wither = Potion.potionRegistry.getObject(new ResourceLocation("wither"));
-            regeneration = Potion.potionRegistry.getObject(new ResourceLocation("regeneration"));
-            damageBoost = Potion.potionRegistry.getObject(new ResourceLocation("strength"));
-            heal = Potion.potionRegistry.getObject(new ResourceLocation("instant_health"));
-            jump = Potion.potionRegistry.getObject(new ResourceLocation("jump_boost"));
-            confusion = Potion.potionRegistry.getObject(new ResourceLocation("nausea"));
-            resistance = Potion.potionRegistry.getObject(new ResourceLocation("resistance"));
-            fireResistance = Potion.potionRegistry.getObject(new ResourceLocation("fire_resistance"));
-            waterBreathing = Potion.potionRegistry.getObject(new ResourceLocation("water_breathing"));
-            invisibility = Potion.potionRegistry.getObject(new ResourceLocation("invisibility"));
-            blindness = Potion.potionRegistry.getObject(new ResourceLocation("blindness"));
-            nightVision = Potion.potionRegistry.getObject(new ResourceLocation("night_vision"));
-            healthBoost = Potion.potionRegistry.getObject(new ResourceLocation("health_boost"));
-            absorption = Potion.potionRegistry.getObject(new ResourceLocation("absorption"));
-            saturation = Potion.potionRegistry.getObject(new ResourceLocation("saturation"));
+            harm = Potion.REGISTRY.getObject(new ResourceLocation("instant_damage"));
+            hunger = Potion.REGISTRY.getObject(new ResourceLocation("hunger"));
+            digSpeed = Potion.REGISTRY.getObject(new ResourceLocation("haste"));
+            digSlowdown = Potion.REGISTRY.getObject(new ResourceLocation("mining_fatigue"));
+            moveSlowdown = Potion.REGISTRY.getObject(new ResourceLocation("slowness"));
+            moveSpeed = Potion.REGISTRY.getObject(new ResourceLocation("speed"));
+            weakness = Potion.REGISTRY.getObject(new ResourceLocation("weakness"));
+            poison = Potion.REGISTRY.getObject(new ResourceLocation("poison"));
+            wither = Potion.REGISTRY.getObject(new ResourceLocation("wither"));
+            regeneration = Potion.REGISTRY.getObject(new ResourceLocation("regeneration"));
+            damageBoost = Potion.REGISTRY.getObject(new ResourceLocation("strength"));
+            heal = Potion.REGISTRY.getObject(new ResourceLocation("instant_health"));
+            jump = Potion.REGISTRY.getObject(new ResourceLocation("jump_boost"));
+            confusion = Potion.REGISTRY.getObject(new ResourceLocation("nausea"));
+            resistance = Potion.REGISTRY.getObject(new ResourceLocation("resistance"));
+            fireResistance = Potion.REGISTRY.getObject(new ResourceLocation("fire_resistance"));
+            waterBreathing = Potion.REGISTRY.getObject(new ResourceLocation("water_breathing"));
+            invisibility = Potion.REGISTRY.getObject(new ResourceLocation("invisibility"));
+            blindness = Potion.REGISTRY.getObject(new ResourceLocation("blindness"));
+            nightVision = Potion.REGISTRY.getObject(new ResourceLocation("night_vision"));
+            healthBoost = Potion.REGISTRY.getObject(new ResourceLocation("health_boost"));
+            absorption = Potion.REGISTRY.getObject(new ResourceLocation("absorption"));
+            saturation = Potion.REGISTRY.getObject(new ResourceLocation("saturation"));
 
             effectsMap.put(EffectType.EFFECT_POISON, poison);
             effectsMap.put(EffectType.EFFECT_POISON2, poison);

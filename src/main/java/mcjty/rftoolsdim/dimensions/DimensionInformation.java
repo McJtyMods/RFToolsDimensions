@@ -65,13 +65,13 @@ public class DimensionInformation implements IDimensionInformation {
     private Block fluidForTerrain = null;
     private IBlockState tendrilBlock = null;
     private IBlockState canyonBlock = null;
-    private IBlockState[] pyramidBlocks = new IBlockState[] { Blocks.stone.getDefaultState() };
-    private IBlockState[] sphereBlocks = new IBlockState[] { Blocks.stone.getDefaultState() };
-    private IBlockState[] hugeSphereBlocks = new IBlockState[] { Blocks.stone.getDefaultState() };
-    private IBlockState[] liquidSphereBlocks = new IBlockState[] { Blocks.stone.getDefaultState() };
-    private Block[] liquidSphereFluids = new Block[] { Blocks.water };
-    private IBlockState[] hugeLiquidSphereBlocks = new IBlockState[] { Blocks.stone.getDefaultState() };
-    private Block[] hugeLiquidSphereFluids = new Block[] { Blocks.water };
+    private IBlockState[] pyramidBlocks = new IBlockState[] { Blocks.STONE.getDefaultState() };
+    private IBlockState[] sphereBlocks = new IBlockState[] { Blocks.STONE.getDefaultState() };
+    private IBlockState[] hugeSphereBlocks = new IBlockState[] { Blocks.STONE.getDefaultState() };
+    private IBlockState[] liquidSphereBlocks = new IBlockState[] { Blocks.STONE.getDefaultState() };
+    private Block[] liquidSphereFluids = new Block[] { Blocks.WATER };
+    private IBlockState[] hugeLiquidSphereBlocks = new IBlockState[] { Blocks.STONE.getDefaultState() };
+    private Block[] hugeLiquidSphereFluids = new Block[] { Blocks.WATER };
     private IBlockState[] extraOregen = new IBlockState[] {};
     private Block[] fluidsForLakes = new Block[] {};
 
@@ -268,7 +268,7 @@ public class DimensionInformation implements IDimensionInformation {
             } else {
                 // Protect against deleted biomes (i.e. a mod with biomes gets removed and this dimension still uses it).
                 // We will pick a replacement biome here.
-                biomes.add(Biomes.plains);
+                biomes.add(Biomes.PLAINS);
             }
         }
         if (tagCompound.hasKey("controller")) {
@@ -291,13 +291,13 @@ public class DimensionInformation implements IDimensionInformation {
         baseBlockForTerrain = getBlockMeta(tagCompound, "baseBlock");
         tendrilBlock = getBlockMeta(tagCompound, "tendrilBlock");
         canyonBlock = getBlockMeta(tagCompound, "canyonBlock");
-        fluidForTerrain = (Block) Block.blockRegistry.getObjectById(tagCompound.getInteger("fluidBlock"));
+        fluidForTerrain = (Block) Block.REGISTRY.getObjectById(tagCompound.getInteger("fluidBlock"));
 
         hugeLiquidSphereFluids = readFluidsFromNBT(tagCompound, "hugeLiquidSphereFluids");
         hugeLiquidSphereBlocks = readBlockArrayFromNBT(tagCompound, "hugeLiquidSphereBlocks");
 
         // Support for the old format with only one liquid block.
-        Block oldLiquidSphereFluid = (Block) Block.blockRegistry.getObjectById(tagCompound.getInteger("liquidSphereFluid"));
+        Block oldLiquidSphereFluid = (Block) Block.REGISTRY.getObjectById(tagCompound.getInteger("liquidSphereFluid"));
         liquidSphereFluids = readFluidsFromNBT(tagCompound, "liquidSphereFluids");
         if (liquidSphereFluids.length == 0) {
             liquidSphereFluids = new Block[] { oldLiquidSphereFluid };
@@ -312,7 +312,7 @@ public class DimensionInformation implements IDimensionInformation {
 
         pyramidBlocks = readBlockArrayFromNBT(tagCompound, "pyramidBlocks");
         if (pyramidBlocks.length == 0) {
-            pyramidBlocks = new IBlockState[] { Blocks.stone.getDefaultState() };
+            pyramidBlocks = new IBlockState[] { Blocks.STONE.getDefaultState() };
         }
 
         // Support for the old format with only one sphere block.
@@ -380,7 +380,7 @@ public class DimensionInformation implements IDimensionInformation {
     private Block[] readFluidsFromNBT(NBTTagCompound tagCompound, String name) {
         List<Block> fluids = new ArrayList<Block>();
         for (int a : getIntArraySafe(tagCompound, name)) {
-            fluids.add(Block.blockRegistry.getObjectById(a));
+            fluids.add(Block.REGISTRY.getObjectById(a));
         }
         return fluids.toArray(new Block[fluids.size()]);
     }
@@ -391,7 +391,7 @@ public class DimensionInformation implements IDimensionInformation {
         int[] metas = getIntArraySafe(tagCompound, name + "_meta");
         for (int i = 0 ; i < blockIds.length ; i++) {
             int id = blockIds[i];
-            Block block = Block.blockRegistry.getObjectById(id);
+            Block block = Block.REGISTRY.getObjectById(id);
             int meta = 0;
             if (i < metas.length) {
                 meta = metas[i];
@@ -402,7 +402,7 @@ public class DimensionInformation implements IDimensionInformation {
     }
 
     private IBlockState getBlockMeta(NBTTagCompound tagCompound, String name) {
-        Block block = Block.blockRegistry.getObjectById(tagCompound.getInteger(name));
+        Block block = Block.REGISTRY.getObjectById(tagCompound.getInteger(name));
         int meta = tagCompound.getInteger(name + "_meta");
         return block.getStateFromMeta(meta);
     }
@@ -432,7 +432,7 @@ public class DimensionInformation implements IDimensionInformation {
             if (t != null) {
                 c.add(BiomeGenBase.getIdForBiome(t));
             } else {
-                c.add(BiomeGenBase.getIdForBiome(Biomes.plains));
+                c.add(BiomeGenBase.getIdForBiome(Biomes.PLAINS));
             }
         }
         tagCompound.setIntArray("biomes", ArrayUtils.toPrimitive(c.toArray(new Integer[c.size()])));
@@ -466,11 +466,11 @@ public class DimensionInformation implements IDimensionInformation {
 
         writeFluidsToNBT(tagCompound, liquidSphereFluids, "liquidSphereFluids");
         if (liquidSphereFluids.length > 0) {
-            tagCompound.setInteger("liquidSphereFluid", Block.blockRegistry.getIDForObject(liquidSphereFluids[0]));
+            tagCompound.setInteger("liquidSphereFluid", Block.REGISTRY.getIDForObject(liquidSphereFluids[0]));
         }
 
         setBlockMeta(tagCompound, canyonBlock, "canyonBlock");
-        tagCompound.setInteger("fluidBlock", Block.blockRegistry.getIDForObject(fluidForTerrain));
+        tagCompound.setInteger("fluidBlock", Block.REGISTRY.getIDForObject(fluidForTerrain));
 
         writeBlocksToNBT(tagCompound, extraOregen, "extraOregen");
         writeFluidsToNBT(tagCompound, fluidsForLakes, "lakeFluids");
@@ -514,7 +514,7 @@ public class DimensionInformation implements IDimensionInformation {
     }
 
     private void setBlockMeta(NBTTagCompound tagCompound, IBlockState blockMeta, String name) {
-        tagCompound.setInteger(name, Block.blockRegistry.getIDForObject(blockMeta.getBlock()));
+        tagCompound.setInteger(name, Block.REGISTRY.getIDForObject(blockMeta.getBlock()));
         // @todo check if this is the good way to persist?
         tagCompound.setInteger(name + "_meta", blockMeta.getBlock().getMetaFromState(blockMeta));
     }
@@ -523,7 +523,7 @@ public class DimensionInformation implements IDimensionInformation {
         List<Integer> c;
         c = new ArrayList<Integer>(fluids.length);
         for (Block t : fluids) {
-            c.add(Block.blockRegistry.getIDForObject(t));
+            c.add(Block.REGISTRY.getIDForObject(t));
         }
         tagCompound.setIntArray(name, ArrayUtils.toPrimitive(c.toArray(new Integer[c.size()])));
     }
@@ -532,7 +532,7 @@ public class DimensionInformation implements IDimensionInformation {
         List<Integer> ids = new ArrayList<Integer>(blocks.length);
         List<Integer> meta = new ArrayList<Integer>(blocks.length);
         for (IBlockState t : blocks) {
-            ids.add(Block.blockRegistry.getIDForObject(t.getBlock()));
+            ids.add(Block.REGISTRY.getIDForObject(t.getBlock()));
             meta.add((int)t.getBlock().getMetaFromState(t));
         }
         tagCompound.setIntArray(name, ArrayUtils.toPrimitive(ids.toArray(new Integer[ids.size()])));
@@ -765,7 +765,7 @@ public class DimensionInformation implements IDimensionInformation {
                 int id = BiomeGenBase.getIdForBiome(entry);
                 buf.writeInt(id);
             } else {
-                buf.writeInt(BiomeGenBase.getIdForBiome(Biomes.plains));
+                buf.writeInt(BiomeGenBase.getIdForBiome(Biomes.PLAINS));
             }
         }
         NetworkTools.writeEnum(buf, controllerType, ControllerType.CONTROLLER_DEFAULT);
@@ -775,9 +775,9 @@ public class DimensionInformation implements IDimensionInformation {
         buf.writeLong(baseSeed);
         buf.writeInt(worldVersion);
 
-        buf.writeInt(Block.blockRegistry.getIDForObject(baseBlockForTerrain.getBlock()));
+        buf.writeInt(Block.REGISTRY.getIDForObject(baseBlockForTerrain.getBlock()));
         buf.writeInt(baseBlockForTerrain.getBlock().getMetaFromState(baseBlockForTerrain));
-        buf.writeInt(Block.blockRegistry.getIDForObject(tendrilBlock.getBlock()));
+        buf.writeInt(Block.REGISTRY.getIDForObject(tendrilBlock.getBlock()));
         buf.writeInt(tendrilBlock.getBlock().getMetaFromState(tendrilBlock));
 
         writeBlockArrayToBuf(buf, pyramidBlocks);
@@ -788,9 +788,9 @@ public class DimensionInformation implements IDimensionInformation {
         writeBlockArrayToBuf(buf, hugeLiquidSphereBlocks);
         writeFluidArrayToBuf(buf, hugeLiquidSphereFluids);
 
-        buf.writeInt(Block.blockRegistry.getIDForObject(canyonBlock.getBlock()));
+        buf.writeInt(Block.REGISTRY.getIDForObject(canyonBlock.getBlock()));
         buf.writeInt(canyonBlock.getBlock().getMetaFromState(canyonBlock));
-        buf.writeInt(Block.blockRegistry.getIDForObject(fluidForTerrain));
+        buf.writeInt(Block.REGISTRY.getIDForObject(fluidForTerrain));
 
         writeBlockArrayToBuf(buf, extraOregen);
 
@@ -842,14 +842,14 @@ public class DimensionInformation implements IDimensionInformation {
     private static void writeFluidArrayToBuf(ByteBuf buf, Block[] fluids) {
         buf.writeInt(fluids.length);
         for (Block block : fluids) {
-            buf.writeInt(Block.blockRegistry.getIDForObject(block));
+            buf.writeInt(Block.REGISTRY.getIDForObject(block));
         }
     }
 
     private static void writeBlockArrayToBuf(ByteBuf buf, IBlockState[] array) {
         buf.writeInt(array.length);
         for (IBlockState block : array) {
-            buf.writeInt(Block.blockRegistry.getIDForObject(block.getBlock()));
+            buf.writeInt(Block.REGISTRY.getIDForObject(block.getBlock()));
             buf.writeInt(block.getBlock().getMetaFromState(block));
         }
     }
@@ -878,7 +878,7 @@ public class DimensionInformation implements IDimensionInformation {
             if (biome != null) {
                 biomes.add(biome);
             } else {
-                biomes.add(Biomes.plains);
+                biomes.add(Biomes.PLAINS);
             }
         }
         controllerType = NetworkTools.readEnum(buf, ControllerType.values());
@@ -888,10 +888,10 @@ public class DimensionInformation implements IDimensionInformation {
         baseSeed = buf.readLong();
         worldVersion = buf.readInt();
 
-        Block block = Block.blockRegistry.getObjectById(buf.readInt());
+        Block block = Block.REGISTRY.getObjectById(buf.readInt());
         int meta = buf.readInt();
         baseBlockForTerrain = block.getStateFromMeta(meta);
-        block = Block.blockRegistry.getObjectById(buf.readInt());
+        block = Block.REGISTRY.getObjectById(buf.readInt());
         meta = buf.readInt();
         tendrilBlock = block.getStateFromMeta(meta);
 
@@ -903,10 +903,10 @@ public class DimensionInformation implements IDimensionInformation {
         hugeLiquidSphereBlocks = readBlockArrayFromBuf(buf);
         hugeLiquidSphereFluids = readFluidArrayFromBuf(buf);
 
-        block = Block.blockRegistry.getObjectById(buf.readInt());
+        block = Block.REGISTRY.getObjectById(buf.readInt());
         meta = buf.readInt();
         canyonBlock = block.getStateFromMeta(meta);
-        fluidForTerrain = Block.blockRegistry.getObjectById(buf.readInt());
+        fluidForTerrain = Block.REGISTRY.getObjectById(buf.readInt());
 
         extraOregen = readBlockArrayFromBuf(buf);
 
@@ -962,7 +962,7 @@ public class DimensionInformation implements IDimensionInformation {
         List<Block> blocks = new ArrayList<Block>();
         int size = buf.readInt();
         for (int i = 0 ; i < size ; i++) {
-            blocks.add((Block) Block.blockRegistry.getObjectById(buf.readInt()));
+            blocks.add((Block) Block.REGISTRY.getObjectById(buf.readInt()));
         }
         return blocks.toArray(new Block[blocks.size()]);
     }
@@ -971,7 +971,7 @@ public class DimensionInformation implements IDimensionInformation {
         int size = buf.readInt();
         List<IBlockState> blocksMeta = new ArrayList<>();
         for (int i = 0 ; i < size ; i++) {
-            Block b = Block.blockRegistry.getObjectById(buf.readInt());
+            Block b = Block.REGISTRY.getObjectById(buf.readInt());
             int m = buf.readInt();
             blocksMeta.add(b.getStateFromMeta(m));
         }
@@ -1084,7 +1084,7 @@ public class DimensionInformation implements IDimensionInformation {
             if (!blocks.isEmpty()) {
                 block = blocks.get(random.nextInt(blocks.size()));
                 if (block == null) {
-                    block = Blocks.stone.getDefaultState();     // This is the default in case None was specified.
+                    block = Blocks.STONE.getDefaultState();     // This is the default in case None was specified.
                 }
             } else {
                 // Nothing was specified. With a relatively big chance we use stone. But there is also a chance that the material will be something else.
@@ -1094,15 +1094,15 @@ public class DimensionInformation implements IDimensionInformation {
                         actualRfCost += calculateCostFactor(key);
                         block = DimletObjectMapping.getBlock(key);
                     } else {
-                        block = Blocks.stone.getDefaultState();
+                        block = Blocks.STONE.getDefaultState();
                     }
                 } else {
-                    block = Blocks.stone.getDefaultState();
+                    block = Blocks.STONE.getDefaultState();
                 }
 
             }
         } else {
-            block = Blocks.stone.getDefaultState();
+            block = Blocks.STONE.getDefaultState();
         }
         return block;
     }
@@ -1111,11 +1111,11 @@ public class DimensionInformation implements IDimensionInformation {
         biomeMapping.clear();
         if (controllerType == ControllerType.CONTROLLER_FILTERED) {
             final Set<Integer> ids = new HashSet<>();
-            for (BiomeGenBase biome : BiomeGenBase.biomeRegistry) {
+            for (BiomeGenBase biome : BiomeGenBase.REGISTRY) {
                 if (biome != null) {
                     ids.add(BiomeGenBase.getIdForBiome(biome));
                 } else {
-                    ids.add(BiomeGenBase.getIdForBiome(Biomes.plains));
+                    ids.add(BiomeGenBase.getIdForBiome(Biomes.PLAINS));
                 }
             }
 

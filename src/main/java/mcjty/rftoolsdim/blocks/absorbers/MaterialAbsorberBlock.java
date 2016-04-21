@@ -24,7 +24,7 @@ import java.util.List;
 public class MaterialAbsorberBlock extends GenericRFToolsBlock<MaterialAbsorberTileEntity, EmptyContainer> {
 
     public MaterialAbsorberBlock() {
-        super(Material.iron, MaterialAbsorberTileEntity.class, EmptyContainer.class, "material_absorber", false);
+        super(Material.IRON, MaterialAbsorberTileEntity.class, EmptyContainer.class, "material_absorber", false);
     }
 
     @Override
@@ -54,7 +54,7 @@ public class MaterialAbsorberBlock extends GenericRFToolsBlock<MaterialAbsorberT
 
         NBTTagCompound tagCompound = itemStack.getTagCompound();
         if (tagCompound != null && tagCompound.hasKey("block")) {
-            Block block = Block.blockRegistry.getObject(new ResourceLocation(tagCompound.getString("block")));
+            Block block = Block.REGISTRY.getObject(new ResourceLocation(tagCompound.getString("block")));
             if (block != null) {
                 int meta = tagCompound.getInteger("meta");
                 list.add(TextFormatting.GREEN + "Block: " + new ItemStack(block, 1, meta).getDisplayName());

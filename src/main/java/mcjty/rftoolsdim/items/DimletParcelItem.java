@@ -28,7 +28,7 @@ public class DimletParcelItem extends GenericRFToolsItem {
             player.inventory.decrStackSize(player.inventory.currentItem, 1);
             int amount = random.nextInt(GeneralConfiguration.maxParcelContents - GeneralConfiguration.minParcelContents + 1) + GeneralConfiguration.minParcelContents;
             if (amount > 0) {
-                SoundTools.playSound(world, SoundEvent.soundEventRegistry.getObject(new ResourceLocation("entity.player.levelup")), player.posX, player.posY, player.posZ, 1.0f, 1.0f);
+                SoundTools.playSound(world, SoundEvent.REGISTRY.getObject(new ResourceLocation("entity.player.levelup")), player.posX, player.posY, player.posZ, 1.0f, 1.0f);
                 for (int i = 0 ; i < amount ; i++) {
                     ItemStack part = DimletRandomizer.getRandomPart(random);
                     if (!player.inventory.addItemStackToInventory(part)) {

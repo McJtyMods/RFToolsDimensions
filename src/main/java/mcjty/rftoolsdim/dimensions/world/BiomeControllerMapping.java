@@ -40,7 +40,7 @@ public class BiomeControllerMapping {
 
         // First check if there exist biomes for a certain filter.
         boolean ok = false;
-        for (BiomeGenBase biome : BiomeGenBase.biomeRegistry) {
+        for (BiomeGenBase biome : BiomeGenBase.REGISTRY) {
             if (biome != null) {
                 if (filter.match(biome)) {
                     ok = true;
@@ -51,13 +51,13 @@ public class BiomeControllerMapping {
 
         if (!ok) {
             // No biomes found! We just map every biome to itself as a fallback.
-            for (BiomeGenBase biome : BiomeGenBase.biomeRegistry) {
+            for (BiomeGenBase biome : BiomeGenBase.REGISTRY) {
                 if (biome != null) {
                     map.put(BiomeGenBase.getIdForBiome(biome), BiomeGenBase.getIdForBiome(biome));
                 }
             }
         } else {
-            for (BiomeGenBase biome : BiomeGenBase.biomeRegistry) {
+            for (BiomeGenBase biome : BiomeGenBase.REGISTRY) {
                 if (biome != null) {
                     if (filter.match(biome)) {
                         map.put(BiomeGenBase.getIdForBiome(biome), BiomeGenBase.getIdForBiome(biome));
@@ -73,7 +73,7 @@ public class BiomeControllerMapping {
         double bestdist = 1000000000.0f;
         int bestidx = 0;        // Make sure we always have some matching biome.
 
-        for (BiomeGenBase base : BiomeGenBase.biomeRegistry) {
+        for (BiomeGenBase base : BiomeGenBase.REGISTRY) {
             if (base != null && filter.match(base)) {
                 // This 'base' could be a replacement. Check if it is close enough.
                 if (biome.getBiomeClass() == base.getBiomeClass()) {

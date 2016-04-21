@@ -149,10 +149,10 @@ public class DimletRandomizer {
     }
 
     public static DimletKey getRandomBiome(Random random) {
-        ArrayList<ResourceLocation> keys = new ArrayList<>(BiomeGenBase.biomeRegistry.getKeys());
+        ArrayList<ResourceLocation> keys = new ArrayList<>(BiomeGenBase.REGISTRY.getKeys());
         int size = keys.size();
         while(true) {
-            BiomeGenBase biome = BiomeGenBase.biomeRegistry.getObject(keys.get(random.nextInt(size)));
+            BiomeGenBase biome = BiomeGenBase.REGISTRY.getObject(keys.get(random.nextInt(size)));
             if (biome != null) {
                 return new DimletKey(DimletType.DIMLET_BIOME, biome.getBiomeName());
             }

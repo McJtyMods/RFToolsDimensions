@@ -79,7 +79,7 @@ public class MapGenRuinedCities {
         int lowestNonair = 256;
         for (int y = 255 ; y >= 0 ; y--) {
             Block block = ablock[index+y];
-            if (!(block == null || block.getMaterial(block.getDefaultState()) == Material.air || block == Blocks.bedrock)) {
+            if (!(block == null || block.getMaterial(block.getDefaultState()) == Material.AIR || block == Blocks.BEDROCK)) {
                 if (bestSpan == null || bestSpan.isLarger(y + 1, lowestNonair - 1)) {
                     bestSpan = new Span(y+1, lowestNonair-1);
                 }
@@ -154,7 +154,7 @@ public class MapGenRuinedCities {
         blockMap.put('P', new BlockMeta(ModBlocks.dimensionalCrossBlock, 0));
         blockMap.put('X', new BlockMeta(ModBlocks.dimensionalPattern1Block, 0));
         blockMap.put('x', new BlockMeta(ModBlocks.dimensionalPattern2Block, 0));
-        blockMap.put('g', new BlockMeta(Blocks.stained_glass, 11));
+        blockMap.put('g', new BlockMeta(Blocks.STAINED_GLASS, 11));
     }
 
     private void createBuilding(Block[] ablock, byte[] ameta, Span span) {

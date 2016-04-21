@@ -18,7 +18,7 @@ public interface BaseTerrainGenerator {
 
     void replaceBlocksForBiome(int chunkX, int chunkZ, ChunkPrimer chunkPrimer, BiomeGenBase[] biomeGenBases);
 
-    IBlockState defaultState = Blocks.air.getDefaultState();
+    IBlockState defaultState = Blocks.AIR.getDefaultState();
 
     static void setBlockState(ChunkPrimer primer, int index, IBlockState state) {
         primer.data[index] = (char) Block.BLOCK_STATE_IDS.get(state);

@@ -106,7 +106,7 @@ public class LiquidDimletType implements IDimletType {
     }
 
     private static DimletKey findLiquidDimlet(NBTTagCompound essenceCompound) {
-        Block block = Block.blockRegistry.getObject(new ResourceLocation(essenceCompound.getString("liquid")));
+        Block block = Block.REGISTRY.getObject(new ResourceLocation(essenceCompound.getString("liquid")));
         DimletKey key = new DimletKey(DimletType.DIMLET_LIQUID, block.getRegistryName() + "@0");
         Settings settings = KnownDimletConfiguration.getSettings(key);
         if (settings == null || !settings.isDimlet()) {

@@ -131,7 +131,7 @@ public class MapGenTendrils {
                                     if (d12 > -0.7D && d13 * d13 + d12 * d12 + d14 * d14 < 1.0D) {
                                         IBlockState block = BaseTerrainGenerator.getBlockState(primer, k3);
 
-                                        if (block.getBlock() == Blocks.air || block == null) {
+                                        if (block.getBlock() == Blocks.AIR || block == null) {
                                             BaseTerrainGenerator.setBlockState(primer, k3, baseBlock);
                                         }
                                     }

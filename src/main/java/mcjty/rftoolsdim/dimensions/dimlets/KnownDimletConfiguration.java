@@ -69,14 +69,14 @@ public class KnownDimletConfiguration {
         Arrays.stream(EffectType.values()).forEach(t -> initDimlet(new DimletKey(DimletType.DIMLET_EFFECT, t.getId()), RFToolsDim.MODID));
         Arrays.stream(StructureType.values()).forEach(t -> initDimlet(new DimletKey(DimletType.DIMLET_STRUCTURE, t.getId()), RFToolsDim.MODID));
 
-        BiomeGenBase.biomeRegistry.iterator().forEachRemaining(KnownDimletConfiguration::initBiomeDimlet);
+        BiomeGenBase.REGISTRY.iterator().forEachRemaining(KnownDimletConfiguration::initBiomeDimlet);
 
-        EntityList.stringToClassMapping.entrySet().stream().forEach(KnownDimletConfiguration::initMobDimlet);
+        EntityList.NAME_TO_CLASS.entrySet().stream().forEach(KnownDimletConfiguration::initMobDimlet);
         FluidRegistry.getRegisteredFluids().entrySet().stream().forEach(KnownDimletConfiguration::initFluidDimlet);
-        Block.blockRegistry.forEach(KnownDimletConfiguration::initMaterialDimlet);
+        Block.REGISTRY.forEach(KnownDimletConfiguration::initMaterialDimlet);
 
-        initDimlet(new DimletKey(DimletType.DIMLET_MATERIAL, Blocks.stone.getRegistryName() + "@0"), "minecraft");
-        initDimlet(new DimletKey(DimletType.DIMLET_LIQUID, Blocks.water.getRegistryName() + "@0"), "minecraft");
+        initDimlet(new DimletKey(DimletType.DIMLET_MATERIAL, Blocks.STONE.getRegistryName() + "@0"), "minecraft");
+        initDimlet(new DimletKey(DimletType.DIMLET_LIQUID, Blocks.WATER.getRegistryName() + "@0"), "minecraft");
 
         BiomeControllerMapping.setupControllerBiomes();
     }
@@ -103,7 +103,7 @@ public class KnownDimletConfiguration {
             if (name != null && !name.isEmpty()) {
                 Block block = me.getValue().getBlock();
                 if (block != null) {
-                    ResourceLocation nameForObject = Block.blockRegistry.getNameForObject(block);
+                    ResourceLocation nameForObject = Block.REGISTRY.getNameForObject(block);
                     if (nameForObject != null) {
                         String mod = nameForObject.getResourceDomain();
                         DimletKey key = new DimletKey(DimletType.DIMLET_LIQUID, block.getRegistryName() + "@0");
@@ -128,7 +128,7 @@ public class KnownDimletConfiguration {
 
         Set<Filter.Feature> features = getBlockFeatures(block);
 
-        ResourceLocation nameForObject = Block.blockRegistry.getNameForObject(block);
+        ResourceLocation nameForObject = Block.REGISTRY.getNameForObject(block);
         String mod = nameForObject.getResourceDomain();
 
         for (IBlockState state : block.getBlockState().getValidStates()) {
@@ -176,7 +176,7 @@ public class KnownDimletConfiguration {
     }
 
     public static void dumpMobs() {
-        EntityList.stringToClassMapping.entrySet().stream().forEach(KnownDimletConfiguration::dumpMob);
+        EntityList.NAME_TO_CLASS.entrySet().stream().forEach(KnownDimletConfiguration::dumpMob);
     }
 
     private static void dumpMob(Map.Entry<String, Class<? extends Entity>> entry) {
@@ -185,7 +185,7 @@ public class KnownDimletConfiguration {
             DimletKey key = new DimletKey(DimletType.DIMLET_MOB, entry.getKey());
             String mod = RFToolsTools.findModID(entityClass);
             Settings settings = DimletRules.getSettings(key, mod);
-            String name = EntityList.classToStringMapping.get(entityClass);
+            String name = EntityList.CLASS_TO_NAME.get(entityClass);
             if (name == null) {
                 name = "generic";
             }
@@ -248,8 +248,8 @@ public class KnownDimletConfiguration {
         }
         craftableDimlets.add(new DimletKey(DimletType.DIMLET_CONTROLLER, DimletObjectMapping.DEFAULT_ID));
         craftableDimlets.add(new DimletKey(DimletType.DIMLET_CONTROLLER, "Single"));
-        craftableDimlets.add(new DimletKey(DimletType.DIMLET_MATERIAL, Blocks.stone.getRegistryName() + "@0"));
-        craftableDimlets.add(new DimletKey(DimletType.DIMLET_LIQUID, Blocks.water.getRegistryName() + "@0"));
+        craftableDimlets.add(new DimletKey(DimletType.DIMLET_MATERIAL, Blocks.STONE.getRegistryName() + "@0"));
+        craftableDimlets.add(new DimletKey(DimletType.DIMLET_LIQUID, Blocks.WATER.getRegistryName() + "@0"));
         craftableDimlets.add(new DimletKey(DimletType.DIMLET_SKY, "Normal"));
         craftableDimlets.add(new DimletKey(DimletType.DIMLET_SKY, "Normal Day"));
         craftableDimlets.add(new DimletKey(DimletType.DIMLET_SKY, "Normal Night"));
@@ -282,7 +282,7 @@ public class KnownDimletConfiguration {
     public static String getDisplayName(DimletKey key) {
         switch (key.getType()) {
             case DIMLET_BIOME:
-                BiomeGenBase biome = BiomeGenBase.biomeRegistry.getObject(new ResourceLocation(key.getId()));
+                BiomeGenBase biome = BiomeGenBase.REGISTRY.getObject(new ResourceLocation(key.getId()));
                 return biome == null ? "<invalid>" : biome.getBiomeName();
             case DIMLET_LIQUID:
                 Block fluid = DimletObjectMapping.getFluid(key);
@@ -303,7 +303,7 @@ public class KnownDimletConfiguration {
                 }
                 break;
             case DIMLET_MOB:
-                Class<? extends Entity> entityClass = EntityList.stringToClassMapping.get(key.getId());
+                Class<? extends Entity> entityClass = EntityList.NAME_TO_CLASS.get(key.getId());
                 if (entityClass == null) {
                     return "<Unknown>";
                 }

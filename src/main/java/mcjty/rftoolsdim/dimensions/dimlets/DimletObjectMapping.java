@@ -63,7 +63,7 @@ public class DimletObjectMapping {
             String id = dimlet.getId();
             // @todo temporary for people who accidently got an old Default dimlet
             if (DimletObjectMapping.DEFAULT_ID.equals(id)) {
-                return Blocks.stone.getDefaultState();
+                return Blocks.STONE.getDefaultState();
             }
             int lastIndexOf = StringUtils.lastIndexOf(id, "@");
             String blockid;
@@ -76,7 +76,7 @@ public class DimletObjectMapping {
                 meta = Integer.parseInt(id.substring(lastIndexOf + 1));
             }
 
-            Block block = Block.blockRegistry.getObject(new ResourceLocation(blockid));
+            Block block = Block.REGISTRY.getObject(new ResourceLocation(blockid));
             if (block == null) {
                 return null;
             }
@@ -90,13 +90,13 @@ public class DimletObjectMapping {
             String id = dimlet.getId();
             // @todo temporary for people who accidently got an old Default dimlet
             if (DimletObjectMapping.DEFAULT_ID.equals(id)) {
-                return Blocks.water;
+                return Blocks.WATER;
             }
             int lastIndexOf = StringUtils.lastIndexOf(id, "@");
             String blockid = id.substring(0, lastIndexOf);
 //            int meta = Integer.parseInt(id.substring(lastIndexOf+1));
 
-            Block block = Block.blockRegistry.getObject(new ResourceLocation(blockid));
+            Block block = Block.REGISTRY.getObject(new ResourceLocation(blockid));
             if (block == null) {
                 return null;
             }
@@ -107,7 +107,7 @@ public class DimletObjectMapping {
 
     public static BiomeGenBase getBiome(DimletKey dimlet) {
         if (DimletType.DIMLET_BIOME.equals(dimlet.getType())) {
-            BiomeGenBase biome = BiomeGenBase.biomeRegistry.getObject(new ResourceLocation(dimlet.getId()));
+            BiomeGenBase biome = BiomeGenBase.REGISTRY.getObject(new ResourceLocation(dimlet.getId()));
             return biome;
         }
         return null;

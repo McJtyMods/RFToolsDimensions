@@ -16,7 +16,7 @@ import java.util.List;
 public class DimensionEnscriberBlock extends GenericRFToolsBlock<DimensionEnscriberTileEntity, DimensionEnscriberContainer> {
 
     public DimensionEnscriberBlock() {
-        super(Material.iron, DimensionEnscriberTileEntity.class, DimensionEnscriberContainer.class, "dimension_enscriber", true);
+        super(Material.IRON, DimensionEnscriberTileEntity.class, DimensionEnscriberContainer.class, "dimension_enscriber", true);
     }
 
     @Override

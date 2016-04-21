@@ -58,7 +58,7 @@ public class WorldGenerationTools {
     // non-air block is encountered.
     public static void fillEmptyWithStone(World world, int x, int y, int z) {
         while (y > 0 && !isSolid(world, x, y, z)) {
-            world.setBlockState(new BlockPos(x, y, z), Blocks.stone.getDefaultState(), 2);
+            world.setBlockState(new BlockPos(x, y, z), Blocks.STONE.getDefaultState(), 2);
             y--;
         }
     }

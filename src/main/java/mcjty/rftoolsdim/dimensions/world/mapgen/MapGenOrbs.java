@@ -35,7 +35,7 @@ public class MapGenOrbs {
                     int z = cz * 16 + random.nextInt(16);
                     int radius = random.nextInt(large ? 20 : 6) + (large ? 10 : 4);
 
-                    IBlockState block = Blocks.stone.getDefaultState();
+                    IBlockState block = Blocks.STONE.getDefaultState();
                     if (blocks.length > 1) {
                         block = blocks[random.nextInt(blocks.length)];
                     } else if (blocks.length == 1) {

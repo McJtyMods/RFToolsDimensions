@@ -61,7 +61,7 @@ public class MapGenSwampHut extends MapGenStructure {
     }
 
     public boolean func_175798_a(BlockPos p_175798_1_) {
-        StructureStart structurestart = this.func_175797_c(p_175798_1_);
+        StructureStart structurestart = this.getStructureAt(p_175798_1_);
 
         if (structurestart != null && structurestart instanceof MapGenScatteredFeature.Start && !structurestart.getComponents().isEmpty()) {
             StructureComponent structurecomponent = structurestart.getComponents().get(0);

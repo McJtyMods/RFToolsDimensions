@@ -106,7 +106,7 @@ public class MaterialDimletType implements IDimletType {
     }
 
     private static DimletKey findMaterialDimlet(NBTTagCompound essenceCompound) {
-        Block block = Block.blockRegistry.getObject(new ResourceLocation(essenceCompound.getString("block")));
+        Block block = Block.REGISTRY.getObject(new ResourceLocation(essenceCompound.getString("block")));
         int meta = essenceCompound.getInteger("meta");
         DimletKey key = new DimletKey(DimletType.DIMLET_MATERIAL, block.getRegistryName() + "@" + meta);
         Settings settings = KnownDimletConfiguration.getSettings(key);

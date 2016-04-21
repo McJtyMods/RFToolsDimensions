@@ -174,7 +174,7 @@ public class MaterialAbsorberTileEntity extends GenericTileEntity implements ITi
         super.readRestorableFromNBT(tagCompound);
         absorbing = tagCompound.getInteger("absorbing");
         if (tagCompound.hasKey("block")) {
-            Block block = Block.blockRegistry.getObject(new ResourceLocation(tagCompound.getString("block")));
+            Block block = Block.REGISTRY.getObject(new ResourceLocation(tagCompound.getString("block")));
             int meta = tagCompound.getInteger("meta");
             blockState = block.getStateFromMeta(meta);
         } else {

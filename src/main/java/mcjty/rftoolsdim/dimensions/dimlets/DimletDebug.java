@@ -25,7 +25,7 @@ public class DimletDebug {
     private static void dumpLiquid(Map.Entry<String, Fluid> entry) {
         Block block = entry.getValue().getBlock();
         if (block != null) {
-            ResourceLocation nameForObject = Block.blockRegistry.getNameForObject(block);
+            ResourceLocation nameForObject = Block.REGISTRY.getNameForObject(block);
             String mod = nameForObject.getResourceDomain();
             DimletKey key = new DimletKey(DimletType.DIMLET_LIQUID, block.getRegistryName() + "@0");
             Settings settings = DimletRules.getSettings(key, mod);
@@ -34,7 +34,7 @@ public class DimletDebug {
     }
 
     public static void dumpBlocks() {
-        Block.blockRegistry.forEach(DimletDebug::dumpBlock);
+        Block.REGISTRY.forEach(DimletDebug::dumpBlock);
     }
 
     private static void dumpBlock(Block block) {
@@ -43,7 +43,7 @@ public class DimletDebug {
         }
 
         Set<Filter.Feature> features = KnownDimletConfiguration.getBlockFeatures(block);
-        String mod = Block.blockRegistry.getNameForObject(block).getResourceDomain();
+        String mod = Block.REGISTRY.getNameForObject(block).getResourceDomain();
 
         for (IBlockState state : block.getBlockState().getValidStates()) {
             int meta = state.getBlock().getMetaFromState(state);

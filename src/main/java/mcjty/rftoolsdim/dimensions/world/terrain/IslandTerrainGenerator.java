@@ -260,7 +260,7 @@ public class IslandTerrainGenerator implements BaseTerrainGenerator {
 //                                        realMeta = baseMeta;
 //                                    }
                                 } else {
-                                    BaseTerrainGenerator.setBlockState(primer, index, Blocks.air.getDefaultState());
+                                    BaseTerrainGenerator.setBlockState(primer, index, Blocks.AIR.getDefaultState());
                                 }
 
                                 index += maxheight;
@@ -324,22 +324,22 @@ public class IslandTerrainGenerator implements BaseTerrainGenerator {
 
             if (height <= 2) {
                 if (shallowOcean) {
-                    BaseTerrainGenerator.setBlockState(primer, index, Blocks.bedrock.getDefaultState());
+                    BaseTerrainGenerator.setBlockState(primer, index, Blocks.BEDROCK.getDefaultState());
                 } else {
-                    BaseTerrainGenerator.setBlockState(primer, index, Blocks.air.getDefaultState());
+                    BaseTerrainGenerator.setBlockState(primer, index, Blocks.AIR.getDefaultState());
                 }
             } else {
                 IBlockState currentBlock = BaseTerrainGenerator.getBlockState(primer, index);
-                if (currentBlock.getBlock() == Blocks.bedrock && height <= 12) {
+                if (currentBlock.getBlock() == Blocks.BEDROCK && height <= 12) {
                     if (shallowOcean) {
                         BaseTerrainGenerator.setBlockState(primer, index, baseLiquid.getDefaultState());
 
                     } else {
-                        BaseTerrainGenerator.setBlockState(primer, index, Blocks.air.getDefaultState());
+                        BaseTerrainGenerator.setBlockState(primer, index, Blocks.AIR.getDefaultState());
                     }
                     k = -1;
                 } else {
-                    if (currentBlock != null && currentBlock.getBlock().getMaterial(currentBlock) != Material.air) {
+                    if (currentBlock != null && currentBlock.getBlock().getMaterial(currentBlock) != Material.AIR) {
                         if (currentBlock == baseBlock) {
                             if (k == -1) {
                                 if (l <= 0) {
@@ -350,9 +350,9 @@ public class IslandTerrainGenerator implements BaseTerrainGenerator {
                                     block1 = baseBlock; //biomegenbase.fillerBlock;
                                 }
 
-                                if (height < 63 && (block == null || block.getBlock().getMaterial(block) == Material.air)) {
+                                if (height < 63 && (block == null || block.getBlock().getMaterial(block) == Material.AIR)) {
                                     if (biomegenbase.getFloatTemperature(new BlockPos(x, height, z)) < 0.15F) {
-                                        block = Blocks.ice.getDefaultState();
+                                        block = Blocks.ICE.getDefaultState();
                                     } else {
                                         block = baseLiquid.getDefaultState();
                                     }
@@ -364,7 +364,7 @@ public class IslandTerrainGenerator implements BaseTerrainGenerator {
                                     BaseTerrainGenerator.setBlockState(primer, index, block);
                                 } else if (height < 56 - l) {
                                     block = null;
-                                    block1 = baseBlock; //Blocks.stone;
+                                    block1 = baseBlock; //Blocks.STONE;
                                     BaseTerrainGenerator.setBlockState(primer, index, biomegenbase.fillerBlock);
                                 } else {
                                     BaseTerrainGenerator.setBlockState(primer, index, block1);
@@ -373,9 +373,9 @@ public class IslandTerrainGenerator implements BaseTerrainGenerator {
                                 --k;
                                 BaseTerrainGenerator.setBlockState(primer, index, block1);
 
-                                if (k == 0 && block1 == Blocks.sand) {
+                                if (k == 0 && block1 == Blocks.SAND) {
                                     k = provider.rand.nextInt(4) + Math.max(0, height - 63);
-                                    block1 = Blocks.sandstone.getDefaultState();
+                                    block1 = Blocks.SANDSTONE.getDefaultState();
                                 }
                             }
                         }

@@ -31,7 +31,7 @@ public class MapGenPyramids {
             if (y < 10 || y > 230) {
                 return;
             }
-            IBlockState block = Blocks.stone.getDefaultState();
+            IBlockState block = Blocks.STONE.getDefaultState();
             if (blocks.length > 1) {
                 block = blocks[random.nextInt(blocks.length)];
             } else if (blocks.length == 1) {
@@ -74,7 +74,7 @@ public class MapGenPyramids {
     private int findTopSolid(ChunkPrimer primer, int x, int z) {
         int index = (x * 16 + z) * 256;
         int y = 255;
-        while (y >= 5 && (BaseTerrainGenerator.getBlockState(primer, index+y) == null || BaseTerrainGenerator.getBlockState(primer, index+y).getBlock().getMaterial(BaseTerrainGenerator.getBlockState(primer, index+y)) == Material.air)) {
+        while (y >= 5 && (BaseTerrainGenerator.getBlockState(primer, index+y) == null || BaseTerrainGenerator.getBlockState(primer, index+y).getBlock().getMaterial(BaseTerrainGenerator.getBlockState(primer, index+y)) == Material.AIR)) {
             y--;
         }
         return y;

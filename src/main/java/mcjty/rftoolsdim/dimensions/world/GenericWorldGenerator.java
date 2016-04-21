@@ -49,7 +49,7 @@ public class GenericWorldGenerator implements IWorldGenerator {
         }
 
         Block dimensionalShardBlock = GameRegistry.findBlock("rftools", "dimensional_shard_ore");
-        addOreSpawn(dimensionalShardBlock.getDefaultState(), Blocks.stone.getDefaultState(), world, random, chunkX * 16, chunkZ * 16,
+        addOreSpawn(dimensionalShardBlock.getDefaultState(), Blocks.STONE.getDefaultState(), world, random, chunkX * 16, chunkZ * 16,
                     WorldgenConfiguration.oreMinimumVeinSize, WorldgenConfiguration.oreMaximumVeinSize, WorldgenConfiguration.oreMaximumVeinCount,
                     WorldgenConfiguration.oreMinimumHeight, WorldgenConfiguration.oreMaximumHeight);
 
@@ -157,7 +157,7 @@ public class GenericWorldGenerator implements IWorldGenerator {
 
     private void setStainedGlassIfAir(World world, int x, int y, int z, int i) {
         if (world.isAirBlock(new BlockPos(x, y, z))) {
-            world.setBlockState(new BlockPos(x, y, z), Blocks.stained_glass.getStateFromMeta(i), 2);
+            world.setBlockState(new BlockPos(x, y, z), Blocks.STAINED_GLASS.getStateFromMeta(i), 2);
         }
     }
 
@@ -167,9 +167,9 @@ public class GenericWorldGenerator implements IWorldGenerator {
         int y = world.getTopSolidOrLiquidBlock(new BlockPos(x, 0, z)).getY();
         if (y > 10 && y < 240) {
             for (int i = 0 ; i < random.nextInt(3) + 2 ; i++) {
-                world.setBlockState(new BlockPos(x, y++, z), Blocks.stained_hardened_clay.getStateFromMeta(6), 2);
+                world.setBlockState(new BlockPos(x, y++, z), Blocks.STAINED_HARDENED_CLAY.getStateFromMeta(6), 2);
             }
-            world.setBlockState(new BlockPos(x, y, z), Blocks.stained_glass.getStateFromMeta(6), 2);
+            world.setBlockState(new BlockPos(x, y, z), Blocks.STAINED_GLASS.getStateFromMeta(6), 2);
         }
     }
 
@@ -247,7 +247,7 @@ public class GenericWorldGenerator implements IWorldGenerator {
                         if (color == -2) {
                             RFToolsDim.teleportationManager.createReceiver(world, new BlockPos(x+midx, starty, z+midz), information.getName(), -1);
                         } else if (color != -1) {
-                            world.setBlockState(new BlockPos(x + midx, starty, z + midz), Blocks.stained_hardened_clay.getStateFromMeta(color), 2);
+                            world.setBlockState(new BlockPos(x + midx, starty, z + midz), Blocks.STAINED_HARDENED_CLAY.getStateFromMeta(color), 2);
                         } else {
                             world.setBlockToAir(new BlockPos(x+midx, starty, z+midz));
                         }
@@ -298,16 +298,16 @@ public class GenericWorldGenerator implements IWorldGenerator {
                 if (x == 0 && z == 0) {
                     RFToolsDim.teleportationManager.createReceiver(world, new BlockPos(x+midx, starty, z+midz), information.getName(), -1);
                 } else if (x == 0 && (z == 2 || z == -2)) {
-                    world.setBlockState(new BlockPos(x + midx, starty, z + midz), Blocks.glowstone.getDefaultState(), 3);
+                    world.setBlockState(new BlockPos(x + midx, starty, z + midz), Blocks.GLOWSTONE.getDefaultState(), 3);
                 } else {
-                    world.setBlockState(new BlockPos(x + midx, starty, z + midz), Blocks.stained_hardened_clay.getStateFromMeta(3), 2);
+                    world.setBlockState(new BlockPos(x + midx, starty, z + midz), Blocks.STAINED_HARDENED_CLAY.getStateFromMeta(3), 2);
                 }
                 for (int y = 1 ; y <= 3 ; y++) {
                     world.setBlockToAir(new BlockPos(x+midx, starty+y, z+midz));
                 }
                 // Check the top layer. If it is something other then air we will replace it with clay as well.
                 if (!world.isAirBlock(new BlockPos(x+midx, starty+4, z+midz))) {
-                    world.setBlockState(new BlockPos(x + midx, starty + 4, z + midz), Blocks.stained_hardened_clay.getStateFromMeta(3), 2);
+                    world.setBlockState(new BlockPos(x + midx, starty + 4, z + midz), Blocks.STAINED_HARDENED_CLAY.getStateFromMeta(3), 2);
                 }
             }
         }
@@ -318,13 +318,13 @@ public class GenericWorldGenerator implements IWorldGenerator {
                     for (int z = -bounds ; z <= bounds ; z++) {
                         if (x == -bounds || x == bounds || z == -bounds || z == bounds) {
                             if (z == 0 && y >= 2 && y <= 3 || x == 0 && y >= 2 && y <= 3 && z == bounds) {
-                                world.setBlockState(new BlockPos(x + midx, starty + y, z + midz), Blocks.glass_pane.getStateFromMeta(0), 2);
+                                world.setBlockState(new BlockPos(x + midx, starty + y, z + midz), Blocks.GLASS_PANE.getStateFromMeta(0), 2);
                             } else if (x == 0 && y == 1 && z == -bounds) {
-                                world.setBlockState(new BlockPos(x + midx, starty + y, z + midz), Blocks.iron_door.getStateFromMeta(1), 2);
+                                world.setBlockState(new BlockPos(x + midx, starty + y, z + midz), Blocks.IRON_DOOR.getStateFromMeta(1), 2);
                             } else if (x == 0 && y == 2 && z == -bounds) {
-                                world.setBlockState(new BlockPos(x + midx, starty + y, z + midz), Blocks.iron_door.getStateFromMeta(8), 2);
+                                world.setBlockState(new BlockPos(x + midx, starty + y, z + midz), Blocks.IRON_DOOR.getStateFromMeta(8), 2);
                             } else {
-                                world.setBlockState(new BlockPos(x + midx, starty + y, z + midz), Blocks.stained_hardened_clay.getStateFromMeta(9), 2);
+                                world.setBlockState(new BlockPos(x + midx, starty + y, z + midz), Blocks.STAINED_HARDENED_CLAY.getStateFromMeta(9), 2);
                             }
                         }
                     }
@@ -332,18 +332,18 @@ public class GenericWorldGenerator implements IWorldGenerator {
             }
             for (int x = -bounds ; x <= bounds ; x++) {
                 for (int z = -bounds ; z <= bounds ; z++) {
-                    world.setBlockState(new BlockPos(x + midx, starty + 4, z + midz), Blocks.stained_hardened_clay.getStateFromMeta(9), 2);
+                    world.setBlockState(new BlockPos(x + midx, starty + 4, z + midz), Blocks.STAINED_HARDENED_CLAY.getStateFromMeta(9), 2);
                 }
             }
-            world.setBlockState(new BlockPos(midx - 1, starty + 2, midz - bounds - 1), Blocks.stone_button.getStateFromMeta(4), 2);
-            world.setBlockState(new BlockPos(midx + 1, starty + 2, midz - bounds + 1), Blocks.stone_button.getStateFromMeta(3), 2);
+            world.setBlockState(new BlockPos(midx - 1, starty + 2, midz - bounds - 1), Blocks.STONE_BUTTON.getStateFromMeta(4), 2);
+            world.setBlockState(new BlockPos(midx + 1, starty + 2, midz - bounds + 1), Blocks.STONE_BUTTON.getStateFromMeta(3), 2);
 
-            world.setBlockState(new BlockPos(midx + 1, starty, midz - bounds - 1), Blocks.stained_hardened_clay.getStateFromMeta(3), 2);
-            world.setBlockState(new BlockPos(midx, starty, midz - bounds - 1), Blocks.stained_hardened_clay.getStateFromMeta(3), 2);
-            world.setBlockState(new BlockPos(midx - 1, starty, midz - bounds - 1), Blocks.stained_hardened_clay.getStateFromMeta(3), 2);
-            world.setBlockState(new BlockPos(midx + 1, starty, midz - bounds - 2), Blocks.stained_hardened_clay.getStateFromMeta(3), 2);
-            world.setBlockState(new BlockPos(midx, starty, midz - bounds - 2), Blocks.stained_hardened_clay.getStateFromMeta(3), 2);
-            world.setBlockState(new BlockPos(midx - 1, starty, midz - bounds - 2), Blocks.stained_hardened_clay.getStateFromMeta(3), 2);
+            world.setBlockState(new BlockPos(midx + 1, starty, midz - bounds - 1), Blocks.STAINED_HARDENED_CLAY.getStateFromMeta(3), 2);
+            world.setBlockState(new BlockPos(midx, starty, midz - bounds - 1), Blocks.STAINED_HARDENED_CLAY.getStateFromMeta(3), 2);
+            world.setBlockState(new BlockPos(midx - 1, starty, midz - bounds - 1), Blocks.STAINED_HARDENED_CLAY.getStateFromMeta(3), 2);
+            world.setBlockState(new BlockPos(midx + 1, starty, midz - bounds - 2), Blocks.STAINED_HARDENED_CLAY.getStateFromMeta(3), 2);
+            world.setBlockState(new BlockPos(midx, starty, midz - bounds - 2), Blocks.STAINED_HARDENED_CLAY.getStateFromMeta(3), 2);
+            world.setBlockState(new BlockPos(midx - 1, starty, midz - bounds - 2), Blocks.STAINED_HARDENED_CLAY.getStateFromMeta(3), 2);
         }
 
         registerReceiver(world, dimensionManager, information, midx, midz, starty);
@@ -366,7 +366,7 @@ public class GenericWorldGenerator implements IWorldGenerator {
             default: cornerBlock = ModBlocks.dimensionalCross2Block;
         }
 
-        Block buildingBlock = Blocks.stained_hardened_clay;
+        Block buildingBlock = Blocks.STAINED_HARDENED_CLAY;
         int color = random.nextInt(5);
         if (color == 0) {
             color = 3;
@@ -387,7 +387,7 @@ public class GenericWorldGenerator implements IWorldGenerator {
                 boolean zside = z == midz-3 || z == midz+3;
                 boolean antenna = (x == midx-2 && z == midz-2);
                 boolean smallAntenna = doSmallAntenna && (x == midx+2 && z == midz+2);
-                world.setBlockState(new BlockPos(x, starty, z), Blocks.double_stone_slab.getDefaultState(), 2);
+                world.setBlockState(new BlockPos(x, starty, z), Blocks.DOUBLE_STONE_SLAB.getDefaultState(), 2);
                 if (corner) {
                     world.setBlockState(new BlockPos(x, starty + 1, z), cornerBlock.getStateFromMeta(1), 2);
                     world.setBlockState(new BlockPos(x, starty + 2, z), cornerBlock.getStateFromMeta(1), 2);
@@ -395,7 +395,7 @@ public class GenericWorldGenerator implements IWorldGenerator {
                 } else if (xside) {
                     world.setBlockState(new BlockPos(x, starty + 1, z), buildingBlock.getStateFromMeta(color), 2);
                     if (z >= midz-1 && z <= midz+1) {
-                        world.setBlockState(new BlockPos(x, starty + 2, z), Blocks.glass_pane.getStateFromMeta(0), 2);
+                        world.setBlockState(new BlockPos(x, starty + 2, z), Blocks.GLASS_PANE.getStateFromMeta(0), 2);
                     } else {
                         world.setBlockState(new BlockPos(x, starty + 2, z), buildingBlock.getStateFromMeta(color), 2);
                     }
@@ -410,19 +410,19 @@ public class GenericWorldGenerator implements IWorldGenerator {
                     world.setBlockToAir(new BlockPos(x, starty+3, z));
                 }
                 if (antenna) {
-                    world.setBlockState(new BlockPos(x, starty + 4, z), Blocks.double_stone_slab.getDefaultState(), 2);
-                    world.setBlockState(new BlockPos(x, starty + 5, z), Blocks.iron_bars.getDefaultState(), 2);
-                    world.setBlockState(new BlockPos(x, starty + 6, z), Blocks.iron_bars.getDefaultState(), 2);
-                    world.setBlockState(new BlockPos(x, starty + 7, z), Blocks.iron_bars.getDefaultState(), 2);
-                    world.setBlockState(new BlockPos(x, starty + 8, z), Blocks.glowstone.getDefaultState(), 3);
+                    world.setBlockState(new BlockPos(x, starty + 4, z), Blocks.DOUBLE_STONE_SLAB.getDefaultState(), 2);
+                    world.setBlockState(new BlockPos(x, starty + 5, z), Blocks.IRON_BARS.getDefaultState(), 2);
+                    world.setBlockState(new BlockPos(x, starty + 6, z), Blocks.IRON_BARS.getDefaultState(), 2);
+                    world.setBlockState(new BlockPos(x, starty + 7, z), Blocks.IRON_BARS.getDefaultState(), 2);
+                    world.setBlockState(new BlockPos(x, starty + 8, z), Blocks.GLOWSTONE.getDefaultState(), 3);
                 } else if (smallAntenna) {
-                    world.setBlockState(new BlockPos(x, starty + 4, z), Blocks.double_stone_slab.getDefaultState(), 2);
-                    world.setBlockState(new BlockPos(x, starty + 5, z), Blocks.iron_bars.getDefaultState(), 2);
+                    world.setBlockState(new BlockPos(x, starty + 4, z), Blocks.DOUBLE_STONE_SLAB.getDefaultState(), 2);
+                    world.setBlockState(new BlockPos(x, starty + 5, z), Blocks.IRON_BARS.getDefaultState(), 2);
                     world.setBlockToAir(new BlockPos(x, starty + 6, z));
                     world.setBlockToAir(new BlockPos(x, starty + 7, z));
                     world.setBlockToAir(new BlockPos(x, starty + 8, z));
                 } else {
-                    world.setBlockState(new BlockPos(x, starty + 4, z), Blocks.stone_slab.getDefaultState(), 2);
+                    world.setBlockState(new BlockPos(x, starty + 4, z), Blocks.STONE_SLAB.getDefaultState(), 2);
                     world.setBlockToAir(new BlockPos(x, starty+5, z));
                     world.setBlockToAir(new BlockPos(x, starty+6, z));
                     world.setBlockToAir(new BlockPos(x, starty+7, z));
@@ -436,10 +436,10 @@ public class GenericWorldGenerator implements IWorldGenerator {
 
         if (doExtraFeature) {
             if (!WorldGenerationTools.isSolid(world, midx+4, starty, midz-3)) {
-                world.setBlockState(new BlockPos(midx + 4, starty, midz - 3), Blocks.iron_bars.getDefaultState(), 2);
+                world.setBlockState(new BlockPos(midx + 4, starty, midz - 3), Blocks.IRON_BARS.getDefaultState(), 2);
             }
-            world.setBlockState(new BlockPos(midx + 4, starty + 1, midz - 3), Blocks.iron_bars.getDefaultState(), 2);
-            world.setBlockState(new BlockPos(midx + 4, starty + 2, midz - 3), Blocks.iron_bars.getDefaultState(), 2);
+            world.setBlockState(new BlockPos(midx + 4, starty + 1, midz - 3), Blocks.IRON_BARS.getDefaultState(), 2);
+            world.setBlockState(new BlockPos(midx + 4, starty + 2, midz - 3), Blocks.IRON_BARS.getDefaultState(), 2);
             if (!WorldGenerationTools.isSolid(world, midx+5, starty, midz-3)) {
                 world.setBlockState(new BlockPos(midx + 5, starty, midz - 3), buildingBlock.getStateFromMeta(color), 2);
             }
@@ -457,19 +457,19 @@ public class GenericWorldGenerator implements IWorldGenerator {
         }
 
         // Small platform before the door
-        world.setBlockState(new BlockPos(midx - 1, starty, midz - 4), Blocks.double_stone_slab.getDefaultState(), 2);
-        world.setBlockState(new BlockPos(midx, starty, midz - 4), Blocks.double_stone_slab.getDefaultState(), 2);
-        world.setBlockState(new BlockPos(midx + 1, starty, midz - 4), Blocks.double_stone_slab.getDefaultState(), 2);
+        world.setBlockState(new BlockPos(midx - 1, starty, midz - 4), Blocks.DOUBLE_STONE_SLAB.getDefaultState(), 2);
+        world.setBlockState(new BlockPos(midx, starty, midz - 4), Blocks.DOUBLE_STONE_SLAB.getDefaultState(), 2);
+        world.setBlockState(new BlockPos(midx + 1, starty, midz - 4), Blocks.DOUBLE_STONE_SLAB.getDefaultState(), 2);
 
-        world.setBlockState(new BlockPos(midx, starty + 1, midz - 3), Blocks.iron_door.getStateFromMeta(1), 2);
-        world.setBlockState(new BlockPos(midx, starty + 2, midz - 3), Blocks.iron_door.getStateFromMeta(8), 2);
-        world.setBlockState(new BlockPos(midx - 1, starty + 2, midz - 4), Blocks.stone_button.getStateFromMeta(4), 2);
-        world.setBlockState(new BlockPos(midx + 1, starty + 2, midz - 2), Blocks.stone_button.getStateFromMeta(3), 2);
+        world.setBlockState(new BlockPos(midx, starty + 1, midz - 3), Blocks.IRON_DOOR.getStateFromMeta(1), 2);
+        world.setBlockState(new BlockPos(midx, starty + 2, midz - 3), Blocks.IRON_DOOR.getStateFromMeta(8), 2);
+        world.setBlockState(new BlockPos(midx - 1, starty + 2, midz - 4), Blocks.STONE_BUTTON.getStateFromMeta(4), 2);
+        world.setBlockState(new BlockPos(midx + 1, starty + 2, midz - 2), Blocks.STONE_BUTTON.getStateFromMeta(3), 2);
 
-        world.setBlockState(new BlockPos(midx, starty + 3, midz + 3), Blocks.redstone_lamp.getDefaultState(), 2);
-        world.setBlockState(new BlockPos(midx, starty + 3, midz + 2), Blocks.lever.getStateFromMeta(4), 2);
+        world.setBlockState(new BlockPos(midx, starty + 3, midz + 3), Blocks.REDSTONE_LAMP.getDefaultState(), 2);
+        world.setBlockState(new BlockPos(midx, starty + 3, midz + 2), Blocks.LEVER.getStateFromMeta(4), 2);
 
-        world.setBlockState(new BlockPos(midx + 2, starty + 1, midz - 2), Blocks.chest.getDefaultState(), 2);
+        world.setBlockState(new BlockPos(midx + 2, starty + 1, midz - 2), Blocks.CHEST.getDefaultState(), 2);
 
         WeightedRandomSelector.Distribution<Integer> bestDistribution = DimletRandomizer.getRandomDimlets().createDistribution(0.2f);
 

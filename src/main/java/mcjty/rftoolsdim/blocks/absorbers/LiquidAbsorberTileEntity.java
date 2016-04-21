@@ -80,7 +80,7 @@ public class LiquidAbsorberTileEntity extends GenericTileEntity implements ITick
     private Block isValidSourceBlock(BlockPos coordinate) {
         IBlockState state = worldObj.getBlockState(coordinate);
         Block block = state.getBlock();
-        if (block == null || block.getMaterial(state) == Material.air) {
+        if (block == null || block.getMaterial(state) == Material.AIR) {
             return null;
         }
 
@@ -188,7 +188,7 @@ public class LiquidAbsorberTileEntity extends GenericTileEntity implements ITick
         super.readRestorableFromNBT(tagCompound);
         absorbing = tagCompound.getInteger("absorbing");
         if (tagCompound.hasKey("liquid")) {
-            block = Block.blockRegistry.getObject(new ResourceLocation(tagCompound.getString("liquid")));
+            block = Block.REGISTRY.getObject(new ResourceLocation(tagCompound.getString("liquid")));
         } else {
             block = null;
         }

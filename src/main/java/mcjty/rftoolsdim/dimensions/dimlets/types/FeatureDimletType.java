@@ -201,7 +201,7 @@ public class FeatureDimletType implements IDimletType {
             fluidsForLakes = fluids.toArray(new Block[fluids.size()]);
             for (int i = 0 ; i < fluidsForLakes.length ; i++) {
                 if (fluidsForLakes[i] == null) {
-                    fluidsForLakes[i] = Blocks.water;
+                    fluidsForLakes[i] = Blocks.WATER;
                 }
             }
         } else {
@@ -211,7 +211,7 @@ public class FeatureDimletType implements IDimletType {
             return fluidsForLakes;
         }
 
-        return new Block[] { Blocks.water };
+        return new Block[] { Blocks.WATER };
     }
 
     private IBlockState[] getRandomBlockArray(Random random, Set<FeatureType> featureTypes, Map<FeatureType, List<DimletKey>> modifiersForFeature, FeatureType t, boolean allowEmpty) {
@@ -239,7 +239,7 @@ public class FeatureDimletType implements IDimletType {
             blockArray = blocks.toArray(new IBlockState[blocks.size()]);
             for (int i = 0 ; i < blockArray.length ; i++) {
                 if (blockArray[i] == null) {
-                    blockArray[i] = Blocks.stone.getDefaultState();
+                    blockArray[i] = Blocks.STONE.getDefaultState();
                 }
             }
         } else {
@@ -248,7 +248,7 @@ public class FeatureDimletType implements IDimletType {
         if (allowEmpty || blockArray.length > 0) {
             return blockArray;
         }
-        return new IBlockState[] { Blocks.stone.getDefaultState() };
+        return new IBlockState[] { Blocks.STONE.getDefaultState() };
     }
 
     @Override

@@ -236,7 +236,7 @@ public class CavernTerrainGenerator implements BaseTerrainGenerator {
                                 } else if (height < liquidlevel) {
                                     BaseTerrainGenerator.setBlockState(primer, index, baseLiquid.getDefaultState());
                                 } else {
-                                    BaseTerrainGenerator.setBlockState(primer, index, Blocks.air.getDefaultState());
+                                    BaseTerrainGenerator.setBlockState(primer, index, Blocks.AIR.getDefaultState());
                                 }
 
                                 index += maxheight;
@@ -284,11 +284,11 @@ public class CavernTerrainGenerator implements BaseTerrainGenerator {
                     int l1 = (l * 16 + k) * 256 + k1;
 
                     if (k1 < WorldgenConfiguration.bedrockLayer) {
-                        BaseTerrainGenerator.setBlockState(primer, l1, Blocks.bedrock.getDefaultState());
+                        BaseTerrainGenerator.setBlockState(primer, l1, Blocks.BEDROCK.getDefaultState());
                     } else if (k1 < 255 - provider.rand.nextInt(5) && k1 > provider.rand.nextInt(5)) {
                         IBlockState block2 = BaseTerrainGenerator.getBlockState(primer, l1);
 
-                        if (block2 != null && block2.getBlock().getMaterial(block2) != Material.air) {
+                        if (block2 != null && block2.getBlock().getMaterial(block2) != Material.AIR) {
                             if (block2 == baseBlock) {
                                 if (j1 == -1) {
                                     if (i1 <= 0) {
@@ -297,7 +297,7 @@ public class CavernTerrainGenerator implements BaseTerrainGenerator {
                                         block = baseBlock;
                                     }
 
-                                    if (k1 < b0 && (block == null || block.getBlock().getMaterial(block) == Material.air)) {
+                                    if (k1 < b0 && (block == null || block.getBlock().getMaterial(block) == Material.AIR)) {
                                         block = baseLiquid.getDefaultState();
                                     }
 
@@ -320,7 +320,7 @@ public class CavernTerrainGenerator implements BaseTerrainGenerator {
                         }
                     } else if (heightsetting == CavernHeight.HEIGHT_256) {
                         // Only use a bedrock ceiling if the height is 256.
-                        BaseTerrainGenerator.setBlockState(primer, l1, Blocks.bedrock.getDefaultState());
+                        BaseTerrainGenerator.setBlockState(primer, l1, Blocks.BEDROCK.getDefaultState());
                     }
                 }
             }

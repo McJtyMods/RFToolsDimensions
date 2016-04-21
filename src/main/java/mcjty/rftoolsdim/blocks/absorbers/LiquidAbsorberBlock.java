@@ -27,7 +27,7 @@ import java.util.List;
 public class LiquidAbsorberBlock extends GenericRFToolsBlock<LiquidAbsorberTileEntity, EmptyContainer> {
 
     public LiquidAbsorberBlock() {
-        super(Material.iron, LiquidAbsorberTileEntity.class, EmptyContainer.class, "liquid_absorber", false);
+        super(Material.IRON, LiquidAbsorberTileEntity.class, EmptyContainer.class, "liquid_absorber", false);
     }
 
     @Override
@@ -59,7 +59,7 @@ public class LiquidAbsorberBlock extends GenericRFToolsBlock<LiquidAbsorberTileE
 
         NBTTagCompound tagCompound = itemStack.getTagCompound();
         if (tagCompound != null && tagCompound.hasKey("liquid")) {
-            Block block = Block.blockRegistry.getObject(new ResourceLocation(tagCompound.getString("block")));
+            Block block = Block.REGISTRY.getObject(new ResourceLocation(tagCompound.getString("block")));
             if (block != null) {
                 Fluid fluid = FluidRegistry.lookupFluidForBlock(block);
                 if (fluid != null) {

@@ -145,31 +145,31 @@ public class TerrainDimletType implements IDimletType {
 
         IBlockState baseBlockForTerrain;
         if (dimensionInformation.isPatreonBitSet(Patreons.PATREON_LAYEREDMETA)) {
-            baseBlockForTerrain = Blocks.stone.getDefaultState();
-//            baseBlockForTerrain = new BlockMeta(Blocks.wool, 127);
+            baseBlockForTerrain = Blocks.STONE.getDefaultState();
+//            baseBlockForTerrain = new BlockMeta(Blocks.WOOL, 127);
             // @todo
         } else {
             if (!blocks.isEmpty()) {
                 baseBlockForTerrain = blocks.get(random.nextInt(blocks.size()));
                 if (baseBlockForTerrain == null) {
-                    baseBlockForTerrain = Blocks.stone.getDefaultState();     // This is the default in case None was specified.
+                    baseBlockForTerrain = Blocks.STONE.getDefaultState();     // This is the default in case None was specified.
                 }
             } else {
                 // Nothing was specified. With a relatively big chance we use stone. But there is also a chance that the material will be something else.
                 // Note that in this particular case we disallow randomly selecting 'expensive' blocks like glass.
                 // If the terrain type is void we always pick stone as a random material.
                 if (terrainType == TerrainType.TERRAIN_VOID) {
-                    baseBlockForTerrain = Blocks.stone.getDefaultState();
+                    baseBlockForTerrain = Blocks.STONE.getDefaultState();
                 } else if (random.nextFloat() < WorldgenConfiguration.randomBaseBlockChance) {
                     DimletKey key = DimletRandomizer.getRandomMaterialBlock(random);
                     if (key != null) {
                         dimensionInformation.updateCostFactor(key);
                         baseBlockForTerrain = DimletObjectMapping.getBlock(key);
                     } else {
-                        baseBlockForTerrain = Blocks.stone.getDefaultState();
+                        baseBlockForTerrain = Blocks.STONE.getDefaultState();
                     }
                 } else {
-                    baseBlockForTerrain = Blocks.stone.getDefaultState();
+                    baseBlockForTerrain = Blocks.STONE.getDefaultState();
                 }
             }
         }
@@ -179,22 +179,22 @@ public class TerrainDimletType implements IDimletType {
         if (!fluids.isEmpty()) {
             fluidForTerrain = fluids.get(random.nextInt(fluids.size()));
             if (fluidForTerrain == null) {
-                fluidForTerrain = Blocks.water;         // This is the default.
+                fluidForTerrain = Blocks.WATER;         // This is the default.
             }
         } else {
             // If the terrain type is void we always pick water as the random liquid.
             if (terrainType == TerrainType.TERRAIN_VOID) {
-                fluidForTerrain = Blocks.water;
+                fluidForTerrain = Blocks.WATER;
             } else if (random.nextFloat() < WorldgenConfiguration.randomOceanLiquidChance) {
                 DimletKey key = DimletRandomizer.getRandomFluidBlock(random);
                 if (key != null) {
                     dimensionInformation.updateCostFactor(key);
                     fluidForTerrain = DimletObjectMapping.getFluid(key);
                 } else {
-                    fluidForTerrain = Blocks.water;
+                    fluidForTerrain = Blocks.WATER;
                 }
             } else {
-                fluidForTerrain = Blocks.water;
+                fluidForTerrain = Blocks.WATER;
             }
         }
         dimensionInformation.setFluidForTerrain(fluidForTerrain);

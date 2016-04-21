@@ -25,7 +25,7 @@ import java.util.List;
 public class FeatureAbsorberBlock extends GenericRFToolsBlock<FeatureAbsorberTileEntity, EmptyContainer> {
 
     public FeatureAbsorberBlock() {
-        super(Material.iron, FeatureAbsorberTileEntity.class, EmptyContainer.class, "feature_absorber", false);
+        super(Material.IRON, FeatureAbsorberTileEntity.class, EmptyContainer.class, "feature_absorber", false);
     }
 
     @Override

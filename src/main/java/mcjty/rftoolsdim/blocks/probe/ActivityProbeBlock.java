@@ -22,7 +22,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class ActivityProbeBlock extends Block {
 
     public ActivityProbeBlock() {
-        super(Material.iron);
+        super(Material.IRON);
         setUnlocalizedName("activity_probe");
         setRegistryName("activity_probe");
         setCreativeTab(RFToolsDim.tabRfToolsDim);

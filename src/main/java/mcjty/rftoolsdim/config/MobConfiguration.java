@@ -57,7 +57,7 @@ public class MobConfiguration {
 
     private static void initMobItem(Configuration cfg, String name,
                                     int chance, int mingroup, int maxgroup, int maxentity) {
-        Class<? extends Entity> entityClass = EntityList.stringToClassMapping.get(name);
+        Class<? extends Entity> entityClass = EntityList.NAME_TO_CLASS.get(name);
         if (entityClass == null) {
             Logging.logError("Cannot find mob with name '" + name +"'!");
             return;

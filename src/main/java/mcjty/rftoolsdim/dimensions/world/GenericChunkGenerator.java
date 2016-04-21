@@ -414,12 +414,12 @@ public class GenericChunkGenerator implements IChunkGenerator {
         if (dimensionInformation.hasFeatureType(FeatureType.FEATURE_LAKES)) {
             if (dimensionInformation.getFluidsForLakes().length == 0) {
                 // No specific liquid dimlets specified: we generate default lakes (water and lava were appropriate).
-                if (biomegenbase != Biomes.desert && biomegenbase != Biomes.desertHills && !flag && this.rand.nextInt(4) == 0
+                if (biomegenbase != Biomes.DESERT && biomegenbase != Biomes.DESERT_HILLS && !flag && this.rand.nextInt(4) == 0
                         && TerrainGen.populate(this, worldObj, rand, chunkX, chunkZ, flag, PopulateChunkEvent.Populate.EventType.LAKE)) {
                     k1 = x + this.rand.nextInt(16) + 8;
                     l1 = this.rand.nextInt(256);
                     i2 = z + this.rand.nextInt(16) + 8;
-                    (new WorldGenLakes(Blocks.water)).generate(this.worldObj, this.rand, new BlockPos(k1, l1, i2));
+                    (new WorldGenLakes(Blocks.WATER)).generate(this.worldObj, this.rand, new BlockPos(k1, l1, i2));
                 }
 
                 if (TerrainGen.populate(this, worldObj, rand, chunkX, chunkZ, flag, PopulateChunkEvent.Populate.EventType.LAVA) && !flag && this.rand.nextInt(8) == 0) {
@@ -428,7 +428,7 @@ public class GenericChunkGenerator implements IChunkGenerator {
                     i2 = z + this.rand.nextInt(16) + 8;
 
                     if (l1 < 63 || this.rand.nextInt(10) == 0) {
-                        (new WorldGenLakes(Blocks.lava)).generate(this.worldObj, this.rand, new BlockPos(k1, l1, i2));
+                        (new WorldGenLakes(Blocks.LAVA)).generate(this.worldObj, this.rand, new BlockPos(k1, l1, i2));
                     }
                 }
             } else {
@@ -469,11 +469,11 @@ public class GenericChunkGenerator implements IChunkGenerator {
                 i2 = this.worldObj.getPrecipitationHeight(new BlockPos(x + k1, 0, z + l1)).getY();
 
                 if (this.worldObj.canBlockFreeze(new BlockPos(k1 + x, i2 - 1, l1 + z), false)) {
-                    this.worldObj.setBlockState(new BlockPos(k1 + x, i2 - 1, l1 + z), Blocks.ice.getDefaultState(), 2);
+                    this.worldObj.setBlockState(new BlockPos(k1 + x, i2 - 1, l1 + z), Blocks.ICE.getDefaultState(), 2);
                 }
 
                 if (this.worldObj.canSnowAt(new BlockPos(k1 + x, i2, l1 + z), true)) {
-                    this.worldObj.setBlockState(new BlockPos(k1 + x, i2, l1 + z), Blocks.snow_layer.getDefaultState(), 2);
+                    this.worldObj.setBlockState(new BlockPos(k1 + x, i2, l1 + z), Blocks.SNOW_LAYER.getDefaultState(), 2);
                 }
             }
         }
@@ -537,7 +537,7 @@ public class GenericChunkGenerator implements IChunkGenerator {
                 return Collections.emptyList();
             }
             if (dimensionInformation.hasStructureType(StructureType.STRUCTURE_SCATTERED)) {
-                if (this.scatteredFeatureGenerator.func_175798_a(pos)) {
+                if (this.scatteredFeatureGenerator.isInsideStructure(pos)) {
                     return this.scatteredFeatureGenerator.getScatteredFeatureSpawnList();
                 }
             }
@@ -563,11 +563,11 @@ public class GenericChunkGenerator implements IChunkGenerator {
             }
 
             if (dimensionInformation.hasStructureType(StructureType.STRUCTURE_FORTRESS)) {
-                if (this.genNetherBridge.func_175795_b(pos)) {
+                if (this.genNetherBridge.isInsideStructure(pos)) {
                     return this.genNetherBridge.getSpawnList();
                 }
 
-                if (this.genNetherBridge.isPositionInStructure(this.worldObj, pos) && this.worldObj.getBlockState(pos.down()).getBlock() == Blocks.nether_brick) {
+                if (this.genNetherBridge.isPositionInStructure(this.worldObj, pos) && this.worldObj.getBlockState(pos.down()).getBlock() == Blocks.NETHER_BRICK) {
                     return this.genNetherBridge.getSpawnList();
                 }
             }

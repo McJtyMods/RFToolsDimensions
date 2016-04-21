@@ -151,7 +151,7 @@ public class MapGenDenseCaves extends MapGenCaves {
 
                                         if (d12 > -0.7D && d13 * d13 + d12 * d12 + d14 * d14 < 1.0D) {
                                             IBlockState iblockstate1 = chunkPrimer.getBlockState(k2, l3, j3);
-                                            IBlockState iblockstate2 = (IBlockState) Objects.firstNonNull(chunkPrimer.getBlockState(k2, l3 + 1, j3), Blocks.air.getDefaultState());
+                                            IBlockState iblockstate2 = (IBlockState) Objects.firstNonNull(chunkPrimer.getBlockState(k2, l3 + 1, j3), Blocks.AIR.getDefaultState());
 
                                             if (isTopBlock(chunkPrimer, k2, l3, j3, chunkX, chunkZ)) {
                                                 flag1 = true;
@@ -211,9 +211,9 @@ public class MapGenDenseCaves extends MapGenCaves {
 
     //Exception biomes to make sure we generate like vanilla
     private boolean isExceptionBiome(BiomeGenBase biome) {
-        if (biome == Biomes.mushroomIsland) return true;
-        if (biome == Biomes.beach) return true;
-        if (biome == Biomes.desert) return true;
+        if (biome == Biomes.MUSHROOM_ISLAND) return true;
+        if (biome == Biomes.BEACH) return true;
+        if (biome == Biomes.DESERT) return true;
         return false;
     }
 
@@ -222,6 +222,6 @@ public class MapGenDenseCaves extends MapGenCaves {
     private boolean isTopBlock(ChunkPrimer data, int x, int y, int z, int chunkX, int chunkZ) {
         net.minecraft.world.biome.BiomeGenBase biome = worldObj.getBiomeGenForCoords(new BlockPos(x + chunkX * 16, 0, z + chunkZ * 16));
         IBlockState state = data.getBlockState(x, y, z);
-        return (isExceptionBiome(biome) ? state.getBlock() == Blocks.grass : state.getBlock() == biome.topBlock);
+        return (isExceptionBiome(biome) ? state.getBlock() == Blocks.GRASS : state.getBlock() == biome.topBlock);
     }
 }
