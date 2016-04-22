@@ -117,7 +117,7 @@ public class MaterialAbsorberTileEntity extends GenericTileEntity implements ITi
                     }
                 }
             }
-            markDirty();
+            markDirtyClient();
         }
     }
 

@@ -134,7 +134,7 @@ public class LiquidAbsorberTileEntity extends GenericTileEntity implements ITick
                     }
                 }
             }
-            markDirty();
+            markDirtyClient();
         }
     }
 
