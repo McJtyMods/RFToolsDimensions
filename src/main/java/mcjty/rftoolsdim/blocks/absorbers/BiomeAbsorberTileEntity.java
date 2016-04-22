@@ -5,6 +5,7 @@ import mcjty.rftoolsdim.config.DimletConstructionConfiguration;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.BiomeGenBase;
 
 import java.util.Random;
@@ -12,7 +13,7 @@ import java.util.Random;
 public class BiomeAbsorberTileEntity extends GenericTileEntity implements ITickable {
 
     private int absorbing = 0;
-    private String biomeName = null;
+    private String biomeId = null;
 
     @Override
     public void update() {
@@ -42,7 +43,7 @@ public class BiomeAbsorberTileEntity extends GenericTileEntity implements ITicka
     protected void checkStateServer() {
         if (absorbing > 0) {
             BiomeGenBase biomeGenBase = worldObj.getBiomeGenForCoords(getPos());
-            if (biomeGenBase == null || !biomeGenBase.getBiomeName().equals(biomeName)) {
+            if (biomeGenBase == null || !biomeGenBase.getRegistryName().toString().equals(biomeId)) {
                 return;
             }
 
@@ -56,17 +57,25 @@ public class BiomeAbsorberTileEntity extends GenericTileEntity implements ITicka
     }
 
     public String getBiomeName() {
-        return biomeName;
+        return getBiomeName(biomeId);
+    }
+
+    public static String getBiomeName(String biomeId) {
+        if (biomeId == null) {
+            return null;
+        }
+        BiomeGenBase biome = BiomeGenBase.REGISTRY.getObject(new ResourceLocation(biomeId));
+        return biome == null ? null : biome.getBiomeName();
     }
 
     public void placeDown() {
-        if (biomeName == null) {
+        if (biomeId == null) {
             BiomeGenBase biomeGenBase = worldObj.getBiomeGenForCoords(getPos());
             if (biomeGenBase == null) {
-                biomeName = null;
+                biomeId = null;
                 absorbing = 0;
-            } else if (!biomeGenBase.getBiomeName().equals(biomeName)) {
-                biomeName = biomeGenBase.getBiomeName();
+            } else if (!biomeGenBase.getRegistryName().toString().equals(biomeId)) {
+                biomeId = biomeGenBase.getRegistryName().toString();
                 absorbing = DimletConstructionConfiguration.maxBiomeAbsorbtion;
             }
             markDirty();
@@ -82,8 +91,8 @@ public class BiomeAbsorberTileEntity extends GenericTileEntity implements ITicka
     public void writeRestorableToNBT(NBTTagCompound tagCompound) {
         super.writeRestorableToNBT(tagCompound);
         tagCompound.setInteger("absorbing", absorbing);
-        if (biomeName != null) {
-            tagCompound.setString("biome", biomeName);
+        if (biomeId != null) {
+            tagCompound.setString("biome", biomeId);
         }
     }
 
@@ -97,9 +106,9 @@ public class BiomeAbsorberTileEntity extends GenericTileEntity implements ITicka
         super.readRestorableFromNBT(tagCompound);
         absorbing = tagCompound.getInteger("absorbing");
         if (tagCompound.hasKey("biome")) {
-            biomeName = tagCompound.getString("biome");
+            biomeId = tagCompound.getString("biome");
         } else {
-            biomeName = null;
+            biomeId = null;
         }
     }
 

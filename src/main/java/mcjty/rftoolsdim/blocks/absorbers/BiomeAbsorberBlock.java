@@ -54,7 +54,8 @@ public class BiomeAbsorberBlock extends GenericRFToolsBlock<BiomeAbsorberTileEnt
 
         NBTTagCompound tagCompound = itemStack.getTagCompound();
         if (tagCompound != null && tagCompound.hasKey("biome")) {
-            String biomeName = tagCompound.getString("biome");
+            String biomeId = tagCompound.getString("biome");
+            String biomeName = BiomeAbsorberTileEntity.getBiomeName(biomeId);
             list.add(TextFormatting.GREEN + "Biome: " + biomeName);
             int absorbing = tagCompound.getInteger("absorbing");
             int pct = ((DimletConstructionConfiguration.maxBiomeAbsorbtion - absorbing) * 100) / DimletConstructionConfiguration.maxBiomeAbsorbtion;
