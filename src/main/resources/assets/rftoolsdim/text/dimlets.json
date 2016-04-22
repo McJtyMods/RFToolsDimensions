@@ -203,7 +203,7 @@
   {
     "filter": {
       "type": "material",
-      "name": [ "dirt", "cobblestone", "sandstone", "nether_brick", "netherrack" ]
+      "name": [ "dirt", "cobblestone", "stonebrick", "red_sandstone", "sandstone", "nether_brick", "netherrack" ]
     },
     "settings": {
       "rarity": 0,
@@ -301,7 +301,7 @@
   {
     "filter": {
       "type": "material",
-      "name": [ "log2", "log", "planks" ]
+      "name": [ "log2", "log", "planks", "prismarine", "purpur_block", "end_bricks" ]
     },
     "settings": {
       "rarity": 2,
@@ -330,7 +330,7 @@
   {
     "filter": {
       "type": "material",
-      "name": [ "diamond_ore", "emerald_ore", "dimensional_shard_ore" ]
+      "name": [ "diamond_ore", "emerald_ore", "dimensional_shard_ore", "glowstone" ]
     },
     "settings": {
       "rarity": 5,
@@ -414,7 +414,7 @@
   {
     "filter": {
       "type": "material",
-      "name": [ "iron_block", "redstone_block", "coal_block", "prismarine" ]
+      "name": [ "iron_block", "redstone_block", "coal_block" ]
     },
     "settings": {
       "rarity": 4,
