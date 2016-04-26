@@ -288,6 +288,14 @@ public class RfToolsDimensionManager extends WorldSavedData {
         RFToolsDimMessages.INSTANCE.sendToAll(new PacketRegisterDimensions(id));
     }
 
+    public static RfToolsDimensionManager getDimensionManagerClient() {
+        if (instance != null) {
+            return instance;
+        }
+        instance = new RfToolsDimensionManager(DIMMANAGER_NAME);
+        return instance;
+    }
+
     public static RfToolsDimensionManager getDimensionManager(World world) {
         if (instance != null) {
             return instance;

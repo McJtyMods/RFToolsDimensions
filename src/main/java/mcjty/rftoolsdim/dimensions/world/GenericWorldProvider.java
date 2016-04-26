@@ -14,6 +14,7 @@ import mcjty.rftoolsdim.dimensions.types.ControllerType;
 import mcjty.rftoolsdim.dimensions.types.SkyType;
 import mcjty.rftoolsdim.network.PacketGetDimensionEnergy;
 import mcjty.rftoolsdim.network.RFToolsDimMessages;
+import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.math.BlockPos;
@@ -21,10 +22,12 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
+import net.minecraft.world.WorldServer;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.biome.BiomeProvider;
 import net.minecraft.world.biome.BiomeProviderSingle;
 import net.minecraft.world.chunk.IChunkGenerator;
+import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -65,6 +68,9 @@ public class GenericWorldProvider extends WorldProvider implements  /*@todo impl
 
     private DimensionInformation getDimensionInformation() {
         if (dimensionInformation == null) {
+            // Note: we cannot use worldObj here since we are possibly still busy setting up our world so the 'mapStorage'
+            // is always correct here. So we have to use the overworld.
+//            WorldServer overworld = DimensionManager.getWorld(0);
             int dim = getDimension();
             dimensionInformation = RfToolsDimensionManager.getDimensionManager(worldObj).getDimensionInformation(dim);
             if (dimensionInformation == null) {
@@ -170,7 +176,25 @@ public class GenericWorldProvider extends WorldProvider implements  /*@todo impl
 
 
     @Override
+    public BiomeProvider getBiomeProvider() {
+        if (biomeProvider == null) {
+            createBiomeProviderInternal();
+        }
+        return biomeProvider;
+    }
+
+    @Override
     protected void createBiomeProvider() {
+        if (worldObj instanceof WorldClient) {
+            // We don't have sufficient information right here (dimension information has not synced yet)
+            biomeProvider = null;
+            return;
+        }
+
+        createBiomeProviderInternal();
+    }
+
+    private void createBiomeProviderInternal() {
         getDimensionInformation();
         if (dimensionInformation != null) {
             ControllerType type = dimensionInformation.getControllerType();
@@ -207,7 +231,6 @@ public class GenericWorldProvider extends WorldProvider implements  /*@todo impl
                 }
             }
         }
-
     }
 
     @Override
