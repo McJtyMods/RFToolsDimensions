@@ -14,7 +14,6 @@ import mcjty.rftoolsdim.dimensions.types.ControllerType;
 import mcjty.rftoolsdim.dimensions.types.SkyType;
 import mcjty.rftoolsdim.network.PacketGetDimensionEnergy;
 import mcjty.rftoolsdim.network.RFToolsDimMessages;
-import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.math.BlockPos;
@@ -27,7 +26,6 @@ import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.biome.BiomeProvider;
 import net.minecraft.world.biome.BiomeProviderSingle;
 import net.minecraft.world.chunk.IChunkGenerator;
-import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -185,13 +183,14 @@ public class GenericWorldProvider extends WorldProvider implements  /*@todo impl
 
     @Override
     protected void createBiomeProvider() {
-        if (worldObj instanceof WorldClient) {
-            // We don't have sufficient information right here (dimension information has not synced yet)
-            biomeProvider = null;
+        if (worldObj instanceof WorldServer) {
+            createBiomeProviderInternal();
             return;
         }
 
-        createBiomeProviderInternal();
+        // We are on a client here and we don't have sufficient information right here (dimension information has not synced yet)
+        biomeProvider = null;
+        return;
     }
 
     private void createBiomeProviderInternal() {
