@@ -6,6 +6,7 @@ import mcjty.rftools.api.screens.data.IModuleDataContents;
 import mcjty.rftoolsdim.config.GeneralConfiguration;
 import mcjty.rftoolsdim.config.PowerConfiguration;
 import mcjty.rftoolsdim.dimensions.DimensionStorage;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -35,7 +36,6 @@ public class DimensionScreenModule implements IScreenModule<IModuleDataContents>
     }
 
     @Override
-    public void mouseClick(World world, int x, int y, boolean clicked) {
-
+    public void mouseClick(World world, int x, int y, boolean clicked, EntityPlayer player) {
     }
 }

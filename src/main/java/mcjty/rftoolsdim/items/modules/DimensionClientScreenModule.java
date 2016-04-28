@@ -1,9 +1,6 @@
 package mcjty.rftoolsdim.items.modules;
 
-import mcjty.rftools.api.screens.FormatStyle;
-import mcjty.rftools.api.screens.IClientScreenModule;
-import mcjty.rftools.api.screens.IModuleGuiBuilder;
-import mcjty.rftools.api.screens.IModuleRenderHelper;
+import mcjty.rftools.api.screens.*;
 import mcjty.rftools.api.screens.data.IModuleDataContents;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -33,7 +30,7 @@ public class DimensionClientScreenModule implements IClientScreenModule<IModuleD
     }
 
     @Override
-    public void render(IModuleRenderHelper helper, FontRenderer fontRenderer, int currenty, IModuleDataContents screenData, float factor) {
+    public void render(IModuleRenderHelper renderHelper, FontRenderer fontRenderer, int currenty, IModuleDataContents screenData, ModuleRenderInfo renderInfo) {
         GL11.glDisable(GL11.GL_LIGHTING);
         int xoffset;
         if (!line.isEmpty()) {
@@ -43,7 +40,7 @@ public class DimensionClientScreenModule implements IClientScreenModule<IModuleD
             xoffset = 7;
         }
 
-        helper.renderLevel(fontRenderer, xoffset, currenty, screenData, "RF", hidebar, hidetext, showpct, showdiff, rfcolor, rfcolorNeg, 0xffff0000, 0xff333300, format);
+        renderHelper.renderLevel(fontRenderer, xoffset, currenty, screenData, "RF", hidebar, hidetext, showpct, showdiff, rfcolor, rfcolorNeg, 0xffff0000, 0xff333300, format);
     }
 
     @Override
