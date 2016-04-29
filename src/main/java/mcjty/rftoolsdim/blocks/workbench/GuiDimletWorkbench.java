@@ -92,6 +92,9 @@ public class GuiDimletWorkbench extends GenericGuiContainer<DimletWorkbenchTileE
 
     private void suggestParts() {
         int selected = itemList.getSelected();
+        if (selected == -1) {
+            return;
+        }
         Widget widget = itemList.getChild(selected);
         Object userObject = widget.getUserObject();
         if (userObject instanceof DimletKey) {
