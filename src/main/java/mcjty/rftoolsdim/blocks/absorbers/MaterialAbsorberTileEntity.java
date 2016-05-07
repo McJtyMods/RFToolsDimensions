@@ -9,6 +9,8 @@ import mcjty.rftoolsdim.dimensions.dimlets.KnownDimletConfiguration;
 import mcjty.rftoolsdim.dimensions.dimlets.types.DimletType;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
@@ -87,8 +89,14 @@ public class MaterialAbsorberTileEntity extends GenericTileEntity implements ITi
                 if (b != null) {
                     if (blockState == null) {
                         absorbing = DimletConstructionConfiguration.maxBlockAbsorbtion;
-                        blockState = b;
-                        toscan.clear();
+                        if (b.getBlock() == Blocks.LIT_REDSTONE_ORE) {
+                            b = Blocks.REDSTONE_ORE.getDefaultState();
+                        }
+                        if (Item.getItemFromBlock(b.getBlock()) != null) {
+                            // Safety
+                            blockState = b;
+                            toscan.clear();
+                        }
                     }
                     toscan.add(getPos().down());
                 }
@@ -152,8 +160,10 @@ public class MaterialAbsorberTileEntity extends GenericTileEntity implements ITi
         super.writeRestorableToNBT(tagCompound);
         tagCompound.setInteger("absorbing", absorbing);
         if (blockState != null) {
-            tagCompound.setString("block", blockState.getBlock().getRegistryName().getResourcePath());
-            tagCompound.setInteger("meta", blockState.getBlock().getMetaFromState(blockState));
+            String resourcePath = blockState.getBlock().getRegistryName().toString();
+            tagCompound.setString("block", resourcePath);
+            int meta = blockState.getBlock().getMetaFromState(blockState);
+            tagCompound.setInteger("meta", meta);
         }
     }
 

@@ -10,6 +10,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.BlockRenderLayer;
@@ -49,7 +50,7 @@ public class MaterialAbsorberBlock extends GenericRFToolsBlock<MaterialAbsorberT
 
     @SideOnly(Side.CLIENT)
     @Override
-    public void addInformation(ItemStack itemStack, EntityPlayer player, List list, boolean whatIsThis) {
+    public void addInformation(ItemStack itemStack, EntityPlayer player, List<String> list, boolean whatIsThis) {
         super.addInformation(itemStack, player, list, whatIsThis);
 
         NBTTagCompound tagCompound = itemStack.getTagCompound();
@@ -57,7 +58,11 @@ public class MaterialAbsorberBlock extends GenericRFToolsBlock<MaterialAbsorberT
             Block block = Block.REGISTRY.getObject(new ResourceLocation(tagCompound.getString("block")));
             if (block != null) {
                 int meta = tagCompound.getInteger("meta");
-                list.add(TextFormatting.GREEN + "Block: " + new ItemStack(block, 1, meta).getDisplayName());
+                if (Item.getItemFromBlock(block) == null) {
+                    list.add(TextFormatting.RED + "Block: ERROR");
+                } else {
+                    list.add(TextFormatting.GREEN + "Block: " + new ItemStack(block, 1, meta).getDisplayName());
+                }
                 int absorbing = tagCompound.getInteger("absorbing");
                 int pct = ((DimletConstructionConfiguration.maxBlockAbsorbtion - absorbing) * 100) / DimletConstructionConfiguration.maxBlockAbsorbtion;
                 list.add(TextFormatting.GREEN + "Absorbed: " + pct + "%");
