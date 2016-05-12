@@ -1,5 +1,5 @@
 {
-  "parent": "builtin/generated",
+  "parent": "item/generated",
   "textures": {
     "layer0": "rftoolsdim:items/parts/dimletMemoryUnit0"
   },
