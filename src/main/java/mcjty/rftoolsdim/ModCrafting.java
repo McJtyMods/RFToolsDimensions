@@ -12,8 +12,12 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.oredict.RecipeSorter;
 
 public class ModCrafting {
+    static {
+        RecipeSorter.register("rftoolsdim:nbtmatchingrecipe", NBTMatchingRecipe.class, RecipeSorter.Category.SHAPED, "after:minecraft:shaped");
+    }
 
     public static void init() {
         initDimletRecipes();
@@ -99,16 +103,24 @@ public class ModCrafting {
         addRecipe(DimletType.DIMLET_TIME, "Normal", " r ", "rwr", "ppp", 'r', Items.REDSTONE, 'w', Items.CLOCK, 'p', ModItems.dimletTemplateItem);
         addRecipe(DimletType.DIMLET_WEATHER, DimletObjectMapping.DEFAULT_ID, " r ", "rwr", "ppp", 'r', Items.REDSTONE, 'w', Items.SNOWBALL, 'p', Items.PAPER);
         addRecipe(DimletType.DIMLET_DIGIT, "0", " r ", "rtr", "ppp", 'r', Items.REDSTONE, 't', redstoneTorch, 'p', Items.PAPER);
-        addRecipe(DimletType.DIMLET_DIGIT, "1", "d", 'd', KnownDimletConfiguration.getDimletStack(DimletType.DIMLET_DIGIT, "0"));
-        addRecipe(DimletType.DIMLET_DIGIT, "2", "d", 'd', KnownDimletConfiguration.getDimletStack(DimletType.DIMLET_DIGIT, "1"));
-        addRecipe(DimletType.DIMLET_DIGIT, "3", "d", 'd', KnownDimletConfiguration.getDimletStack(DimletType.DIMLET_DIGIT, "2"));
-        addRecipe(DimletType.DIMLET_DIGIT, "4", "d", 'd', KnownDimletConfiguration.getDimletStack(DimletType.DIMLET_DIGIT, "3"));
-        addRecipe(DimletType.DIMLET_DIGIT, "5", "d", 'd', KnownDimletConfiguration.getDimletStack(DimletType.DIMLET_DIGIT, "4"));
-        addRecipe(DimletType.DIMLET_DIGIT, "6", "d", 'd', KnownDimletConfiguration.getDimletStack(DimletType.DIMLET_DIGIT, "5"));
-        addRecipe(DimletType.DIMLET_DIGIT, "7", "d", 'd', KnownDimletConfiguration.getDimletStack(DimletType.DIMLET_DIGIT, "6"));
-        addRecipe(DimletType.DIMLET_DIGIT, "8", "d", 'd', KnownDimletConfiguration.getDimletStack(DimletType.DIMLET_DIGIT, "7"));
-        addRecipe(DimletType.DIMLET_DIGIT, "9", "d", 'd', KnownDimletConfiguration.getDimletStack(DimletType.DIMLET_DIGIT, "8"));
-        addRecipe(DimletType.DIMLET_DIGIT, "0", "d", 'd', KnownDimletConfiguration.getDimletStack(DimletType.DIMLET_DIGIT, "9"));
+
+        addDigitRecipe("0", "1");
+        addDigitRecipe("1", "2");
+        addDigitRecipe("2", "3");
+        addDigitRecipe("3", "4");
+        addDigitRecipe("4", "5");
+        addDigitRecipe("5", "6");
+        addDigitRecipe("6", "7");
+        addDigitRecipe("7", "8");
+        addDigitRecipe("8", "9");
+        addDigitRecipe("9", "0");
+    }
+
+    private static void addDigitRecipe(String source, String dest) {
+        GameRegistry.addRecipe(new NBTMatchingRecipe(1, 1,
+                                                     new ItemStack[] { KnownDimletConfiguration.getDimletStack(DimletType.DIMLET_DIGIT, source) },
+                                                     new String[][] { new String[] { "dkey" } },
+                                                     KnownDimletConfiguration.getDimletStack(DimletType.DIMLET_DIGIT, dest)));
     }
 
     private static void addRecipe(DimletType type, String id, Object... params) {
