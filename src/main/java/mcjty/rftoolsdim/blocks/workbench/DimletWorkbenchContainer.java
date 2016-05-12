@@ -1,6 +1,9 @@
 package mcjty.rftoolsdim.blocks.workbench;
 
-import mcjty.lib.container.*;
+import mcjty.lib.container.ContainerFactory;
+import mcjty.lib.container.GenericContainer;
+import mcjty.lib.container.SlotDefinition;
+import mcjty.lib.container.SlotType;
 import mcjty.rftoolsdim.items.ModItems;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ClickType;
@@ -44,6 +47,21 @@ public class DimletWorkbenchContainer extends GenericContainer {
         addInventory(ContainerFactory.CONTAINER_PLAYER, player.inventory);
         setCrafter(((DimletWorkbenchTileEntity) containerInventory)::craftDimlet);
         generateSlots();
+    }
+
+    @Override
+    protected boolean mergeItemStacks(ItemStack itemStack, int sourceIndex, SlotDefinition slotDefinition, boolean reverse) {
+        if (sourceIndex >= SLOT_BASE && sourceIndex <= SLOT_ESSENCE) {
+            return mergeItemStack(itemStack, SLOT_BUFFER, SLOT_BUFFER + SIZE_BUFFER, reverse);
+        }
+        if (slotDefinition.getType() == SlotType.SLOT_SPECIFICITEM) {
+            if (sourceIndex >= SLOT_BUFFER && sourceIndex < SLOT_BUFFER + SIZE_BUFFER) {
+                return super.mergeItemStacks(itemStack, sourceIndex, slotDefinition, reverse);
+            } else {
+                return mergeItemStack(itemStack, SLOT_BUFFER, SLOT_BUFFER + SIZE_BUFFER, reverse);
+            }
+        }
+        return super.mergeItemStacks(itemStack, sourceIndex, slotDefinition, reverse);
     }
 
     @Override
