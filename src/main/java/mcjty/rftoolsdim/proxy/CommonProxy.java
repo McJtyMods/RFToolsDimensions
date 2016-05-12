@@ -10,7 +10,6 @@ import mcjty.rftoolsdim.blocks.ModBlocks;
 import mcjty.rftoolsdim.config.*;
 import mcjty.rftoolsdim.dimensions.DimensionTickEvent;
 import mcjty.rftoolsdim.dimensions.ModDimensions;
-import mcjty.rftoolsdim.dimensions.dimlets.KnownDimletConfiguration;
 import mcjty.rftoolsdim.gui.GuiProxy;
 import mcjty.rftoolsdim.items.ModItems;
 import mcjty.rftoolsdim.network.RFToolsDimMessages;
@@ -44,7 +43,6 @@ public abstract class CommonProxy {
         ModItems.init();
         ModBlocks.init();
         ModDimensions.init();
-        KnownDimletConfiguration.setupChestLoot();
 
         DimletRules.readRules(modConfigDir);
     }

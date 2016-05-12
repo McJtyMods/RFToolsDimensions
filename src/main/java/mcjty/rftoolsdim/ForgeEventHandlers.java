@@ -3,6 +3,7 @@ package mcjty.rftoolsdim;
 import mcjty.lib.varia.Logging;
 import mcjty.rftoolsdim.config.GeneralConfiguration;
 import mcjty.rftoolsdim.config.PowerConfiguration;
+import mcjty.rftoolsdim.config.WorldgenConfiguration;
 import mcjty.rftoolsdim.dimensions.DimensionInformation;
 import mcjty.rftoolsdim.dimensions.DimensionStorage;
 import mcjty.rftoolsdim.dimensions.RfToolsDimensionManager;
@@ -21,6 +22,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.storage.loot.LootEntryItem;
+import net.minecraft.world.storage.loot.LootPool;
+import net.minecraft.world.storage.loot.LootTableList;
+import net.minecraft.world.storage.loot.conditions.LootCondition;
+import net.minecraft.world.storage.loot.functions.LootFunction;
+import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
@@ -162,6 +169,24 @@ public class ForgeEventHandlers {
         if (event.getEntityLiving() instanceof EntityEnderman) {
             if (random.nextFloat() < GeneralConfiguration.endermanDimletPartDrop) {
                 event.getEntityLiving().entityDropItem(new ItemStack(ModItems.dimletParcelItem), 1.05f);
+            }
+        }
+    }
+
+
+    @SubscribeEvent
+    public void onLootLoad(LootTableLoadEvent event) {
+        if (event.getName().equals(LootTableList.CHESTS_ABANDONED_MINESHAFT) ||
+                event.getName().equals(LootTableList.CHESTS_IGLOO_CHEST) ||
+                event.getName().equals(LootTableList.CHESTS_DESERT_PYRAMID) ||
+                event.getName().equals(LootTableList.CHESTS_JUNGLE_TEMPLE) ||
+                event.getName().equals(LootTableList.CHESTS_NETHER_BRIDGE) ||
+                event.getName().equals(LootTableList.CHESTS_SIMPLE_DUNGEON) ||
+                event.getName().equals(LootTableList.CHESTS_VILLAGE_BLACKSMITH)) {
+            LootPool main = event.getTable().getPool("main");
+            // Safety, check if the main lootpool is still present
+            if (main != null) {
+                main.addEntry(new LootEntryItem(ModItems.dimletParcelItem, WorldgenConfiguration.dimletParcelRarity, 0, new LootFunction[0], new LootCondition[0], RFToolsDim.MODID + ":parcel"));
             }
         }
     }

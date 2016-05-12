@@ -24,7 +24,7 @@ public class WorldgenConfiguration {
     public static float randomControllerChance = 0.4f;
     public static int bedrockLayer = 1;
     public static boolean normalTerrainInheritsOverworld = false;
-    public static int dimletParcelRarity = 5;
+    public static int dimletParcelRarity = 2;
     public static int oreMinimumVeinSize = 5;
     public static int oreMaximumVeinSize = 8;
     public static int oreMaximumVeinCount = 3;

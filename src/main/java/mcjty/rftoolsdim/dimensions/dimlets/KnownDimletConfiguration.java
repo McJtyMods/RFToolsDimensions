@@ -334,26 +334,6 @@ public class KnownDimletConfiguration {
         return "Unknown";
     }
 
-    public static void setupChestLoot() {
-        //@todo
-//        setupChestLoot(ChestGenHooks.DUNGEON_CHEST);
-//        setupChestLoot(ChestGenHooks.MINESHAFT_CORRIDOR);
-//        setupChestLoot(ChestGenHooks.PYRAMID_DESERT_CHEST);
-//        setupChestLoot(ChestGenHooks.PYRAMID_JUNGLE_CHEST);
-//        setupChestLoot(ChestGenHooks.STRONGHOLD_CORRIDOR);
-//        setupChestLoot(ChestGenHooks.STRONGHOLD_CROSSING);
-//        setupChestLoot(ChestGenHooks.STRONGHOLD_LIBRARY);
-//        setupChestLoot(ChestGenHooks.VILLAGE_BLACKSMITH);
-//        setupChestLoot(ChestGenHooks.NETHER_FORTRESS);
-    }
-
-//    private static void setupChestLoot(String category) {
-//        List<List<ItemStack>> items = getRandomPartLists();
-//
-//        ChestGenHooks chest = ChestGenHooks.getInfo(category);
-//        chest.addItem(new WeightedRandomChestContent(ModItems.dimletParcelItem, 0, 1, 2, WorldgenConfiguration.dimletParcelRarity));
-//    }
-//
     private static List<List<ItemStack>> randomPartLists = null;
 
     public static List<List<ItemStack>> getRandomPartLists() {
