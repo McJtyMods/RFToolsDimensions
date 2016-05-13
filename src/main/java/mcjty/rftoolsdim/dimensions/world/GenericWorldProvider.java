@@ -2,10 +2,10 @@ package mcjty.rftoolsdim.dimensions.world;
 
 import mcjty.lib.varia.Logging;
 import mcjty.rftoolsdim.api.dimension.IRFToolsWorldProvider;
+import mcjty.rftoolsdim.config.GeneralConfiguration;
 import mcjty.rftoolsdim.config.PowerConfiguration;
 import mcjty.rftoolsdim.dimensions.DimensionInformation;
 import mcjty.rftoolsdim.dimensions.DimensionStorage;
-import mcjty.rftoolsdim.config.GeneralConfiguration;
 import mcjty.rftoolsdim.dimensions.RfToolsDimensionManager;
 import mcjty.rftoolsdim.dimensions.description.WeatherDescriptor;
 import mcjty.rftoolsdim.dimensions.dimlets.types.Patreons;
@@ -63,7 +63,13 @@ public class GenericWorldProvider extends WorldProvider implements  /*@todo impl
     private DimensionInformation getDimensionInformation() {
         if (dimensionInformation == null) {
             int dim = worldObj.provider.getDimensionId();
-            dimensionInformation = RfToolsDimensionManager.getDimensionManager(worldObj).getDimensionInformation(dim);
+            RfToolsDimensionManager dimensionManager;
+            if (worldObj.isRemote) {
+                dimensionManager = RfToolsDimensionManager.getDimensionManagerClient();
+            } else {
+                dimensionManager = RfToolsDimensionManager.getDimensionManager(worldObj);
+            }
+            dimensionInformation = dimensionManager.getDimensionInformation(dim);
             if (dimensionInformation == null) {
                 Logging.log("Dimension information for dimension " + dim + " is missing!");
             } else {
