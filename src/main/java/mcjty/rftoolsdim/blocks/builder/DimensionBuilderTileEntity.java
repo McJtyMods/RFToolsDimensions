@@ -142,7 +142,7 @@ public class DimensionBuilderTileEntity extends GenericEnergyReceiverTileEntity 
         markDirtyClient();
     }
 
-    private NBTTagCompound hasTab() {
+    public NBTTagCompound hasTab() {
         ItemStack itemStack = inventoryHelper.getStackInSlot(0);
         if (itemStack == null || itemStack.stackSize == 0) {
             return null;

@@ -85,6 +85,7 @@ public class RFToolsDim implements ModBase {
         MainCompatHandler.registerWaila();
 
         FMLInterModComms.sendFunctionMessage("rftools", "getTeleportationManager", "mcjty.rftoolsdim.RFToolsDim$GetTeleportationManager");
+        FMLInterModComms.sendFunctionMessage("theoneprobe", "getTheOneProbe", "mcjty.rftoolsdim.theoneprobe.TheOneProbeSupport");
     }
 
     @Mod.EventHandler
