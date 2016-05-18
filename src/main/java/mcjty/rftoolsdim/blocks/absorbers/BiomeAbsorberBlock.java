@@ -4,6 +4,7 @@ import mcjty.lib.container.EmptyContainer;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.blocks.GenericRFToolsBlock;
 import mcjty.rftoolsdim.config.DimletConstructionConfiguration;
+import mcjty.theoneprobe.api.*;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import net.minecraft.block.material.Material;
@@ -12,17 +13,21 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.input.Keyboard;
 
 import java.util.List;
 
-public class BiomeAbsorberBlock extends GenericRFToolsBlock<BiomeAbsorberTileEntity, EmptyContainer> {
+@Optional.InterfaceList({
+        @Optional.Interface(iface = "mcjty.theoneprobe.api.IProbeInfoAccessor", modid = "theoneprobe")})
+public class BiomeAbsorberBlock extends GenericRFToolsBlock<BiomeAbsorberTileEntity, EmptyContainer> implements IProbeInfoAccessor {
 
     public BiomeAbsorberBlock() {
         super(Material.IRON, BiomeAbsorberTileEntity.class, EmptyContainer.class, "biome_absorber", false);
@@ -31,6 +36,23 @@ public class BiomeAbsorberBlock extends GenericRFToolsBlock<BiomeAbsorberTileEnt
     @Override
     public boolean hasNoRotation() {
         return true;
+    }
+
+    @Optional.Method(modid = "theoneprobe")
+    @Override
+    public void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, EntityPlayer player, World world, IBlockState blockState, IProbeHitData data) {
+        super.addProbeInfo(mode, probeInfo, player, world, blockState, data);
+        TileEntity te = world.getTileEntity(data.getPos());
+        if (te instanceof BiomeAbsorberTileEntity) {
+            BiomeAbsorberTileEntity tileEntity = (BiomeAbsorberTileEntity) te;
+            if (tileEntity.getBiomeName() != null) {
+                String biomeName = tileEntity.getBiomeName();
+                int absorbing = tileEntity.getAbsorbing();
+                int pct = ((DimletConstructionConfiguration.maxBiomeAbsorbtion - absorbing) * 100) / DimletConstructionConfiguration.maxBiomeAbsorbtion;
+                probeInfo.text(TextFormatting.GREEN + "Biome: " + biomeName)
+                    .progress(pct, 100, "", "%", new ProgressStyle());
+            }
+        }
     }
 
     @SideOnly(Side.CLIENT)

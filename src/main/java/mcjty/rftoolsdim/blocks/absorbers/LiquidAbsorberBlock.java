@@ -4,6 +4,10 @@ import mcjty.lib.container.EmptyContainer;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.blocks.GenericRFToolsBlock;
 import mcjty.rftoolsdim.config.DimletConstructionConfiguration;
+import mcjty.theoneprobe.api.IProbeHitData;
+import mcjty.theoneprobe.api.IProbeInfo;
+import mcjty.theoneprobe.api.ProbeMode;
+import mcjty.theoneprobe.api.ProgressStyle;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import net.minecraft.block.Block;
@@ -12,18 +16,23 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.input.Keyboard;
 
 import java.util.List;
 
+@Optional.InterfaceList({
+        @Optional.Interface(iface = "mcjty.theoneprobe.api.IProbeInfoAccessor", modid = "theoneprobe")})
 public class LiquidAbsorberBlock extends GenericRFToolsBlock<LiquidAbsorberTileEntity, EmptyContainer> {
 
     public LiquidAbsorberBlock() {
@@ -33,6 +42,24 @@ public class LiquidAbsorberBlock extends GenericRFToolsBlock<LiquidAbsorberTileE
     @Override
     public boolean hasNoRotation() {
         return true;
+    }
+
+    @Optional.Method(modid = "theoneprobe")
+    @Override
+    public void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, EntityPlayer player, World world, IBlockState blockState, IProbeHitData data) {
+        super.addProbeInfo(mode, probeInfo, player, world, blockState, data);
+        TileEntity te = world.getTileEntity(data.getPos());
+        if (te instanceof LiquidAbsorberTileEntity) {
+            LiquidAbsorberTileEntity tileEntity = (LiquidAbsorberTileEntity) te;
+            if (tileEntity.getBlock() != null) {
+                Block block = tileEntity.getBlock();
+                Fluid fluid = FluidRegistry.lookupFluidForBlock(block);
+                int absorbing = tileEntity.getAbsorbing();
+                int pct = ((DimletConstructionConfiguration.maxLiquidAbsorbtion - absorbing) * 100) / DimletConstructionConfiguration.maxLiquidAbsorbtion;
+                probeInfo.text(TextFormatting.GREEN + "Liquid: " + new FluidStack(fluid, 1).getLocalizedName())
+                            .progress(pct, 100, "", "%", new ProgressStyle());
+            }
+        }
     }
 
     @SideOnly(Side.CLIENT)
@@ -45,7 +72,7 @@ public class LiquidAbsorberBlock extends GenericRFToolsBlock<LiquidAbsorberTileE
             Fluid fluid = FluidRegistry.lookupFluidForBlock(block);
             if (fluid != null) {
                 int absorbing = tileEntity.getAbsorbing();
-                int pct = ((DimletConstructionConfiguration.maxBlockAbsorbtion - absorbing) * 100) / DimletConstructionConfiguration.maxBlockAbsorbtion;
+                int pct = ((DimletConstructionConfiguration.maxLiquidAbsorbtion - absorbing) * 100) / DimletConstructionConfiguration.maxLiquidAbsorbtion;
                 currenttip.add(TextFormatting.GREEN + "Liquid: " + new FluidStack(fluid, 1).getLocalizedName() + " (" + pct + "%)");
             }
         }
