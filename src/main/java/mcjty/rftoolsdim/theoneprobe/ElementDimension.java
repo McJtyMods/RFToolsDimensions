@@ -6,6 +6,7 @@ import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.theoneprobe.api.Cursor;
 import mcjty.theoneprobe.api.IElement;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
 
 public class ElementDimension implements IElement {
@@ -24,6 +25,7 @@ public class ElementDimension implements IElement {
 
     @Override
     public void render(Cursor cursor) {
+        GlStateManager.color(1, 1, 1, 1);
         Minecraft.getMinecraft().getTextureManager().bindTexture(iconStages);
         int x = ((pct - 1) / 4) % 5;
         int y = ((pct - 1) / 4) / 5;

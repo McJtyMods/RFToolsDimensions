@@ -23,7 +23,8 @@ public interface IElement {
     int getHeight();
 
     /**
-     * Persist this element to the given network buffer
+     * Persist this element to the given network buffer. This should be symmetrical to
+     * what IElementFactory.createElement() expects.
      */
     void toBytes(ByteBuf buf);
 

@@ -5,6 +5,7 @@ import mcjty.lib.container.GenericGuiContainer;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.blocks.GenericRFToolsBlock;
 import mcjty.rftoolsdim.theoneprobe.ElementDimension;
+import mcjty.theoneprobe.api.IProbeHitData;
 import mcjty.theoneprobe.api.IProbeInfo;
 import mcjty.theoneprobe.api.IProbeInfoAccessor;
 import mcjty.theoneprobe.api.ProbeMode;
@@ -22,12 +23,15 @@ import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.input.Keyboard;
 
 import java.util.List;
 
+@Optional.InterfaceList({
+        @Optional.Interface(iface = "mcjty.theoneprobe.api.IProbeInfoAccessor", modid = "theoneprobe")})
 public class DimensionBuilderBlock extends GenericRFToolsBlock<DimensionBuilderTileEntity, DimensionBuilderContainer> implements Infusable, IProbeInfoAccessor {
 
     public static enum OperationType implements IStringSerializable {
@@ -82,8 +86,11 @@ public class DimensionBuilderBlock extends GenericRFToolsBlock<DimensionBuilderT
         }
     }
 
+    @Optional.Method(modid = "theoneprobe")
     @Override
-    public void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, World world, IBlockState blockState, BlockPos pos) {
+    public void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, EntityPlayer player, World world, IBlockState blockState, IProbeHitData data) {
+        super.addProbeInfo(mode, probeInfo, player, world, blockState, data);
+        BlockPos pos = data.getPos();
         TileEntity te = world.getTileEntity(pos);
         if (te instanceof DimensionBuilderTileEntity) {
             DimensionBuilderTileEntity tileEntity = (DimensionBuilderTileEntity) te;
@@ -92,7 +99,7 @@ public class DimensionBuilderBlock extends GenericRFToolsBlock<DimensionBuilderT
                 int ticksLeft = tagCompound.getInteger("ticksLeft");
                 int tickCost = tagCompound.getInteger("tickCost");
                 int pct = (tickCost - ticksLeft) * 100 / tickCost;
-                probeInfo.element(new ElementDimension(pct));
+                probeInfo.horizontal().element(new ElementDimension(pct)).text(pct + "%");
             }
         }
     }
