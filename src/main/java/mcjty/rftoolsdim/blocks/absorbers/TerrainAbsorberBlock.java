@@ -21,15 +21,12 @@ import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.input.Keyboard;
 
 import java.util.List;
 
-@Optional.InterfaceList({
-        @Optional.Interface(iface = "mcjty.theoneprobe.api.IProbeInfoAccessor", modid = "theoneprobe")})
 public class TerrainAbsorberBlock extends GenericRFToolsBlock<TerrainAbsorberTileEntity, EmptyContainer> {
 
     public TerrainAbsorberBlock() {
@@ -41,7 +38,6 @@ public class TerrainAbsorberBlock extends GenericRFToolsBlock<TerrainAbsorberTil
         return true;
     }
 
-    @Optional.Method(modid = "theoneprobe")
     @Override
     public void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, EntityPlayer player, World world, IBlockState blockState, IProbeHitData data) {
         super.addProbeInfo(mode, probeInfo, player, world, blockState, data);
@@ -53,7 +49,7 @@ public class TerrainAbsorberBlock extends GenericRFToolsBlock<TerrainAbsorberTil
                 int absorbing = tileEntity.getAbsorbing();
                 int pct = ((DimletConstructionConfiguration.maxTerrainAbsorbtion - absorbing) * 100) / DimletConstructionConfiguration.maxTerrainAbsorbtion;
                 probeInfo.text(TextFormatting.GREEN + "Terrain: " + terrainName)
-                        .progress(pct, 100, "", "%", new ProgressStyle());
+                        .progress(pct, 100, new ProgressStyle().suffix("%"));
             }
         }
     }

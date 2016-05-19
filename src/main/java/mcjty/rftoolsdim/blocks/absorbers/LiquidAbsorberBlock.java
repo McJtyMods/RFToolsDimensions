@@ -24,15 +24,12 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.input.Keyboard;
 
 import java.util.List;
 
-@Optional.InterfaceList({
-        @Optional.Interface(iface = "mcjty.theoneprobe.api.IProbeInfoAccessor", modid = "theoneprobe")})
 public class LiquidAbsorberBlock extends GenericRFToolsBlock<LiquidAbsorberTileEntity, EmptyContainer> {
 
     public LiquidAbsorberBlock() {
@@ -44,7 +41,6 @@ public class LiquidAbsorberBlock extends GenericRFToolsBlock<LiquidAbsorberTileE
         return true;
     }
 
-    @Optional.Method(modid = "theoneprobe")
     @Override
     public void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, EntityPlayer player, World world, IBlockState blockState, IProbeHitData data) {
         super.addProbeInfo(mode, probeInfo, player, world, blockState, data);
@@ -57,7 +53,7 @@ public class LiquidAbsorberBlock extends GenericRFToolsBlock<LiquidAbsorberTileE
                 int absorbing = tileEntity.getAbsorbing();
                 int pct = ((DimletConstructionConfiguration.maxLiquidAbsorbtion - absorbing) * 100) / DimletConstructionConfiguration.maxLiquidAbsorbtion;
                 probeInfo.text(TextFormatting.GREEN + "Liquid: " + new FluidStack(fluid, 1).getLocalizedName())
-                            .progress(pct, 100, "", "%", new ProgressStyle());
+                            .progress(pct, 100, new ProgressStyle().suffix("%"));
             }
         }
     }

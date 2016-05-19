@@ -3,7 +3,6 @@ package mcjty.rftoolsdim.theoneprobe;
 import io.netty.buffer.ByteBuf;
 import mcjty.lib.gui.RenderHelper;
 import mcjty.rftoolsdim.RFToolsDim;
-import mcjty.theoneprobe.api.Cursor;
 import mcjty.theoneprobe.api.IElement;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -24,12 +23,12 @@ public class ElementDimension implements IElement {
     }
 
     @Override
-    public void render(Cursor cursor) {
+    public void render(int x, int y) {
         GlStateManager.color(1, 1, 1, 1);
         Minecraft.getMinecraft().getTextureManager().bindTexture(iconStages);
-        int x = ((pct - 1) / 4) % 5;
-        int y = ((pct - 1) / 4) / 5;
-        RenderHelper.drawTexturedModalRect(cursor.getX(), cursor.getY(), x * 48, y * 48, 48, 48);
+        int u = ((pct - 1) / 4) % 5;
+        int v = ((pct - 1) / 4) / 5;
+        RenderHelper.drawTexturedModalRect(x, y, u * 48, v * 48, 48, 48);
     }
 
     @Override

@@ -22,15 +22,12 @@ import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.input.Keyboard;
 
 import java.util.List;
 
-@Optional.InterfaceList({
-        @Optional.Interface(iface = "mcjty.theoneprobe.api.IProbeInfoAccessor", modid = "theoneprobe")})
 public class MaterialAbsorberBlock extends GenericRFToolsBlock<MaterialAbsorberTileEntity, EmptyContainer> {
 
     public MaterialAbsorberBlock() {
@@ -42,7 +39,6 @@ public class MaterialAbsorberBlock extends GenericRFToolsBlock<MaterialAbsorberT
         return true;
     }
 
-    @Optional.Method(modid = "theoneprobe")
     @Override
     public void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, EntityPlayer player, World world, IBlockState blockState, IProbeHitData data) {
         super.addProbeInfo(mode, probeInfo, player, world, blockState, data);
@@ -57,7 +53,7 @@ public class MaterialAbsorberBlock extends GenericRFToolsBlock<MaterialAbsorberT
                 ItemStack stack = new ItemStack(block, 1, meta);
                 probeInfo.text(TextFormatting.GREEN + "Block: " + stack.getDisplayName())
                         .horizontal()
-                            .progress(pct, 100, "", "%", new ProgressStyle())
+                            .progress(pct, 100, new ProgressStyle().suffix("%"))
                             .item(stack);
             }
         }

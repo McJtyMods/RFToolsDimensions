@@ -21,15 +21,12 @@ import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.input.Keyboard;
 
 import java.util.List;
 
-@Optional.InterfaceList({
-        @Optional.Interface(iface = "mcjty.theoneprobe.api.IProbeInfoAccessor", modid = "theoneprobe")})
 public class FeatureAbsorberBlock extends GenericRFToolsBlock<FeatureAbsorberTileEntity, EmptyContainer> {
 
     public FeatureAbsorberBlock() {
@@ -41,7 +38,6 @@ public class FeatureAbsorberBlock extends GenericRFToolsBlock<FeatureAbsorberTil
         return true;
     }
 
-    @Optional.Method(modid = "theoneprobe")
     @Override
     public void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, EntityPlayer player, World world, IBlockState blockState, IProbeHitData data) {
         super.addProbeInfo(mode, probeInfo, player, world, blockState, data);
@@ -52,7 +48,7 @@ public class FeatureAbsorberBlock extends GenericRFToolsBlock<FeatureAbsorberTil
                 int absorbing = tileEntity.getAbsorbing();
                 int pct = ((DimletConstructionConfiguration.maxFeatureAbsorbtion - absorbing) * 100) / DimletConstructionConfiguration.maxFeatureAbsorbtion;
                 probeInfo.text(TextFormatting.GREEN + "Unknown feature")
-                        .progress(pct, 100, "", "%", new ProgressStyle());
+                        .progress(pct, 100, new ProgressStyle().suffix("%"));
             }
         }
     }
