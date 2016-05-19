@@ -6,7 +6,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 
 import java.util.Random;
 
@@ -42,8 +42,8 @@ public class BiomeAbsorberTileEntity extends GenericTileEntity implements ITicka
 
     protected void checkStateServer() {
         if (absorbing > 0) {
-            BiomeGenBase biomeGenBase = worldObj.getBiomeGenForCoords(getPos());
-            if (biomeGenBase == null || !biomeGenBase.getRegistryName().toString().equals(biomeId)) {
+            Biome Biome = worldObj.getBiomeGenForCoords(getPos());
+            if (Biome == null || !Biome.getRegistryName().toString().equals(biomeId)) {
                 return;
             }
 
@@ -64,18 +64,18 @@ public class BiomeAbsorberTileEntity extends GenericTileEntity implements ITicka
         if (biomeId == null) {
             return null;
         }
-        BiomeGenBase biome = BiomeGenBase.REGISTRY.getObject(new ResourceLocation(biomeId));
+        Biome biome = Biome.REGISTRY.getObject(new ResourceLocation(biomeId));
         return biome == null ? null : biome.getBiomeName();
     }
 
     public void placeDown() {
         if (biomeId == null) {
-            BiomeGenBase biomeGenBase = worldObj.getBiomeGenForCoords(getPos());
-            if (biomeGenBase == null) {
+            Biome Biome = worldObj.getBiomeGenForCoords(getPos());
+            if (Biome == null) {
                 biomeId = null;
                 absorbing = 0;
-            } else if (!biomeGenBase.getRegistryName().toString().equals(biomeId)) {
-                biomeId = biomeGenBase.getRegistryName().toString();
+            } else if (!Biome.getRegistryName().toString().equals(biomeId)) {
+                biomeId = Biome.getRegistryName().toString();
                 absorbing = DimletConstructionConfiguration.maxBiomeAbsorbtion;
             }
             markDirty();
@@ -83,8 +83,9 @@ public class BiomeAbsorberTileEntity extends GenericTileEntity implements ITicka
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound tagCompound) {
+    public NBTTagCompound writeToNBT(NBTTagCompound tagCompound) {
         super.writeToNBT(tagCompound);
+        return tagCompound;
     }
 
     @Override

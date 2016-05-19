@@ -13,7 +13,7 @@ import mcjty.rftoolsdim.dimensions.types.ControllerType;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.config.Configuration;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -132,7 +132,7 @@ public class BiomeDimletType implements IDimletType {
             biomeKeys.add(key);
         }
 
-        List<BiomeGenBase> biomes = dimensionInformation.getBiomes();
+        List<Biome> biomes = dimensionInformation.getBiomes();
         biomes.clear();
         for (DimletKey key : biomeKeys) {
             biomes.add(DimletObjectMapping.getBiome(key));

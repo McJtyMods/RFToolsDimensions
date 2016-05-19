@@ -211,7 +211,7 @@ public class RfToolsDimensionManager extends WorldSavedData {
 
     public static void unfreezeDimension(World world) {
         WorldServer worldServer = (WorldServer) world;
-        for (Chunk chunk : worldServer.getChunkProvider().loadedChunks) {
+        for (Chunk chunk : worldServer.getChunkProvider().getLoadedChunks()) {
             unfreezeChunk(chunk);
         }
     }
@@ -300,7 +300,7 @@ public class RfToolsDimensionManager extends WorldSavedData {
         if (instance != null) {
             return instance;
         }
-        instance = (RfToolsDimensionManager) world.getMapStorage().loadData(RfToolsDimensionManager.class, DIMMANAGER_NAME);
+        instance = (RfToolsDimensionManager) world.getMapStorage().getOrLoadData(RfToolsDimensionManager.class, DIMMANAGER_NAME);
         if (instance == null) {
             instance = new RfToolsDimensionManager(DIMMANAGER_NAME);
         }
@@ -448,7 +448,7 @@ public class RfToolsDimensionManager extends WorldSavedData {
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound tagCompound) {
+    public NBTTagCompound writeToNBT(NBTTagCompound tagCompound) {
         NBTTagList lst = new NBTTagList();
         for (Map.Entry<Integer,DimensionDescriptor> me : dimensions.entrySet()) {
             NBTTagCompound tc = new NBTTagCompound();
@@ -469,5 +469,6 @@ public class RfToolsDimensionManager extends WorldSavedData {
             lstIds[i] = ids.get(i);
         }
         tagCompound.setIntArray("reclaimedIds", lstIds);
+        return tagCompound;
     }
 }

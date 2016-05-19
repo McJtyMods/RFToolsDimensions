@@ -31,7 +31,7 @@ import net.minecraft.nbt.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.util.Constants;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.ArrayUtils;
@@ -86,7 +86,7 @@ public class DimensionInformation implements IDimensionInformation {
     private Set<EffectType> effectTypes = EnumSet.noneOf(EffectType.class);
 
     private ControllerType controllerType = null;
-    private List<BiomeGenBase> biomes = new ArrayList<BiomeGenBase>();
+    private List<Biome> biomes = new ArrayList<>();
     private static final Map<Integer, Integer> biomeMapping = new HashMap<>();
 
     private String digitString = "";
@@ -262,7 +262,7 @@ public class DimensionInformation implements IDimensionInformation {
 
         biomes.clear();
         for (int a : getIntArraySafe(tagCompound, "biomes")) {
-            BiomeGenBase biome = BiomeGenBase.getBiome(a);
+            Biome biome = Biome.getBiome(a);
             if (biome != null) {
                 biomes.add(biome);
             } else {
@@ -428,11 +428,11 @@ public class DimensionInformation implements IDimensionInformation {
         tagCompound.setIntArray("effects", toIntArray(effectTypes));
 
         List<Integer> c = new ArrayList<Integer>(biomes.size());
-        for (BiomeGenBase t : biomes) {
+        for (Biome t : biomes) {
             if (t != null) {
-                c.add(BiomeGenBase.getIdForBiome(t));
+                c.add(Biome.getIdForBiome(t));
             } else {
-                c.add(BiomeGenBase.getIdForBiome(Biomes.PLAINS));
+                c.add(Biome.getIdForBiome(Biomes.PLAINS));
             }
         }
         tagCompound.setIntArray("biomes", ArrayUtils.toPrimitive(c.toArray(new Integer[c.size()])));
@@ -647,7 +647,7 @@ public class DimensionInformation implements IDimensionInformation {
         }
         logDebug(player, "        Base fluid: " + getDisplayName(fluidForTerrain));
         logDebug(player, "    Biome controller: " + (controllerType == null ? "<null>" : controllerType.name()));
-        for (BiomeGenBase biome : getBiomes()) {
+        for (Biome biome : getBiomes()) {
             if (biome != null) {
                 logDebug(player, "    Biome: " + biome.getBiomeName());
             }
@@ -760,12 +760,12 @@ public class DimensionInformation implements IDimensionInformation {
         NetworkTools.writeEnumCollection(buf, effectTypes);
 
         buf.writeInt(biomes.size());
-        for (BiomeGenBase entry : biomes) {
+        for (Biome entry : biomes) {
             if (entry != null) {
-                int id = BiomeGenBase.getIdForBiome(entry);
+                int id = Biome.getIdForBiome(entry);
                 buf.writeInt(id);
             } else {
-                buf.writeInt(BiomeGenBase.getIdForBiome(Biomes.PLAINS));
+                buf.writeInt(Biome.getIdForBiome(Biomes.PLAINS));
             }
         }
         NetworkTools.writeEnum(buf, controllerType, ControllerType.CONTROLLER_DEFAULT);
@@ -874,7 +874,7 @@ public class DimensionInformation implements IDimensionInformation {
         int size = buf.readInt();
         for (int i = 0 ; i < size ; i++) {
             int id = buf.readInt();
-            BiomeGenBase biome = BiomeGenBase.getBiome(id);
+            Biome biome = Biome.getBiome(id);
             if (biome != null) {
                 biomes.add(biome);
             } else {
@@ -1111,22 +1111,22 @@ public class DimensionInformation implements IDimensionInformation {
         biomeMapping.clear();
         if (controllerType == ControllerType.CONTROLLER_FILTERED) {
             final Set<Integer> ids = new HashSet<>();
-            for (BiomeGenBase biome : BiomeGenBase.REGISTRY) {
+            for (Biome biome : Biome.REGISTRY) {
                 if (biome != null) {
-                    ids.add(BiomeGenBase.getIdForBiome(biome));
+                    ids.add(Biome.getIdForBiome(biome));
                 } else {
-                    ids.add(BiomeGenBase.getIdForBiome(Biomes.PLAINS));
+                    ids.add(Biome.getIdForBiome(Biomes.PLAINS));
                 }
             }
 
             ControllerType.BiomeFilter biomeFilter = new ControllerType.BiomeFilter() {
                 @Override
-                public boolean match(BiomeGenBase biome) {
-                    return ids.contains(BiomeGenBase.getIdForBiome(biome));
+                public boolean match(Biome biome) {
+                    return ids.contains(Biome.getIdForBiome(biome));
                 }
 
                 @Override
-                public double calculateBiomeDistance(BiomeGenBase a, BiomeGenBase b) {
+                public double calculateBiomeDistance(Biome a, Biome b) {
                     return calculateBiomeDistance(a, b, false, false, false);
                 }
             };
@@ -1193,7 +1193,7 @@ public class DimensionInformation implements IDimensionInformation {
         return effectTypes;
     }
 
-    public List<BiomeGenBase> getBiomes() {
+    public List<Biome> getBiomes() {
         return biomes;
     }
 

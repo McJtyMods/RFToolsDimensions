@@ -9,7 +9,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.gen.NoiseGenerator;
 import net.minecraft.world.gen.NoiseGeneratorOctaves;
@@ -283,8 +283,8 @@ public class IslandTerrainGenerator implements BaseTerrainGenerator {
 
 
     @Override
-    public void replaceBlocksForBiome(int chunkX, int chunkZ, ChunkPrimer primer, BiomeGenBase[] biomeGenBases) {
-//        ChunkProviderEvent.ReplaceBiomeBlocks event = new ChunkProviderEvent.ReplaceBiomeBlocks(provider, chunkX, chunkZ, aBlock, abyte, biomeGenBases, world);
+    public void replaceBlocksForBiome(int chunkX, int chunkZ, ChunkPrimer primer, Biome[] Biomes) {
+//        ChunkProviderEvent.ReplaceBiomeBlocks event = new ChunkProviderEvent.ReplaceBiomeBlocks(provider, chunkX, chunkZ, aBlock, abyte, Biomes, world);
 //        MinecraftForge.EVENT_BUS.post(event);
 //        if (event.getResult() == Event.Result.DENY) {
 //            return;
@@ -295,18 +295,18 @@ public class IslandTerrainGenerator implements BaseTerrainGenerator {
 
         for (int k = 0; k < 16; ++k) {
             for (int l = 0; l < 16; ++l) {
-                BiomeGenBase biomegenbase = biomeGenBases[l + k * 16];
-                genBiomeTerrain(biomegenbase, primer, chunkX * 16 + k, chunkZ * 16 + l, this.stoneNoise[l + k * 16]);
+                Biome Biome = Biomes[l + k * 16];
+                genBiomeTerrain(Biome, primer, chunkX * 16 + k, chunkZ * 16 + l, this.stoneNoise[l + k * 16]);
             }
         }
     }
 
-    public final void genBiomeTerrain(BiomeGenBase biomegenbase, ChunkPrimer primer, int x, int z, double noise) {
+    public final void genBiomeTerrain(Biome Biome, ChunkPrimer primer, int x, int z, double noise) {
         Block baseLiquid = provider.dimensionInformation.getFluidForTerrain();
         IBlockState baseBlock = provider.dimensionInformation.getBaseBlockForTerrain();
 
-        IBlockState block = biomegenbase.topBlock;
-        IBlockState block1 = biomegenbase.fillerBlock;    //baseBlock
+        IBlockState block = Biome.topBlock;
+        IBlockState block1 = Biome.fillerBlock;    //baseBlock
 
         int k = -1;
         int l = (int)(noise / 3.0D + 3.0D + provider.rand.nextDouble() * 0.25D);
@@ -346,12 +346,12 @@ public class IslandTerrainGenerator implements BaseTerrainGenerator {
                                     block = null;
                                     block1 = baseBlock;
                                 } else if (height >= 59 && height <= 64) {
-                                    block = biomegenbase.topBlock;
-                                    block1 = baseBlock; //biomegenbase.fillerBlock;
+                                    block = Biome.topBlock;
+                                    block1 = baseBlock; //Biome.fillerBlock;
                                 }
 
                                 if (height < 63 && (block == null || block.getBlock().getMaterial(block) == Material.AIR)) {
-                                    if (biomegenbase.getFloatTemperature(new BlockPos(x, height, z)) < 0.15F) {
+                                    if (Biome.getFloatTemperature(new BlockPos(x, height, z)) < 0.15F) {
                                         block = Blocks.ICE.getDefaultState();
                                     } else {
                                         block = baseLiquid.getDefaultState();
@@ -365,7 +365,7 @@ public class IslandTerrainGenerator implements BaseTerrainGenerator {
                                 } else if (height < 56 - l) {
                                     block = null;
                                     block1 = baseBlock; //Blocks.STONE;
-                                    BaseTerrainGenerator.setBlockState(primer, index, biomegenbase.fillerBlock);
+                                    BaseTerrainGenerator.setBlockState(primer, index, Biome.fillerBlock);
                                 } else {
                                     BaseTerrainGenerator.setBlockState(primer, index, block1);
                                 }

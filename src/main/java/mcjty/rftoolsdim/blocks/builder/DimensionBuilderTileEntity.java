@@ -365,10 +365,11 @@ public class DimensionBuilderTileEntity extends GenericEnergyReceiverTileEntity 
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound tagCompound) {
+    public NBTTagCompound writeToNBT(NBTTagCompound tagCompound) {
         super.writeToNBT(tagCompound);
         tagCompound.setByte("powered", (byte) powered);
         tagCompound.setByte("state", (byte) state);
+        return tagCompound;
     }
 
     @Override

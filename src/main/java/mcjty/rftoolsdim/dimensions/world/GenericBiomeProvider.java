@@ -23,11 +23,11 @@ public class GenericBiomeProvider extends BiomeProvider {
     }
 
     @Override
-    public GenLayer[] getModdedBiomeGenerators(WorldType worldType, long seed, GenLayer[] original) {
+    public GenLayer[] getModdedBiomeerators(WorldType worldType, long seed, GenLayer[] original) {
         if (dimensionInformation == null) {
             dimensionInformation = hackyDimensionInformation;
         }
-        GenLayer[] layer = super.getModdedBiomeGenerators(worldType, seed, original);
+        GenLayer[] layer = super.getModdedBiomeerators(worldType, seed, original);
         GenLayer rflayer = null;
         ControllerType type;
         DimensionInformation di = dimensionInformation;

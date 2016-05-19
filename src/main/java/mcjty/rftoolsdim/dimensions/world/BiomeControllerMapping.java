@@ -1,7 +1,7 @@
 package mcjty.rftoolsdim.dimensions.world;
 
 import mcjty.rftoolsdim.dimensions.types.ControllerType;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -40,7 +40,7 @@ public class BiomeControllerMapping {
 
         // First check if there exist biomes for a certain filter.
         boolean ok = false;
-        for (BiomeGenBase biome : BiomeGenBase.REGISTRY) {
+        for (Biome biome : Biome.REGISTRY) {
             if (biome != null) {
                 if (filter.match(biome)) {
                     ok = true;
@@ -51,40 +51,40 @@ public class BiomeControllerMapping {
 
         if (!ok) {
             // No biomes found! We just map every biome to itself as a fallback.
-            for (BiomeGenBase biome : BiomeGenBase.REGISTRY) {
+            for (Biome biome : Biome.REGISTRY) {
                 if (biome != null) {
-                    map.put(BiomeGenBase.getIdForBiome(biome), BiomeGenBase.getIdForBiome(biome));
+                    map.put(Biome.getIdForBiome(biome), Biome.getIdForBiome(biome));
                 }
             }
         } else {
-            for (BiomeGenBase biome : BiomeGenBase.REGISTRY) {
+            for (Biome biome : Biome.REGISTRY) {
                 if (biome != null) {
                     if (filter.match(biome)) {
-                        map.put(BiomeGenBase.getIdForBiome(biome), BiomeGenBase.getIdForBiome(biome));
+                        map.put(Biome.getIdForBiome(biome), Biome.getIdForBiome(biome));
                     } else {
-                        map.put(BiomeGenBase.getIdForBiome(biome), findSuitableBiomes(biome, filter));
+                        map.put(Biome.getIdForBiome(biome), findSuitableBiomes(biome, filter));
                     }
                 }
             }
         }
     }
 
-    private static int findSuitableBiomes(BiomeGenBase biome, ControllerType.BiomeFilter filter) {
+    private static int findSuitableBiomes(Biome biome, ControllerType.BiomeFilter filter) {
         double bestdist = 1000000000.0f;
         int bestidx = 0;        // Make sure we always have some matching biome.
 
-        for (BiomeGenBase base : BiomeGenBase.REGISTRY) {
+        for (Biome base : Biome.REGISTRY) {
             if (base != null && filter.match(base)) {
                 // This 'base' could be a replacement. Check if it is close enough.
                 if (biome.getBiomeClass() == base.getBiomeClass()) {
                     // Same class, that's good enough for me.
-                    return BiomeGenBase.getIdForBiome(base);
+                    return Biome.getIdForBiome(base);
                 }
 
                 double dist = filter.calculateBiomeDistance(biome, base);
                 if (dist < bestdist) {
                     bestdist = dist;
-                    bestidx = BiomeGenBase.getIdForBiome(base);
+                    bestidx = Biome.getIdForBiome(base);
                 }
             }
         }

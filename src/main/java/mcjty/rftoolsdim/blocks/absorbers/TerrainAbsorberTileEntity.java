@@ -97,8 +97,9 @@ public class TerrainAbsorberTileEntity extends GenericTileEntity implements ITic
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound tagCompound) {
+    public NBTTagCompound writeToNBT(NBTTagCompound tagCompound) {
         super.writeToNBT(tagCompound);
+        return tagCompound;
     }
 
     @Override

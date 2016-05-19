@@ -26,7 +26,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -69,7 +69,7 @@ public class KnownDimletConfiguration {
         Arrays.stream(EffectType.values()).forEach(t -> initDimlet(new DimletKey(DimletType.DIMLET_EFFECT, t.getId()), RFToolsDim.MODID));
         Arrays.stream(StructureType.values()).forEach(t -> initDimlet(new DimletKey(DimletType.DIMLET_STRUCTURE, t.getId()), RFToolsDim.MODID));
 
-        BiomeGenBase.REGISTRY.iterator().forEachRemaining(KnownDimletConfiguration::initBiomeDimlet);
+        Biome.REGISTRY.iterator().forEachRemaining(KnownDimletConfiguration::initBiomeDimlet);
 
         EntityList.NAME_TO_CLASS.entrySet().stream().forEach(KnownDimletConfiguration::initMobDimlet);
         FluidRegistry.getRegisteredFluids().entrySet().stream().forEach(KnownDimletConfiguration::initFluidDimlet);
@@ -81,7 +81,7 @@ public class KnownDimletConfiguration {
         BiomeControllerMapping.setupControllerBiomes();
     }
 
-    private static void initBiomeDimlet(BiomeGenBase biome) {
+    private static void initBiomeDimlet(Biome biome) {
         String name = biome.getBiomeName();
         if (name != null && !name.isEmpty()) {
             DimletKey key = new DimletKey(DimletType.DIMLET_BIOME, biome.getRegistryName().toString());
@@ -282,7 +282,7 @@ public class KnownDimletConfiguration {
     public static String getDisplayName(DimletKey key) {
         switch (key.getType()) {
             case DIMLET_BIOME:
-                BiomeGenBase biome = BiomeGenBase.REGISTRY.getObject(new ResourceLocation(key.getId()));
+                Biome biome = Biome.REGISTRY.getObject(new ResourceLocation(key.getId()));
                 return biome == null ? "<invalid>" : biome.getBiomeName();
             case DIMLET_LIQUID:
                 Block fluid = DimletObjectMapping.getFluid(key);

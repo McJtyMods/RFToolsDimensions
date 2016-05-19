@@ -10,7 +10,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 import org.apache.commons.lang3.StringUtils;
 
 public class DimletObjectMapping {
@@ -105,9 +105,9 @@ public class DimletObjectMapping {
         return null;
     }
 
-    public static BiomeGenBase getBiome(DimletKey dimlet) {
+    public static Biome getBiome(DimletKey dimlet) {
         if (DimletType.DIMLET_BIOME.equals(dimlet.getType())) {
-            BiomeGenBase biome = BiomeGenBase.REGISTRY.getObject(new ResourceLocation(dimlet.getId()));
+            Biome biome = Biome.REGISTRY.getObject(new ResourceLocation(dimlet.getId()));
             return biome;
         }
         return null;

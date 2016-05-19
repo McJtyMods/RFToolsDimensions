@@ -138,7 +138,7 @@ public class MaterialAbsorberTileEntity extends GenericTileEntity implements ITi
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound tagCompound) {
+    public NBTTagCompound writeToNBT(NBTTagCompound tagCompound) {
         super.writeToNBT(tagCompound);
         int[] x = new int[toscan.size()];
         int[] y = new int[toscan.size()];
@@ -153,6 +153,7 @@ public class MaterialAbsorberTileEntity extends GenericTileEntity implements ITi
         tagCompound.setIntArray("toscanx", x);
         tagCompound.setIntArray("toscany", y);
         tagCompound.setIntArray("toscanz", z);
+        return tagCompound;
     }
 
     @Override

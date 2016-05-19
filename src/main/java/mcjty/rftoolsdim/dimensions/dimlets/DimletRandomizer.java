@@ -7,7 +7,7 @@ import mcjty.rftoolsdim.dimensions.dimlets.types.DimletType;
 import mcjty.rftoolsdim.dimensions.types.ControllerType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 
 import java.util.*;
 
@@ -149,10 +149,10 @@ public class DimletRandomizer {
     }
 
     public static DimletKey getRandomBiome(Random random) {
-        ArrayList<ResourceLocation> keys = new ArrayList<>(BiomeGenBase.REGISTRY.getKeys());
+        ArrayList<ResourceLocation> keys = new ArrayList<>(Biome.REGISTRY.getKeys());
         int size = keys.size();
         while(true) {
-            BiomeGenBase biome = BiomeGenBase.REGISTRY.getObject(keys.get(random.nextInt(size)));
+            Biome biome = Biome.REGISTRY.getObject(keys.get(random.nextInt(size)));
             if (biome != null) {
                 return new DimletKey(DimletType.DIMLET_BIOME, biome.getBiomeName());
             }

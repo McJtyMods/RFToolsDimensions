@@ -19,11 +19,11 @@ import net.minecraft.entity.passive.IAnimals;
 import net.minecraft.init.Biomes;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.ChunkCoordIntPair;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldEntitySpawner;
 import net.minecraft.world.WorldType;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.chunk.IChunkGenerator;
@@ -58,10 +58,10 @@ public class GenericChunkGenerator implements IChunkGenerator {
     // @todo, examine and consider customizing
     private ChunkProviderSettings settings = new ChunkProviderSettings.Factory().build();
 
-    private List<BiomeGenBase.SpawnListEntry> extraSpawns;
+    private List<Biome.SpawnListEntry> extraSpawns;
     private List<Integer> extraSpawnsMax;
 
-    public BiomeGenBase[] biomesForGeneration;
+    public Biome[] biomesForGeneration;
 
     private MapGenBase caveGenerator = new MapGenCaves();
 
@@ -270,7 +270,7 @@ public class GenericChunkGenerator implements IChunkGenerator {
         extraSpawnsMax = new ArrayList<>();
         for (MobDescriptor mob : dimensionInformation.getExtraMobs()) {
             Class<? extends Entity> entityClass = mob.getEntityClass();
-            extraSpawns.add(new BiomeGenBase.SpawnListEntry((Class<? extends EntityLiving>) entityClass, mob.getSpawnChance(), mob.getMinGroup(), mob.getMaxGroup()));
+            extraSpawns.add(new Biome.SpawnListEntry((Class<? extends EntityLiving>) entityClass, mob.getSpawnChance(), mob.getMinGroup(), mob.getMaxGroup()));
             extraSpawnsMax.add(mob.getMaxLoaded());
         }
 
@@ -352,7 +352,7 @@ public class GenericChunkGenerator implements IChunkGenerator {
         byte[] abyte = chunk.getBiomeArray();
 
         for (int i = 0; i < abyte.length; ++i) {
-            abyte[i] = (byte) BiomeGenBase.getIdForBiome(this.biomesForGeneration[i]);
+            abyte[i] = (byte) Biome.getIdForBiome(this.biomesForGeneration[i]);
         }
 
         chunk.generateSkylightMap();
@@ -364,7 +364,7 @@ public class GenericChunkGenerator implements IChunkGenerator {
         BlockFalling.fallInstantly = true;
         int x = chunkX * 16;
         int z = chunkZ * 16;
-        BiomeGenBase biomegenbase = this.worldObj.getBiomeGenForCoords(new BlockPos(x + 16, 0, z + 16));
+        Biome Biome = this.worldObj.getBiomeGenForCoords(new BlockPos(x + 16, 0, z + 16));
         this.rand.setSeed(this.worldObj.getSeed());
         long i1 = this.rand.nextLong() / 2L * 2L + 1L;
         long j1 = this.rand.nextLong() / 2L * 2L + 1L;
@@ -373,7 +373,7 @@ public class GenericChunkGenerator implements IChunkGenerator {
 
         MinecraftForge.EVENT_BUS.post(new PopulateChunkEvent.Pre(this, worldObj, rand, chunkX, chunkZ, flag));
 
-        ChunkCoordIntPair cp = new ChunkCoordIntPair(chunkX, chunkZ);
+        ChunkPos cp = new ChunkPos(chunkX, chunkZ);
 
         if (dimensionInformation.hasStructureType(StructureType.STRUCTURE_MINESHAFT)) {
             this.mineshaftGenerator.generateStructure(this.worldObj, this.rand, cp);
@@ -414,7 +414,7 @@ public class GenericChunkGenerator implements IChunkGenerator {
         if (dimensionInformation.hasFeatureType(FeatureType.FEATURE_LAKES)) {
             if (dimensionInformation.getFluidsForLakes().length == 0) {
                 // No specific liquid dimlets specified: we generate default lakes (water and lava were appropriate).
-                if (biomegenbase != Biomes.DESERT && biomegenbase != Biomes.DESERT_HILLS && !flag && this.rand.nextInt(4) == 0
+                if (Biome != Biomes.DESERT && Biome != Biomes.DESERT_HILLS && !flag && this.rand.nextInt(4) == 0
                         && TerrainGen.populate(this, worldObj, rand, chunkX, chunkZ, flag, PopulateChunkEvent.Populate.EventType.LAKE)) {
                     k1 = x + this.rand.nextInt(16) + 8;
                     l1 = this.rand.nextInt(256);
@@ -456,9 +456,9 @@ public class GenericChunkGenerator implements IChunkGenerator {
             }
         }
 
-        biomegenbase.decorate(this.worldObj, this.rand, new BlockPos(x, 0, z));
+        Biome.decorate(this.worldObj, this.rand, new BlockPos(x, 0, z));
         if (TerrainGen.populate(this, worldObj, rand, chunkX, chunkZ, flag, PopulateChunkEvent.Populate.EventType.ANIMALS)) {
-            WorldEntitySpawner.performWorldGenSpawning(this.worldObj, biomegenbase, x + 8, z + 8, 16, 16, this.rand);
+            WorldEntitySpawner.performWorldGenSpawning(this.worldObj, Biome, x + 8, z + 8, 16, 16, this.rand);
         }
         x += 8;
         z += 8;
@@ -489,14 +489,14 @@ public class GenericChunkGenerator implements IChunkGenerator {
         boolean flag = false;
 
         if (dimensionInformation.hasStructureType(StructureType.STRUCTURE_OCEAN_MONUMENT) && chunkIn.getInhabitedTime() < 3600L) {
-            flag |= this.oceanMonumentGenerator.generateStructure(this.worldObj, this.rand, new ChunkCoordIntPair(x, z));
+            flag |= this.oceanMonumentGenerator.generateStructure(this.worldObj, this.rand, new ChunkPos(x, z));
         }
 
         return flag;
     }
 
     @Override
-    public List<BiomeGenBase.SpawnListEntry> getPossibleCreatures(EnumCreatureType creatureType, BlockPos pos) {
+    public List<Biome.SpawnListEntry> getPossibleCreatures(EnumCreatureType creatureType, BlockPos pos) {
         List creatures = getDefaultCreatures(creatureType, pos);
         if (extraSpawns.isEmpty()) {
             return creatures;
@@ -531,7 +531,7 @@ public class GenericChunkGenerator implements IChunkGenerator {
     }
 
     private List getDefaultCreatures(EnumCreatureType creatureType, BlockPos pos) {
-        BiomeGenBase biomegenbase = this.worldObj.getBiomeGenForCoords(pos);
+        Biome Biome = this.worldObj.getBiomeGenForCoords(pos);
         if (creatureType == EnumCreatureType.MONSTER) {
             if (dimensionInformation.isPeaceful()) {
                 return Collections.emptyList();
@@ -580,7 +580,7 @@ public class GenericChunkGenerator implements IChunkGenerator {
             }
         }
 
-        return biomegenbase.getSpawnableList(creatureType);
+        return Biome.getSpawnableList(creatureType);
     }
 
     @Override

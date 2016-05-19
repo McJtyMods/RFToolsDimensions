@@ -22,7 +22,7 @@ import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeProvider;
 import net.minecraft.world.biome.BiomeProviderSingle;
 import net.minecraft.world.chunk.IChunkGenerator;
@@ -289,8 +289,8 @@ public class GenericWorldProvider extends WorldProvider implements  /*@todo impl
     }
 
     @Override
-    public BiomeGenBase getBiomeGenForCoords(BlockPos pos) {
-        return super.getBiomeGenForCoords(pos);
+    public Biome getBiomeForCoords(BlockPos pos) {
+        return super.getBiomeForCoords(pos);
     }
 
     @Override

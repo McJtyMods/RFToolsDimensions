@@ -37,7 +37,7 @@ public class DimensionStorage extends WorldSavedData {
         if (instance != null) {
             return instance;
         }
-        instance = (DimensionStorage) world.getMapStorage().loadData(DimensionStorage.class, DIMSTORAGE_NAME);
+        instance = (DimensionStorage) world.getMapStorage().getOrLoadData(DimensionStorage.class, DIMSTORAGE_NAME);
         if (instance == null) {
             instance = new DimensionStorage(DIMSTORAGE_NAME);
         }
@@ -84,7 +84,7 @@ public class DimensionStorage extends WorldSavedData {
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound tagCompound) {
+    public NBTTagCompound writeToNBT(NBTTagCompound tagCompound) {
         NBTTagList lst = new NBTTagList();
         for (Map.Entry<Integer,Integer> me : energy.entrySet()) {
             NBTTagCompound tc = new NBTTagCompound();
@@ -93,5 +93,6 @@ public class DimensionStorage extends WorldSavedData {
             lst.appendTag(tc);
         }
         tagCompound.setTag("dimensions", lst);
+        return tagCompound;
     }
 }

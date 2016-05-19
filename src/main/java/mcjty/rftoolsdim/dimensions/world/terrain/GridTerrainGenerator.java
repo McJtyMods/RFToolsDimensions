@@ -2,7 +2,7 @@ package mcjty.rftoolsdim.dimensions.world.terrain;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.ChunkPrimer;
 
 public class GridTerrainGenerator extends NormalTerrainGenerator {
@@ -65,6 +65,6 @@ public class GridTerrainGenerator extends NormalTerrainGenerator {
     }
 
     @Override
-    public void replaceBlocksForBiome(int chunkX, int chunkZ, ChunkPrimer primer, BiomeGenBase[] biomeGenBases) {
+    public void replaceBlocksForBiome(int chunkX, int chunkZ, ChunkPrimer primer, Biome[] Biomes) {
     }
 }

@@ -2,20 +2,20 @@ package mcjty.rftoolsdim.dimensions.world.mapgen;
 
 import com.google.common.collect.Lists;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.structure.*;
 
 import java.util.List;
 import java.util.Random;
 
 public class MapGenDesertTemple extends MapGenStructure {
-    private List<BiomeGenBase.SpawnListEntry> scatteredFeatureSpawnList;
+    private List<Biome.SpawnListEntry> scatteredFeatureSpawnList;
 
     private int maxDistance;
     private int minDistance;
 
     public MapGenDesertTemple() {
-        this.scatteredFeatureSpawnList = Lists.<BiomeGenBase.SpawnListEntry>newArrayList();
+        this.scatteredFeatureSpawnList = Lists.<Biome.SpawnListEntry>newArrayList();
         this.maxDistance = 32;
         this.minDistance = 8;
     }
@@ -69,7 +69,7 @@ public class MapGenDesertTemple extends MapGenStructure {
         }
     }
 
-    public List<BiomeGenBase.SpawnListEntry> getScatteredFeatureSpawnList() {
+    public List<Biome.SpawnListEntry> getScatteredFeatureSpawnList() {
         return this.scatteredFeatureSpawnList;
     }
 

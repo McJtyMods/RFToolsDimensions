@@ -4,7 +4,7 @@ import mcjty.rftoolsdim.dimensions.world.GenericChunkGenerator;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.ChunkPrimer;
 
 public class LiquidTerrainGenerator implements BaseTerrainGenerator {
@@ -43,7 +43,7 @@ public class LiquidTerrainGenerator implements BaseTerrainGenerator {
     }
 
     @Override
-    public void replaceBlocksForBiome(int chunkX, int chunkZ, ChunkPrimer primer, BiomeGenBase[] biomeGenBases) {
+    public void replaceBlocksForBiome(int chunkX, int chunkZ, ChunkPrimer primer, Biome[] Biomes) {
     }
 
 }

@@ -8,7 +8,6 @@ import mcjty.rftoolsdim.theoneprobe.TheOneProbeSupport;
 import mcjty.theoneprobe.api.IProbeHitData;
 import mcjty.theoneprobe.api.IProbeInfo;
 import mcjty.theoneprobe.api.ProbeMode;
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
@@ -100,8 +99,9 @@ public class DimensionBuilderBlock extends GenericRFToolsBlock<DimensionBuilderT
     }
 
     @Override
-    public void onNeighborBlockChange(World world, BlockPos pos, IBlockState state, Block neighborBlock) {
-        checkRedstoneWithTE(world, pos);
+    public void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor) {
+        // @todo
+        checkRedstoneWithTE((World) world, pos);
     }
 
     @Override

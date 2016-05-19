@@ -145,7 +145,7 @@ public class LiquidAbsorberTileEntity extends GenericTileEntity implements ITick
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound tagCompound) {
+    public NBTTagCompound writeToNBT(NBTTagCompound tagCompound) {
         super.writeToNBT(tagCompound);
         int[] x = new int[toscan.size()];
         int[] y = new int[toscan.size()];
@@ -160,6 +160,7 @@ public class LiquidAbsorberTileEntity extends GenericTileEntity implements ITick
         tagCompound.setIntArray("toscanx", x);
         tagCompound.setIntArray("toscany", y);
         tagCompound.setIntArray("toscanz", z);
+        return tagCompound;
     }
 
     @Override

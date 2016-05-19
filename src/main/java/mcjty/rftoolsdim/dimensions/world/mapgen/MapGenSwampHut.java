@@ -3,23 +3,23 @@ package mcjty.rftoolsdim.dimensions.world.mapgen;
 import com.google.common.collect.Lists;
 import net.minecraft.entity.monster.EntityWitch;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.structure.*;
 
 import java.util.List;
 import java.util.Random;
 
 public class MapGenSwampHut extends MapGenStructure {
-    private List<BiomeGenBase.SpawnListEntry> scatteredFeatureSpawnList;
+    private List<Biome.SpawnListEntry> scatteredFeatureSpawnList;
 
     private int maxDistance;
     private int minDistance;
 
     public MapGenSwampHut() {
-        this.scatteredFeatureSpawnList = Lists.<BiomeGenBase.SpawnListEntry>newArrayList();
+        this.scatteredFeatureSpawnList = Lists.<Biome.SpawnListEntry>newArrayList();
         this.maxDistance = 32;
         this.minDistance = 8;
-        this.scatteredFeatureSpawnList.add(new BiomeGenBase.SpawnListEntry(EntityWitch.class, 1, 1, 1));
+        this.scatteredFeatureSpawnList.add(new Biome.SpawnListEntry(EntityWitch.class, 1, 1, 1));
     }
 
     @Override
@@ -71,7 +71,7 @@ public class MapGenSwampHut extends MapGenStructure {
         }
     }
 
-    public List<BiomeGenBase.SpawnListEntry> getScatteredFeatureSpawnList() {
+    public List<Biome.SpawnListEntry> getScatteredFeatureSpawnList() {
         return this.scatteredFeatureSpawnList;
     }
 

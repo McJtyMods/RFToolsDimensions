@@ -5,7 +5,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.ChunkPrimer;
 
 /**
@@ -16,7 +16,7 @@ public interface BaseTerrainGenerator {
 
     void generate(int chunkX, int chunkZ, ChunkPrimer chunkPrimer);
 
-    void replaceBlocksForBiome(int chunkX, int chunkZ, ChunkPrimer chunkPrimer, BiomeGenBase[] biomeGenBases);
+    void replaceBlocksForBiome(int chunkX, int chunkZ, ChunkPrimer chunkPrimer, Biome[] Biomes);
 
     IBlockState defaultState = Blocks.AIR.getDefaultState();
 
