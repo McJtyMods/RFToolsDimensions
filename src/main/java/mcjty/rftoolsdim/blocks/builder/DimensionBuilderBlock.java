@@ -4,7 +4,7 @@ import mcjty.lib.api.Infusable;
 import mcjty.lib.container.GenericGuiContainer;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.blocks.GenericRFToolsBlock;
-import mcjty.rftoolsdim.theoneprobe.ElementDimension;
+import mcjty.rftoolsdim.theoneprobe.TheOneProbeSupport;
 import mcjty.theoneprobe.api.IProbeHitData;
 import mcjty.theoneprobe.api.IProbeInfo;
 import mcjty.theoneprobe.api.ProbeMode;
@@ -94,7 +94,7 @@ public class DimensionBuilderBlock extends GenericRFToolsBlock<DimensionBuilderT
                 int ticksLeft = tagCompound.getInteger("ticksLeft");
                 int tickCost = tagCompound.getInteger("tickCost");
                 int pct = (tickCost - ticksLeft) * 100 / tickCost;
-                probeInfo.horizontal().element(new ElementDimension(pct)).text(pct + "%");
+                TheOneProbeSupport.addDimensionElement(probeInfo.horizontal(), pct).text(pct + "%");
             }
         }
     }

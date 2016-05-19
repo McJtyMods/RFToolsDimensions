@@ -1,6 +1,7 @@
 package mcjty.rftoolsdim.theoneprobe;
 
 import mcjty.lib.varia.Logging;
+import mcjty.theoneprobe.api.IProbeInfo;
 import mcjty.theoneprobe.api.ITheOneProbe;
 
 import javax.annotation.Nullable;
@@ -18,5 +19,9 @@ public class TheOneProbeSupport implements com.google.common.base.Function<ITheO
         Logging.log("Enabled support for The One Probe");
         ELEMENT_DIMENSION = probe.registerElementFactory(ElementDimension::new);
         return null;
+    }
+
+    public static IProbeInfo addDimensionElement(IProbeInfo probeInfo, int pct) {
+        return probeInfo.element(new ElementDimension(pct));
     }
 }
