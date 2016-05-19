@@ -7,7 +7,6 @@ import mcjty.rftoolsdim.config.DimletConstructionConfiguration;
 import mcjty.theoneprobe.api.IProbeHitData;
 import mcjty.theoneprobe.api.IProbeInfo;
 import mcjty.theoneprobe.api.ProbeMode;
-import mcjty.theoneprobe.api.ProgressStyle;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import net.minecraft.block.material.Material;
@@ -49,7 +48,7 @@ public class TerrainAbsorberBlock extends GenericRFToolsBlock<TerrainAbsorberTil
                 int absorbing = tileEntity.getAbsorbing();
                 int pct = ((DimletConstructionConfiguration.maxTerrainAbsorbtion - absorbing) * 100) / DimletConstructionConfiguration.maxTerrainAbsorbtion;
                 probeInfo.text(TextFormatting.GREEN + "Terrain: " + terrainName)
-                        .progress(pct, 100, new ProgressStyle().suffix("%"));
+                        .progress(pct, 100, probeInfo.defaultProgressStyle().suffix("%"));
             }
         }
     }

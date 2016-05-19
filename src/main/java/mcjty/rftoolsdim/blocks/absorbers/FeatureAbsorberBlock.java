@@ -7,7 +7,6 @@ import mcjty.rftoolsdim.config.DimletConstructionConfiguration;
 import mcjty.theoneprobe.api.IProbeHitData;
 import mcjty.theoneprobe.api.IProbeInfo;
 import mcjty.theoneprobe.api.ProbeMode;
-import mcjty.theoneprobe.api.ProgressStyle;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import net.minecraft.block.material.Material;
@@ -48,7 +47,7 @@ public class FeatureAbsorberBlock extends GenericRFToolsBlock<FeatureAbsorberTil
                 int absorbing = tileEntity.getAbsorbing();
                 int pct = ((DimletConstructionConfiguration.maxFeatureAbsorbtion - absorbing) * 100) / DimletConstructionConfiguration.maxFeatureAbsorbtion;
                 probeInfo.text(TextFormatting.GREEN + "Unknown feature")
-                        .progress(pct, 100, new ProgressStyle().suffix("%"));
+                        .progress(pct, 100, probeInfo.defaultProgressStyle().suffix("%"));
             }
         }
     }

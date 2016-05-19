@@ -7,7 +7,6 @@ import mcjty.rftoolsdim.config.DimletConstructionConfiguration;
 import mcjty.theoneprobe.api.IProbeHitData;
 import mcjty.theoneprobe.api.IProbeInfo;
 import mcjty.theoneprobe.api.ProbeMode;
-import mcjty.theoneprobe.api.ProgressStyle;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import net.minecraft.block.Block;
@@ -53,7 +52,7 @@ public class LiquidAbsorberBlock extends GenericRFToolsBlock<LiquidAbsorberTileE
                 int absorbing = tileEntity.getAbsorbing();
                 int pct = ((DimletConstructionConfiguration.maxLiquidAbsorbtion - absorbing) * 100) / DimletConstructionConfiguration.maxLiquidAbsorbtion;
                 probeInfo.text(TextFormatting.GREEN + "Liquid: " + new FluidStack(fluid, 1).getLocalizedName())
-                            .progress(pct, 100, new ProgressStyle().suffix("%"));
+                            .progress(pct, 100, probeInfo.defaultProgressStyle().suffix("%"));
             }
         }
     }
