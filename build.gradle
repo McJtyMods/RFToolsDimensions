@@ -30,6 +30,13 @@ repositories {
         name 'OC Repo'
         url "http://maven.cil.li/"
     }
+    maven { // TOP
+        name 'tterrag maven'
+        url "http://maven.tterrag.com/"
+    }
+    maven { // McJtyLib
+        url "http://maven.k-4u.nl"
+    }
     maven {
         name = "sonatype"
         url = "https://oss.sonatype.org/content/repositories/snapshots/"
@@ -48,9 +55,9 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 minecraft {
-    version = "1.9.4-12.17.0.1909-1.9.4"
+    version = "1.9.4-12.17.0.1950"
     runDir = "run"
-    mappings = "snapshot_20160518"
+    mappings = "snapshot_20160604"
     useDepAts = true
 }
 
@@ -66,12 +73,12 @@ artifacts {
 
 
 dependencies {
-    deobfCompile "mcp.mobius.waila:Waila:1.7.0-B2_1.9"
+    deobfCompile "mcp.mobius.waila:Waila:1.7.0-B3_1.9.4"
     deobfCompile "mezz.jei:jei_1.9.4:3.4.0.202"
+    deobfCompile "mcjty.theoneprobe:TheOneProbe:1.9.4-1.0.4-15"
+    deobfCompile "com.github.mcjty:mcjtylib:1.9.4-1.8.7-SNAPSHOT"
 
     //compile "li.cil.oc:OpenComputers:MC1.7.10-1.5.+:api"
-
-//    compile "com.github.mcjty:mcjtylib:1.8.9-1.8.1beta6-SNAPSHOT:dev"
 }
 
 jar {

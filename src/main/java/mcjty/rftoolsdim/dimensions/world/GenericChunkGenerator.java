@@ -280,7 +280,7 @@ public class GenericChunkGenerator implements IChunkGenerator {
     public Chunk provideChunk(int chunkX, int chunkZ) {
         this.rand.setSeed(chunkX * 341873128712L + chunkZ * 132897987541L);
         ChunkPrimer chunkprimer = new ChunkPrimer();
-        this.biomesForGeneration = this.worldObj.getBiomeProvider().loadBlockGeneratorData(this.biomesForGeneration, chunkX * 16, chunkZ * 16, 16, 16);
+        this.biomesForGeneration = this.worldObj.getBiomeProvider().getBiomesForGeneration(this.biomesForGeneration, chunkX * 16, chunkZ * 16, 16, 16);
         terrainGenerator.generate(chunkX, chunkZ, chunkprimer);
         terrainGenerator.replaceBlocksForBiome(chunkX, chunkZ, chunkprimer, this.biomesForGeneration);
 
@@ -364,7 +364,7 @@ public class GenericChunkGenerator implements IChunkGenerator {
         BlockFalling.fallInstantly = true;
         int x = chunkX * 16;
         int z = chunkZ * 16;
-        Biome Biome = this.worldObj.getBiomeGenForCoords(new BlockPos(x + 16, 0, z + 16));
+        Biome Biome = this.worldObj.getBiomeForCoordsBody(new BlockPos(x + 16, 0, z + 16));
         this.rand.setSeed(this.worldObj.getSeed());
         long i1 = this.rand.nextLong() / 2L * 2L + 1L;
         long j1 = this.rand.nextLong() / 2L * 2L + 1L;
@@ -531,7 +531,7 @@ public class GenericChunkGenerator implements IChunkGenerator {
     }
 
     private List getDefaultCreatures(EnumCreatureType creatureType, BlockPos pos) {
-        Biome Biome = this.worldObj.getBiomeGenForCoords(pos);
+        Biome Biome = this.worldObj.getBiomeForCoordsBody(pos);
         if (creatureType == EnumCreatureType.MONSTER) {
             if (dimensionInformation.isPeaceful()) {
                 return Collections.emptyList();

@@ -42,7 +42,7 @@ public class BiomeAbsorberTileEntity extends GenericTileEntity implements ITicka
 
     protected void checkStateServer() {
         if (absorbing > 0) {
-            Biome Biome = worldObj.getBiomeGenForCoords(getPos());
+            Biome Biome = worldObj.getBiomeForCoordsBody(getPos());
             if (Biome == null || !Biome.getRegistryName().toString().equals(biomeId)) {
                 return;
             }
@@ -70,7 +70,7 @@ public class BiomeAbsorberTileEntity extends GenericTileEntity implements ITicka
 
     public void placeDown() {
         if (biomeId == null) {
-            Biome Biome = worldObj.getBiomeGenForCoords(getPos());
+            Biome Biome = worldObj.getBiomeForCoordsBody(getPos());
             if (Biome == null) {
                 biomeId = null;
                 absorbing = 0;
