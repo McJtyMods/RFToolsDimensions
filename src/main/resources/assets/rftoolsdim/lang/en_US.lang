@@ -85,32 +85,32 @@ item.mediocre_efficiency_essence.name=Mediocre Efficiency Essence
 item.dimension_module.name=Dimension Module
 
 # Blocks
-tile.dimletFilterBlock.name=Dimlet Filter
-tile.dimlet_workbench.name=Dimlet Workbench
-tile.dimension_enscriber.name=Dimension Enscriber
-tile.dimension_builder.name=Dimension Builder
-tile.creativeDimensionBuilderBlock.name=Creative Dimension Builder
-tile.dimensionEditorBlock.name=Dimension Editor
-tile.dimensionMonitorBlock.name=Dimension Monitor
-tile.machineInfuserBlock.name=Machine Infuser
-tile.activity_probe.name=Activity Probe
-tile.energyExtractorBlock.name=Energy Extractor
-tile.biome_absorber.name=Biome Absorber
-tile.terrain_absorber.name=Terrain Absorber
-tile.feature_absorber.name=Feature Absorber
-tile.material_absorber.name=Material Absorber
-tile.liquid_absorber.name=Liquid Absorber
-tile.timeAbsorberBlock.name=Time Absorber
-tile.volcanicCoreBlock.name=Volcanic Core
-tile.volcanicBlock.name=Volcanic Block
+tile.rftoolsdim.dimletFilterBlock.name=Dimlet Filter
+tile.rftoolsdim.dimlet_workbench.name=Dimlet Workbench
+tile.rftoolsdim.dimension_enscriber.name=Dimension Enscriber
+tile.rftoolsdim.dimension_builder.name=Dimension Builder
+tile.rftoolsdim.creativeDimensionBuilderBlock.name=Creative Dimension Builder
+tile.rftoolsdim.dimensionEditorBlock.name=Dimension Editor
+tile.rftoolsdim.dimensionMonitorBlock.name=Dimension Monitor
+tile.rftoolsdim.machineInfuserBlock.name=Machine Infuser
+tile.rftoolsdim.activity_probe.name=Activity Probe
+tile.rftoolsdim.energyExtractorBlock.name=Energy Extractor
+tile.rftoolsdim.biome_absorber.name=Biome Absorber
+tile.rftoolsdim.terrain_absorber.name=Terrain Absorber
+tile.rftoolsdim.feature_absorber.name=Feature Absorber
+tile.rftoolsdim.material_absorber.name=Material Absorber
+tile.rftoolsdim.liquid_absorber.name=Liquid Absorber
+tile.rftoolsdim.timeAbsorberBlock.name=Time Absorber
+tile.rftoolsdim.volcanicCoreBlock.name=Volcanic Core
+tile.rftoolsdim.volcanicBlock.name=Volcanic Block
 
-tile.dimensional_blank_block.name=Dimensional Blank Block
-tile.dimensional_block.name=Dimensional Block
-tile.dimensional_small_blocks.name=Dimensional Small Blocks
-tile.dimensional_cross_block.name=Dimensional Cross Block
-tile.dimensional_cross2_block.name=Dimensional Cross 2 Block
-tile.dimensional_pattern1_block.name=Dimensional Pattern 1 Block
-tile.dimensional_pattern2_block.name=Dimensional Pattern 2 Block
+tile.rftoolsdim.dimensional_blank_block.name=Dimensional Blank Block
+tile.rftoolsdim.dimensional_block.name=Dimensional Block
+tile.rftoolsdim.dimensional_small_blocks.name=Dimensional Small Blocks
+tile.rftoolsdim.dimensional_cross_block.name=Dimensional Cross Block
+tile.rftoolsdim.dimensional_cross2_block.name=Dimensional Cross 2 Block
+tile.rftoolsdim.dimensional_pattern1_block.name=Dimensional Pattern 1 Block
+tile.rftoolsdim.dimensional_pattern2_block.name=Dimensional Pattern 2 Block
 
 # Creative Tabs
 itemGroup.RfToolsDim=RFTools Dimensions
