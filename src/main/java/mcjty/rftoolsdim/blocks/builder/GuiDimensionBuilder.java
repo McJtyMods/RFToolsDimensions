@@ -10,9 +10,9 @@ import mcjty.lib.gui.widgets.*;
 import mcjty.lib.gui.widgets.Label;
 import mcjty.lib.gui.widgets.Panel;
 import mcjty.lib.network.Argument;
+import mcjty.lib.varia.RedstoneMode;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.network.RFToolsDimMessages;
-import mcjty.rftoolsdim.varia.RedstoneMode;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 
@@ -72,21 +72,16 @@ public class GuiDimensionBuilder extends GenericGuiContainer<DimensionBuilderTil
 
     private void initRedstoneMode() {
         redstoneMode = new ImageChoiceLabel(mc, this).
-                addChoiceEvent(new ChoiceEvent() {
-                    @Override
-                    public void choiceChanged(Widget parent, String newChoice) {
-                        changeRedstoneMode();
-                    }
-                }).
+                addChoiceEvent((parent, newChoice) -> changeRedstoneMode()).
                 addChoice(RedstoneMode.REDSTONE_IGNORED.getDescription(), "Redstone mode:\nIgnored", iconGuiElements, 0, 0).
                 addChoice(RedstoneMode.REDSTONE_OFFREQUIRED.getDescription(), "Redstone mode:\nOff to activate", iconGuiElements, 16, 0).
                 addChoice(RedstoneMode.REDSTONE_ONREQUIRED.getDescription(), "Redstone mode:\nOn to activate", iconGuiElements, 32, 0);
         redstoneMode.setLayoutHint(new PositionalLayout.PositionalHint(150, 46, 16, 16));
-        redstoneMode.setCurrentChoice(tileEntity.getRedstoneMode().ordinal());
+        redstoneMode.setCurrentChoice(tileEntity.getRSMode().ordinal());
     }
 
     private void changeRedstoneMode() {
-        tileEntity.setRedstoneMode(RedstoneMode.values()[redstoneMode.getCurrentChoiceIndex()]);
+        tileEntity.setRSMode(RedstoneMode.values()[redstoneMode.getCurrentChoiceIndex()]);
         sendServerCommand(RFToolsDimMessages.INSTANCE, DimensionBuilderTileEntity.CMD_RSMODE, new Argument("rs", RedstoneMode.values()[redstoneMode.getCurrentChoiceIndex()].getDescription()));
     }
 

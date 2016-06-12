@@ -4,7 +4,6 @@ import mcjty.lib.container.DefaultSidedInventory;
 import mcjty.lib.container.InventoryHelper;
 import mcjty.lib.entity.GenericTileEntity;
 import mcjty.lib.network.Argument;
-import mcjty.lib.varia.CustomSidedInvWrapper;
 import mcjty.lib.varia.Logging;
 import mcjty.rftoolsdim.config.GeneralConfiguration;
 import mcjty.rftoolsdim.config.Settings;
@@ -23,9 +22,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +36,11 @@ public class DimensionEnscriberTileEntity extends GenericTileEntity implements D
     private boolean tabSlotHasChanged = false;
 
     private InventoryHelper inventoryHelper = new InventoryHelper(this, DimensionEnscriberContainer.factory, DimensionEnscriberContainer.SIZE_DIMLETS+1);
+
+    @Override
+    protected boolean needsCustomInvWrapper() {
+        return true;
+    }
 
     @Override
     public int[] getSlotsForFace(EnumFacing side) {
@@ -248,23 +249,5 @@ public class DimensionEnscriberTileEntity extends GenericTileEntity implements D
             return true;
         }
         return false;
-    }
-
-    private IItemHandler invHandler = new CustomSidedInvWrapper(this);
-
-    @Override
-    public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-            return true;
-        }
-        return super.hasCapability(capability, facing);
-    }
-
-    @Override
-    public <T> T getCapability(net.minecraftforge.common.capabilities.Capability<T> capability, net.minecraft.util.EnumFacing facing) {
-        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-            return (T) invHandler;
-        }
-        return super.getCapability(capability, facing);
     }
 }

@@ -29,7 +29,7 @@ import java.util.List;
 
 public class DimensionBuilderBlock extends GenericRFToolsBlock<DimensionBuilderTileEntity, DimensionBuilderContainer> implements Infusable {
 
-    public static enum OperationType implements IStringSerializable {
+    public enum OperationType implements IStringSerializable {
         CHARGING("charging"),
         EMPTY("empty"),
         BUILDING1("building1"),
@@ -49,6 +49,10 @@ public class DimensionBuilderBlock extends GenericRFToolsBlock<DimensionBuilderT
 
     public static final PropertyEnum<OperationType> OPERATIONTYPE = PropertyEnum.create("operationtype", OperationType.class);
 
+    @Override
+    public boolean needsRedstoneCheck() {
+        return true;
+    }
 
     public DimensionBuilderBlock(boolean creative) {
         super(Material.IRON, DimensionBuilderTileEntity.class, DimensionBuilderContainer.class, "dimension_builder", true);
@@ -68,7 +72,7 @@ public class DimensionBuilderBlock extends GenericRFToolsBlock<DimensionBuilderT
 
     @SideOnly(Side.CLIENT)
     @Override
-    public void addInformation(ItemStack itemStack, EntityPlayer player, List list, boolean whatIsThis) {
+    public void addInformation(ItemStack itemStack, EntityPlayer player, List<String> list, boolean whatIsThis) {
         super.addInformation(itemStack, player, list, whatIsThis);
 
         if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
@@ -98,11 +102,6 @@ public class DimensionBuilderBlock extends GenericRFToolsBlock<DimensionBuilderT
         }
     }
 
-    @Override
-    public void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor) {
-        // @todo
-        checkRedstoneWithTE((World) world, pos);
-    }
 
     @Override
     public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {

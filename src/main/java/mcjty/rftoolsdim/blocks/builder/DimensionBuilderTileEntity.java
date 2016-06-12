@@ -5,8 +5,8 @@ import mcjty.lib.container.InventoryHelper;
 import mcjty.lib.entity.GenericEnergyReceiverTileEntity;
 import mcjty.lib.network.Argument;
 import mcjty.lib.network.PacketRequestIntegerFromServer;
-import mcjty.lib.varia.CustomSidedInvWrapper;
 import mcjty.lib.varia.Logging;
+import mcjty.lib.varia.RedstoneMode;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.config.GeneralConfiguration;
 import mcjty.rftoolsdim.config.MachineConfiguration;
@@ -15,7 +15,6 @@ import mcjty.rftoolsdim.dimensions.DimensionStorage;
 import mcjty.rftoolsdim.dimensions.RfToolsDimensionManager;
 import mcjty.rftoolsdim.dimensions.description.DimensionDescriptor;
 import mcjty.rftoolsdim.network.RFToolsDimMessages;
-import mcjty.rftoolsdim.varia.RedstoneMode;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -24,9 +23,6 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
 
 import java.util.Map;
 import java.util.Random;
@@ -44,8 +40,6 @@ public class DimensionBuilderTileEntity extends GenericEnergyReceiverTileEntity 
 
     private int creative = -1;      // -1 is unknown
     private int state = 0;          // For front state
-    private RedstoneMode redstoneMode = RedstoneMode.REDSTONE_IGNORED;
-    private int powered = 0;
 
     public static int OK = 0;
     public static int ERROR_NOOWNER = -1;
@@ -65,6 +59,16 @@ public class DimensionBuilderTileEntity extends GenericEnergyReceiverTileEntity 
         if (oldstate != state) {
             worldObj.markBlockRangeForRenderUpdate(getPos(), getPos());
         }
+    }
+
+    @Override
+    protected boolean needsRedstoneMode() {
+        return true;
+    }
+
+    @Override
+    protected boolean needsCustomInvWrapper() {
+        return true;
     }
 
     private boolean isCreative() {
@@ -100,19 +104,9 @@ public class DimensionBuilderTileEntity extends GenericEnergyReceiverTileEntity 
             return;
         }
 
-        if (redstoneMode != RedstoneMode.REDSTONE_IGNORED) {
-            boolean rs = powered > 0;
-            if (redstoneMode == RedstoneMode.REDSTONE_OFFREQUIRED) {
-                if (rs) {
-                    setState(-1);
-                    return;
-                }
-            } else if (redstoneMode == RedstoneMode.REDSTONE_ONREQUIRED) {
-                if (!rs) {
-                    setState(-1);
-                    return;
-                }
-            }
+        if (!isMachineEnabled()) {
+            setState(-1);
+            return;
         }
 
         int ticksLeft = tagCompound.getInteger("ticksLeft");
@@ -123,23 +117,6 @@ public class DimensionBuilderTileEntity extends GenericEnergyReceiverTileEntity 
         }
 
         setState(ticksLeft);
-    }
-
-    @Override
-    public void setPowered(int powered) {
-        if (this.powered != powered) {
-            this.powered = powered;
-            markDirty();
-        }
-    }
-
-    public RedstoneMode getRedstoneMode() {
-        return redstoneMode;
-    }
-
-    public void setRedstoneMode(RedstoneMode redstoneMode) {
-        this.redstoneMode = redstoneMode;
-        markDirtyClient();
     }
 
     public NBTTagCompound hasTab() {
@@ -339,7 +316,7 @@ public class DimensionBuilderTileEntity extends GenericEnergyReceiverTileEntity 
         }
         if (CMD_RSMODE.equals(command)) {
             String m = args.get("rs").getString();
-            setRedstoneMode(RedstoneMode.getMode(m));
+            setRSMode(RedstoneMode.getMode(m));
             return true;
         }
         return false;
@@ -352,7 +329,6 @@ public class DimensionBuilderTileEntity extends GenericEnergyReceiverTileEntity 
     @Override
     public void readFromNBT(NBTTagCompound tagCompound) {
         super.readFromNBT(tagCompound);
-        powered = tagCompound.getByte("powered");
         state = tagCompound.getByte("state");
     }
 
@@ -360,14 +336,11 @@ public class DimensionBuilderTileEntity extends GenericEnergyReceiverTileEntity 
     public void readRestorableFromNBT(NBTTagCompound tagCompound) {
         super.readRestorableFromNBT(tagCompound);
         readBufferFromNBT(tagCompound, inventoryHelper);
-        int m = tagCompound.getByte("rsMode");
-        redstoneMode = RedstoneMode.values()[m];
     }
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound tagCompound) {
         super.writeToNBT(tagCompound);
-        tagCompound.setByte("powered", (byte) powered);
         tagCompound.setByte("state", (byte) state);
         return tagCompound;
     }
@@ -376,24 +349,5 @@ public class DimensionBuilderTileEntity extends GenericEnergyReceiverTileEntity 
     public void writeRestorableToNBT(NBTTagCompound tagCompound) {
         super.writeRestorableToNBT(tagCompound);
         writeBufferToNBT(tagCompound, inventoryHelper);
-        tagCompound.setByte("rsMode", (byte) redstoneMode.ordinal());
-    }
-
-    private IItemHandler invHandler = new CustomSidedInvWrapper(this);
-
-    @Override
-    public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-            return true;
-        }
-        return super.hasCapability(capability, facing);
-    }
-
-    @Override
-    public <T> T getCapability(net.minecraftforge.common.capabilities.Capability<T> capability, net.minecraft.util.EnumFacing facing) {
-        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-            return (T) invHandler;
-        }
-        return super.getCapability(capability, facing);
     }
 }

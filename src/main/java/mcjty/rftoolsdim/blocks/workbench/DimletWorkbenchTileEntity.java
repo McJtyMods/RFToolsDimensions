@@ -6,7 +6,6 @@ import mcjty.lib.entity.GenericEnergyReceiverTileEntity;
 import mcjty.lib.network.Argument;
 import mcjty.lib.network.PacketRequestIntegerFromServer;
 import mcjty.lib.varia.BlockTools;
-import mcjty.lib.varia.CustomSidedInvWrapper;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.config.MachineConfiguration;
 import mcjty.rftoolsdim.config.Settings;
@@ -23,9 +22,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
 
 import java.util.Map;
 
@@ -47,6 +43,11 @@ public class DimletWorkbenchTileEntity extends GenericEnergyReceiverTileEntity i
 
     public DimletWorkbenchTileEntity() {
         super(MachineConfiguration.WORKBENCH_MAXENERGY, MachineConfiguration.WORKBENCH_RECEIVEPERTICK);
+    }
+
+    @Override
+    protected boolean needsCustomInvWrapper() {
+        return true;
     }
 
     @Override
@@ -432,23 +433,5 @@ public class DimletWorkbenchTileEntity extends GenericEnergyReceiverTileEntity i
             return true;
         }
         return false;
-    }
-
-    private IItemHandler invHandler = new CustomSidedInvWrapper(this);
-
-    @Override
-    public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-            return true;
-        }
-        return super.hasCapability(capability, facing);
-    }
-
-    @Override
-    public <T> T getCapability(net.minecraftforge.common.capabilities.Capability<T> capability, net.minecraft.util.EnumFacing facing) {
-        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-            return (T) invHandler;
-        }
-        return super.getCapability(capability, facing);
     }
 }
