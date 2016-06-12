@@ -14,7 +14,7 @@ public enum StructureType {
     STRUCTURE_OCEAN_MONUMENT("OceanMonument"),
     STRUCTURE_SWAMPHUT("SwampHut"),
     STRUCTURE_DESERTTEMPLE("DesertTemple"),
-    STRUCTURE_JUNGLETEMPLE("JugnleTemple"),
+    STRUCTURE_JUNGLETEMPLE("JungleTemple"),
     STRUCTURE_IGLOO("Igloo");
 //    STRUCTURE_RECURRENTCOMPLEX("RecurrentComplex");
 

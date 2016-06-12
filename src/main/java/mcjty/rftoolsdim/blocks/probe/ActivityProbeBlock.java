@@ -23,7 +23,7 @@ public class ActivityProbeBlock extends Block {
 
     public ActivityProbeBlock() {
         super(Material.IRON);
-        setUnlocalizedName("activity_probe");
+        setUnlocalizedName(RFToolsDim.MODID + "." + "activity_probe");
         setRegistryName("activity_probe");
         setCreativeTab(RFToolsDim.tabRfToolsDim);
         setHardness(2.0f);

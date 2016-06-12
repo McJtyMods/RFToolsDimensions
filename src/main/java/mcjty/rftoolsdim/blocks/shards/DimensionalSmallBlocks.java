@@ -17,7 +17,7 @@ public class DimensionalSmallBlocks extends Block {
         super(Material.ROCK);
         setHardness(2.0f);
         setResistance(4.0f);
-        setUnlocalizedName("dimensional_small_blocks");
+        setUnlocalizedName(RFToolsDim.MODID + "." + "dimensional_small_blocks");
         setRegistryName("dimensional_small_blocks");
         setLightLevel(0.6f);
         setCreativeTab(RFToolsDim.tabRfToolsDim);

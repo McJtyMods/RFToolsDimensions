@@ -26,7 +26,7 @@ public abstract class AbstractDirectionalBlock extends Block {
 
     public AbstractDirectionalBlock(String name) {
         super(Material.ROCK);
-        setUnlocalizedName(name);
+        setUnlocalizedName(RFToolsDim.MODID + "." + name);
         setRegistryName(name);
         setCreativeTab(RFToolsDim.tabRfToolsDim);
         GameRegistry.register(this);
