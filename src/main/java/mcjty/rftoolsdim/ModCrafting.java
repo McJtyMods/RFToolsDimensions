@@ -53,6 +53,8 @@ public class ModCrafting {
             GameRegistry.addRecipe(new ItemStack(ModBlocks.dimensionBuilderBlock), "oEo", "DMD", "ggg", 'o', Items.ENDER_PEARL, 'E', Items.EMERALD, 'D', Items.DIAMOND,
                                    'M', machineFrame, 'g', Items.GOLD_INGOT);
         }
+
+//        GameRegistry.addRecipe(new ItemStack(ModBlocks.essencePainterBlock), "ppp", "iMi", "ppp", 'p', Items.PAPER, 'i', inkSac, 'M', machineFrame);
     }
 
     private static void initAbsorberRecipes() {

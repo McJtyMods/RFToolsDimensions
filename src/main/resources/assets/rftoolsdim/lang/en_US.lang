@@ -109,6 +109,7 @@ tile.rftoolsdim.liquid_absorber.name=Liquid Absorber
 tile.rftoolsdim.timeAbsorberBlock.name=Time Absorber
 tile.rftoolsdim.volcanicCoreBlock.name=Volcanic Core
 tile.rftoolsdim.volcanicBlock.name=Volcanic Block
+tile.rftoolsdim.essence_painter.name=Essence Painter
 
 tile.rftoolsdim.dimensional_blank_block.name=Dimensional Blank Block
 tile.rftoolsdim.dimensional_block.name=Dimensional Block
