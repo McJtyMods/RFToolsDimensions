@@ -19,6 +19,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import java.util.*;
@@ -32,6 +33,7 @@ public class DimensionTickEvent {
 
     private static Random random = new Random();
 
+    @SubscribeEvent
     public void onWorldTick(TickEvent.WorldTickEvent evt) {
         if (evt.phase == TickEvent.Phase.START) {
             return;
