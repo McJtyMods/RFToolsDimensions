@@ -1,105 +1,85 @@
 package mcjty.rftoolsdim.blocks.editor;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import mcjty.lib.api.Infusable;
-import mcjty.lib.varia.BlockTools;
-import mcjty.rftools.RFTools;
-import mcjty.rftools.blocks.GenericRFToolsBlock;
+import mcjty.lib.container.GenericGuiContainer;
+import mcjty.rftoolsdim.RFToolsDim;
+import mcjty.rftoolsdim.blocks.GenericRFToolsBlock;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.input.Keyboard;
 
 import java.util.List;
 
-public class DimensionEditorBlock extends GenericRFToolsBlock implements Infusable {
+public class DimensionEditorBlock extends GenericRFToolsBlock<DimensionEditorTileEntity, DimensionEditorContainer> implements Infusable {
 
-    private IIcon iconFrontEmpty;
-    private IIcon iconFrontBusy1;
-    private IIcon iconFrontBusy2;
+    public enum OperationType implements IStringSerializable {
+        NORMAL("normal"),
+        EMPTY("empty"),
+        BUILDING1("building1"),
+        BUILDING2("building2");
+
+        private final String name;
+
+        OperationType(String name) {
+            this.name = name;
+        }
+
+        @Override
+        public String getName() {
+            return name;
+        }
+    }
+
+    public static final PropertyEnum<DimensionEditorBlock.OperationType> OPERATIONTYPE = PropertyEnum.create("operationtype", DimensionEditorBlock.OperationType.class);
+
 
     public DimensionEditorBlock() {
-        super(Material.iron, DimensionEditorTileEntity.class, true);
-        setBlockName("dimensionEditorBlock");
-        setHorizRotation(true);
-        setCreativeTab(RFTools.tabRfTools);
+        super(Material.IRON, DimensionEditorTileEntity.class, DimensionEditorContainer.class, "dimension_editor", true);
     }
 
     @Override
     public int getGuiID() {
-        return RFTools.GUI_DIMENSION_EDITOR;
+        return RFToolsDim.GUI_DIMENSION_EDITOR;
     }
 
     @Override
-    public void registerBlockIcons(IIconRegister iconRegister) {
-        super.registerBlockIcons(iconRegister);
-        iconFrontEmpty = iconRegister.registerIcon(RFTools.MODID + ":" + "machineDimensionEditor_empty");
-        iconFrontBusy1 = iconRegister.registerIcon(RFTools.MODID + ":" + "machineDimensionEditor_busy1");
-        iconFrontBusy2 = iconRegister.registerIcon(RFTools.MODID + ":" + "machineDimensionEditor_busy2");
+    public Class<? extends GenericGuiContainer> getGuiClass() {
+        return GuiDimensionEditor.class;
     }
 
     @SideOnly(Side.CLIENT)
     @Override
-    public void addInformation(ItemStack itemStack, EntityPlayer player, List list, boolean whatIsThis) {
+    public void addInformation(ItemStack itemStack, EntityPlayer player, List<String> list, boolean whatIsThis) {
         super.addInformation(itemStack, player, list, whatIsThis);
 
         if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
-            list.add(EnumChatFormatting.WHITE + "This machine allows you to inject certain types");
-            list.add(EnumChatFormatting.WHITE + "of dimlets into an existing dimension. This cannot");
-            list.add(EnumChatFormatting.WHITE + "be undone and the dimlet is lost so be careful!");
-            list.add(EnumChatFormatting.YELLOW + "Infusing bonus: reduced power consumption.");
+            list.add(TextFormatting.WHITE + "This machine allows you to inject certain types");
+            list.add(TextFormatting.WHITE + "of dimlets into an existing dimension. This cannot");
+            list.add(TextFormatting.WHITE + "be undone and the dimlet is lost so be careful!");
+            list.add(TextFormatting.YELLOW + "Infusing bonus: reduced power consumption.");
         } else {
-            list.add(EnumChatFormatting.WHITE + RFTools.SHIFT_MESSAGE);
+            list.add(TextFormatting.WHITE + RFToolsDim.SHIFT_MESSAGE);
         }
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public GuiContainer createClientGui(EntityPlayer entityPlayer, TileEntity tileEntity) {
-        DimensionEditorTileEntity dimensionEditorTileEntity = (DimensionEditorTileEntity) tileEntity;
-        DimensionEditorContainer dimensionEditorContainer = new DimensionEditorContainer(entityPlayer, dimensionEditorTileEntity);
-        return new GuiDimensionEditor(dimensionEditorTileEntity, dimensionEditorContainer);
+    public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
+        DimensionEditorTileEntity te = (DimensionEditorTileEntity) world.getTileEntity(pos);
+        return state.withProperty(OPERATIONTYPE, te.getState());
     }
 
     @Override
-    public Container createServerContainer(EntityPlayer entityPlayer, TileEntity tileEntity) {
-        return new DimensionEditorContainer(entityPlayer, (DimensionEditorTileEntity) tileEntity);
-    }
-
-
-    @Override
-    public String getIdentifyingIconName() {
-        return "machineDimensionEditor";
-    }
-
-    @Override
-    public int getLightValue(IBlockAccess world, int x, int y, int z) {
-        int meta = world.getBlockMetadata(x, y, z);
-        int state = BlockTools.getState(meta);
-        if (state == 0) {
-            return 10;
-        } else {
-            return getLightValue();
-        }
-    }
-
-    @Override
-    public IIcon getIconInd(IBlockAccess blockAccess, int x, int y, int z, int meta) {
-        int state = BlockTools.getState(meta);
-        switch (state) {
-            case 0: return iconInd;
-            case 1: return iconFrontEmpty;
-            case 2: return iconFrontBusy1;
-            case 3: return iconFrontBusy2;
-            default: return iconInd;
-        }
+    protected BlockStateContainer createBlockState() {
+        return new BlockStateContainer(this, FACING, OPERATIONTYPE);
     }
 }

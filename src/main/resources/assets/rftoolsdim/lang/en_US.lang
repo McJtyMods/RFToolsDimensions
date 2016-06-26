@@ -94,6 +94,7 @@ item.dimension_module.name=Dimension Module
 tile.rftoolsdim.dimletFilterBlock.name=Dimlet Filter
 tile.rftoolsdim.dimlet_workbench.name=Dimlet Workbench
 tile.rftoolsdim.dimension_enscriber.name=Dimension Enscriber
+tile.rftoolsdim.dimension_editor.name=Dimension Editor
 tile.rftoolsdim.dimension_builder.name=Dimension Builder
 tile.rftoolsdim.creativeDimensionBuilderBlock.name=Creative Dimension Builder
 tile.rftoolsdim.dimensionEditorBlock.name=Dimension Editor

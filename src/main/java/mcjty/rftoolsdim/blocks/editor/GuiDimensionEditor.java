@@ -8,13 +8,13 @@ import mcjty.lib.gui.widgets.*;
 import mcjty.lib.gui.widgets.Label;
 import mcjty.lib.gui.widgets.Panel;
 import mcjty.lib.varia.BlockTools;
-import mcjty.rftools.RFTools;
-import mcjty.rftools.network.RFToolsMessages;
+import mcjty.rftoolsdim.RFToolsDim;
+import mcjty.rftoolsdim.network.RFToolsDimMessages;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.Slot;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import java.awt.*;
 
@@ -27,12 +27,12 @@ public class GuiDimensionEditor extends GenericGuiContainer<DimensionEditorTileE
     private Label percentage;
     private Label destroy;
 
-    private static final ResourceLocation iconLocation = new ResourceLocation(RFTools.MODID, "textures/gui/dimensioneditor.png");
-    private static final ResourceLocation iconGuiElements = new ResourceLocation(RFTools.MODID, "textures/gui/guielements.png");
+    private static final ResourceLocation iconLocation = new ResourceLocation(RFToolsDim.MODID, "textures/gui/dimensioneditor.png");
+    private static final ResourceLocation iconGuiElements = new ResourceLocation(RFToolsDim.MODID, "textures/gui/guielements.png");
 
     public GuiDimensionEditor(DimensionEditorTileEntity dimensionEditorTileEntity, DimensionEditorContainer container) {
-        super(RFTools.instance, RFToolsMessages.INSTANCE, dimensionEditorTileEntity, container, RFTools.GUI_MANUAL_DIMENSION, "editor");
-        GenericEnergyStorageTileEntity.setCurrentRF(dimensionEditorTileEntity.getEnergyStored(ForgeDirection.DOWN));
+        super(RFToolsDim.instance, RFToolsDimMessages.INSTANCE, dimensionEditorTileEntity, container, RFToolsDim.GUI_MANUAL_DIMENSION, "editor");
+        GenericEnergyStorageTileEntity.setCurrentRF(dimensionEditorTileEntity.getEnergyStored(EnumFacing.DOWN));
 
         xSize = EDITOR_WIDTH;
         ySize = EDITOR_HEIGHT;
@@ -42,7 +42,7 @@ public class GuiDimensionEditor extends GenericGuiContainer<DimensionEditorTileE
     public void initGui() {
         super.initGui();
 
-        int maxEnergyStored = tileEntity.getMaxEnergyStored(ForgeDirection.DOWN);
+        int maxEnergyStored = tileEntity.getMaxEnergyStored(EnumFacing.DOWN);
         energyBar = new EnergyBar(mc, this).setVertical().setMaxValue(maxEnergyStored).setLayoutHint(new PositionalLayout.PositionalHint(10, 7, 8, 54)).setShowText(false);
         energyBar.setValue(GenericEnergyStorageTileEntity.getCurrentRF());
 
@@ -63,7 +63,7 @@ public class GuiDimensionEditor extends GenericGuiContainer<DimensionEditorTileE
         toplevel.setBounds(new Rectangle(guiLeft, guiTop, xSize, ySize));
 
         window = new Window(this, toplevel);
-        tileEntity.requestRfFromServer(RFToolsMessages.INSTANCE);
+        tileEntity.requestRfFromServer(RFToolsDim.MODID);
         tileEntity.requestBuildingPercentage();
     }
 
@@ -84,14 +84,14 @@ public class GuiDimensionEditor extends GenericGuiContainer<DimensionEditorTileE
         Slot slot = this.inventorySlots.getSlot(DimensionEditorContainer.SLOT_INJECTINPUT);
         if (slot.getHasStack()) {
             Block block = BlockTools.getBlock(slot.getStack());
-            if (block == Blocks.tnt) {
+            if (block == Blocks.TNT) {
                 destroy.setVisible(true);
             }
         }
 
         energyBar.setValue(GenericEnergyStorageTileEntity.getCurrentRF());
 
-        tileEntity.requestRfFromServer(RFToolsMessages.INSTANCE);
+        tileEntity.requestRfFromServer(RFToolsDim.MODID);
         tileEntity.requestBuildingPercentage();
     }
 }

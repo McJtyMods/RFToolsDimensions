@@ -8,8 +8,6 @@ import mcjty.lib.network.PacketRequestIntegerFromServer;
 import mcjty.lib.varia.BlockTools;
 import mcjty.lib.varia.Broadcaster;
 import mcjty.rftoolsdim.RFToolsDim;
-import mcjty.rftoolsdim.blocks.builder.DimensionBuilderBlock;
-import mcjty.rftoolsdim.config.DimletConfiguration;
 import mcjty.rftoolsdim.config.GeneralConfiguration;
 import mcjty.rftoolsdim.config.MachineConfiguration;
 import mcjty.rftoolsdim.config.Settings;
@@ -31,7 +29,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.EnumFacing;
@@ -40,7 +37,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
-import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import org.apache.commons.io.FileUtils;
 
@@ -326,8 +322,8 @@ public class DimensionEditorTileEntity extends GenericEnergyReceiverTileEntity i
         markDirty();
     }
 
-    public DimensionBuilderBlock.OperationType getState() {
-        return DimensionBuilderBlock.OperationType.values()[state];
+    public DimensionEditorBlock.OperationType getState() {
+        return DimensionEditorBlock.OperationType.values()[state];
     }
 
     private void setState() {
