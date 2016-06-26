@@ -62,6 +62,7 @@ public class RFToolsDim implements ModBase {
     private static int modGuiIndex = 0;
     public static final int GUI_DIMENSION_ENSCRIBER = modGuiIndex++;
     public static final int GUI_DIMENSION_BUILDER = modGuiIndex++;
+    public static final int GUI_DIMENSION_EDITOR = modGuiIndex++;
     public static final int GUI_MANUAL_DIMENSION = modGuiIndex++;
     public static final int GUI_DIMLET_WORKBENCH = modGuiIndex++;
 

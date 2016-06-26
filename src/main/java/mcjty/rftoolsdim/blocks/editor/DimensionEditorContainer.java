@@ -4,10 +4,13 @@ import mcjty.lib.container.ContainerFactory;
 import mcjty.lib.container.GenericContainer;
 import mcjty.lib.container.SlotDefinition;
 import mcjty.lib.container.SlotType;
-import mcjty.rftools.blocks.teleporter.TeleporterSetup;
+import mcjty.rftoolsdim.items.ModItems;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 public class DimensionEditorContainer extends GenericContainer {
     public static final String CONTAINER_INVENTORY = "container";
@@ -18,9 +21,10 @@ public class DimensionEditorContainer extends GenericContainer {
     public static final ContainerFactory factory = new ContainerFactory() {
         @Override
         protected void setup() {
-            addSlotBox(new SlotDefinition(SlotType.SLOT_SPECIFICITEM, new ItemStack(DimletSetup.knownDimlet), new ItemStack(TeleporterSetup.matterReceiverBlock),
-                    new ItemStack(Blocks.tnt)), CONTAINER_INVENTORY, SLOT_INJECTINPUT, 64, 24, 1, 18, 1, 18);
-            addSlotBox(new SlotDefinition(SlotType.SLOT_SPECIFICITEM, new ItemStack(DimletSetup.realizedDimensionTab)), CONTAINER_INVENTORY, SLOT_DIMENSIONTARGET, 118, 24, 1, 18, 1, 18);
+            Block receiver = ForgeRegistries.BLOCKS.getValue(new ResourceLocation("rftools", "matter_receiver"));
+            addSlotBox(new SlotDefinition(SlotType.SLOT_SPECIFICITEM, new ItemStack(ModItems.knownDimletItem), new ItemStack(receiver),
+                    new ItemStack(Blocks.TNT)), CONTAINER_INVENTORY, SLOT_INJECTINPUT, 64, 24, 1, 18, 1, 18);
+            addSlotBox(new SlotDefinition(SlotType.SLOT_SPECIFICITEM, new ItemStack(ModItems.realizedDimensionTabItem)), CONTAINER_INVENTORY, SLOT_DIMENSIONTARGET, 118, 24, 1, 18, 1, 18);
             layoutPlayerInventorySlots(10, 70);
         }
     };
