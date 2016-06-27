@@ -13,6 +13,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.Biome;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.*;
+
 public class DimletObjectMapping {
 
     public static final String NONE_ID = "None";
@@ -153,13 +155,60 @@ public class DimletObjectMapping {
         return null;
     }
 
-    public static float getCelestialAngle(DimletKey dimlet) {
-        // @todo
-        return 0.0f;
+    private static Map<DimletKey, Float> dimletToCelestialAngle;
+    private static Map<DimletKey, Float> dimletToSpeed;
+
+    private static void setupTimeTables() {
+        if (dimletToCelestialAngle == null) {
+            dimletToCelestialAngle = new HashMap<>();
+            dimletToCelestialAngle.put(new DimletKey(DimletType.DIMLET_TIME, "Normal"), null);
+            dimletToCelestialAngle.put(new DimletKey(DimletType.DIMLET_TIME, "Noon"), 0.0f);
+            dimletToCelestialAngle.put(new DimletKey(DimletType.DIMLET_TIME, "Midnight"), 0.5f);
+            dimletToCelestialAngle.put(new DimletKey(DimletType.DIMLET_TIME, "Morning"), 0.75f);
+            dimletToCelestialAngle.put(new DimletKey(DimletType.DIMLET_TIME, "Evening"), 0.2f);
+            dimletToCelestialAngle.put(new DimletKey(DimletType.DIMLET_TIME, "Fast"), null);
+            dimletToCelestialAngle.put(new DimletKey(DimletType.DIMLET_TIME, "Slow"), null);
+        }
+        if (dimletToSpeed == null) {
+            dimletToSpeed = new HashMap<>();
+            dimletToSpeed.put(new DimletKey(DimletType.DIMLET_TIME, "Normal"), null);
+            dimletToSpeed.put(new DimletKey(DimletType.DIMLET_TIME, "Noon"), null);
+            dimletToSpeed.put(new DimletKey(DimletType.DIMLET_TIME, "Midnight"), null);
+            dimletToSpeed.put(new DimletKey(DimletType.DIMLET_TIME, "Morning"), null);
+            dimletToSpeed.put(new DimletKey(DimletType.DIMLET_TIME, "Evening"), null);
+            dimletToSpeed.put(new DimletKey(DimletType.DIMLET_TIME, "Fast"), 2.0f);
+            dimletToSpeed.put(new DimletKey(DimletType.DIMLET_TIME, "Slow"), 0.5f);
+        }
     }
 
-    public static float getTimeSpeed(DimletKey dimlet) {
-        // @todo
-        return 0.0f;
+
+    public static Collection<DimletKey> getTimeDimlets() {
+        setupTimeTables();
+        List<DimletKey> dimlets = new ArrayList<>();
+        for (DimletKey dimletKey : dimletToCelestialAngle.keySet()) {
+            dimlets.add(dimletKey);
+        }
+        return dimlets;
+    }
+
+    public static Collection<DimletKey> getCelestialAngles() {
+        setupTimeTables();
+        List<DimletKey> dimlets = new ArrayList<>();
+        for (DimletKey dimletKey : dimletToCelestialAngle.keySet()) {
+            if (dimletToCelestialAngle.get(dimletKey) != null) {
+                dimlets.add(dimletKey);
+            }
+        }
+        return dimlets;
+    }
+
+    public static Float getCelestialAngle(DimletKey dimlet) {
+        setupTimeTables();
+        return dimletToCelestialAngle.get(dimlet);
+    }
+
+    public static Float getTimeSpeed(DimletKey dimlet) {
+        setupTimeTables();
+        return dimletToSpeed.get(dimlet);
     }
 }
