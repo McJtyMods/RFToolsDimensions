@@ -33,6 +33,7 @@ public class ModBlocks {
     public static BiomeAbsorberBlock biomeAbsorberBlock;
     public static TerrainAbsorberBlock terrainAbsorberBlock;
     public static FeatureAbsorberBlock featureAbsorberBlock;
+    public static TimeAbsorberBlock timeAbsorberBlock;
 
     public static void init() {
         dimensionalBlankBlock = new DimensionalBlankBlock();
@@ -55,6 +56,7 @@ public class ModBlocks {
         biomeAbsorberBlock = new BiomeAbsorberBlock();
         terrainAbsorberBlock = new TerrainAbsorberBlock();
         featureAbsorberBlock = new FeatureAbsorberBlock();
+        timeAbsorberBlock = new TimeAbsorberBlock();
     }
 
     @SideOnly(Side.CLIENT)
@@ -79,5 +81,6 @@ public class ModBlocks {
         biomeAbsorberBlock.initModel();
         terrainAbsorberBlock.initModel();
         featureAbsorberBlock.initModel();
+        timeAbsorberBlock.initModel();
     }
 }

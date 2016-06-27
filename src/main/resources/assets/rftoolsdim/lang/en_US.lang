@@ -106,6 +106,7 @@ tile.rftoolsdim.biome_absorber.name=Biome Absorber
 tile.rftoolsdim.terrain_absorber.name=Terrain Absorber
 tile.rftoolsdim.feature_absorber.name=Feature Absorber
 tile.rftoolsdim.material_absorber.name=Material Absorber
+tile.rftoolsdim.time_absorber.name=Time Absorber
 tile.rftoolsdim.liquid_absorber.name=Liquid Absorber
 tile.rftoolsdim.timeAbsorberBlock.name=Time Absorber
 tile.rftoolsdim.volcanicCoreBlock.name=Volcanic Core

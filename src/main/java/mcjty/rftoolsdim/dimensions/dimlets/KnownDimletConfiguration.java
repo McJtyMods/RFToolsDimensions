@@ -79,6 +79,15 @@ public class KnownDimletConfiguration {
         initDimlet(new DimletKey(DimletType.DIMLET_MATERIAL, Blocks.STONE.getRegistryName() + "@0"), "minecraft");
         initDimlet(new DimletKey(DimletType.DIMLET_LIQUID, Blocks.WATER.getRegistryName() + "@0"), "minecraft");
 
+        initDimlet(new DimletKey(DimletType.DIMLET_TIME, "Normal"), RFToolsDim.MODID);
+        initDimlet(new DimletKey(DimletType.DIMLET_TIME, "Noon"), RFToolsDim.MODID);
+        initDimlet(new DimletKey(DimletType.DIMLET_TIME, "Midnight"), RFToolsDim.MODID);
+        initDimlet(new DimletKey(DimletType.DIMLET_TIME, "Morning"), RFToolsDim.MODID);
+        initDimlet(new DimletKey(DimletType.DIMLET_TIME, "Evening"), RFToolsDim.MODID);
+        initDimlet(new DimletKey(DimletType.DIMLET_TIME, "Fast"), RFToolsDim.MODID);
+        initDimlet(new DimletKey(DimletType.DIMLET_TIME, "Slow"), RFToolsDim.MODID);
+//        addExtraInformation(keyTimeNormal, "With this normal dimlet you will get", "default day/night timing");
+
         BiomeControllerMapping.setupControllerBiomes();
     }
 
@@ -318,7 +327,7 @@ public class KnownDimletConfiguration {
             case DIMLET_FEATURE:
                 return key.getId();
             case DIMLET_TIME:
-                return "time";//@todo
+                return key.getId();
             case DIMLET_DIGIT:
                 return key.getId();
             case DIMLET_EFFECT:

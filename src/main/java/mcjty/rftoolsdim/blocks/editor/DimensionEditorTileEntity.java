@@ -343,25 +343,19 @@ public class DimensionEditorTileEntity extends GenericEnergyReceiverTileEntity i
         }
     }
 
-    //@todo
-//    @Override
-//    public int[] getAccessibleSlotsFromSide(int side) {
-//        return DimletResearcherContainer.factory.getAccessibleSlots();
-//    }
-//
-//    @Override
-//    public boolean canInsertItem(int index, ItemStack item, int side) {
-//        return DimletResearcherContainer.factory.isInputSlot(index);
-//    }
-//
-//    @Override
-//    public boolean canExtractItem(int index, ItemStack item, int side) {
-//        return DimletResearcherContainer.factory.isOutputSlot(index);
-//    }
-//
     @Override
-    public int getInventoryStackLimit() {
-        return 64; //@todo DimletConfiguration.dimletStackSize;
+    public int[] getSlotsForFace(EnumFacing side) {
+        return DimensionEditorContainer.factory.getAccessibleSlots();
+    }
+
+    @Override
+    public boolean canInsertItem(int index, ItemStack itemStackIn, EnumFacing direction) {
+        return DimensionEditorContainer.factory.isInputSlot(index);
+    }
+
+    @Override
+    public boolean canExtractItem(int index, ItemStack stack, EnumFacing direction) {
+        return DimensionEditorContainer.factory.isOutputSlot(index);
     }
 
     @Override
@@ -369,11 +363,6 @@ public class DimensionEditorTileEntity extends GenericEnergyReceiverTileEntity i
         return canPlayerAccess(player);
     }
 
-
-    @Override
-    public boolean isItemValidForSlot(int index, ItemStack stack) {
-        return true;
-    }
 
     // Request the building percentage from the server. This has to be called on the client side.
     public void requestBuildingPercentage() {

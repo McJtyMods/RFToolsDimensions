@@ -1,15 +1,19 @@
 package mcjty.rftoolsdim.dimensions.dimlets.types;
 
+import mcjty.lib.varia.BlockTools;
+import mcjty.rftoolsdim.blocks.ModBlocks;
+import mcjty.rftoolsdim.blocks.absorbers.TimeAbsorberTileEntity;
 import mcjty.rftoolsdim.config.WorldgenConfiguration;
+import mcjty.rftoolsdim.dimensions.DimensionInformation;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletKey;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletObjectMapping;
-import mcjty.rftoolsdim.dimensions.dimlets.DimletRandomizer;
-import mcjty.rftoolsdim.dimensions.DimensionInformation;
+import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.config.Configuration;
 import org.apache.commons.lang3.tuple.Pair;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -80,21 +84,15 @@ public class TimeDimletType implements IDimletType {
                 celestialAngle = null;      // Default
                 timeSpeed = null;
             } else {
-                // @todo
-                celestialAngle = 0.0f;
-                timeSpeed = 1.0f;
-//                List<DimletKey> keys = new ArrayList<>(DimletObjectMapping.idToCelestialAngle.keySet());
-//                DimletKey key = keys.get(random.nextInt(keys.size()));
-//                celestialAngle = DimletObjectMapping.idToCelestialAngle.get(key);
-//                timeSpeed = DimletObjectMapping.idToSpeed.get(key);
+                List<DimletKey> keys = new ArrayList<>(DimletObjectMapping.getTimeDimlets());
+                DimletKey key = keys.get(random.nextInt(keys.size()));
+                celestialAngle = DimletObjectMapping.getCelestialAngle(key);
+                timeSpeed = DimletObjectMapping.getTimeSpeed(key);
             }
         } else {
             DimletKey key = dimlets.get(random.nextInt(dimlets.size())).getKey();
-            // @todo
-            celestialAngle = 0.0f;
-            timeSpeed = 1.0f;
-//            celestialAngle = DimletObjectMapping.idToCelestialAngle.get(key);
-//            timeSpeed = DimletObjectMapping.idToSpeed.get(key);
+            celestialAngle = DimletObjectMapping.getCelestialAngle(key);
+            timeSpeed = DimletObjectMapping.getTimeSpeed(key);
         }
         dimensionInformation.setCelestialAngle(celestialAngle);
         dimensionInformation.setTimeSpeed(timeSpeed);
@@ -106,26 +104,32 @@ public class TimeDimletType implements IDimletType {
     }
 
     private static boolean isValidTimeEssence(ItemStack stackEssence, NBTTagCompound essenceCompound) {
-//        Block essenceBlock = BlockTools.getBlock(stackEssence);
-//
-//        if (essenceBlock != DimletConstructionSetup.timeAbsorberBlock) {
-//            return false;
-//        }
-//        if (essenceCompound == null) {
-//            return false;
-//        }
-//        int absorbing = essenceCompound.getInteger("absorbing");
-//        float angle = essenceCompound.getFloat("angle");
-//        if (absorbing > 0 || angle < -0.01f) {
-//            return false;
-//        }
+        Block essenceBlock = BlockTools.getBlock(stackEssence);
+
+        if (essenceBlock != ModBlocks.timeAbsorberBlock) {
+            return false;
+        }
+        if (essenceCompound == null) {
+            return false;
+        }
+        int absorbing = essenceCompound.getInteger("absorbing");
+        float angle = essenceCompound.getFloat("angle");
+        if (absorbing > 0 || angle < -0.01f) {
+            return false;
+        }
         return true;
     }
 
     private static DimletKey findTimeDimlet(ItemStack stackEssence) {
         float angle = stackEssence.getTagCompound().getFloat("angle");
-        return null;//@todo TimeAbsorberTileEntity.findBestTimeDimlet(angle);
+        return TimeAbsorberTileEntity.findBestTimeDimlet(angle);
     }
+
+    @Override
+    public ItemStack getDefaultEssence() {
+        return new ItemStack(ModBlocks.timeAbsorberBlock);
+    }
+
 
     @Override
     public DimletKey attemptDimletCrafting(ItemStack stackController, ItemStack stackMemory, ItemStack stackEnergy, ItemStack stackEssence) {

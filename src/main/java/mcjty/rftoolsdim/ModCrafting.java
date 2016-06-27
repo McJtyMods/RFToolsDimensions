@@ -53,6 +53,8 @@ public class ModCrafting {
             GameRegistry.addRecipe(new ItemStack(ModBlocks.dimensionBuilderBlock), "oEo", "DMD", "ggg", 'o', Items.ENDER_PEARL, 'E', Items.EMERALD, 'D', Items.DIAMOND,
                                    'M', machineFrame, 'g', Items.GOLD_INGOT);
         }
+        GameRegistry.addRecipe(new ItemStack(ModBlocks.dimensionEditorBlock), "oEo", "DMD", "ggg", 'o', Items.REDSTONE, 'E', Items.EMERALD, 'D', Items.DIAMOND,
+                'M', machineFrame, 'g', Items.GOLD_INGOT);
 
 //        GameRegistry.addRecipe(new ItemStack(ModBlocks.essencePainterBlock), "ppp", "iMi", "ppp", 'p', Items.PAPER, 'i', inkSac, 'M', machineFrame);
     }
@@ -70,6 +72,8 @@ public class ModCrafting {
         GameRegistry.addShapelessRecipe(new ItemStack(ModBlocks.materialAbsorberBlock), new ItemStack(ModBlocks.materialAbsorberBlock));
         GameRegistry.addRecipe(new ItemStack(ModBlocks.liquidAbsorberBlock), "bwb", "wMw", "bwb", 'M', machineFrame, 'b', Items.BUCKET, 'w', Blocks.WOOL);
         GameRegistry.addShapelessRecipe(new ItemStack(ModBlocks.liquidAbsorberBlock), new ItemStack(ModBlocks.liquidAbsorberBlock));
+        GameRegistry.addRecipe(new ItemStack(ModBlocks.timeAbsorberBlock), "cwc", "wMw", "cwc", 'M', machineFrame, 'c', Items.CLOCK, 'w', Blocks.WOOL);
+        GameRegistry.addShapelessRecipe(new ItemStack(ModBlocks.timeAbsorberBlock), new ItemStack(ModBlocks.timeAbsorberBlock));
     }
 
     private static void initCosmeticRecipes() {
