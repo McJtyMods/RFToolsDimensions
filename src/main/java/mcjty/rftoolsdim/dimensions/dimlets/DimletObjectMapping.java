@@ -147,7 +147,8 @@ public class DimletObjectMapping {
 
     public static SpecialType getSpecial(DimletKey dimlet) {
         if (DimletType.DIMLET_SPECIAL.equals(dimlet.getType())) {
-            // @todo
+            SpecialType type = SpecialType.getSpecialById(dimlet.getId());
+            return type;
         }
         return null;
     }

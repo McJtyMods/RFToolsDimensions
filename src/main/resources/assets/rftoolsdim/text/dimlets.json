@@ -1,6 +1,118 @@
 [
   {
     "filter": {
+      "type": "special",
+      "name": "Owner"
+    },
+    "settings": {
+      "rarity": 0,
+      "create": 0,
+      "maintain": 0,
+      "ticks": 0,
+      "worldgen": false,
+      "dimlet": true
+    }
+  },
+  {
+    "filter": {
+      "type": "special",
+      "name": "NoAnimals"
+    },
+    "settings": {
+      "rarity": 2,
+      "create": 5000,
+      "maintain": 40,
+      "ticks": 10,
+      "worldgen": false,
+      "dimlet": true
+    }
+  },
+  {
+    "filter": {
+      "type": "special",
+      "name": "Spawn"
+    },
+    "settings": {
+      "rarity": 2,
+      "create": 10000,
+      "maintain": 300,
+      "ticks": 100,
+      "worldgen": false,
+      "dimlet": true
+    }
+  },
+  {
+    "filter": {
+      "type": "special",
+      "name": "Seed"
+    },
+    "settings": {
+      "rarity": 2,
+      "create": 1000,
+      "maintain": 0,
+      "ticks": 100,
+      "worldgen": false,
+      "dimlet": true
+    }
+  },
+  {
+    "filter": {
+      "type": "special",
+      "name": "Seed"
+    },
+    "settings": {
+      "rarity": 2,
+      "create": 1000,
+      "maintain": 0,
+      "ticks": 100,
+      "worldgen": false,
+      "dimlet": true
+    }
+  },
+  {
+    "filter": {
+      "type": "special",
+      "name": "Peaceful"
+    },
+    "settings": {
+      "rarity": 5,
+      "create": 50000,
+      "maintain": 30000,
+      "ticks": 900,
+      "worldgen": false,
+      "dimlet": true
+    }
+  },
+  {
+    "filter": {
+      "type": "special",
+      "name": "Efficiency"
+    },
+    "settings": {
+      "rarity": 5,
+      "create": 100000,
+      "maintain": -20,
+      "ticks": 900,
+      "worldgen": false,
+      "dimlet": true
+    }
+  },
+  {
+    "filter": {
+      "type": "special",
+      "name": "MediocreEfficiency"
+    },
+    "settings": {
+      "rarity": 4,
+      "create": 100000,
+      "maintain": -5,
+      "ticks": 400,
+      "worldgen": false,
+      "dimlet": true
+    }
+  },
+  {
+    "filter": {
       "type": "digit"
     },
     "settings": {
