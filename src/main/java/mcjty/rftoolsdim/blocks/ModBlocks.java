@@ -2,6 +2,7 @@ package mcjty.rftoolsdim.blocks;
 
 import mcjty.rftoolsdim.blocks.absorbers.*;
 import mcjty.rftoolsdim.blocks.builder.DimensionBuilderBlock;
+import mcjty.rftoolsdim.blocks.editor.DimensionEditorBlock;
 import mcjty.rftoolsdim.blocks.enscriber.DimensionEnscriberBlock;
 import mcjty.rftoolsdim.blocks.probe.ActivityProbeBlock;
 import mcjty.rftoolsdim.blocks.shards.*;
@@ -21,6 +22,7 @@ public class ModBlocks {
 
     public static DimensionEnscriberBlock dimensionEnscriberBlock;
     public static DimensionBuilderBlock dimensionBuilderBlock;
+    public static DimensionEditorBlock dimensionEditorBlock;
     public static DimletWorkbenchBlock dimletWorkbenchBlock;
     public static ActivityProbeBlock activityProbeBlock;
 
@@ -41,6 +43,7 @@ public class ModBlocks {
 
         dimensionEnscriberBlock = new DimensionEnscriberBlock();
         dimensionBuilderBlock = new DimensionBuilderBlock(false);
+        dimensionEditorBlock = new DimensionEditorBlock();
         dimletWorkbenchBlock = new DimletWorkbenchBlock();
         activityProbeBlock = new ActivityProbeBlock();
 
@@ -63,6 +66,7 @@ public class ModBlocks {
 
         dimensionEnscriberBlock.initModel();
         dimensionBuilderBlock.initModel();
+        dimensionEditorBlock.initModel();
         dimletWorkbenchBlock.initModel();
         activityProbeBlock.initModel();
 
