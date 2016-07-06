@@ -18,7 +18,6 @@ import net.minecraft.block.BlockFalling;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
@@ -26,6 +25,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.fluids.Fluid;
@@ -199,7 +199,7 @@ public class KnownDimletConfiguration {
             if (name == null) {
                 name = "generic";
             }
-            String readableName = I18n.format("entity." + name + ".name");
+            String readableName = I18n.translateToLocal("entity." + name + ".name");
             Logging.log(key + " (" + name + ", " + readableName + "): " + settings.toString());
         }
     }
@@ -317,7 +317,7 @@ public class KnownDimletConfiguration {
                 if (entityClass == null) {
                     return "<Unknown>";
                 }
-                return I18n.format("entity." + key.getId() + ".name");
+                return I18n.translateToLocal("entity." + key.getId() + ".name");
             case DIMLET_SKY:
                 return "sky"; //@todo
             case DIMLET_STRUCTURE:
