@@ -31,8 +31,8 @@ public class DimletParcelItem extends GenericRFToolsItem {
                 SoundTools.playSound(world, SoundEvent.REGISTRY.getObject(new ResourceLocation("entity.player.levelup")), player.posX, player.posY, player.posZ, 1.0f, 1.0f);
                 for (int i = 0 ; i < amount ; i++) {
                     ItemStack part = DimletRandomizer.getRandomPart(random);
-                    if (!player.inventory.addItemStackToInventory(part)) {
-                        player.entityDropItem(part, 1.05f);
+                    if (!player.inventory.addItemStackToInventory(part.copy())) {
+                        player.entityDropItem(part.copy(), 1.05f);
                     }
                 }
             }
