@@ -94,7 +94,7 @@ public class LiquidDimletType implements IDimletType {
             return null;
         }
         int absorbing = essenceCompound.getInteger("absorbing");
-        if (absorbing > 0 || essenceCompound.hasKey("liquid")) {
+        if (absorbing > 0 || !essenceCompound.hasKey("liquid")) {
             return null;
         }
         return findLiquidDimlet(essenceCompound);

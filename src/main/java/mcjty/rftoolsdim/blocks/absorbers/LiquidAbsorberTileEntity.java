@@ -168,7 +168,7 @@ public class LiquidAbsorberTileEntity extends GenericTileEntity implements ITick
         super.writeRestorableToNBT(tagCompound);
         tagCompound.setInteger("absorbing", absorbing);
         if (block != null) {
-            tagCompound.setString("liquid", block.getRegistryName().getResourcePath());
+            tagCompound.setString("liquid", block.getRegistryName().toString());
         }
     }
 
