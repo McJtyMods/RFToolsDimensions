@@ -81,7 +81,7 @@ public class LiquidAbsorberBlock extends GenericRFToolsBlock<LiquidAbsorberTileE
 
         NBTTagCompound tagCompound = itemStack.getTagCompound();
         if (tagCompound != null && tagCompound.hasKey("liquid")) {
-            Block block = Block.REGISTRY.getObject(new ResourceLocation(tagCompound.getString("block")));
+            Block block = Block.REGISTRY.getObject(new ResourceLocation(tagCompound.getString("liquid")));
             if (block != null) {
                 Fluid fluid = FluidRegistry.lookupFluidForBlock(block);
                 if (fluid != null) {
