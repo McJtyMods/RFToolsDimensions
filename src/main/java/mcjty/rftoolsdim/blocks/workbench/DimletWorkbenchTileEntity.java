@@ -28,6 +28,7 @@ import java.util.Map;
 public class DimletWorkbenchTileEntity extends GenericEnergyReceiverTileEntity implements ITickable, DefaultSidedInventory {
     public static final String CMD_STARTEXTRACT = "startExtract";
     public static final String CMD_SUGGESTPARTS = "suggestParts";
+    public static final String CMD_CHEATDIMLET = "cheatDimlet";
     public static final String CMD_GETEXTRACTING = "getExtracting";
     public static final String CLIENTCMD_GETEXTRACTING = "getExtracting";
 
@@ -251,6 +252,13 @@ public class DimletWorkbenchTileEntity extends GenericEnergyReceiverTileEntity i
         return worldObj.rand.nextFloat() <= (0.61f + factor * 0.4f);
     }
 
+    private void cheatDimlet(EntityPlayerMP player, DimletKey key) {
+        ItemStack dimlet = KnownDimletConfiguration.getDimletStack(key);
+        if (!player.inventory.addItemStackToInventory(dimlet)) {
+            player.entityDropItem(dimlet, 1.05f);
+        }
+    }
+
     private void suggestParts(EntityPlayerMP playerMP, DimletKey key) {
         // First try to remove all items currently in the slots
         setAsideIfPossible(playerMP, DimletWorkbenchContainer.SLOT_BASE);
@@ -398,6 +406,11 @@ public class DimletWorkbenchTileEntity extends GenericEnergyReceiverTileEntity i
             String type = args.get("type").getString();
             String id = args.get("id").getString();
             suggestParts(playerMP, new DimletKey(DimletType.getTypeByName(type), id));
+            return true;
+        } else if (CMD_CHEATDIMLET.equals(command)) {
+            String type = args.get("type").getString();
+            String id = args.get("id").getString();
+            cheatDimlet(playerMP, new DimletKey(DimletType.getTypeByName(type), id));
             return true;
         }
         return false;

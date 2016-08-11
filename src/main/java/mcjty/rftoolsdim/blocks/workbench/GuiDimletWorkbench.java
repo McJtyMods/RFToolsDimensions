@@ -20,10 +20,14 @@ import mcjty.rftoolsdim.dimensions.dimlets.KnownDimletConfiguration;
 import mcjty.rftoolsdim.dimensions.dimlets.types.DimletCraftingTools;
 import mcjty.rftoolsdim.items.ModItems;
 import mcjty.rftoolsdim.network.RFToolsDimMessages;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TextFormatting;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
 import java.awt.*;
@@ -67,7 +71,12 @@ public class GuiDimletWorkbench extends GenericGuiContainer<DimletWorkbenchTileE
 
             @Override
             public void doubleClick(Widget widget, int i) {
-                suggestParts();
+                EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
+                if (player.isCreative() && (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT))) {
+                    cheatDimlet();
+                } else {
+                    suggestParts();
+                }
             }
         });
         slider = new Slider(mc, this).setLayoutHint(new PositionalLayout.PositionalHint(239, 25, 9, 108)).setDesiredWidth(11).setVertical().setScrollable(itemList);
@@ -88,6 +97,21 @@ public class GuiDimletWorkbench extends GenericGuiContainer<DimletWorkbenchTileE
         listDirty = true;
 
         window = new Window(this, toplevel);
+    }
+
+    private void cheatDimlet() {
+        int selected = itemList.getSelected();
+        if (selected == -1) {
+            return;
+        }
+        Widget widget = itemList.getChild(selected);
+        Object userObject = widget.getUserObject();
+        if (userObject instanceof DimletKey) {
+            DimletKey key = (DimletKey) userObject;
+            sendServerCommand(RFToolsDimMessages.INSTANCE, DimletWorkbenchTileEntity.CMD_CHEATDIMLET,
+                    new Argument("type", key.getType().dimletType.getName()),
+                    new Argument("id", key.getId()));
+        }
     }
 
     private void suggestParts() {
@@ -219,7 +243,11 @@ public class GuiDimletWorkbench extends GenericGuiContainer<DimletWorkbenchTileE
                 ItemStack typectrl = new ItemStack(ModItems.dimletTypeControllerItem, 1, key.getType().ordinal());
                 ItemStack essence = key.getType().dimletType.getDefaultEssence();
 
-                widget.setTooltips("Type: " + key.getType().dimletType.getName(), "Rarity: " + settings.getRarity(), "@0@1@2", "@3@4@5");
+                if (Minecraft.getMinecraft().thePlayer.isCreative()) {
+                    widget.setTooltips(TextFormatting.RED + "Shift-Double-Click to cheat", "Type: " + key.getType().dimletType.getName(), "Rarity: " + settings.getRarity(), "@0@1@2", "@3@4@5");
+                } else {
+                    widget.setTooltips("Type: " + key.getType().dimletType.getName(), "Rarity: " + settings.getRarity(), "@0@1@2", "@3@4@5");
+                }
                 widget.setTooltipItems(base, ctrl, energy, memory, typectrl, essence);
 //                itemList.setTooltips("Type: " + key.getType().dimletType.getName(), "Rarity: " + settings.getRarity(), "Y: @0 @1 @2 @3 @4 @5");
 //                itemList.setTooltipItems(base, ctrl, energy, memory, typectrl, essence);
