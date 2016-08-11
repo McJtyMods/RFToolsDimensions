@@ -6,13 +6,12 @@ import mcjty.rftoolsdim.dimensions.types.TerrainType;
 import mcjty.rftoolsdim.dimensions.world.GenericChunkGenerator;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldType;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.ChunkPrimer;
-import net.minecraft.world.gen.NoiseGenerator;
+import net.minecraft.world.gen.ChunkProviderSettings;
 import net.minecraft.world.gen.NoiseGeneratorOctaves;
 import net.minecraft.world.gen.NoiseGeneratorPerlin;
 import net.minecraftforge.common.MinecraftForge;
@@ -25,32 +24,32 @@ public class NormalTerrainGenerator implements BaseTerrainGenerator {
     private World world;
     protected GenericChunkGenerator provider;
 
-    private final double[] noiseField;
-    private double[] noiseData1;
-    private double[] noiseData2;
-    private double[] noiseData3;
-    private double[] noiseData4;
+    private final double[] heightMap;
+    private double[] mainNoiseRegion;
+    private double[] minLimitRegion;
+    private double[] maxLimitRegion;
+    private double[] depthRegion;
 
-    private NoiseGeneratorOctaves noiseGen1;
-    private NoiseGeneratorOctaves noiseGen2;
-    private NoiseGeneratorOctaves noiseGen3;
-    private NoiseGeneratorPerlin noiseGen4;
+    private NoiseGeneratorOctaves minLimitPerlinNoise;
+    private NoiseGeneratorOctaves maxLimitPerlinNoise;
+    private NoiseGeneratorOctaves mainPerlinNoise;
+    private NoiseGeneratorPerlin surfaceNoise;
 
     // A NoiseGeneratorOctaves used in generating terrain
-    private NoiseGeneratorOctaves noiseGen6;
+    private NoiseGeneratorOctaves depthNoise;
 
-    private final float[] parabolicField;
-    private double[] stoneNoise = new double[256];
+    private final float[] biomeWeights;
+    private double[] depthBuffer = new double[256];
 
 
     public NormalTerrainGenerator() {
-        this.noiseField = new double[825];
+        this.heightMap = new double[825];
 
-        this.parabolicField = new float[25];
+        this.biomeWeights = new float[25];
         for (int j = -2; j <= 2; ++j) {
             for (int k = -2; k <= 2; ++k) {
                 float f = 10.0F / MathHelper.sqrt_float((j * j + k * k) + 0.2F);
-                this.parabolicField[j + 2 + (k + 2) * 5] = f;
+                this.biomeWeights[j + 2 + (k + 2) * 5] = f;
             }
         }
     }
@@ -61,33 +60,37 @@ public class NormalTerrainGenerator implements BaseTerrainGenerator {
         this.world = world;
         this.provider = provider;
 
-        this.noiseGen1 = new NoiseGeneratorOctaves(provider.rand, 16);
-        this.noiseGen2 = new NoiseGeneratorOctaves(provider.rand, 16);
-        this.noiseGen3 = new NoiseGeneratorOctaves(provider.rand, 8);
-        this.noiseGen4 = new NoiseGeneratorPerlin(provider.rand, 4);
+        this.minLimitPerlinNoise = new NoiseGeneratorOctaves(provider.rand, 16);
+        this.maxLimitPerlinNoise = new NoiseGeneratorOctaves(provider.rand, 16);
+        this.mainPerlinNoise = new NoiseGeneratorOctaves(provider.rand, 8);
+        this.surfaceNoise = new NoiseGeneratorPerlin(provider.rand, 4);
         NoiseGeneratorOctaves noiseGen5 = new NoiseGeneratorOctaves(provider.rand, 10);
-        this.noiseGen6 = new NoiseGeneratorOctaves(provider.rand, 16);
+        this.depthNoise = new NoiseGeneratorOctaves(provider.rand, 16);
         NoiseGeneratorOctaves mobSpawnerNoise = new NoiseGeneratorOctaves(provider.rand, 8);
 
         net.minecraftforge.event.terraingen.InitNoiseGensEvent.ContextOverworld ctx =
-                new net.minecraftforge.event.terraingen.InitNoiseGensEvent.ContextOverworld(noiseGen1, noiseGen2, noiseGen3, noiseGen4, noiseGen5, noiseGen6, mobSpawnerNoise);
+                new net.minecraftforge.event.terraingen.InitNoiseGensEvent.ContextOverworld(minLimitPerlinNoise, maxLimitPerlinNoise, mainPerlinNoise, surfaceNoise, noiseGen5, depthNoise, mobSpawnerNoise);
         ctx = net.minecraftforge.event.terraingen.TerrainGen.getModdedNoiseGenerators(world, provider.rand, ctx);
-        this.noiseGen1 = ctx.getLPerlin1();
-        this.noiseGen2 = ctx.getLPerlin2();
-        this.noiseGen3 = ctx.getPerlin();
-        this.noiseGen4 = ctx.getHeight();
+        this.minLimitPerlinNoise = ctx.getLPerlin1();
+        this.maxLimitPerlinNoise = ctx.getLPerlin2();
+        this.mainPerlinNoise = ctx.getPerlin();
+        this.surfaceNoise = ctx.getHeight();
 //        this.field_185983_b = ctx.getScale();
-        this.noiseGen6 = ctx.getDepth();
+        this.depthNoise = ctx.getDepth();
 //        this.field_185985_d = ctx.getForest();
     }
 
-    private void func_147423_a(int chunkX4, int chunkY4, int chunkZ4) {
-        this.noiseData4 = this.noiseGen6.generateNoiseOctaves(this.noiseData4, chunkX4, chunkZ4, 5, 5, 200.0D, 200.0D, 0.5D);
-        this.noiseData1 = this.noiseGen3.generateNoiseOctaves(this.noiseData1, chunkX4, chunkY4, chunkZ4, 5, 33, 5, 8.555150000000001D, 4.277575000000001D, 8.555150000000001D);
-        this.noiseData2 = this.noiseGen1.generateNoiseOctaves(this.noiseData2, chunkX4, chunkY4, chunkZ4, 5, 33, 5, 684.412D, 684.412D, 684.412D);
-        this.noiseData3 = this.noiseGen2.generateNoiseOctaves(this.noiseData3, chunkX4, chunkY4, chunkZ4, 5, 33, 5, 684.412D, 684.412D, 684.412D);
-        int l = 0;
-        int i1 = 0;
+    private void generateHeightmap(int chunkX4, int chunkY4, int chunkZ4) {
+        ChunkProviderSettings settings = provider.getSettings();
+        this.depthRegion = this.depthNoise.generateNoiseOctaves(this.depthRegion, chunkX4, chunkZ4, 5, 5, (double)settings.depthNoiseScaleX, (double)settings.depthNoiseScaleZ, (double)settings.depthNoiseScaleExponent);
+        float f = settings.coordinateScale;
+        float f1 = settings.heightScale;
+        this.mainNoiseRegion = this.mainPerlinNoise.generateNoiseOctaves(this.mainNoiseRegion, chunkX4, chunkY4, chunkZ4, 5, 33, 5, (double)(f / settings.mainNoiseScaleX), (double)(f1 / settings.mainNoiseScaleY), (double)(f / settings.mainNoiseScaleZ));
+        this.minLimitRegion = this.minLimitPerlinNoise.generateNoiseOctaves(this.minLimitRegion, chunkX4, chunkY4, chunkZ4, 5, 33, 5, (double)f, (double)f1, (double)f);
+        this.maxLimitRegion = this.maxLimitPerlinNoise.generateNoiseOctaves(this.maxLimitRegion, chunkX4, chunkY4, chunkZ4, 5, 33, 5, (double)f, (double)f1, (double)f);
+
+        int i = 0;
+        int j = 0;
 
         boolean domaze = false;
         boolean elevated = false;
@@ -121,63 +124,60 @@ public class NormalTerrainGenerator implements BaseTerrainGenerator {
             return;
         }
 
-        for (int j1 = 0; j1 < 5; ++j1) {
-            for (int k1 = 0; k1 < 5; ++k1) {
-                float f = 0.0F;
-                float f1 = 0.0F;
+        for (int k = 0; k < 5; ++k) {
+            for (int l = 0; l < 5; ++l) {
                 float f2 = 0.0F;
-                byte b0 = 2;
-                Biome Biome = provider.biomesForGeneration[j1 + 2 + (k1 + 2) * 10];
+                float f3 = 0.0F;
+                float f4 = 0.0F;
+                Biome Biome = provider.biomesForGeneration[k + 2 + (l + 2) * 10];
 
-                for (int l1 = -b0; l1 <= b0; ++l1) {
-                    for (int i2 = -b0; i2 <= b0; ++i2) {
-                        Biome Biome1 = provider.biomesForGeneration[j1 + l1 + 2 + (k1 + i2 + 2) * 10];
-//                        float f3 = Biome1.rootHeight;
-//                        float f4 = Biome1.heightVariation;
-                        float f3 = provider.getSettings().biomeDepthOffSet + Biome1.getBaseHeight() * provider.getSettings().biomeDepthWeight;
-                        float f4 = provider.getSettings().biomeScaleOffset + Biome1.getHeightVariation() * provider.getSettings().biomeScaleWeight;
+                for (int j1 = -2; j1 <= 2; ++j1) {
+                    for (int k1 = - 2; k1 <=  2; ++k1) {
+                        Biome Biome1 = provider.biomesForGeneration[k + j1 + 2 + (l + k1 + 2) * 10];
+                        float f5 = provider.getSettings().biomeDepthOffSet + Biome1.getBaseHeight() * provider.getSettings().biomeDepthWeight;
+                        float f6 = provider.getSettings().biomeScaleOffset + Biome1.getHeightVariation() * provider.getSettings().biomeScaleWeight;
 
                         if (domaze || donearlands) {
-                            if (f3 > 0.0F && elevated) {
+                            if (f5 > 0.0F && elevated) {
                                 if (provider.worldType == WorldType.AMPLIFIED) {
-                                    f3 = 2.0F + f3 * 1.5f;
-                                    f4 = 1.0F + f4 * 3.0f;
+                                    f5 = 2.0F + f5 * 1.5f;
+                                    f6 = 1.0F + f6 * 3.0f;
                                 } else {
-                                    f3 = 2.0F + f3;
-                                    f4 = 0.5F + f4 * 1.5f;
+                                    f5 = 2.0F + f5;
+                                    f6 = 0.5F + f6 * 1.5f;
                                 }
                             } else {
-                                if (provider.worldType == WorldType.AMPLIFIED && f3 > 0.0f) {
-                                    f3 = 0.5F + f3 * 1.5F;
-                                    f4 = 0.5F + f4 * 2.0F;
+                                if (provider.worldType == WorldType.AMPLIFIED && f5 > 0.0f) {
+                                    f5 = 0.5F + f5 * 1.5F;
+                                    f6 = 0.5F + f6 * 2.0F;
                                 } else {
-                                    f4 = f4 * 0.5F;
+                                    f6 = f6 * 0.5F;
                                 }
                             }
                         } else {
-                            if (provider.worldType == WorldType.AMPLIFIED && f3 > 0.0F) {
-                                f3 = 1.0F + f3 * 2.0F;
-                                f4 = 1.0F + f4 * 4.0F;
+                            if (provider.worldType == WorldType.AMPLIFIED && f5 > 0.0F) {
+                                f5 = 1.0F + f5 * 2.0F;
+                                f6 = 1.0F + f6 * 4.0F;
                             }
                         }
 
-                        float f5 = parabolicField[l1 + 2 + (i2 + 2) * 5] / (f3 + 2.0F);
+                        float f7 = biomeWeights[j1 + 2 + (k1 + 2) * 5] / (f5 + 2.0F);
 
                         if (Biome1.getBaseHeight() > Biome.getBaseHeight()) {
-                            f5 /= 2.0F;
+                            f7 /= 2.0F;
                         }
 
-                        f += f4 * f5;
-                        f1 += f3 * f5;
-                        f2 += f5;
+                        f2 += f6 * f7;
+                        f3 += f5 * f7;
+                        f4 += f7;
                     }
                 }
 
-                f /= f2;
-                f1 /= f2;
-                f = f * 0.9F + 0.1F;
-                f1 = (f1 * 4.0F - 1.0F) / 8.0F;
-                double d12 = this.noiseData4[i1] / 8000.0D;
+                f2 /= f4;
+                f3 /= f4;
+                f2 = f2 * 0.9F + 0.1F;
+                f3 = (f3 * 4.0F - 1.0F) / 8.0F;
+                double d12 = this.depthRegion[j] / 8000.0D;
 
                 if (d12 < 0.0D) {
                     d12 = -d12 * 0.3D;
@@ -202,9 +202,9 @@ public class NormalTerrainGenerator implements BaseTerrainGenerator {
                     d12 /= 8.0D;
                 }
 
-                ++i1;
-                double d13 = f1;
-                double d14 = f;
+                ++j;
+                double d13 = f3;
+                double d14 = f2;
                 d13 += d12 * 0.2D;
                 d13 = d13 * 8.5D / 8.0D;
                 double d5 = 8.5D + d13 * 4.0D;
@@ -216,9 +216,9 @@ public class NormalTerrainGenerator implements BaseTerrainGenerator {
                         d6 *= 4.0D;
                     }
 
-                    double d7 = this.noiseData2[l] / 512.0D;
-                    double d8 = this.noiseData3[l] / 512.0D;
-                    double d9 = (this.noiseData1[l] / 10.0D + 1.0D) / 2.0D;
+                    double d7 = this.minLimitRegion[i] / 512.0D;
+                    double d8 = this.maxLimitRegion[i] / 512.0D;
+                    double d9 = (this.mainNoiseRegion[i] / 10.0D + 1.0D) / 2.0D;
                     double d10 = MathHelper.denormalizeClamp(d7, d8, d9) - d6;
 
                     if (j2 > 29) {
@@ -226,8 +226,8 @@ public class NormalTerrainGenerator implements BaseTerrainGenerator {
                         d10 = d10 * (1.0D - d11) + -10.0D * d11;
                     }
 
-                    this.noiseField[l] = d10;
-                    ++l;
+                    this.heightMap[i] = d10;
+                    ++i;
                 }
             }
         }
@@ -239,7 +239,7 @@ public class NormalTerrainGenerator implements BaseTerrainGenerator {
 //        byte baseMeta = provider.dimensionInformation.getBaseBlockForTerrain().getMeta();
         Block baseLiquid = provider.dimensionInformation.getFluidForTerrain();
 
-        func_147423_a(chunkX * 4, 0, chunkZ * 4);
+        generateHeightmap(chunkX * 4, 0, chunkZ * 4);
 
         byte waterLevel = 63;
         for (int x4 = 0; x4 < 4; ++x4) {
@@ -253,30 +253,27 @@ public class NormalTerrainGenerator implements BaseTerrainGenerator {
                 int j2 = (i1 + z4 + 1) * 33;
 
                 for (int height32 = 0; height32 < 32; ++height32) {
-                    double d0 = 0.125D;
-                    double d1 = noiseField[k1 + height32];
-                    double d2 = noiseField[l1 + height32];
-                    double d3 = noiseField[i2 + height32];
-                    double d4 = noiseField[j2 + height32];
-                    double d5 = (noiseField[k1 + height32 + 1] - d1) * d0;
-                    double d6 = (noiseField[l1 + height32 + 1] - d2) * d0;
-                    double d7 = (noiseField[i2 + height32 + 1] - d3) * d0;
-                    double d8 = (noiseField[j2 + height32 + 1] - d4) * d0;
+                    double d1 = heightMap[k1 + height32];
+                    double d2 = heightMap[l1 + height32];
+                    double d3 = heightMap[i2 + height32];
+                    double d4 = heightMap[j2 + height32];
+                    double d5 = (heightMap[k1 + height32 + 1] - d1) * 0.125D;
+                    double d6 = (heightMap[l1 + height32 + 1] - d2) * 0.125D;
+                    double d7 = (heightMap[i2 + height32 + 1] - d3) * 0.125D;
+                    double d8 = (heightMap[j2 + height32 + 1] - d4) * 0.125D;
 
                     for (int h = 0; h < 8; ++h) {
-                        double d9 = 0.25D;
                         double d10 = d1;
                         double d11 = d2;
-                        double d12 = (d3 - d1) * d9;
-                        double d13 = (d4 - d2) * d9;
+                        double d12 = (d3 - d1) * 0.25D;
+                        double d13 = (d4 - d2) * 0.25D;
                         int height = (height32 * 8) + h;
 
                         for (int x = 0; x < 4; ++x) {
                             int index = ((x + (x4 * 4)) << 12) | ((0 + (z4 * 4)) << 8) | height;
                             short maxheight = 256;
                             index -= maxheight;
-                            double d14 = 0.25D;
-                            double d16 = (d11 - d10) * d14;
+                            double d16 = (d11 - d10) * 0.25D;
                             double d15 = d10 - d16;
 
                             for (int z = 0; z < 4; ++z) {
@@ -291,8 +288,6 @@ public class NormalTerrainGenerator implements BaseTerrainGenerator {
 //                                    }
                                 } else if (height < waterLevel) {
                                     BaseTerrainGenerator.setBlockState(primer, index, baseLiquid.getDefaultState());
-                                } else {
-                                    BaseTerrainGenerator.setBlockState(primer, index, Blocks.AIR.getDefaultState());
                                 }
                             }
 
@@ -319,12 +314,12 @@ public class NormalTerrainGenerator implements BaseTerrainGenerator {
         }
 
         double d0 = 0.03125D;
-        this.stoneNoise = this.noiseGen4.getRegion(this.stoneNoise, (chunkX * 16), (chunkZ * 16), 16, 16, d0 * 2.0D, d0 * 2.0D, 1.0D);
+        this.depthBuffer = this.surfaceNoise.getRegion(this.depthBuffer, (chunkX * 16), (chunkZ * 16), 16, 16, d0 * 2.0D, d0 * 2.0D, 1.0D);
 
         for (int k = 0; k < 16; ++k) {
             for (int l = 0; l < 16; ++l) {
                 Biome Biome = Biomes[l + k * 16];
-                Biome.genTerrainBlocks(world, provider.rand, primer, chunkX * 16 + k, chunkZ * 16 + l, this.stoneNoise[l + k * 16]);
+                Biome.genTerrainBlocks(world, provider.rand, primer, chunkX * 16 + k, chunkZ * 16 + l, this.depthBuffer[l + k * 16]);
             }
         }
     }

@@ -26,6 +26,7 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeProvider;
 import net.minecraft.world.biome.BiomeProviderSingle;
 import net.minecraft.world.chunk.IChunkGenerator;
+import net.minecraft.world.storage.WorldInfo;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -156,6 +157,8 @@ public class GenericWorldProvider extends WorldProvider implements  /*@todo impl
                 seed = calculateSeed(worldObj.getSeed(), dim) ;
             }
         }
+//        seed = dimensionInformation.getBaseSeed();
+//        System.out.println("seed = " + seed);
     }
 
     private DimensionStorage getStorage() {
@@ -200,7 +203,16 @@ public class GenericWorldProvider extends WorldProvider implements  /*@todo impl
             if (type == ControllerType.CONTROLLER_SINGLE) {
                 this.biomeProvider = new BiomeProviderSingle(dimensionInformation.getBiomes().get(0));
             } else if (type == ControllerType.CONTROLLER_DEFAULT) {
-                this.biomeProvider = new BiomeProvider(worldObj.getWorldInfo());
+                WorldInfo worldInfo = worldObj.getWorldInfo();
+                System.out.println("worldInfo.getSeed() = " + worldInfo.getSeed());
+                System.out.println("seed = " + seed);
+                worldInfo = new WorldInfo(worldInfo) {
+                    @Override
+                    public long getSeed() {
+                        return seed;
+                    }
+                };
+                this.biomeProvider = new BiomeProvider(worldInfo);
             } else {
                 GenericBiomeProvider.hackyDimensionInformation = dimensionInformation;      // Hack to get the dimension information in the superclass.
                 this.biomeProvider = new GenericBiomeProvider(seed, worldObj.getWorldInfo(), dimensionInformation);

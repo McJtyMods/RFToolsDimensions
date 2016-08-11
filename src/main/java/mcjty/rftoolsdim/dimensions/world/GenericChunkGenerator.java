@@ -202,7 +202,9 @@ public class GenericChunkGenerator implements IChunkGenerator {
         }
 
         this.seed = seed;
+//        System.out.println("GenericChunkGenerator: seed = " + seed);
         this.rand = new Random((seed + 516) * 314);
+//        this.rand = new Random(seed);
 
         switch (dimensionInformation.getTerrainType()) {
             case TERRAIN_VOID:
