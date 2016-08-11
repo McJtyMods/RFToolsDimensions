@@ -11,7 +11,8 @@ public enum SpecialType {
     SPECIAL_SEED("Seed"),
     SPECIAL_SPAWN("Spawn"),
     SPECIAL_NOANIMALS("NoAnimals"),
-    SPECIAL_OWNER("Owner");
+    SPECIAL_OWNER("Owner"),
+    SPECIAL_CHEATER("Cheater");
 
     private static final Map<String,SpecialType> SPECIAL_TYPE_MAP = new HashMap<>();
 

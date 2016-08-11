@@ -80,6 +80,7 @@ public class DimensionInformation implements IDimensionInformation {
     private boolean noanimals = false;
     private boolean shelter = false;
     private boolean respawnHere = false;
+    private boolean cheater = false;
 
     private Set<FeatureType> featureTypes = EnumSet.noneOf(FeatureType.class);
     private Set<StructureType> structureTypes = EnumSet.noneOf(StructureType.class);
@@ -331,6 +332,7 @@ public class DimensionInformation implements IDimensionInformation {
         noanimals = tagCompound.getBoolean("noanimals");
         shelter = tagCompound.getBoolean("shelter");
         respawnHere = tagCompound.getBoolean("respawnHere");
+        cheater = tagCompound.getBoolean("cheater");
         if (tagCompound.hasKey("celestialAngle")) {
             celestialAngle = tagCompound.getFloat("celestialAngle");
         } else {
@@ -479,6 +481,7 @@ public class DimensionInformation implements IDimensionInformation {
         tagCompound.setBoolean("noanimals", noanimals);
         tagCompound.setBoolean("shelter", shelter);
         tagCompound.setBoolean("respawnHere", respawnHere);
+        tagCompound.setBoolean("cheater", cheater);
         if (celestialAngle != null) {
             tagCompound.setFloat("celestialAngle", celestialAngle);
         }
@@ -731,6 +734,9 @@ public class DimensionInformation implements IDimensionInformation {
         if (respawnHere) {
             logDebug(player, "    Respawn local");
         }
+        if (cheater) {
+            logDebug(player, "    CHEATER!");
+        }
         if (celestialAngle != null) {
             logDebug(player, "    Celestial angle: " + celestialAngle);
         }
@@ -800,6 +806,7 @@ public class DimensionInformation implements IDimensionInformation {
         buf.writeBoolean(noanimals);
         buf.writeBoolean(shelter);
         buf.writeBoolean(respawnHere);
+        buf.writeBoolean(cheater);
         NetworkTools.writeFloat(buf, celestialAngle);
         NetworkTools.writeFloat(buf, timeSpeed);
 
@@ -916,6 +923,7 @@ public class DimensionInformation implements IDimensionInformation {
         noanimals = buf.readBoolean();
         shelter = buf.readBoolean();
         respawnHere = buf.readBoolean();
+        cheater = buf.readBoolean();
 
         celestialAngle = NetworkTools.readFloat(buf);
         timeSpeed = NetworkTools.readFloat(buf);
@@ -1394,6 +1402,14 @@ public class DimensionInformation implements IDimensionInformation {
 
     public void setRespawnHere(boolean respawnHere) {
         this.respawnHere = respawnHere;
+    }
+
+    public boolean isCheater() {
+        return cheater;
+    }
+
+    public void setCheater(boolean cheater) {
+        this.cheater = cheater;
     }
 
     public Float getCelestialAngle() {

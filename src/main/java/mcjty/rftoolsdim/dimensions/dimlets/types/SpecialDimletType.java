@@ -1,9 +1,8 @@
 package mcjty.rftoolsdim.dimensions.dimlets.types;
 
+import mcjty.rftoolsdim.dimensions.DimensionInformation;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletKey;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletObjectMapping;
-import mcjty.rftoolsdim.dimensions.dimlets.DimletRandomizer;
-import mcjty.rftoolsdim.dimensions.DimensionInformation;
 import mcjty.rftoolsdim.dimensions.types.SpecialType;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.config.Configuration;
@@ -72,6 +71,8 @@ public class SpecialDimletType implements IDimletType {
             dimensionInformation.setNoanimals(true);
         } else if (specialType == SpecialType.SPECIAL_SPAWN) {
             dimensionInformation.setRespawnHere(true);
+        } else if (specialType == SpecialType.SPECIAL_CHEATER) {
+            dimensionInformation.setCheater(true);
         }
     }
 
@@ -89,6 +90,8 @@ public class SpecialDimletType implements IDimletType {
                 dimensionInformation.setShelter(true);
             } else if (specialType == SpecialType.SPECIAL_SPAWN) {
                 dimensionInformation.setRespawnHere(true);
+            } else if (specialType == SpecialType.SPECIAL_CHEATER) {
+                dimensionInformation.setCheater(true);
             }
         }
     }

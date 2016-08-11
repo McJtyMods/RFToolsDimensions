@@ -136,7 +136,7 @@ public class DimensionBuilderTileEntity extends GenericEnergyReceiverTileEntity 
         if (id != 0) {
             DimensionStorage dimensionStorage = DimensionStorage.getDimensionStorage(worldObj);
             int rf;
-            if (isCreative()) {
+            if (isCheaterDimension(tagCompound)) {
                 rf = MachineConfiguration.BUILDER_MAXENERGY;
             } else {
                 rf = getEnergyStored(EnumFacing.DOWN);
@@ -153,7 +153,7 @@ public class DimensionBuilderTileEntity extends GenericEnergyReceiverTileEntity 
                     Logging.log("#################### id:" + id + ", rf:" + rf + ", energy:" + energy + ", max:" + maxEnergy);
                 }
             }
-            if (!isCreative()) {
+            if (!isCheaterDimension(tagCompound)) {
                 consumeEnergy(rf);
             }
             dimensionStorage.setEnergyLevel(id, energy + rf);
@@ -189,8 +189,8 @@ public class DimensionBuilderTileEntity extends GenericEnergyReceiverTileEntity 
         int createCost = tagCompound.getInteger("rfCreateCost");
         createCost = (int) (createCost * (2.0f - getInfusedFactor()) / 2.0f);
 
-        if (isCreative() || (getEnergyStored(EnumFacing.DOWN) >= createCost)) {
-            if (isCreative()) {
+        if (isCheaterDimension(tagCompound) || (getEnergyStored(EnumFacing.DOWN) >= createCost)) {
+            if (isCheaterDimension(tagCompound)) {
                 ticksLeft = 0;
             } else {
                 consumeEnergy(createCost);
@@ -213,6 +213,14 @@ public class DimensionBuilderTileEntity extends GenericEnergyReceiverTileEntity 
             }
         }
         return ticksLeft;
+    }
+
+    private boolean isCheaterDimension(NBTTagCompound tagCompound) {
+        if (isCreative()) {
+            return true;
+        }
+        String descriptionString = tagCompound.getString("descriptionString");
+        return descriptionString.contains("XCheater");
     }
 
     public DimensionBuilderBlock.OperationType getState() {

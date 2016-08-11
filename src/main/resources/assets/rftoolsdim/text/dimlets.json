@@ -16,6 +16,20 @@
   {
     "filter": {
       "type": "special",
+      "name": "Cheater"
+    },
+    "settings": {
+      "rarity": 0,
+      "create": 0,
+      "maintain": 0,
+      "ticks": 0,
+      "worldgen": false,
+      "dimlet": true
+    }
+  },
+  {
+    "filter": {
+      "type": "special",
       "name": "NoAnimals"
     },
     "settings": {
