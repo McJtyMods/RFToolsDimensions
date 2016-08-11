@@ -95,7 +95,12 @@ public class DimletObjectMapping {
                 return Blocks.WATER;
             }
             int lastIndexOf = StringUtils.lastIndexOf(id, "@");
-            String blockid = id.substring(0, lastIndexOf);
+            String blockid;
+            if (lastIndexOf == -1) {
+                blockid = id;
+            } else {
+                blockid = id.substring(0, lastIndexOf);
+            }
 //            int meta = Integer.parseInt(id.substring(lastIndexOf+1));
 
             Block block = Block.REGISTRY.getObject(new ResourceLocation(blockid));
