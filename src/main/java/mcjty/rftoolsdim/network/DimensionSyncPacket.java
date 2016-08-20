@@ -32,11 +32,14 @@ public class DimensionSyncPacket {
 
     public void execute() {
         // Only do this on client side.
+        StringBuilder builder = new StringBuilder();
         for (int id : dimensions) {
-            Logging.log("DimensionSyncPacket: Registering id: id = " + id);
+            builder.append(id);
+            builder.append(' ');
             if (!DimensionManager.isDimensionRegistered(id)) {
                 DimensionManager.registerDimension(id, ModDimensions.rftoolsType);
             }
         }
+        Logging.log("DimensionSyncPacket: Registering: " + builder.toString());
     }
 }

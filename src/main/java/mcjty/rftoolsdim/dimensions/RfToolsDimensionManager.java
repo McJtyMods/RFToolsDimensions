@@ -5,14 +5,12 @@ import mcjty.rftoolsdim.config.DimletRules;
 import mcjty.rftoolsdim.config.GeneralConfiguration;
 import mcjty.rftoolsdim.config.PowerConfiguration;
 import mcjty.rftoolsdim.dimensions.description.DimensionDescriptor;
-import mcjty.rftoolsdim.dimensions.world.GenericWorldProvider;
 import mcjty.rftoolsdim.items.ModItems;
 import mcjty.rftoolsdim.items.PhasedFieldGeneratorItem;
 import mcjty.rftoolsdim.network.PacketRegisterDimensions;
 import mcjty.rftoolsdim.network.PacketSyncDimensionInfo;
 import mcjty.rftoolsdim.network.PacketSyncRules;
 import mcjty.rftoolsdim.network.RFToolsDimMessages;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -23,7 +21,6 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ClassInheritanceMultiMap;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldSavedData;
 import net.minecraft.world.WorldServer;
@@ -31,7 +28,6 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.ChunkProviderServer;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.util.Constants;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.util.*;
 
@@ -46,11 +42,6 @@ public class RfToolsDimensionManager extends WorldSavedData {
     private final Set<Integer> reclaimedIds = new HashSet<Integer>();
 
     public void syncFromServer(Map<Integer, DimensionDescriptor> dims, Map<Integer, DimensionInformation> dimInfo) {
-        Logging.log("RfToolsDimensionManager.syncFromServer");
-        if (dims.isEmpty() || dimInfo.isEmpty()) {
-            Logging.log("Dimension information from server is empty.");
-        }
-
         for (Map.Entry<Integer, DimensionDescriptor> entry : dims.entrySet()) {
             int id = entry.getKey();
             DimensionDescriptor descriptor = entry.getValue();
@@ -273,12 +264,14 @@ public class RfToolsDimensionManager extends WorldSavedData {
     }
 
     public void registerDimensions() {
-        Logging.log("Registering RFTools dimensions");
+        StringBuilder builder = new StringBuilder();
         for (Map.Entry<Integer, DimensionDescriptor> me : dimensions.entrySet()) {
             int id = me.getKey();
-            Logging.log("    Dimension: " + id);
+            builder.append(id);
+            builder.append(' ');
             registerDimensionToServerAndClient(id);
         }
+        Logging.log("Registering RFTools dimensions: " + builder.toString());
     }
 
     private void registerDimensionToServerAndClient(int id) {
