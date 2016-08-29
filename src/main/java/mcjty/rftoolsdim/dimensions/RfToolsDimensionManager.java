@@ -331,7 +331,6 @@ public class RfToolsDimensionManager extends WorldSavedData {
         if (DimensionManager.isDimensionRegistered(id)) {
             DimensionManager.unregisterDimension(id);
         }
-        DimensionManager.unregisterDimension(id);
     }
 
     public void recoverDimension(World world, int id, DimensionDescriptor descriptor, String name, String playerName, UUID player) {
