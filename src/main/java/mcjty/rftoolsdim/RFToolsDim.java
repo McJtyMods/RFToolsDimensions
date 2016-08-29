@@ -41,10 +41,10 @@ import java.util.EnumMap;
         version = RFToolsDim.VERSION)
 public class RFToolsDim implements ModBase {
     public static final String MODID = "rftoolsdim";
-    public static final String VERSION = "4.30beta47";
-    public static final String MIN_FORGE_VER = "12.16.1.1896";
-    public static final String MIN_MCJTYLIB_VER = "1.9.4-1.9.0";
-    public static final String MIN_RFTOOLS_VER = "1.9.4-4.60";
+    public static final String VERSION = "4.30beta48";
+    public static final String MIN_FORGE_VER = "12.16.1.1898";
+    public static final String MIN_MCJTYLIB_VER = "1.10-1.9.9";
+    public static final String MIN_RFTOOLS_VER = "1.10.2-5.20";
 
     @SidedProxy(clientSide="mcjty.rftoolsdim.proxy.ClientProxy", serverSide="mcjty.rftoolsdim.proxy.ServerProxy")
     public static CommonProxy proxy;
