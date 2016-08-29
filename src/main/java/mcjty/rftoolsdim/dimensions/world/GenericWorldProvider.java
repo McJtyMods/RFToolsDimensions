@@ -204,8 +204,6 @@ public class GenericWorldProvider extends WorldProvider implements  /*@todo impl
                 this.biomeProvider = new BiomeProviderSingle(dimensionInformation.getBiomes().get(0));
             } else if (type == ControllerType.CONTROLLER_DEFAULT) {
                 WorldInfo worldInfo = worldObj.getWorldInfo();
-                System.out.println("worldInfo.getSeed() = " + worldInfo.getSeed());
-                System.out.println("seed = " + seed);
                 worldInfo = new WorldInfo(worldInfo) {
                     @Override
                     public long getSeed() {
