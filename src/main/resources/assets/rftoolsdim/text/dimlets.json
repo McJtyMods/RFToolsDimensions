@@ -399,7 +399,7 @@
   {
     "filter": {
       "type": "material",
-      "name": [ "stained_hardened_clay", "hardened_clay" ]
+      "name": [ "stained_hardened_clay", "hardened_clay", "clay" ]
     },
     "settings": {
       "rarity": 2,
