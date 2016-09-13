@@ -35,6 +35,7 @@ public class DimletRandomizer {
     private static WeightedRandomSelector<Integer,DimletKey> randomTerrainDimlets;
     private static WeightedRandomSelector<Integer,DimletKey> randomSkyDimlets;
     private static WeightedRandomSelector<Integer,DimletKey> randomSkyBodyDimlets;
+    private static WeightedRandomSelector<Integer,DimletKey> randomWeatherDimlets;
 
     public static void init() {
         randomDimlets = null;
@@ -47,6 +48,7 @@ public class DimletRandomizer {
         randomTerrainDimlets = null;
         randomSkyDimlets = null;
         randomSkyBodyDimlets = null;
+        randomWeatherDimlets = null;
     }
 
     private static void setupWeightedRandomList() {
@@ -119,6 +121,12 @@ public class DimletRandomizer {
                     setupRarity(randomTerrainDimlets, rarity0, rarity1, rarity2, rarity3, rarity4, rarity5, rarity6);
                 }
                 randomTerrainDimlets.addItem(entry.getValue().getRarity(), key);
+            } else if (key.getType() == DimletType.DIMLET_WEATHER) {
+                if (randomWeatherDimlets == null) {
+                    randomWeatherDimlets = new WeightedRandomSelector<>();
+                    setupRarity(randomWeatherDimlets, rarity0, rarity1, rarity2, rarity3, rarity4, rarity5, rarity6);
+                }
+                randomWeatherDimlets.addItem(entry.getValue().getRarity(), key);
             } else if (key.getType() == DimletType.DIMLET_SKY) {
                 if (randomSkyDimlets == null) {
                     randomSkyDimlets = new WeightedRandomSelector<>();
@@ -180,6 +188,11 @@ public class DimletRandomizer {
     public static DimletKey getRandomSky(Random random) {
         setupWeightedRandomList();
         return randomSkyDimlets == null ? null : randomSkyDimlets.select(random);
+    }
+
+    public static DimletKey getRandomWeather(Random random) {
+        setupWeightedRandomList();
+        return randomWeatherDimlets == null ? null : randomWeatherDimlets.select(random);
     }
 
     public static DimletKey getRandomSkyBody(Random random) {

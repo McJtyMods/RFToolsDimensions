@@ -1,11 +1,12 @@
 package mcjty.rftoolsdim.dimensions.dimlets.types;
 
-import mcjty.rftoolsdim.dimensions.DimensionInformation;
 import mcjty.rftoolsdim.config.WorldgenConfiguration;
+import mcjty.rftoolsdim.dimensions.DimensionInformation;
 import mcjty.rftoolsdim.dimensions.description.WeatherDescriptor;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletKey;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletObjectMapping;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletRandomizer;
+import mcjty.rftoolsdim.dimensions.dimlets.WeatherRegistry;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.config.Configuration;
 import org.apache.commons.lang3.tuple.Pair;
@@ -79,18 +80,17 @@ public class WeatherDimletType implements IDimletType {
         WeatherDescriptor.Builder builder = new WeatherDescriptor.Builder();
         if (dimlets.isEmpty()) {
             while (random.nextFloat() > WorldgenConfiguration.randomWeatherChance) {
-//                List<DimletKey> keys = new ArrayList<>(DimletObjectMapping.idToWeatherDescriptor.keySet());
-//                DimletKey key = keys.get(random.nextInt(keys.size()));
-//                dimensionInformation.updateCostFactor(key);
-//                builder.combine(DimletObjectMapping.idToWeatherDescriptor.get(key));
-                // @todo
+                DimletKey key = DimletRandomizer.getRandomWeather(random);
+                if (key != null) {
+                    dimensionInformation.updateCostFactor(key);
+                    builder.combine(WeatherRegistry.getWeatherDescriptor(key));
+                }
             }
         } else {
-//            for (Pair<DimletKey, List<DimletKey>> dimlet : dimlets) {
-//                DimletKey key = dimlet.getKey();
-//                builder.combine(DimletObjectMapping.idToWeatherDescriptor.get(key));
-//            }
-            // @todo
+            for (Pair<DimletKey, List<DimletKey>> dimlet : dimlets) {
+                DimletKey key = dimlet.getKey();
+                builder.combine(WeatherRegistry.getWeatherDescriptor(key));
+            }
         }
         dimensionInformation.setWeatherDescriptor(builder.build());
     }

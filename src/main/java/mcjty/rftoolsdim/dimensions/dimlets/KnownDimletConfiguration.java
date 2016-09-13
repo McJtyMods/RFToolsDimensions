@@ -9,6 +9,7 @@ import mcjty.rftoolsdim.config.Filter;
 import mcjty.rftoolsdim.config.GeneralConfiguration;
 import mcjty.rftoolsdim.config.Settings;
 import mcjty.rftoolsdim.dimensions.description.SkyDescriptor;
+import mcjty.rftoolsdim.dimensions.description.WeatherDescriptor;
 import mcjty.rftoolsdim.dimensions.dimlets.types.DimletType;
 import mcjty.rftoolsdim.dimensions.types.*;
 import mcjty.rftoolsdim.dimensions.world.BiomeControllerMapping;
@@ -91,8 +92,25 @@ public class KnownDimletConfiguration {
 //        addExtraInformation(keyTimeNormal, "With this normal dimlet you will get", "default day/night timing");
 
         initSkyDimlets();
+        initWeatherDimlets();
 
         BiomeControllerMapping.setupControllerBiomes();
+    }
+
+    private static void initWeatherDimlets() {
+        initWeatherDimlet("Default", new WeatherDescriptor.Builder().build());
+        initWeatherDimlet("no.rain", new WeatherDescriptor.Builder().weatherType(WeatherType.WEATHER_NORAIN).build());
+        initWeatherDimlet("light.rain", new WeatherDescriptor.Builder().weatherType(WeatherType.WEATHER_LIGHTRAIN).build());
+        initWeatherDimlet("hard.rain", new WeatherDescriptor.Builder().weatherType(WeatherType.WEATHER_HARDRAIN).build());
+        initWeatherDimlet("no.thunder", new WeatherDescriptor.Builder().weatherType(WeatherType.WEATHER_NOTHUNDER).build());
+        initWeatherDimlet("light.thunder", new WeatherDescriptor.Builder().weatherType(WeatherType.WEATHER_LIGHTTHUNDER).build());
+        initWeatherDimlet("hard.thunder", new WeatherDescriptor.Builder().weatherType(WeatherType.WEATHER_HARDTHUNDER).build());
+    }
+
+    private static void initWeatherDimlet(String id, WeatherDescriptor weatherDescriptor) {
+        DimletKey key = new DimletKey(DimletType.DIMLET_WEATHER, id);
+        initDimlet(key, RFToolsDim.MODID);
+        WeatherRegistry.registerWeather(key, weatherDescriptor);
     }
 
     private static void initSkyDimlets() {
@@ -388,7 +406,7 @@ public class KnownDimletConfiguration {
                 }
                 return I18n.translateToLocal("entity." + key.getId() + ".name");
             case DIMLET_SKY:
-                return StringUtils.capitalize(StringUtils.join(StringUtils.split(key.getId(), '.')));
+                return StringUtils.capitalize(StringUtils.join(StringUtils.split(key.getId(), '.'), ' '));
             case DIMLET_STRUCTURE:
                 return key.getId();
             case DIMLET_TERRAIN:
@@ -406,7 +424,7 @@ public class KnownDimletConfiguration {
             case DIMLET_CONTROLLER:
                 return key.getId();
             case DIMLET_WEATHER:
-                return "weather"; //@todo
+                return StringUtils.capitalize(StringUtils.join(StringUtils.split(key.getId(), '.'), ' '));
             case DIMLET_PATREON:
                 return key.getId();
         }

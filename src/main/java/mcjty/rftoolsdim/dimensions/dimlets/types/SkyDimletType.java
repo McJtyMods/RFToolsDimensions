@@ -97,7 +97,6 @@ public class SkyDimletType implements IDimletType {
                         dimlets.add(Pair.of(key, modifiers));
                     }
                 }
-                // @todo
             }
 
             if (random.nextFloat() < WorldgenConfiguration.randomSpecialSkyChance) {

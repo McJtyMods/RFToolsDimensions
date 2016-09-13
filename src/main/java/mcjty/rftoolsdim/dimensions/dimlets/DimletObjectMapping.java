@@ -147,7 +147,7 @@ public class DimletObjectMapping {
 
     public static WeatherDescriptor getWeather(DimletKey dimlet) {
         if (DimletType.DIMLET_WEATHER.equals(dimlet.getType())) {
-            // @todo
+            return WeatherRegistry.getWeatherDescriptor(dimlet);
         }
         return new WeatherDescriptor.Builder().build();
     }
