@@ -9,7 +9,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.Biome;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
 public class DimletRandomizer {
 
@@ -30,6 +33,8 @@ public class DimletRandomizer {
     private static WeightedRandomSelector<Integer,DimletKey> randomEffectDimlets;
     private static WeightedRandomSelector<Integer,DimletKey> randomFeatureDimlets;
     private static WeightedRandomSelector<Integer,DimletKey> randomTerrainDimlets;
+    private static WeightedRandomSelector<Integer,DimletKey> randomSkyDimlets;
+    private static WeightedRandomSelector<Integer,DimletKey> randomSkyBodyDimlets;
 
     public static void init() {
         randomDimlets = null;
@@ -40,6 +45,8 @@ public class DimletRandomizer {
         randomEffectDimlets = null;
         randomFeatureDimlets = null;
         randomTerrainDimlets = null;
+        randomSkyDimlets = null;
+        randomSkyBodyDimlets = null;
     }
 
     private static void setupWeightedRandomList() {
@@ -58,20 +65,6 @@ public class DimletRandomizer {
 
         randomDimlets = new WeightedRandomSelector<>();
         setupRarity(randomDimlets, rarity0, rarity1, rarity2, rarity3, rarity4, rarity5, rarity6);
-        randomMaterialDimlets = new WeightedRandomSelector<>();
-        setupRarity(randomMaterialDimlets, rarity0, rarity1, rarity2, rarity3, rarity4, rarity5, rarity6);
-        randomLiquidDimlets = new WeightedRandomSelector<>();
-        setupRarity(randomLiquidDimlets, rarity0, rarity1, rarity2, rarity3, rarity4, rarity5, rarity6);
-        randomMobDimlets = new WeightedRandomSelector<>();
-        setupRarity(randomMobDimlets, rarity0, rarity1, rarity2, rarity3, rarity4, rarity5, rarity6);
-        randomStructureDimlets = new WeightedRandomSelector<>();
-        setupRarity(randomStructureDimlets, rarity0, rarity1, rarity2, rarity3, rarity4, rarity5, rarity6);
-        randomEffectDimlets = new WeightedRandomSelector<>();
-        setupRarity(randomEffectDimlets, rarity0, rarity1, rarity2, rarity3, rarity4, rarity5, rarity6);
-        randomFeatureDimlets = new WeightedRandomSelector<>();
-        setupRarity(randomFeatureDimlets, rarity0, rarity1, rarity2, rarity3, rarity4, rarity5, rarity6);
-        randomTerrainDimlets = new WeightedRandomSelector<>();
-        setupRarity(randomTerrainDimlets, rarity0, rarity1, rarity2, rarity3, rarity4, rarity5, rarity6);
 
         for (Map.Entry<DimletKey, Settings> entry : knownDimlets.entrySet()) {
             DimletKey key = entry.getKey();
@@ -85,19 +78,60 @@ public class DimletRandomizer {
 
             randomDimlets.addItem(entry.getValue().getRarity(), key);
             if (key.getType() == DimletType.DIMLET_MATERIAL) {
+                if (randomMaterialDimlets == null) {
+                    randomMaterialDimlets = new WeightedRandomSelector<>();
+                    setupRarity(randomMaterialDimlets, rarity0, rarity1, rarity2, rarity3, rarity4, rarity5, rarity6);
+                }
                 randomMaterialDimlets.addItem(entry.getValue().getRarity(), key);
             } else if (key.getType() == DimletType.DIMLET_LIQUID) {
+                if (randomLiquidDimlets == null) {
+                    randomLiquidDimlets = new WeightedRandomSelector<>();
+                    setupRarity(randomLiquidDimlets, rarity0, rarity1, rarity2, rarity3, rarity4, rarity5, rarity6);
+                }
                 randomLiquidDimlets.addItem(entry.getValue().getRarity(), key);
             } else if (key.getType() == DimletType.DIMLET_MOB) {
+                if (randomMobDimlets == null) {
+                    randomMobDimlets = new WeightedRandomSelector<>();
+                    setupRarity(randomMobDimlets, rarity0, rarity1, rarity2, rarity3, rarity4, rarity5, rarity6);
+                }
                 randomMobDimlets.addItem(entry.getValue().getRarity(), key);
             } else if (key.getType() == DimletType.DIMLET_EFFECT) {
+                if (randomEffectDimlets == null) {
+                    randomEffectDimlets = new WeightedRandomSelector<>();
+                    setupRarity(randomEffectDimlets, rarity0, rarity1, rarity2, rarity3, rarity4, rarity5, rarity6);
+                }
                 randomEffectDimlets.addItem(entry.getValue().getRarity(), key);
             } else if (key.getType() == DimletType.DIMLET_FEATURE) {
+                if (randomFeatureDimlets == null) {
+                    randomFeatureDimlets = new WeightedRandomSelector<>();
+                    setupRarity(randomFeatureDimlets, rarity0, rarity1, rarity2, rarity3, rarity4, rarity5, rarity6);
+                }
                 randomFeatureDimlets.addItem(entry.getValue().getRarity(), key);
             } else if (key.getType() == DimletType.DIMLET_STRUCTURE) {
+                if (randomStructureDimlets == null) {
+                    randomStructureDimlets = new WeightedRandomSelector<>();
+                    setupRarity(randomStructureDimlets, rarity0, rarity1, rarity2, rarity3, rarity4, rarity5, rarity6);
+                }
                 randomStructureDimlets.addItem(entry.getValue().getRarity(), key);
             } else if (key.getType() == DimletType.DIMLET_TERRAIN) {
+                if (randomTerrainDimlets == null) {
+                    randomTerrainDimlets = new WeightedRandomSelector<>();
+                    setupRarity(randomTerrainDimlets, rarity0, rarity1, rarity2, rarity3, rarity4, rarity5, rarity6);
+                }
                 randomTerrainDimlets.addItem(entry.getValue().getRarity(), key);
+            } else if (key.getType() == DimletType.DIMLET_SKY) {
+                if (randomSkyDimlets == null) {
+                    randomSkyDimlets = new WeightedRandomSelector<>();
+                    setupRarity(randomSkyDimlets, rarity0, rarity1, rarity2, rarity3, rarity4, rarity5, rarity6);
+                }
+                randomSkyDimlets.addItem(entry.getValue().getRarity(), key);
+                if (SkyRegistry.isSkyBody(key)) {
+                    if (randomSkyBodyDimlets == null) {
+                        randomSkyBodyDimlets = new WeightedRandomSelector<>();
+                        setupRarity(randomSkyBodyDimlets, rarity0, rarity1, rarity2, rarity3, rarity4, rarity5, rarity6);
+                    }
+                    randomSkyBodyDimlets.addItem(entry.getValue().getRarity(), key);
+                }
             }
         }
     }
@@ -115,32 +149,42 @@ public class DimletRandomizer {
 
     public static DimletKey getRandomTerrain(Random random) {
         setupWeightedRandomList();
-        return randomTerrainDimlets.select(random);
+        return randomTerrainDimlets == null ? null : randomTerrainDimlets.select(random);
     }
 
     public static DimletKey getRandomFeature(Random random) {
         setupWeightedRandomList();
-        return randomFeatureDimlets.select(random);
+        return randomFeatureDimlets == null ? null : randomFeatureDimlets.select(random);
     }
 
     public static DimletKey getRandomEffect(Random random) {
         setupWeightedRandomList();
-        return randomEffectDimlets.select(random);
+        return randomEffectDimlets == null ? null : randomEffectDimlets.select(random);
     }
 
     public static DimletKey getRandomStructure(Random random) {
         setupWeightedRandomList();
-        return randomStructureDimlets.select(random);
+        return randomStructureDimlets == null ? null : randomStructureDimlets.select(random);
     }
 
     public static DimletKey getRandomFluidBlock(Random random) {
         setupWeightedRandomList();
-        return randomLiquidDimlets.select(random);
+        return randomLiquidDimlets == null ? null : randomLiquidDimlets.select(random);
     }
 
     public static DimletKey getRandomMaterialBlock(Random random) {
         setupWeightedRandomList();
-        return randomMaterialDimlets.select(random);
+        return randomMaterialDimlets == null ? null : randomMaterialDimlets.select(random);
+    }
+
+    public static DimletKey getRandomSky(Random random) {
+        setupWeightedRandomList();
+        return randomSkyDimlets == null ? null : randomSkyDimlets.select(random);
+    }
+
+    public static DimletKey getRandomSkyBody(Random random) {
+        setupWeightedRandomList();
+        return randomSkyBodyDimlets == null ? null : randomSkyBodyDimlets.select(random);
     }
 
     public static DimletKey getRandomController(Random random) {
@@ -149,7 +193,7 @@ public class DimletRandomizer {
     }
 
     public static DimletKey getRandomBiome(Random random) {
-        ArrayList<ResourceLocation> keys = new ArrayList<>(Biome.REGISTRY.getKeys());
+        List<ResourceLocation> keys = new ArrayList<>(Biome.REGISTRY.getKeys());
         int size = keys.size();
         while(true) {
             Biome biome = Biome.REGISTRY.getObject(keys.get(random.nextInt(size)));
@@ -161,7 +205,7 @@ public class DimletRandomizer {
 
     public static DimletKey getRandomMob(Random random) {
         setupWeightedRandomList();
-        return randomMobDimlets.select(random);
+        return randomMobDimlets == null ? null : randomMobDimlets.select(random);
     }
 
     public static WeightedRandomSelector<Integer, DimletKey> getRandomDimlets() {

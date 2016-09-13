@@ -140,7 +140,7 @@ public class DimletObjectMapping {
 
     public static SkyDescriptor getSky(DimletKey dimlet) {
         if (DimletType.DIMLET_SKY.equals(dimlet.getType())) {
-            // @todo
+            return SkyRegistry.getSkyDescriptor(dimlet);
         }
         return new SkyDescriptor.Builder().build();
     }

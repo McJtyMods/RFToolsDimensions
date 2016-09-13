@@ -8,6 +8,7 @@ import mcjty.rftoolsdim.config.DimletRules;
 import mcjty.rftoolsdim.config.Filter;
 import mcjty.rftoolsdim.config.GeneralConfiguration;
 import mcjty.rftoolsdim.config.Settings;
+import mcjty.rftoolsdim.dimensions.description.SkyDescriptor;
 import mcjty.rftoolsdim.dimensions.dimlets.types.DimletType;
 import mcjty.rftoolsdim.dimensions.types.*;
 import mcjty.rftoolsdim.dimensions.world.BiomeControllerMapping;
@@ -31,6 +32,7 @@ import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.oredict.OreDictionary;
+import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.Modifier;
 import java.util.*;
@@ -88,7 +90,74 @@ public class KnownDimletConfiguration {
         initDimlet(new DimletKey(DimletType.DIMLET_TIME, "Slow"), RFToolsDim.MODID);
 //        addExtraInformation(keyTimeNormal, "With this normal dimlet you will get", "default day/night timing");
 
+        initSkyDimlets();
+
         BiomeControllerMapping.setupControllerBiomes();
+    }
+
+    private static void initSkyDimlets() {
+        initSkyDimlet("normal", new SkyDescriptor.Builder().skyType(SkyType.SKY_NORMAL).build(), false);
+        initSkyDimlet("normal.day", new SkyDescriptor.Builder().sunBrightnessFactor(1.0f).build(), false);
+        initSkyDimlet("normal.night", new SkyDescriptor.Builder().starBrightnessFactor(1.0f).build(), false);
+
+        initSkyDimlet("dark.day", new SkyDescriptor.Builder().sunBrightnessFactor(0.4f).skyColorFactor(0.6f, 0.6f, 0.6f).build(), false);
+        initSkyDimlet("normal.night", new SkyDescriptor.Builder().starBrightnessFactor(1.0f).build(), false);
+        initSkyDimlet("bright.night", new SkyDescriptor.Builder().starBrightnessFactor(1.5f).build(), false);
+        initSkyDimlet("dark.night", new SkyDescriptor.Builder().starBrightnessFactor(0.4f).build(), false);
+        initSkyDimlet("red", new SkyDescriptor.Builder().skyColorFactor(1.0f, 0.2f, 0.2f).build(), false);
+        initSkyDimlet("dark.red", new SkyDescriptor.Builder().skyColorFactor(0.6f, 0.0f, 0.0f).build(), false);
+        initSkyDimlet("green", new SkyDescriptor.Builder().skyColorFactor(0.2f, 1.0f, 0.2f).build(), false);
+        initSkyDimlet("dark.green", new SkyDescriptor.Builder().skyColorFactor(0f, 0.6f, 0f).build(), false);
+        initSkyDimlet("blue", new SkyDescriptor.Builder().skyColorFactor(0.2f, 0.2f, 1.0f).build(), false);
+        initSkyDimlet("dark.blue", new SkyDescriptor.Builder().skyColorFactor(0.0f, 0.0f, 0.6f).build(), false);
+        initSkyDimlet("yellow", new SkyDescriptor.Builder().skyColorFactor(1.0f, 1.0f, 0.2f).build(), false);
+        initSkyDimlet("cyan", new SkyDescriptor.Builder().skyColorFactor(0.2f, 1.0f, 1.0f).build(), false);
+        initSkyDimlet("dark.cyan", new SkyDescriptor.Builder().skyColorFactor(0.0f, 0.6f, 0.6f).build(), false);
+        initSkyDimlet("purple", new SkyDescriptor.Builder().skyColorFactor(1.0f, 0.2f, 1.0f).build(), false);
+        initSkyDimlet("dark.purple", new SkyDescriptor.Builder().skyColorFactor(0.6f, 0, 0.6f).build(), false);
+        initSkyDimlet("black", new SkyDescriptor.Builder().skyColorFactor(0.0f, 0.0f, 0.0f).build(), false);
+        initSkyDimlet("gold", new SkyDescriptor.Builder().skyColorFactor(1.0f, 0.6f, 0.0f).build(), false);
+
+        initSkyDimlet("normal.fog", new SkyDescriptor.Builder().fogColorFactor(1.0f, 1.0f, 1.0f).build(), false);
+        initSkyDimlet("black.fog", new SkyDescriptor.Builder().fogColorFactor(0.0f, 0.0f, 0.0f).build(), false);
+        initSkyDimlet("red.fog", new SkyDescriptor.Builder().fogColorFactor(1.0f, 0.2f, 0.2f).build(), false);
+        initSkyDimlet("green.fog", new SkyDescriptor.Builder().fogColorFactor(0.2f, 1.0f, 0.2f).build(), false);
+        initSkyDimlet("blue.fog", new SkyDescriptor.Builder().fogColorFactor(0.2f, 0.2f, 1.0f).build(), false);
+        initSkyDimlet("yellow.fog", new SkyDescriptor.Builder().fogColorFactor(1.0f, 1.0f, 0.2f).build(), false);
+        initSkyDimlet("cyan.fog", new SkyDescriptor.Builder().fogColorFactor(0.2f, 1.0f, 1.0f).build(), false);
+        initSkyDimlet("purple.fog", new SkyDescriptor.Builder().fogColorFactor(1.0f, 0.2f, 1.0f).build(), false);
+
+        initSkyDimlet("ender", new SkyDescriptor.Builder().skyType(SkyType.SKY_ENDER).build(), false);
+        initSkyDimlet("inferno", new SkyDescriptor.Builder().skyType(SkyType.SKY_INFERNO).build(), false);
+        initSkyDimlet("stars1", new SkyDescriptor.Builder().skyType(SkyType.SKY_STARS1).build(), false);
+        initSkyDimlet("stars2", new SkyDescriptor.Builder().skyType(SkyType.SKY_STARS2).build(), false);
+
+        initSkyDimlet("body.none", new SkyDescriptor.Builder().addBody(CelestialBodyType.BODY_NONE).build(), false);   // False because we don't want to select this randomly.
+        initSkyDimlet("body.sun", new SkyDescriptor.Builder().addBody(CelestialBodyType.BODY_SUN).build(), true);
+        initSkyDimlet("body.large.sun", new SkyDescriptor.Builder().addBody(CelestialBodyType.BODY_LARGESUN).build(), true);
+        initSkyDimlet("body.small.sun", new SkyDescriptor.Builder().addBody(CelestialBodyType.BODY_SMALLSUN).build(), true);
+        initSkyDimlet("body.red.sun", new SkyDescriptor.Builder().addBody(CelestialBodyType.BODY_REDSUN).build(), true);
+        initSkyDimlet("body.moon", new SkyDescriptor.Builder().addBody(CelestialBodyType.BODY_MOON).build(), true);
+        initSkyDimlet("body.large.moon", new SkyDescriptor.Builder().addBody(CelestialBodyType.BODY_LARGEMOON).build(), true);
+        initSkyDimlet("body.small.moon", new SkyDescriptor.Builder().addBody(CelestialBodyType.BODY_SMALLMOON).build(), true);
+        initSkyDimlet("body.red.moon", new SkyDescriptor.Builder().addBody(CelestialBodyType.BODY_REDMOON).build(), true);
+        initSkyDimlet("body.planet", new SkyDescriptor.Builder().addBody(CelestialBodyType.BODY_PLANET).build(), true);
+        initSkyDimlet("body.large.planet", new SkyDescriptor.Builder().addBody(CelestialBodyType.BODY_LARGEPLANET).build(), true);
+
+        initSkyDimlet("normal.clouds", new SkyDescriptor.Builder().resetCloudColor().build(), false);
+        initSkyDimlet("black.clouds", new SkyDescriptor.Builder().cloudColorFactor(0.0f, 0.0f, 0.0f).build(), false);
+        initSkyDimlet("red.clouds", new SkyDescriptor.Builder().cloudColorFactor(1.0f, 0.2f, 0.2f).build(), false);
+        initSkyDimlet("green.clouds", new SkyDescriptor.Builder().cloudColorFactor(0.2f, 1.0f, 0.2f).build(), false);
+        initSkyDimlet("blue.clouds", new SkyDescriptor.Builder().cloudColorFactor(0.2f, 0.2f, 1.0f).build(), false);
+        initSkyDimlet("yellow.clouds", new SkyDescriptor.Builder().cloudColorFactor(1.0f, 1.0f, 0.2f).build(), false);
+        initSkyDimlet("cyan.clouds", new SkyDescriptor.Builder().cloudColorFactor(0.2f, 1.0f, 1.0f).build(), false);
+        initSkyDimlet("purple.clouds", new SkyDescriptor.Builder().cloudColorFactor(1.0f, 0.2f, 1.0f).build(), false);
+    }
+
+    private static void initSkyDimlet(String id, SkyDescriptor descriptor, boolean body) {
+        DimletKey key = new DimletKey(DimletType.DIMLET_SKY, id);
+        initDimlet(key, RFToolsDim.MODID);
+        SkyRegistry.registerSky(key, descriptor, body);
     }
 
     private static void initBiomeDimlet(Biome biome) {
@@ -260,9 +329,9 @@ public class KnownDimletConfiguration {
         craftableDimlets.add(new DimletKey(DimletType.DIMLET_CONTROLLER, "Single"));
         craftableDimlets.add(new DimletKey(DimletType.DIMLET_MATERIAL, Blocks.STONE.getRegistryName() + "@0"));
         craftableDimlets.add(new DimletKey(DimletType.DIMLET_LIQUID, Blocks.WATER.getRegistryName() + "@0"));
-        craftableDimlets.add(new DimletKey(DimletType.DIMLET_SKY, "Normal"));
-        craftableDimlets.add(new DimletKey(DimletType.DIMLET_SKY, "Normal Day"));
-        craftableDimlets.add(new DimletKey(DimletType.DIMLET_SKY, "Normal Night"));
+        craftableDimlets.add(new DimletKey(DimletType.DIMLET_SKY, "normal"));
+        craftableDimlets.add(new DimletKey(DimletType.DIMLET_SKY, "normal.day"));
+        craftableDimlets.add(new DimletKey(DimletType.DIMLET_SKY, "normal.night"));
         craftableDimlets.add(new DimletKey(DimletType.DIMLET_MOB, DimletObjectMapping.DEFAULT_ID));
         craftableDimlets.add(new DimletKey(DimletType.DIMLET_TIME, "Normal"));
         craftableDimlets.add(new DimletKey(DimletType.DIMLET_WEATHER, DimletObjectMapping.DEFAULT_ID));
@@ -319,7 +388,7 @@ public class KnownDimletConfiguration {
                 }
                 return I18n.translateToLocal("entity." + key.getId() + ".name");
             case DIMLET_SKY:
-                return "sky"; //@todo
+                return StringUtils.capitalize(StringUtils.join(StringUtils.split(key.getId(), '.')));
             case DIMLET_STRUCTURE:
                 return key.getId();
             case DIMLET_TERRAIN:

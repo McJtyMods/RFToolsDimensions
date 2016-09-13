@@ -128,8 +128,10 @@ public class TerrainDimletType implements IDimletType {
             // Pick a random terrain type with a seed that is generated from all the
             // dimlets so we always get the same random value for these dimlets.
             DimletKey key = DimletRandomizer.getRandomTerrain(random);
-            dimensionInformation.updateCostFactor(key);
-            terrainType = DimletObjectMapping.getTerrain(key);
+            if (key != null) {
+                dimensionInformation.updateCostFactor(key);
+                terrainType = DimletObjectMapping.getTerrain(key);
+            }
             modifiers = Collections.emptyList();
         } else {
             int index = random.nextInt(dimlets.size());
