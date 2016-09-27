@@ -261,9 +261,19 @@ public class GuiDimletWorkbench extends GenericGuiContainer<DimletWorkbenchTileE
                 ItemStack essence = key.getType().dimletType.getDefaultEssence(key);
 
                 if (Minecraft.getMinecraft().thePlayer.isCreative()) {
-                    widget.setTooltips(TextFormatting.RED + "Shift-Double-Click to cheat", "Type: " + key.getType().dimletType.getName(), "Rarity: " + settings.getRarity(), "@0@1@2", "@3@4@5");
+                    if (essence == null) {
+                        widget.setTooltips(TextFormatting.RED + "Shift-Double-Click to cheat", "Type: " + key.getType().dimletType.getName(), "Rarity: " + settings.getRarity(), "@0@1@2", "@3@4@5",
+                                TextFormatting.RED + "(currently not craftable)");
+                    } else {
+                        widget.setTooltips(TextFormatting.RED + "Shift-Double-Click to cheat", "Type: " + key.getType().dimletType.getName(), "Rarity: " + settings.getRarity(), "@0@1@2", "@3@4@5");
+                    }
                 } else {
-                    widget.setTooltips("Type: " + key.getType().dimletType.getName(), "Rarity: " + settings.getRarity(), "@0@1@2", "@3@4@5");
+                    if (essence == null) {
+                        widget.setTooltips("Type: " + key.getType().dimletType.getName(), "Rarity: " + settings.getRarity(), "@0@1@2", "@3@4@5",
+                            TextFormatting.RED + "(currently not craftable)");
+                    } else {
+                        widget.setTooltips("Type: " + key.getType().dimletType.getName(), "Rarity: " + settings.getRarity(), "@0@1@2", "@3@4@5");
+                    }
                 }
                 widget.setTooltipItems(base, ctrl, energy, memory, typectrl, essence);
 //                itemList.setTooltips("Type: " + key.getType().dimletType.getName(), "Rarity: " + settings.getRarity(), "Y: @0 @1 @2 @3 @4 @5");
