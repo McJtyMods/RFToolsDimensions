@@ -1,14 +1,18 @@
 package mcjty.rftoolsdim.dimensions.dimlets.types;
 
+import mcjty.rftoolsdim.config.DimletConstructionConfiguration;
 import mcjty.rftoolsdim.config.WorldgenConfiguration;
 import mcjty.rftoolsdim.dimensions.DimensionInformation;
 import mcjty.rftoolsdim.dimensions.description.MobDescriptor;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletKey;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletObjectMapping;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletRandomizer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.List;
@@ -111,26 +115,42 @@ public class MobDimletType implements IDimletType {
     }
 
     private static boolean isValidMobEssence(ItemStack stackEssence, NBTTagCompound essenceCompound) {
-//        if (stackEssence.getItem() != DimletConstructionSetup.syringeItem) {
-//            return false;
-//        }
-//        if (essenceCompound == null) {
-//            return false;
-//        }
-//        int level = essenceCompound.getInteger("level");
-//        String mob = essenceCompound.getString("mobName");
-//        if (level < DimletConstructionConfiguration.maxMobInjections || mob == null) {
-//            return false;
-//        }
+        Item syringeItem = ForgeRegistries.ITEMS.getValue(new ResourceLocation("rftools", "syringe"));
+        if (stackEssence.getItem() != syringeItem) {
+            return false;
+        }
+        if (essenceCompound == null) {
+            return false;
+        }
+        int level = essenceCompound.getInteger("level");
+        String mobId = essenceCompound.getString("mobId");
+        if (level < DimletConstructionConfiguration.maxMobInjections || mobId.isEmpty()) {
+            return false;
+        }
         return true;
     }
+
+    @Override
+    public DimletKey isValidEssence(ItemStack stackEssence) {
+        if (!isValidMobEssence(stackEssence, stackEssence.getTagCompound())) {
+            return null;
+        }
+        String mob = stackEssence.getTagCompound().getString("mobId");
+        return new DimletKey(DimletType.DIMLET_MOB, mob);
+    }
+
+    @Override
+    public ItemStack getDefaultEssence() {
+        return new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation("rftools", "syringe")));
+    }
+
 
     @Override
     public DimletKey attemptDimletCrafting(ItemStack stackController, ItemStack stackMemory, ItemStack stackEnergy, ItemStack stackEssence) {
         if (!isValidMobEssence(stackEssence, stackEssence.getTagCompound())) {
             return null;
         }
-        String mob = stackEssence.getTagCompound().getString("mobName");
+        String mob = stackEssence.getTagCompound().getString("mobId");
         if (!DimletCraftingTools.matchDimletRecipe(new DimletKey(DimletType.DIMLET_MOB, mob), stackController, stackMemory, stackEnergy)) {
             return null;
         }
