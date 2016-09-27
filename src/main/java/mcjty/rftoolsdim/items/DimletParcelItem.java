@@ -24,6 +24,9 @@ public class DimletParcelItem extends GenericRFToolsItem {
 
     @Override
     public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
+        if (hand != EnumHand.MAIN_HAND) {
+            return new ActionResult<>(EnumActionResult.PASS, stack);
+        }
         if (!world.isRemote) {
             player.inventory.decrStackSize(player.inventory.currentItem, 1);
             int amount = random.nextInt(GeneralConfiguration.maxParcelContents - GeneralConfiguration.minParcelContents + 1) + GeneralConfiguration.minParcelContents;
