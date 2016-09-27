@@ -18,6 +18,7 @@ import mcjty.rftoolsdim.config.Settings;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletKey;
 import mcjty.rftoolsdim.dimensions.dimlets.KnownDimletConfiguration;
 import mcjty.rftoolsdim.dimensions.dimlets.types.DimletCraftingTools;
+import mcjty.rftoolsdim.dimensions.dimlets.types.DimletType;
 import mcjty.rftoolsdim.items.ModItems;
 import mcjty.rftoolsdim.network.RFToolsDimMessages;
 import net.minecraft.client.Minecraft;
@@ -27,13 +28,15 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
+import org.apache.commons.lang3.tuple.Pair;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class GuiDimletWorkbench extends GenericGuiContainer<DimletWorkbenchTileEntity> {
     public static final int WORKBENCH_WIDTH = 256;
@@ -136,8 +139,22 @@ public class GuiDimletWorkbench extends GenericGuiContainer<DimletWorkbenchTileE
         listDirty = false;
         itemList.removeChildren();
         Map<DimletKey, Settings> dimlets = KnownDimletConfiguration.getKnownDimlets();
+
         String filter = searchBar.getText().toLowerCase();
-        List<DimletKey> keys = dimlets.keySet().stream().filter(key -> KnownDimletConfiguration.getDisplayName(key).toLowerCase().contains(filter)).collect(Collectors.toList());
+
+        // First remove all dimlets with the same name and also apply the filter already
+        Map<Pair<DimletType, String>, DimletKey> uniquelyNamedDimlets = new HashMap<>();
+        for (DimletKey key : dimlets.keySet()) {
+            String name = KnownDimletConfiguration.getDisplayName(key);
+            if (name.toLowerCase().contains(filter)) {
+                Pair<DimletType, String> k = Pair.of(key.getType(), name);
+                if (!uniquelyNamedDimlets.containsKey(k)) {
+                    uniquelyNamedDimlets.put(k, key);
+                }
+            }
+        }
+
+        List<DimletKey> keys = new ArrayList<>(uniquelyNamedDimlets.values());
         keys.sort((a, b) -> {
             int rc = a.getType().compareTo(b.getType());
             if (rc == 0) {
