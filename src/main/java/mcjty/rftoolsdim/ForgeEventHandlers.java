@@ -11,6 +11,8 @@ import mcjty.rftoolsdim.dimensions.types.EffectType;
 import mcjty.rftoolsdim.dimensions.types.FeatureType;
 import mcjty.rftoolsdim.items.ModItems;
 import mcjty.rftoolsdim.network.DimensionSyncPacket;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockBed;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
@@ -31,6 +33,7 @@ import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.terraingen.ChunkGeneratorEvent;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -190,4 +193,32 @@ public class ForgeEventHandlers {
             }
         }
     }
+
+    @SubscribeEvent
+    public void onPlayerRightClickEvent(PlayerInteractEvent.RightClickBlock event) {
+        World world = event.getWorld();
+        if (!world.isRemote) {
+            Block block = world.getBlockState(event.getPos()).getBlock();
+            if (block instanceof BlockBed) {
+                RfToolsDimensionManager dimensionManager = RfToolsDimensionManager.getDimensionManager(world);
+                if (dimensionManager.getDimensionInformation(world.provider.getDimension()) != null) {
+                    // We are in an RFTools dimension.
+                    switch (GeneralConfiguration.bedBehaviour) {
+                        case 0:
+                            event.setCanceled(true);
+                            Logging.message(event.getEntityPlayer(), "You cannot sleep in this dimension!");
+                            break;
+                        case 1:
+                            // Just do the usual thing (this typically mean explosion).
+                            break;
+                        case 2:
+                            event.setCanceled(true);
+                            Logging.message(event.getEntityPlayer(), "Not implemented yet!");
+                            break;
+                    }
+                }
+            }
+        }
+    }
+
 }
