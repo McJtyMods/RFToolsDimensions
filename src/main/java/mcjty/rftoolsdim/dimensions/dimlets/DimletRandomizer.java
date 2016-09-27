@@ -245,7 +245,7 @@ public class DimletRandomizer {
                 stacks.get(i).stream().forEach(s -> dimletPartDistribution.addItem(finalI, s));
             }
         }
-        return dimletPartDistribution.select(random);
+        return dimletPartDistribution.select(random).copy();
     }
 
 }
