@@ -258,7 +258,7 @@ public class GuiDimletWorkbench extends GenericGuiContainer<DimletWorkbenchTileE
                 ItemStack energy = new ItemStack(ModItems.dimletEnergyModuleItem, 1, level);
                 ItemStack memory = new ItemStack(ModItems.dimletMemoryUnitItem, 1, level);
                 ItemStack typectrl = new ItemStack(ModItems.dimletTypeControllerItem, 1, key.getType().ordinal());
-                ItemStack essence = key.getType().dimletType.getDefaultEssence();
+                ItemStack essence = key.getType().dimletType.getDefaultEssence(key);
 
                 if (Minecraft.getMinecraft().thePlayer.isCreative()) {
                     widget.setTooltips(TextFormatting.RED + "Shift-Double-Click to cheat", "Type: " + key.getType().dimletType.getName(), "Rarity: " + settings.getRarity(), "@0@1@2", "@3@4@5");

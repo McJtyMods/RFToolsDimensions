@@ -4,8 +4,12 @@ import mcjty.rftoolsdim.dimensions.DimensionInformation;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletKey;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletObjectMapping;
 import mcjty.rftoolsdim.dimensions.types.SpecialType;
+import mcjty.rftoolsdim.items.ModItems;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.List;
@@ -102,27 +106,44 @@ public class SpecialDimletType implements IDimletType {
     }
 
     private static boolean isValidSpecialEssence(ItemStack stackEssence) {
-//        if (stackEssence.getItem() == DimletConstructionSetup.peaceEssenceItem) {
-//            return true;
-//        }
-//        if (stackEssence.getItem() == DimletConstructionSetup.efficiencyEssenceItem) {
-//            return true;
-//        }
-//        if (stackEssence.getItem() == DimletConstructionSetup.mediocreEfficiencyEssenceItem) {
-//            return true;
-//        }
+        Item peaceEssence = ForgeRegistries.ITEMS.getValue(new ResourceLocation("rftools", "peace_essence"));
+
+        if (stackEssence.getItem() == peaceEssence) {
+            return true;
+        }
+        if (stackEssence.getItem() == ModItems.efficiencyEssenceItem) {
+            return true;
+        }
+        if (stackEssence.getItem() == ModItems.mediocreEfficiencyEssenceItem) {
+            return true;
+        }
 
         return false;
     }
 
-    private static DimletKey findSpecialDimlet(ItemStack stackEssence) {
-//        if (stackEssence.getItem() == DimletConstructionSetup.peaceEssenceItem) {
-//            return new DimletKey(DimletType.DIMLET_SPECIAL, "Peaceful");
-//        } else if (stackEssence.getItem() == DimletConstructionSetup.efficiencyEssenceItem) {
-//            return new DimletKey(DimletType.DIMLET_SPECIAL, "Efficiency");
-//        } else if (stackEssence.getItem() == DimletConstructionSetup.mediocreEfficiencyEssenceItem) {
-//            return new DimletKey(DimletType.DIMLET_SPECIAL, "Mediocre Efficiency");
-//        }
+    @Override
+    public ItemStack getDefaultEssence(DimletKey key) {
+        if (SpecialType.SPECIAL_PEACEFUL.getId().equals(key.getId())) {
+            return new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation("rftools", "peace_essence")));
+        } else if (SpecialType.SPECIAL_EFFICIENCY.getId().equals(key.getId())) {
+            return new ItemStack(ModItems.efficiencyEssenceItem);
+        } else if (SpecialType.SPECIAL_EFFICIENCY_LOW.getId().equals(key.getId())) {
+            return new ItemStack(ModItems.mediocreEfficiencyEssenceItem);
+        }
+        return null;
+    }
+
+
+        @Override
+    public DimletKey isValidEssence(ItemStack stackEssence) {
+        Item peaceEssence = ForgeRegistries.ITEMS.getValue(new ResourceLocation("rftools", "peace_essence"));
+        if (stackEssence.getItem() == peaceEssence) {
+            return new DimletKey(DimletType.DIMLET_SPECIAL, SpecialType.SPECIAL_PEACEFUL.getId());
+        } else if (stackEssence.getItem() == ModItems.efficiencyEssenceItem) {
+            return new DimletKey(DimletType.DIMLET_SPECIAL, SpecialType.SPECIAL_EFFICIENCY.getId());
+        } else if (stackEssence.getItem() == ModItems.mediocreEfficiencyEssenceItem) {
+            return new DimletKey(DimletType.DIMLET_SPECIAL, SpecialType.SPECIAL_EFFICIENCY_LOW.getId());
+        }
         return null;
     }
 
@@ -131,7 +152,7 @@ public class SpecialDimletType implements IDimletType {
         if (!isValidSpecialEssence(stackEssence)) {
             return null;
         }
-        DimletKey specialDimlet = findSpecialDimlet(stackEssence);
+        DimletKey specialDimlet = isValidEssence(stackEssence);
         if (specialDimlet == null) {
             return null;
         }

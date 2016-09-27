@@ -276,7 +276,7 @@ public class FeatureDimletType implements IDimletType {
     }
 
     @Override
-    public ItemStack getDefaultEssence() {
+    public ItemStack getDefaultEssence(DimletKey key) {
         return new ItemStack(ModBlocks.featureAbsorberBlock);
     }
 

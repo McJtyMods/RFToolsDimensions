@@ -14,6 +14,9 @@ public class ModItems {
     public static DimletMemoryUnitItem dimletMemoryUnitItem;
     public static DimletTypeControllerItem dimletTypeControllerItem;
     public static StructureEssenceItem structureEssenceItem;
+    public static EfficiencyEssenceItem efficiencyEssenceItem;
+    public static MediocreEfficiencyEssenceItem mediocreEfficiencyEssenceItem;
+
     public static KnownDimlet knownDimletItem;
     public static EmptyDimensionTab emptyDimensionTabItem;
     public static RealizedDimensionTab realizedDimensionTabItem;
@@ -33,6 +36,9 @@ public class ModItems {
         dimletTypeControllerItem = new DimletTypeControllerItem();
         structureEssenceItem = new StructureEssenceItem();
         knownDimletItem = new KnownDimlet();
+        efficiencyEssenceItem = new EfficiencyEssenceItem();
+        mediocreEfficiencyEssenceItem = new MediocreEfficiencyEssenceItem();
+
         emptyDimensionTabItem = new EmptyDimensionTab();
         realizedDimensionTabItem = new RealizedDimensionTab();
         dimletTemplateItem = new DimletTemplate();
@@ -51,6 +57,9 @@ public class ModItems {
         dimletMemoryUnitItem.initModel();
         dimletTypeControllerItem.initModel();
         structureEssenceItem.initModel();
+        efficiencyEssenceItem.initModel();;
+        mediocreEfficiencyEssenceItem.initModel();
+
         knownDimletItem.initModel();
         emptyDimensionTabItem.initModel();
         realizedDimensionTabItem.initModel();

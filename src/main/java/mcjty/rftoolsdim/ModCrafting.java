@@ -7,12 +7,18 @@ import mcjty.rftoolsdim.dimensions.dimlets.KnownDimletConfiguration;
 import mcjty.rftoolsdim.dimensions.dimlets.types.DimletType;
 import mcjty.rftoolsdim.items.ModItems;
 import net.minecraft.block.Block;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Enchantments;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.RecipeSorter;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class ModCrafting {
     static {
@@ -24,6 +30,7 @@ public class ModCrafting {
         initMachineRecipes();
         initCosmeticRecipes();
         initAbsorberRecipes();
+        initEssenceRecipes();
 
         Item dimensionalShard = GameRegistry.findItem("rftools", "dimensional_shard");
         GameRegistry.addRecipe(new ItemStack(ModItems.emptyDimensionTabItem), "prp", "rpr", "prp", 'p', Items.PAPER, 'r', Items.REDSTONE);
@@ -36,6 +43,34 @@ public class ModCrafting {
         ItemStack inkSac = new ItemStack(Items.DYE, 1, 0);
         GameRegistry.addRecipe(new ItemStack(ModItems.dimensionModuleItem), " c ", "rir", " b ", 'c', Items.ENDER_PEARL, 'r', Items.REDSTONE, 'i', Items.IRON_INGOT,
                                'b', inkSac);
+    }
+
+    private static void initEssenceRecipes() {
+        String[] pickMatcher = new String[] { "ench" };
+
+        ItemStack diamondPick = createEnchantedItem(Items.DIAMOND_PICKAXE, Enchantments.EFFICIENCY, 3);
+        GameRegistry.addRecipe(new NBTMatchingRecipe(3, 3,
+                new ItemStack[] {null, diamondPick, null,
+                        new ItemStack(Items.ENDER_EYE), new ItemStack(Items.NETHER_STAR), new ItemStack(Items.ENDER_EYE),
+                        null, new ItemStack(Items.ENDER_EYE), null},
+                new String[][] {null, pickMatcher, null, null, null, null, null, null, null},
+                new ItemStack(ModItems.efficiencyEssenceItem)));
+
+        ItemStack ironPick = createEnchantedItem(Items.IRON_PICKAXE, Enchantments.EFFICIENCY, 2);
+        GameRegistry.addRecipe(new NBTMatchingRecipe(3, 3,
+                new ItemStack[] {null, ironPick, null,
+                        new ItemStack(Items.ENDER_EYE), new ItemStack(Items.GHAST_TEAR), new ItemStack(Items.ENDER_EYE),
+                        null, new ItemStack(Items.ENDER_EYE), null},
+                new String[][] {null, pickMatcher, null, null, null, null, null, null, null},
+                new ItemStack(ModItems.mediocreEfficiencyEssenceItem)));
+    }
+
+    public static ItemStack createEnchantedItem(Item item, Enchantment enchantment, int amount) {
+        ItemStack stack = new ItemStack(item);
+        Map<Enchantment, Integer> enchant = new HashMap<>();
+        enchant.put(enchantment, amount);
+        EnchantmentHelper.setEnchantments(enchant, stack);
+        return stack;
     }
 
     private static void initMachineRecipes() {

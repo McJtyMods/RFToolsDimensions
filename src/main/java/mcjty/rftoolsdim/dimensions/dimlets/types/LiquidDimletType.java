@@ -101,7 +101,7 @@ public class LiquidDimletType implements IDimletType {
     }
 
     @Override
-    public ItemStack getDefaultEssence() {
+    public ItemStack getDefaultEssence(DimletKey key) {
         return new ItemStack(ModBlocks.liquidAbsorberBlock);
     }
 

@@ -164,7 +164,7 @@ public class BiomeDimletType implements IDimletType {
     }
 
     @Override
-    public ItemStack getDefaultEssence() {
+    public ItemStack getDefaultEssence(DimletKey key) {
         return new ItemStack(ModBlocks.biomeAbsorberBlock);
     }
 

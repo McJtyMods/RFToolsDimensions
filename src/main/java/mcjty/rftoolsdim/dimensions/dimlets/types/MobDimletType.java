@@ -140,7 +140,7 @@ public class MobDimletType implements IDimletType {
     }
 
     @Override
-    public ItemStack getDefaultEssence() {
+    public ItemStack getDefaultEssence(DimletKey key) {
         return new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation("rftools", "syringe")));
     }
 
