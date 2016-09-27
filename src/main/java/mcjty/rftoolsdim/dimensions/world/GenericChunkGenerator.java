@@ -282,9 +282,10 @@ public class GenericChunkGenerator implements IChunkGenerator {
     public Chunk provideChunk(int chunkX, int chunkZ) {
         this.rand.setSeed(chunkX * 341873128712L + chunkZ * 132897987541L);
         ChunkPrimer chunkprimer = new ChunkPrimer();
+
         this.biomesForGeneration = this.worldObj.getBiomeProvider().getBiomesForGeneration(this.biomesForGeneration, chunkX * 4 - 2, chunkZ * 4 - 2, 10, 10);
         terrainGenerator.generate(chunkX, chunkZ, chunkprimer);
-        this.biomesForGeneration = this.worldObj.getBiomeProvider().getBiomesForGeneration(this.biomesForGeneration, chunkX * 16, chunkZ * 16, 16, 16);
+        this.biomesForGeneration = this.worldObj.getBiomeProvider().getBiomes(this.biomesForGeneration, chunkX * 16, chunkZ * 16, 16, 16);
         terrainGenerator.replaceBlocksForBiome(chunkX, chunkZ, chunkprimer, this.biomesForGeneration);
 
         if (dimensionInformation.hasFeatureType(FeatureType.FEATURE_TENDRILS)) {
