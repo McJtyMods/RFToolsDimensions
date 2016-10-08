@@ -66,7 +66,13 @@ public class KnownDimletConfiguration {
         for (int i = 0 ; i <= 9 ; i++) {
             initDimlet(new DimletKey(DimletType.DIMLET_DIGIT, Integer.toString(i)), RFToolsDim.MODID);
         }
-        Arrays.stream(TerrainType.values()).forEach(t -> initDimlet(new DimletKey(DimletType.DIMLET_TERRAIN, t.getId()), RFToolsDim.MODID));
+
+        if (GeneralConfiguration.voidOnly) {
+            initDimlet(new DimletKey(DimletType.DIMLET_TERRAIN, TerrainType.TERRAIN_VOID.getId()), RFToolsDim.MODID);
+        } else {
+            Arrays.stream(TerrainType.values()).forEach(t -> initDimlet(new DimletKey(DimletType.DIMLET_TERRAIN, t.getId()), RFToolsDim.MODID));
+        }
+
         Arrays.stream(ControllerType.values()).forEach(t -> initDimlet(new DimletKey(DimletType.DIMLET_CONTROLLER, t.getId()), RFToolsDim.MODID));
         Arrays.stream(FeatureType.values()).forEach(t -> initDimlet(new DimletKey(DimletType.DIMLET_FEATURE, t.getId()), RFToolsDim.MODID));
         Arrays.stream(EffectType.values()).forEach(t -> initDimlet(new DimletKey(DimletType.DIMLET_EFFECT, t.getId()), RFToolsDim.MODID));
