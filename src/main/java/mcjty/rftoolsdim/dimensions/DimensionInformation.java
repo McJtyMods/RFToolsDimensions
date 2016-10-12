@@ -28,11 +28,13 @@ import net.minecraft.init.Biomes;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.*;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -380,25 +382,74 @@ public class DimensionInformation implements IDimensionInformation {
     }
 
     private Block[] readFluidsFromNBT(NBTTagCompound tagCompound, String name) {
-        List<Block> fluids = new ArrayList<Block>();
-        for (int a : getIntArraySafe(tagCompound, name)) {
-            fluids.add(Block.REGISTRY.getObjectById(a));
+        List<Block> fluids = new ArrayList<>();
+
+        if (tagCompound.hasKey(name + "_reg")) {
+            // New system
+            NBTTagList list = tagCompound.getTagList(name + "_reg", Constants.NBT.TAG_STRING);
+            for (int i = 0 ; i < list.tagCount() ; i++) {
+                NBTTagString reg = (NBTTagString) list.get(i);
+                Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(reg.getString()));
+                if (block == null) {
+                    // Block no longer exists, ignore
+                    Logging.logError("Block with id " + reg.getString() + " no longer exists! Ignoring...");
+                } else {
+                    fluids.add(block);
+                }
+            }
+        } else {
+            // Old system
+            for (int a : getIntArraySafe(tagCompound, name)) {
+                fluids.add(Block.REGISTRY.getObjectById(a));
+            }
         }
         return fluids.toArray(new Block[fluids.size()]);
     }
 
     private static IBlockState[] readBlockArrayFromNBT(NBTTagCompound tagCompound, String name) {
         List<IBlockState> blocks = new ArrayList<>();
-        int[] blockIds = getIntArraySafe(tagCompound, name);
         int[] metas = getIntArraySafe(tagCompound, name + "_meta");
-        for (int i = 0 ; i < blockIds.length ; i++) {
-            int id = blockIds[i];
-            Block block = Block.REGISTRY.getObjectById(id);
-            int meta = 0;
-            if (i < metas.length) {
-                meta = metas[i];
+
+        if (tagCompound.hasKey(name + "_reg")) {
+            // New system
+            NBTTagList list = tagCompound.getTagList(name + "_reg", Constants.NBT.TAG_STRING);
+            for (int i = 0 ; i < list.tagCount() ; i++) {
+                NBTTagString reg = (NBTTagString) list.get(i);
+                Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(reg.getString()));
+                if (block == null) {
+                    // Block no longer exists, ignore
+                    Logging.logError("Block with id " + reg.getString() + " no longer exists! Ignoring...");
+                } else {
+                    int meta = 0;
+                    if (i < metas.length) {
+                        meta = metas[i];
+                    }
+                    try {
+                        blocks.add(block.getStateFromMeta(meta));
+                    } catch (Exception e) {
+                        Logging.logError("Block with id " + reg.getString() + " no longer supports meta " + meta + "! Ignoring...");
+                    }
+                }
             }
-            blocks.add(block.getStateFromMeta(meta));
+        } else {
+            // Old system
+            int[] blockIds = getIntArraySafe(tagCompound, name);
+            for (int i = 0; i < blockIds.length; i++) {
+                int id = blockIds[i];
+                Block block = Block.REGISTRY.getObjectById(id);
+                int meta = 0;
+                if (i < metas.length) {
+                    meta = metas[i];
+                }
+                try {
+                    blocks.add(block.getStateFromMeta(meta));
+                } catch (Exception e) {
+                    // To work around a problem with changed ids we catch this exception here.
+                    // In future this should never happen since we don't persist with ids anymore.
+                    // But we were not always as smart as we are now...
+                    Logging.logError("Block has changed in dimension: ignoring");
+                }
+            }
         }
         return blocks.toArray(new IBlockState[blocks.size()]);
     }
@@ -523,22 +574,29 @@ public class DimensionInformation implements IDimensionInformation {
     }
 
     private static void writeFluidsToNBT(NBTTagCompound tagCompound, Block[] fluids, String name) {
-        List<Integer> c;
-        c = new ArrayList<Integer>(fluids.length);
+        NBTTagList list = new NBTTagList();
+//        List<Integer> c;
+//        c = new ArrayList<Integer>(fluids.length);
         for (Block t : fluids) {
-            c.add(Block.REGISTRY.getIDForObject(t));
+//            c.add(Block.REGISTRY.getIDForObject(t));
+            list.appendTag(new NBTTagString(t.getRegistryName().toString()));
         }
-        tagCompound.setIntArray(name, ArrayUtils.toPrimitive(c.toArray(new Integer[c.size()])));
+//        tagCompound.setIntArray(name, ArrayUtils.toPrimitive(c.toArray(new Integer[c.size()])));
+        tagCompound.setTag(name + "_reg", list);
     }
 
     private static void writeBlocksToNBT(NBTTagCompound tagCompound, IBlockState[] blocks, String name) {
-        List<Integer> ids = new ArrayList<Integer>(blocks.length);
+        NBTTagList list = new NBTTagList();
+//        List<Integer> ids = new ArrayList<Integer>(blocks.length);
         List<Integer> meta = new ArrayList<Integer>(blocks.length);
         for (IBlockState t : blocks) {
-            ids.add(Block.REGISTRY.getIDForObject(t.getBlock()));
-            meta.add((int)t.getBlock().getMetaFromState(t));
+//            ids.add(Block.REGISTRY.getIDForObject(t.getBlock()));
+            list.appendTag(new NBTTagString(t.getBlock().getRegistryName().toString()));
+            meta.add(t.getBlock().getMetaFromState(t));
         }
-        tagCompound.setIntArray(name, ArrayUtils.toPrimitive(ids.toArray(new Integer[ids.size()])));
+//        tagCompound.setIntArray(name, ArrayUtils.toPrimitive(ids.toArray(new Integer[ids.size()])));
+
+        tagCompound.setTag(name + "_reg", list);
         tagCompound.setIntArray(name + "_meta", ArrayUtils.toPrimitive(meta.toArray(new Integer[meta.size()])));
     }
 
