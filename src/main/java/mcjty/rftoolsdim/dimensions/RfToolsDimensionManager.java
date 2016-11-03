@@ -42,8 +42,10 @@ public class RfToolsDimensionManager extends WorldSavedData {
     private final Set<Integer> reclaimedIds = new HashSet<Integer>();
 
     public void syncFromServer(Map<Integer, DimensionDescriptor> dims, Map<Integer, DimensionInformation> dimInfo) {
+        System.out.println("RfToolsDimensionManager.syncFromServer");
         for (Map.Entry<Integer, DimensionDescriptor> entry : dims.entrySet()) {
             int id = entry.getKey();
+            System.out.println("1: id = " + id);
             DimensionDescriptor descriptor = entry.getValue();
             if (dimensions.containsKey(id)) {
                 dimensionToID.remove(dimensions.get(id));
@@ -54,6 +56,7 @@ public class RfToolsDimensionManager extends WorldSavedData {
 
         for (Map.Entry<Integer, DimensionInformation> entry : dimInfo.entrySet()) {
             int id = entry.getKey();
+            System.out.println("2: id = " + id);
             DimensionInformation info = entry.getValue();
             dimensionInformation.put(id, info);
         }
@@ -255,6 +258,8 @@ public class RfToolsDimensionManager extends WorldSavedData {
         if (!world.isRemote) {
             // Sync to clients.
             Logging.log("Sync dimension info to clients!");
+            System.out.println("dimensions.size() = " + dimensions.size());
+            System.out.println("dimensionInformation.size() = " + dimensionInformation.size());
             RFToolsDimMessages.INSTANCE.sendToAll(new PacketSyncDimensionInfo(dimensions, dimensionInformation));
         }
     }
@@ -289,11 +294,16 @@ public class RfToolsDimensionManager extends WorldSavedData {
         return instance;
     }
 
+    public static RfToolsDimensionManager getDimensionManagerNullable(World world) {
+        return instance;
+    }
+
     public static RfToolsDimensionManager getDimensionManager(World world) {
         if (instance != null) {
             return instance;
         }
         instance = (RfToolsDimensionManager) world.getMapStorage().getOrLoadData(RfToolsDimensionManager.class, DIMMANAGER_NAME);
+        System.out.println("instance = " + instance);
         if (instance == null) {
             instance = new RfToolsDimensionManager(DIMMANAGER_NAME);
         }

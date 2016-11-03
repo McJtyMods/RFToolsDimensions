@@ -113,8 +113,8 @@ public class DimensionMonitorItem extends GenericRFToolsItem {
     public void addInformation(ItemStack itemStack, EntityPlayer player, List list, boolean whatIsThis) {
         super.addInformation(itemStack, player, list, whatIsThis);
         int id = player.worldObj.provider.getDimension();
-        RfToolsDimensionManager dimensionManager = RfToolsDimensionManager.getDimensionManager(player.worldObj);
-        DimensionInformation dimensionInformation = dimensionManager.getDimensionInformation(id);
+        RfToolsDimensionManager dimensionManager = RfToolsDimensionManager.getDimensionManagerNullable(player.worldObj);
+        DimensionInformation dimensionInformation = dimensionManager == null ? null : dimensionManager.getDimensionInformation(id);
         if (dimensionInformation == null) {
             list.add("Not an RFTools dimension!");
         } else {
