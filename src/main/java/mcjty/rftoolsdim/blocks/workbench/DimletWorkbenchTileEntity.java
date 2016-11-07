@@ -53,7 +53,7 @@ public class DimletWorkbenchTileEntity extends GenericEnergyReceiverTileEntity i
 
     @Override
     public int[] getSlotsForFace(EnumFacing side) {
-        return DimletWorkbenchContainer.factory.getAccessibleSlots();
+        return new int[] { DimletWorkbenchContainer.SLOT_INPUT, DimletWorkbenchContainer.SLOT_OUTPUT };
     }
 
     @Override
