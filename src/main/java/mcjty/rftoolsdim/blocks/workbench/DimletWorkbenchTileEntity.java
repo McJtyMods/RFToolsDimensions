@@ -26,7 +26,7 @@ import net.minecraft.util.ITickable;
 import java.util.Map;
 
 public class DimletWorkbenchTileEntity extends GenericEnergyReceiverTileEntity implements ITickable, DefaultSidedInventory {
-    public static final String CMD_STARTEXTRACT = "startExtract";
+    public static final String CMD_EXTRACTMODE = "setExtractMode";
     public static final String CMD_SUGGESTPARTS = "suggestParts";
     public static final String CMD_CHEATDIMLET = "cheatDimlet";
     public static final String CMD_GETEXTRACTING = "getExtracting";
@@ -37,6 +37,7 @@ public class DimletWorkbenchTileEntity extends GenericEnergyReceiverTileEntity i
     private int extracting = 0;
     private DimletKey idToExtract = null;
     private int inhibitCrafting = 0;
+    private boolean extractMode = false;
 
     public int getExtracting() {
         return extracting;
@@ -113,6 +114,8 @@ public class DimletWorkbenchTileEntity extends GenericEnergyReceiverTileEntity i
                 }
             }
             markDirty();
+        } else if (extractMode) {
+            startExtracting();
         }
     }
 
@@ -179,6 +182,15 @@ public class DimletWorkbenchTileEntity extends GenericEnergyReceiverTileEntity i
         inventoryHelper.decrStackSize(DimletWorkbenchContainer.SLOT_ESSENCE, 1);
         inhibitCrafting--;
         checkCrafting();
+    }
+
+    public boolean isExtractMode() {
+        return extractMode;
+    }
+
+    public void setExtractMode(boolean extractMode) {
+        this.extractMode = extractMode;
+        markDirtyClient();
     }
 
     private void startExtracting() {
@@ -367,6 +379,7 @@ public class DimletWorkbenchTileEntity extends GenericEnergyReceiverTileEntity i
         super.readRestorableFromNBT(tagCompound);
         readBufferFromNBT(tagCompound, inventoryHelper);
         extracting = tagCompound.getInteger("extracting");
+        extractMode = tagCompound.getBoolean("extractMode");
         idToExtract = null;
         if (tagCompound.hasKey("extKtype")) {
             DimletType type = DimletType.getTypeByOpcode(tagCompound.getString("extKtype"));
@@ -387,6 +400,7 @@ public class DimletWorkbenchTileEntity extends GenericEnergyReceiverTileEntity i
         super.writeRestorableToNBT(tagCompound);
         writeBufferToNBT(tagCompound, inventoryHelper);
         tagCompound.setInteger("extracting", extracting);
+        tagCompound.setBoolean("extractMode", extractMode);
         if (idToExtract != null) {
             tagCompound.setString("extKtype", idToExtract.getType().dimletType.getOpcode());
             tagCompound.setString("extDkey", idToExtract.getId());
@@ -399,8 +413,8 @@ public class DimletWorkbenchTileEntity extends GenericEnergyReceiverTileEntity i
         if (rc) {
             return true;
         }
-        if (CMD_STARTEXTRACT.equals(command)) {
-            startExtracting();
+        if (CMD_EXTRACTMODE.equals(command)) {
+            setExtractMode(args.get("mode").getBoolean());
             return true;
         } else if (CMD_SUGGESTPARTS.equals(command)) {
             String type = args.get("type").getString();

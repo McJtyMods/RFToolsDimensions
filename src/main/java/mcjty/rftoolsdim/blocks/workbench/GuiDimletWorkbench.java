@@ -8,7 +8,6 @@ import mcjty.lib.gui.events.SelectionEvent;
 import mcjty.lib.gui.layout.HorizontalAlignment;
 import mcjty.lib.gui.layout.PositionalLayout;
 import mcjty.lib.gui.widgets.*;
-import mcjty.lib.gui.widgets.Button;
 import mcjty.lib.gui.widgets.Label;
 import mcjty.lib.gui.widgets.Panel;
 import mcjty.lib.gui.widgets.TextField;
@@ -23,7 +22,6 @@ import mcjty.rftoolsdim.items.ModItems;
 import mcjty.rftoolsdim.network.RFToolsDimMessages;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
@@ -43,7 +41,7 @@ public class GuiDimletWorkbench extends GenericGuiContainer<DimletWorkbenchTileE
     public static final int WORKBENCH_HEIGHT = 224;
 
     private EnergyBar energyBar;
-    private Button extractButton;
+    private ToggleButton extractButton;
 
     private TextField searchBar;
 
@@ -85,13 +83,16 @@ public class GuiDimletWorkbench extends GenericGuiContainer<DimletWorkbenchTileE
         slider = new Slider(mc, this).setLayoutHint(new PositionalLayout.PositionalHint(239, 25, 9, 108)).setDesiredWidth(11).setVertical().setScrollable(itemList);
 
         int maxEnergyStored = tileEntity.getMaxEnergyStored(EnumFacing.DOWN);
-        energyBar = new EnergyBar(mc, this).setVertical().setMaxValue(maxEnergyStored).setLayoutHint(new PositionalLayout.PositionalHint(80, 9, 38, 10)).setShowText(false)
+        energyBar = new EnergyBar(mc, this).setVertical().setMaxValue(maxEnergyStored).setLayoutHint(new PositionalLayout.PositionalHint(88, 9, 30, 10)).setShowText(false)
             .setHorizontal();
         energyBar.setValue(GenericEnergyStorageTileEntity.getCurrentRF());
 
-        extractButton = new Button(mc, this).setText("Extract").setLayoutHint(new PositionalLayout.PositionalHint(30, 7, 48, 14)).addButtonEvent(
-                parent -> extractDimlet()
-        ).setTooltips("Deconstruct a dimlet into its parts");
+        extractButton = new ToggleButton(mc, this).setText("Extract")
+                .setLayoutHint(new PositionalLayout.PositionalHint(30, 7, 56, 14))
+                .setCheckMarker(true)
+                .addButtonEvent(parent -> setExtractMode()
+        ).setTooltips("If on dimlets will be reconstructed into parts");
+        extractButton.setPressed(tileEntity.isExtractMode());
 
         Widget toplevel = new Panel(mc, this).setBackground(iconLocation).setLayout(new PositionalLayout())
                 .addChild(extractButton).addChild(energyBar).addChild(itemList).addChild(slider).addChild(searchBar);
@@ -183,44 +184,18 @@ public class GuiDimletWorkbench extends GenericGuiContainer<DimletWorkbenchTileE
         panel.addChild(label);
     }
 
-    private void extractDimlet() {
-        Slot slot = inventorySlots.getSlot(DimletWorkbenchContainer.SLOT_INPUT);
-        if (slot.getStack() != null) {
-            ItemStack itemStack = slot.getStack();
-            if (ModItems.knownDimletItem.equals(itemStack.getItem())) {
-                DimletKey key = KnownDimletConfiguration.getDimletKey(itemStack);
-                if (!KnownDimletConfiguration.isCraftable(key)) {
-//                    Achievements.trigger(Minecraft.getMinecraft().thePlayer, Achievements.smallBits);
-                    sendServerCommand(RFToolsDimMessages.INSTANCE, DimletWorkbenchTileEntity.CMD_STARTEXTRACT);
-                }
-            }
-        }
+    private void setExtractMode() {
+        tileEntity.setExtractMode(extractButton.isPressed());
+        sendServerCommand(RFToolsDimMessages.INSTANCE, DimletWorkbenchTileEntity.CMD_EXTRACTMODE,
+                new Argument("mode", extractButton.isPressed()));
     }
-
-    private void enableButtons() {
-        boolean enabled = false;
-        Slot slot = inventorySlots.getSlot(DimletWorkbenchContainer.SLOT_INPUT);
-        if (slot.getStack() != null) {
-            ItemStack itemStack = slot.getStack();
-            if (ModItems.knownDimletItem.equals(itemStack.getItem())) {
-                DimletKey key = KnownDimletConfiguration.getDimletKey(itemStack);
-                if (!KnownDimletConfiguration.isCraftable(key)) {
-                    enabled = true;
-                }
-            }
-        }
-        extractButton.setEnabled(enabled);
-    }
-
-
 
     @Override
     protected void drawGuiContainerBackgroundLayer(float v, int i, int i2) {
-        enableButtons();
-
         int extracting = tileEntity.getExtracting();
         if (extracting == 0) {
             extractButton.setText("Extract");
+            extractButton.setEnabled(true);
         } else {
             switch (extracting % 4) {
                 case 0: extractButton.setText("."); break;
