@@ -91,6 +91,9 @@ public class ModCrafting {
         GameRegistry.addRecipe(new ItemStack(ModBlocks.dimensionEditorBlock), "oEo", "DMD", "ggg", 'o', Items.REDSTONE, 'E', Items.EMERALD, 'D', Items.DIAMOND,
                 'M', machineFrame, 'g', Items.GOLD_INGOT);
 
+        GameRegistry.addRecipe(new ItemStack(ModBlocks.energyExtractorBlock), "RoR", "sMs", "RsR", 'o', Items.ENDER_PEARL, 's', dimensionalShard,
+                'M', machineFrame, 'R', Blocks.REDSTONE_BLOCK);
+
 //        GameRegistry.addRecipe(new ItemStack(ModBlocks.essencePainterBlock), "ppp", "iMi", "ppp", 'p', Items.PAPER, 'i', inkSac, 'M', machineFrame);
     }
 
