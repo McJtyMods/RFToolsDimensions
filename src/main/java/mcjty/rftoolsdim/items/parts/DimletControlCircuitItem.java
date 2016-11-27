@@ -68,9 +68,9 @@ public class DimletControlCircuitItem extends GenericRFToolsItem {
     }
 
     @Override
-    public void getSubItems(Item item, CreativeTabs creativeTabs, List<ItemStack> list) {
+    protected void clGetSubItems(Item itemIn, CreativeTabs tab, List<ItemStack> subItems) {
         for (int i = 0 ; i < 7 ; i++) {
-            list.add(new ItemStack(this, 1, i));
+            subItems.add(new ItemStack(this, 1, i));
         }
     }
 }

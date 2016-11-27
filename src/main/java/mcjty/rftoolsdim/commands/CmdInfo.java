@@ -1,5 +1,6 @@
 package mcjty.rftoolsdim.commands;
 
+import mcjty.lib.tools.ChatTools;
 import mcjty.rftoolsdim.dimensions.DimensionInformation;
 import mcjty.rftoolsdim.dimensions.RfToolsDimensionManager;
 import net.minecraft.command.ICommandSender;
@@ -37,7 +38,7 @@ public class CmdInfo extends AbstractRfToolsCommand {
         if (args.length == 2) {
             dim = fetchInt(sender, args, 1, 0);
         } else if (args.length > 2) {
-            sender.addChatMessage(new TextComponentString(TextFormatting.RED + "Too many parameters!"));
+            ChatTools.addChatMessage(sender, new TextComponentString(TextFormatting.RED + "Too many parameters!"));
             return;
         } else {
             dim = world.provider.getDimension();
@@ -46,14 +47,14 @@ public class CmdInfo extends AbstractRfToolsCommand {
         RfToolsDimensionManager dimensionManager = RfToolsDimensionManager.getDimensionManager(world);
         DimensionInformation information = dimensionManager.getDimensionInformation(dim);
         if (information == null) {
-            sender.addChatMessage(new TextComponentString(TextFormatting.RED + "Not an RFTools dimension!"));
+            ChatTools.addChatMessage(sender, new TextComponentString(TextFormatting.RED + "Not an RFTools dimension!"));
             return;
         }
-        sender.addChatMessage(new TextComponentString(TextFormatting.YELLOW + "Dimension ID " + dim));
-        sender.addChatMessage(new TextComponentString(TextFormatting.YELLOW + "Description string " + information.getDescriptor().getDescriptionString()));
+        ChatTools.addChatMessage(sender, new TextComponentString(TextFormatting.YELLOW + "Dimension ID " + dim));
+        ChatTools.addChatMessage(sender, new TextComponentString(TextFormatting.YELLOW + "Description string " + information.getDescriptor().getDescriptionString()));
         String ownerName = information.getOwnerName();
         if (ownerName != null && !ownerName.isEmpty()) {
-            sender.addChatMessage(new TextComponentString(TextFormatting.YELLOW + "Owned by: " + ownerName));
+            ChatTools.addChatMessage(sender, new TextComponentString(TextFormatting.YELLOW + "Owned by: " + ownerName));
         }
         if (sender instanceof EntityPlayer) {
             information.dump((EntityPlayer) sender);

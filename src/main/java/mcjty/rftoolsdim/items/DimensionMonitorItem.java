@@ -1,5 +1,6 @@
 package mcjty.rftoolsdim.items;
 
+import mcjty.lib.tools.MinecraftTools;
 import mcjty.lib.varia.Logging;
 import mcjty.rftoolsdim.config.PowerConfiguration;
 import mcjty.rftoolsdim.dimensions.DimensionInformation;
@@ -47,7 +48,7 @@ public class DimensionMonitorItem extends GenericRFToolsItem {
         ModelLoader.setCustomMeshDefinition(this, new ItemMeshDefinition() {
             @Override
             public ModelResourceLocation getModelLocation(ItemStack stack) {
-                WorldClient world = Minecraft.getMinecraft().theWorld;
+                WorldClient world = MinecraftTools.getWorld(Minecraft.getMinecraft());
                 int id = world.provider.getDimension();
                 DimensionStorage storage = DimensionStorage.getDimensionStorage(world);
                 int energyLevel = storage.getEnergyLevel(id);
@@ -70,10 +71,11 @@ public class DimensionMonitorItem extends GenericRFToolsItem {
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
+    protected ActionResult<ItemStack> clOnItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+        ItemStack stack = player.getHeldItem(hand);
         if (!world.isRemote) {
-            int id = player.worldObj.provider.getDimension();
-            RfToolsDimensionManager dimensionManager = RfToolsDimensionManager.getDimensionManager(player.worldObj);
+            int id = player.getEntityWorld().provider.getDimension();
+            RfToolsDimensionManager dimensionManager = RfToolsDimensionManager.getDimensionManager(player.getEntityWorld());
             DimensionInformation dimensionInformation = dimensionManager.getDimensionInformation(id);
             if (dimensionInformation == null) {
                 Logging.message(player, "Not an RFTools dimension!");
@@ -110,10 +112,10 @@ public class DimensionMonitorItem extends GenericRFToolsItem {
 //    }
 
     @Override
-    public void addInformation(ItemStack itemStack, EntityPlayer player, List list, boolean whatIsThis) {
+    public void addInformation(ItemStack itemStack, EntityPlayer player, List<String> list, boolean whatIsThis) {
         super.addInformation(itemStack, player, list, whatIsThis);
-        int id = player.worldObj.provider.getDimension();
-        RfToolsDimensionManager dimensionManager = RfToolsDimensionManager.getDimensionManagerNullable(player.worldObj);
+        int id = player.getEntityWorld().provider.getDimension();
+        RfToolsDimensionManager dimensionManager = RfToolsDimensionManager.getDimensionManagerNullable(player.getEntityWorld());
         DimensionInformation dimensionInformation = dimensionManager == null ? null : dimensionManager.getDimensionInformation(id);
         if (dimensionInformation == null) {
             list.add("Not an RFTools dimension!");

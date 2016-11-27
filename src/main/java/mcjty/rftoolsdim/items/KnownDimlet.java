@@ -162,10 +162,10 @@ public class KnownDimlet extends GenericRFToolsItem {
     }
 
     @Override
-    public void getSubItems(Item item, CreativeTabs creativeTabs, List<ItemStack> list) {
+    protected void clGetSubItems(Item itemIn, CreativeTabs tab, List<ItemStack> subItems) {
         Set<DimletKey> dimlets = KnownDimletConfiguration.getCraftableDimlets();
         for (DimletKey key : dimlets) {
-            list.add(KnownDimletConfiguration.getDimletStack(key));
+            subItems.add(KnownDimletConfiguration.getDimletStack(key));
         }
 //
 //        int meta = 0;

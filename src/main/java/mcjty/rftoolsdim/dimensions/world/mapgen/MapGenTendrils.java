@@ -1,5 +1,6 @@
 package mcjty.rftoolsdim.dimensions.world.mapgen;
 
+import mcjty.lib.varia.MathTools;
 import mcjty.rftoolsdim.dimensions.world.GenericChunkGenerator;
 import mcjty.rftoolsdim.dimensions.world.terrain.BaseTerrainGenerator;
 import net.minecraft.block.state.IBlockState;
@@ -83,12 +84,12 @@ public class MapGenTendrils {
                 }
 
                 if (p_151541_6_ >= d4 - 16.0D - d6 * 2.0D && p_151541_10_ >= d5 - 16.0D - d6 * 2.0D && p_151541_6_ <= d4 + 16.0D + d6 * 2.0D && p_151541_10_ <= d5 + 16.0D + d6 * 2.0D) {
-                    int i4 = MathHelper.floor_double(p_151541_6_ - d6) - chunkX * 16 - 1;
-                    int l1 = MathHelper.floor_double(p_151541_6_ + d6) - chunkX * 16 + 1;
-                    int j4 = MathHelper.floor_double(p_151541_8_ - d7) - 1;
-                    int i2 = MathHelper.floor_double(p_151541_8_ + d7) + 1;
-                    int k4 = MathHelper.floor_double(p_151541_10_ - d6) - chunkZ * 16 - 1;
-                    int j2 = MathHelper.floor_double(p_151541_10_ + d6) - chunkZ * 16 + 1;
+                    int i4 = MathTools.floor(p_151541_6_ - d6) - chunkX * 16 - 1;
+                    int l1 = MathTools.floor(p_151541_6_ + d6) - chunkX * 16 + 1;
+                    int j4 = MathTools.floor(p_151541_8_ - d7) - 1;
+                    int i2 = MathTools.floor(p_151541_8_ + d7) + 1;
+                    int k4 = MathTools.floor(p_151541_10_ - d6) - chunkZ * 16 - 1;
+                    int j2 = MathTools.floor(p_151541_10_ + d6) - chunkZ * 16 + 1;
 
                     if (i4 < 0) {
                         i4 = 0;

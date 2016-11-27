@@ -66,7 +66,7 @@ public class DimensionEditorTileEntity extends GenericEnergyReceiverTileEntity i
         int oldstate = state;
         super.onDataPacket(net, packet);
         if (oldstate != state) {
-            worldObj.markBlockRangeForRenderUpdate(getPos(), getPos());
+            getWorld().markBlockRangeForRenderUpdate(getPos(), getPos());
         }
     }
 
@@ -82,7 +82,7 @@ public class DimensionEditorTileEntity extends GenericEnergyReceiverTileEntity i
 
     @Override
     public void update() {
-        if (worldObj.isRemote) {
+        if (getWorld().isRemote) {
             return;
         }
         ItemStack injectableItemStack = validateInjectableItemStack();
@@ -123,7 +123,7 @@ public class DimensionEditorTileEntity extends GenericEnergyReceiverTileEntity i
 
                 ticksLeft--;
                 if (ticksLeft <= 0) {
-                    RfToolsDimensionManager dimensionManager = RfToolsDimensionManager.getDimensionManager(worldObj);
+                    RfToolsDimensionManager dimensionManager = RfToolsDimensionManager.getDimensionManager(getWorld());
 
                     ItemStack dimensionTab = validateDimensionItemStack();
                     NBTTagCompound tagCompound = dimensionTab.getTagCompound();
@@ -131,7 +131,7 @@ public class DimensionEditorTileEntity extends GenericEnergyReceiverTileEntity i
 
                     injectableItemStack = validateInjectableItemStack();
                     if (isMatterReceiver(injectableItemStack)) {
-                        World dimWorld = dimensionManager.getWorldForDimension(worldObj, id);
+                        World dimWorld = dimensionManager.getWorldForDimension(getWorld(), id);
                         int y = findGoodReceiverLocation(dimWorld);
                         if (y == -1) {
                             y = dimWorld.getHeight() / 2;

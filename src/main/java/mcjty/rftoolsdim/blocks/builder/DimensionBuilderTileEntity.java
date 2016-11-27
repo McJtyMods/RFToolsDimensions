@@ -5,6 +5,7 @@ import mcjty.lib.container.InventoryHelper;
 import mcjty.lib.entity.GenericEnergyReceiverTileEntity;
 import mcjty.lib.network.Argument;
 import mcjty.lib.network.PacketRequestIntegerFromServer;
+import mcjty.lib.tools.ItemStackTools;
 import mcjty.lib.varia.Logging;
 import mcjty.lib.varia.RedstoneMode;
 import mcjty.rftoolsdim.RFToolsDim;
@@ -57,7 +58,7 @@ public class DimensionBuilderTileEntity extends GenericEnergyReceiverTileEntity 
         int oldstate = state;
         super.onDataPacket(net, packet);
         if (oldstate != state) {
-            worldObj.markBlockRangeForRenderUpdate(getPos(), getPos());
+            getWorld().markBlockRangeForRenderUpdate(getPos(), getPos());
         }
     }
 
@@ -92,7 +93,7 @@ public class DimensionBuilderTileEntity extends GenericEnergyReceiverTileEntity 
 
     @Override
     public void update() {
-        if (!worldObj.isRemote) {
+        if (!getWorld().isRemote) {
             checkStateServer();
         }
     }
@@ -121,7 +122,7 @@ public class DimensionBuilderTileEntity extends GenericEnergyReceiverTileEntity 
 
     public NBTTagCompound hasTab() {
         ItemStack itemStack = inventoryHelper.getStackInSlot(0);
-        if (itemStack == null || itemStack.stackSize == 0) {
+        if (ItemStackTools.isEmpty(itemStack)) {
             return null;
         }
 
@@ -134,7 +135,7 @@ public class DimensionBuilderTileEntity extends GenericEnergyReceiverTileEntity 
         int id = tagCompound.getInteger("id");
 
         if (id != 0) {
-            DimensionStorage dimensionStorage = DimensionStorage.getDimensionStorage(worldObj);
+            DimensionStorage dimensionStorage = DimensionStorage.getDimensionStorage(getWorld());
             int rf;
             if (isCheaterDimension(tagCompound)) {
                 rf = MachineConfiguration.BUILDER_MAXENERGY;
@@ -157,7 +158,7 @@ public class DimensionBuilderTileEntity extends GenericEnergyReceiverTileEntity 
                 consumeEnergy(rf);
             }
             dimensionStorage.setEnergyLevel(id, energy + rf);
-            dimensionStorage.save(worldObj);
+            dimensionStorage.save(getWorld());
         }
     }
 
@@ -174,7 +175,7 @@ public class DimensionBuilderTileEntity extends GenericEnergyReceiverTileEntity 
                 int tickCost = tagCompound.getInteger("tickCost");
                 if (ticksLeft == tickCost || ticksLeft < 5) {
                     // Check if we are allow to make the dimension.
-                    RfToolsDimensionManager manager = RfToolsDimensionManager.getDimensionManager(worldObj);
+                    RfToolsDimensionManager manager = RfToolsDimensionManager.getDimensionManager(getWorld());
                     int cnt = manager.countOwnedDimensions(getOwnerUUID());
                     if (cnt >= GeneralConfiguration.maxDimensionsPerPlayer) {
                         errorMode = ERROR_TOOMANYDIMENSIONS;
@@ -205,10 +206,10 @@ public class DimensionBuilderTileEntity extends GenericEnergyReceiverTileEntity 
             }
             tagCompound.setInteger("ticksLeft", ticksLeft);
             if (ticksLeft <= 0) {
-                RfToolsDimensionManager manager = RfToolsDimensionManager.getDimensionManager(worldObj);
+                RfToolsDimensionManager manager = RfToolsDimensionManager.getDimensionManager(getWorld());
                 DimensionDescriptor descriptor = new DimensionDescriptor(tagCompound);
                 String name = tagCompound.getString("name");
-                int id = manager.createNewDimension(worldObj, descriptor, name, getOwnerName(), getOwnerUUID());
+                int id = manager.createNewDimension(getWorld(), descriptor, name, getOwnerName(), getOwnerUUID());
                 tagCompound.setInteger("id", id);
             }
         }
@@ -260,7 +261,7 @@ public class DimensionBuilderTileEntity extends GenericEnergyReceiverTileEntity 
     }
 
     @Override
-    public boolean isUseableByPlayer(EntityPlayer player) {
+    public boolean isUsable(EntityPlayer player) {
         return canPlayerAccess(player);
     }
 
@@ -284,7 +285,7 @@ public class DimensionBuilderTileEntity extends GenericEnergyReceiverTileEntity 
         }
         if (CMD_GETBUILDING.equals(command)) {
             ItemStack itemStack = inventoryHelper.getStackInSlot(0);
-            if (itemStack == null || itemStack.stackSize == 0) {
+            if (ItemStackTools.isEmpty(itemStack)) {
                 return 0;
             } else {
                 NBTTagCompound tagCompound = itemStack.getTagCompound();

@@ -1,5 +1,7 @@
 package mcjty.rftoolsdim.commands;
 
+import mcjty.lib.compat.CompatCommand;
+import mcjty.lib.tools.ChatTools;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
@@ -9,12 +11,13 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public abstract class DefaultCommand implements ICommand {
+public abstract class DefaultCommand implements CompatCommand {
     protected final Map<String,RfToolsCommand> commands = new HashMap<String, RfToolsCommand>();
 
     public DefaultCommand() {
@@ -26,9 +29,9 @@ public abstract class DefaultCommand implements ICommand {
     }
 
     public void showHelp(ICommandSender sender) {
-        sender.addChatMessage(new TextComponentString(TextFormatting.BLUE + getCommandName() + " <subcommand> <args>"));
+        ChatTools.addChatMessage(sender, new TextComponentString(TextFormatting.BLUE + getName() + " <subcommand> <args>"));
         for (Map.Entry<String,RfToolsCommand> me : commands.entrySet()) {
-            sender.addChatMessage(new TextComponentString("    " + me.getKey() + " " + me.getValue().getHelp()));
+            ChatTools.addChatMessage(sender, new TextComponentString("    " + me.getKey() + " " + me.getValue().getHelp()));
         }
     }
 
@@ -60,12 +63,12 @@ public abstract class DefaultCommand implements ICommand {
     }
 
     @Override
-    public String getCommandUsage(ICommandSender sender) {
-        return getCommandName() + " <subcommand> <args> (try '" + getCommandName() + " help' for more info)";
+    public String getUsage(ICommandSender sender) {
+        return getName() + " <subcommand> <args> (try '" + getName() + " help' for more info)";
     }
 
     @Override
-    public List getCommandAliases() {
+    public List<String> getAliases() {
         return Collections.emptyList();
     }
 
@@ -75,12 +78,12 @@ public abstract class DefaultCommand implements ICommand {
     }
 
     @Override
-    public String getCommandName() {
+    public String getName() {
         return null;
     }
 
     @Override
-    public List<String> getTabCompletionOptions(MinecraftServer server, ICommandSender sender, String[] args, BlockPos pos) {
+    public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos pos) {
         return Collections.emptyList();
     }
 
@@ -95,7 +98,7 @@ public abstract class DefaultCommand implements ICommand {
             RfToolsCommand command = commands.get(args[0]);
             if (command == null) {
                 if (!world.isRemote) {
-                    sender.addChatMessage(new TextComponentString(TextFormatting.RED + "Unknown RfTools command: " + args[0]));
+                    ChatTools.addChatMessage(sender, new TextComponentString(TextFormatting.RED + "Unknown RfTools command: " + args[0]));
                 }
             } else {
                 if (world.isRemote) {
@@ -105,8 +108,10 @@ public abstract class DefaultCommand implements ICommand {
                     }
                 } else {
                     // Server-side.
-                    if (!sender.canCommandSenderUseCommand(command.getPermissionLevel(), getCommandName())) {
-                        sender.addChatMessage(new TextComponentString(TextFormatting.RED + "Command is not allowed!"));
+                    // @todo @@@@@@@@@@@@@@@@@@@@@@@@@@@@
+                    if (!sender.canUseCommand(command.getPermissionLevel(), getName())) {
+//                        if (!sender.canCommandSenderUseCommand(command.getPermissionLevel(), getCommandName())) {
+                        ChatTools.addChatMessage(sender, new TextComponentString(TextFormatting.RED + "Command is not allowed!"));
                     } else {
                         command.execute(sender, args);
                     }
@@ -127,6 +132,6 @@ public abstract class DefaultCommand implements ICommand {
 
     @Override
     public int compareTo(ICommand o) {
-        return getCommandName().compareTo(o.getCommandName());
+        return getName().compareTo(o.getName());
     }
 }

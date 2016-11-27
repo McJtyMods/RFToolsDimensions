@@ -21,7 +21,7 @@ public class FeatureAbsorberTileEntity extends GenericTileEntity implements ITic
 
     @Override
     public void update() {
-        if (worldObj.isRemote) {
+        if (getWorld().isRemote) {
             checkStateClient();
         } else {
             checkStateServer();
@@ -31,7 +31,7 @@ public class FeatureAbsorberTileEntity extends GenericTileEntity implements ITic
 
     protected void checkStateClient() {
         if (absorbing > 0) {
-            Random rand = worldObj.rand;
+            Random rand = getWorld().rand;
 
             double u = rand.nextFloat() * 2.0f - 1.0f;
             double v = (float) (rand.nextFloat() * 2.0f * Math.PI);
@@ -40,14 +40,14 @@ public class FeatureAbsorberTileEntity extends GenericTileEntity implements ITic
             double z = u;
             double r = 1.0f;
 
-            worldObj.spawnParticle(EnumParticleTypes.PORTAL, getPos().getX() + 0.5f + x * r, getPos().getY() + 0.5f + y * r, getPos().getZ() + 0.5f + z * r, -x, -y, -z);
+            getWorld().spawnParticle(EnumParticleTypes.PORTAL, getPos().getX() + 0.5f + x * r, getPos().getY() + 0.5f + y * r, getPos().getZ() + 0.5f + z * r, -x, -y, -z);
         }
     }
 
     protected void checkStateServer() {
         if (absorbing > 0) {
-            int dim = worldObj.provider.getDimension();
-            DimensionInformation information = RfToolsDimensionManager.getDimensionManager(worldObj).getDimensionInformation(dim);
+            int dim = getWorld().provider.getDimension();
+            DimensionInformation information = RfToolsDimensionManager.getDimensionManager(getWorld()).getDimensionInformation(dim);
             if (information == null || !information.hasFeatureType(FeatureType.getFeatureById(featureName))) {
                 return;
             }
@@ -58,7 +58,7 @@ public class FeatureAbsorberTileEntity extends GenericTileEntity implements ITic
     }
 
     private String getRandomFeature(int dim) {
-        DimensionInformation information = RfToolsDimensionManager.getDimensionManager(worldObj).getDimensionInformation(dim);
+        DimensionInformation information = RfToolsDimensionManager.getDimensionManager(getWorld()).getDimensionInformation(dim);
         if (information == null) {
             return null;
         }
@@ -67,7 +67,7 @@ public class FeatureAbsorberTileEntity extends GenericTileEntity implements ITic
             return null;
         }
         List<FeatureType> list = new ArrayList<FeatureType>(featureTypes);
-        return list.get(worldObj.rand.nextInt(list.size())).getId();
+        return list.get(getWorld().rand.nextInt(list.size())).getId();
     }
 
     public int getAbsorbing() {
@@ -80,7 +80,7 @@ public class FeatureAbsorberTileEntity extends GenericTileEntity implements ITic
 
     public void placeDown() {
         if (featureName == null) {
-            int dim = worldObj.provider.getDimension();
+            int dim = getWorld().provider.getDimension();
             String feature = getRandomFeature(dim);
             if (feature == null) {
                 featureName = null;

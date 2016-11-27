@@ -1,6 +1,7 @@
 package mcjty.rftoolsdim.commands;
 
 import mcjty.lib.container.InventoryHelper;
+import mcjty.lib.tools.ChatTools;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletKey;
 import mcjty.rftoolsdim.dimensions.dimlets.KnownDimletConfiguration;
 import mcjty.rftoolsdim.dimensions.dimlets.types.DimletType;
@@ -34,7 +35,7 @@ public class CmdCreateDimlet extends AbstractRfToolsCommand {
     @Override
     public void execute(ICommandSender sender, String[] args) {
         if (args.length != 3) {
-            sender.addChatMessage(new TextComponentString(TextFormatting.RED + "Bad parameters!"));
+            ChatTools.addChatMessage(sender, new TextComponentString(TextFormatting.RED + "Bad parameters!"));
             return;
         }
 
@@ -42,12 +43,12 @@ public class CmdCreateDimlet extends AbstractRfToolsCommand {
         String name = fetchString(sender, args, 2, "");
         DimletType type = DimletType.getTypeByName(typeString);
         if (type == null) {
-            sender.addChatMessage(new TextComponentString(TextFormatting.RED + "Bad type!"));
+            ChatTools.addChatMessage(sender, new TextComponentString(TextFormatting.RED + "Bad type!"));
             return;
         }
 
         if (!(sender instanceof EntityPlayer)) {
-            sender.addChatMessage(new TextComponentString(TextFormatting.RED + "This command only works as a player!"));
+            ChatTools.addChatMessage(sender, new TextComponentString(TextFormatting.RED + "This command only works as a player!"));
             return;
         }
 

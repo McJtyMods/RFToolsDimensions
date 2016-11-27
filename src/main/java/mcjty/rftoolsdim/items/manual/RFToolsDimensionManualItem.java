@@ -22,9 +22,10 @@ public class RFToolsDimensionManualItem extends GenericRFToolsItem {
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
+    protected ActionResult<ItemStack> clOnItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+        ItemStack stack = player.getHeldItem(hand);
         if (world.isRemote) {
-            player.openGui(RFToolsDim.instance, RFToolsDim.GUI_MANUAL_DIMENSION, player.worldObj, (int) player.posX, (int) player.posY, (int) player.posZ);
+            player.openGui(RFToolsDim.instance, RFToolsDim.GUI_MANUAL_DIMENSION, player.getEntityWorld(), (int) player.posX, (int) player.posY, (int) player.posZ);
             return new ActionResult<>(EnumActionResult.SUCCESS, stack);
         }
         return new ActionResult<>(EnumActionResult.SUCCESS, stack);

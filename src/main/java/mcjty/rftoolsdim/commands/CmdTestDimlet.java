@@ -1,5 +1,6 @@
 package mcjty.rftoolsdim.commands;
 
+import mcjty.lib.tools.ChatTools;
 import mcjty.rftoolsdim.config.DimletRules;
 import mcjty.rftoolsdim.config.Settings;
 import mcjty.rftoolsdim.dimensions.dimlets.types.DimletType;
@@ -33,7 +34,7 @@ public class CmdTestDimlet extends AbstractRfToolsCommand {
     @Override
     public void execute(ICommandSender sender, String[] args) {
         if (args.length != 4) {
-            sender.addChatMessage(new TextComponentString(TextFormatting.RED + "Bad parameters!"));
+            ChatTools.addChatMessage(sender, new TextComponentString(TextFormatting.RED + "Bad parameters!"));
             return;
         }
 
@@ -42,11 +43,11 @@ public class CmdTestDimlet extends AbstractRfToolsCommand {
         String name = fetchString(sender, args, 3, "");
         DimletType type = DimletType.getTypeByName(typeString);
         if (type == null) {
-            sender.addChatMessage(new TextComponentString(TextFormatting.RED + "Bad type!"));
+            ChatTools.addChatMessage(sender, new TextComponentString(TextFormatting.RED + "Bad type!"));
             return;
         }
 
         Settings settings = DimletRules.getSettings(type, mod, name, Collections.emptySet(), 0, Collections.emptyMap());
-        sender.addChatMessage(new TextComponentString(TextFormatting.GREEN + settings.toString()));
+        ChatTools.addChatMessage(sender, new TextComponentString(TextFormatting.GREEN + settings.toString()));
     }
 }

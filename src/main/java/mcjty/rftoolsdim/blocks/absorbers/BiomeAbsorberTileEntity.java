@@ -17,7 +17,7 @@ public class BiomeAbsorberTileEntity extends GenericTileEntity implements ITicka
 
     @Override
     public void update() {
-        if (worldObj.isRemote) {
+        if (getWorld().isRemote) {
             checkStateClient();
         } else {
             checkStateServer();
@@ -27,7 +27,7 @@ public class BiomeAbsorberTileEntity extends GenericTileEntity implements ITicka
 
     protected void checkStateClient() {
         if (absorbing > 0) {
-            Random rand = worldObj.rand;
+            Random rand = getWorld().rand;
 
             double u = rand.nextFloat() * 2.0f - 1.0f;
             double v = (float) (rand.nextFloat() * 2.0f * Math.PI);
@@ -36,13 +36,13 @@ public class BiomeAbsorberTileEntity extends GenericTileEntity implements ITicka
             double z = u;
             double r = 1.0f;
 
-            worldObj.spawnParticle(EnumParticleTypes.PORTAL, getPos().getX() + 0.5f + x * r, getPos().getY() + 0.5f + y * r, getPos().getZ() + 0.5f + z * r, -x, -y, -z);
+            getWorld().spawnParticle(EnumParticleTypes.PORTAL, getPos().getX() + 0.5f + x * r, getPos().getY() + 0.5f + y * r, getPos().getZ() + 0.5f + z * r, -x, -y, -z);
         }
     }
 
     protected void checkStateServer() {
         if (absorbing > 0) {
-            Biome Biome = worldObj.getBiomeForCoordsBody(getPos());
+            Biome Biome = getWorld().getBiomeForCoordsBody(getPos());
             if (Biome == null || !Biome.getRegistryName().toString().equals(biomeId)) {
                 return;
             }
@@ -70,7 +70,7 @@ public class BiomeAbsorberTileEntity extends GenericTileEntity implements ITicka
 
     public void placeDown() {
         if (biomeId == null) {
-            Biome Biome = worldObj.getBiomeForCoordsBody(getPos());
+            Biome Biome = getWorld().getBiomeForCoordsBody(getPos());
             if (Biome == null) {
                 biomeId = null;
                 absorbing = 0;

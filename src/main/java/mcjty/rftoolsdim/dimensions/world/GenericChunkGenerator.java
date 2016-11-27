@@ -38,6 +38,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 import net.minecraftforge.event.terraingen.TerrainGen;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -587,10 +588,16 @@ public class GenericChunkGenerator implements IChunkGenerator {
         return Biome.getSpawnableList(creatureType);
     }
 
+    //@todo @@@@@@@@@@@
+    @Nullable
     @Override
-    public BlockPos getStrongholdGen(World worldIn, String structureName, BlockPos position) {
-        return "Stronghold".equals(structureName) && this.strongholdGenerator != null ? this.strongholdGenerator.getClosestStrongholdPos(worldIn, position) : null;
+    public BlockPos getStrongholdGen(World worldIn, String structureName, BlockPos position, boolean p_180513_4_) {
+        return "Stronghold".equals(structureName) && this.strongholdGenerator != null ? this.strongholdGenerator.getClosestStrongholdPos(worldIn, position, p_180513_4_) : null;
     }
+//    @Override
+//    public BlockPos getStrongholdGen(World worldIn, String structureName, BlockPos position) {
+//        return "Stronghold".equals(structureName) && this.strongholdGenerator != null ? this.strongholdGenerator.getClosestStrongholdPos(worldIn, position) : null;
+//    }
 
     @Override
     public void recreateStructures(Chunk chunkIn, int x, int z) {

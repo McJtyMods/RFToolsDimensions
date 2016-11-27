@@ -47,7 +47,8 @@ public class GenericWorldProvider extends WorldProvider implements  /*@todo impl
     }
 
     public World getWorld() {
-        return worldObj;
+        // @todo @@@@@@ worldObj
+        return world;
     }
 
 
@@ -71,7 +72,7 @@ public class GenericWorldProvider extends WorldProvider implements  /*@todo impl
             // is always correct here. So we have to use the overworld.
 //            WorldServer overworld = DimensionManager.getWorld(0);
             int dim = getDimension();
-            dimensionInformation = RfToolsDimensionManager.getDimensionManager(worldObj).getDimensionInformation(dim);
+            dimensionInformation = RfToolsDimensionManager.getDimensionManager(getWorld()).getDimensionInformation(dim);
             if (dimensionInformation == null) {
                 Logging.log("Dimension information for dimension " + dim + " is missing!");
             } else {
@@ -136,10 +137,10 @@ public class GenericWorldProvider extends WorldProvider implements  /*@todo impl
 //
     private void setSeed(int dim) {
         if (dimensionInformation == null) {
-            if (worldObj == null) {
+            if (getWorld() == null) {
                 return;
             }
-            dimensionInformation = RfToolsDimensionManager.getDimensionManager(worldObj).getDimensionInformation(dim);
+            dimensionInformation = RfToolsDimensionManager.getDimensionManager(getWorld()).getDimensionInformation(dim);
             if (dimensionInformation == null) {
                 Logging.log("Error: setSeed() called with null diminfo. Error ignored!");
                 return;
@@ -154,7 +155,7 @@ public class GenericWorldProvider extends WorldProvider implements  /*@todo impl
             if (baseSeed != 0) {
                 seed = calculateSeed(baseSeed, dim) ;
             } else {
-                seed = calculateSeed(worldObj.getSeed(), dim) ;
+                seed = calculateSeed(getWorld().getSeed(), dim) ;
             }
         }
 //        seed = dimensionInformation.getBaseSeed();
@@ -163,7 +164,7 @@ public class GenericWorldProvider extends WorldProvider implements  /*@todo impl
 
     private DimensionStorage getStorage() {
         if (storage == null) {
-            storage = DimensionStorage.getDimensionStorage(worldObj);
+            storage = DimensionStorage.getDimensionStorage(getWorld());
         }
         return storage;
     }
@@ -184,17 +185,30 @@ public class GenericWorldProvider extends WorldProvider implements  /*@todo impl
         return biomeProvider;
     }
 
+
+    // @todo @@@@@@@@@@@@@@@@@@
     @Override
-    protected void createBiomeProvider() {
-        if (worldObj instanceof WorldServer) {
+    protected void init() {
+//        super.init();
+        if (getWorld() instanceof WorldServer) {
             createBiomeProviderInternal();
             return;
         }
 
         // We are on a client here and we don't have sufficient information right here (dimension information has not synced yet)
         biomeProvider = null;
-        return;
     }
+//    @Override
+//    protected void createBiomeProvider() {
+//        if (getWorld() instanceof WorldServer) {
+//            createBiomeProviderInternal();
+//            return;
+//        }
+//
+//        // We are on a client here and we don't have sufficient information right here (dimension information has not synced yet)
+//        biomeProvider = null;
+//        return;
+//    }
 
     private void createBiomeProviderInternal() {
         getDimensionInformation();
@@ -203,7 +217,7 @@ public class GenericWorldProvider extends WorldProvider implements  /*@todo impl
             if (type == ControllerType.CONTROLLER_SINGLE) {
                 this.biomeProvider = new BiomeProviderSingle(dimensionInformation.getBiomes().get(0));
             } else if (type == ControllerType.CONTROLLER_DEFAULT) {
-                WorldInfo worldInfo = worldObj.getWorldInfo();
+                WorldInfo worldInfo = getWorld().getWorldInfo();
                 worldInfo = new WorldInfo(worldInfo) {
                     @Override
                     public long getSeed() {
@@ -213,16 +227,16 @@ public class GenericWorldProvider extends WorldProvider implements  /*@todo impl
                 this.biomeProvider = new BiomeProvider(worldInfo);
             } else {
                 GenericBiomeProvider.hackyDimensionInformation = dimensionInformation;      // Hack to get the dimension information in the superclass.
-                this.biomeProvider = new GenericBiomeProvider(seed, worldObj.getWorldInfo(), dimensionInformation);
+                this.biomeProvider = new GenericBiomeProvider(seed, getWorld().getWorldInfo(), dimensionInformation);
             }
         } else {
-            this.biomeProvider = new BiomeProvider(worldObj.getWorldInfo());
+            this.biomeProvider = new BiomeProvider(getWorld().getWorldInfo());
         }
 
         if (dimensionInformation != null) {
             hasNoSky = !dimensionInformation.getTerrainType().hasSky();
 
-            if (worldObj.isRemote) {
+            if (getWorld().isRemote) {
                 // Only on client!
                 SkyType skyType = dimensionInformation.getSkyDescriptor().getSkyType();
                 if (hasNoSky) {
@@ -295,7 +309,7 @@ public class GenericWorldProvider extends WorldProvider implements  /*@todo impl
     public IChunkGenerator createChunkGenerator() {
         int dim = getDimension();
         setSeed(dim);
-        return new GenericChunkGenerator(worldObj, seed);
+        return new GenericChunkGenerator(getWorld(), seed);
     }
 
     @Override
@@ -406,27 +420,27 @@ public class GenericWorldProvider extends WorldProvider implements  /*@todo impl
     @Override
     public void updateWeather() {
         super.updateWeather();
-        if (!worldObj.isRemote) {
+        if (!getWorld().isRemote) {
             getDimensionInformation();
             if (dimensionInformation != null) {
                 WeatherDescriptor descriptor = dimensionInformation.getWeatherDescriptor();
                 float rs = descriptor.getRainStrength();
                 if (rs > -0.5f) {
-                    worldObj.rainingStrength = rs;
-                    if (Math.abs(worldObj.rainingStrength) < 0.001) {
-                        worldObj.prevRainingStrength = 0;
-                        worldObj.rainingStrength = 0;
-                        worldObj.getWorldInfo().setRaining(false);
+                    getWorld().rainingStrength = rs;
+                    if (Math.abs(getWorld().rainingStrength) < 0.001) {
+                        getWorld().prevRainingStrength = 0;
+                        getWorld().rainingStrength = 0;
+                        getWorld().getWorldInfo().setRaining(false);
                     }
                 }
 
                 float ts = descriptor.getThunderStrength();
                 if (ts > -0.5f) {
-                    worldObj.thunderingStrength = ts;
-                    if (Math.abs(worldObj.thunderingStrength) < 0.001) {
-                        worldObj.prevThunderingStrength = 0;
-                        worldObj.thunderingStrength = 0;
-                        worldObj.getWorldInfo().setThundering(false);
+                    getWorld().thunderingStrength = ts;
+                    if (Math.abs(getWorld().thunderingStrength) < 0.001) {
+                        getWorld().prevThunderingStrength = 0;
+                        getWorld().thunderingStrength = 0;
+                        getWorld().getWorldInfo().setThundering(false);
                     }
                 }
             }

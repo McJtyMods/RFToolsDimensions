@@ -5,6 +5,7 @@ import mcjty.lib.container.InventoryHelper;
 import mcjty.lib.entity.GenericEnergyReceiverTileEntity;
 import mcjty.lib.network.Argument;
 import mcjty.lib.network.PacketRequestIntegerFromServer;
+import mcjty.lib.tools.ItemStackTools;
 import mcjty.lib.varia.BlockTools;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.config.MachineConfiguration;
@@ -88,7 +89,7 @@ public class DimletWorkbenchTileEntity extends GenericEnergyReceiverTileEntity i
     }
 
     @Override
-    public boolean isUseableByPlayer(EntityPlayer player) {
+    public boolean isUsable(EntityPlayer player) {
         return canPlayerAccess(player);
     }
 
@@ -99,7 +100,7 @@ public class DimletWorkbenchTileEntity extends GenericEnergyReceiverTileEntity i
 
     @Override
     public void update() {
-        if (!worldObj.isRemote) {
+        if (!getWorld().isRemote) {
             checkStateServer();;
         }
     }
@@ -261,7 +262,7 @@ public class DimletWorkbenchTileEntity extends GenericEnergyReceiverTileEntity i
     }
 
     private boolean extractSuccess(float factor) {
-        return worldObj.rand.nextFloat() <= (0.61f + factor * 0.4f);
+        return getWorld().rand.nextFloat() <= (0.61f + factor * 0.4f);
     }
 
     private void cheatDimlet(EntityPlayerMP player, DimletKey key) {
@@ -295,10 +296,10 @@ public class DimletWorkbenchTileEntity extends GenericEnergyReceiverTileEntity i
 
     private void setAsideIfPossible(EntityPlayerMP playerMP, int slot) {
         ItemStack stack = inventoryHelper.getStackInSlot(slot);
-        if (stack != null) {
+        if (ItemStackTools.isValid(stack)) {
             int result = InventoryHelper.mergeItemStack(this, false, stack, DimletWorkbenchContainer.SLOT_BUFFER, DimletWorkbenchContainer.SLOT_BUFFER + DimletWorkbenchContainer.SIZE_BUFFER, null);
             if (result > 0) {
-                stack.stackSize = result;
+                ItemStackTools.setStackSize(stack, result);
                 if (playerMP.inventory.addItemStackToInventory(stack)) {
                     inventoryHelper.setInventorySlotContents(64, slot, null);
                 }
@@ -324,9 +325,9 @@ public class DimletWorkbenchTileEntity extends GenericEnergyReceiverTileEntity i
         }
         for (int i = 0 ; i < playerMP.inventory.getSizeInventory() ; i++) {
             ItemStack stack = playerMP.inventory.getStackInSlot(i);
-            if (stack != null && stack.isItemEqual(part)) {
+            if (ItemStackTools.isValid(stack) && stack.isItemEqual(part)) {
                 ItemStack partStack = playerMP.inventory.decrStackSize(i, 1);
-                if (partStack != null) {
+                if (ItemStackTools.isValid(partStack)) {
                     inventoryHelper.setInventorySlotContents(64, slot, partStack);
                     playerMP.openContainer.detectAndSendChanges();
                     return;
@@ -351,9 +352,9 @@ public class DimletWorkbenchTileEntity extends GenericEnergyReceiverTileEntity i
         }
         for (int i = 0 ; i < playerMP.inventory.getSizeInventory() ; i++) {
             ItemStack stack = playerMP.inventory.getStackInSlot(i);
-            if (stack != null && key.equals(type.isValidEssence(stack))) {
+            if (ItemStackTools.isValid(stack) && key.equals(type.isValidEssence(stack))) {
                 ItemStack partStack = playerMP.inventory.decrStackSize(i, 1);
-                if (partStack != null) {
+                if (ItemStackTools.isValid(partStack)) {
                     inventoryHelper.setInventorySlotContents(64, slot, partStack);
                     playerMP.openContainer.detectAndSendChanges();
                     return;
@@ -365,7 +366,7 @@ public class DimletWorkbenchTileEntity extends GenericEnergyReceiverTileEntity i
     private void mergeItemOrThrowInWorld(ItemStack stack) {
         int notInserted = inventoryHelper.mergeItemStack(this, false, stack, DimletWorkbenchContainer.SLOT_BUFFER, DimletWorkbenchContainer.SLOT_BUFFER + DimletWorkbenchContainer.SIZE_BUFFER, null);
         if (notInserted > 0) {
-            BlockTools.spawnItemStack(worldObj, getPos().getX(), getPos().getY(), getPos().getZ(), stack);
+            BlockTools.spawnItemStack(getWorld(), getPos().getX(), getPos().getY(), getPos().getZ(), stack);
         }
     }
 

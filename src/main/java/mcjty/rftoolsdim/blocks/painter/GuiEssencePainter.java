@@ -11,6 +11,8 @@ import mcjty.lib.gui.widgets.Panel;
 import mcjty.lib.gui.widgets.TextField;
 import mcjty.lib.gui.widgets.*;
 import mcjty.lib.network.Argument;
+import mcjty.lib.tools.ItemStackTools;
+import mcjty.lib.tools.MinecraftTools;
 import mcjty.lib.varia.Counter;
 import mcjty.lib.varia.Logging;
 import mcjty.rftoolsdim.RFToolsDim;
@@ -99,9 +101,9 @@ public class GuiEssencePainter extends GenericGuiContainer<EssencePainterTileEnt
     private void extractDimlets() {
         for (int i = 0; i < EssencePainterContainer.SIZE_DIMLETS ; i++) {
             ItemStack stack = inventorySlots.getSlot(i + EssencePainterContainer.SLOT_DIMLETS).getStack();
-            if (stack != null && stack.stackSize > 0) {
+            if (ItemStackTools.isValid(stack)) {
                 // Cannot extract. There are still items in the way.
-                Logging.warn(mc.thePlayer, "You cannot extract. Remove all dimlets first!");
+                Logging.warn(MinecraftTools.getPlayer(mc), "You cannot extract. Remove all dimlets first!");
                 return;
             }
         }
@@ -116,7 +118,7 @@ public class GuiEssencePainter extends GenericGuiContainer<EssencePainterTileEnt
         Slot slot = inventorySlots.getSlot(EssencePainterContainer.SLOT_TAB);
         extractButton.setEnabled(false);
         storeButton.setEnabled(false);
-        if (slot.getStack() != null) {
+        if (ItemStackTools.isValid(slot.getStack())) {
             if (slot.getStack().getItem() == ModItems.emptyDimensionTabItem) {
                 storeButton.setEnabled(true);
             } else if (slot.getStack().getItem() == ModItems.realizedDimensionTabItem) {
@@ -159,7 +161,7 @@ public class GuiEssencePainter extends GenericGuiContainer<EssencePainterTileEnt
         int cntOwner = 0;
         for (int i = EssencePainterContainer.SLOT_DIMLETS; i < EssencePainterContainer.SLOT_TAB ; i++) {
             Slot slot = inventorySlots.getSlot(i);
-            if (slot != null && slot.getStack() != null && slot.getStack().stackSize > 0) {
+            if (slot != null && ItemStackTools.isValid(slot.getStack())) {
                 ItemStack stack = slot.getStack();
                 DimletKey key = KnownDimletConfiguration.getDimletKey(stack);
                 if (key.getType() == DimletType.DIMLET_TERRAIN) {
@@ -192,7 +194,7 @@ public class GuiEssencePainter extends GenericGuiContainer<EssencePainterTileEnt
         List<DimletKey> modifiers = new ArrayList<DimletKey>();
         for (int i = EssencePainterContainer.SLOT_DIMLETS; i < EssencePainterContainer.SLOT_TAB ; i++) {
             Slot slot = inventorySlots.getSlot(i);
-            if (slot != null && slot.getStack() != null && slot.getStack().stackSize > 0) {
+            if (slot != null && ItemStackTools.isValid(slot.getStack())) {
                 ItemStack stack = slot.getStack();
                 DimletKey key = KnownDimletConfiguration.getDimletKey(stack);
                 DimletType type = key.getType();
@@ -268,7 +270,7 @@ public class GuiEssencePainter extends GenericGuiContainer<EssencePainterTileEnt
 
     private void setNameFromDimensionTab() {
         Slot slot = inventorySlots.getSlot(EssencePainterContainer.SLOT_TAB);
-        if (slot.getStack() != null && slot.getStack().getItem() == ModItems.realizedDimensionTabItem) {
+        if (ItemStackTools.isValid(slot.getStack()) && slot.getStack().getItem() == ModItems.realizedDimensionTabItem) {
             NBTTagCompound tagCompound = slot.getStack().getTagCompound();
             if (tagCompound != null) {
                 String name = tagCompound.getString("name");

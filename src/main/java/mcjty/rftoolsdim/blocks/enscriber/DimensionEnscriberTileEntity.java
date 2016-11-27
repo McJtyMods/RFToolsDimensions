@@ -4,6 +4,7 @@ import mcjty.lib.container.DefaultSidedInventory;
 import mcjty.lib.container.InventoryHelper;
 import mcjty.lib.entity.GenericTileEntity;
 import mcjty.lib.network.Argument;
+import mcjty.lib.tools.ItemStackTools;
 import mcjty.lib.varia.Logging;
 import mcjty.rftoolsdim.config.GeneralConfiguration;
 import mcjty.rftoolsdim.config.Settings;
@@ -63,7 +64,7 @@ public class DimensionEnscriberTileEntity extends GenericTileEntity implements D
     }
 
     @Override
-    public boolean isUseableByPlayer(EntityPlayer player) {
+    public boolean isUsable(EntityPlayer player) {
         return canPlayerAccess(player);
     }
 
@@ -103,7 +104,7 @@ public class DimensionEnscriberTileEntity extends GenericTileEntity implements D
             }
         }
         DimensionDescriptor descriptor = convertToDimensionDescriptor();
-        ItemStack realizedTab = createRealizedTab(descriptor, worldObj);
+        ItemStack realizedTab = createRealizedTab(descriptor, getWorld());
         inventoryHelper.setStackInSlot(DimensionEnscriberContainer.SLOT_TAB, realizedTab);
 
         markDirty();
@@ -113,7 +114,7 @@ public class DimensionEnscriberTileEntity extends GenericTileEntity implements D
         boolean owner = false;
         for (int i = 0 ; i < DimensionEnscriberContainer.SIZE_DIMLETS ; i++) {
             ItemStack stack = inventoryHelper.getStackInSlot(i + DimensionEnscriberContainer.SLOT_DIMLETS);
-            if (stack != null && stack.stackSize > 0) {
+            if (ItemStackTools.isValid(stack)) {
                 DimletKey key = KnownDimletConfiguration.getDimletKey(stack);
                 if (key.getType() == DimletType.DIMLET_SPECIAL && DimletObjectMapping.getSpecial(key) == SpecialType.SPECIAL_OWNER) {
                     owner = true;
@@ -156,7 +157,7 @@ public class DimensionEnscriberTileEntity extends GenericTileEntity implements D
 
         for (int i = 0 ; i < DimensionEnscriberContainer.SIZE_DIMLETS ; i++) {
             ItemStack stack = inventoryHelper.getStackInSlot(i + DimensionEnscriberContainer.SLOT_DIMLETS);
-            if (stack != null && stack.stackSize > 0) {
+            if (ItemStackTools.isValid(stack)) {
                 DimletKey key = KnownDimletConfiguration.getDimletKey(stack);
                 Settings settings = KnownDimletConfiguration.getSettings(key);
                 if (settings != null) {
@@ -207,11 +208,11 @@ public class DimensionEnscriberTileEntity extends GenericTileEntity implements D
             tagCompound.setString("name", name);
             if (tagCompound.hasKey("id")) {
                 Integer id = tagCompound.getInteger("id");
-                RfToolsDimensionManager dimensionManager = RfToolsDimensionManager.getDimensionManager(worldObj);
+                RfToolsDimensionManager dimensionManager = RfToolsDimensionManager.getDimensionManager(getWorld());
                 DimensionInformation information = dimensionManager.getDimensionInformation(id);
                 if (information != null) {
                     information.setName(name);
-                    dimensionManager.save(worldObj);
+                    dimensionManager.save(getWorld());
                 }
             }
             markDirty();
@@ -220,7 +221,7 @@ public class DimensionEnscriberTileEntity extends GenericTileEntity implements D
 
     @Override
     public void onSlotChanged(int index, ItemStack stack) {
-        if (worldObj.isRemote && index == DimensionEnscriberContainer.SLOT_TAB) {
+        if (getWorld().isRemote && index == DimensionEnscriberContainer.SLOT_TAB) {
             tabSlotHasChanged = true;
         }
     }

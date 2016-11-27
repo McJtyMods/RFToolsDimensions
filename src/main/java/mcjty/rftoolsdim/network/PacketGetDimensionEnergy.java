@@ -36,7 +36,7 @@ public class PacketGetDimensionEnergy implements IMessage {
         }
 
         private void handle(PacketGetDimensionEnergy message, MessageContext ctx) {
-            World world = ctx.getServerHandler().playerEntity.worldObj;
+            World world = ctx.getServerHandler().playerEntity.getEntityWorld();
             DimensionStorage dimensionStorage = DimensionStorage.getDimensionStorage(world);
 
             PacketReturnEnergy returnMessage = new PacketReturnEnergy(message.dimension, dimensionStorage.getEnergyLevel(message.dimension));

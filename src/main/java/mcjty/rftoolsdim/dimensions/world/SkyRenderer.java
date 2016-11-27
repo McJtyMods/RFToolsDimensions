@@ -1,5 +1,7 @@
 package mcjty.rftoolsdim.dimensions.world;
 
+import mcjty.lib.tools.MinecraftTools;
+import mcjty.lib.varia.MathTools;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.dimensions.DimensionInformation;
 import mcjty.rftoolsdim.dimensions.description.CelestialBodyDescriptor;
@@ -369,8 +371,8 @@ public class SkyRenderer {
     private static void renderSky(float partialTickTime, DimensionInformation information) {
         initialize();
 
-        EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
-        WorldClient world = Minecraft.getMinecraft().theWorld;
+        EntityPlayerSP player = MinecraftTools.getPlayer(Minecraft.getMinecraft());
+        WorldClient world = MinecraftTools.getWorld(Minecraft.getMinecraft());
         TextureManager renderEngine = Minecraft.getMinecraft().getTextureManager();
 
         GlStateManager.disableTexture2D();
@@ -816,8 +818,8 @@ public class SkyRenderer {
         double d1 = (entityX + d0 * 0.029999999329447746D) / f2;
         double d2 = entityZ / f2 + 0.33000001311302185D;
         float y = provider.getCloudHeight() - f1 + 0.33F;
-        int i = MathHelper.floor_double(d1 / 2048.0D);
-        int j = MathHelper.floor_double(d2 / 2048.0D);
+        int i = MathTools.floor(d1 / 2048.0D);
+        int j = MathTools.floor(d2 / 2048.0D);
         d1 -= (i * 2048);
         d2 -= (j * 2048);
         renderEngine.bindTexture(locationCloudsPng);
@@ -841,10 +843,10 @@ public class SkyRenderer {
         }
 
         f10 = 0.00390625F;
-        f8 = MathHelper.floor_double(d1) * f10;
-        f9 = MathHelper.floor_double(d2) * f10;
-        float f11 = (float) (d1 - MathHelper.floor_double(d1));
-        float f12 = (float) (d2 - MathHelper.floor_double(d2));
+        f8 = MathTools.floor(d1) * f10;
+        f9 = MathTools.floor(d2) * f10;
+        float f11 = (float) (d1 - MathTools.floor(d1));
+        float f12 = (float) (d2 - MathTools.floor(d2));
         byte b0 = 8;
         byte b1 = 4;
         float f13 = 9.765625E-4F;

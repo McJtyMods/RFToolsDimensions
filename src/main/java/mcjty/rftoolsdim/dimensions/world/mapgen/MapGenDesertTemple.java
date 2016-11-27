@@ -2,9 +2,11 @@ package mcjty.rftoolsdim.dimensions.world.mapgen;
 
 import com.google.common.collect.Lists;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.structure.*;
 
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
 
@@ -25,6 +27,13 @@ public class MapGenDesertTemple extends MapGenStructure {
         return "RFTDesertTemple";
     }
 
+    // @todo @@@@@@@@@@@@@@@@@@
+    @Nullable
+    @Override
+    public BlockPos getClosestStrongholdPos(World worldIn, BlockPos pos, boolean p_180706_3_) {
+        return null;
+    }
+
     @Override
     protected boolean canSpawnStructureAtCoords(int chunkX, int chunkZ) {
         int i = chunkX;
@@ -40,7 +49,9 @@ public class MapGenDesertTemple extends MapGenStructure {
 
         int k = chunkX / this.maxDistance;
         int l = chunkZ / this.maxDistance;
-        Random random = this.worldObj.setRandomSeed(k, l, 14357617);
+
+        // @todo @@@@@@@@@@@@ worldObj
+        Random random = this.world.setRandomSeed(k, l, 14357617);
         k = k * this.maxDistance;
         l = l * this.maxDistance;
         k = k + random.nextInt(this.maxDistance - this.minDistance);
