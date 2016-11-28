@@ -1,5 +1,6 @@
 package mcjty.rftoolsdim.dimensions.world;
 
+import mcjty.lib.compat.CompatWorldProvider;
 import mcjty.lib.varia.Logging;
 import mcjty.rftoolsdim.api.dimension.IRFToolsWorldProvider;
 import mcjty.rftoolsdim.config.GeneralConfiguration;
@@ -19,8 +20,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.DimensionType;
-import net.minecraft.world.World;
-import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeProvider;
@@ -33,7 +32,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.Set;
 
 //@Optional.InterfaceList(@Optional.Interface(iface = "ivorius.reccomplex.dimensions.DimensionDictionary$Handler", modid = "reccomplex"))
-public class GenericWorldProvider extends WorldProvider implements  /*@todo implements DimensionDictionary.Handler,*/ IRFToolsWorldProvider {
+public class GenericWorldProvider extends CompatWorldProvider implements  /*@todo implements DimensionDictionary.Handler,*/ IRFToolsWorldProvider {
 
     public static final String RFTOOLS_DIMENSION = "rftools_dimension";
 
@@ -45,12 +44,6 @@ public class GenericWorldProvider extends WorldProvider implements  /*@todo impl
     private long calculateSeed(long seed, int dim) {
         return dim * 13L + seed;
     }
-
-    public World getWorld() {
-        // @todo @@@@@@ worldObj
-        return world;
-    }
-
 
     @Override
     public DimensionType getDimensionType() {
@@ -185,11 +178,8 @@ public class GenericWorldProvider extends WorldProvider implements  /*@todo impl
         return biomeProvider;
     }
 
-
-    // @todo @@@@@@@@@@@@@@@@@@
     @Override
-    protected void init() {
-//        super.init();
+    protected void initialize() {
         if (getWorld() instanceof WorldServer) {
             createBiomeProviderInternal();
             return;
@@ -198,17 +188,6 @@ public class GenericWorldProvider extends WorldProvider implements  /*@todo impl
         // We are on a client here and we don't have sufficient information right here (dimension information has not synced yet)
         biomeProvider = null;
     }
-//    @Override
-//    protected void createBiomeProvider() {
-//        if (getWorld() instanceof WorldServer) {
-//            createBiomeProviderInternal();
-//            return;
-//        }
-//
-//        // We are on a client here and we don't have sufficient information right here (dimension information has not synced yet)
-//        biomeProvider = null;
-//        return;
-//    }
 
     private void createBiomeProviderInternal() {
         getDimensionInformation();

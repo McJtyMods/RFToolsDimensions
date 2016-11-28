@@ -2,6 +2,7 @@ package mcjty.rftoolsdim.dimensions.dimlets;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
+import mcjty.lib.compat.CompatBlock;
 import mcjty.lib.varia.Logging;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.config.DimletRules;
@@ -249,11 +250,7 @@ public class KnownDimletConfiguration {
         for (IBlockState state : block.getBlockState().getValidStates()) {
             int meta = state.getBlock().getMetaFromState(state);
 
-            // @todo @@@@@@@@@@@@@@@
-            List<IProperty<?>> propertyNames = new ArrayList<>(state.getPropertyKeys());
-//            List<IProperty> propertyNames = new ArrayList<>(state.getPropertyNames());
-
-
+            List<IProperty<?>> propertyNames = new ArrayList<>(CompatBlock.getPropertyKeys(state));
             propertyNames.sort((o1, o2) -> o1.getName().compareTo(o2.getName()));
 
             ImmutableMap<IProperty<?>, Comparable<?>> properties = state.getProperties();

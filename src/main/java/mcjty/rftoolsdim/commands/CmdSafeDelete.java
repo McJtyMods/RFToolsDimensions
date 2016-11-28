@@ -1,5 +1,6 @@
 package mcjty.rftoolsdim.commands;
 
+import mcjty.lib.compat.CompatCommandBase;
 import mcjty.lib.tools.ChatTools;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.config.GeneralConfiguration;
@@ -63,9 +64,7 @@ public class CmdSafeDelete extends AbstractRfToolsCommand {
             return;
         }
 
-        // @todo @@@@@@@@@@@@
-        if (!sender.canUseCommand(3, "safedel")) {
-//            if (!sender.canCommandSenderUseCommand(3, "safedel")) {
+        if (!CompatCommandBase.canUseCommand(sender, 3, "safedel")) {
             DimensionInformation information = dimensionManager.getDimensionInformation(dim);
             if (information.getOwner() == null) {
                 ChatTools.addChatMessage(sender, new TextComponentString(TextFormatting.RED + "This dimension has no owner. You cannot delete it!"));

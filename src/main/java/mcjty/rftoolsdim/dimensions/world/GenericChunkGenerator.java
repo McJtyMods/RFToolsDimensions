@@ -1,5 +1,7 @@
 package mcjty.rftoolsdim.dimensions.world;
 
+import mcjty.lib.compat.CompatChunkGenerator;
+import mcjty.lib.compat.CompatMapGenStructure;
 import mcjty.rftoolsdim.config.WorldgenConfiguration;
 import mcjty.rftoolsdim.dimensions.DimensionInformation;
 import mcjty.rftoolsdim.dimensions.RfToolsDimensionManager;
@@ -26,7 +28,6 @@ import net.minecraft.world.WorldType;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkPrimer;
-import net.minecraft.world.chunk.IChunkGenerator;
 import net.minecraft.world.gen.ChunkProviderSettings;
 import net.minecraft.world.gen.MapGenBase;
 import net.minecraft.world.gen.MapGenCaves;
@@ -38,7 +39,6 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 import net.minecraftforge.event.terraingen.TerrainGen;
 
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -46,7 +46,7 @@ import java.util.Random;
 
 import static net.minecraftforge.event.terraingen.InitMapGenEvent.EventType.*;
 
-public class GenericChunkGenerator implements IChunkGenerator {
+public class GenericChunkGenerator implements CompatChunkGenerator {
 
     public Random rand;
     public long seed;
@@ -588,16 +588,12 @@ public class GenericChunkGenerator implements IChunkGenerator {
         return Biome.getSpawnableList(creatureType);
     }
 
-    //@todo @@@@@@@@@@@
-    @Nullable
     @Override
-    public BlockPos getStrongholdGen(World worldIn, String structureName, BlockPos position, boolean p_180513_4_) {
-        return "Stronghold".equals(structureName) && this.strongholdGenerator != null ? this.strongholdGenerator.getClosestStrongholdPos(worldIn, position, p_180513_4_) : null;
+    public BlockPos clGetStrongholdGen(World worldIn, String structureName, BlockPos position) {
+        return "Stronghold".equals(structureName) && this.strongholdGenerator != null
+                ? CompatMapGenStructure.getClosestStrongholdPos(this.strongholdGenerator, worldIn, position)
+                : null;
     }
-//    @Override
-//    public BlockPos getStrongholdGen(World worldIn, String structureName, BlockPos position) {
-//        return "Stronghold".equals(structureName) && this.strongholdGenerator != null ? this.strongholdGenerator.getClosestStrongholdPos(worldIn, position) : null;
-//    }
 
     @Override
     public void recreateStructures(Chunk chunkIn, int x, int z) {

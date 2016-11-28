@@ -17,9 +17,16 @@ import java.util.Random;
 
 public class MapGenDenseCaves extends MapGenCaves {
     private final GenericChunkGenerator provider;
+    private World w;
 
     public MapGenDenseCaves(GenericChunkGenerator provider) {
         this.provider = provider;
+    }
+
+    @Override
+    public void generate(World worldIn, int x, int z, ChunkPrimer primer) {
+        w = worldIn;
+        super.generate(worldIn, x, z, primer);
     }
 
     protected void func_151541_a(long nextLong, int chunkX, int chunkZ, ChunkPrimer chunkPrimer, double p_151541_6_, double p_151541_8_, double p_151541_10_, float p_151541_12_, float p_151541_13_, float p_151541_14_, int p_151541_15_, int p_151541_16_, double p_151541_17_) {
@@ -221,8 +228,7 @@ public class MapGenDenseCaves extends MapGenCaves {
     //Determine if the block at the specified location is the top block for the biome, we take into account
     //Vanilla bugs to make sure that we generate the map the same way vanilla does.
     private boolean isTopBlock(ChunkPrimer data, int x, int y, int z, int chunkX, int chunkZ) {
-        // @todo @@@@@@@@@@@@@@@ worldObj
-        net.minecraft.world.biome.Biome biome = world.getBiomeForCoordsBody(new BlockPos(x + chunkX * 16, 0, z + chunkZ * 16));
+        net.minecraft.world.biome.Biome biome = w.getBiomeForCoordsBody(new BlockPos(x + chunkX * 16, 0, z + chunkZ * 16));
         IBlockState state = data.getBlockState(x, y, z);
         return (isExceptionBiome(biome) ? state.getBlock() == Blocks.GRASS : state.getBlock() == biome.topBlock);
     }

@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.gen.structure.*;
 
 import javax.annotation.Nullable;
@@ -15,11 +16,18 @@ public class MapGenJungleTemple extends MapGenStructure {
 
     private int maxDistance;
     private int minDistance;
+    private World w;
 
     public MapGenJungleTemple() {
         this.scatteredFeatureSpawnList = Lists.<Biome.SpawnListEntry>newArrayList();
         this.maxDistance = 32;
         this.minDistance = 8;
+    }
+
+    @Override
+    public void generate(World worldIn, int x, int z, ChunkPrimer primer) {
+        w = worldIn;
+        super.generate(worldIn, x, z, primer);
     }
 
     @Override
@@ -42,8 +50,7 @@ public class MapGenJungleTemple extends MapGenStructure {
 
         int k = chunkX / this.maxDistance;
         int l = chunkZ / this.maxDistance;
-        // @todo @@@@@@@@@@ worldObj
-        Random random = this.world.setRandomSeed(k, l, 14357617);
+        Random random = this.w.setRandomSeed(k, l, 14357617);
         k = k * this.maxDistance;
         l = l * this.maxDistance;
         k = k + random.nextInt(this.maxDistance - this.minDistance);

@@ -21,7 +21,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ClassInheritanceMultiMap;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldSavedData;
 import net.minecraft.world.WorldServer;
@@ -182,11 +181,8 @@ public class RfToolsDimensionManager extends WorldSavedData {
         int i = MathTools.floor((c.getY() - radius) / 16.0D);
         int j = MathTools.floor((c.getY() + 1 + radius) / 16.0D);
 
-        // @todo @@@@@@@@@@@@@@@@@@@@@@@@
-        i = MathHelper.clamp(i, 0, chunk.getEntityLists().length - 1);
-        j = MathHelper.clamp(j, 0, chunk.getEntityLists().length - 1);
-//        i = MathHelper.clamp_int(i, 0, chunk.getEntityLists().length - 1);
-//        j = MathHelper.clamp_int(j, 0, chunk.getEntityLists().length - 1);
+        i = mcjty.lib.tools.MathTools.clamp(i, 0, chunk.getEntityLists().length - 1);
+        j = mcjty.lib.tools.MathTools.clamp(j, 0, chunk.getEntityLists().length - 1);
 
         for (int k = i; k <= j; ++k) {
             ClassInheritanceMultiMap<Entity> entityList = chunk.getEntityLists()[k];

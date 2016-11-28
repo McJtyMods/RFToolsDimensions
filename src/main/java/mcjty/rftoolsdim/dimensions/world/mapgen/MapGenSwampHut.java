@@ -5,6 +5,7 @@ import net.minecraft.entity.monster.EntityWitch;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.gen.structure.*;
 
 import javax.annotation.Nullable;
@@ -16,12 +17,19 @@ public class MapGenSwampHut extends MapGenStructure {
 
     private int maxDistance;
     private int minDistance;
+    private World w;
 
     public MapGenSwampHut() {
         this.scatteredFeatureSpawnList = Lists.<Biome.SpawnListEntry>newArrayList();
         this.maxDistance = 32;
         this.minDistance = 8;
         this.scatteredFeatureSpawnList.add(new Biome.SpawnListEntry(EntityWitch.class, 1, 1, 1));
+    }
+
+    @Override
+    public void generate(World worldIn, int x, int z, ChunkPrimer primer) {
+        w = worldIn;
+        super.generate(worldIn, x, z, primer);
     }
 
     @Override
@@ -45,8 +53,7 @@ public class MapGenSwampHut extends MapGenStructure {
         int k = chunkX / this.maxDistance;
         int l = chunkZ / this.maxDistance;
 
-        // @todo @@@@@@@@@@@@@@ (worldObj)
-        Random random = this.world.setRandomSeed(k, l, 14357617);
+        Random random = this.w.setRandomSeed(k, l, 14357617);
 
         k = k * this.maxDistance;
         l = l * this.maxDistance;
