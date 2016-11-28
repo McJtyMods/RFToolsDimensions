@@ -76,8 +76,8 @@ public class DimletWorkbenchTileEntity extends GenericEnergyReceiverTileEntity i
     private void checkCrafting() {
         if (inhibitCrafting == 0) {
             if (!checkDimletCrafting()) {
-                if (inventoryHelper.getStackInSlot(DimletWorkbenchContainer.SLOT_OUTPUT) != null) {
-                    inventoryHelper.setInventorySlotContents(0, DimletWorkbenchContainer.SLOT_OUTPUT, null);
+                if (ItemStackTools.isValid(inventoryHelper.getStackInSlot(DimletWorkbenchContainer.SLOT_OUTPUT))) {
+                    inventoryHelper.setInventorySlotContents(0, DimletWorkbenchContainer.SLOT_OUTPUT, ItemStackTools.getEmptyStack());
                 }
             }
         }
@@ -122,27 +122,27 @@ public class DimletWorkbenchTileEntity extends GenericEnergyReceiverTileEntity i
 
     private boolean checkDimletCrafting() {
         ItemStack stackBase = inventoryHelper.getStackInSlot(DimletWorkbenchContainer.SLOT_BASE);
-        if (stackBase == null) {
+        if (ItemStackTools.isEmpty(stackBase)) {
             return false;
         }
         ItemStack stackController = inventoryHelper.getStackInSlot(DimletWorkbenchContainer.SLOT_CONTROLLER);
-        if (stackController == null) {
+        if (ItemStackTools.isEmpty(stackController)) {
             return false;
         }
         ItemStack stackTypeController = inventoryHelper.getStackInSlot(DimletWorkbenchContainer.SLOT_TYPE_CONTROLLER);
-        if (stackTypeController == null) {
+        if (ItemStackTools.isEmpty(stackTypeController)) {
             return false;
         }
         ItemStack stackMemory = inventoryHelper.getStackInSlot(DimletWorkbenchContainer.SLOT_MEMORY);
-        if (stackMemory == null) {
+        if (ItemStackTools.isEmpty(stackMemory)) {
             return false;
         }
         ItemStack stackEnergy = inventoryHelper.getStackInSlot(DimletWorkbenchContainer.SLOT_ENERGY);
-        if (stackEnergy == null) {
+        if (ItemStackTools.isEmpty(stackEnergy)) {
             return false;
         }
         ItemStack stackEssence = inventoryHelper.getStackInSlot(DimletWorkbenchContainer.SLOT_ESSENCE);
-        if (stackEssence == null) {
+        if (ItemStackTools.isEmpty(stackEssence)) {
             return false;
         }
 
@@ -200,7 +200,7 @@ public class DimletWorkbenchTileEntity extends GenericEnergyReceiverTileEntity i
             return;
         }
         ItemStack stack = inventoryHelper.getStackInSlot(DimletWorkbenchContainer.SLOT_INPUT);
-        if (stack != null) {
+        if (ItemStackTools.isValid(stack)) {
             if (ModItems.knownDimletItem.equals(stack.getItem())) {
                 DimletKey key = KnownDimletConfiguration.getDimletKey(stack);
                 Settings settings = KnownDimletConfiguration.getSettings(key);
@@ -315,9 +315,9 @@ public class DimletWorkbenchTileEntity extends GenericEnergyReceiverTileEntity i
         }
         for (int i = DimletWorkbenchContainer.SLOT_BUFFER ; i < DimletWorkbenchContainer.SLOT_BUFFER + DimletWorkbenchContainer.SIZE_BUFFER ; i++) {
             ItemStack stack = inventoryHelper.getStackInSlot(i);
-            if (stack != null && stack.isItemEqual(part)) {
+            if (ItemStackTools.isValid(stack) && stack.isItemEqual(part)) {
                 ItemStack partStack = inventoryHelper.decrStackSize(i, 1);
-                if (partStack != null) {
+                if (ItemStackTools.isValid(partStack)) {
                     inventoryHelper.setInventorySlotContents(64, slot, partStack);
                     return;
                 }
@@ -342,9 +342,9 @@ public class DimletWorkbenchTileEntity extends GenericEnergyReceiverTileEntity i
         }
         for (int i = DimletWorkbenchContainer.SLOT_BUFFER ; i < DimletWorkbenchContainer.SLOT_BUFFER + DimletWorkbenchContainer.SIZE_BUFFER ; i++) {
             ItemStack stack = inventoryHelper.getStackInSlot(i);
-            if (stack != null && key.equals(type.isValidEssence(stack))) {
+            if (ItemStackTools.isValid(stack) && key.equals(type.isValidEssence(stack))) {
                 ItemStack partStack = inventoryHelper.decrStackSize(i, 1);
-                if (partStack != null) {
+                if (ItemStackTools.isValid(partStack)) {
                     inventoryHelper.setInventorySlotContents(64, slot, partStack);
                     return;
                 }

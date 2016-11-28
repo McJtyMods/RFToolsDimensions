@@ -12,6 +12,7 @@ import mcjty.lib.gui.widgets.Label;
 import mcjty.lib.gui.widgets.Panel;
 import mcjty.lib.gui.widgets.TextField;
 import mcjty.lib.network.Argument;
+import mcjty.lib.tools.ItemStackTools;
 import mcjty.lib.tools.MinecraftTools;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.config.Settings;
@@ -237,14 +238,14 @@ public class GuiDimletWorkbench extends GenericGuiContainer<DimletWorkbenchTileE
                 ItemStack essence = key.getType().dimletType.getDefaultEssence(key);
 
                 if (MinecraftTools.getPlayer(Minecraft.getMinecraft()).isCreative()) {
-                    if (essence == null) {
+                    if (ItemStackTools.isEmpty(essence)) {
                         widget.setTooltips(TextFormatting.RED + "Shift-Double-Click to cheat", "Type: " + key.getType().dimletType.getName(), "Rarity: " + settings.getRarity(), "@0@1@2", "@3@4@5",
                                 TextFormatting.RED + "(currently not craftable)");
                     } else {
                         widget.setTooltips(TextFormatting.RED + "Shift-Double-Click to cheat", "Type: " + key.getType().dimletType.getName(), "Rarity: " + settings.getRarity(), "@0@1@2", "@3@4@5");
                     }
                 } else {
-                    if (essence == null) {
+                    if (ItemStackTools.isEmpty(essence)) {
                         widget.setTooltips("Type: " + key.getType().dimletType.getName(), "Rarity: " + settings.getRarity(), "@0@1@2", "@3@4@5",
                             TextFormatting.RED + "(currently not craftable)");
                     } else {

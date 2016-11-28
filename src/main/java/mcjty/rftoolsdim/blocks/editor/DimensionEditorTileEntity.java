@@ -91,12 +91,12 @@ public class DimensionEditorTileEntity extends GenericEnergyReceiverTileEntity i
             return;
         }
         ItemStack injectableItemStack = validateInjectableItemStack();
-        if (injectableItemStack == null) {
+        if (ItemStackTools.isEmpty(injectableItemStack)) {
             return;
         }
 
         ItemStack dimensionItemStack = validateDimensionItemStack();
-        if (dimensionItemStack == null) {
+        if (ItemStackTools.isEmpty(dimensionItemStack)) {
             return;
         }
 

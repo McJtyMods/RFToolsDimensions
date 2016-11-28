@@ -1,5 +1,6 @@
 package mcjty.rftoolsdim.dimensions;
 
+import mcjty.lib.tools.ItemStackTools;
 import mcjty.lib.varia.Logging;
 import mcjty.lib.varia.MathTools;
 import mcjty.rftoolsdim.config.DimletRules;
@@ -224,7 +225,7 @@ public class RfToolsDimensionManager extends WorldSavedData {
         InventoryPlayer inventory = player.inventory;
         for (int i = 0 ; i < inventory.getHotbarSize() ; i++) {
             ItemStack slot = inventory.getStackInSlot(i);
-            if (slot != null && slot.getItem() == ModItems.phasedFieldGeneratorItem) {
+            if (ItemStackTools.isValid(slot) && slot.getItem() == ModItems.phasedFieldGeneratorItem) {
                 PhasedFieldGeneratorItem pfg = (PhasedFieldGeneratorItem) slot.getItem();
                 int energyStored = pfg.getEnergyStored(slot);
                 int toConsume;

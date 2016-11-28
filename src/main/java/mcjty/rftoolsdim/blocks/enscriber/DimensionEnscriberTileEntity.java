@@ -199,7 +199,7 @@ public class DimensionEnscriberTileEntity extends GenericTileEntity implements D
 
     private void setName(String name) {
         ItemStack realizedTab = inventoryHelper.getStackInSlot(DimensionEnscriberContainer.SLOT_TAB);
-        if (realizedTab != null) {
+        if (ItemStackTools.isValid(realizedTab)) {
             NBTTagCompound tagCompound = realizedTab.getTagCompound();
             if (tagCompound == null) {
                 tagCompound = new NBTTagCompound();
