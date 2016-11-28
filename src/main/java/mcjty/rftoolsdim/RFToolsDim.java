@@ -3,6 +3,7 @@ package mcjty.rftoolsdim;
 import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import mcjty.lib.base.ModBase;
+import mcjty.lib.compat.CompatCreativeTabs;
 import mcjty.lib.compat.MainCompatHandler;
 import mcjty.lib.varia.Logging;
 import mcjty.rftools.api.teleportation.ITeleportationManager;
@@ -67,10 +68,10 @@ public class RFToolsDim implements ModBase {
     public static final int GUI_DIMLET_WORKBENCH = modGuiIndex++;
     public static final int GUI_ESSENCE_PAINTER = modGuiIndex++;
 
-    public static CreativeTabs tabRfToolsDim = new CreativeTabs("RfToolsDim") {
+    public static CreativeTabs tabRfToolsDim = new CompatCreativeTabs("RfToolsDim") {
+
         @Override
-        @SideOnly(Side.CLIENT)
-        public Item getTabIconItem() {
+        protected Item getItem() {
             return ModItems.realizedDimensionTabItem;
         }
     };
@@ -159,7 +160,7 @@ public class RFToolsDim implements ModBase {
     @Override
     public void openManual(EntityPlayer player, int bookIndex, String page) {
 //        GuiRFToolsManual.locatePage = page;
-        player.openGui(RFToolsDim.instance, bookIndex, player.worldObj, (int) player.posX, (int) player.posY, (int) player.posZ);
+        player.openGui(RFToolsDim.instance, bookIndex, player.getEntityWorld(), (int) player.posX, (int) player.posY, (int) player.posZ);
     }
 
     public static class GetTeleportationManager implements com.google.common.base.Function<ITeleportationManager, Void> {

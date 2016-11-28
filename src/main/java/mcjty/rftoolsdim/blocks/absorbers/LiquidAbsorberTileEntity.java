@@ -32,7 +32,7 @@ public class LiquidAbsorberTileEntity extends GenericTileEntity implements ITick
 
     @Override
     public void update() {
-        if (worldObj.isRemote) {
+        if (getWorld().isRemote) {
             checkStateClient();
         } else {
             checkStateServer();
@@ -41,7 +41,7 @@ public class LiquidAbsorberTileEntity extends GenericTileEntity implements ITick
 
     private void checkStateClient() {
         if (absorbing > 0) {
-            Random rand = worldObj.rand;
+            Random rand = getWorld().rand;
 
             double u = rand.nextFloat() * 2.0f - 1.0f;
             double v = (float) (rand.nextFloat() * 2.0f * Math.PI);
@@ -50,7 +50,7 @@ public class LiquidAbsorberTileEntity extends GenericTileEntity implements ITick
             double z = u;
             double r = 1.0f;
 
-            worldObj.spawnParticle(EnumParticleTypes.PORTAL, getPos().getX() + 0.5f + x * r, getPos().getY() + 0.5f + y * r, getPos().getZ() + 0.5f + z * r, -x, -y, -z);
+            getWorld().spawnParticle(EnumParticleTypes.PORTAL, getPos().getX() + 0.5f + x * r, getPos().getY() + 0.5f + y * r, getPos().getZ() + 0.5f + z * r, -x, -y, -z);
         }
     }
 
@@ -78,7 +78,7 @@ public class LiquidAbsorberTileEntity extends GenericTileEntity implements ITick
     }
 
     private Block isValidSourceBlock(BlockPos coordinate) {
-        IBlockState state = worldObj.getBlockState(coordinate);
+        IBlockState state = getWorld().getBlockState(coordinate);
         Block block = state.getBlock();
         if (block == null || block.getMaterial(state) == Material.AIR) {
             return null;
@@ -110,7 +110,7 @@ public class LiquidAbsorberTileEntity extends GenericTileEntity implements ITick
                 }
 
                 if (!toscan.isEmpty()) {
-                    int r = worldObj.rand.nextInt(toscan.size());
+                    int r = getWorld().rand.nextInt(toscan.size());
                     Iterator<BlockPos> iterator = toscan.iterator();
                     BlockPos c = null;
                     for (int i = 0 ; i <= r ; i++) {
@@ -126,11 +126,11 @@ public class LiquidAbsorberTileEntity extends GenericTileEntity implements ITick
 
                     if (blockMatches(c)) {
                         // @todo check getBreakSound() client-side!
-                        SoundTools.playSound(worldObj, block.getSoundType().breakSound, getPos().getX(), getPos().getY(), getPos().getZ(), 1.0f, 1.0f);
-                        worldObj.setBlockToAir(c);
+                        SoundTools.playSound(getWorld(), block.getSoundType().breakSound, getPos().getX(), getPos().getY(), getPos().getZ(), 1.0f, 1.0f);
+                        getWorld().setBlockToAir(c);
                         absorbing--;
-                        IBlockState state = worldObj.getBlockState(c);
-                        worldObj.notifyBlockUpdate(c, state, state, 3);
+                        IBlockState state = getWorld().getBlockState(c);
+                        getWorld().notifyBlockUpdate(c, state, state, 3);
                     }
                 }
             }

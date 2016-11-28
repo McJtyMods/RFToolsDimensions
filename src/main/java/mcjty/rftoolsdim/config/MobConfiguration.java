@@ -4,6 +4,7 @@ import mcjty.lib.varia.Logging;
 import mcjty.rftoolsdim.dimensions.description.MobDescriptor;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.config.Configuration;
 
 import java.util.HashMap;
@@ -57,7 +58,9 @@ public class MobConfiguration {
 
     private static void initMobItem(Configuration cfg, String name,
                                     int chance, int mingroup, int maxgroup, int maxentity) {
-        Class<? extends Entity> entityClass = EntityList.NAME_TO_CLASS.get(name);
+        // @todo @@@@@@@@@@@@@@@@@@@@@@@@@@
+        Class<? extends Entity> entityClass = EntityList.getClass(new ResourceLocation(name));
+//        Class<? extends Entity> entityClass = EntityList.NAME_TO_CLASS.get(name);
         if (entityClass == null) {
             Logging.logError("Cannot find mob with name '" + name +"'!");
             return;

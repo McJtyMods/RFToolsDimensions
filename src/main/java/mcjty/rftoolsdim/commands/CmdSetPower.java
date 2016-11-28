@@ -1,5 +1,6 @@
 package mcjty.rftoolsdim.commands;
 
+import mcjty.lib.tools.ChatTools;
 import mcjty.rftoolsdim.config.PowerConfiguration;
 import mcjty.rftoolsdim.dimensions.DimensionInformation;
 import mcjty.rftoolsdim.dimensions.DimensionStorage;
@@ -33,7 +34,7 @@ public class CmdSetPower extends AbstractRfToolsCommand {
     @Override
     public void execute(ICommandSender sender, String[] args) {
         if (args.length > 2) {
-            sender.addChatMessage(new TextComponentString(TextFormatting.RED + "Too many parameters!"));
+            ChatTools.addChatMessage(sender, new TextComponentString(TextFormatting.RED + "Too many parameters!"));
             return;
         }
 
@@ -44,7 +45,7 @@ public class CmdSetPower extends AbstractRfToolsCommand {
         RfToolsDimensionManager dimensionManager = RfToolsDimensionManager.getDimensionManager(world);
         DimensionInformation information = dimensionManager.getDimensionInformation(dim);
         if (information == null) {
-            sender.addChatMessage(new TextComponentString(TextFormatting.RED + "Not an RFTools dimension!"));
+            ChatTools.addChatMessage(sender, new TextComponentString(TextFormatting.RED + "Not an RFTools dimension!"));
             return;
         }
 

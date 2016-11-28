@@ -1,5 +1,6 @@
 package mcjty.rftoolsdim.dimensions.world;
 
+import mcjty.lib.tools.WorldTools;
 import mcjty.lib.varia.Logging;
 import mcjty.lib.varia.WeightedRandomSelector;
 import mcjty.rftoolsdim.RFToolsDim;
@@ -21,13 +22,14 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkGenerator;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.feature.WorldGenMinable;
 import net.minecraftforge.fml.common.IWorldGenerator;
-import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 import java.util.Random;
 
@@ -48,7 +50,7 @@ public class GenericWorldGenerator implements IWorldGenerator {
             }
         }
 
-        Block dimensionalShardBlock = GameRegistry.findBlock("rftools", "dimensional_shard_ore");
+        Block dimensionalShardBlock = ForgeRegistries.BLOCKS.getValue(new ResourceLocation("rftools", "dimensional_shard_ore"));
         addOreSpawn(dimensionalShardBlock.getDefaultState(), Blocks.STONE.getDefaultState(), world, random, chunkX * 16, chunkZ * 16,
                     WorldgenConfiguration.oreMinimumVeinSize, WorldgenConfiguration.oreMaximumVeinSize, WorldgenConfiguration.oreMaximumVeinCount,
                     WorldgenConfiguration.oreMinimumHeight, WorldgenConfiguration.oreMaximumHeight);
@@ -509,7 +511,7 @@ public class GenericWorldGenerator implements IWorldGenerator {
 
     private EntityItemFrame spawnItemFrame(World world, int x, int y, int z) {
         EntityItemFrame frame = new EntityItemFrame(world, new BlockPos(x, y, z+1), EnumFacing.NORTH);
-        world.spawnEntityInWorld(frame);
+        WorldTools.spawnEntity(world, frame);
         frame.setPosition(x, y, z);
         return frame;
     }

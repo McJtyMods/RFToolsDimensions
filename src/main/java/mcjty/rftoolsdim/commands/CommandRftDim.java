@@ -26,7 +26,7 @@ public class CommandRftDim extends DefaultCommand {
     }
 
     @Override
-    public String getCommandName() {
+    public String getName() {
         return "rftdim";
     }
 }

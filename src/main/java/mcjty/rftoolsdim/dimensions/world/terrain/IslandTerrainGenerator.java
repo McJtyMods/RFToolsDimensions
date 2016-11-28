@@ -136,7 +136,8 @@ public class IslandTerrainGenerator implements BaseTerrainGenerator {
                         float xx = (x + chunkX2) / 1.0F;
                         float zz = (z + chunkZ2) / 1.0F;
 
-                        f2 = 100.0F - MathHelper.sqrt_float(xx * xx + zz * zz) * 8.0F;
+                        // @todo @@@@@@@@@@@@@@@@@@@@@@
+                        f2 = 100.0F - MathHelper.sqrt(xx * xx + zz * zz) * 8.0F;
 
                         if (f2 > 80.0F) {
                             f2 = 80.0F;

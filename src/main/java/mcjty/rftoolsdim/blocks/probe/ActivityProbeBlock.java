@@ -1,5 +1,6 @@
 package mcjty.rftoolsdim.blocks.probe;
 
+import mcjty.lib.compat.CompatBlock;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.dimensions.DimensionInformation;
 import mcjty.rftoolsdim.dimensions.RfToolsDimensionManager;
@@ -19,7 +20,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ActivityProbeBlock extends Block {
+public class ActivityProbeBlock extends CompatBlock {
 
     public ActivityProbeBlock() {
         super(Material.IRON);
@@ -39,8 +40,8 @@ public class ActivityProbeBlock extends Block {
     }
 
     @Override
-    public IBlockState onBlockPlaced(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
-        IBlockState state = super.onBlockPlaced(world, pos, facing, hitX, hitY, hitZ, meta, placer);
+    protected IBlockState clGetStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
+        IBlockState state = super.clGetStateForPlacement(world, pos, facing, hitX, hitY, hitZ, meta, placer);
         if (!world.isRemote) {
             RfToolsDimensionManager dimensionManager = RfToolsDimensionManager.getDimensionManager(world);
             DimensionInformation information = dimensionManager.getDimensionInformation(world.provider.getDimension());

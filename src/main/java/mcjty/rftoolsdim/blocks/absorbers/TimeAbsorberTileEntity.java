@@ -25,7 +25,7 @@ public class TimeAbsorberTileEntity extends GenericTileEntity implements ITickab
 
     @Override
     public void update() {
-        if (worldObj.isRemote) {
+        if (getWorld().isRemote) {
             checkStateClient();
         } else {
             checkStateServer();
@@ -35,7 +35,7 @@ public class TimeAbsorberTileEntity extends GenericTileEntity implements ITickab
 
     private void checkStateClient() {
         if (absorbing > 0) {
-            Random rand = worldObj.rand;
+            Random rand = getWorld().rand;
 
             double u = rand.nextFloat() * 2.0f - 1.0f;
             double v = (float) (rand.nextFloat() * 2.0f * Math.PI);
@@ -44,7 +44,7 @@ public class TimeAbsorberTileEntity extends GenericTileEntity implements ITickab
             double z = u;
             double r = 1.0f;
 
-            worldObj.spawnParticle(EnumParticleTypes.PORTAL, getPos().getX() + 0.5f + x * r, getPos().getY() + 0.5f + y * r, getPos().getZ() + 0.5f + z * r, -x, -y, -z);
+            getWorld().spawnParticle(EnumParticleTypes.PORTAL, getPos().getX() + 0.5f + x * r, getPos().getY() + 0.5f + y * r, getPos().getZ() + 0.5f + z * r, -x, -y, -z);
         }
     }
 
@@ -111,8 +111,8 @@ public class TimeAbsorberTileEntity extends GenericTileEntity implements ITickab
     }
 
     private void registerTime() {
-        if (worldObj.canBlockSeeSky(getPos())) {
-            float a = worldObj.getCelestialAngle(1.0f);
+        if (getWorld().canBlockSeeSky(getPos())) {
+            float a = getWorld().getCelestialAngle(1.0f);
             DimletKey bestDimlet = findBestTimeDimlet(a);
             float besta = DimletObjectMapping.getCelestialAngle(bestDimlet);
 

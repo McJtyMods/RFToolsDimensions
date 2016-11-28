@@ -18,7 +18,7 @@ public class EnergyExtractorTileEntity extends GenericEnergyProviderTileEntity i
 
     @Override
     public void update() {
-        if (!worldObj.isRemote) {
+        if (!getWorld().isRemote) {
             checkStateServer();
         }
     }
@@ -28,8 +28,8 @@ public class EnergyExtractorTileEntity extends GenericEnergyProviderTileEntity i
 
         if (energyStored < MachineConfiguration.EXTRACTOR_MAXENERGY) {
             // Get energy out of the dimension.
-            DimensionStorage storage = DimensionStorage.getDimensionStorage(worldObj);
-            int dimensionEnergy = storage.getEnergyLevel(worldObj.provider.getDimension());
+            DimensionStorage storage = DimensionStorage.getDimensionStorage(getWorld());
+            int dimensionEnergy = storage.getEnergyLevel(getWorld().provider.getDimension());
             int needed = MachineConfiguration.EXTRACTOR_MAXENERGY - energyStored;
             if (needed > dimensionEnergy) {
                 needed = dimensionEnergy;
@@ -40,8 +40,8 @@ public class EnergyExtractorTileEntity extends GenericEnergyProviderTileEntity i
                 dimensionEnergy -= needed;
                 modifyEnergyStored(needed);
 
-                storage.setEnergyLevel(worldObj.provider.getDimension(), dimensionEnergy);
-                storage.save(worldObj);
+                storage.setEnergyLevel(getWorld().provider.getDimension(), dimensionEnergy);
+                storage.save(getWorld());
             }
         }
 
@@ -53,7 +53,7 @@ public class EnergyExtractorTileEntity extends GenericEnergyProviderTileEntity i
 
         for (EnumFacing facing : EnumFacing.values()) {
             BlockPos pos = getPos().offset(facing);
-            TileEntity te = worldObj.getTileEntity(pos);
+            TileEntity te = getWorld().getTileEntity(pos);
             if (EnergyTools.isEnergyTE(te)) {
                 EnumFacing opposite = facing.getOpposite();
                 int rfToGive = rf <= energyStored ? rf : energyStored;

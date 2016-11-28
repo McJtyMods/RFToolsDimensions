@@ -1,6 +1,7 @@
 package mcjty.rftoolsdim.dimensions;
 
 import mcjty.lib.varia.Logging;
+import mcjty.lib.varia.MathTools;
 import mcjty.rftoolsdim.config.DimletRules;
 import mcjty.rftoolsdim.config.GeneralConfiguration;
 import mcjty.rftoolsdim.config.PowerConfiguration;
@@ -161,10 +162,10 @@ public class RfToolsDimensionManager extends WorldSavedData {
     }
 
     private static void getEntitiesInSphere(World world, BlockPos c, float radius, List tokeep) {
-        int i = MathHelper.floor_double((c.getX() - radius) / 16.0D);
-        int j = MathHelper.floor_double((c.getX() + 1 + radius) / 16.0D);
-        int k = MathHelper.floor_double((c.getZ() - radius) / 16.0D);
-        int l = MathHelper.floor_double((c.getZ() + 1 + radius) / 16.0D);
+        int i = MathTools.floor((c.getX() - radius) / 16.0D);
+        int j = MathTools.floor((c.getX() + 1 + radius) / 16.0D);
+        int k = MathTools.floor((c.getZ() - radius) / 16.0D);
+        int l = MathTools.floor((c.getZ() + 1 + radius) / 16.0D);
 
         for (int i1 = i; i1 <= j; ++i1) {
             for (int j1 = k; j1 <= l; ++j1) {
@@ -178,10 +179,14 @@ public class RfToolsDimensionManager extends WorldSavedData {
 
     private static void getEntitiesInSphere(Chunk chunk, BlockPos c, float radius, List entities) {
         float squaredRange = radius * radius;
-        int i = MathHelper.floor_double((c.getY() - radius) / 16.0D);
-        int j = MathHelper.floor_double((c.getY() + 1 + radius) / 16.0D);
-        i = MathHelper.clamp_int(i, 0, chunk.getEntityLists().length - 1);
-        j = MathHelper.clamp_int(j, 0, chunk.getEntityLists().length - 1);
+        int i = MathTools.floor((c.getY() - radius) / 16.0D);
+        int j = MathTools.floor((c.getY() + 1 + radius) / 16.0D);
+
+        // @todo @@@@@@@@@@@@@@@@@@@@@@@@
+        i = MathHelper.clamp(i, 0, chunk.getEntityLists().length - 1);
+        j = MathHelper.clamp(j, 0, chunk.getEntityLists().length - 1);
+//        i = MathHelper.clamp_int(i, 0, chunk.getEntityLists().length - 1);
+//        j = MathHelper.clamp_int(j, 0, chunk.getEntityLists().length - 1);
 
         for (int k = i; k <= j; ++k) {
             ClassInheritanceMultiMap<Entity> entityList = chunk.getEntityLists()[k];

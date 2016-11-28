@@ -18,7 +18,7 @@ public class TerrainAbsorberTileEntity extends GenericTileEntity implements ITic
 
     @Override
     public void update() {
-        if (worldObj.isRemote) {
+        if (getWorld().isRemote) {
             checkStateClient();
         } else {
             checkStateServer();
@@ -28,7 +28,7 @@ public class TerrainAbsorberTileEntity extends GenericTileEntity implements ITic
 
     protected void checkStateClient() {
         if (absorbing > 0) {
-            Random rand = worldObj.rand;
+            Random rand = getWorld().rand;
 
             double u = rand.nextFloat() * 2.0f - 1.0f;
             double v = (float) (rand.nextFloat() * 2.0f * Math.PI);
@@ -37,13 +37,13 @@ public class TerrainAbsorberTileEntity extends GenericTileEntity implements ITic
             double z = u;
             double r = 1.0f;
 
-            worldObj.spawnParticle(EnumParticleTypes.PORTAL, getPos().getX() + 0.5f + x * r, getPos().getY() + 0.5f + y * r, getPos().getZ() + 0.5f + z * r, -x, -y, -z);
+            getWorld().spawnParticle(EnumParticleTypes.PORTAL, getPos().getX() + 0.5f + x * r, getPos().getY() + 0.5f + y * r, getPos().getZ() + 0.5f + z * r, -x, -y, -z);
         }
     }
 
     protected void checkStateServer() {
         if (absorbing > 0) {
-            int dim = worldObj.provider.getDimension();
+            int dim = getWorld().provider.getDimension();
             String terrain = getCurrentTerrain(dim);
             if (!terrain.equals(terrainName)) {
                 return;
@@ -63,7 +63,7 @@ public class TerrainAbsorberTileEntity extends GenericTileEntity implements ITic
         } else if (dim == 1) {
             terrain = TerrainType.TERRAIN_ISLAND.getId();
         } else {
-            DimensionInformation dimensionInformation = RfToolsDimensionManager.getDimensionManager(worldObj).getDimensionInformation(dim);
+            DimensionInformation dimensionInformation = RfToolsDimensionManager.getDimensionManager(getWorld()).getDimensionInformation(dim);
             if (dimensionInformation != null) {
                 terrain = dimensionInformation.getTerrainType().getId();
             } else {
@@ -83,7 +83,7 @@ public class TerrainAbsorberTileEntity extends GenericTileEntity implements ITic
 
     public void placeDown() {
         if (terrainName == null) {
-            int dim = worldObj.provider.getDimension();
+            int dim = getWorld().provider.getDimension();
             String terrain = getCurrentTerrain(dim);
             if (terrain == null) {
                 terrainName = null;

@@ -1,6 +1,7 @@
 package mcjty.rftoolsdim.commands;
 
 import mcjty.lib.container.InventoryHelper;
+import mcjty.lib.tools.ChatTools;
 import mcjty.rftoolsdim.blocks.enscriber.DimensionEnscriberTileEntity;
 import mcjty.rftoolsdim.dimensions.RfToolsDimensionManager;
 import mcjty.rftoolsdim.dimensions.description.DimensionDescriptor;
@@ -35,10 +36,10 @@ public class CmdCreateTab extends AbstractRfToolsCommand {
     @Override
     public void execute(ICommandSender sender, String[] args) {
         if (args.length < 2) {
-            sender.addChatMessage(new TextComponentString(TextFormatting.RED + "The dimension parameter is missing!"));
+            ChatTools.addChatMessage(sender, new TextComponentString(TextFormatting.RED + "The dimension parameter is missing!"));
             return;
         } else if (args.length > 2) {
-            sender.addChatMessage(new TextComponentString(TextFormatting.RED + "Too many parameters!"));
+            ChatTools.addChatMessage(sender, new TextComponentString(TextFormatting.RED + "Too many parameters!"));
             return;
         }
 
@@ -48,7 +49,7 @@ public class CmdCreateTab extends AbstractRfToolsCommand {
         RfToolsDimensionManager dimensionManager = RfToolsDimensionManager.getDimensionManager(world);
         DimensionDescriptor dimensionDescriptor = dimensionManager.getDimensionDescriptor(dim);
         if (dimensionDescriptor == null) {
-            sender.addChatMessage(new TextComponentString(TextFormatting.RED + "Not an RFTools dimension!"));
+            ChatTools.addChatMessage(sender, new TextComponentString(TextFormatting.RED + "Not an RFTools dimension!"));
             return;
         }
 
@@ -57,7 +58,7 @@ public class CmdCreateTab extends AbstractRfToolsCommand {
             ItemStack tab = DimensionEnscriberTileEntity.createRealizedTab(dimensionDescriptor, sender.getEntityWorld());
             InventoryHelper.mergeItemStack(player.inventory, false, tab, 0, 35, null);
         } else {
-            sender.addChatMessage(new TextComponentString(TextFormatting.RED + "This command only works as a player!"));
+            ChatTools.addChatMessage(sender, new TextComponentString(TextFormatting.RED + "This command only works as a player!"));
         }
     }
 }

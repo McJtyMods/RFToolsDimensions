@@ -1,5 +1,6 @@
 package mcjty.rftoolsdim.commands;
 
+import mcjty.lib.tools.ChatTools;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.config.GeneralConfiguration;
 import mcjty.rftoolsdim.dimensions.DimensionInformation;
@@ -40,10 +41,10 @@ public class CmdSafeDelete extends AbstractRfToolsCommand {
     @Override
     public void execute(ICommandSender sender, String[] args) {
         if (args.length < 2) {
-            sender.addChatMessage(new TextComponentString(TextFormatting.RED + "The dimension parameter is missing!"));
+            ChatTools.addChatMessage(sender, new TextComponentString(TextFormatting.RED + "The dimension parameter is missing!"));
             return;
         } else if (args.length > 2) {
-            sender.addChatMessage(new TextComponentString(TextFormatting.RED + "Too many parameters!"));
+            ChatTools.addChatMessage(sender, new TextComponentString(TextFormatting.RED + "Too many parameters!"));
             return;
         }
 
@@ -52,29 +53,31 @@ public class CmdSafeDelete extends AbstractRfToolsCommand {
 
         RfToolsDimensionManager dimensionManager = RfToolsDimensionManager.getDimensionManager(world);
         if (dimensionManager.getDimensionDescriptor(dim) == null) {
-            sender.addChatMessage(new TextComponentString(TextFormatting.RED + "Not an RFTools dimension!"));
+            ChatTools.addChatMessage(sender, new TextComponentString(TextFormatting.RED + "Not an RFTools dimension!"));
             return;
         }
 
         World w = DimensionManager.getWorld(dim);
         if (w != null) {
-            sender.addChatMessage(new TextComponentString(TextFormatting.RED + "Dimension is still in use!"));
+            ChatTools.addChatMessage(sender, new TextComponentString(TextFormatting.RED + "Dimension is still in use!"));
             return;
         }
 
-        if (!sender.canCommandSenderUseCommand(3, "safedel")) {
+        // @todo @@@@@@@@@@@@
+        if (!sender.canUseCommand(3, "safedel")) {
+//            if (!sender.canCommandSenderUseCommand(3, "safedel")) {
             DimensionInformation information = dimensionManager.getDimensionInformation(dim);
             if (information.getOwner() == null) {
-                sender.addChatMessage(new TextComponentString(TextFormatting.RED + "This dimension has no owner. You cannot delete it!"));
+                ChatTools.addChatMessage(sender, new TextComponentString(TextFormatting.RED + "This dimension has no owner. You cannot delete it!"));
                 return;
             }
             if (!(sender instanceof EntityPlayerMP)) {
-                sender.addChatMessage(new TextComponentString(TextFormatting.RED + "This command must be run as a player!"));
+                ChatTools.addChatMessage(sender, new TextComponentString(TextFormatting.RED + "This command must be run as a player!"));
                 return;
             }
             EntityPlayerMP entityPlayerMP = (EntityPlayerMP) sender;
             if (!information.getOwner().equals(entityPlayerMP.getGameProfile().getId())) {
-                sender.addChatMessage(new TextComponentString(TextFormatting.RED + "You are not the owner of this dimension. You cannot delete it!"));
+                ChatTools.addChatMessage(sender, new TextComponentString(TextFormatting.RED + "You are not the owner of this dimension. You cannot delete it!"));
                 return;
             }
         }
@@ -93,12 +96,12 @@ public class CmdSafeDelete extends AbstractRfToolsCommand {
             File rootDirectory = DimensionManager.getCurrentSaveRootDirectory();
             try {
                 FileUtils.deleteDirectory(new File(rootDirectory.getPath() + File.separator + "RFTOOLS" + dim));
-                sender.addChatMessage(new TextComponentString("Dimension deleted and dimension folder succesfully wiped!"));
+                ChatTools.addChatMessage(sender, new TextComponentString("Dimension deleted and dimension folder succesfully wiped!"));
             } catch (IOException e) {
-                sender.addChatMessage(new TextComponentString(TextFormatting.RED + "Dimension deleted but dimension folder could not be completely wiped!"));
+                ChatTools.addChatMessage(sender, new TextComponentString(TextFormatting.RED + "Dimension deleted but dimension folder could not be completely wiped!"));
             }
         } else {
-            sender.addChatMessage(new TextComponentString("Dimension deleted. Please remove the dimension folder from disk!"));
+            ChatTools.addChatMessage(sender, new TextComponentString("Dimension deleted. Please remove the dimension folder from disk!"));
         }
     }
 }

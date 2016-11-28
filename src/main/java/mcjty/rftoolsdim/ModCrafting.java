@@ -14,6 +14,8 @@ import net.minecraft.init.Enchantments;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.RecipeSorter;
 
@@ -32,7 +34,7 @@ public class ModCrafting {
         initAbsorberRecipes();
         initEssenceRecipes();
 
-        Item dimensionalShard = GameRegistry.findItem("rftools", "dimensional_shard");
+        Item dimensionalShard = ForgeRegistries.ITEMS.getValue(new ResourceLocation("rftools", "dimensional_shard"));
         GameRegistry.addRecipe(new ItemStack(ModItems.emptyDimensionTabItem), "prp", "rpr", "prp", 'p', Items.PAPER, 'r', Items.REDSTONE);
         GameRegistry.addRecipe(new ItemStack(ModItems.dimletTemplateItem), "sss", "sps", "sss", 's', dimensionalShard, 'p', Items.PAPER);
 
@@ -74,10 +76,10 @@ public class ModCrafting {
     }
 
     private static void initMachineRecipes() {
-        Block machineFrame = GameRegistry.findBlock("rftools", "machine_frame");
+        Block machineFrame = ForgeRegistries.BLOCKS.getValue(new ResourceLocation("rftools", "machine_frame"));
         ItemStack inkSac = new ItemStack(Items.DYE, 1, 0);
 
-        Item dimensionalShard = GameRegistry.findItem("rftools", "dimensional_shard");
+        Item dimensionalShard = ForgeRegistries.ITEMS.getValue(new ResourceLocation("rftools", "dimensional_shard"));
         GameRegistry.addRecipe(new ItemStack(ModBlocks.activityProbeBlock), "sss", "oMo", "sss", 'o', Items.ENDER_PEARL, 's', dimensionalShard,
                                'M', machineFrame);
         GameRegistry.addRecipe(new ItemStack(ModBlocks.dimensionEnscriberBlock), "rpr", "bMb", "iii", 'r', Items.REDSTONE, 'p', Items.PAPER, 'b', inkSac,
@@ -98,7 +100,7 @@ public class ModCrafting {
     }
 
     private static void initAbsorberRecipes() {
-        Block machineFrame = GameRegistry.findBlock("rftools", "machine_frame");
+        Block machineFrame = ForgeRegistries.BLOCKS.getValue(new ResourceLocation("rftools", "machine_frame"));
         GameRegistry.addRecipe(new ItemStack(ModBlocks.featureAbsorberBlock), "dws", "wMw", "swd", 'M', machineFrame, 'd', Items.DIAMOND, 's', Items.EMERALD, 'w', Blocks.WOOL);
         GameRegistry.addShapelessRecipe(new ItemStack(ModBlocks.featureAbsorberBlock), new ItemStack(ModBlocks.featureAbsorberBlock));
         GameRegistry.addRecipe(new ItemStack(ModBlocks.terrainAbsorberBlock), "dws", "wMw", "swd", 'M', machineFrame, 'd', Blocks.STONE, 's', Blocks.DIRT, 'w', Blocks.WOOL);
@@ -115,7 +117,7 @@ public class ModCrafting {
     }
 
     private static void initCosmeticRecipes() {
-        Item dimensionalShard = GameRegistry.findItem("rftools", "dimensional_shard");
+        Item dimensionalShard = ForgeRegistries.ITEMS.getValue(new ResourceLocation("rftools", "dimensional_shard"));
         ItemStack inkSac = new ItemStack(Items.DYE, 1, 0);
         GameRegistry.addRecipe(new ItemStack(ModBlocks.dimensionalBlankBlock, 8), "bbb", "b*b", "bbb", 'b', Blocks.STONE, '*', dimensionalShard);
         GameRegistry.addShapelessRecipe(new ItemStack(ModBlocks.dimensionalBlock), new ItemStack(ModBlocks.dimensionalBlankBlock));

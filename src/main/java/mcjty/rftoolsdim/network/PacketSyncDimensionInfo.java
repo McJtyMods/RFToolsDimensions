@@ -2,6 +2,7 @@ package mcjty.rftoolsdim.network;
 
 import io.netty.buffer.ByteBuf;
 import mcjty.lib.network.NetworkTools;
+import mcjty.lib.tools.PacketBufferTools;
 import mcjty.rftoolsdim.dimensions.DimensionInformation;
 import mcjty.rftoolsdim.dimensions.description.DimensionDescriptor;
 import net.minecraft.client.Minecraft;
@@ -31,7 +32,7 @@ public class PacketSyncDimensionInfo implements IMessage {
             PacketBuffer buffer = new PacketBuffer(buf);
             NBTTagCompound tagCompound;
             try {
-                tagCompound = buffer.readNBTTagCompoundFromBuffer();
+                tagCompound = PacketBufferTools.readCompoundTag(buffer);
             } catch (IOException e) {
                 e.printStackTrace();
                 return;
@@ -58,7 +59,7 @@ public class PacketSyncDimensionInfo implements IMessage {
             NBTTagCompound tagCompound = new NBTTagCompound();
             me.getValue().writeToNBT(tagCompound);
             PacketBuffer buffer = new PacketBuffer(buf);
-            buffer.writeNBTTagCompoundToBuffer(tagCompound);
+            PacketBufferTools.writeCompoundTag(buffer, tagCompound);
         }
 
         buf.writeInt(dimensionInformation.size());

@@ -1,5 +1,7 @@
 package mcjty.rftoolsdim.commands;
 
+import mcjty.lib.tools.ChatTools;
+import mcjty.lib.tools.WorldTools;
 import mcjty.rftoolsdim.dimensions.DimensionInformation;
 import mcjty.rftoolsdim.dimensions.RfToolsDimensionManager;
 import net.minecraft.command.ICommandSender;
@@ -7,6 +9,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 
 public class CmdSetOwner extends AbstractRfToolsCommand {
     @Override
@@ -32,10 +35,10 @@ public class CmdSetOwner extends AbstractRfToolsCommand {
     @Override
     public void execute(ICommandSender sender, String[] args) {
         if (args.length < 3) {
-            sender.addChatMessage(new TextComponentString(TextFormatting.RED + "The dimension and player parameters are missing!"));
+            ChatTools.addChatMessage(sender, new TextComponentString(TextFormatting.RED + "The dimension and player parameters are missing!"));
             return;
         } else if (args.length > 3) {
-            sender.addChatMessage(new TextComponentString(TextFormatting.RED + "Too many parameters!"));
+            ChatTools.addChatMessage(sender, new TextComponentString(TextFormatting.RED + "Too many parameters!"));
             return;
         }
 
@@ -45,19 +48,20 @@ public class CmdSetOwner extends AbstractRfToolsCommand {
         World world = sender.getEntityWorld();
         RfToolsDimensionManager dimensionManager = RfToolsDimensionManager.getDimensionManager(world);
         if (dimensionManager.getDimensionDescriptor(dim) == null) {
-            sender.addChatMessage(new TextComponentString(TextFormatting.RED + "Not an RFTools dimension!"));
+            ChatTools.addChatMessage(sender, new TextComponentString(TextFormatting.RED + "Not an RFTools dimension!"));
             return;
         }
 
-        for (EntityPlayerMP entityPlayerMP : world.getMinecraftServer().getPlayerList().getPlayerList()) {
+
+        for (EntityPlayerMP entityPlayerMP : WorldTools.getPlayerList((WorldServer)world)) {
             if (playerName.equals(entityPlayerMP.getDisplayName())) {
                 DimensionInformation information = dimensionManager.getDimensionInformation(dim);
                 information.setOwner(playerName, entityPlayerMP.getGameProfile().getId());
-                sender.addChatMessage(new TextComponentString(TextFormatting.GREEN + "Owner of dimension changed!"));
+                ChatTools.addChatMessage(sender, new TextComponentString(TextFormatting.GREEN + "Owner of dimension changed!"));
                 dimensionManager.save(world);
                 return;
             }
         }
-        sender.addChatMessage(new TextComponentString(TextFormatting.RED + "Could not find player!"));
+        ChatTools.addChatMessage(sender, new TextComponentString(TextFormatting.RED + "Could not find player!"));
     }
 }

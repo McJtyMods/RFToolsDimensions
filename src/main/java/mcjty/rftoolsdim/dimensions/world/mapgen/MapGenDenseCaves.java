@@ -1,6 +1,7 @@
 package mcjty.rftoolsdim.dimensions.world.mapgen;
 
 import com.google.common.base.Objects;
+import mcjty.lib.varia.MathTools;
 import mcjty.rftoolsdim.dimensions.world.GenericChunkGenerator;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Biomes;
@@ -82,12 +83,12 @@ public class MapGenDenseCaves extends MapGenCaves {
                 }
 
                 if (p_151541_6_ >= d4 - 16.0D - d6 * 2.0D && p_151541_10_ >= d5 - 16.0D - d6 * 2.0D && p_151541_6_ <= d4 + 16.0D + d6 * 2.0D && p_151541_10_ <= d5 + 16.0D + d6 * 2.0D) {
-                    int i4 = MathHelper.floor_double(p_151541_6_ - d6) - chunkX * 16 - 1;
-                    int l1 = MathHelper.floor_double(p_151541_6_ + d6) - chunkX * 16 + 1;
-                    int j4 = MathHelper.floor_double(p_151541_8_ - d7) - 1;
-                    int i2 = MathHelper.floor_double(p_151541_8_ + d7) + 1;
-                    int k4 = MathHelper.floor_double(p_151541_10_ - d6) - chunkZ * 16 - 1;
-                    int j2 = MathHelper.floor_double(p_151541_10_ + d6) - chunkZ * 16 + 1;
+                    int i4 = MathTools.floor(p_151541_6_ - d6) - chunkX * 16 - 1;
+                    int l1 = MathTools.floor(p_151541_6_ + d6) - chunkX * 16 + 1;
+                    int j4 = MathTools.floor(p_151541_8_ - d7) - 1;
+                    int i2 = MathTools.floor(p_151541_8_ + d7) + 1;
+                    int k4 = MathTools.floor(p_151541_10_ - d6) - chunkZ * 16 - 1;
+                    int j2 = MathTools.floor(p_151541_10_ + d6) - chunkZ * 16 + 1;
 
                     if (i4 < 0) {
                         i4 = 0;
@@ -220,7 +221,8 @@ public class MapGenDenseCaves extends MapGenCaves {
     //Determine if the block at the specified location is the top block for the biome, we take into account
     //Vanilla bugs to make sure that we generate the map the same way vanilla does.
     private boolean isTopBlock(ChunkPrimer data, int x, int y, int z, int chunkX, int chunkZ) {
-        net.minecraft.world.biome.Biome biome = worldObj.getBiomeForCoordsBody(new BlockPos(x + chunkX * 16, 0, z + chunkZ * 16));
+        // @todo @@@@@@@@@@@@@@@ worldObj
+        net.minecraft.world.biome.Biome biome = world.getBiomeForCoordsBody(new BlockPos(x + chunkX * 16, 0, z + chunkZ * 16));
         IBlockState state = data.getBlockState(x, y, z);
         return (isExceptionBiome(biome) ? state.getBlock() == Blocks.GRASS : state.getBlock() == biome.topBlock);
     }

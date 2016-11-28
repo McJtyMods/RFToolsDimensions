@@ -1,5 +1,6 @@
 package mcjty.rftoolsdim.dimensions;
 
+import mcjty.lib.tools.WorldTools;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.config.GeneralConfiguration;
 import mcjty.rftoolsdim.config.PowerConfiguration;
@@ -195,7 +196,7 @@ public class DimensionTickEvent {
                 newpos = new BlockPos(newpos.getX(), newpos.getY() + 3, newpos.getZ());
             }
             EntityFireworkRocket entityfireworkrocket = new EntityFireworkRocket(world, newpos.getX(), newpos.getY(), newpos.getZ(), fireworkStack);
-            world.spawnEntityInWorld(entityfireworkrocket);
+            WorldTools.spawnEntity(world, entityfireworkrocket);
         }
     }
 

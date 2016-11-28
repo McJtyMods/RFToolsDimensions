@@ -32,6 +32,8 @@ import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fml.common.registry.EntityEntry;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.oredict.OreDictionary;
 import org.apache.commons.lang3.StringUtils;
 
@@ -81,7 +83,12 @@ public class KnownDimletConfiguration {
 
         Biome.REGISTRY.iterator().forEachRemaining(KnownDimletConfiguration::initBiomeDimlet);
 
-        EntityList.NAME_TO_CLASS.entrySet().stream().forEach(KnownDimletConfiguration::initMobDimlet);
+        // @todo @@@@@@@@@@@@@@@
+        for (EntityEntry entry : ForgeRegistries.ENTITIES) {
+            initMobDimlet(entry.getName(), entry.getEntityClass());
+        }
+//        EntityList.NAME_TO_CLASS.entrySet().stream().forEach(KnownDimletConfiguration::initMobDimlet);
+
         FluidRegistry.getRegisteredFluids().entrySet().stream().forEach(KnownDimletConfiguration::initFluidDimlet);
         Block.REGISTRY.forEach(KnownDimletConfiguration::initMaterialDimlet);
 
@@ -193,9 +200,14 @@ public class KnownDimletConfiguration {
     }
 
     private static void initMobDimlet(Map.Entry<String, Class<? extends Entity>> entry) {
+        String name = entry.getKey();
         Class<? extends Entity> entityClass = entry.getValue();
+        initMobDimlet(name, entityClass);
+    }
+
+    private static void initMobDimlet(String name, Class<? extends Entity> entityClass) {
         if (isValidMobClass(entityClass)) {
-            DimletKey key = new DimletKey(DimletType.DIMLET_MOB, entry.getKey());
+            DimletKey key = new DimletKey(DimletType.DIMLET_MOB, name);
             initDimlet(key, RFToolsTools.findModID(entityClass));
         }
     }
@@ -236,7 +248,12 @@ public class KnownDimletConfiguration {
 
         for (IBlockState state : block.getBlockState().getValidStates()) {
             int meta = state.getBlock().getMetaFromState(state);
-            List<IProperty> propertyNames = new ArrayList<>(state.getPropertyNames());
+
+            // @todo @@@@@@@@@@@@@@@
+            List<IProperty<?>> propertyNames = new ArrayList<>(state.getPropertyKeys());
+//            List<IProperty> propertyNames = new ArrayList<>(state.getPropertyNames());
+
+
             propertyNames.sort((o1, o2) -> o1.getName().compareTo(o2.getName()));
 
             ImmutableMap<IProperty<?>, Comparable<?>> properties = state.getProperties();
@@ -279,16 +296,30 @@ public class KnownDimletConfiguration {
     }
 
     public static void dumpMobs() {
-        EntityList.NAME_TO_CLASS.entrySet().stream().forEach(KnownDimletConfiguration::dumpMob);
+        // @todo @@@@@@@@@@@@@@@@
+        for (EntityEntry entry : ForgeRegistries.ENTITIES) {
+            dumpMob(entry.getName(), entry.getEntityClass());
+        }
+//        EntityList.NAME_TO_CLASS.entrySet().stream().forEach(KnownDimletConfiguration::dumpMob);
     }
 
     private static void dumpMob(Map.Entry<String, Class<? extends Entity>> entry) {
+        String id = entry.getKey();
         Class<? extends Entity> entityClass = entry.getValue();
+        dumpMob(id, entityClass);
+    }
+
+    private static void dumpMob(String id, Class<? extends Entity> entityClass) {
         if (isValidMobClass(entityClass)) {
-            DimletKey key = new DimletKey(DimletType.DIMLET_MOB, entry.getKey());
+            DimletKey key = new DimletKey(DimletType.DIMLET_MOB, id);
             String mod = RFToolsTools.findModID(entityClass);
             Settings settings = DimletRules.getSettings(key, mod);
-            String name = EntityList.CLASS_TO_NAME.get(entityClass);
+
+            // @todo @@@@@@@@@@@@@@@@@@@
+            ResourceLocation resourceLocation = EntityList.getKey(entityClass);
+            String name = resourceLocation.toString();
+//            String name = EntityList.CLASS_TO_NAME.get(entityClass);
+
             if (name == null) {
                 name = "generic";
             }
@@ -406,7 +437,9 @@ public class KnownDimletConfiguration {
                 }
                 break;
             case DIMLET_MOB:
-                Class<? extends Entity> entityClass = EntityList.NAME_TO_CLASS.get(key.getId());
+                // @todo @@@@@@@@@@@@@@@@@
+                Class<? extends Entity> entityClass = EntityList.getClass(new ResourceLocation(key.getId()));
+//                Class<? extends Entity> entityClass = EntityList.NAME_TO_CLASS.get(key.getId());
                 if (entityClass == null) {
                     return "<Unknown>";
                 }

@@ -12,6 +12,7 @@ import mcjty.lib.gui.widgets.Label;
 import mcjty.lib.gui.widgets.Panel;
 import mcjty.lib.gui.widgets.TextField;
 import mcjty.lib.network.Argument;
+import mcjty.lib.tools.MinecraftTools;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.config.Settings;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletKey;
@@ -72,7 +73,7 @@ public class GuiDimletWorkbench extends GenericGuiContainer<DimletWorkbenchTileE
 
             @Override
             public void doubleClick(Widget widget, int i) {
-                EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
+                EntityPlayerSP player = MinecraftTools.getPlayer(Minecraft.getMinecraft());
                 if (player.isCreative() && (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT))) {
                     cheatDimlet();
                 } else {
@@ -235,7 +236,7 @@ public class GuiDimletWorkbench extends GenericGuiContainer<DimletWorkbenchTileE
                 ItemStack typectrl = new ItemStack(ModItems.dimletTypeControllerItem, 1, key.getType().ordinal());
                 ItemStack essence = key.getType().dimletType.getDefaultEssence(key);
 
-                if (Minecraft.getMinecraft().thePlayer.isCreative()) {
+                if (MinecraftTools.getPlayer(Minecraft.getMinecraft()).isCreative()) {
                     if (essence == null) {
                         widget.setTooltips(TextFormatting.RED + "Shift-Double-Click to cheat", "Type: " + key.getType().dimletType.getName(), "Rarity: " + settings.getRarity(), "@0@1@2", "@3@4@5",
                                 TextFormatting.RED + "(currently not craftable)");
