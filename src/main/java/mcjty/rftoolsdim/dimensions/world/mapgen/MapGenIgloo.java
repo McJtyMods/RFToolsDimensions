@@ -1,6 +1,7 @@
 package mcjty.rftoolsdim.dimensions.world.mapgen;
 
 import com.google.common.collect.Lists;
+import mcjty.lib.compat.CompatMapGenStructure;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
@@ -11,7 +12,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
 
-public class MapGenIgloo extends MapGenStructure {
+public class MapGenIgloo extends CompatMapGenStructure {
     private List<Biome.SpawnListEntry> scatteredFeatureSpawnList;
 
     private int maxDistance;
@@ -68,10 +69,8 @@ public class MapGenIgloo extends MapGenStructure {
         return new MapGenIgloo.Start(this.rand, chunkX, chunkZ);
     }
 
-    // @todo @@@@@@@@@@@@@@@@@@@
-    @Nullable
     @Override
-    public BlockPos getClosestStrongholdPos(World worldIn, BlockPos pos, boolean p_180706_3_) {
+    public BlockPos clGetClosestStrongholdPos(World worldIn, BlockPos position) {
         return null;
     }
 

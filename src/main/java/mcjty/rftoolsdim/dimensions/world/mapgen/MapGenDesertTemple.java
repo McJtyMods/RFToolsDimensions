@@ -1,17 +1,20 @@
 package mcjty.rftoolsdim.dimensions.world.mapgen;
 
 import com.google.common.collect.Lists;
+import mcjty.lib.compat.CompatMapGenStructure;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.ChunkPrimer;
-import net.minecraft.world.gen.structure.*;
+import net.minecraft.world.gen.structure.ComponentScatteredFeaturePieces;
+import net.minecraft.world.gen.structure.MapGenScatteredFeature;
+import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraft.world.gen.structure.StructureStart;
 
-import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
 
-public class MapGenDesertTemple extends MapGenStructure {
+public class MapGenDesertTemple extends CompatMapGenStructure {
     private List<Biome.SpawnListEntry> scatteredFeatureSpawnList;
 
     private int maxDistance;
@@ -35,10 +38,8 @@ public class MapGenDesertTemple extends MapGenStructure {
         return "RFTDesertTemple";
     }
 
-    // @todo @@@@@@@@@@@@@@@@@@
-    @Nullable
     @Override
-    public BlockPos getClosestStrongholdPos(World worldIn, BlockPos pos, boolean p_180706_3_) {
+    public BlockPos clGetClosestStrongholdPos(World worldIn, BlockPos position) {
         return null;
     }
 

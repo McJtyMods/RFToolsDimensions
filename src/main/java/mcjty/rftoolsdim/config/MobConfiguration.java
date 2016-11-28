@@ -1,5 +1,6 @@
 package mcjty.rftoolsdim.config;
 
+import mcjty.lib.tools.EntityTools;
 import mcjty.lib.varia.Logging;
 import mcjty.rftoolsdim.dimensions.description.MobDescriptor;
 import net.minecraft.entity.Entity;
@@ -56,20 +57,20 @@ public class MobConfiguration {
         initMobItem(cfg, "EnderDragon", 4, 1, 2, 4);
     }
 
+    // Accepts an old-style (1.10) entity ID or a new-style string representation of a resourcelocation
     private static void initMobItem(Configuration cfg, String name,
                                     int chance, int mingroup, int maxgroup, int maxentity) {
-        // @todo @@@@@@@@@@@@@@@@@@@@@@@@@@
-        Class<? extends Entity> entityClass = EntityList.getClass(new ResourceLocation(name));
-//        Class<? extends Entity> entityClass = EntityList.NAME_TO_CLASS.get(name);
+        String id = EntityTools.fixEntityId(name);
+        Class<? extends Entity> entityClass = EntityTools.findClassByName(id);
         if (entityClass == null) {
-            Logging.logError("Cannot find mob with name '" + name +"'!");
+            Logging.logError("Cannot find mob with id '" + id +"'!");
             return;
         }
         if (cfg != null) {
-            chance = cfg.get(CATEGORY_MOBS, name + ".chance", chance).getInt();
-            mingroup = cfg.get(CATEGORY_MOBS, name + ".mingroup", mingroup).getInt();
-            maxgroup = cfg.get(CATEGORY_MOBS, name + ".maxgroup", maxgroup).getInt();
-            maxentity = cfg.get(CATEGORY_MOBS, name + ".maxentity", maxentity).getInt();
+            chance = cfg.get(CATEGORY_MOBS, id + ".chance", chance).getInt();
+            mingroup = cfg.get(CATEGORY_MOBS, id + ".mingroup", mingroup).getInt();
+            maxgroup = cfg.get(CATEGORY_MOBS, id + ".maxgroup", maxgroup).getInt();
+            maxentity = cfg.get(CATEGORY_MOBS, id + ".maxentity", maxentity).getInt();
         }
         mobClasses.put(name, new MobDescriptor(entityClass, chance, mingroup, maxgroup, maxentity));
     }

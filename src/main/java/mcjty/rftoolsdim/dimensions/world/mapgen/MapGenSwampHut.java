@@ -1,6 +1,7 @@
 package mcjty.rftoolsdim.dimensions.world.mapgen;
 
 import com.google.common.collect.Lists;
+import mcjty.lib.compat.CompatMapGenStructure;
 import net.minecraft.entity.monster.EntityWitch;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -12,7 +13,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
 
-public class MapGenSwampHut extends MapGenStructure {
+public class MapGenSwampHut extends CompatMapGenStructure {
     private List<Biome.SpawnListEntry> scatteredFeatureSpawnList;
 
     private int maxDistance;
@@ -67,10 +68,8 @@ public class MapGenSwampHut extends MapGenStructure {
         return false;
     }
 
-    // @todo @@@@@@@@@@@@@@@@@@@@@ (not in 1.10)
-    @Nullable
     @Override
-    public BlockPos getClosestStrongholdPos(World worldIn, BlockPos pos, boolean p_180706_3_) {
+    public BlockPos clGetClosestStrongholdPos(World worldIn, BlockPos position) {
         return null;
     }
 

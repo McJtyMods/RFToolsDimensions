@@ -1,12 +1,12 @@
 package mcjty.rftoolsdim.dimensions.world.terrain;
 
+import mcjty.lib.tools.MathTools;
 import mcjty.lib.varia.Logging;
 import mcjty.rftoolsdim.dimensions.types.FeatureType;
 import mcjty.rftoolsdim.dimensions.types.TerrainType;
 import mcjty.rftoolsdim.dimensions.world.GenericChunkGenerator;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldType;
 import net.minecraft.world.biome.Biome;
@@ -48,9 +48,7 @@ public class NormalTerrainGenerator implements BaseTerrainGenerator {
         this.biomeWeights = new float[25];
         for (int j = -2; j <= 2; ++j) {
             for (int k = -2; k <= 2; ++k) {
-                // @todo @@@@@
-                float f = 10.0F / MathHelper.sqrt((j * j + k * k) + 0.2F);
-//                float f = 10.0F / MathHelper.sqrt_float((j * j + k * k) + 0.2F);
+                float f = (float) (10.0F / Math.sqrt((j * j + k * k) + 0.2F));
                 this.biomeWeights[j + 2 + (k + 2) * 5] = f;
             }
         }
@@ -221,9 +219,7 @@ public class NormalTerrainGenerator implements BaseTerrainGenerator {
                     double d7 = this.minLimitRegion[i] / 512.0D;
                     double d8 = this.maxLimitRegion[i] / 512.0D;
                     double d9 = (this.mainNoiseRegion[i] / 10.0D + 1.0D) / 2.0D;
-                    // @todo @@@@@
-                    double d10 = MathHelper.clamp(d7, d8, d9) - d6;
-//                    double d10 = MathHelper.denormalizeClamp(d7, d8, d9) - d6;
+                    double d10 = MathTools.clamp(d7, d8, d9) - d6;
 
                     if (j2 > 29) {
                         double d11 = ((j2 - 29) / 3.0F);
