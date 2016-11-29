@@ -169,7 +169,7 @@ public class DimensionEnscriberTileEntity extends GenericTileEntity implements D
                     }
                 }
             }
-            inventoryHelper.setStackInSlot(i + DimensionEnscriberContainer.SLOT_DIMLETS, null);
+            inventoryHelper.setStackInSlot(i + DimensionEnscriberContainer.SLOT_DIMLETS, ItemStackTools.getEmptyStack());
         }
         return new DimensionDescriptor(descriptors, forcedSeed);
     }

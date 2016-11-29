@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import mcjty.lib.compat.CompatBlock;
 import mcjty.lib.tools.EntityTools;
+import mcjty.lib.tools.ItemStackTools;
 import mcjty.lib.varia.Logging;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.config.DimletRules;
@@ -259,7 +260,7 @@ public class KnownDimletConfiguration {
 
         ItemStack stack = new ItemStack(block, 1, OreDictionary.WILDCARD_VALUE);
         int[] iDs = null;
-        if (stack.getItem() != null) {
+        if (ItemStackTools.isValid(stack) && stack.getItem() != null) {
             iDs = OreDictionary.getOreIDs(stack);
         }
         if (iDs != null && iDs.length > 0) {

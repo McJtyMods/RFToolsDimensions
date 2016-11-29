@@ -169,7 +169,7 @@ public class EssencePainterTileEntity extends GenericTileEntity implements Defau
                     }
                 }
             }
-            inventoryHelper.setStackInSlot(i + EssencePainterContainer.SLOT_DIMLETS, null);
+            inventoryHelper.setStackInSlot(i + EssencePainterContainer.SLOT_DIMLETS, ItemStackTools.getEmptyStack());
         }
         return new DimensionDescriptor(descriptors, forcedSeed);
     }

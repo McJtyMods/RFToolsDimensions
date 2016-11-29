@@ -1,5 +1,6 @@
 package mcjty.rftoolsdim;
 
+import mcjty.lib.tools.ItemStackTools;
 import mcjty.rftoolsdim.blocks.ModBlocks;
 import mcjty.rftoolsdim.config.GeneralConfiguration;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletObjectMapping;
@@ -52,17 +53,17 @@ public class ModCrafting {
 
         ItemStack diamondPick = createEnchantedItem(Items.DIAMOND_PICKAXE, Enchantments.EFFICIENCY, 3);
         GameRegistry.addRecipe(new NBTMatchingRecipe(3, 3,
-                new ItemStack[] {null, diamondPick, null,
+                new ItemStack[] {ItemStackTools.getEmptyStack(), diamondPick, ItemStackTools.getEmptyStack(),
                         new ItemStack(Items.ENDER_EYE), new ItemStack(Items.NETHER_STAR), new ItemStack(Items.ENDER_EYE),
-                        null, new ItemStack(Items.ENDER_EYE), null},
+                        ItemStackTools.getEmptyStack(), new ItemStack(Items.ENDER_EYE), ItemStackTools.getEmptyStack()},
                 new String[][] {null, pickMatcher, null, null, null, null, null, null, null},
                 new ItemStack(ModItems.efficiencyEssenceItem)));
 
         ItemStack ironPick = createEnchantedItem(Items.IRON_PICKAXE, Enchantments.EFFICIENCY, 2);
         GameRegistry.addRecipe(new NBTMatchingRecipe(3, 3,
-                new ItemStack[] {null, ironPick, null,
+                new ItemStack[] {ItemStackTools.getEmptyStack(), ironPick, ItemStackTools.getEmptyStack(),
                         new ItemStack(Items.ENDER_EYE), new ItemStack(Items.GHAST_TEAR), new ItemStack(Items.ENDER_EYE),
-                        null, new ItemStack(Items.ENDER_EYE), null},
+                        ItemStackTools.getEmptyStack(), new ItemStack(Items.ENDER_EYE), ItemStackTools.getEmptyStack()},
                 new String[][] {null, pickMatcher, null, null, null, null, null, null, null},
                 new ItemStack(ModItems.mediocreEfficiencyEssenceItem)));
     }
