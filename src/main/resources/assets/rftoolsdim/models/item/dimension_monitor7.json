@@ -1,7 +1,7 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "rftoolsdim:items/monitor/dimensionMonitorItemL7"
+    "layer0": "rftoolsdim:items/monitor/dimensionmonitoriteml7"
   },
   "display": {
     "thirdperson": {

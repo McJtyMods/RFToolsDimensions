@@ -1,7 +1,7 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "rftoolsdim:items/parts/mediocreEfficiencyEssence"
+    "layer0": "rftoolsdim:items/parts/mediocreefficiencyessence"
   },
   "display": {
     "thirdperson": {

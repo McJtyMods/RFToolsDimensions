@@ -1,7 +1,7 @@
 {
   "parent": "builtin/generated",
   "textures": {
-    "layer0": "rftoolsdim:items/dimensionModuleItem"
+    "layer0": "rftoolsdim:items/dimensionmoduleitem"
   },
   "display": {
     "thirdperson": {

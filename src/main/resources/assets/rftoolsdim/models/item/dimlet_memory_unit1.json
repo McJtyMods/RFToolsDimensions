@@ -1,7 +1,7 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "rftoolsdim:items/parts/dimletMemoryUnit1"
+    "layer0": "rftoolsdim:items/parts/dimletmemoryunit1"
   },
   "display": {
     "thirdperson": {

@@ -1,7 +1,7 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "rftoolsdim:items/pfg/phasedFieldGeneratorItemL5"
+    "layer0": "rftoolsdim:items/pfg/phasedfieldgeneratoriteml5"
   },
   "display": {
     "thirdperson": {

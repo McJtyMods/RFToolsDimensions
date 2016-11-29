@@ -1,7 +1,7 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "rftoolsdim:items/parts/dimletTypeControllerBiome"
+    "layer0": "rftoolsdim:items/parts/dimlettypecontrollerbiome"
   },
   "display": {
     "thirdperson": {
