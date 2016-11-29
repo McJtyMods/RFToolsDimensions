@@ -5,14 +5,14 @@
     "model": "rftoolsdim:dimension_monitor"
   },
   "variants": {
-    "l0": { "textures": { "txt": "rftoolsdim:items/monitor/dimensionMonitorItemL0" } },
-    "l1": { "textures": { "txt": "rftoolsdim:items/monitor/dimensionMonitorItemL1" } },
-    "l2": { "textures": { "txt": "rftoolsdim:items/monitor/dimensionMonitorItemL2" } },
-    "l3": { "textures": { "txt": "rftoolsdim:items/monitor/dimensionMonitorItemL3" } },
-    "l4": { "textures": { "txt": "rftoolsdim:items/monitor/dimensionMonitorItemL4" } },
-    "l5": { "textures": { "txt": "rftoolsdim:items/monitor/dimensionMonitorItemL5" } },
-    "l6": { "textures": { "txt": "rftoolsdim:items/monitor/dimensionMonitorItemL6" } },
-    "l7": { "textures": { "txt": "rftoolsdim:items/monitor/dimensionMonitorItemL7" } },
-    "l8": { "textures": { "txt": "rftoolsdim:items/monitor/dimensionMonitorItemL8" } }
+    "l0": { "textures": { "txt": "rftoolsdim:items/monitor/dimensionmonitoritemL0" } },
+    "l1": { "textures": { "txt": "rftoolsdim:items/monitor/dimensionmonitoritemL1" } },
+    "l2": { "textures": { "txt": "rftoolsdim:items/monitor/dimensionmonitoritemL2" } },
+    "l3": { "textures": { "txt": "rftoolsdim:items/monitor/dimensionmonitoritemL3" } },
+    "l4": { "textures": { "txt": "rftoolsdim:items/monitor/dimensionmonitoritemL4" } },
+    "l5": { "textures": { "txt": "rftoolsdim:items/monitor/dimensionmonitoritemL5" } },
+    "l6": { "textures": { "txt": "rftoolsdim:items/monitor/dimensionmonitoritemL6" } },
+    "l7": { "textures": { "txt": "rftoolsdim:items/monitor/dimensionmonitoritemL7" } },
+    "l8": { "textures": { "txt": "rftoolsdim:items/monitor/dimensionmonitoritemL8" } }
   }
 }

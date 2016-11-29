@@ -2,7 +2,7 @@
   "forge_marker": 1,
   "defaults": {
     "model": "rftools:rftoolsblock",
-    "textures": { "front": "rftoolsdim:blocks/machineDimensionBuilder" }
+    "textures": { "front": "rftoolsdim:blocks/machinedimensionbuilder" }
   },
   "variants": {
     "normal": [{}],
@@ -16,10 +16,10 @@
       "down": {"x": 90}
     },
     "operationtype": {
-      "empty": { "textures": { "front": "rftoolsdim:blocks/machineDimensionBuilder_empty" } },
-      "charging": { "textures": { "front": "rftoolsdim:blocks/machineDimensionBuilder" } },
-      "building1": { "textures": { "front": "rftoolsdim:blocks/machineDimensionBuilder_busy1" } },
-      "building2": { "textures": { "front": "rftoolsdim:blocks/machineDimensionBuilder_busy2" } }
+      "empty": { "textures": { "front": "rftoolsdim:blocks/machinedimensionbuilder_empty" } },
+      "charging": { "textures": { "front": "rftoolsdim:blocks/machinedimensionbuilder" } },
+      "building1": { "textures": { "front": "rftoolsdim:blocks/machinedimensionbuilder_busy1" } },
+      "building2": { "textures": { "front": "rftoolsdim:blocks/machinedimensionbuilder_busy2" } }
     }
   }
 }
