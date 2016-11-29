@@ -61,7 +61,7 @@ public class MobConfiguration {
     private static void initMobItem(Configuration cfg, String name,
                                     int chance, int mingroup, int maxgroup, int maxentity) {
         String id = EntityTools.fixEntityId(name);
-        Class<? extends Entity> entityClass = EntityTools.findClassByName(id);
+        Class<? extends Entity> entityClass = EntityTools.findClassById(id);
         if (entityClass == null) {
             Logging.logError("Cannot find mob with id '" + id +"'!");
             return;

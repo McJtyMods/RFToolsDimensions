@@ -35,11 +35,13 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import javax.annotation.Nullable;
 import java.util.EnumMap;
 
-@Mod(modid = RFToolsDim.MODID, name="RFTools Dimensions", dependencies =
-        "required-after:Forge@["+ RFToolsDim.MIN_FORGE_VER+
-        ",);required-after:rftools@["+RFToolsDim.MIN_RFTOOLS_VER+
-        ",);required-after:McJtyLib@["+ RFToolsDim.MIN_MCJTYLIB_VER+",)",
-        version = RFToolsDim.VERSION)
+@Mod(modid = RFToolsDim.MODID, name="RFTools Dimensions",
+//        dependencies =
+//        "required-after:Forge@["+ RFToolsDim.MIN_FORGE_VER+
+//        ",);required-after:rftools@["+RFToolsDim.MIN_RFTOOLS_VER+
+//        ",);required-after:McJtyLib@["+ RFToolsDim.MIN_MCJTYLIB_VER+",)",
+        version = RFToolsDim.VERSION,
+        acceptedMinecraftVersions = "[1.10,1.12)")
 public class RFToolsDim implements ModBase {
     public static final String MODID = "rftoolsdim";
     public static final String VERSION = "4.45";

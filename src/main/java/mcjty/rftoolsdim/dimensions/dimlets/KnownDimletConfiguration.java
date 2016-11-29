@@ -28,7 +28,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.fluids.Fluid;
@@ -195,7 +194,7 @@ public class KnownDimletConfiguration {
     }
 
     private static void initMobDimlet(String id) {
-        Class<? extends Entity> entityClass = EntityTools.findClassByName(id);
+        Class<? extends Entity> entityClass = EntityTools.findClassById(id);
         if (isValidMobClass(entityClass)) {
             DimletKey key = new DimletKey(DimletType.DIMLET_MOB, id);
             initDimlet(key, RFToolsTools.findModID(entityClass));
@@ -286,19 +285,14 @@ public class KnownDimletConfiguration {
     }
 
     private static void dumpMob(String id) {
-        Class<? extends Entity> entityClass = EntityTools.findClassByName(id);
+        Class<? extends Entity> entityClass = EntityTools.findClassById(id);
         if (isValidMobClass(entityClass)) {
             DimletKey key = new DimletKey(DimletType.DIMLET_MOB, id);
             String mod = RFToolsTools.findModID(entityClass);
             Settings settings = DimletRules.getSettings(key, mod);
 
-            String resourceName = EntityTools.findEntityNameByClass(entityClass);
-            String unlocName = EntityTools.findEntityUnlocNameByClass(entityClass);
-
-            if (unlocName == null) {
-                unlocName = "generic";
-            }
-            String readableName = I18n.translateToLocal("entity." + unlocName + ".name");
+            String resourceName = EntityTools.findEntityIdByClass(entityClass);
+            String readableName = EntityTools.findEntityLocNameByClass(entityClass);
             Logging.log(resourceName + " (" + resourceName + ", " + readableName + "): " + settings.toString());
         }
     }
@@ -412,12 +406,11 @@ public class KnownDimletConfiguration {
                 }
                 break;
             case DIMLET_MOB:
-                Class<? extends Entity> entityClass = EntityTools.findClassByName(EntityTools.fixEntityId(key.getId()));
+                Class<? extends Entity> entityClass = EntityTools.findClassById(EntityTools.fixEntityId(key.getId()));
                 if (entityClass == null) {
                     return "<Unknown>";
                 }
-                String unloc = EntityTools.findEntityUnlocNameByClass(entityClass);
-                return I18n.translateToLocal("entity." + unloc + ".name");
+                return EntityTools.findEntityLocNameByClass(entityClass);
             case DIMLET_SKY:
                 return StringUtils.capitalize(StringUtils.join(StringUtils.split(key.getId(), '.'), ' '));
             case DIMLET_STRUCTURE:
