@@ -44,7 +44,7 @@ import java.util.EnumMap;
         acceptedMinecraftVersions = "[1.10,1.12)")
 public class RFToolsDim implements ModBase {
     public static final String MODID = "rftoolsdim";
-    public static final String VERSION = "4.45alpha1";
+    public static final String VERSION = "4.45alpha2";
     public static final String MIN_FORGE_VER = "12.16.1.1898";
     public static final String MIN_MCJTYLIB_VER = "1.10-1.9.9";
     public static final String MIN_RFTOOLS_VER = "1.10.2-5.20";
