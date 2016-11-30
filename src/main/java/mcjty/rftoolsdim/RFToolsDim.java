@@ -36,18 +36,22 @@ import javax.annotation.Nullable;
 import java.util.EnumMap;
 
 @Mod(modid = RFToolsDim.MODID, name="RFTools Dimensions",
-//        dependencies =
-//        "required-after:Forge@["+ RFToolsDim.MIN_FORGE_VER+
-//        ",);required-after:rftools@["+RFToolsDim.MIN_RFTOOLS_VER+
-//        ",);required-after:McJtyLib@["+ RFToolsDim.MIN_MCJTYLIB_VER+",)",
+        dependencies =
+                        "required-after:mcjtylib_ng@[" + RFToolsDim.MIN_MCJTYLIB_VER + ",);" +
+                        "required-after:compatlayer@[" + RFToolsDim.COMPATLAYER_VER + ",);" +
+                        "required-after:rftools@[" + RFToolsDim.MIN_RFTOOLS_VER + ",);" +
+                        "after:Forge@[" + RFToolsDim.MIN_FORGE10_VER + ",);" +
+                        "after:forge@[" + RFToolsDim.MIN_FORGE11_VER + ",)",
         version = RFToolsDim.VERSION,
         acceptedMinecraftVersions = "[1.10,1.12)")
 public class RFToolsDim implements ModBase {
     public static final String MODID = "rftoolsdim";
     public static final String VERSION = "4.45alpha2";
-    public static final String MIN_FORGE_VER = "12.16.1.1898";
-    public static final String MIN_MCJTYLIB_VER = "1.10-1.9.9";
-    public static final String MIN_RFTOOLS_VER = "1.10.2-5.20";
+    public static final String MIN_RFTOOLS_VER = "5.62alpha4";
+    public static final String MIN_FORGE10_VER = "12.18.1.2082";
+    public static final String MIN_FORGE11_VER = "13.19.0.2157";
+    public static final String MIN_MCJTYLIB_VER = "2.2.0alpha14";
+    public static final String COMPATLAYER_VER = "0.0.35alpha";
 
     @SidedProxy(clientSide="mcjty.rftoolsdim.proxy.ClientProxy", serverSide="mcjty.rftoolsdim.proxy.ServerProxy")
     public static CommonProxy proxy;
