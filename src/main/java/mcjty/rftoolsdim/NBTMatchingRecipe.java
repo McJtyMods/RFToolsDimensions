@@ -63,7 +63,7 @@ public class NBTMatchingRecipe extends ShapedRecipes {
 
                 ItemStack itemstack1 = inventoryCrafting.getStackInRowAndColumn(col, row);
 
-                if (ItemStackTools.isValid(itemstack1) || ItemStackTools.isEmpty(itemstack)) {
+                if (ItemStackTools.isValid(itemstack1) || ItemStackTools.isValid(itemstack)) {
                     if (ItemStackTools.isEmpty(itemstack1) || ItemStackTools.isEmpty(itemstack)) {
                         return false;
                     }
