@@ -46,12 +46,12 @@ import java.util.EnumMap;
         acceptedMinecraftVersions = "[1.10,1.12)")
 public class RFToolsDim implements ModBase {
     public static final String MODID = "rftoolsdim";
-    public static final String VERSION = "4.45alpha2";
-    public static final String MIN_RFTOOLS_VER = "5.62alpha4";
+    public static final String VERSION = "4.45beta1";
+    public static final String MIN_RFTOOLS_VER = "5.62beta1";
     public static final String MIN_FORGE10_VER = "12.18.1.2082";
-    public static final String MIN_FORGE11_VER = "13.19.0.2157";
-    public static final String MIN_MCJTYLIB_VER = "2.2.0alpha14";
-    public static final String COMPATLAYER_VER = "0.0.35alpha";
+    public static final String MIN_FORGE11_VER = "13.19.0.2176";
+    public static final String MIN_MCJTYLIB_VER = "2.2.0beta1";
+    public static final String COMPATLAYER_VER = "0.0.39beta";
 
     @SidedProxy(clientSide="mcjty.rftoolsdim.proxy.ClientProxy", serverSide="mcjty.rftoolsdim.proxy.ServerProxy")
     public static CommonProxy proxy;
