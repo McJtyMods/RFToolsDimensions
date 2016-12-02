@@ -1,5 +1,6 @@
 package mcjty.rftoolsdim.dimensions.dimlets.types;
 
+import mcjty.lib.tools.ItemStackTools;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletKey;
 import mcjty.rftoolsdim.dimensions.DimensionInformation;
 import net.minecraft.item.ItemStack;
@@ -73,7 +74,7 @@ public interface IDimletType {
      */
     default DimletKey isValidEssence(ItemStack essenceStack) { return null; }
 
-    default ItemStack getDefaultEssence(DimletKey key) { return null; }
+    default ItemStack getDefaultEssence(DimletKey key) { return ItemStackTools.getEmptyStack(); }
 
     /**
      * Attempt to craft a dimlet of this type given a controller, a memory part, an energy part and an essence item.
