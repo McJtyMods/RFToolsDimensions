@@ -83,6 +83,7 @@ public class KnownDimletConfiguration {
         Biome.REGISTRY.iterator().forEachRemaining(KnownDimletConfiguration::initBiomeDimlet);
 
         EntityTools.getEntities().forEach(KnownDimletConfiguration::initMobDimlet);
+        initMobDimlet(DimletObjectMapping.DEFAULT_ID);
 
         FluidRegistry.getRegisteredFluids().entrySet().stream().forEach(KnownDimletConfiguration::initFluidDimlet);
         Block.REGISTRY.forEach(KnownDimletConfiguration::initMaterialDimlet);
@@ -195,10 +196,15 @@ public class KnownDimletConfiguration {
     }
 
     private static void initMobDimlet(String id) {
-        Class<? extends Entity> entityClass = EntityTools.findClassById(id);
-        if (isValidMobClass(entityClass)) {
+        if (DimletObjectMapping.DEFAULT_ID.equals(id)) {
             DimletKey key = new DimletKey(DimletType.DIMLET_MOB, id);
-            initDimlet(key, RFToolsTools.findModID(entityClass));
+            initDimlet(key, RFToolsDim.MODID);
+        } else {
+            Class<? extends Entity> entityClass = EntityTools.findClassById(id);
+            if (isValidMobClass(entityClass)) {
+                DimletKey key = new DimletKey(DimletType.DIMLET_MOB, id);
+                initDimlet(key, RFToolsTools.findModID(entityClass));
+            }
         }
     }
 
@@ -407,6 +413,9 @@ public class KnownDimletConfiguration {
                 }
                 break;
             case DIMLET_MOB:
+                if (DimletObjectMapping.DEFAULT_ID.equals(key.getId())) {
+                    return key.getId();
+                }
                 Class<? extends Entity> entityClass = EntityTools.findClassById(EntityTools.fixEntityId(key.getId()));
                 if (entityClass == null) {
                     return "<Unknown>";

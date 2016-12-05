@@ -686,6 +686,20 @@
   {
     "filter": {
       "type": "mob",
+      "name": "Default"
+    },
+    "settings": {
+      "rarity": 0,
+      "create": 100,
+      "maintain": 1,
+      "ticks": 100,
+      "worldgen": true,
+      "dimlet": true
+    }
+  },
+  {
+    "filter": {
+      "type": "mob",
       "mod": "BiomesOPlenty"
     },
     "settings": {
