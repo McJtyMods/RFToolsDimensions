@@ -11,6 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -148,7 +149,10 @@ public class DimensionDescriptor {
     }
 
     public static List<DimletKey> parseDescriptionString(String descriptionString) {
-        List<DimletKey> result = new ArrayList<DimletKey>();
+        if (descriptionString == null || descriptionString.isEmpty()) {
+            return Collections.emptyList();
+        }
+        List<DimletKey> result = new ArrayList<>();
         String ds = descriptionString.substring(1);
         if (!ds.isEmpty()) {
             String[] opcodes = StringUtils.split(ds, ",");
