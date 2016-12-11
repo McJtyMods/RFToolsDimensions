@@ -14,7 +14,7 @@ public class GeneralConfiguration {
     public static double brutalMobsFactor = 5.0f;   // How much stronger brutal mobs should be
     public static double strongMobsFactor = 2.0f;   // How much stronger brutal strong should be
 
-    public static int bedBehaviour = 0;         // Behaviour when sleeping in an RFTools dimension: 0 = do nothing, 1 = explode
+    public static int bedBehaviour = 0;         // Behaviour when sleeping in an RFTools dimension: 0 = do nothing, 1 = explode, 2 = set spawn
 
 	public static boolean randomizeSeed = false;
 
@@ -59,7 +59,7 @@ public class GeneralConfiguration {
                                     "The maximum amount of dimlet parts you get out of a dimlet parcel").getInt();
 
         bedBehaviour = cfg.get(CATEGORY_GENERAL, "bedBehaviour", bedBehaviour,
-                "Behaviour when sleeping in an RFTools dimension: 0 = do nothing, 1 = explode, 2 = set spawn (not implemented yet)").getInt();
+                "Behaviour when sleeping in an RFTools dimension: 0 = do nothing, 1 = explode, 2 = set spawn").getInt();
 
         randomizeSeed = cfg.get(CATEGORY_GENERAL, "randomizeSeed", randomizeSeed,
                 "Randomize the seed when the dimension is created").getBoolean();

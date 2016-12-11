@@ -213,7 +213,8 @@ public class ForgeEventHandlers {
                             break;
                         case 2:
                             event.setCanceled(true);
-                            Logging.message(event.getEntityPlayer(), "Not implemented yet!");
+                            event.getEntityPlayer().setSpawnChunk(event.getPos(), true, event.getWorld().provider.getDimension());
+                            Logging.message(event.getEntityPlayer(), "Spawn point set!");
                             break;
                     }
                 }
