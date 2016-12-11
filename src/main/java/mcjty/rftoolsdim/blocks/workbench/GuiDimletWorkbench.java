@@ -40,7 +40,7 @@ import java.util.Map;
 
 public class GuiDimletWorkbench extends GenericGuiContainer<DimletWorkbenchTileEntity> {
     public static final int WORKBENCH_WIDTH = 256;
-    public static final int WORKBENCH_HEIGHT = 224;
+    public static final int WORKBENCH_HEIGHT = 244;
 
     private EnergyBar energyBar;
     private ToggleButton extractButton;
@@ -66,7 +66,7 @@ public class GuiDimletWorkbench extends GenericGuiContainer<DimletWorkbenchTileE
         super.initGui();
 
         searchBar = new TextField(mc, this).setLayoutHint(new PositionalLayout.PositionalHint(120, 7, 128, 16)).addTextEvent((widget,string) -> { itemList.setSelected(-1); listDirty = true; });
-        itemList = new WidgetList(mc, this).setLayoutHint(new PositionalLayout.PositionalHint(120, 25, 118, 108)).
+        itemList = new WidgetList(mc, this).setLayoutHint(new PositionalLayout.PositionalHint(120, 25, 118, 133)).
                 setLeftMargin(0).setRowheight(-1).addSelectionEvent(new SelectionEvent() {
             @Override
             public void select(Widget widget, int i) {
@@ -82,7 +82,7 @@ public class GuiDimletWorkbench extends GenericGuiContainer<DimletWorkbenchTileE
                 }
             }
         });
-        slider = new Slider(mc, this).setLayoutHint(new PositionalLayout.PositionalHint(239, 25, 9, 108)).setDesiredWidth(11).setVertical().setScrollable(itemList);
+        slider = new Slider(mc, this).setLayoutHint(new PositionalLayout.PositionalHint(239, 25, 9, 133)).setDesiredWidth(11).setVertical().setScrollable(itemList);
 
         int maxEnergyStored = tileEntity.getMaxEnergyStored(EnumFacing.DOWN);
         energyBar = new EnergyBar(mc, this).setVertical().setMaxValue(maxEnergyStored).setLayoutHint(new PositionalLayout.PositionalHint(88, 9, 30, 10)).setShowText(false)
@@ -149,7 +149,7 @@ public class GuiDimletWorkbench extends GenericGuiContainer<DimletWorkbenchTileE
         Map<Pair<DimletType, String>, DimletKey> uniquelyNamedDimlets = new HashMap<>();
         for (DimletKey key : dimlets.keySet()) {
             String name = KnownDimletConfiguration.getDisplayName(key);
-            if (name.toLowerCase().contains(filter)) {
+            if (dimletMatches(filter, key, name)) {
                 Pair<DimletType, String> k = Pair.of(key.getType(), name);
                 if (!uniquelyNamedDimlets.containsKey(k)) {
                     uniquelyNamedDimlets.put(k, key);
@@ -170,6 +170,14 @@ public class GuiDimletWorkbench extends GenericGuiContainer<DimletWorkbenchTileE
         if (itemList.getFirstSelected() >= itemList.getChildCount()) {
             itemList.setFirstSelected(0);
         }
+    }
+
+    private boolean dimletMatches(String filter, DimletKey key, String name) {
+        if (name.toLowerCase().contains(filter)) {
+            return true;
+        }
+        String typeName = key.getType().dimletType.getName();
+        return typeName.toLowerCase().contains(filter);
     }
 
     private void addItemToList(DimletKey key, WidgetList itemList) {
