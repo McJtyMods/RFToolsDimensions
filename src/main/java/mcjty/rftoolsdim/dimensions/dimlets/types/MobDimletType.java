@@ -89,7 +89,8 @@ public class MobDimletType implements IDimletType {
                 DimletKey key = DimletRandomizer.getRandomMob(random);
                 if (key != null) {
                     dimensionInformation.updateCostFactor(key);
-                    extraMobs.add(DimletObjectMapping.getMob(key));
+                    MobDescriptor mob = DimletObjectMapping.getMob(key);
+                    extraMobs.add(mob);
                 }
             }
         } else {

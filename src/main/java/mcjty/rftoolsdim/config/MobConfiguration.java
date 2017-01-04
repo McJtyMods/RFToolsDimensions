@@ -72,7 +72,7 @@ public class MobConfiguration {
             maxgroup = cfg.get(CATEGORY_MOBS, id + ".maxgroup", maxgroup).getInt();
             maxentity = cfg.get(CATEGORY_MOBS, id + ".maxentity", maxentity).getInt();
         }
-        mobClasses.put(name, new MobDescriptor(entityClass, chance, mingroup, maxgroup, maxentity));
+        mobClasses.put(id, new MobDescriptor(entityClass, chance, mingroup, maxgroup, maxentity));
     }
 
 }

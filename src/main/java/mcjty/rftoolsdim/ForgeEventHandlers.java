@@ -16,11 +16,13 @@ import net.minecraft.block.BlockBed;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
+import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.IAnimals;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -222,4 +224,27 @@ public class ForgeEventHandlers {
         }
     }
 
+    @SubscribeEvent
+    public void onEntitySpawn(LivingSpawnEvent.SpecialSpawn event) {
+        World world = event.getWorld();
+        if (world.isRemote) {
+            return;
+        }
+
+        EntityLivingBase entityLiving = event.getEntityLiving();
+        if (entityLiving instanceof EntityDragon) {
+            int id = world.provider.getDimension();
+
+            RfToolsDimensionManager dimensionManager = RfToolsDimensionManager.getDimensionManager(world);
+            DimensionInformation dimensionInformation = dimensionManager.getDimensionInformation(id);
+
+            if (dimensionInformation != null) {
+                // Ender dragon needs to be spawned with an additional NBT key set
+                NBTTagCompound dragonTag = new NBTTagCompound();
+                entityLiving.writeEntityToNBT(dragonTag);
+                dragonTag.setShort("DragonPhase", (short) 0);
+                entityLiving.readEntityFromNBT(dragonTag);
+            }
+        }
+    }
 }

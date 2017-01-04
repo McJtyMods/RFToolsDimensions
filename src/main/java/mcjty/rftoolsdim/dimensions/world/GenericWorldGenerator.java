@@ -267,7 +267,6 @@ public class GenericWorldGenerator implements IWorldGenerator {
     }
 
     private void generateSpawnPlatform(World world) {
-        System.out.println("GenericWorldGenerator.generateSpawnPlatform");
         RfToolsDimensionManager dimensionManager = RfToolsDimensionManager.getDimensionManager(world);
         DimensionInformation information = dimensionManager.getDimensionInformation(world.provider.getDimension());
 
