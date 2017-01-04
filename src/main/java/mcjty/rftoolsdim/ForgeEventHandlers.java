@@ -16,6 +16,7 @@ import net.minecraft.block.BlockBed;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.monster.IMob;
@@ -173,7 +174,7 @@ public class ForgeEventHandlers {
     public void onEntityDrop(LivingDropsEvent event) {
         if (event.getEntityLiving() instanceof EntityEnderman) {
             if (random.nextFloat() < GeneralConfiguration.endermanDimletPartDrop) {
-                event.getEntityLiving().entityDropItem(new ItemStack(ModItems.dimletParcelItem), 1.05f);
+                event.getDrops().add(new EntityItem((event.getEntityLiving()).world, event.getEntityLiving().posX, event.getEntityLiving().posY, event.getEntityLiving().posZ, new ItemStack(ModItems.dimletParcelItem)));
             }
         }
     }
