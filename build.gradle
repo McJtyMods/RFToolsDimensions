@@ -44,7 +44,7 @@ repositories {
     }
 }
 
-version = "1.1x-4.52"
+version = "1.1x-4.53"
 def ENV = System.getenv()
 if (ENV.DRONE_BUILD_NUMBER) {
     version += ".n" + ENV.DRONE_BUILD_NUMBER
@@ -80,7 +80,7 @@ dependencies {
     deobfCompile "com.github.mcjty:compatlayer:1.11.2-0.1.7"
     deobfCompile "com.github.mcjty:mcjtylib:1.1x-2.3.2-SNAPSHOT"
     deobfCompile "com.github.mcjty:intwheel:1.1x-1.2.0"
-    deobfCompile "com.github.mcjty:rftools:1.1x-5.80"
+    deobfCompile "com.github.mcjty:rftools:1.1x-5.81"
 
     //compile "li.cil.oc:OpenComputers:MC1.7.10-1.5.+:api"
 }
