@@ -273,8 +273,10 @@ public class GenericChunkGenerator implements CompatChunkGenerator {
         extraSpawnsMax = new ArrayList<>();
         for (MobDescriptor mob : dimensionInformation.getExtraMobs()) {
             Class<? extends Entity> entityClass = mob.getEntityClass();
-            extraSpawns.add(new Biome.SpawnListEntry((Class<? extends EntityLiving>) entityClass, mob.getSpawnChance(), mob.getMinGroup(), mob.getMaxGroup()));
-            extraSpawnsMax.add(mob.getMaxLoaded());
+            if (entityClass != null) {
+                extraSpawns.add(new Biome.SpawnListEntry((Class<? extends EntityLiving>) entityClass, mob.getSpawnChance(), mob.getMinGroup(), mob.getMaxGroup()));
+                extraSpawnsMax.add(mob.getMaxLoaded());
+            }
         }
 
     }
