@@ -190,8 +190,11 @@ public class KnownDimletConfiguration {
     private static void initBiomeDimlet(Biome biome) {
         String name = biome.getBiomeName();
         if (name != null && !name.isEmpty()) {
-            DimletKey key = new DimletKey(DimletType.DIMLET_BIOME, biome.getRegistryName().toString());
-            initDimlet(key, RFToolsTools.findModID(biome));
+            ResourceLocation registryName = biome.getRegistryName();
+            if (registryName != null) {
+                DimletKey key = new DimletKey(DimletType.DIMLET_BIOME, registryName.toString());
+                initDimlet(key, RFToolsTools.findModID(biome));
+            }
         }
     }
 
