@@ -35,6 +35,7 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.Level;
 
 import java.lang.reflect.Modifier;
 import java.util.*;
@@ -267,7 +268,14 @@ public class KnownDimletConfiguration {
     public static Set<Filter.Feature> getBlockFeatures(Block block) {
         Set<Filter.Feature> features = EnumSet.noneOf(Filter.Feature.class);
 
-        ItemStack stack = new ItemStack(block, 1, OreDictionary.WILDCARD_VALUE);
+        ItemStack stack = null;
+        try {
+            stack = new ItemStack(block, 1, OreDictionary.WILDCARD_VALUE);
+        } catch (Exception e) {
+            Logging.getLogger().log(Level.ERROR, "Failed to create a dimlet for block " + block.getRegistryName() +
+                    "! Please report to the correct mod!", e);
+            return features;
+        }
         int[] iDs = null;
         if (ItemStackTools.isValid(stack) && stack.getItem() != null) {
             iDs = OreDictionary.getOreIDs(stack);
