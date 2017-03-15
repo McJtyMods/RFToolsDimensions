@@ -46,8 +46,13 @@ public class FeatureAbsorberBlock extends GenericRFToolsBlock<FeatureAbsorberTil
             if (tileEntity.getFeatureName() != null) {
                 int absorbing = tileEntity.getAbsorbing();
                 int pct = ((DimletConstructionConfiguration.maxFeatureAbsorbtion - absorbing) * 100) / DimletConstructionConfiguration.maxFeatureAbsorbtion;
-                probeInfo.text(TextFormatting.GREEN + "Unknown feature")
-                        .progress(pct, 100, probeInfo.defaultProgressStyle().suffix("%"));
+                if (pct == 100) {
+                    probeInfo.text(TextFormatting.GREEN + tileEntity.getFeatureName())
+                            .progress(pct, 100, probeInfo.defaultProgressStyle().suffix("%"));
+                } else {
+                    probeInfo.text(TextFormatting.GREEN + "Unknown feature")
+                            .progress(pct, 100, probeInfo.defaultProgressStyle().suffix("%"));
+                }
             }
         }
     }
@@ -60,22 +65,31 @@ public class FeatureAbsorberBlock extends GenericRFToolsBlock<FeatureAbsorberTil
         if (tileEntity != null && tileEntity.getFeatureName() != null) {
             int absorbing = tileEntity.getAbsorbing();
             int pct = ((DimletConstructionConfiguration.maxFeatureAbsorbtion - absorbing) * 100) / DimletConstructionConfiguration.maxFeatureAbsorbtion;
-            currenttip.add(TextFormatting.GREEN + "Unknown feature (" + pct + "%)");
+            if (pct == 100) {
+                currenttip.add(TextFormatting.GREEN + tileEntity.getFeatureName() + " (" + pct + "%)");
+            } else {
+                currenttip.add(TextFormatting.GREEN + "Unknown feature (" + pct + "%)");
+            }
         }
         return currenttip;
     }
 
     @SideOnly(Side.CLIENT)
     @Override
-    public void addInformation(ItemStack itemStack, EntityPlayer player, List list, boolean whatIsThis) {
+    public void addInformation(ItemStack itemStack, EntityPlayer player, List<String> list, boolean whatIsThis) {
         super.addInformation(itemStack, player, list, whatIsThis);
 
         NBTTagCompound tagCompound = itemStack.getTagCompound();
         if (tagCompound != null && tagCompound.hasKey("feature")) {
-            list.add(TextFormatting.GREEN + "Unknown Feature");
             int absorbing = tagCompound.getInteger("absorbing");
             int pct = ((DimletConstructionConfiguration.maxFeatureAbsorbtion - absorbing) * 100) / DimletConstructionConfiguration.maxFeatureAbsorbtion;
-            list.add(TextFormatting.GREEN + "Absorbed: " + pct + "%");
+            if (pct == 100) {
+                list.add(TextFormatting.GREEN + tagCompound.getString("feature"));
+                list.add(TextFormatting.GREEN + "Absorbed: " + pct + "%");
+            } else {
+                list.add(TextFormatting.GREEN + "Unknown Feature");
+                list.add(TextFormatting.GREEN + "Absorbed: " + pct + "%");
+            }
         }
 
         if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
