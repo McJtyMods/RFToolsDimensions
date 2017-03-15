@@ -70,7 +70,7 @@ public class DimensionTickEvent {
                     WorldServer world = DimensionManager.getWorld(id);
 
                     // Power handling.
-                    if (world != null || information.getProbeCounter() == 0) {
+                    if ((world != null && world.getChunkProvider().getLoadedChunkCount() > 0) || information.getProbeCounter() == 0) {
                         handlePower(doEffects, dimensionStorage, entry, id, information);
                     }
 
