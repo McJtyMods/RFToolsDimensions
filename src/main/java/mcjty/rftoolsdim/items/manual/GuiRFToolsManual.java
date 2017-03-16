@@ -9,12 +9,14 @@ import mcjty.lib.gui.widgets.Label;
 import mcjty.lib.gui.widgets.Panel;
 import mcjty.lib.gui.widgets.*;
 import mcjty.rftoolsdim.RFToolsDim;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Mouse;
 
 import java.awt.*;
 import java.io.IOException;
+import java.util.Locale;
 
 public class GuiRFToolsManual extends GuiScreen {
 
@@ -41,7 +43,8 @@ public class GuiRFToolsManual extends GuiScreen {
 
     public GuiRFToolsManual(int manual) {
         if (manual == MANUAL_DIMENSION) {
-            manualText = manualDimensionText;
+            String gameLocale = Minecraft.getMinecraft().getLanguageManager().getCurrentLanguage().getLanguageCode().toLowerCase(Locale.ENGLISH);
+            manualText = "en_us".equals(gameLocale) ? manualDimensionText : new ResourceLocation(RFToolsDim.MODID, "text/manual_dimension-" + gameLocale + ".txt");
         }
     }
 
