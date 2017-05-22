@@ -137,6 +137,8 @@ public class DimletRandomizer {
                 }
                 randomWeatherDimlets.addItem(entry.getValue().getRarity(), key);
                 randomUncraftableDimlets.addItem(entry.getValue().getRarity(), key);
+            } else if (key.getType() == DimletType.DIMLET_CONTROLLER) {
+                randomUncraftableDimlets.addItem(entry.getValue().getRarity(), key);
             } else if (key.getType() == DimletType.DIMLET_SKY) {
                 if (randomSkyDimlets == null) {
                     randomSkyDimlets = new RarityRandomSelector<>();
