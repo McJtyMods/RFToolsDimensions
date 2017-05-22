@@ -32,6 +32,7 @@ public class WorldgenConfiguration {
     public static int oreMaximumHeight = 40;
 
     public static int enableDimletsInRFToolsDungeons = 2;
+    public static int uncraftableDimletsInRFToolsDungeons = 2;
     public static boolean enableDimletsInRFToolsFrames = true;
 
     public static void init(Configuration cfg) {
@@ -90,6 +91,8 @@ public class WorldgenConfiguration {
 
         enableDimletsInRFToolsDungeons = cfg.get(CATEGORY_WORLDGEN, "enableDimletsInRFToolsDungeons", enableDimletsInRFToolsDungeons,
                 "The maximum number of random dimlets that can be generated in rftools dungeons (set to 0 to disable this)").getInt();
+        uncraftableDimletsInRFToolsDungeons = cfg.get(CATEGORY_WORLDGEN, "uncraftableDimletsInRFToolsDungeons", uncraftableDimletsInRFToolsDungeons,
+                "The number of uncraftable dimlets that will always be generated in rftools dungeons (set to 0 to disable this, this value is independ from enableDimletsInRFToolsDungeons)").getInt();
         enableDimletsInRFToolsFrames = cfg.get(CATEGORY_WORLDGEN, "enableDimletsInRFToolsFrames", enableDimletsInRFToolsFrames,
                 "If true then item frames in rftools dungeons will contain dimlets. Otherwise they will contain dimlet parts").getBoolean();
     }

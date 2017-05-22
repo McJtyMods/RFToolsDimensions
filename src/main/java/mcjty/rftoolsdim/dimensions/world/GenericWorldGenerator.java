@@ -486,6 +486,14 @@ public class GenericWorldGenerator implements IWorldGenerator {
                 chest.setInventorySlotContents(random.nextInt(chest.getSizeInventory()), stack);
             }
         }
+
+        // Always generate a few cosmetic dimlets
+        for (int i = 0; i < WorldgenConfiguration.uncraftableDimletsInRFToolsDungeons; i++) {
+            DimletKey key = DimletRandomizer.getRandomUncraftableDimlets().select(bestDistribution, random);
+            ItemStack stack = KnownDimletConfiguration.getDimletStack(key);
+            chest.setInventorySlotContents(random.nextInt(chest.getSizeInventory()), stack);
+        }
+
         for (int i = 0 ; i < random.nextInt(2) ; i++) {
             chest.setInventorySlotContents(random.nextInt(chest.getSizeInventory()), new ItemStack(ModItems.dimletParcelItem));
         }

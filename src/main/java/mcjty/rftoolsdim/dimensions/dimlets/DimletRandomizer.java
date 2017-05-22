@@ -26,6 +26,7 @@ public class DimletRandomizer {
 
     // All dimlet ids in a weighted random selector based on rarity.
     private static WeightedRandomSelector<Integer,DimletKey> randomDimlets;
+    private static WeightedRandomSelector<Integer,DimletKey> randomUncraftableDimlets;
     private static WeightedRandomSelector<Integer,DimletKey> randomMaterialDimlets;
     private static WeightedRandomSelector<Integer,DimletKey> randomLiquidDimlets;
     private static WeightedRandomSelector<Integer,DimletKey> randomMobDimlets;
@@ -39,6 +40,7 @@ public class DimletRandomizer {
 
     public static void init() {
         randomDimlets = null;
+        randomUncraftableDimlets = null;
         randomMaterialDimlets = null;
         randomLiquidDimlets = null;
         randomMobDimlets = null;
@@ -67,6 +69,9 @@ public class DimletRandomizer {
 
         randomDimlets = new WeightedRandomSelector<>();
         setupRarity(randomDimlets, rarity0, rarity1, rarity2, rarity3, rarity4, rarity5, rarity6);
+
+        randomUncraftableDimlets = new WeightedRandomSelector<>();
+        setupRarity(randomUncraftableDimlets, rarity0, rarity1, rarity2, rarity3, rarity4, rarity5, rarity6);
 
         for (Map.Entry<DimletKey, Settings> entry : knownDimlets.entrySet()) {
             DimletKey key = entry.getKey();
@@ -103,6 +108,7 @@ public class DimletRandomizer {
                     setupRarity(randomEffectDimlets, rarity0, rarity1, rarity2, rarity3, rarity4, rarity5, rarity6);
                 }
                 randomEffectDimlets.addItem(entry.getValue().getRarity(), key);
+                randomUncraftableDimlets.addItem(entry.getValue().getRarity(), key);
             } else if (key.getType() == DimletType.DIMLET_FEATURE) {
                 if (randomFeatureDimlets == null) {
                     randomFeatureDimlets = new WeightedRandomSelector<>();
@@ -115,18 +121,21 @@ public class DimletRandomizer {
                     setupRarity(randomStructureDimlets, rarity0, rarity1, rarity2, rarity3, rarity4, rarity5, rarity6);
                 }
                 randomStructureDimlets.addItem(entry.getValue().getRarity(), key);
+                randomUncraftableDimlets.addItem(entry.getValue().getRarity(), key);
             } else if (key.getType() == DimletType.DIMLET_TERRAIN) {
                 if (randomTerrainDimlets == null) {
                     randomTerrainDimlets = new WeightedRandomSelector<>();
                     setupRarity(randomTerrainDimlets, rarity0, rarity1, rarity2, rarity3, rarity4, rarity5, rarity6);
                 }
                 randomTerrainDimlets.addItem(entry.getValue().getRarity(), key);
+                randomUncraftableDimlets.addItem(entry.getValue().getRarity(), key);
             } else if (key.getType() == DimletType.DIMLET_WEATHER) {
                 if (randomWeatherDimlets == null) {
                     randomWeatherDimlets = new WeightedRandomSelector<>();
                     setupRarity(randomWeatherDimlets, rarity0, rarity1, rarity2, rarity3, rarity4, rarity5, rarity6);
                 }
                 randomWeatherDimlets.addItem(entry.getValue().getRarity(), key);
+                randomUncraftableDimlets.addItem(entry.getValue().getRarity(), key);
             } else if (key.getType() == DimletType.DIMLET_SKY) {
                 if (randomSkyDimlets == null) {
                     randomSkyDimlets = new WeightedRandomSelector<>();
@@ -140,6 +149,7 @@ public class DimletRandomizer {
                     }
                     randomSkyBodyDimlets.addItem(entry.getValue().getRarity(), key);
                 }
+                randomUncraftableDimlets.addItem(entry.getValue().getRarity(), key);
             }
         }
     }
@@ -224,6 +234,11 @@ public class DimletRandomizer {
     public static WeightedRandomSelector<Integer, DimletKey> getRandomDimlets() {
         setupWeightedRandomList();
         return randomDimlets;
+    }
+
+    public static WeightedRandomSelector<Integer, DimletKey> getRandomUncraftableDimlets() {
+        setupWeightedRandomList();
+        return randomUncraftableDimlets;
     }
 
     private static WeightedRandomSelector<Integer, ItemStack> dimletPartDistribution;
