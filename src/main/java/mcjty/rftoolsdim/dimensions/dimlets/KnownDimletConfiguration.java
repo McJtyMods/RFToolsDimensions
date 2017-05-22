@@ -416,9 +416,16 @@ public class KnownDimletConfiguration {
             case DIMLET_MATERIAL:
                 IBlockState state = DimletObjectMapping.getBlock(key);
                 if (state != null) {
-                    ItemStack stack = new ItemStack(state.getBlock(), 1, state.getBlock().getMetaFromState(state));
+                    String modid = state.getBlock().getRegistryName().getResourceDomain();
+                    int meta = state.getBlock().getMetaFromState(state);
+                    ItemStack stack = new ItemStack(state.getBlock(), 1, meta);
+                    String suffix = "";
+                    if ("chisel".equals(modid)) {
+                        // Special case for chisel as it has the same name as the base block for all its variants
+                        suffix = "@" + meta;
+                    }
                     try {
-                        return stack.getItem() == null ? "?" : stack.getDisplayName();
+                        return stack.getItem() == null ? "?" : (stack.getDisplayName() + suffix);
                     } catch (Exception e) {
                         e.printStackTrace();
                         return "<Bug>";
