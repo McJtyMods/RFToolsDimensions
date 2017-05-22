@@ -13,6 +13,8 @@ import mcjty.rftoolsdim.dimensions.world.mapgen.*;
 import mcjty.rftoolsdim.dimensions.world.terrain.*;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
+import net.minecraft.block.BlockLiquid;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureType;
@@ -28,10 +30,8 @@ import net.minecraft.world.WorldType;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkPrimer;
-import net.minecraft.world.gen.ChunkProviderSettings;
-import net.minecraft.world.gen.MapGenBase;
-import net.minecraft.world.gen.MapGenCaves;
-import net.minecraft.world.gen.MapGenRavine;
+import net.minecraft.world.chunk.IChunkProvider;
+import net.minecraft.world.gen.*;
 import net.minecraft.world.gen.feature.WorldGenDungeons;
 import net.minecraft.world.gen.feature.WorldGenLakes;
 import net.minecraft.world.gen.structure.*;
@@ -223,6 +223,9 @@ public class GenericChunkGenerator implements CompatChunkGenerator {
             case TERRAIN_NORMAL:
                 terrainGenerator = new NormalTerrainGenerator();
                 break;
+            case TERRAIN_UPSIDEDOWN:
+                terrainGenerator = new UpsideDownTerrainGenerator();
+                break;
             case TERRAIN_ISLAND:
                 terrainGenerator = new IslandTerrainGenerator(IslandTerrainGenerator.NORMAL);
                 break;
@@ -355,6 +358,10 @@ public class GenericChunkGenerator implements CompatChunkGenerator {
 
 //        this.ruinedCitiesGenerator.generate(this.worldObj, chunkX, chunkZ, ablock, abyte);
 
+        if (dimensionInformation.getTerrainType() == TerrainType.TERRAIN_UPSIDEDOWN) {
+            reverse(chunkprimer);
+        }
+
         Chunk chunk = new Chunk(this.worldObj, chunkprimer, chunkX, chunkZ);
         byte[] abyte = chunk.getBiomeArray();
 
@@ -363,7 +370,37 @@ public class GenericChunkGenerator implements CompatChunkGenerator {
         }
 
         chunk.generateSkylightMap();
+
         return chunk;
+    }
+
+    private static boolean isDangerous(char c) {
+        IBlockState iblockstate = Block.BLOCK_STATE_IDS.getByValue(c);
+        if (iblockstate.getBlock() instanceof BlockLiquid || iblockstate.getBlock() instanceof BlockFalling) {
+            return true;
+        }
+        return false;
+    }
+
+    private static void reverse(ChunkPrimer primer) {
+        for (int x = 0; x < 16; x++) {
+            for (int z = 0; z < 16; z++) {
+                int idx = (x << 12 | z << 8);
+                for (int y = 0; y < 128; y++) {
+                    char c = primer.data[idx + y];
+                    if (isDangerous(c)) {
+                        c = 0;
+                    }
+                    char c2 = primer.data[idx + 255 - y];
+                    if (isDangerous(c2)) {
+                        c2 = 0;
+                    }
+                    primer.data[idx + y] = c2;
+                    primer.data[idx + 255 - y] = c;
+                }
+
+            }
+        }
     }
 
     @Override
@@ -371,82 +408,88 @@ public class GenericChunkGenerator implements CompatChunkGenerator {
         BlockFalling.fallInstantly = true;
         int x = chunkX * 16;
         int z = chunkZ * 16;
-        Biome Biome = this.worldObj.getBiomeForCoordsBody(new BlockPos(x + 16, 0, z + 16));
-        this.rand.setSeed(this.worldObj.getSeed());
+        World w = this.worldObj;
+        Biome Biome = w.getBiomeForCoordsBody(new BlockPos(x + 16, 0, z + 16));
+        this.rand.setSeed(w.getSeed());
         long i1 = this.rand.nextLong() / 2L * 2L + 1L;
         long j1 = this.rand.nextLong() / 2L * 2L + 1L;
-        this.rand.setSeed(chunkX * i1 + chunkZ * j1 ^ this.worldObj.getSeed());
+        this.rand.setSeed(chunkX * i1 + chunkZ * j1 ^ w.getSeed());
         boolean flag = false;
 
-        MinecraftForge.EVENT_BUS.post(new PopulateChunkEvent.Pre(this, worldObj, rand, chunkX, chunkZ, flag));
+        if (dimensionInformation.getTerrainType() == TerrainType.TERRAIN_UPSIDEDOWN) {
+            w = wrapUpsidedownWorld();
+        }
+
+        MinecraftForge.EVENT_BUS.post(new PopulateChunkEvent.Pre(this, w, rand, chunkX, chunkZ, flag));
 
         ChunkPos cp = new ChunkPos(chunkX, chunkZ);
 
         if (dimensionInformation.hasStructureType(StructureType.STRUCTURE_MINESHAFT)) {
-            this.mineshaftGenerator.generateStructure(this.worldObj, this.rand, cp);
+            this.mineshaftGenerator.generateStructure(w, this.rand, cp);
         }
         if (dimensionInformation.hasStructureType(StructureType.STRUCTURE_VILLAGE)) {
-            flag = this.villageGenerator.generateStructure(this.worldObj, this.rand, cp);
+            flag = this.villageGenerator.generateStructure(w, this.rand, cp);
         }
         if (dimensionInformation.hasStructureType(StructureType.STRUCTURE_STRONGHOLD)) {
-            this.strongholdGenerator.generateStructure(this.worldObj, this.rand, cp);
+            this.strongholdGenerator.generateStructure(w, this.rand, cp);
         }
         if (dimensionInformation.hasStructureType(StructureType.STRUCTURE_FORTRESS)) {
-            this.genNetherBridge.generateStructure(this.worldObj, this.rand, cp);
+            this.genNetherBridge.generateStructure(w, this.rand, cp);
         }
         if (dimensionInformation.hasStructureType(StructureType.STRUCTURE_SCATTERED)) {
-            this.scatteredFeatureGenerator.generateStructure(this.worldObj, this.rand, cp);
+            this.scatteredFeatureGenerator.generateStructure(w, this.rand, cp);
         }
         if (dimensionInformation.hasStructureType(StructureType.STRUCTURE_SWAMPHUT)) {
-            this.genSwampHut.generateStructure(this.worldObj, this.rand, cp);
+            this.genSwampHut.generateStructure(w, this.rand, cp);
         }
         if (dimensionInformation.hasStructureType(StructureType.STRUCTURE_DESERTTEMPLE)) {
-            this.genDesertTemple.generateStructure(this.worldObj, this.rand, cp);
+            this.genDesertTemple.generateStructure(w, this.rand, cp);
         }
         if (dimensionInformation.hasStructureType(StructureType.STRUCTURE_JUNGLETEMPLE)) {
-            this.genJungleTemple.generateStructure(this.worldObj, this.rand, cp);
+            this.genJungleTemple.generateStructure(w, this.rand, cp);
         }
         if (dimensionInformation.hasStructureType(StructureType.STRUCTURE_IGLOO)) {
-            this.genIgloo.generateStructure(this.worldObj, this.rand, cp);
+            this.genIgloo.generateStructure(w, this.rand, cp);
         }
         if (dimensionInformation.hasStructureType(StructureType.STRUCTURE_OCEAN_MONUMENT)) {
-            this.oceanMonumentGenerator.generateStructure(this.worldObj, this.rand, cp);
+            this.oceanMonumentGenerator.generateStructure(w, this.rand, cp);
         }
 
         int k1;
         int l1;
         int i2;
 
-
-        if (dimensionInformation.hasFeatureType(FeatureType.FEATURE_LAKES)) {
-            if (dimensionInformation.getFluidsForLakes().length == 0) {
-                // No specific liquid dimlets specified: we generate default lakes (water and lava were appropriate).
-                if (Biome != Biomes.DESERT && Biome != Biomes.DESERT_HILLS && !flag && this.rand.nextInt(4) == 0
-                        && TerrainGen.populate(this, worldObj, rand, chunkX, chunkZ, flag, PopulateChunkEvent.Populate.EventType.LAKE)) {
-                    k1 = x + this.rand.nextInt(16) + 8;
-                    l1 = this.rand.nextInt(256);
-                    i2 = z + this.rand.nextInt(16) + 8;
-                    (new WorldGenLakes(Blocks.WATER)).generate(this.worldObj, this.rand, new BlockPos(k1, l1, i2));
-                }
-
-                if (TerrainGen.populate(this, worldObj, rand, chunkX, chunkZ, flag, PopulateChunkEvent.Populate.EventType.LAVA) && !flag && this.rand.nextInt(8) == 0) {
-                    k1 = x + this.rand.nextInt(16) + 8;
-                    l1 = this.rand.nextInt(this.rand.nextInt(248) + 8);
-                    i2 = z + this.rand.nextInt(16) + 8;
-
-                    if (l1 < 63 || this.rand.nextInt(10) == 0) {
-                        (new WorldGenLakes(Blocks.LAVA)).generate(this.worldObj, this.rand, new BlockPos(k1, l1, i2));
-                    }
-                }
-            } else {
-                // Generate lakes for the specified biomes.
-                for (Block liquid : dimensionInformation.getFluidsForLakes()) {
-                    if (!flag && this.rand.nextInt(4) == 0
-                            && TerrainGen.populate(this, worldObj, rand, chunkX, chunkZ, flag, PopulateChunkEvent.Populate.EventType.LAKE)) {
+        if (dimensionInformation.getTerrainType() != TerrainType.TERRAIN_UPSIDEDOWN) {
+            if (dimensionInformation.hasFeatureType(FeatureType.FEATURE_LAKES)) {
+                if (dimensionInformation.getFluidsForLakes().length == 0) {
+                    // No specific liquid dimlets specified: we generate default lakes (water and lava were appropriate).
+                    if (Biome != Biomes.DESERT && Biome != Biomes.DESERT_HILLS && !flag && this.rand.nextInt(4) == 0
+                            && TerrainGen.populate(this, w, rand, chunkX, chunkZ, flag, PopulateChunkEvent.Populate.EventType.LAKE)) {
                         k1 = x + this.rand.nextInt(16) + 8;
                         l1 = this.rand.nextInt(256);
                         i2 = z + this.rand.nextInt(16) + 8;
-                        (new WorldGenLakes(liquid)).generate(this.worldObj, this.rand, new BlockPos(k1, l1, i2));
+                        (new WorldGenLakes(Blocks.WATER)).generate(w, this.rand, new BlockPos(k1, l1, i2));
+                    }
+
+                    if (TerrainGen.populate(this, w, rand, chunkX, chunkZ, flag, PopulateChunkEvent.Populate.EventType.LAVA) && !flag && this.rand.nextInt(8) == 0) {
+                        k1 = x + this.rand.nextInt(16) + 8;
+                        l1 = this.rand.nextInt(this.rand.nextInt(248) + 8);
+                        i2 = z + this.rand.nextInt(16) + 8;
+
+                        if (l1 < 63 || this.rand.nextInt(10) == 0) {
+                            (new WorldGenLakes(Blocks.LAVA)).generate(w, this.rand, new BlockPos(k1, l1, i2));
+                        }
+                    }
+                } else {
+                    // Generate lakes for the specified biomes.
+                    for (Block liquid : dimensionInformation.getFluidsForLakes()) {
+                        if (!flag && this.rand.nextInt(4) == 0
+                                && TerrainGen.populate(this, w, rand, chunkX, chunkZ, flag, PopulateChunkEvent.Populate.EventType.LAKE)) {
+                            k1 = x + this.rand.nextInt(16) + 8;
+                            l1 = this.rand.nextInt(256);
+                            i2 = z + this.rand.nextInt(16) + 8;
+                            (new WorldGenLakes(liquid)).generate(w, this.rand, new BlockPos(k1, l1, i2));
+                        }
                     }
                 }
             }
@@ -454,41 +497,114 @@ public class GenericChunkGenerator implements CompatChunkGenerator {
 
         boolean doGen = false;
         if (dimensionInformation.hasStructureType(StructureType.STRUCTURE_DUNGEON)) {
-            doGen = TerrainGen.populate(this, worldObj, rand, chunkX, chunkZ, flag, PopulateChunkEvent.Populate.EventType.DUNGEON);
+            doGen = TerrainGen.populate(this, w, rand, chunkX, chunkZ, flag, PopulateChunkEvent.Populate.EventType.DUNGEON);
             for (k1 = 0; doGen && k1 < 8; ++k1) {
                 l1 = x + this.rand.nextInt(16) + 8;
                 i2 = this.rand.nextInt(256);
                 int j2 = z + this.rand.nextInt(16) + 8;
-                (new WorldGenDungeons()).generate(this.worldObj, this.rand, new BlockPos(l1, i2, j2));
+                (new WorldGenDungeons()).generate(w, this.rand, new BlockPos(l1, i2, j2));
             }
         }
 
-        Biome.decorate(this.worldObj, this.rand, new BlockPos(x, 0, z));
-        if (TerrainGen.populate(this, worldObj, rand, chunkX, chunkZ, flag, PopulateChunkEvent.Populate.EventType.ANIMALS)) {
-            WorldEntitySpawner.performWorldGenSpawning(this.worldObj, Biome, x + 8, z + 8, 16, 16, this.rand);
+        Biome.decorate(w, this.rand, new BlockPos(x, 0, z));
+        if (TerrainGen.populate(this, w, rand, chunkX, chunkZ, flag, PopulateChunkEvent.Populate.EventType.ANIMALS)) {
+            WorldEntitySpawner.performWorldGenSpawning(w, Biome, x + 8, z + 8, 16, 16, this.rand);
         }
         x += 8;
         z += 8;
 
-        doGen = TerrainGen.populate(this, worldObj, rand, chunkX, chunkZ, flag, PopulateChunkEvent.Populate.EventType.ICE);
+        doGen = TerrainGen.populate(this, w, rand, chunkX, chunkZ, flag, PopulateChunkEvent.Populate.EventType.ICE);
         for (k1 = 0; doGen && k1 < 16; ++k1) {
             for (l1 = 0; l1 < 16; ++l1) {
-                i2 = this.worldObj.getPrecipitationHeight(new BlockPos(x + k1, 0, z + l1)).getY();
+                i2 = w.getPrecipitationHeight(new BlockPos(x + k1, 0, z + l1)).getY();
 
-                if (this.worldObj.canBlockFreeze(new BlockPos(k1 + x, i2 - 1, l1 + z), false)) {
-                    this.worldObj.setBlockState(new BlockPos(k1 + x, i2 - 1, l1 + z), Blocks.ICE.getDefaultState(), 2);
+                if (w.canBlockFreeze(new BlockPos(k1 + x, i2 - 1, l1 + z), false)) {
+                    w.setBlockState(new BlockPos(k1 + x, i2 - 1, l1 + z), Blocks.ICE.getDefaultState(), 2);
                 }
 
-                if (this.worldObj.canSnowAt(new BlockPos(k1 + x, i2, l1 + z), true)) {
-                    this.worldObj.setBlockState(new BlockPos(k1 + x, i2, l1 + z), Blocks.SNOW_LAYER.getDefaultState(), 2);
+                if (w.canSnowAt(new BlockPos(k1 + x, i2, l1 + z), true)) {
+                    w.setBlockState(new BlockPos(k1 + x, i2, l1 + z), Blocks.SNOW_LAYER.getDefaultState(), 2);
                 }
             }
         }
 
-        MinecraftForge.EVENT_BUS.post(new PopulateChunkEvent.Post(this, worldObj, rand, chunkX, chunkZ, flag));
+        MinecraftForge.EVENT_BUS.post(new PopulateChunkEvent.Post(this, w, rand, chunkX, chunkZ, flag));
 
         BlockFalling.fallInstantly = false;
 
+    }
+
+    private World wrapUpsidedownWorld() {
+        World w;
+        w = new World(worldObj.getSaveHandler(), worldObj.getWorldInfo(), worldObj.provider, worldObj.profiler, worldObj.isRemote) {
+            @Override
+            protected IChunkProvider createChunkProvider() {
+                return worldObj.getChunkProvider();
+            }
+
+            @Override
+            public int getHeight(int x, int z) {
+                // This needs to be done differently
+                Chunk chunk = worldObj.getChunkFromChunkCoords(x >> 4, z >> 4);
+                int y = 0;
+                for (y = 0 ; y < 256 ; y++) {
+                    IBlockState blockState = chunk.getBlockState(x & 15, y, z & 15);
+                    if (blockState.getBlock() != Blocks.AIR) {
+                        return y;
+                    }
+                }
+
+                return worldObj.getHeight(x, z);
+            }
+
+            @Override
+            public Biome getBiome(BlockPos pos) {
+                return worldObj.getBiome(pos);
+            }
+
+            @Override
+            public Biome getBiomeForCoordsBody(BlockPos pos) {
+                return worldObj.getBiomeForCoordsBody(pos);
+            }
+
+            @Override
+            public Chunk getChunkFromBlockCoords(BlockPos pos) {
+                return worldObj.getChunkFromBlockCoords(pos);
+            }
+
+            @Override
+            public Chunk getChunkFromChunkCoords(int chunkX, int chunkZ) {
+                return worldObj.getChunkFromChunkCoords(chunkX, chunkZ);
+            }
+
+            @Override
+            public BlockPos getTopSolidOrLiquidBlock(BlockPos pos) {
+                BlockPos p = worldObj.getTopSolidOrLiquidBlock(pos);
+                return new BlockPos(p.getX(), 255-p.getY(), p.getZ());
+            }
+
+            @Override
+            protected boolean isChunkLoaded(int x, int z, boolean allowEmpty) {
+                return ((ChunkProviderServer) worldObj.getChunkProvider()).chunkExists(x, z);
+            }
+
+            @Override
+            public boolean setBlockState(BlockPos pos, IBlockState newState, int flags) {
+                if (newState.getBlock() instanceof BlockLiquid) {
+                    return true;
+                }
+                if (newState.getBlock() instanceof BlockFalling) {
+                    return true;
+                }
+                return worldObj.setBlockState(new BlockPos(pos.getX(), 255-pos.getY(), pos.getZ()), newState, flags);
+            }
+
+            @Override
+            public IBlockState getBlockState(BlockPos pos) {
+                return worldObj.getBlockState(new BlockPos(pos.getX(), 255-pos.getY(), pos.getZ()));
+            }
+        };
+        return w;
     }
 
     @Override
