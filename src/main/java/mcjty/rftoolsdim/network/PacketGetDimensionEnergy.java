@@ -36,11 +36,11 @@ public class PacketGetDimensionEnergy implements IMessage {
         }
 
         private void handle(PacketGetDimensionEnergy message, MessageContext ctx) {
-            World world = ctx.getServerHandler().playerEntity.getEntityWorld();
+            World world = ctx.getServerHandler().player.getEntityWorld();
             DimensionStorage dimensionStorage = DimensionStorage.getDimensionStorage(world);
 
             PacketReturnEnergy returnMessage = new PacketReturnEnergy(message.dimension, dimensionStorage.getEnergyLevel(message.dimension));
-            RFToolsDimMessages.INSTANCE.sendTo(returnMessage, ctx.getServerHandler().playerEntity);
+            RFToolsDimMessages.INSTANCE.sendTo(returnMessage, ctx.getServerHandler().player);
         }
 
     }

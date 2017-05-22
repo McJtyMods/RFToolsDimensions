@@ -64,7 +64,7 @@ public class ForgeEventHandlers {
         Logging.log("SMP: Sync dimensions to client");
         DimensionSyncPacket packet = new DimensionSyncPacket();
 
-        EntityPlayer player = ((NetHandlerPlayServer) event.getHandler()).playerEntity;
+        EntityPlayer player = ((NetHandlerPlayServer) event.getHandler()).player;
         RfToolsDimensionManager manager = RfToolsDimensionManager.getDimensionManager(player.getEntityWorld());
         for (Integer id : manager.getDimensions().keySet()) {
             Logging.log("Sending over dimension " + id + " to the client");
