@@ -301,10 +301,10 @@ public class DimletWorkbenchTileEntity extends GenericEnergyReceiverTileEntity i
             if (result > 0) {
                 ItemStackTools.setStackSize(stack, result);
                 if (playerMP.inventory.addItemStackToInventory(stack)) {
-                    inventoryHelper.setInventorySlotContents(64, slot, null);
+                    inventoryHelper.setInventorySlotContents(64, slot, ItemStackTools.getEmptyStack());
                 }
             } else {
-                inventoryHelper.setInventorySlotContents(64, slot, null);
+                inventoryHelper.setInventorySlotContents(64, slot, ItemStackTools.getEmptyStack());
             }
         }
     }
