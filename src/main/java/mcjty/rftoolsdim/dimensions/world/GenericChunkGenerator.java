@@ -2,6 +2,7 @@ package mcjty.rftoolsdim.dimensions.world;
 
 import mcjty.lib.compat.CompatChunkGenerator;
 import mcjty.lib.compat.CompatMapGenStructure;
+import mcjty.rftoolsdim.blocks.ModBlocks;
 import mcjty.rftoolsdim.config.WorldgenConfiguration;
 import mcjty.rftoolsdim.dimensions.DimensionInformation;
 import mcjty.rftoolsdim.dimensions.RfToolsDimensionManager;
@@ -11,9 +12,7 @@ import mcjty.rftoolsdim.dimensions.types.StructureType;
 import mcjty.rftoolsdim.dimensions.types.TerrainType;
 import mcjty.rftoolsdim.dimensions.world.mapgen.*;
 import mcjty.rftoolsdim.dimensions.world.terrain.*;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockFalling;
-import net.minecraft.block.BlockLiquid;
+import net.minecraft.block.*;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -370,37 +369,53 @@ public class GenericChunkGenerator implements CompatChunkGenerator {
         }
 
         chunk.generateSkylightMap();
+//        if (dimensionInformation.getTerrainType() == TerrainType.TERRAIN_UPSIDEDOWN) {
+//            ExtendedBlockStorage[] storage = chunk.getBlockStorageArray();
+//            for (int x = 0 ; x < 16 ; x++) {
+//                for (int z = 0 ; z < 16 ; z++) {
+//                    if (worldObj.provider.hasSkyLight()) {
+//                    }
+//                }
+//            }
+//        }
 
         return chunk;
-    }
-
-    private static boolean isDangerous(char c) {
-        IBlockState iblockstate = Block.BLOCK_STATE_IDS.getByValue(c);
-        if (iblockstate.getBlock() instanceof BlockLiquid || iblockstate.getBlock() instanceof BlockFalling) {
-            return true;
-        }
-        return false;
     }
 
     private static void reverse(ChunkPrimer primer) {
         for (int x = 0; x < 16; x++) {
             for (int z = 0; z < 16; z++) {
                 int idx = (x << 12 | z << 8);
-                for (int y = 0; y < 128; y++) {
+                for (int y = 0; y < 64; y++) {
                     char c = primer.data[idx + y];
-                    if (isDangerous(c)) {
-                        c = 0;
-                    }
-                    char c2 = primer.data[idx + 255 - y];
-                    if (isDangerous(c2)) {
-                        c2 = 0;
-                    }
+                    c = findSuitableReplacement(c);
+                    char c2 = primer.data[idx + 127 - y];
+                    c2 = findSuitableReplacement(c2);
                     primer.data[idx + y] = c2;
-                    primer.data[idx + 255 - y] = c;
+                    primer.data[idx + 127 - y] = c;
                 }
-
+                for (int y = 128 ; y < 255 ; y++) {
+                    primer.data[idx + y] = 0;
+                }
             }
         }
+    }
+
+    private static char findSuitableReplacement(char c) {
+        IBlockState iblockstate = Block.BLOCK_STATE_IDS.getByValue(c);
+        Block block = iblockstate.getBlock();
+        if (block instanceof BlockLiquid) {
+            c = (char) Block.BLOCK_STATE_IDS.get(ModBlocks.fakeWaterBlock.getDefaultState());
+        } else if (block instanceof BlockGravel) {
+            c = (char) Block.BLOCK_STATE_IDS.get(ModBlocks.fakeGravelBlock.getDefaultState());
+        } else if (block instanceof BlockSand) {
+            c = (char) Block.BLOCK_STATE_IDS.get(ModBlocks.fakeSandBlock.getDefaultState());
+        } else if (block == Blocks.BEDROCK) {
+            c = (char) Block.BLOCK_STATE_IDS.get(Blocks.STONE.getDefaultState());
+        } else if (block instanceof BlockFalling) {
+            c = 0;
+        }
+        return c;
     }
 
     @Override
@@ -547,10 +562,10 @@ public class GenericChunkGenerator implements CompatChunkGenerator {
                 // This needs to be done differently
                 Chunk chunk = worldObj.getChunkFromChunkCoords(x >> 4, z >> 4);
                 int y = 0;
-                for (y = 0 ; y < 256 ; y++) {
+                for (y = 0; y < 128; y++) {
                     IBlockState blockState = chunk.getBlockState(x & 15, y, z & 15);
                     if (blockState.getBlock() != Blocks.AIR) {
-                        return y;
+                        return 127 - y;
                     }
                 }
 
@@ -580,7 +595,8 @@ public class GenericChunkGenerator implements CompatChunkGenerator {
             @Override
             public BlockPos getTopSolidOrLiquidBlock(BlockPos pos) {
                 BlockPos p = worldObj.getTopSolidOrLiquidBlock(pos);
-                return new BlockPos(p.getX(), 255-p.getY(), p.getZ());
+//                return new BlockPos(p.getX(), 255-p.getY(), p.getZ());
+                return new BlockPos(p.getX(), getHeight(p.getX(), p.getZ()), p.getZ());
             }
 
             @Override
@@ -596,12 +612,20 @@ public class GenericChunkGenerator implements CompatChunkGenerator {
                 if (newState.getBlock() instanceof BlockFalling) {
                     return true;
                 }
-                return worldObj.setBlockState(new BlockPos(pos.getX(), 255-pos.getY(), pos.getZ()), newState, flags);
+                if (pos.getY() >= 128) {
+                    return worldObj.setBlockState(pos, newState, flags);
+                } else {
+                    return worldObj.setBlockState(new BlockPos(pos.getX(), 127 - pos.getY(), pos.getZ()), newState, flags);
+                }
             }
 
             @Override
             public IBlockState getBlockState(BlockPos pos) {
-                return worldObj.getBlockState(new BlockPos(pos.getX(), 255-pos.getY(), pos.getZ()));
+                if (pos.getY() >= 128) {
+                    return worldObj.getBlockState(pos);
+                } else {
+                    return worldObj.getBlockState(new BlockPos(pos.getX(), 127 - pos.getY(), pos.getZ()));
+                }
             }
         };
         return w;

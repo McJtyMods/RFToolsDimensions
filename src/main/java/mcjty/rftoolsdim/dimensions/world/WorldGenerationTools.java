@@ -8,6 +8,18 @@ import net.minecraft.world.World;
 
 public class WorldGenerationTools {
 
+    public static int findUpsideDownEmptySpot(World world, int x, int z) {
+        for (int y = 90 ; y > 0 ; y--) {
+            if (world.isAirBlock(new BlockPos(x, y, z)) && world.isAirBlock(new BlockPos(x, y+1, z)) && world.isAirBlock(new BlockPos(x, y+2, z))
+                    && world.isAirBlock(new BlockPos(x, y+3, z)) && world.isAirBlock(new BlockPos(x, y+4, z))) {
+                return y;
+            }
+        }
+        return -1;
+    }
+
+
+
     public static int findSuitableEmptySpot(World world, int x, int z) {
         int y = world.getTopSolidOrLiquidBlock(new BlockPos(x, 0, z)).getY();
         if (y == -1) {

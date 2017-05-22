@@ -2,6 +2,7 @@ package mcjty.rftoolsdim.dimensions.world.terrain;
 
 import mcjty.lib.tools.MathTools;
 import mcjty.lib.varia.Logging;
+import mcjty.rftoolsdim.blocks.ModBlocks;
 import mcjty.rftoolsdim.dimensions.types.FeatureType;
 import mcjty.rftoolsdim.dimensions.types.TerrainType;
 import mcjty.rftoolsdim.dimensions.world.GenericChunkGenerator;
@@ -233,16 +234,11 @@ public class UpsideDownTerrainGenerator implements BaseTerrainGenerator {
         }
     }
 
-    public static int reverse(int index) {
-        return index;
-//        int y = index & 255;
-//        return (index & ~255) | (255-y);
-    }
-
     @Override
     public void generate(int chunkX, int chunkZ, ChunkPrimer primer) {
         IBlockState baseBlock = provider.dimensionInformation.getBaseBlockForTerrain();
 //        byte baseMeta = provider.dimensionInformation.getBaseBlockForTerrain().getMeta();
+        Block baseLiquid = ModBlocks.fakeWaterBlock;
 
         generateHeightmap(chunkX * 4, 0, chunkZ * 4);
 
@@ -284,13 +280,15 @@ public class UpsideDownTerrainGenerator implements BaseTerrainGenerator {
                             for (int z = 0; z < 4; ++z) {
                                 index += maxheight;
                                 if ((d15 += d16) > 0.0D) {
-                                    BaseTerrainGenerator.setBlockState(primer, reverse(index), baseBlock);
+                                    BaseTerrainGenerator.setBlockState(primer, index, baseBlock);
                                     // @todo find a way to support this 127 feature
 //                                    if (baseMeta == 127) {
 //                                        realMeta = (byte)((height/2 + x/2 + z/2) & 0xf);
 //                                    } else {
 //                                        realMeta = baseMeta;
 //                                    }
+                                } else if (height < waterLevel) {
+                                    BaseTerrainGenerator.setBlockState(primer, index, baseLiquid.getDefaultState());
                                 }
                             }
 

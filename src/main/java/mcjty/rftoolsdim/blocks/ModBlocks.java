@@ -5,7 +5,6 @@ import mcjty.rftoolsdim.blocks.builder.DimensionBuilderBlock;
 import mcjty.rftoolsdim.blocks.editor.DimensionEditorBlock;
 import mcjty.rftoolsdim.blocks.energyextractor.EnergyExtractorBlock;
 import mcjty.rftoolsdim.blocks.enscriber.DimensionEnscriberBlock;
-import mcjty.rftoolsdim.blocks.painter.EssencePainterBlock;
 import mcjty.rftoolsdim.blocks.probe.ActivityProbeBlock;
 import mcjty.rftoolsdim.blocks.shards.*;
 import mcjty.rftoolsdim.blocks.workbench.DimletWorkbenchBlock;
@@ -37,6 +36,10 @@ public class ModBlocks {
     public static FeatureAbsorberBlock featureAbsorberBlock;
     public static TimeAbsorberBlock timeAbsorberBlock;
 
+    public static FakeWaterBlock fakeWaterBlock;
+    public static FakeGravelBlock fakeGravelBlock;
+    public static FakeSandBlock fakeSandBlock;
+
     public static void init() {
         dimensionalBlankBlock = new DimensionalBlankBlock();
         dimensionalBlock = new DimensionalBlock();
@@ -60,6 +63,10 @@ public class ModBlocks {
         terrainAbsorberBlock = new TerrainAbsorberBlock();
         featureAbsorberBlock = new FeatureAbsorberBlock();
         timeAbsorberBlock = new TimeAbsorberBlock();
+
+        fakeWaterBlock = new FakeWaterBlock();
+        fakeGravelBlock = new FakeGravelBlock();
+        fakeSandBlock = new FakeSandBlock();
     }
 
     @SideOnly(Side.CLIENT)
@@ -86,5 +93,9 @@ public class ModBlocks {
         terrainAbsorberBlock.initModel();
         featureAbsorberBlock.initModel();
         timeAbsorberBlock.initModel();
+
+        fakeWaterBlock.initModel();
+        fakeGravelBlock.initModel();
+        fakeSandBlock.initModel();
     }
 }

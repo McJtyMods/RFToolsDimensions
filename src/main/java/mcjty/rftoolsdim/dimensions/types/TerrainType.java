@@ -22,7 +22,7 @@ public enum TerrainType {
     TERRAIN_WAVES("Waves", false, true, 1, 0.6f),
     TERRAIN_FILLEDWAVES("FilledWaves", false, true, 1, 1.2f),
     TERRAIN_ROUGH("Rough", false, true, 1, 0.6f),
-    TERRAIN_UPSIDEDOWN("UpsideDown", false, true, 1, 1);
+    TERRAIN_UPSIDEDOWN("UpsideDown", true, true, 1, 1);
 
     private static final Map<String,TerrainType> TERRAIN_TYPE_MAP = new HashMap<>();
 
