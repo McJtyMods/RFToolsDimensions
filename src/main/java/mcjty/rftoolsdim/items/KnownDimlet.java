@@ -96,10 +96,13 @@ public class KnownDimlet extends GenericRFToolsItem {
 
     @SideOnly(Side.CLIENT)
     @Override
-    public void addInformation(ItemStack itemStack, EntityPlayer player, List<String> list, boolean whatIsThis) {
-        super.addInformation(itemStack, player, list, whatIsThis);
+    public void addInformation(ItemStack itemStack, EntityPlayer player, List<String> list, boolean showExtended) {
+        super.addInformation(itemStack, player, list, showExtended);
         DimletKey key = KnownDimletConfiguration.getDimletKey(itemStack);
         Settings settings = KnownDimletConfiguration.getSettings(key);
+        if (showExtended) {
+            list.add(TextFormatting.GOLD + "Key: " + key.getId());
+        }
         if (settings == null) {
             list.add(TextFormatting.WHITE + "Dimlet " + key.getType().dimletType.getName() + "." + key.getId());
             list.add(TextFormatting.RED + "This dimlet is blacklisted!");
