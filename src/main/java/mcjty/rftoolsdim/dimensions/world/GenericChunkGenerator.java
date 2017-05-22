@@ -505,7 +505,7 @@ public class GenericChunkGenerator implements CompatChunkGenerator {
     @Override
     public List<Biome.SpawnListEntry> getPossibleCreatures(EnumCreatureType creatureType, BlockPos pos) {
         List creatures = getDefaultCreatures(creatureType, pos);
-        if (extraSpawns.isEmpty()) {
+        if (extraSpawns.isEmpty() || worldObj == null) {        // null pointer protection here
             return creatures;
         }
 
