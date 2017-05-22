@@ -1,6 +1,8 @@
 package mcjty.rftoolsdim.items;
 
 import cofh.api.energy.IEnergyContainerItem;
+import mcjty.lib.tools.ItemStackTools;
+import mcjty.rftools.items.ItemCapabilityProvider;
 import mcjty.rftoolsdim.config.PowerConfiguration;
 import mcjty.rftoolsdim.dimensions.DimensionTickEvent;
 import net.minecraft.client.renderer.ItemMeshDefinition;
@@ -12,6 +14,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -63,6 +66,19 @@ public class PhasedFieldGeneratorItem extends GenericRFToolsItem implements IEne
         });
     }
 
+
+    @Override
+    public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+        if (ItemStackTools.isEmpty(oldStack) != ItemStackTools.isEmpty(newStack)) {
+            return true;
+        }
+        return oldStack.getItem() != newStack.getItem();
+    }
+
+    @Override
+    public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
+        return new ItemCapabilityProvider(stack, this);
+    }
 
 
 
