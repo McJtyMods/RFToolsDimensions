@@ -1,10 +1,10 @@
 package mcjty.rftoolsdim.dimensions.dimlets;
 
-import mcjty.lib.varia.WeightedRandomSelector;
 import mcjty.rftoolsdim.config.DimletConfiguration;
 import mcjty.rftoolsdim.config.Settings;
 import mcjty.rftoolsdim.dimensions.dimlets.types.DimletType;
 import mcjty.rftoolsdim.dimensions.types.ControllerType;
+import mcjty.rftoolsdim.varia.RarityRandomSelector;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.Biome;
@@ -25,18 +25,18 @@ public class DimletRandomizer {
     public static final int RARITY_6 = 6;
 
     // All dimlet ids in a weighted random selector based on rarity.
-    private static WeightedRandomSelector<Integer,DimletKey> randomDimlets;
-    private static WeightedRandomSelector<Integer,DimletKey> randomUncraftableDimlets;
-    private static WeightedRandomSelector<Integer,DimletKey> randomMaterialDimlets;
-    private static WeightedRandomSelector<Integer,DimletKey> randomLiquidDimlets;
-    private static WeightedRandomSelector<Integer,DimletKey> randomMobDimlets;
-    private static WeightedRandomSelector<Integer,DimletKey> randomStructureDimlets;
-    private static WeightedRandomSelector<Integer,DimletKey> randomEffectDimlets;
-    private static WeightedRandomSelector<Integer,DimletKey> randomFeatureDimlets;
-    private static WeightedRandomSelector<Integer,DimletKey> randomTerrainDimlets;
-    private static WeightedRandomSelector<Integer,DimletKey> randomSkyDimlets;
-    private static WeightedRandomSelector<Integer,DimletKey> randomSkyBodyDimlets;
-    private static WeightedRandomSelector<Integer,DimletKey> randomWeatherDimlets;
+    private static RarityRandomSelector<Integer,DimletKey> randomDimlets;
+    private static RarityRandomSelector<Integer,DimletKey> randomUncraftableDimlets;
+    private static RarityRandomSelector<Integer,DimletKey> randomMaterialDimlets;
+    private static RarityRandomSelector<Integer,DimletKey> randomLiquidDimlets;
+    private static RarityRandomSelector<Integer,DimletKey> randomMobDimlets;
+    private static RarityRandomSelector<Integer,DimletKey> randomStructureDimlets;
+    private static RarityRandomSelector<Integer,DimletKey> randomEffectDimlets;
+    private static RarityRandomSelector<Integer,DimletKey> randomFeatureDimlets;
+    private static RarityRandomSelector<Integer,DimletKey> randomTerrainDimlets;
+    private static RarityRandomSelector<Integer,DimletKey> randomSkyDimlets;
+    private static RarityRandomSelector<Integer,DimletKey> randomSkyBodyDimlets;
+    private static RarityRandomSelector<Integer,DimletKey> randomWeatherDimlets;
 
     public static void init() {
         randomDimlets = null;
@@ -67,10 +67,10 @@ public class DimletRandomizer {
         float rarity5 = DimletConfiguration.rarity5;
         float rarity6 = DimletConfiguration.rarity6;
 
-        randomDimlets = new WeightedRandomSelector<>();
+        randomDimlets = new RarityRandomSelector<>();
         setupRarity(randomDimlets, rarity0, rarity1, rarity2, rarity3, rarity4, rarity5, rarity6);
 
-        randomUncraftableDimlets = new WeightedRandomSelector<>();
+        randomUncraftableDimlets = new RarityRandomSelector<>();
         setupRarity(randomUncraftableDimlets, rarity0, rarity1, rarity2, rarity3, rarity4, rarity5, rarity6);
 
         for (Map.Entry<DimletKey, Settings> entry : knownDimlets.entrySet()) {
@@ -86,66 +86,66 @@ public class DimletRandomizer {
             randomDimlets.addItem(entry.getValue().getRarity(), key);
             if (key.getType() == DimletType.DIMLET_MATERIAL) {
                 if (randomMaterialDimlets == null) {
-                    randomMaterialDimlets = new WeightedRandomSelector<>();
+                    randomMaterialDimlets = new RarityRandomSelector<>();
                     setupRarity(randomMaterialDimlets, rarity0, rarity1, rarity2, rarity3, rarity4, rarity5, rarity6);
                 }
                 randomMaterialDimlets.addItem(entry.getValue().getRarity(), key);
             } else if (key.getType() == DimletType.DIMLET_LIQUID) {
                 if (randomLiquidDimlets == null) {
-                    randomLiquidDimlets = new WeightedRandomSelector<>();
+                    randomLiquidDimlets = new RarityRandomSelector<>();
                     setupRarity(randomLiquidDimlets, rarity0, rarity1, rarity2, rarity3, rarity4, rarity5, rarity6);
                 }
                 randomLiquidDimlets.addItem(entry.getValue().getRarity(), key);
             } else if (key.getType() == DimletType.DIMLET_MOB) {
                 if (randomMobDimlets == null) {
-                    randomMobDimlets = new WeightedRandomSelector<>();
+                    randomMobDimlets = new RarityRandomSelector<>();
                     setupRarity(randomMobDimlets, rarity0, rarity1, rarity2, rarity3, rarity4, rarity5, rarity6);
                 }
                 randomMobDimlets.addItem(entry.getValue().getRarity(), key);
             } else if (key.getType() == DimletType.DIMLET_EFFECT) {
                 if (randomEffectDimlets == null) {
-                    randomEffectDimlets = new WeightedRandomSelector<>();
+                    randomEffectDimlets = new RarityRandomSelector<>();
                     setupRarity(randomEffectDimlets, rarity0, rarity1, rarity2, rarity3, rarity4, rarity5, rarity6);
                 }
                 randomEffectDimlets.addItem(entry.getValue().getRarity(), key);
                 randomUncraftableDimlets.addItem(entry.getValue().getRarity(), key);
             } else if (key.getType() == DimletType.DIMLET_FEATURE) {
                 if (randomFeatureDimlets == null) {
-                    randomFeatureDimlets = new WeightedRandomSelector<>();
+                    randomFeatureDimlets = new RarityRandomSelector<>();
                     setupRarity(randomFeatureDimlets, rarity0, rarity1, rarity2, rarity3, rarity4, rarity5, rarity6);
                 }
                 randomFeatureDimlets.addItem(entry.getValue().getRarity(), key);
                 randomUncraftableDimlets.addItem(entry.getValue().getRarity(), key);
             } else if (key.getType() == DimletType.DIMLET_STRUCTURE) {
                 if (randomStructureDimlets == null) {
-                    randomStructureDimlets = new WeightedRandomSelector<>();
+                    randomStructureDimlets = new RarityRandomSelector<>();
                     setupRarity(randomStructureDimlets, rarity0, rarity1, rarity2, rarity3, rarity4, rarity5, rarity6);
                 }
                 randomStructureDimlets.addItem(entry.getValue().getRarity(), key);
                 randomUncraftableDimlets.addItem(entry.getValue().getRarity(), key);
             } else if (key.getType() == DimletType.DIMLET_TERRAIN) {
                 if (randomTerrainDimlets == null) {
-                    randomTerrainDimlets = new WeightedRandomSelector<>();
+                    randomTerrainDimlets = new RarityRandomSelector<>();
                     setupRarity(randomTerrainDimlets, rarity0, rarity1, rarity2, rarity3, rarity4, rarity5, rarity6);
                 }
                 randomTerrainDimlets.addItem(entry.getValue().getRarity(), key);
                 randomUncraftableDimlets.addItem(entry.getValue().getRarity(), key);
             } else if (key.getType() == DimletType.DIMLET_WEATHER) {
                 if (randomWeatherDimlets == null) {
-                    randomWeatherDimlets = new WeightedRandomSelector<>();
+                    randomWeatherDimlets = new RarityRandomSelector<>();
                     setupRarity(randomWeatherDimlets, rarity0, rarity1, rarity2, rarity3, rarity4, rarity5, rarity6);
                 }
                 randomWeatherDimlets.addItem(entry.getValue().getRarity(), key);
                 randomUncraftableDimlets.addItem(entry.getValue().getRarity(), key);
             } else if (key.getType() == DimletType.DIMLET_SKY) {
                 if (randomSkyDimlets == null) {
-                    randomSkyDimlets = new WeightedRandomSelector<>();
+                    randomSkyDimlets = new RarityRandomSelector<>();
                     setupRarity(randomSkyDimlets, rarity0, rarity1, rarity2, rarity3, rarity4, rarity5, rarity6);
                 }
                 randomSkyDimlets.addItem(entry.getValue().getRarity(), key);
                 if (SkyRegistry.isSkyBody(key)) {
                     if (randomSkyBodyDimlets == null) {
-                        randomSkyBodyDimlets = new WeightedRandomSelector<>();
+                        randomSkyBodyDimlets = new RarityRandomSelector<>();
                         setupRarity(randomSkyBodyDimlets, rarity0, rarity1, rarity2, rarity3, rarity4, rarity5, rarity6);
                     }
                     randomSkyBodyDimlets.addItem(entry.getValue().getRarity(), key);
@@ -155,7 +155,7 @@ public class DimletRandomizer {
         }
     }
 
-    private static void setupRarity(WeightedRandomSelector<Integer,DimletKey> randomDimlets, float rarity0, float rarity1, float rarity2, float rarity3, float rarity4, float rarity5, float rarity6) {
+    private static void setupRarity(RarityRandomSelector<Integer,DimletKey> randomDimlets, float rarity0, float rarity1, float rarity2, float rarity3, float rarity4, float rarity5, float rarity6) {
         randomDimlets.addRarity(RARITY_0, rarity0);
         randomDimlets.addRarity(RARITY_1, rarity1);
         randomDimlets.addRarity(RARITY_2, rarity2);
@@ -232,22 +232,22 @@ public class DimletRandomizer {
         return randomMobDimlets == null ? null : randomMobDimlets.select(random);
     }
 
-    public static WeightedRandomSelector<Integer, DimletKey> getRandomDimlets() {
+    public static RarityRandomSelector<Integer, DimletKey> getRandomDimlets() {
         setupWeightedRandomList();
         return randomDimlets;
     }
 
-    public static WeightedRandomSelector<Integer, DimletKey> getRandomUncraftableDimlets() {
+    public static RarityRandomSelector<Integer, DimletKey> getRandomUncraftableDimlets() {
         setupWeightedRandomList();
         return randomUncraftableDimlets;
     }
 
-    private static WeightedRandomSelector<Integer, ItemStack> dimletPartDistribution;
+    private static RarityRandomSelector<Integer, ItemStack> dimletPartDistribution;
 
     // Get a random part item
     public static ItemStack getRandomPart(Random random) {
         if (dimletPartDistribution == null) {
-            dimletPartDistribution = new WeightedRandomSelector<>();
+            dimletPartDistribution = new RarityRandomSelector<>();
             dimletPartDistribution.addRarity(RARITY_0, DimletConfiguration.rarity0);
             dimletPartDistribution.addRarity(RARITY_1, DimletConfiguration.rarity1);
             dimletPartDistribution.addRarity(RARITY_2, DimletConfiguration.rarity2);

@@ -2,7 +2,6 @@ package mcjty.rftoolsdim.dimensions.world;
 
 import mcjty.lib.tools.WorldTools;
 import mcjty.lib.varia.Logging;
-import mcjty.lib.varia.WeightedRandomSelector;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.blocks.ModBlocks;
 import mcjty.rftoolsdim.config.WorldgenConfiguration;
@@ -15,6 +14,7 @@ import mcjty.rftoolsdim.dimensions.dimlets.types.Patreons;
 import mcjty.rftoolsdim.dimensions.types.FeatureType;
 import mcjty.rftoolsdim.dimensions.types.TerrainType;
 import mcjty.rftoolsdim.items.ModItems;
+import mcjty.rftoolsdim.varia.RarityRandomSelector;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItemFrame;
@@ -472,7 +472,7 @@ public class GenericWorldGenerator implements IWorldGenerator {
 
         world.setBlockState(new BlockPos(midx + 2, starty + 1, midz - 2), Blocks.CHEST.getDefaultState(), 2);
 
-        WeightedRandomSelector.Distribution<Integer> bestDistribution = DimletRandomizer.getRandomDimlets().createDistribution(0.2f);
+        RarityRandomSelector.Distribution<Integer> bestDistribution = DimletRandomizer.getRandomDimlets().createDistribution(0.2f);
 
         TileEntityChest chest = (TileEntityChest) world.getTileEntity(new BlockPos(midx+2, starty+1, midz-2));
         for (int i = 0 ; i < random.nextInt(4)+3 ; i++) {
@@ -489,7 +489,8 @@ public class GenericWorldGenerator implements IWorldGenerator {
 
         // Always generate a few cosmetic dimlets
         for (int i = 0; i < WorldgenConfiguration.uncraftableDimletsInRFToolsDungeons; i++) {
-            DimletKey key = DimletRandomizer.getRandomUncraftableDimlets().select(bestDistribution, random);
+            RarityRandomSelector<Integer, DimletKey> dimlets = DimletRandomizer.getRandomUncraftableDimlets();
+            DimletKey key = dimlets.select(bestDistribution, random);
             ItemStack stack = KnownDimletConfiguration.getDimletStack(key);
             chest.setInventorySlotContents(random.nextInt(chest.getSizeInventory()), stack);
         }
