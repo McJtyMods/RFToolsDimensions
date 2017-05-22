@@ -248,19 +248,21 @@ public class KnownDimletConfiguration {
 
         for (IBlockState state : block.getBlockState().getValidStates()) {
             int meta = state.getBlock().getMetaFromState(state);
+            ItemStack stack = new ItemStack(state.getBlock(), 1, state.getBlock().getMetaFromState(state));
+            if (stack.getItem() != null) {      // Protection
+                List<IProperty<?>> propertyNames = new ArrayList<>(CompatBlock.getPropertyKeys(state));
+                propertyNames.sort((o1, o2) -> o1.getName().compareTo(o2.getName()));
 
-            List<IProperty<?>> propertyNames = new ArrayList<>(CompatBlock.getPropertyKeys(state));
-            propertyNames.sort((o1, o2) -> o1.getName().compareTo(o2.getName()));
-
-            ImmutableMap<IProperty<?>, Comparable<?>> properties = state.getProperties();
-            Map<String, String> props = new HashMap<>();
-            for (Map.Entry<IProperty<?>, Comparable<?>> entry : properties.entrySet()) {
-                props.put(entry.getKey().getName(), entry.getValue().toString());
-            }
-            DimletKey key = new DimletKey(DimletType.DIMLET_MATERIAL, block.getRegistryName() + "@" + meta);
-            Settings settings = DimletRules.getSettings(key, mod, features, props);
-            if (!settings.isBlacklisted()) {
-                knownDimlets.put(key, settings);
+                ImmutableMap<IProperty<?>, Comparable<?>> properties = state.getProperties();
+                Map<String, String> props = new HashMap<>();
+                for (Map.Entry<IProperty<?>, Comparable<?>> entry : properties.entrySet()) {
+                    props.put(entry.getKey().getName(), entry.getValue().toString());
+                }
+                DimletKey key = new DimletKey(DimletType.DIMLET_MATERIAL, block.getRegistryName() + "@" + meta);
+                Settings settings = DimletRules.getSettings(key, mod, features, props);
+                if (!settings.isBlacklisted()) {
+                    knownDimlets.put(key, settings);
+                }
             }
         }
     }
