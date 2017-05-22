@@ -240,7 +240,7 @@
     "filter": {
       "type": "material",
       "mod": "biomesoplenty",
-      "name": [ "ash_block", "stone", "mud", "sand", "dirt", "ash_stone", "crag_rock", "dried_dirt", "hard_dirt", "hard_ice", "hard_sand", "log_0", "log_1", "log_2", "log_3", "planks_0" ]
+      "name": [ "ash_block", "stone", "mud", "dirt", "ash_stone", "crag_rock", "dried_dirt", "hard_dirt", "hard_ice", "hard_sand", "log_0", "log_1", "log_2", "log_3", "planks_0" ]
     },
     "settings": {
       "rarity": 2,
@@ -249,6 +249,21 @@
       "ticks": 10,
       "worldgen": true,
       "dimlet": true
+    }
+  },
+  {
+    "filter": {
+      "type": "material",
+      "mod": "biomesoplenty",
+      "name": "sand"
+    },
+    "settings": {
+      "rarity": 2,
+      "create": 100,
+      "maintain": 30,
+      "ticks": 10,
+      "worldgen": false,
+      "dimlet": false
     }
   },
   {
