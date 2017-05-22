@@ -102,6 +102,9 @@ public class RarityRandomSelector<K,E> {
             }
         }
         List<E> list = items.get(key);
+        if (list == null) {
+            return null;
+        }
         return list.get(random.nextInt(list.size()));
     }
 

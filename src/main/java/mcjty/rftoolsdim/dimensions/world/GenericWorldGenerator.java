@@ -482,8 +482,10 @@ public class GenericWorldGenerator implements IWorldGenerator {
         if (WorldgenConfiguration.enableDimletsInRFToolsDungeons > 0) {
             for (int i = 0; i < random.nextInt(WorldgenConfiguration.enableDimletsInRFToolsDungeons); i++) {
                 DimletKey key = DimletRandomizer.getRandomDimlets().select(bestDistribution, random);
-                ItemStack stack = KnownDimletConfiguration.getDimletStack(key);
-                chest.setInventorySlotContents(random.nextInt(chest.getSizeInventory()), stack);
+                if (key != null) {
+                    ItemStack stack = KnownDimletConfiguration.getDimletStack(key);
+                    chest.setInventorySlotContents(random.nextInt(chest.getSizeInventory()), stack);
+                }
             }
         }
 
@@ -491,8 +493,10 @@ public class GenericWorldGenerator implements IWorldGenerator {
         for (int i = 0; i < WorldgenConfiguration.uncraftableDimletsInRFToolsDungeons; i++) {
             RarityRandomSelector<Integer, DimletKey> dimlets = DimletRandomizer.getRandomUncraftableDimlets();
             DimletKey key = dimlets.select(bestDistribution, random);
-            ItemStack stack = KnownDimletConfiguration.getDimletStack(key);
-            chest.setInventorySlotContents(random.nextInt(chest.getSizeInventory()), stack);
+            if (key != null) {
+                ItemStack stack = KnownDimletConfiguration.getDimletStack(key);
+                chest.setInventorySlotContents(random.nextInt(chest.getSizeInventory()), stack);
+            }
         }
 
         for (int i = 0 ; i < random.nextInt(2) ; i++) {
@@ -505,11 +509,17 @@ public class GenericWorldGenerator implements IWorldGenerator {
 
         if (WorldgenConfiguration.enableDimletsInRFToolsFrames) {
             DimletKey rd1 = DimletRandomizer.getRandomDimlets().select(bestDistribution, random);
-            frame1.setDisplayedItem(KnownDimletConfiguration.getDimletStack(rd1));
+            if (rd1 != null) {
+                frame1.setDisplayedItem(KnownDimletConfiguration.getDimletStack(rd1));
+            }
             DimletKey rd2 = DimletRandomizer.getRandomDimlets().select(bestDistribution, random);
-            frame2.setDisplayedItem(KnownDimletConfiguration.getDimletStack(rd2));
+            if (rd2 != null) {
+                frame2.setDisplayedItem(KnownDimletConfiguration.getDimletStack(rd2));
+            }
             DimletKey rd3 = DimletRandomizer.getRandomDimlets().select(bestDistribution, random);
-            frame3.setDisplayedItem(KnownDimletConfiguration.getDimletStack(rd3));
+            if (rd3 != null) {
+                frame3.setDisplayedItem(KnownDimletConfiguration.getDimletStack(rd3));
+            }
         } else {
             frame1.setDisplayedItem(DimletRandomizer.getRandomPart(random));
             frame2.setDisplayedItem(DimletRandomizer.getRandomPart(random));
