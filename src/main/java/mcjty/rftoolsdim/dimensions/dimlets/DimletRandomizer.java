@@ -115,6 +115,7 @@ public class DimletRandomizer {
                     setupRarity(randomFeatureDimlets, rarity0, rarity1, rarity2, rarity3, rarity4, rarity5, rarity6);
                 }
                 randomFeatureDimlets.addItem(entry.getValue().getRarity(), key);
+                randomUncraftableDimlets.addItem(entry.getValue().getRarity(), key);
             } else if (key.getType() == DimletType.DIMLET_STRUCTURE) {
                 if (randomStructureDimlets == null) {
                     randomStructureDimlets = new WeightedRandomSelector<>();
