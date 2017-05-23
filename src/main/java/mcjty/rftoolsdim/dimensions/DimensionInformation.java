@@ -70,6 +70,7 @@ public class DimensionInformation implements IDimensionInformation {
     private IBlockState[] pyramidBlocks = new IBlockState[] { Blocks.STONE.getDefaultState() };
     private IBlockState[] sphereBlocks = new IBlockState[] { Blocks.STONE.getDefaultState() };
     private IBlockState[] hugeSphereBlocks = new IBlockState[] { Blocks.STONE.getDefaultState() };
+    private IBlockState[] scatteredSphereBlocks = new IBlockState[] { Blocks.STONE.getDefaultState() };
     private IBlockState[] liquidSphereBlocks = new IBlockState[] { Blocks.STONE.getDefaultState() };
     private Block[] liquidSphereFluids = new Block[] { Blocks.WATER };
     private IBlockState[] hugeLiquidSphereBlocks = new IBlockState[] { Blocks.STONE.getDefaultState() };
@@ -326,6 +327,7 @@ public class DimensionInformation implements IDimensionInformation {
         }
 
         hugeSphereBlocks = readBlockArrayFromNBT(tagCompound, "hugeSphereBlocks");
+        scatteredSphereBlocks = readBlockArrayFromNBT(tagCompound, "scatteredSphereBlocks");
 
         extraOregen = readBlockArrayFromNBT(tagCompound, "extraOregen");
         fluidsForLakes = readFluidsFromNBT(tagCompound, "lakeFluids");
@@ -508,6 +510,7 @@ public class DimensionInformation implements IDimensionInformation {
         }
 
         writeBlocksToNBT(tagCompound, hugeSphereBlocks, "hugeSphereBlocks");
+        writeBlocksToNBT(tagCompound, scatteredSphereBlocks, "scatteredSphereBlocks");
         writeBlocksToNBT(tagCompound, hugeLiquidSphereBlocks, "hugeLiquidSphereBlocks");
         writeFluidsToNBT(tagCompound, hugeLiquidSphereFluids, "hugeLiquidSphereFluids");
 
@@ -689,6 +692,13 @@ public class DimensionInformation implements IDimensionInformation {
                 }
             }
         }
+        if (featureTypes.contains(FeatureType.FEATURE_SCATTEREDORBS)) {
+            for (IBlockState block : scatteredSphereBlocks) {
+                if (block != null) {
+                    logDebug(player, "        Scattered Orb blocks: " + getDisplayName(block));
+                }
+            }
+        }
         if (featureTypes.contains(FeatureType.FEATURE_LIQUIDORBS)) {
             for (IBlockState block : liquidSphereBlocks) {
                 if (block != null) {
@@ -847,6 +857,7 @@ public class DimensionInformation implements IDimensionInformation {
         writeBlockArrayToBuf(buf, pyramidBlocks);
         writeBlockArrayToBuf(buf, sphereBlocks);
         writeBlockArrayToBuf(buf, hugeSphereBlocks);
+        writeBlockArrayToBuf(buf, scatteredSphereBlocks);
         writeBlockArrayToBuf(buf, liquidSphereBlocks);
         writeFluidArrayToBuf(buf, liquidSphereFluids);
         writeBlockArrayToBuf(buf, hugeLiquidSphereBlocks);
@@ -963,6 +974,7 @@ public class DimensionInformation implements IDimensionInformation {
         pyramidBlocks = readBlockArrayFromBuf(buf);
         sphereBlocks = readBlockArrayFromBuf(buf);
         hugeSphereBlocks = readBlockArrayFromBuf(buf);
+        scatteredSphereBlocks = readBlockArrayFromBuf(buf);
         liquidSphereBlocks = readBlockArrayFromBuf(buf);
         liquidSphereFluids = readFluidArrayFromBuf(buf);
         hugeLiquidSphereBlocks = readBlockArrayFromBuf(buf);
@@ -1330,6 +1342,14 @@ public class DimensionInformation implements IDimensionInformation {
 
     public void setHugeSphereBlocks(IBlockState[] hugeSphereBlocks) {
         this.hugeSphereBlocks = hugeSphereBlocks;
+    }
+
+    public void setScatteredSphereBlocks(IBlockState[] scatteredSphereBlocks) {
+        this.scatteredSphereBlocks = scatteredSphereBlocks;
+    }
+
+    public IBlockState[] getScatteredSphereBlocks() {
+        return scatteredSphereBlocks;
     }
 
     public IBlockState[] getLiquidSphereBlocks() {

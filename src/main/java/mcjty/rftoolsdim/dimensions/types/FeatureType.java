@@ -26,7 +26,8 @@ public enum FeatureType {
     FEATURE_NODIMLETBUILDINGS("NoDimletBuildings", null, null, 0, 0),
     FEATURE_PYRAMIDS("Pyramids", new TSet(TERRAIN_AMPLIFIED, TERRAIN_CAVERN, TERRAIN_FLOODED_CAVERN, TERRAIN_FLAT, TERRAIN_CHAOTIC, TERRAIN_ISLAND, TERRAIN_ISLANDS, TERRAIN_LOW_CAVERN, TERRAIN_NEARLANDS, TERRAIN_NORMAL, TERRAIN_PLATEAUS, TERRAIN_SOLID, TERRAIN_WAVES, TERRAIN_FILLEDWAVES, TERRAIN_ROUGH),
             new MMap(-1, DimletType.DIMLET_MATERIAL), 1, 0),
-    FEATURE_CLEAN("Clean", null, null, 0, 0);
+    FEATURE_CLEAN("Clean", null, null, 0, 0),
+    FEATURE_SCATTEREDORBS("ScatteredOrbs", null, new MMap(-1, DimletType.DIMLET_MATERIAL), 1, 0);
 
     private final String id;                    // Unique id to use in dimlets
     private final Set<TerrainType> supportedTerrains;

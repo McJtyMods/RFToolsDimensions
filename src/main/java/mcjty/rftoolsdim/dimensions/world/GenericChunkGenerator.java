@@ -72,6 +72,7 @@ public class GenericChunkGenerator implements CompatChunkGenerator {
     private MapGenPyramids pyramidGenerator = new MapGenPyramids(this);
     private MapGenOrbs sphereGenerator = new MapGenOrbs(this, false);
     private MapGenOrbs hugeSphereGenerator = new MapGenOrbs(this, true);
+    private MapGenScatteredOrbs scatteredSphereGenerator = new MapGenScatteredOrbs(this);
     private MapGenRuinedCities ruinedCitiesGenerator = new MapGenRuinedCities(this);
     private MapGenLiquidOrbs liquidSphereGenerator = new MapGenLiquidOrbs(this, false);
     private MapGenLiquidOrbs hugeLiquidSphereGenerator = new MapGenLiquidOrbs(this, true);
@@ -308,6 +309,9 @@ public class GenericChunkGenerator implements CompatChunkGenerator {
         }
         if (dimensionInformation.hasFeatureType(FeatureType.FEATURE_HUGEORBS)) {
             this.hugeSphereGenerator.generate(this.worldObj, chunkX, chunkZ, chunkprimer);
+        }
+        if (dimensionInformation.hasFeatureType(FeatureType.FEATURE_SCATTEREDORBS)) {
+            this.scatteredSphereGenerator.generate(this.worldObj, chunkX, chunkZ, chunkprimer);
         }
         if (dimensionInformation.hasFeatureType(FeatureType.FEATURE_LIQUIDORBS)) {
             this.liquidSphereGenerator.generate(this.worldObj, chunkX, chunkZ, chunkprimer);
