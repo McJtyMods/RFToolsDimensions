@@ -172,6 +172,20 @@ public class GenericWorldProvider extends CompatWorldProvider implements  /*@tod
 
 
     @Override
+    protected void generateLightBrightnessTable() {
+        getDimensionInformation();
+        if (dimensionInformation != null && dimensionInformation.getTerrainType() == TerrainType.TERRAIN_INVERTIGO) {
+            for (int i = 0; i <= 15; ++i)
+            {
+                float f1 = 1.0F - (float)i / 15.0F;
+                this.lightBrightnessTable[i] = (1.0F - f1) / (f1 * 3.0F + 1.0F) * 1.0F + 1.0F;
+            }
+            return;
+        }
+        super.generateLightBrightnessTable();
+    }
+
+    @Override
     public BiomeProvider getBiomeProvider() {
         if (biomeProvider == null) {
             createBiomeProviderInternal();
