@@ -24,6 +24,7 @@ import mcjty.rftoolsdim.proxy.CommonProxy;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.*;
@@ -57,6 +58,8 @@ public class RFToolsDim implements ModBase {
 
     @Mod.Instance("rftoolsdim")
     public static RFToolsDim instance;
+
+    public static boolean chisel = false;
 
     public static ITeleportationManager teleportationManager;
 
@@ -121,6 +124,7 @@ public class RFToolsDim implements ModBase {
     public void init(FMLInitializationEvent e) {
         this.proxy.init(e);
 
+        chisel = Loader.isModLoaded("chisel");
         channels = NetworkRegistry.INSTANCE.newChannel("RFToolsChannel", DimensionSyncChannelHandler.instance);
 
 //        Achievements.init();

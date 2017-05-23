@@ -7,6 +7,7 @@ import mcjty.lib.tools.EntityTools;
 import mcjty.lib.tools.ItemStackTools;
 import mcjty.lib.varia.Logging;
 import mcjty.rftoolsdim.RFToolsDim;
+import mcjty.rftoolsdim.compat.ChiselCompat;
 import mcjty.rftoolsdim.config.DimletRules;
 import mcjty.rftoolsdim.config.Filter;
 import mcjty.rftoolsdim.config.GeneralConfiguration;
@@ -420,9 +421,9 @@ public class KnownDimletConfiguration {
                     int meta = state.getBlock().getMetaFromState(state);
                     ItemStack stack = new ItemStack(state.getBlock(), 1, meta);
                     String suffix = "";
-                    if ("chisel".equals(modid)) {
+                    if ("chisel".equals(modid) && RFToolsDim.chisel) {
                         // Special case for chisel as it has the same name as the base block for all its variants
-                        suffix = "@" + meta;
+                        suffix = ", " + ChiselCompat.getReadableName(state);
                     }
                     try {
                         return stack.getItem() == null ? "?" : (stack.getDisplayName() + suffix);
