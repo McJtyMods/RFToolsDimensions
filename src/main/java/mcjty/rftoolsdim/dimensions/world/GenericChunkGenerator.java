@@ -222,7 +222,7 @@ public class GenericChunkGenerator implements CompatChunkGenerator {
             case TERRAIN_NORMAL:
                 terrainGenerator = new NormalTerrainGenerator();
                 break;
-            case TERRAIN_UPSIDEDOWN:
+            case TERRAIN_INVERTIGO:
                 terrainGenerator = new UpsideDownTerrainGenerator();
                 break;
             case TERRAIN_ISLAND:
@@ -357,7 +357,7 @@ public class GenericChunkGenerator implements CompatChunkGenerator {
 
 //        this.ruinedCitiesGenerator.generate(this.worldObj, chunkX, chunkZ, ablock, abyte);
 
-        if (dimensionInformation.getTerrainType() == TerrainType.TERRAIN_UPSIDEDOWN) {
+        if (dimensionInformation.getTerrainType() == TerrainType.TERRAIN_INVERTIGO) {
             reverse(chunkprimer);
         }
 
@@ -369,7 +369,7 @@ public class GenericChunkGenerator implements CompatChunkGenerator {
         }
 
         chunk.generateSkylightMap();
-//        if (dimensionInformation.getTerrainType() == TerrainType.TERRAIN_UPSIDEDOWN) {
+//        if (dimensionInformation.getTerrainType() == TerrainType.TERRAIN_INVERTIGO) {
 //            ExtendedBlockStorage[] storage = chunk.getBlockStorageArray();
 //            for (int x = 0 ; x < 16 ; x++) {
 //                for (int z = 0 ; z < 16 ; z++) {
@@ -431,7 +431,7 @@ public class GenericChunkGenerator implements CompatChunkGenerator {
         this.rand.setSeed(chunkX * i1 + chunkZ * j1 ^ w.getSeed());
         boolean flag = false;
 
-        if (dimensionInformation.getTerrainType() == TerrainType.TERRAIN_UPSIDEDOWN) {
+        if (dimensionInformation.getTerrainType() == TerrainType.TERRAIN_INVERTIGO) {
             w = wrapUpsidedownWorld();
         }
 
@@ -474,7 +474,7 @@ public class GenericChunkGenerator implements CompatChunkGenerator {
         int l1;
         int i2;
 
-        if (dimensionInformation.getTerrainType() != TerrainType.TERRAIN_UPSIDEDOWN) {
+        if (dimensionInformation.getTerrainType() != TerrainType.TERRAIN_INVERTIGO) {
             if (dimensionInformation.hasFeatureType(FeatureType.FEATURE_LAKES)) {
                 if (dimensionInformation.getFluidsForLakes().length == 0) {
                     // No specific liquid dimlets specified: we generate default lakes (water and lava were appropriate).

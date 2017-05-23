@@ -13,6 +13,7 @@ import mcjty.rftoolsdim.dimensions.description.WeatherDescriptor;
 import mcjty.rftoolsdim.dimensions.dimlets.types.Patreons;
 import mcjty.rftoolsdim.dimensions.types.ControllerType;
 import mcjty.rftoolsdim.dimensions.types.SkyType;
+import mcjty.rftoolsdim.dimensions.types.TerrainType;
 import mcjty.rftoolsdim.network.PacketGetDimensionEnergy;
 import mcjty.rftoolsdim.network.RFToolsDimMessages;
 import net.minecraft.entity.Entity;
@@ -302,6 +303,16 @@ public class GenericWorldProvider extends CompatWorldProvider implements  /*@tod
     }
 
     private static long lastFogTime = 0;
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public float getCloudHeight() {
+        getDimensionInformation();
+        if (dimensionInformation != null && dimensionInformation.getTerrainType() == TerrainType.TERRAIN_INVERTIGO) {
+            return 5;
+        }
+        return super.getCloudHeight();
+    }
 
     @Override
     @SideOnly(Side.CLIENT)

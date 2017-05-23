@@ -275,7 +275,7 @@ public class GenericWorldGenerator implements IWorldGenerator {
         int starty;
         if (information.getTerrainType() == TerrainType.TERRAIN_SOLID) {
             starty = 64;
-        } else if (information.getTerrainType() == TerrainType.TERRAIN_UPSIDEDOWN) {
+        } else if (information.getTerrainType() == TerrainType.TERRAIN_INVERTIGO) {
             starty = WorldGenerationTools.findUpsideDownEmptySpot(world, midx, midz);
         } else {
             starty = WorldGenerationTools.findSuitableEmptySpot(world, midx, midz);
