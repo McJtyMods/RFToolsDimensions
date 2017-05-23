@@ -423,7 +423,10 @@ public class KnownDimletConfiguration {
                     String suffix = "";
                     if ("chisel".equals(modid) && RFToolsDim.chisel) {
                         // Special case for chisel as it has the same name as the base block for all its variants
-                        suffix = ", " + ChiselCompat.getReadableName(state);
+                        String readableName = ChiselCompat.getReadableName(state);
+                        if (readableName != null) {
+                            suffix = ", " + readableName;
+                        }
                     }
                     try {
                         return stack.getItem() == null ? "?" : (stack.getDisplayName() + suffix);
