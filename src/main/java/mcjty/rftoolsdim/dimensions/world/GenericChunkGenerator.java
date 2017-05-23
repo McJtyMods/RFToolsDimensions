@@ -21,11 +21,10 @@ import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.IAnimals;
 import net.minecraft.init.Biomes;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.IProgressUpdate;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
-import net.minecraft.world.World;
-import net.minecraft.world.WorldEntitySpawner;
-import net.minecraft.world.WorldType;
+import net.minecraft.world.*;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkPrimer;
@@ -34,10 +33,12 @@ import net.minecraft.world.gen.*;
 import net.minecraft.world.gen.feature.WorldGenDungeons;
 import net.minecraft.world.gen.feature.WorldGenLakes;
 import net.minecraft.world.gen.structure.*;
+import net.minecraft.world.storage.MapStorage;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 import net.minecraftforge.event.terraingen.TerrainGen;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -551,7 +552,7 @@ public class GenericChunkGenerator implements CompatChunkGenerator {
 
     private World wrapUpsidedownWorld() {
         World w;
-        w = new World(worldObj.getSaveHandler(), worldObj.getWorldInfo(), worldObj.provider, worldObj.profiler, worldObj.isRemote) {
+        w = new WorldServer(worldObj.getMinecraftServer(), worldObj.getSaveHandler(), worldObj.getWorldInfo(), worldObj.provider.getDimension(), worldObj.profiler) {
             @Override
             protected IChunkProvider createChunkProvider() {
                 return worldObj.getChunkProvider();
@@ -570,6 +571,38 @@ public class GenericChunkGenerator implements CompatChunkGenerator {
                 }
 
                 return worldObj.getHeight(x, z);
+            }
+
+            @Nullable
+            @Override
+            public WorldSavedData loadData(Class<? extends WorldSavedData> clazz, String dataID) {
+                return worldObj.loadData(clazz, dataID);
+            }
+
+            @Override
+            public void setData(String dataID, WorldSavedData worldSavedDataIn) {
+                worldObj.setData(dataID, worldSavedDataIn);
+            }
+
+            @Nullable
+            @Override
+            public MapStorage getMapStorage() {
+                return worldObj.getMapStorage();
+            }
+
+            @Override
+            public int getUniqueDataId(String key) {
+                return worldObj.getUniqueDataId(key);
+            }
+
+            @Override
+            public void saveAllChunks(boolean all, @Nullable IProgressUpdate progressCallback) throws MinecraftException {
+                ((WorldServer)worldObj).saveAllChunks(all, progressCallback);
+            }
+
+            @Override
+            public void tick() {
+                worldObj.tick();
             }
 
             @Override
