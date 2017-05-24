@@ -38,6 +38,7 @@ import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.terraingen.ChunkGeneratorEvent;
+import net.minecraftforge.event.terraingen.OreGenEvent;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
@@ -156,6 +157,20 @@ public class ForgeEventHandlers {
 
     @SubscribeEvent
     public void onReplaceBiomeBlocks(ChunkGeneratorEvent.ReplaceBiomeBlocks event) {
+        World world = event.getWorld();
+        if (world == null) {
+            return;
+        }
+        int id = world.provider.getDimension();
+        RfToolsDimensionManager dimensionManager = RfToolsDimensionManager.getDimensionManager(world);
+        DimensionInformation information = dimensionManager.getDimensionInformation(id);
+        if (information != null && information.hasFeatureType(FeatureType.FEATURE_CLEAN)) {
+            event.setResult(Event.Result.DENY);
+        }
+    }
+
+    @SubscribeEvent
+    public void onOreGenEvent(OreGenEvent.GenerateMinable event) {
         World world = event.getWorld();
         if (world == null) {
             return;
