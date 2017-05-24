@@ -3,6 +3,7 @@ package mcjty.rftoolsdim.dimensions.world;
 import mcjty.lib.compat.CompatChunkGenerator;
 import mcjty.lib.compat.CompatMapGenStructure;
 import mcjty.rftoolsdim.blocks.ModBlocks;
+import mcjty.rftoolsdim.config.OresAPlentyConfiguration;
 import mcjty.rftoolsdim.config.WorldgenConfiguration;
 import mcjty.rftoolsdim.dimensions.DimensionInformation;
 import mcjty.rftoolsdim.dimensions.RfToolsDimensionManager;
@@ -35,8 +36,11 @@ import net.minecraft.world.chunk.storage.IChunkLoader;
 import net.minecraft.world.gen.*;
 import net.minecraft.world.gen.feature.WorldGenDungeons;
 import net.minecraft.world.gen.feature.WorldGenLakes;
+import net.minecraft.world.gen.feature.WorldGenMinable;
+import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraft.world.gen.structure.*;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.terraingen.OreGenEvent;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 import net.minecraftforge.event.terraingen.TerrainGen;
 
@@ -57,8 +61,7 @@ public class GenericChunkGenerator implements CompatChunkGenerator {
     public WorldType worldType;
     private final BaseTerrainGenerator terrainGenerator;
 
-    // @todo, examine and consider customizing
-    private ChunkProviderSettings settings = new ChunkProviderSettings.Factory().build();
+    private ChunkProviderSettings settings = null;
 
     private List<Biome.SpawnListEntry> extraSpawns;
     private List<Integer> extraSpawnsMax;
@@ -78,6 +81,14 @@ public class GenericChunkGenerator implements CompatChunkGenerator {
     private MapGenLiquidOrbs liquidSphereGenerator = new MapGenLiquidOrbs(this, false);
     private MapGenLiquidOrbs hugeLiquidSphereGenerator = new MapGenLiquidOrbs(this, true);
     private MapGenBase denseCaveGenerator = new MapGenDenseCaves(this);
+
+    private WorldGenerator coalGen = new WorldGenMinable(Blocks.COAL_ORE.getDefaultState(), OresAPlentyConfiguration.coal.getSize());
+    private WorldGenerator ironGen = new WorldGenMinable(Blocks.IRON_ORE.getDefaultState(), OresAPlentyConfiguration.iron.getSize());
+    private WorldGenerator goldGen = new WorldGenMinable(Blocks.GOLD_ORE.getDefaultState(), OresAPlentyConfiguration.gold.getSize());
+    private WorldGenerator redstoneGen = new WorldGenMinable(Blocks.REDSTONE_ORE.getDefaultState(), OresAPlentyConfiguration.redstone.getSize());
+    private WorldGenerator diamondGen = new WorldGenMinable(Blocks.DIAMOND_ORE.getDefaultState(), OresAPlentyConfiguration.diamond.getSize());
+    private WorldGenerator lapisGen = new WorldGenMinable(Blocks.LAPIS_ORE.getDefaultState(), OresAPlentyConfiguration.lapis.getSize());
+    private WorldGenerator emeraldGen = new WorldGenMinable(Blocks.EMERALD_ORE.getDefaultState(), OresAPlentyConfiguration.emerald.getSize());
 
     private MapGenStronghold strongholdGenerator = new MapGenStronghold() {
         @Override
@@ -168,6 +179,15 @@ public class GenericChunkGenerator implements CompatChunkGenerator {
     private MapGenBase ravineGenerator = new MapGenRavine();
 
     public ChunkProviderSettings getSettings() {
+        if (settings == null) {
+            System.out.println("dimensionInformation = " + dimensionInformation);
+            ChunkProviderSettings.Factory factory = new ChunkProviderSettings.Factory();
+            factory.lapisCount *= 5;
+            factory.lapisSize *= 5;
+            factory.diamondCount *= 5;
+            factory.diamondSize *= 5;
+            settings = factory.build();
+        }
         return settings;
     }
 
@@ -400,7 +420,7 @@ public class GenericChunkGenerator implements CompatChunkGenerator {
                     primer.data[idx + y] = c2;
                     primer.data[idx + 127 - y] = c;
                 }
-                for (int y = 128 ; y < 255 ; y++) {
+                for (int y = 128; y < 255; y++) {
                     primer.data[idx + y] = 0;
                 }
             }
@@ -546,7 +566,20 @@ public class GenericChunkGenerator implements CompatChunkGenerator {
             }
         }
 
-        Biome.decorate(w, this.rand, new BlockPos(x, 0, z));
+        BlockPos pos = new BlockPos(x, 0, z);
+        Biome.decorate(w, this.rand, pos);
+
+        // OresAPlenty
+//        if (dimensionInformation.hasFeatureType(FeatureType.FEATURE_ORESAPLENTY)) {
+            generateOre(w, this.rand, coalGen, OreGenEvent.GenerateMinable.EventType.COAL, pos, OresAPlentyConfiguration.coal);
+            generateOre(w, this.rand, ironGen, OreGenEvent.GenerateMinable.EventType.IRON, pos, OresAPlentyConfiguration.iron);
+            generateOre(w, this.rand, goldGen, OreGenEvent.GenerateMinable.EventType.GOLD, pos, OresAPlentyConfiguration.gold);
+            generateOre(w, this.rand, lapisGen, OreGenEvent.GenerateMinable.EventType.LAPIS, pos, OresAPlentyConfiguration.lapis);
+            generateOre(w, this.rand, diamondGen, OreGenEvent.GenerateMinable.EventType.DIAMOND, pos, OresAPlentyConfiguration.diamond);
+            generateOre(w, this.rand, redstoneGen, OreGenEvent.GenerateMinable.EventType.REDSTONE, pos, OresAPlentyConfiguration.redstone);
+            generateOre(w, this.rand, emeraldGen, OreGenEvent.GenerateMinable.EventType.EMERALD, pos, OresAPlentyConfiguration.emerald);
+//        }
+
         if (TerrainGen.populate(this, w, rand, chunkX, chunkZ, flag, PopulateChunkEvent.Populate.EventType.ANIMALS)) {
             WorldEntitySpawner.performWorldGenSpawning(w, Biome, x + 8, z + 8, 16, 16, this.rand);
         }
@@ -718,4 +751,39 @@ public class GenericChunkGenerator implements CompatChunkGenerator {
             this.oceanMonumentGenerator.generate(this.worldObj, x, z, null);
         }
     }
+
+    private static void generateOre(World w, Random rand, WorldGenerator gen, OreGenEvent.GenerateMinable.EventType type, BlockPos pos, OresAPlentyConfiguration.Settings settings) {
+        if (settings.getCount() > 0) {
+            if (TerrainGen.generateOre(w, rand, gen, pos, type)) {
+                genStandardOre1(w, rand, settings.getCount(), gen, settings.getMin(), settings.getMax(), pos);
+            }
+        }
+    }
+
+    private static void genStandardOre1(World worldIn, Random random, int blockCount, WorldGenerator generator, int minHeight, int maxHeight, BlockPos chunkPos) {
+        if (maxHeight < minHeight) {
+            int i = minHeight;
+            minHeight = maxHeight;
+            maxHeight = i;
+        } else if (maxHeight == minHeight) {
+            if (minHeight < 255) {
+                ++maxHeight;
+            } else {
+                --minHeight;
+            }
+        }
+
+        for (int j = 0; j < blockCount; ++j) {
+            BlockPos blockpos = chunkPos.add(random.nextInt(16), random.nextInt(maxHeight - minHeight) + minHeight, random.nextInt(16));
+            generator.generate(worldIn, random, blockpos);
+        }
+    }
+
+    private static void genStandardOre2(World worldIn, Random random, int blockCount, WorldGenerator generator, int centerHeight, int spread, BlockPos chunkPos) {
+        for (int i = 0; i < blockCount; ++i) {
+            BlockPos blockpos = chunkPos.add(random.nextInt(16), random.nextInt(spread) + random.nextInt(spread) + centerHeight - spread, random.nextInt(16));
+            generator.generate(worldIn, random, blockpos);
+        }
+    }
+
 }

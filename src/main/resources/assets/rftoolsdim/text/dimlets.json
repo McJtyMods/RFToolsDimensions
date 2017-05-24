@@ -980,6 +980,20 @@
   },
   {
     "filter": {
+      "type": "feature",
+      "name": "OresAPlenty"
+    },
+    "settings": {
+      "rarity": 5,
+      "create": 10000,
+      "maintain": 20000,
+      "ticks": 1000,
+      "worldgen": true,
+      "dimlet": true
+    }
+  },
+  {
+    "filter": {
       "type": "feature"
     },
     "settings": {
