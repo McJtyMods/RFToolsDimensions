@@ -570,7 +570,7 @@ public class GenericChunkGenerator implements CompatChunkGenerator {
         Biome.decorate(w, this.rand, pos);
 
         // OresAPlenty
-//        if (dimensionInformation.hasFeatureType(FeatureType.FEATURE_ORESAPLENTY)) {
+        if (dimensionInformation.hasFeatureType(FeatureType.FEATURE_ORESAPLENTY)) {
             generateOre(w, this.rand, coalGen, OreGenEvent.GenerateMinable.EventType.COAL, pos, OresAPlentyConfiguration.coal);
             generateOre(w, this.rand, ironGen, OreGenEvent.GenerateMinable.EventType.IRON, pos, OresAPlentyConfiguration.iron);
             generateOre(w, this.rand, goldGen, OreGenEvent.GenerateMinable.EventType.GOLD, pos, OresAPlentyConfiguration.gold);
@@ -578,7 +578,7 @@ public class GenericChunkGenerator implements CompatChunkGenerator {
             generateOre(w, this.rand, diamondGen, OreGenEvent.GenerateMinable.EventType.DIAMOND, pos, OresAPlentyConfiguration.diamond);
             generateOre(w, this.rand, redstoneGen, OreGenEvent.GenerateMinable.EventType.REDSTONE, pos, OresAPlentyConfiguration.redstone);
             generateOre(w, this.rand, emeraldGen, OreGenEvent.GenerateMinable.EventType.EMERALD, pos, OresAPlentyConfiguration.emerald);
-//        }
+        }
 
         if (TerrainGen.populate(this, w, rand, chunkX, chunkZ, flag, PopulateChunkEvent.Populate.EventType.ANIMALS)) {
             WorldEntitySpawner.performWorldGenSpawning(w, Biome, x + 8, z + 8, 16, 16, this.rand);
