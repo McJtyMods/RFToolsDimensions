@@ -454,6 +454,7 @@ public class GenericChunkGenerator implements CompatChunkGenerator {
                         return (ChunkProviderServer) ww.getChunkProvider();
                     }
                 };
+                net.minecraftforge.common.DimensionManager.setWorld(ww.provider.getDimension(), (WorldServer) ww, ww.getMinecraftServer());
             }
             upsidedownWorld.worldObj = (WorldServer) worldObj;
             w = upsidedownWorld;
