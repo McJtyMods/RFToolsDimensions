@@ -21,24 +21,25 @@ import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.IAnimals;
 import net.minecraft.init.Biomes;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.IProgressUpdate;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
-import net.minecraft.world.*;
+import net.minecraft.world.World;
+import net.minecraft.world.WorldEntitySpawner;
+import net.minecraft.world.WorldServer;
+import net.minecraft.world.WorldType;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.chunk.IChunkProvider;
+import net.minecraft.world.chunk.storage.IChunkLoader;
 import net.minecraft.world.gen.*;
 import net.minecraft.world.gen.feature.WorldGenDungeons;
 import net.minecraft.world.gen.feature.WorldGenLakes;
 import net.minecraft.world.gen.structure.*;
-import net.minecraft.world.storage.MapStorage;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 import net.minecraftforge.event.terraingen.TerrainGen;
 
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -423,6 +424,8 @@ public class GenericChunkGenerator implements CompatChunkGenerator {
         return c;
     }
 
+    private static UpsidedownWorld upsidedownWorld = null;
+
     @Override
     public void populate(int chunkX, int chunkZ) {
         BlockFalling.fallInstantly = true;
@@ -437,7 +440,23 @@ public class GenericChunkGenerator implements CompatChunkGenerator {
         boolean flag = false;
 
         if (dimensionInformation.getTerrainType() == TerrainType.TERRAIN_INVERTIGO) {
-            w = wrapUpsidedownWorld();
+            if (upsidedownWorld == null) {
+                World ww = worldObj;
+                upsidedownWorld = new UpsidedownWorld((WorldServer) worldObj) {
+                    @Override
+                    protected IChunkProvider createChunkProvider() {
+                        IChunkLoader ichunkloader = ww.getSaveHandler().getChunkLoader(ww.provider);
+                        return new ChunkProviderServer((WorldServer) ww, ichunkloader, ww.provider.createChunkGenerator());
+                    }
+
+                    @Override
+                    public ChunkProviderServer getChunkProvider() {
+                        return (ChunkProviderServer) ww.getChunkProvider();
+                    }
+                };
+            }
+            upsidedownWorld.worldObj = (WorldServer) worldObj;
+            w = upsidedownWorld;
         }
 
         MinecraftForge.EVENT_BUS.post(new PopulateChunkEvent.Pre(this, w, rand, chunkX, chunkZ, flag));
@@ -551,121 +570,6 @@ public class GenericChunkGenerator implements CompatChunkGenerator {
         MinecraftForge.EVENT_BUS.post(new PopulateChunkEvent.Post(this, w, rand, chunkX, chunkZ, flag));
 
         BlockFalling.fallInstantly = false;
-
-    }
-
-    private World wrapUpsidedownWorld() {
-        World w;
-        w = new WorldServer(worldObj.getMinecraftServer(), worldObj.getSaveHandler(), worldObj.getWorldInfo(), worldObj.provider.getDimension(), worldObj.profiler) {
-            @Override
-            protected IChunkProvider createChunkProvider() {
-                return worldObj.getChunkProvider();
-            }
-
-            @Override
-            public int getHeight(int x, int z) {
-                // This needs to be done differently
-                Chunk chunk = worldObj.getChunkFromChunkCoords(x >> 4, z >> 4);
-                int y = 0;
-                for (y = 0; y < 128; y++) {
-                    IBlockState blockState = chunk.getBlockState(x & 15, y, z & 15);
-                    if (blockState.getBlock() != Blocks.AIR) {
-                        return 127 - y;
-                    }
-                }
-
-                return worldObj.getHeight(x, z);
-            }
-
-            @Nullable
-            @Override
-            public WorldSavedData loadData(Class<? extends WorldSavedData> clazz, String dataID) {
-                return worldObj.loadData(clazz, dataID);
-            }
-
-            @Override
-            public void setData(String dataID, WorldSavedData worldSavedDataIn) {
-                worldObj.setData(dataID, worldSavedDataIn);
-            }
-
-            @Nullable
-            @Override
-            public MapStorage getMapStorage() {
-                return worldObj.getMapStorage();
-            }
-
-            @Override
-            public int getUniqueDataId(String key) {
-                return worldObj.getUniqueDataId(key);
-            }
-
-            @Override
-            public void saveAllChunks(boolean all, @Nullable IProgressUpdate progressCallback) throws MinecraftException {
-                ((WorldServer)worldObj).saveAllChunks(all, progressCallback);
-            }
-
-            @Override
-            public void tick() {
-                worldObj.tick();
-            }
-
-            @Override
-            public Biome getBiome(BlockPos pos) {
-                return worldObj.getBiome(pos);
-            }
-
-            @Override
-            public Biome getBiomeForCoordsBody(BlockPos pos) {
-                return worldObj.getBiomeForCoordsBody(pos);
-            }
-
-            @Override
-            public Chunk getChunkFromBlockCoords(BlockPos pos) {
-                return worldObj.getChunkFromBlockCoords(pos);
-            }
-
-            @Override
-            public Chunk getChunkFromChunkCoords(int chunkX, int chunkZ) {
-                return worldObj.getChunkFromChunkCoords(chunkX, chunkZ);
-            }
-
-            @Override
-            public BlockPos getTopSolidOrLiquidBlock(BlockPos pos) {
-                BlockPos p = worldObj.getTopSolidOrLiquidBlock(pos);
-//                return new BlockPos(p.getX(), 255-p.getY(), p.getZ());
-                return new BlockPos(p.getX(), getHeight(p.getX(), p.getZ()), p.getZ());
-            }
-
-            @Override
-            protected boolean isChunkLoaded(int x, int z, boolean allowEmpty) {
-                return ((ChunkProviderServer) worldObj.getChunkProvider()).chunkExists(x, z);
-            }
-
-            @Override
-            public boolean setBlockState(BlockPos pos, IBlockState newState, int flags) {
-                if (newState.getBlock() instanceof BlockLiquid) {
-                    return true;
-                }
-                if (newState.getBlock() instanceof BlockFalling) {
-                    return true;
-                }
-                if (pos.getY() >= 128) {
-                    return worldObj.setBlockState(pos, newState, flags);
-                } else {
-                    return worldObj.setBlockState(new BlockPos(pos.getX(), 127 - pos.getY(), pos.getZ()), newState, flags);
-                }
-            }
-
-            @Override
-            public IBlockState getBlockState(BlockPos pos) {
-                if (pos.getY() >= 128) {
-                    return worldObj.getBlockState(pos);
-                } else {
-                    return worldObj.getBlockState(new BlockPos(pos.getX(), 127 - pos.getY(), pos.getZ()));
-                }
-            }
-        };
-        return w;
     }
 
     @Override
