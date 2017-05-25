@@ -93,9 +93,14 @@ public class UpsidedownWorld extends WorldServer {
 
     @Override
     public BlockPos getTopSolidOrLiquidBlock(BlockPos pos) {
-        BlockPos p = worldObj.getTopSolidOrLiquidBlock(pos);
-//                return new BlockPos(p.getX(), 255-p.getY(), p.getZ());
-        return new BlockPos(p.getX(), getHeight(p.getX(), p.getZ()), p.getZ());
+        BlockPos blockpos = getHeight(pos);
+        for (; blockpos.getY() < 128 ; blockpos = blockpos.up()) {
+            IBlockState state = worldObj.getBlockState(blockpos);
+            if (state.getMaterial().blocksMovement() && !state.getBlock().isLeaves(state, this, blockpos) && !state.getBlock().isFoliage(this, blockpos)) {
+                break;
+            }
+        }
+        return blockpos;
     }
 
     @Override
