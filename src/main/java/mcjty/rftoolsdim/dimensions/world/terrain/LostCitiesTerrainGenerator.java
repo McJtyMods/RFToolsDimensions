@@ -467,6 +467,7 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
                     })
             };
 
+
     private static Level[] FLOORS = new Level[]
             {
                     new Level(new String[]{
@@ -488,10 +489,10 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
                                     "################" +
                                     "################",
                             "" +
-                                    "#==============#" +
+                                    "#==@========@==#" +
                                     "=  x        x  =" +
                                     "=  xF       x  =" +
-                                    "=  xF      Lx  =" +
+                                    "@  xF      Lx  @" +
                                     "=  xD      Lx  =" +
                                     "=  x        x  =" +
                                     "=              =" +
@@ -500,15 +501,15 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
                                     "=  x   l    x  =" +
                                     "=  xxxxxxxxxx  =" +
                                     "=              =" +
-                                    "=              =" +
+                                    "@              @" +
                                     "=              =" +
                                     "=     F        =" +
-                                    "#==============#",
+                                    "#==@========@==#",
                             "" +
-                                    "#==============#" +
+                                    "#==@========@==#" +
                                     "=  x        x  =" +
                                     "=  x        x  =" +
-                                    "=  x       Lx  =" +
+                                    "@  x       Lx  @" +
                                     "=  x*      Lx  =" +
                                     "=  x        x  =" +
                                     "=              =" +
@@ -517,15 +518,15 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
                                     "=  x   l    x  =" +
                                     "=  xxxxxxxxxx  =" +
                                     "=              =" +
+                                    "@              @" +
                                     "=              =" +
                                     "=              =" +
-                                    "=              =" +
-                                    "#==============#",
+                                    "#==@========@==#",
                             "" +
-                                    "#==============#" +
+                                    "#==@========@==#" +
                                     "=  x        x  =" +
                                     "=  x        x  =" +
-                                    "=  x        x  =" +
+                                    "@  x        x  @" +
                                     "=  x        x  =" +
                                     "=  x        x  =" +
                                     "=  x        x  =" +
@@ -534,10 +535,10 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
                                     "=  x   l    x  =" +
                                     "=  xxxxxxxxxx  =" +
                                     "=              =" +
+                                    "@              @" +
                                     "=              =" +
                                     "=              =" +
-                                    "=              =" +
-                                    "#==============#",
+                                    "#==@========@==#",
                             "" +
                                     "################" +
                                     "################" +
@@ -592,10 +593,10 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
                                     "################" +
                                     "################",
                             "" +
-                                    "#==============#" +
+                                    "#==@========@==#" +
                                     "=  F      QQQ  =" +
                                     "=              =" +
-                                    "=              =" +
+                                    "@              @" +
                                     "=              =" +
                                     "=             F=" +
                                     "=              =" +
@@ -604,15 +605,15 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
                                     "=      l       =" +
                                     "=xxxxxxxxxxx  x=" +
                                     "=              =" +
+                                    "@              @" +
                                     "=              =" +
                                     "=              =" +
-                                    "=              =" +
-                                    "#==============#",
+                                    "#==@========@==#",
                             "" +
-                                    "#==============#" +
+                                    "#==@========@==#" +
                                     "=         **   =" +
                                     "=              =" +
-                                    "=              =" +
+                                    "@              @" +
                                     "=              =" +
                                     "=              =" +
                                     "=              =" +
@@ -621,15 +622,15 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
                                     "=      l       =" +
                                     "=x::xxxxxxxx  x=" +
                                     "=              =" +
+                                    "@              @" +
                                     "=              =" +
                                     "=              =" +
-                                    "=              =" +
-                                    "#==============#",
+                                    "#==@========@==#",
                             "" +
-                                    "#==============#" +
+                                    "#==@========@==#" +
                                     "=              =" +
                                     "=              =" +
-                                    "=              =" +
+                                    "@              @" +
                                     "=              =" +
                                     "=              =" +
                                     "=              =" +
@@ -638,10 +639,10 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
                                     "=      l       =" +
                                     "=xxxxxxxxxxxxxx=" +
                                     "=              =" +
+                                    "@              @" +
                                     "=              =" +
                                     "=              =" +
-                                    "=              =" +
-                                    "#==============#",
+                                    "#==@========@==#",
                             "" +
                                     "################" +
                                     "################" +
@@ -696,10 +697,10 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
                                     "################" +
                                     "################",
                             "" +
-                                    "#==============#" +
+                                    "#==@========@==#" +
                                     "=WWWWWWWWWWWWWW=" +
                                     "=WWWWWWWWWWWWWW=" +
-                                    "=WWWWWWWWWWWWWW=" +
+                                    "@WWWWWWWWWWWWWW@" +
                                     "=WWWWWWWWWWWWWW=" +
                                     "================" +
                                     "=              =" +
@@ -708,15 +709,15 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
                                     "=F     l       =" +
                                     "=F    xxx::::::=" +
                                     "=      :       =" +
+                                    "@      :       @" +
                                     "=      :       =" +
                                     "=      :       =" +
-                                    "=      :       =" +
-                                    "#==============#",
+                                    "#==@========@==#",
                             "" +
-                                    "#==============#" +
+                                    "#==@========@==#" +
                                     "=WWWWWWWWWWWWWW=" +
                                     "=WWWWWWWWWWWWWW=" +
-                                    "=WWWWWWWWWWWWWW=" +
+                                    "@WWWWWWWWWWWWWW@" +
                                     "=WWWWWWWWWWWWWW=" +
                                     "================" +
                                     "=              =" +
@@ -725,15 +726,15 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
                                     "=      l       =" +
                                     "=     xxx::::::=" +
                                     "=      :       =" +
+                                    "@      :       @" +
                                     "=      :       =" +
                                     "=      :       =" +
-                                    "=      :       =" +
-                                    "#==============#",
+                                    "#==@========@==#",
                             "" +
-                                    "#==============#" +
+                                    "#==@========@==#" +
                                     "=WWWWWWWWWWWWWW=" +
                                     "=WWWWWWWWWWWWWW=" +
-                                    "=WWWWWWWWWWWWWW=" +
+                                    "@WWWWWWWWWWWWWW@" +
                                     "=WWWWWWWWWWWWWW=" +
                                     "================" +
                                     "=              =" +
@@ -742,10 +743,10 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
                                     "=      l       =" +
                                     "=     xxx::::::=" +
                                     "=      :       =" +
+                                    "@      :       @" +
                                     "=      :       =" +
                                     "=      :       =" +
-                                    "=      :       =" +
-                                    "#==============#",
+                                    "#==@========@==#",
                             "" +
                                     "################" +
                                     "################" +
@@ -800,10 +801,10 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
                                     "################" +
                                     "################",
                             "" +
-                                    "#==============#" +
+                                    "#==@========@==#" +
                                     "=              =" +
                                     "=              =" +
-                                    "=              =" +
+                                    "@              @" +
                                     "=              =" +
                                     "=              =" +
                                     "=    xx xx     =" +
@@ -812,15 +813,15 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
                                     "=    x l x     =" +
                                     "=x xxxxxxxxxxxx=" +
                                     "=     FFF      =" +
+                                    "@              @" +
                                     "=              =" +
                                     "=              =" +
-                                    "=              =" +
-                                    "#==============#",
+                                    "#==@========@==#",
                             "" +
-                                    "#==============#" +
+                                    "#==@========@==#" +
                                     "=              =" +
                                     "=              =" +
-                                    "=              =" +
+                                    "@              @" +
                                     "=              =" +
                                     "=              =" +
                                     "=    xx xx     =" +
@@ -829,15 +830,15 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
                                     "=    x l x     =" +
                                     "=x xxxxxxxx===x=" +
                                     "=              =" +
+                                    "@              @" +
                                     "=              =" +
                                     "=              =" +
-                                    "=              =" +
-                                    "#==============#",
+                                    "#==@========@==#",
                             "" +
-                                    "#==============#" +
+                                    "#==@========@==#" +
                                     "=              =" +
                                     "=              =" +
-                                    "=              =" +
+                                    "@              @" +
                                     "=              =" +
                                     "=              =" +
                                     "=    xxxxx     =" +
@@ -846,10 +847,10 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
                                     "=    x l x     =" +
                                     "=xxxxxxxxxxxxxx=" +
                                     "=              =" +
+                                    "@              @" +
                                     "=              =" +
                                     "=              =" +
-                                    "=              =" +
-                                    "#==============#",
+                                    "#==@========@==#",
                             "" +
                                     "################" +
                                     "################" +
@@ -904,10 +905,10 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
                                     "################" +
                                     "################",
                             "" +
-                                    "#==============#" +
+                                    "#==@========@==#" +
                                     "=   LL         =" +
                                     "=              =" +
-                                    "=              =" +
+                                    "@              @" +
                                     "=              =" +
                                     "=              =" +
                                     "=    xx xx     =" +
@@ -916,15 +917,15 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
                                     "=    X l X     =" +
                                     "=  QQxxxxxQQ   =" +
                                     "=      CF      =" +
+                                    "@              @" +
                                     "=              =" +
                                     "=              =" +
-                                    "=              =" +
-                                    "#==============#",
+                                    "#==@========@==#",
                             "" +
-                                    "#==============#" +
+                                    "#==@========@==#" +
                                     "=   LL         =" +
                                     "=              =" +
-                                    "=              =" +
+                                    "@              @" +
                                     "=              =" +
                                     "=              =" +
                                     "=    xx xx     =" +
@@ -933,15 +934,15 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
                                     "=    x l x     =" +
                                     "=  QQxxxxxQQ   =" +
                                     "=              =" +
+                                    "@              @" +
                                     "=              =" +
                                     "=              =" +
-                                    "=              =" +
-                                    "#==============#",
+                                    "#==@========@==#",
                             "" +
-                                    "#==============#" +
+                                    "#==@========@==#" +
                                     "=              =" +
                                     "=              =" +
-                                    "=              =" +
+                                    "@              @" +
                                     "=              =" +
                                     "=              =" +
                                     "=    xxxxx     =" +
@@ -950,10 +951,10 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
                                     "=    x l x     =" +
                                     "=  QQxxxxxQQ   =" +
                                     "=              =" +
+                                    "@              @" +
                                     "=              =" +
                                     "=              =" +
-                                    "=              =" +
-                                    "#==============#",
+                                    "#==@========@==#",
                             "" +
                                     "################" +
                                     "################" +
@@ -1008,10 +1009,10 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
                                     "################" +
                                     "################",
                             "" +
-                                    "#==============#" +
+                                    "#==@========@==#" +
                                     "=              =" +
                                     "=              =" +
-                                    "=              =" +
+                                    "@              @" +
                                     "=              =" +
                                     "=              =" +
                                     "=    xx xx     =" +
@@ -1020,15 +1021,15 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
                                     "=    x l x     =" +
                                     "=    xxxxx     =" +
                                     "=      Fx      =" +
-                                    "=       x      =" +
+                                    "@       x      @" +
                                     "=              =" +
                                     "=       x      =" +
-                                    "#==============#",
+                                    "#==@========@==#",
                             "" +
-                                    "#==============#" +
+                                    "#==@========@==#" +
                                     "=              =" +
                                     "=              =" +
-                                    "=              =" +
+                                    "@              @" +
                                     "=              =" +
                                     "=              =" +
                                     "=    xx xx     =" +
@@ -1037,15 +1038,15 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
                                     "=    x l x     =" +
                                     "=    xxxxx     =" +
                                     "=       x      =" +
-                                    "=       x      =" +
+                                    "@       x      @" +
                                     "=              =" +
                                     "=       x      =" +
-                                    "#==============#",
+                                    "#==@========@==#",
                             "" +
-                                    "#==============#" +
+                                    "#==@========@==#" +
                                     "=              =" +
                                     "=              =" +
-                                    "=              =" +
+                                    "@              @" +
                                     "=              =" +
                                     "=              =" +
                                     "=    xxxxx     =" +
@@ -1054,10 +1055,10 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
                                     "=    x l x     =" +
                                     "=    xxxxx     =" +
                                     "=       x      =" +
+                                    "@       x      @" +
                                     "=       x      =" +
                                     "=       x      =" +
-                                    "=       x      =" +
-                                    "#==============#",
+                                    "#==@========@==#",
                             "" +
                                     "################" +
                                     "################" +
@@ -1112,10 +1113,10 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
                                     "################" +
                                     "################",
                             "" +
-                                    "#==============#" +
+                                    "#==@========@==#" +
                                     "=      x       =" +
                                     "=      x       =" +
-                                    "=              =" +
+                                    "@              @" +
                                     "=      x       =" +
                                     "=      x       =" +
                                     "=    xxxxx     =" +
@@ -1124,15 +1125,15 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
                                     "=      l xL    =" +
                                     "=xxxxxxxxx     =" +
                                     "=    F         =" +
+                                    "@              @" +
                                     "=              =" +
                                     "=              =" +
-                                    "=              =" +
-                                    "#==============#",
+                                    "#==@========@==#",
                             "" +
-                                    "#==============#" +
+                                    "#==@========@==#" +
                                     "=      x       =" +
                                     "=      x       =" +
-                                    "=              =" +
+                                    "@              @" +
                                     "=      x       =" +
                                     "=      x       =" +
                                     "=    xxxxx     =" +
@@ -1141,15 +1142,15 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
                                     "=      l xL    =" +
                                     "=xxxxxxxxx     =" +
                                     "=              =" +
+                                    "@              @" +
                                     "=              =" +
                                     "=              =" +
-                                    "=              =" +
-                                    "#==============#",
+                                    "#==@========@==#",
                             "" +
-                                    "#==============#" +
+                                    "#==@========@==#" +
                                     "=      x       =" +
                                     "=      x       =" +
-                                    "=      x       =" +
+                                    "@      x       @" +
                                     "=      x       =" +
                                     "=      x       =" +
                                     "=    xxxxx     =" +
@@ -1158,10 +1159,10 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
                                     "=    x l x     =" +
                                     "=xxxxxxxxx     =" +
                                     "=              =" +
+                                    "@              @" +
                                     "=              =" +
                                     "=              =" +
-                                    "=              =" +
-                                    "#==============#",
+                                    "#==@========@==#",
                             "" +
                                     "################" +
                                     "################" +
@@ -1216,27 +1217,10 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
                                     "################" +
                                     "################",
                             "" +
-                                    "#==============#" +
+                                    "#==@========@==#" +
                                     "=              =" +
                                     "=              =" +
-                                    "=              =" +
-                                    "=              =" +
-                                    "=              =" +
-                                    "=    QQQQQ:::::=" +
-                                    "=    Q   Q     =" +
-                                    "=    Q   Q     =" +
-                                    "=      l       =" +
-                                    "=    QQQQQ     =" +
-                                    "=              =" +
-                                    "=              =" +
-                                    "=              =" +
-                                    "=              =" +
-                                    "#==============#",
-                            "" +
-                                    "#==============#" +
-                                    "=              =" +
-                                    "=              =" +
-                                    "=              =" +
+                                    "@              @" +
                                     "=              =" +
                                     "=              =" +
                                     "=    QQQQQ:::::=" +
@@ -1245,15 +1229,32 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
                                     "=      l       =" +
                                     "=    QQQQQ     =" +
                                     "=              =" +
+                                    "@              @" +
                                     "=              =" +
                                     "=              =" +
-                                    "=              =" +
-                                    "#==============#",
+                                    "#==@========@==#",
                             "" +
-                                    "#==============#" +
+                                    "#==@========@==#" +
                                     "=              =" +
                                     "=              =" +
+                                    "@              @" +
                                     "=              =" +
+                                    "=              =" +
+                                    "=    QQQQQ:::::=" +
+                                    "=    Q   Q     =" +
+                                    "=    Q   Q     =" +
+                                    "=      l       =" +
+                                    "=    QQQQQ     =" +
+                                    "=              =" +
+                                    "@              @" +
+                                    "=              =" +
+                                    "=              =" +
+                                    "#==@========@==#",
+                            "" +
+                                    "#==@========@==#" +
+                                    "=              =" +
+                                    "=              =" +
+                                    "@              @" +
                                     "=              =" +
                                     "=              =" +
                                     "=    QQQQQ:::::=" +
@@ -1262,10 +1263,10 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
                                     "=    Q l Q     =" +
                                     "=    QQQQQ     =" +
                                     "=              =" +
+                                    "@              @" +
                                     "=              =" +
                                     "=              =" +
-                                    "=              =" +
-                                    "#==============#",
+                                    "#==@========@==#",
                             "" +
                                     "################" +
                                     "################" +
@@ -1320,10 +1321,10 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
                                     "################" +
                                     "################",
                             "" +
-                                    "#==============#" +
+                                    "#==@========@==#" +
                                     "=      x       =" +
                                     "=      xF      =" +
-                                    "=              =" +
+                                    "@              @" +
                                     "=      x       =" +
                                     "=     Lx       =" +
                                     "=    xxxxx     =" +
@@ -1332,15 +1333,15 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
                                     "=      l x     =" +
                                     "=xxxxXxxxX     =" +
                                     "=       :      =" +
-                                    "=       :      =" +
+                                    "@       :      @" +
                                     "=   C          =" +
                                     "=              =" +
-                                    "#==============#",
+                                    "#==@========@==#",
                             "" +
-                                    "#==============#" +
+                                    "#==@========@==#" +
                                     "=      x       =" +
                                     "=      x       =" +
-                                    "=              =" +
+                                    "@              @" +
                                     "=      x       =" +
                                     "=     Lx       =" +
                                     "=    xxxxx     =" +
@@ -1349,15 +1350,15 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
                                     "=      l x     =" +
                                     "=xxxxxxxxx     =" +
                                     "=       :      =" +
-                                    "=       :      =" +
+                                    "@       :      @" +
                                     "=              =" +
                                     "=              =" +
-                                    "#==============#",
+                                    "#==@========@==#",
                             "" +
-                                    "#==============#" +
+                                    "#==@========@==#" +
                                     "=      x       =" +
                                     "=      x       =" +
-                                    "=      x       =" +
+                                    "@      x       @" +
                                     "=      x       =" +
                                     "=     Lx       =" +
                                     "=    xxxxx     =" +
@@ -1366,10 +1367,10 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
                                     "=    x l x     =" +
                                     "=xxxxxxxxx     =" +
                                     "=       :      =" +
-                                    "=       :      =" +
+                                    "@       :      @" +
                                     "=              =" +
                                     "=              =" +
-                                    "#==============#",
+                                    "#==@========@==#",
                             "" +
                                     "################" +
                                     "################" +
@@ -1454,6 +1455,7 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
             mapping = new HashMap<>();
             mapping.put('#', Blocks.STONEBRICK.getDefaultState());
             mapping.put('=', Blocks.GLASS.getDefaultState());
+            mapping.put('@', Blocks.GRAVEL.getDefaultState());      // Will be replaced with glass
             mapping.put(' ', Blocks.AIR.getDefaultState());
             mapping.put('x', Blocks.STONEBRICK.getDefaultState());
             mapping.put('l', Blocks.LADDER.getDefaultState());
@@ -1481,7 +1483,8 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
                 for (int y = 0; y < 6; y++) {
                     for (int x = 0; x < 16; x++) {
                         for (int z = 0; z < 16; z++) {
-                            Character c = level.getC(x, y, z);;
+                            Character c = level.getC(x, y, z);
+                            ;
                             if (c == '1') {
                                 gi.addSpawnerType1(new BlockPos(x, y, z));
                             } else if (c == '2') {
@@ -1508,6 +1511,7 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
         public final boolean[] connectionAtX;
         public final boolean[] connectionAtZ;
         public final int topType;
+        public final int glassType;
 
         public BuildingInfo(int chunkX, int chunkZ, long seed) {
             Random rand = getBuildingRandom(chunkX, chunkZ, seed);
@@ -1518,15 +1522,16 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
                 fountainType = -1;
             }
             floors = rand.nextInt(7);
-            floorTypes = new int[floors+2];
-            connectionAtX = new boolean[floors+2];
-            connectionAtZ = new boolean[floors+2];
-            for (int i = 0 ; i <= floors+1 ; i++) {
+            floorTypes = new int[floors + 2];
+            connectionAtX = new boolean[floors + 2];
+            connectionAtZ = new boolean[floors + 2];
+            for (int i = 0; i <= floors + 1; i++) {
                 floorTypes[i] = rand.nextInt(FLOORS.length);
                 connectionAtX[i] = rand.nextFloat() < .6f;
                 connectionAtZ[i] = rand.nextFloat() < .6f;
             }
             topType = rand.nextInt(TOPS.length);
+            glassType = rand.nextInt(4);
         }
 
         public boolean hasConnectionAtX(int level) {
@@ -1558,6 +1563,9 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
         IBlockState stone = Blocks.STONE.getDefaultState();
         IBlockState street = Blocks.DOUBLE_STONE_SLAB.getDefaultState();
         IBlockState air = Blocks.AIR.getDefaultState();
+        IBlockState glass = Blocks.GLASS.getDefaultState();
+        IBlockState quartz = Blocks.QUARTZ_BLOCK.getDefaultState();
+        IBlockState bricks = Blocks.STONEBRICK.getDefaultState();
 
         byte waterLevel = height;
 
@@ -1595,40 +1603,49 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
                         }
                         IBlockState b = level.get(x, f, z);
                         if (x == 0 && z == 8 && f >= 1 && f <= 2 && info.hasConnectionAtX(l)) {
-                            BuildingInfo info2 = new BuildingInfo(chunkX-1, chunkZ, provider.seed);
-                            if (info2.hasBuilding && l <= info2.floors+1) {
+                            BuildingInfo info2 = new BuildingInfo(chunkX - 1, chunkZ, provider.seed);
+                            if (info2.hasBuilding && l <= info2.floors + 1) {
                                 b = air;
                             } else if (!info2.hasBuilding && l == 0) {
                                 b = air;
                             }
                         } else if (x == 15 && z == 8 && f >= 1 && f <= 2) {
-                            BuildingInfo info2 = new BuildingInfo(chunkX+1, chunkZ, provider.seed);
-                            if (info2.hasBuilding && l <= info2.floors+1 && info2.hasConnectionAtX(l)) {
+                            BuildingInfo info2 = new BuildingInfo(chunkX + 1, chunkZ, provider.seed);
+                            if (info2.hasBuilding && l <= info2.floors + 1 && info2.hasConnectionAtX(l)) {
                                 b = air;
                             } else if (!info2.hasBuilding && l == 0) {
                                 b = air;
                             }
                         }
                         if (z == 0 && x == 8 && f >= 1 && f <= 2 && info.hasConnectionAtZ(l)) {
-                            BuildingInfo info2 = new BuildingInfo(chunkX, chunkZ-1, provider.seed);
-                            if (info2.hasBuilding && l <= info2.floors+1) {
+                            BuildingInfo info2 = new BuildingInfo(chunkX, chunkZ - 1, provider.seed);
+                            if (info2.hasBuilding && l <= info2.floors + 1) {
                                 b = air;
                             } else if (!info2.hasBuilding && l == 0) {
                                 b = air;
                             }
                         } else if (z == 15 && x == 8 && f >= 1 && f <= 2) {
-                            BuildingInfo info2 = new BuildingInfo(chunkX, chunkZ+1, provider.seed);
-                            if (info2.hasBuilding && l <= info2.floors+1 && info2.hasConnectionAtZ(l)) {
+                            BuildingInfo info2 = new BuildingInfo(chunkX, chunkZ + 1, provider.seed);
+                            if (info2.hasBuilding && l <= info2.floors + 1 && info2.hasConnectionAtZ(l)) {
                                 b = air;
                             } else if (!info2.hasBuilding && l == 0) {
                                 b = air;
                             }
                         }
 
+                        if (b.getBlock() == Blocks.GRAVEL) {
+                            switch (info.glassType) {
+                                case 0: b = glass; break;
+                                case 1: b = street; break;
+                                case 2: b = bricks; break;
+                                case 3: b = quartz; break;
+                            }
+                        }
+
                         BaseTerrainGenerator.setBlockState(primer, index++, b);
                         height++;
                     }
-                    while (height < buildingtop+6) {
+                    while (height < buildingtop + 6) {
                         int f = getFloor(height);
                         int floortype = info.topType;
                         level = TOPS[floortype];
@@ -1639,13 +1656,13 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
                 } else {
                     if (isBorder(x, z)) {
                         IBlockState b = stone;
-                        if (x <= STREETBORDER && z > STREETBORDER && z < (15-STREETBORDER) && !new BuildingInfo(chunkX-1, chunkZ, provider.seed).hasBuilding) {
+                        if (x <= STREETBORDER && z > STREETBORDER && z < (15 - STREETBORDER) && !new BuildingInfo(chunkX - 1, chunkZ, provider.seed).hasBuilding) {
                             b = street;
-                        } else if (x >= (15-STREETBORDER) && z > STREETBORDER && z < (15-STREETBORDER) && !new BuildingInfo(chunkX+1, chunkZ, provider.seed).hasBuilding) {
+                        } else if (x >= (15 - STREETBORDER) && z > STREETBORDER && z < (15 - STREETBORDER) && !new BuildingInfo(chunkX + 1, chunkZ, provider.seed).hasBuilding) {
                             b = street;
-                        } else if (z <= STREETBORDER && x > STREETBORDER && x < (15-STREETBORDER) && !new BuildingInfo(chunkX, chunkZ-1, provider.seed).hasBuilding) {
+                        } else if (z <= STREETBORDER && x > STREETBORDER && x < (15 - STREETBORDER) && !new BuildingInfo(chunkX, chunkZ - 1, provider.seed).hasBuilding) {
                             b = street;
-                        } else if (z >= (15-STREETBORDER) && x > STREETBORDER && x < (15-STREETBORDER) && !new BuildingInfo(chunkX, chunkZ+1, provider.seed).hasBuilding) {
+                        } else if (z >= (15 - STREETBORDER) && x > STREETBORDER && x < (15 - STREETBORDER) && !new BuildingInfo(chunkX, chunkZ + 1, provider.seed).hasBuilding) {
                             b = street;
                         }
                         BaseTerrainGenerator.setBlockState(primer, index++, b);
@@ -1679,6 +1696,7 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
     public static int getFloor(int height) {
         return (height - 63) % 6;
     }
+
     public static int getLevel(int height) {
         return (height - 63) / 6;
     }
@@ -1692,6 +1710,6 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
     }
 
     private boolean isBorder(int x, int z) {
-        return x <= STREETBORDER || x >= (15-STREETBORDER) || z <= STREETBORDER || z >= (15-STREETBORDER);
+        return x <= STREETBORDER || x >= (15 - STREETBORDER) || z <= STREETBORDER || z >= (15 - STREETBORDER);
     }
 }
