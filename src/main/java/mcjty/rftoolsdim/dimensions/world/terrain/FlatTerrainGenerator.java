@@ -54,6 +54,9 @@ public class FlatTerrainGenerator extends NormalTerrainGenerator {
 //                        height++;
 //                    }
 //                } else {
+
+                // @todo
+//                BaseTerrainGenerator.setBlockStateRange(primer, index, index+height, baseBlock);
                     while (height < waterLevel) {
                         BaseTerrainGenerator.setBlockState(primer, index++, baseBlock);
                         height++;

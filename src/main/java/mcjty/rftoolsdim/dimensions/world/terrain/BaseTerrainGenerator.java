@@ -7,6 +7,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.ChunkPrimer;
+import scala.actors.threadpool.Arrays;
 
 /**
  * The base terrain generator.
@@ -22,6 +23,11 @@ public interface BaseTerrainGenerator {
 
     static void setBlockState(ChunkPrimer primer, int index, IBlockState state) {
         primer.data[index] = (char) Block.BLOCK_STATE_IDS.get(state);
+    }
+
+    // From 's' (inclusive) to 'e' (exclusive)
+    static void setBlockStateRange(ChunkPrimer primer, int s, int e, IBlockState state) {
+        Arrays.fill(primer.data, s, e, (char) Block.BLOCK_STATE_IDS.get(state));
     }
 
     static IBlockState getBlockState(ChunkPrimer primer, int index) {

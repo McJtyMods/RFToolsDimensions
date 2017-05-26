@@ -287,6 +287,9 @@ public class GenericChunkGenerator implements CompatChunkGenerator {
             case TERRAIN_ROUGH:
                 terrainGenerator = new RoughTerrainGenerator(false);
                 break;
+            case TERRAIN_LOSTCITIES:
+                terrainGenerator = new LostCitiesTerrainGenerator();
+                break;
             default:
                 terrainGenerator = new VoidTerrainGenerator();
                 break;

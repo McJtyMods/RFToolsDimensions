@@ -1,5 +1,6 @@
 package mcjty.rftoolsdim.dimensions.world;
 
+import mcjty.lib.tools.EntityTools;
 import mcjty.lib.tools.WorldTools;
 import mcjty.lib.varia.Logging;
 import mcjty.rftoolsdim.RFToolsDim;
@@ -13,14 +14,18 @@ import mcjty.rftoolsdim.dimensions.dimlets.KnownDimletConfiguration;
 import mcjty.rftoolsdim.dimensions.dimlets.types.Patreons;
 import mcjty.rftoolsdim.dimensions.types.FeatureType;
 import mcjty.rftoolsdim.dimensions.types.TerrainType;
+import mcjty.rftoolsdim.dimensions.world.terrain.LostCitiesTerrainGenerator;
 import mcjty.rftoolsdim.items.ModItems;
 import mcjty.rftoolsdim.varia.RarityRandomSelector;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockChest;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItemFrame;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
+import net.minecraft.tileentity.TileEntityMobSpawner;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -28,6 +33,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkGenerator;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.feature.WorldGenMinable;
+import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.fml.common.IWorldGenerator;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
@@ -84,6 +90,10 @@ public class GenericWorldGenerator implements IWorldGenerator {
             }
         }
 
+        if (information.getTerrainType() == TerrainType.TERRAIN_LOSTCITIES) {
+            generateLootSpawners(random, chunkX, chunkZ, world);
+        }
+
     }
 
     private void generateDimletDungeon(Random random, int chunkX, int chunkZ, World world) {
@@ -97,6 +107,104 @@ public class GenericWorldGenerator implements IWorldGenerator {
         if (starty > 1 && starty < world.getHeight()-20) {
             generateDungeon(world, random, midx, starty, midz);
         }
+    }
+
+    private void generateLootSpawners(Random random, int chunkX, int chunkZ, World world) {
+        LostCitiesTerrainGenerator.BuildingInfo info = new LostCitiesTerrainGenerator.BuildingInfo(chunkX, chunkZ, world.getSeed());
+
+        int buildingtop = 0;
+        boolean building = info.hasBuilding;
+        if (building) {
+            buildingtop = 69 + info.floors * 6;
+        }
+
+        int height = 63;
+
+
+        while (height < buildingtop) {
+            int f = LostCitiesTerrainGenerator.getFloor(height);
+            if (f == 0) {
+                BlockPos floorpos = new BlockPos(chunkX * 16, height, chunkZ * 16);
+                int floortype = info.floorTypes[LostCitiesTerrainGenerator.getLevel(height)];
+                LostCitiesTerrainGenerator.GenInfo getInfo = LostCitiesTerrainGenerator.getGenInfos().get(floortype);
+                for (BlockPos p : getInfo.getChest()) {
+                    BlockPos pos = floorpos.add(p);
+                    world.setBlockState(pos, Blocks.CHEST.getDefaultState().withProperty(BlockChest.FACING, EnumFacing.SOUTH));
+                    TileEntity tileentity = world.getTileEntity(pos);
+                    if (tileentity instanceof TileEntityChest) {
+                        switch (random.nextInt(30)) {
+                            case 0:
+                                ((TileEntityChest)tileentity).setLootTable(LootTableList.CHESTS_DESERT_PYRAMID, random.nextLong());
+                                break;
+                            case 1:
+                                ((TileEntityChest)tileentity).setLootTable(LootTableList.CHESTS_JUNGLE_TEMPLE, random.nextLong());
+                                break;
+                            case 2:
+                                ((TileEntityChest)tileentity).setLootTable(LootTableList.CHESTS_VILLAGE_BLACKSMITH, random.nextLong());
+                                break;
+                            case 3:
+                                ((TileEntityChest)tileentity).setLootTable(LootTableList.CHESTS_WOODLAND_MANSION, random.nextLong());
+                                break;
+                            case 4:
+                                ((TileEntityChest)tileentity).setLootTable(LootTableList.CHESTS_WOODLAND_MANSION, random.nextLong());
+                                break;
+                            case 5:
+                            case 6:
+                            case 7:
+                            case 8:
+                                ((TileEntityChest)tileentity).setLootTable(LostCitiesTerrainGenerator.LOOT, random.nextLong());
+                                break;
+                            default:
+                                ((TileEntityChest)tileentity).setLootTable(LootTableList.CHESTS_SIMPLE_DUNGEON, random.nextLong());
+                                break;
+                        }
+                    }
+                }
+                for (BlockPos p : getInfo.getRandomFeatures()) {
+                    BlockPos pos = floorpos.add(p);
+                    switch(random.nextInt(30)) {
+                        case 0:
+                            world.setBlockState(pos, Blocks.BREWING_STAND.getDefaultState());
+                            break;
+                        case 1:
+                            world.setBlockState(pos, Blocks.ANVIL.getDefaultState());
+                            break;
+                        case 2:
+                            world.setBlockState(pos, Blocks.CAULDRON.getDefaultState());
+                            break;
+                        case 3:
+                        case 4:
+                        case 5:
+                        case 6:
+                            world.setBlockState(pos, Blocks.CRAFTING_TABLE.getDefaultState());
+                            break;
+                        default:
+                            world.setBlockState(pos, Blocks.FURNACE.getDefaultState());
+                            break;
+                    }
+                }
+                for (BlockPos p : getInfo.getSpawnerType1()) {
+                    BlockPos pos = floorpos.add(p);
+                    world.setBlockState(pos, Blocks.MOB_SPAWNER.getDefaultState());
+                    TileEntity tileentity = world.getTileEntity(pos);
+                    if (tileentity instanceof TileEntityMobSpawner) {
+                        TileEntityMobSpawner spawner = (TileEntityMobSpawner) tileentity;
+                        EntityTools.setSpawnerEntity(world, spawner, new ResourceLocation("minecraft:zombie"), "Zombie");
+                    }
+                }
+                for (BlockPos p : getInfo.getSpawnerType2()) {
+                    BlockPos pos = floorpos.add(p);
+                    world.setBlockState(pos, Blocks.MOB_SPAWNER.getDefaultState());
+                    TileEntity tileentity = world.getTileEntity(pos);
+                    if (tileentity instanceof TileEntityMobSpawner) {
+                        TileEntityMobSpawner spawner = (TileEntityMobSpawner) tileentity;
+                        EntityTools.setSpawnerEntity(world, spawner, new ResourceLocation("minecraft:skeleton"), "Skeleton");
+                    }
+                }
+            }
+            height++;
+        }
+
     }
 
     private void generateVolcano(Random random, int chunkX, int chunkZ, World world) {
