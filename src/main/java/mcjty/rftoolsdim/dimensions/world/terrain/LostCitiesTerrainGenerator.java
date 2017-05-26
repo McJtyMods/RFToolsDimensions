@@ -1507,6 +1507,7 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
         public final boolean hasBuilding;
         public final int fountainType;
         public final int floors;
+        public final int floorsBelowGround;
         public final int[] floorTypes;
         public final boolean[] connectionAtX;
         public final boolean[] connectionAtZ;
@@ -1515,17 +1516,18 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
 
         public BuildingInfo(int chunkX, int chunkZ, long seed) {
             Random rand = getBuildingRandom(chunkX, chunkZ, seed);
-            hasBuilding = rand.nextFloat() < .3f;
+            hasBuilding = (chunkX != 0 || chunkZ != 0) && rand.nextFloat() < .3f;
             if (rand.nextFloat() < .05f) {
                 fountainType = rand.nextInt(FOUNTAINS.length);
             } else {
                 fountainType = -1;
             }
             floors = rand.nextInt(7);
-            floorTypes = new int[floors + 2];
-            connectionAtX = new boolean[floors + 2];
-            connectionAtZ = new boolean[floors + 2];
-            for (int i = 0; i <= floors + 1; i++) {
+            floorsBelowGround = rand.nextInt(3);
+            floorTypes = new int[floors+floorsBelowGround + 2];
+            connectionAtX = new boolean[floors+floorsBelowGround + 2];
+            connectionAtZ = new boolean[floors+floorsBelowGround + 2];
+            for (int i = 0; i <= floors+floorsBelowGround + 1; i++) {
                 floorTypes[i] = rand.nextInt(FLOORS.length);
                 connectionAtX[i] = rand.nextFloat() < .6f;
                 connectionAtZ[i] = rand.nextFloat() < .6f;
@@ -1556,18 +1558,25 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
         return rand;
     }
 
+    private IBlockState street;
+    private IBlockState air;
+    private IBlockState glass;
+    private IBlockState quartz;
+    private IBlockState bricks;
 
     @Override
     public void generate(int chunkX, int chunkZ, ChunkPrimer primer) {
         IBlockState baseBlock = provider.dimensionInformation.getBaseBlockForTerrain();
-        IBlockState stone = Blocks.STONE.getDefaultState();
-        IBlockState street = Blocks.DOUBLE_STONE_SLAB.getDefaultState();
-        IBlockState air = Blocks.AIR.getDefaultState();
-        IBlockState glass = Blocks.GLASS.getDefaultState();
-        IBlockState quartz = Blocks.QUARTZ_BLOCK.getDefaultState();
-        IBlockState bricks = Blocks.STONEBRICK.getDefaultState();
+        IBlockState baseLiquid = provider.dimensionInformation.getFluidForTerrain().getDefaultState();
 
-        byte waterLevel = height;
+        street = Blocks.DOUBLE_STONE_SLAB.getDefaultState();
+        air = Blocks.AIR.getDefaultState();
+        glass = Blocks.GLASS.getDefaultState();
+        quartz = Blocks.QUARTZ_BLOCK.getDefaultState();
+        bricks = Blocks.STONEBRICK.getDefaultState();
+
+        byte groundLevel = height;
+        byte waterLevel = (byte) (groundLevel-3);
 
         BuildingInfo info = new BuildingInfo(chunkX, chunkZ, provider.seed);
 
@@ -1577,6 +1586,9 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
             buildingtop = 69 + info.floors * 6;
         }
 
+        Random rand = new Random(provider.seed * 377 + chunkZ * 341873128712L + chunkX * 132897987541L);
+        rand.nextFloat();
+        rand.nextFloat();
 
         int index = 0;
         for (int x = 0; x < 16; ++x) {
@@ -1587,75 +1599,40 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
                     BaseTerrainGenerator.setBlockState(primer, index++, Blocks.BEDROCK.getDefaultState());
                     height++;
                 }
-                while (height < waterLevel) {
+
+                while (height < WorldgenConfiguration.bedrockLayer + 30 + rand.nextInt(3)) {
                     BaseTerrainGenerator.setBlockState(primer, index++, baseBlock);
                     height++;
                 }
 
                 if (building) {
-                    Level level = null;
+                    int belowGround = info.floorsBelowGround;
+
+                    while (height < groundLevel - belowGround*6) {
+                        BaseTerrainGenerator.setBlockState(primer, index++, height < waterLevel ? baseLiquid : baseBlock);
+                        height++;
+                    }
                     while (height < buildingtop) {
-                        int f = getFloor(height);
-                        int l = getLevel(height);
-                        if (f == 0) {
-                            int floortype = info.floorTypes[l];
-                            level = FLOORS[floortype];
-                        }
-                        IBlockState b = level.get(x, f, z);
-                        if (x == 0 && z == 8 && f >= 1 && f <= 2 && info.hasConnectionAtX(l)) {
-                            BuildingInfo info2 = new BuildingInfo(chunkX - 1, chunkZ, provider.seed);
-                            if (info2.hasBuilding && l <= info2.floors + 1) {
-                                b = air;
-                            } else if (!info2.hasBuilding && l == 0) {
-                                b = air;
-                            }
-                        } else if (x == 15 && z == 8 && f >= 1 && f <= 2) {
-                            BuildingInfo info2 = new BuildingInfo(chunkX + 1, chunkZ, provider.seed);
-                            if (info2.hasBuilding && l <= info2.floors + 1 && info2.hasConnectionAtX(l)) {
-                                b = air;
-                            } else if (!info2.hasBuilding && l == 0) {
-                                b = air;
-                            }
-                        }
-                        if (z == 0 && x == 8 && f >= 1 && f <= 2 && info.hasConnectionAtZ(l)) {
-                            BuildingInfo info2 = new BuildingInfo(chunkX, chunkZ - 1, provider.seed);
-                            if (info2.hasBuilding && l <= info2.floors + 1) {
-                                b = air;
-                            } else if (!info2.hasBuilding && l == 0) {
-                                b = air;
-                            }
-                        } else if (z == 15 && x == 8 && f >= 1 && f <= 2) {
-                            BuildingInfo info2 = new BuildingInfo(chunkX, chunkZ + 1, provider.seed);
-                            if (info2.hasBuilding && l <= info2.floors + 1 && info2.hasConnectionAtZ(l)) {
-                                b = air;
-                            } else if (!info2.hasBuilding && l == 0) {
-                                b = air;
-                            }
-                        }
-
-                        if (b.getBlock() == Blocks.GRAVEL) {
-                            switch (info.glassType) {
-                                case 0: b = glass; break;
-                                case 1: b = street; break;
-                                case 2: b = bricks; break;
-                                case 3: b = quartz; break;
-                            }
-                        }
-
+                        IBlockState b = getBlockForLevel(chunkX, chunkZ, info, x, z, height);
                         BaseTerrainGenerator.setBlockState(primer, index++, b);
                         height++;
                     }
                     while (height < buildingtop + 6) {
                         int f = getFloor(height);
                         int floortype = info.topType;
-                        level = TOPS[floortype];
+                        Level level = TOPS[floortype];
                         IBlockState b = level.get(x, f, z);
                         BaseTerrainGenerator.setBlockState(primer, index++, b);
                         height++;
                     }
                 } else {
+                    while (height < groundLevel) {
+                        BaseTerrainGenerator.setBlockState(primer, index++, height < waterLevel ? baseLiquid : baseBlock);
+                        height++;
+                    }
+
                     if (isBorder(x, z)) {
-                        IBlockState b = stone;
+                        IBlockState b = baseBlock;
                         if (x <= STREETBORDER && z > STREETBORDER && z < (15 - STREETBORDER) && !new BuildingInfo(chunkX - 1, chunkZ, provider.seed).hasBuilding) {
                             b = street;
                         } else if (x >= (15 - STREETBORDER) && z > STREETBORDER && z < (15 - STREETBORDER) && !new BuildingInfo(chunkX + 1, chunkZ, provider.seed).hasBuilding) {
@@ -1684,17 +1661,65 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
                     }
                 }
 
-                while (height < 256) {
-                    BaseTerrainGenerator.setBlockState(primer, index++, air);
-                    height++;
-                }
+                int blocks = 256 - height;
+                BaseTerrainGenerator.setBlockStateRange(primer, index, index + blocks, air);
+//                BaseTerrainGenerator.setBlockState(primer, index++, air);
+                index += blocks;
             }
         }
+    }
 
+    private IBlockState getBlockForLevel(int chunkX, int chunkZ, BuildingInfo info, int x, int z, int height) {
+        int f = getFloor(height);
+        int l = getLevel(height) + info.floorsBelowGround;
+        Level level = FLOORS[info.floorTypes[l]];
+        IBlockState b = level.get(x, f, z);
+        if (x == 0 && z == 8 && f >= 1 && f <= 2 && info.hasConnectionAtX(l)) {
+            BuildingInfo info2 = new BuildingInfo(chunkX - 1, chunkZ, provider.seed);
+            if (info2.hasBuilding && l <= info2.floors + 1) {
+                b = air;
+            } else if (!info2.hasBuilding && l == 0) {
+                b = air;
+            }
+        } else if (x == 15 && z == 8 && f >= 1 && f <= 2) {
+            BuildingInfo info2 = new BuildingInfo(chunkX + 1, chunkZ, provider.seed);
+            if (info2.hasBuilding && l <= info2.floors + 1 && info2.hasConnectionAtX(l)) {
+                b = air;
+            } else if (!info2.hasBuilding && l == 0) {
+                b = air;
+            }
+        }
+        if (z == 0 && x == 8 && f >= 1 && f <= 2 && info.hasConnectionAtZ(l)) {
+            BuildingInfo info2 = new BuildingInfo(chunkX, chunkZ - 1, provider.seed);
+            if (info2.hasBuilding && l <= info2.floors + 1) {
+                b = air;
+            } else if (!info2.hasBuilding && l == 0) {
+                b = air;
+            }
+        } else if (z == 15 && x == 8 && f >= 1 && f <= 2) {
+            BuildingInfo info2 = new BuildingInfo(chunkX, chunkZ + 1, provider.seed);
+            if (info2.hasBuilding && l <= info2.floors + 1 && info2.hasConnectionAtZ(l)) {
+                b = air;
+            } else if (!info2.hasBuilding && l == 0) {
+                b = air;
+            }
+        }
+        if (b.getBlock() == Blocks.GRAVEL) {
+            switch (info.glassType) {
+                case 0: b = glass; break;
+                case 1: b = street; break;
+                case 2: b = bricks; break;
+                case 3: b = quartz; break;
+            }
+        } else if (b.getBlock() == Blocks.LADDER && f == 0 && l == 0) {
+            b = bricks;
+        }
+
+        return b;
     }
 
     public static int getFloor(int height) {
-        return (height - 63) % 6;
+        return (height - 3) % 6;        // -3 instead of -63 because we can also go below the floor
     }
 
     public static int getLevel(int height) {

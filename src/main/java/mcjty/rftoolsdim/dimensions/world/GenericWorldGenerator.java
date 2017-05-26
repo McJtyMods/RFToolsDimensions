@@ -118,14 +118,14 @@ public class GenericWorldGenerator implements IWorldGenerator {
             buildingtop = 69 + info.floors * 6;
         }
 
-        int height = 63;
+        int height = 63 - info.floorsBelowGround * 6;
 
 
         while (height < buildingtop) {
             int f = LostCitiesTerrainGenerator.getFloor(height);
             if (f == 0) {
                 BlockPos floorpos = new BlockPos(chunkX * 16, height, chunkZ * 16);
-                int floortype = info.floorTypes[LostCitiesTerrainGenerator.getLevel(height)];
+                int floortype = info.floorTypes[LostCitiesTerrainGenerator.getLevel(height) + info.floorsBelowGround];
                 LostCitiesTerrainGenerator.GenInfo getInfo = LostCitiesTerrainGenerator.getGenInfos().get(floortype);
                 for (BlockPos p : getInfo.getChest()) {
                     BlockPos pos = floorpos.add(p);
