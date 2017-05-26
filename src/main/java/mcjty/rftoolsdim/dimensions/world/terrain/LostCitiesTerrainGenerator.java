@@ -39,6 +39,118 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
         }
     }
 
+    private static Level[] FOUNTAINS = new Level[]
+            {
+                    new Level(new String[]{
+                            "" +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "      xxxx      " +
+                                    "      xWWx      " +
+                                    "      xWWx      " +
+                                    "      xxxx      " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                "
+                    }),
+                    new Level(new String[]{
+                            "" +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "       xx       " +
+                                    "      xWWx      " +
+                                    "     xWWWWx     " +
+                                    "     xWWWWx     " +
+                                    "      xWWx      " +
+                                    "       xx       " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                "
+                    }),
+                    new Level(new String[]{
+                            "" +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "      xxxx      " +
+                                    "      xWWx      " +
+                                    "      xWWx      " +
+                                    "      xxxx      " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                ",
+                            "" +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "      :  :      " +
+                                    "                " +
+                                    "                " +
+                                    "      :  :      " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                ",
+                            "" +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "      :  :      " +
+                                    "                " +
+                                    "                " +
+                                    "      :  :      " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                ",
+                            "" +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "      xxxx      " +
+                                    "      x  x      " +
+                                    "      x  x      " +
+                                    "      xxxx      " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                "
+                    })
+            };
+
     private static Level[] TOPS = new Level[]
             {
                     new Level(new String[]{
@@ -529,6 +641,110 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
                                     "=              =" +
                                     "=              =" +
                                     "=              =" +
+                                    "#==============#",
+                            "" +
+                                    "################" +
+                                    "################" +
+                                    "################" +
+                                    "################" +
+                                    "################" +
+                                    "################" +
+                                    "################" +
+                                    "################" +
+                                    "################" +
+                                    "#######l########" +
+                                    "################" +
+                                    "################" +
+                                    "################" +
+                                    "################" +
+                                    "################" +
+                                    "################",
+                            "" +
+                                    "################" +
+                                    "################" +
+                                    "################" +
+                                    "################" +
+                                    "################" +
+                                    "################" +
+                                    "################" +
+                                    "################" +
+                                    "################" +
+                                    "#######l########" +
+                                    "################" +
+                                    "################" +
+                                    "################" +
+                                    "################" +
+                                    "################" +
+                                    "################"
+                    }),
+                    new Level(new String[]{
+                            "" +
+                                    "################" +
+                                    "################" +
+                                    "################" +
+                                    "################" +
+                                    "################" +
+                                    "################" +
+                                    "################" +
+                                    "################" +
+                                    "################" +
+                                    "#######l########" +
+                                    "################" +
+                                    "################" +
+                                    "################" +
+                                    "################" +
+                                    "################" +
+                                    "################",
+                            "" +
+                                    "#==============#" +
+                                    "=WWWWWWWWWWWWWW=" +
+                                    "=WWWWWWWWWWWWWW=" +
+                                    "=WWWWWWWWWWWWWW=" +
+                                    "=WWWWWWWWWWWWWW=" +
+                                    "================" +
+                                    "=              =" +
+                                    "=              =" +
+                                    "=L             =" +
+                                    "=F     l       =" +
+                                    "=F    xxx::::::=" +
+                                    "=      :       =" +
+                                    "=      :       =" +
+                                    "=      :       =" +
+                                    "=      :       =" +
+                                    "#==============#",
+                            "" +
+                                    "#==============#" +
+                                    "=WWWWWWWWWWWWWW=" +
+                                    "=WWWWWWWWWWWWWW=" +
+                                    "=WWWWWWWWWWWWWW=" +
+                                    "=WWWWWWWWWWWWWW=" +
+                                    "================" +
+                                    "=              =" +
+                                    "=              =" +
+                                    "=L             =" +
+                                    "=      l       =" +
+                                    "=     xxx::::::=" +
+                                    "=      :       =" +
+                                    "=      :       =" +
+                                    "=      :       =" +
+                                    "=      :       =" +
+                                    "#==============#",
+                            "" +
+                                    "#==============#" +
+                                    "=WWWWWWWWWWWWWW=" +
+                                    "=WWWWWWWWWWWWWW=" +
+                                    "=WWWWWWWWWWWWWW=" +
+                                    "=WWWWWWWWWWWWWW=" +
+                                    "================" +
+                                    "=              =" +
+                                    "=              =" +
+                                    "=L             =" +
+                                    "=      l       =" +
+                                    "=     xxx::::::=" +
+                                    "=      :       =" +
+                                    "=      :       =" +
+                                    "=      :       =" +
+                                    "=      :       =" +
                                     "#==============#",
                             "" +
                                     "################" +
@@ -1251,6 +1467,7 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
             mapping.put('X', Blocks.MONSTER_EGG.getDefaultState().withProperty(BlockSilverfish.VARIANT, BlockSilverfish.EnumType.STONEBRICK));
             mapping.put('Q', Blocks.QUARTZ_BLOCK.getDefaultState());
             mapping.put('L', Blocks.BOOKSHELF.getDefaultState());
+            mapping.put('W', Blocks.WATER.getDefaultState());
         }
         return mapping;
     }
@@ -1285,6 +1502,7 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
 
     public static class BuildingInfo {
         public final boolean hasBuilding;
+        public final int fountainType;
         public final int floors;
         public final int[] floorTypes;
         public final boolean[] connectionAtX;
@@ -1293,17 +1511,22 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
 
         public BuildingInfo(int chunkX, int chunkZ, long seed) {
             Random rand = getBuildingRandom(chunkX, chunkZ, seed);
-            hasBuilding = hasBuilding(rand);
-            floors = buildingFloors(rand);
+            hasBuilding = rand.nextFloat() < .3f;
+            if (rand.nextFloat() < .05f) {
+                fountainType = rand.nextInt(FOUNTAINS.length);
+            } else {
+                fountainType = -1;
+            }
+            floors = rand.nextInt(7);
             floorTypes = new int[floors+2];
             connectionAtX = new boolean[floors+2];
             connectionAtZ = new boolean[floors+2];
             for (int i = 0 ; i <= floors+1 ; i++) {
-                floorTypes[i] = getFloorType(rand);
-                connectionAtX[i] = hasConnectionX(rand);
-                connectionAtZ[i] = hasConnectionZ(rand);
+                floorTypes[i] = rand.nextInt(FLOORS.length);
+                connectionAtX[i] = rand.nextFloat() < .6f;
+                connectionAtZ[i] = rand.nextFloat() < .6f;
             }
-            topType = getTopTye(rand);
+            topType = rand.nextInt(TOPS.length);
         }
 
         public boolean hasConnectionAtX(int level) {
@@ -1321,42 +1544,11 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
         }
     }
 
-    public static boolean hasBuildingAt(int chunkX, int chunkZ, long seed) {
-        Random rand = getBuildingRandom(chunkX, chunkZ, seed);
-        return hasBuilding(rand);
-    }
-
     public static Random getBuildingRandom(int chunkX, int chunkZ, long seed) {
         Random rand = new Random(seed + chunkZ * 341873128712L + chunkX * 132897987541L);
         rand.nextFloat();
         rand.nextFloat();
         return rand;
-    }
-
-    public static boolean hasBuilding(Random rand) {
-        return rand.nextFloat() < .3f;
-    }
-
-    public static int buildingFloors(Random rand) {
-        return rand.nextInt(7);
-    }
-
-    public static int getFloorType(Random rand) {
-        return rand.nextInt(FLOORS.length);
-    }
-
-    public static int getTopTye(Random rand) {
-        return rand.nextInt(TOPS.length);
-    }
-
-    // Connection possibility at X = 0
-    public static boolean hasConnectionX(Random rand) {
-        return rand.nextFloat() < .6f;
-    }
-
-    // Connection possibility at Z = 0
-    public static boolean hasConnectionZ(Random rand) {
-        return rand.nextFloat() < .6f;
     }
 
 
@@ -1461,6 +1653,17 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
                     } else {
                         BaseTerrainGenerator.setBlockState(primer, index++, street);
                         height++;
+                    }
+
+                    if (info.fountainType >= 0) {
+                        int l = 0;
+                        Level level = FOUNTAINS[info.fountainType];
+                        while (l < level.floor.length) {
+                            IBlockState b = level.get(x, l, z);
+                            BaseTerrainGenerator.setBlockState(primer, index++, b);
+                            height++;
+                            l++;
+                        }
                     }
                 }
 
