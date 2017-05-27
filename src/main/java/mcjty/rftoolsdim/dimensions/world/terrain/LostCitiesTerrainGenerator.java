@@ -2,6 +2,8 @@ package mcjty.rftoolsdim.dimensions.world.terrain;
 
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.config.WorldgenConfiguration;
+import net.minecraft.block.BlockPlanks;
+import net.minecraft.block.BlockSapling;
 import net.minecraft.block.BlockSilverfish;
 import net.minecraft.block.BlockStoneBrick;
 import net.minecraft.block.state.IBlockState;
@@ -336,6 +338,110 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
                                     "                " +
                                     "                " +
                                     "      :         " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                ",
+                            "" +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                ",
+                    }),
+                    new Level(new String[]{
+                            "" +
+                                    "################" +
+                                    "#GGDDDGGDDDDGDD#" +
+                                    "#GDGDGGDGGGDDGG#" +
+                                    "#GGGGDDGDDDDGDD#" +
+                                    "#DDDDGGGDDDGDDD#" +
+                                    "#GGDDDDGDDGDDDD#" +
+                                    "#DGDGGGDGGDDDDD#" +
+                                    "#DGGGGGGDDDDDDD#" +
+                                    "#GDGDDDGGGDDDDD#" +
+                                    "#DDGDDDlGDGDDDD#" +
+                                    "#GDGDDDDGDDGDDD#" +
+                                    "#DDGDDDGDGDDGDD#" +
+                                    "#DGGDGGDDDGDDDD#" +
+                                    "#DGDDDDDGDGDDGD#" +
+                                    "#GGDDDGDDDDGGDD#" +
+                                    "################",
+                            "" +
+                                    "w              w" +
+                                    "      p      p  " +
+                                    "    p   xxxx    " +
+                                    "        xWWx    " +
+                                    "      p xWWx    " +
+                                    "  p     xxxx p  " +
+                                    "      p  p      " +
+                                    "    p           " +
+                                    "             p  " +
+                                    "                " +
+                                    "  p       p     " +
+                                    "                " +
+                                    "    p  p        " +
+                                    "            p   " +
+                                    "     p          " +
+                                    "w              w",
+                            "" +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                ",
+                            "" +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                ",
+                            "" +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
                                     "                " +
                                     "                " +
                                     "                " +
@@ -1466,11 +1572,14 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
             mapping.put('F', Blocks.PLANKS.getDefaultState());      // Random feature
             mapping.put(':', Blocks.IRON_BARS.getDefaultState());
             mapping.put('D', Blocks.DIRT.getDefaultState());
+            mapping.put('G', Blocks.GRASS.getDefaultState());
+            mapping.put('p', Blocks.SAPLING.getDefaultState());
             mapping.put('*', Blocks.FLOWER_POT.getDefaultState());
             mapping.put('X', Blocks.MONSTER_EGG.getDefaultState().withProperty(BlockSilverfish.VARIANT, BlockSilverfish.EnumType.STONEBRICK));
             mapping.put('Q', Blocks.QUARTZ_BLOCK.getDefaultState());
             mapping.put('L', Blocks.BOOKSHELF.getDefaultState());
             mapping.put('W', Blocks.WATER.getDefaultState());
+            mapping.put('w', Blocks.COBBLESTONE_WALL.getDefaultState());
         }
         return mapping;
     }
@@ -1625,6 +1734,7 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
                         int floortype = info.topType;
                         Level level = TOPS[floortype];
                         IBlockState b = level.get(x, f, z);
+                        b = getReplacementBlock(rand, info, b, false);
                         BaseTerrainGenerator.setBlockState(primer, index++, b);
                         height++;
                     }
@@ -1707,6 +1817,12 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
                 b = air;
             }
         }
+        boolean down = f == 0 && l == 0;
+
+        return getReplacementBlock(rand, info, b, down);
+    }
+
+    private IBlockState getReplacementBlock(Random rand, BuildingInfo info, IBlockState b, boolean down) {
         if (b.getBlock() == Blocks.GRAVEL) {
             switch (info.glassType) {
                 case 0: b = glass; break;
@@ -1714,14 +1830,41 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
                 case 2: b = bricks; break;
                 case 3: b = quartz; break;
             }
-        } else if (b.getBlock() == Blocks.LADDER && f == 0 && l == 0) {
+        } else if (b.getBlock() == Blocks.LADDER && down) {
             b = bricks;
+        } else if (b.getBlock() == Blocks.SAPLING) {
+            switch (rand.nextInt(11)) {
+                case 0:
+                case 1:
+                case 2:
+                    b = Blocks.RED_FLOWER.getDefaultState();
+                    break;
+                case 3:
+                case 4:
+                case 5:
+                    b = Blocks.YELLOW_FLOWER.getDefaultState();
+                    break;
+                case 6:
+                    b = Blocks.SAPLING.getDefaultState().withProperty(BlockSapling.TYPE, BlockPlanks.EnumType.ACACIA);
+                    break;
+                case 7:
+                    b = Blocks.SAPLING.getDefaultState().withProperty(BlockSapling.TYPE, BlockPlanks.EnumType.BIRCH);
+                    break;
+                case 8:
+                    b = Blocks.SAPLING.getDefaultState().withProperty(BlockSapling.TYPE, BlockPlanks.EnumType.OAK);
+                    break;
+                case 9:
+                    b = Blocks.SAPLING.getDefaultState().withProperty(BlockSapling.TYPE, BlockPlanks.EnumType.SPRUCE);
+                    break;
+                default:
+                    b = air;
+                    break;
+            }
         }
 
         if (b == bricks && rand.nextFloat() < 0.06f) {
             b = bricks_cracked;
         }
-
         return b;
     }
 
