@@ -1,8 +1,13 @@
 package mcjty.rftoolsdim.dimensions.world;
 
+import mcjty.lib.container.GenericBlock;
 import mcjty.lib.tools.EntityTools;
+import mcjty.lib.tools.ItemStackTools;
 import mcjty.lib.tools.WorldTools;
 import mcjty.lib.varia.Logging;
+import mcjty.rftools.blocks.storage.ModularStorageContainer;
+import mcjty.rftools.blocks.storage.ModularStorageItemContainer;
+import mcjty.rftools.blocks.storage.ModularStorageTileEntity;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.blocks.ModBlocks;
 import mcjty.rftoolsdim.config.WorldgenConfiguration;
@@ -22,6 +27,8 @@ import net.minecraft.block.BlockChest;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItemFrame;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
@@ -58,8 +65,8 @@ public class GenericWorldGenerator implements IWorldGenerator {
 
         Block dimensionalShardBlock = ForgeRegistries.BLOCKS.getValue(new ResourceLocation("rftools", "dimensional_shard_ore"));
         addOreSpawn(dimensionalShardBlock.getDefaultState(), Blocks.STONE.getDefaultState(), world, random, chunkX * 16, chunkZ * 16,
-                    WorldgenConfiguration.oreMinimumVeinSize, WorldgenConfiguration.oreMaximumVeinSize, WorldgenConfiguration.oreMaximumVeinCount,
-                    WorldgenConfiguration.oreMinimumHeight, WorldgenConfiguration.oreMaximumHeight);
+                WorldgenConfiguration.oreMinimumVeinSize, WorldgenConfiguration.oreMaximumVeinSize, WorldgenConfiguration.oreMaximumVeinCount,
+                WorldgenConfiguration.oreMinimumHeight, WorldgenConfiguration.oreMaximumHeight);
 
         if (information.isPatreonBitSet(Patreons.PATREON_PUPPETEER) && Math.abs(chunkX) <= 1 && Math.abs(chunkZ) <= 1) {
             generateBigSpawnPlatform(world, chunkX, chunkZ, puppeteerSpawnPlatform);
@@ -100,11 +107,11 @@ public class GenericWorldGenerator implements IWorldGenerator {
         int midx = chunkX * 16 + 8;
         int midz = chunkZ * 16 + 8;
         int starty1 = WorldGenerationTools.findSuitableEmptySpot(world, midx - 3, midz - 3);
-        int starty2 = WorldGenerationTools.findSuitableEmptySpot(world, midx+3, midz-3);
-        int starty3 = WorldGenerationTools.findSuitableEmptySpot(world, midx-3, midz+3);
-        int starty4 = WorldGenerationTools.findSuitableEmptySpot(world, midx+3, midz+3);
-        int starty = (starty1+starty2+starty3+starty4) / 4;
-        if (starty > 1 && starty < world.getHeight()-20) {
+        int starty2 = WorldGenerationTools.findSuitableEmptySpot(world, midx + 3, midz - 3);
+        int starty3 = WorldGenerationTools.findSuitableEmptySpot(world, midx - 3, midz + 3);
+        int starty4 = WorldGenerationTools.findSuitableEmptySpot(world, midx + 3, midz + 3);
+        int starty = (starty1 + starty2 + starty3 + starty4) / 4;
+        if (starty > 1 && starty < world.getHeight() - 20) {
             generateDungeon(world, random, midx, starty, midz);
         }
     }
@@ -129,59 +136,11 @@ public class GenericWorldGenerator implements IWorldGenerator {
                 LostCitiesTerrainGenerator.GenInfo getInfo = LostCitiesTerrainGenerator.getGenInfos().get(floortype);
                 for (BlockPos p : getInfo.getChest()) {
                     BlockPos pos = floorpos.add(p);
-                    world.setBlockState(pos, Blocks.CHEST.getDefaultState().withProperty(BlockChest.FACING, EnumFacing.SOUTH));
-                    TileEntity tileentity = world.getTileEntity(pos);
-                    if (tileentity instanceof TileEntityChest) {
-                        switch (random.nextInt(30)) {
-                            case 0:
-                                ((TileEntityChest)tileentity).setLootTable(LootTableList.CHESTS_DESERT_PYRAMID, random.nextLong());
-                                break;
-                            case 1:
-                                ((TileEntityChest)tileentity).setLootTable(LootTableList.CHESTS_JUNGLE_TEMPLE, random.nextLong());
-                                break;
-                            case 2:
-                                ((TileEntityChest)tileentity).setLootTable(LootTableList.CHESTS_VILLAGE_BLACKSMITH, random.nextLong());
-                                break;
-                            case 3:
-                                ((TileEntityChest)tileentity).setLootTable(LootTableList.CHESTS_WOODLAND_MANSION, random.nextLong());
-                                break;
-                            case 4:
-                                ((TileEntityChest)tileentity).setLootTable(LootTableList.CHESTS_WOODLAND_MANSION, random.nextLong());
-                                break;
-                            case 5:
-                            case 6:
-                            case 7:
-                            case 8:
-                                ((TileEntityChest)tileentity).setLootTable(LostCitiesTerrainGenerator.LOOT, random.nextLong());
-                                break;
-                            default:
-                                ((TileEntityChest)tileentity).setLootTable(LootTableList.CHESTS_SIMPLE_DUNGEON, random.nextLong());
-                                break;
-                        }
-                    }
+                    createLootChest(random, world, pos);
                 }
                 for (BlockPos p : getInfo.getRandomFeatures()) {
                     BlockPos pos = floorpos.add(p);
-                    switch(random.nextInt(30)) {
-                        case 0:
-                            world.setBlockState(pos, Blocks.BREWING_STAND.getDefaultState());
-                            break;
-                        case 1:
-                            world.setBlockState(pos, Blocks.ANVIL.getDefaultState());
-                            break;
-                        case 2:
-                            world.setBlockState(pos, Blocks.CAULDRON.getDefaultState());
-                            break;
-                        case 3:
-                        case 4:
-                        case 5:
-                        case 6:
-                            world.setBlockState(pos, Blocks.CRAFTING_TABLE.getDefaultState());
-                            break;
-                        default:
-                            world.setBlockState(pos, Blocks.FURNACE.getDefaultState());
-                            break;
-                    }
+                    createRandomFeature(random, world, pos);
                 }
                 for (BlockPos p : getInfo.getSpawnerType1()) {
                     BlockPos pos = floorpos.add(p);
@@ -205,6 +164,105 @@ public class GenericWorldGenerator implements IWorldGenerator {
             height++;
         }
 
+    }
+
+    private void createRandomFeature(Random random, World world, BlockPos pos) {
+        switch (random.nextInt(60)) {
+            case 0:
+            case 1:
+                world.setBlockState(pos, Blocks.BREWING_STAND.getDefaultState());
+                break;
+            case 2:
+            case 3:
+                world.setBlockState(pos, Blocks.ANVIL.getDefaultState());
+                break;
+            case 4:
+            case 5:
+                world.setBlockState(pos, Blocks.CAULDRON.getDefaultState());
+                break;
+            case 10:
+            case 11:
+            case 12:
+            case 13:
+            case 14:
+            case 15:
+            case 16:
+                world.setBlockState(pos, Blocks.CRAFTING_TABLE.getDefaultState());
+                break;
+            case 20: {
+                Item storageModule = ForgeRegistries.ITEMS.getValue(new ResourceLocation("rftools", "storage_module"));
+                ItemStack module = new ItemStack(storageModule);
+
+                Block storageBlock = ForgeRegistries.BLOCKS.getValue(new ResourceLocation("rftools", "modular_storage"));
+                world.setBlockState(pos, storageBlock.getDefaultState().withProperty(GenericBlock.FACING, EnumFacing.HORIZONTALS[random.nextInt(EnumFacing.HORIZONTALS.length)]));
+                TileEntity te = world.getTileEntity(pos);
+                if (te instanceof ModularStorageTileEntity) {
+                    ModularStorageTileEntity storage = (ModularStorageTileEntity) te;
+                    storage.setInventorySlotContents(ModularStorageContainer.SLOT_STORAGE_MODULE, module);
+                    for (int i = 0 ; i < 5 + random.nextInt(10) ; i++) {
+                        storage.setInventorySlotContents(i+ModularStorageContainer.SLOT_STORAGE, randomLoot(random));
+                    }
+                }
+            }
+            break;
+            default:
+                world.setBlockState(pos, Blocks.FURNACE.getDefaultState());
+                break;
+        }
+    }
+
+    private ItemStack randomLoot(Random rand) {
+        switch (rand.nextInt(10)) {
+            case 0:
+                return DimletRandomizer.getRandomPart(rand);
+            case 1:
+                return DimletRandomizer.getRandomPart(rand);
+            case 2:
+                RarityRandomSelector.Distribution<Integer> bestDistribution = DimletRandomizer.getRandomDimlets().createDistribution(0.2f);
+                DimletKey key = DimletRandomizer.getRandomDimlets().select(bestDistribution, rand);
+                if (key != null) {
+                    return KnownDimletConfiguration.getDimletStack(key);
+                } else {
+                    return ItemStackTools.getEmptyStack();
+                }
+            case 3:
+                return new ItemStack(ModItems.dimletParcelItem, 1+rand.nextInt(3));
+            default:
+                return new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation("rftools", "dimensional_shard")), rand.nextInt(20)+10);
+        }
+    }
+
+    private void createLootChest(Random random, World world, BlockPos pos) {
+        world.setBlockState(pos, Blocks.CHEST.getDefaultState().withProperty(BlockChest.FACING, EnumFacing.SOUTH));
+        TileEntity tileentity = world.getTileEntity(pos);
+        if (tileentity instanceof TileEntityChest) {
+            switch (random.nextInt(30)) {
+                case 0:
+                    ((TileEntityChest) tileentity).setLootTable(LootTableList.CHESTS_DESERT_PYRAMID, random.nextLong());
+                    break;
+                case 1:
+                    ((TileEntityChest) tileentity).setLootTable(LootTableList.CHESTS_JUNGLE_TEMPLE, random.nextLong());
+                    break;
+                case 2:
+                    ((TileEntityChest) tileentity).setLootTable(LootTableList.CHESTS_VILLAGE_BLACKSMITH, random.nextLong());
+                    break;
+                case 3:
+                    ((TileEntityChest) tileentity).setLootTable(LootTableList.CHESTS_WOODLAND_MANSION, random.nextLong());
+                    break;
+                case 4:
+                    ((TileEntityChest) tileentity).setLootTable(LootTableList.CHESTS_WOODLAND_MANSION, random.nextLong());
+                    break;
+                case 5:
+                case 6:
+                case 7:
+                case 8:
+                    ((TileEntityChest) tileentity).setLootTable(LostCitiesTerrainGenerator.LOOT, random.nextLong());
+                    break;
+                default:
+                    ((TileEntityChest) tileentity).setLootTable(LootTableList.CHESTS_SIMPLE_DUNGEON, random.nextLong());
+                    break;
+            }
+        }
     }
 
     private void generateVolcano(Random random, int chunkX, int chunkZ, World world) {
@@ -232,24 +290,24 @@ public class GenericWorldGenerator implements IWorldGenerator {
         int x = chunkX * 16 + 8;
         int z = chunkZ * 16 + 8;
         int y = world.getTopSolidOrLiquidBlock(new BlockPos(x, 0, z)).getY();
-        int y1 = world.getTopSolidOrLiquidBlock(new BlockPos(x-7, 0, z-7)).getY();
+        int y1 = world.getTopSolidOrLiquidBlock(new BlockPos(x - 7, 0, z - 7)).getY();
         if (y1 < y) {
             y = y1;
         }
-        y1 = world.getTopSolidOrLiquidBlock(new BlockPos(x+7, 0, z-7)).getY();
+        y1 = world.getTopSolidOrLiquidBlock(new BlockPos(x + 7, 0, z - 7)).getY();
         if (y1 < y) {
             y = y1;
         }
-        y1 = world.getTopSolidOrLiquidBlock(new BlockPos(x-7, 0, z+7)).getY();
+        y1 = world.getTopSolidOrLiquidBlock(new BlockPos(x - 7, 0, z + 7)).getY();
         if (y1 < y) {
             y = y1;
         }
-        y1 = world.getTopSolidOrLiquidBlock(new BlockPos(x+7, 0, z+7)).getY();
+        y1 = world.getTopSolidOrLiquidBlock(new BlockPos(x + 7, 0, z + 7)).getY();
         if (y1 < y) {
             y = y1;
         }
         if (y > 10 && y < 230) {
-            for (int i = 7 ; i >= 0 ; i--) {
+            for (int i = 7; i >= 0; i--) {
                 if (i == 0) {
                     setStainedGlassIfAir(world, x, y, z, i);
                 } else {
@@ -276,38 +334,38 @@ public class GenericWorldGenerator implements IWorldGenerator {
         int z = chunkZ * 16 + random.nextInt(16);
         int y = world.getTopSolidOrLiquidBlock(new BlockPos(x, 0, z)).getY();
         if (y > 10 && y < 240) {
-            for (int i = 0 ; i < random.nextInt(3) + 2 ; i++) {
+            for (int i = 0; i < random.nextInt(3) + 2; i++) {
                 world.setBlockState(new BlockPos(x, y++, z), Blocks.STAINED_HARDENED_CLAY.getStateFromMeta(6), 2);
             }
             world.setBlockState(new BlockPos(x, y, z), Blocks.STAINED_GLASS.getStateFromMeta(6), 2);
         }
     }
 
-    private static int[][] puppeteerSpawnPlatform = new int[][] {
-            { -1, -1, -1, -1, -1, -1, -1, -1, 15, 15, 15, 15, 15, 15, 15, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
-            { -1, -1, -1, -1, -1, -1, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, -1, -1, -1, -1, -1, -1, -1 },
-            { -1, -1, -1, -1, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, -1, -1, -1, -1, -1 },
-            { -1, -1, -1, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, -1, -1, -1, -1 },
-            { -1, -1, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, -1, -1, -1 },
-            { -1, -1, 15, 15, 15, 15,  0,  0,  0, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, -1, -1, -1 },
-            { -1, 15, 15, 15, 15,  0,  0,  0,  0,  0, 15, 15, 15,  0, 15, 15, 15,  0, 15, 15, 15, 15, -1, -1 },
-            { -1, 15, 15, 15,  0,  0, 15,  0, 15,  0,  0, 15, 15, 15,  0, 15,  0, 15, 15, 15, 15, 15, -1, -1 },
-            { 15, 15, 15, 15,  0,  0,  0,  0,  0,  0,  0, 15, 15, 15, 15,  0, 15, 15, 15, 15, 15, 15, 15, -1 },
-            { 15, 15, 15, 15,  0,  0, 15,  0, 15,  0,  0, 15, 15, 15,  0, 15,  0, 15, 15, 15, 15, 15, 15, -1 },
-            { 15, 15, 15, 15, 15,  0,  0,  0,  0,  0, 15, 15, 15,  0, 15, 15, 15,  0, 15, 15, 15, 15, 15, -1 },
-            { 15, 15, 15, 15, 15, 15,  0,  0,  0, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, -1 },
-            { 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, -1 },
-            { 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, -2, 15,  0, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, -1 },
-            { 15, 15, 15, 15, 15, 15, 15, 15,  0, 15,  0, 15,  0, 15,  0, 15, 15, 15, 15, 15, 15, 15, 15, -1 },
-            { -1, 15, 15, 15, 15, 15,  0, 15,  0, 15,  0, 15,  0, 15,  0, 15,  0, 15, 15, 15, 15, 15, -1, -1 },
-            { -1, 15, 15, 15, 15, 15,  0, 15,  0, 15,  0, 15,  0, 15,  0, 15,  0, 15, 15, 15, 15, 15, -1, -1 },
-            { -1, -1, 15, 15, 15, 15,  0, 15,  0, 15,  0, 15,  0, 15,  0, 15,  0, 15, 15, 15, 15, -1, -1, -1 },
-            { -1, -1, 15, 15, 15, 15, 15, 15,  0, 15,  0, 15,  0, 15,  0, 15, 15, 15, 15, 15, 15, -1, -1, -1 },
-            { -1, -1, -1, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, -1, -1, -1, -1 },
-            { -1, -1, -1, -1, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, -1, -1, -1, -1, -1 },
-            { -1, -1, -1, -1, -1, -1, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, -1, -1, -1, -1, -1, -1, -1 },
-            { -1, -1, -1, -1, -1, -1, -1, -1, 15, 15, 15, 15, 15, 15, 15, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
-            { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 }
+    private static int[][] puppeteerSpawnPlatform = new int[][]{
+            {-1, -1, -1, -1, -1, -1, -1, -1, 15, 15, 15, 15, 15, 15, 15, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+            {-1, -1, -1, -1, -1, -1, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, -1, -1, -1, -1, -1, -1, -1},
+            {-1, -1, -1, -1, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, -1, -1, -1, -1, -1},
+            {-1, -1, -1, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, -1, -1, -1, -1},
+            {-1, -1, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, -1, -1, -1},
+            {-1, -1, 15, 15, 15, 15, 0, 0, 0, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, -1, -1, -1},
+            {-1, 15, 15, 15, 15, 0, 0, 0, 0, 0, 15, 15, 15, 0, 15, 15, 15, 0, 15, 15, 15, 15, -1, -1},
+            {-1, 15, 15, 15, 0, 0, 15, 0, 15, 0, 0, 15, 15, 15, 0, 15, 0, 15, 15, 15, 15, 15, -1, -1},
+            {15, 15, 15, 15, 0, 0, 0, 0, 0, 0, 0, 15, 15, 15, 15, 0, 15, 15, 15, 15, 15, 15, 15, -1},
+            {15, 15, 15, 15, 0, 0, 15, 0, 15, 0, 0, 15, 15, 15, 0, 15, 0, 15, 15, 15, 15, 15, 15, -1},
+            {15, 15, 15, 15, 15, 0, 0, 0, 0, 0, 15, 15, 15, 0, 15, 15, 15, 0, 15, 15, 15, 15, 15, -1},
+            {15, 15, 15, 15, 15, 15, 0, 0, 0, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, -1},
+            {15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, -1},
+            {15, 15, 15, 15, 15, 15, 15, 15, 15, 15, -2, 15, 0, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, -1},
+            {15, 15, 15, 15, 15, 15, 15, 15, 0, 15, 0, 15, 0, 15, 0, 15, 15, 15, 15, 15, 15, 15, 15, -1},
+            {-1, 15, 15, 15, 15, 15, 0, 15, 0, 15, 0, 15, 0, 15, 0, 15, 0, 15, 15, 15, 15, 15, -1, -1},
+            {-1, 15, 15, 15, 15, 15, 0, 15, 0, 15, 0, 15, 0, 15, 0, 15, 0, 15, 15, 15, 15, 15, -1, -1},
+            {-1, -1, 15, 15, 15, 15, 0, 15, 0, 15, 0, 15, 0, 15, 0, 15, 0, 15, 15, 15, 15, -1, -1, -1},
+            {-1, -1, 15, 15, 15, 15, 15, 15, 0, 15, 0, 15, 0, 15, 0, 15, 15, 15, 15, 15, 15, -1, -1, -1},
+            {-1, -1, -1, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, -1, -1, -1, -1},
+            {-1, -1, -1, -1, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, -1, -1, -1, -1, -1},
+            {-1, -1, -1, -1, -1, -1, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, -1, -1, -1, -1, -1, -1, -1},
+            {-1, -1, -1, -1, -1, -1, -1, -1, 15, 15, 15, 15, 15, 15, 15, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+            {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1}
     };
 
     private boolean isReceiverPresent(World world, int midx, int midz, int starty, int[][] platform) {
@@ -340,29 +398,29 @@ public class GenericWorldGenerator implements IWorldGenerator {
         } else {
             starty++;           // Go one up
         }
-        if (isReceiverPresent(world, midx, midz, starty-1, platform)) {
+        if (isReceiverPresent(world, midx, midz, starty - 1, platform)) {
             starty--;
         }
 
         int r = platform.length;
-        int sx = - r/2;
-        int sz = - r/2;
-        for (int x = sx ; x < sx + r ; x++) {
+        int sx = -r / 2;
+        int sz = -r / 2;
+        for (int x = sx; x < sx + r; x++) {
             int cx = (x + midx) >> 4;
             if (chunkX == cx) {
                 for (int z = sz; z < sz + r; z++) {
                     int cz = (z + midz) >> 4;
                     if (chunkZ == cz) {
-                        int color = platform[r - x - r / 2 -1][z + r / 2];
+                        int color = platform[r - x - r / 2 - 1][z + r / 2];
                         if (color == -2) {
-                            RFToolsDim.teleportationManager.createReceiver(world, new BlockPos(x+midx, starty, z+midz), information.getName(), -1);
+                            RFToolsDim.teleportationManager.createReceiver(world, new BlockPos(x + midx, starty, z + midz), information.getName(), -1);
                         } else if (color != -1) {
                             world.setBlockState(new BlockPos(x + midx, starty, z + midz), Blocks.STAINED_HARDENED_CLAY.getStateFromMeta(color), 2);
                         } else {
-                            world.setBlockToAir(new BlockPos(x+midx, starty, z+midz));
+                            world.setBlockToAir(new BlockPos(x + midx, starty, z + midz));
                         }
-                        for (int y = 1 ; y <= 3 ; y++) {
-                            world.setBlockToAir(new BlockPos(x+midx, starty+y, z+midz));
+                        for (int y = 1; y <= 3; y++) {
+                            world.setBlockToAir(new BlockPos(x + midx, starty + y, z + midz));
                         }
                     }
                 }
@@ -404,29 +462,29 @@ public class GenericWorldGenerator implements IWorldGenerator {
             bounds = 4;
         }
 
-        for (int x = -bounds ; x <= bounds ; x++) {
-            for (int z = -bounds ; z <= bounds ; z++) {
+        for (int x = -bounds; x <= bounds; x++) {
+            for (int z = -bounds; z <= bounds; z++) {
                 if (x == 0 && z == 0) {
-                    RFToolsDim.teleportationManager.createReceiver(world, new BlockPos(x+midx, starty, z+midz), information.getName(), -1);
+                    RFToolsDim.teleportationManager.createReceiver(world, new BlockPos(x + midx, starty, z + midz), information.getName(), -1);
                 } else if (x == 0 && (z == 2 || z == -2)) {
                     world.setBlockState(new BlockPos(x + midx, starty, z + midz), Blocks.GLOWSTONE.getDefaultState(), 3);
                 } else {
                     world.setBlockState(new BlockPos(x + midx, starty, z + midz), Blocks.STAINED_HARDENED_CLAY.getStateFromMeta(3), 2);
                 }
-                for (int y = 1 ; y <= 3 ; y++) {
-                    world.setBlockToAir(new BlockPos(x+midx, starty+y, z+midz));
+                for (int y = 1; y <= 3; y++) {
+                    world.setBlockToAir(new BlockPos(x + midx, starty + y, z + midz));
                 }
                 // Check the top layer. If it is something other then air we will replace it with clay as well.
-                if (!world.isAirBlock(new BlockPos(x+midx, starty+4, z+midz))) {
+                if (!world.isAirBlock(new BlockPos(x + midx, starty + 4, z + midz))) {
                     world.setBlockState(new BlockPos(x + midx, starty + 4, z + midz), Blocks.STAINED_HARDENED_CLAY.getStateFromMeta(3), 2);
                 }
             }
         }
 
         if (shelter) {
-            for (int y = 1 ; y <= 3 ; y++) {
-                for (int x = -bounds ; x <= bounds ; x++) {
-                    for (int z = -bounds ; z <= bounds ; z++) {
+            for (int y = 1; y <= 3; y++) {
+                for (int x = -bounds; x <= bounds; x++) {
+                    for (int z = -bounds; z <= bounds; z++) {
                         if (x == -bounds || x == bounds || z == -bounds || z == bounds) {
                             if (z == 0 && y >= 2 && y <= 3 || x == 0 && y >= 2 && y <= 3 && z == bounds) {
                                 world.setBlockState(new BlockPos(x + midx, starty + y, z + midz), Blocks.GLASS_PANE.getStateFromMeta(0), 2);
@@ -441,8 +499,8 @@ public class GenericWorldGenerator implements IWorldGenerator {
                     }
                 }
             }
-            for (int x = -bounds ; x <= bounds ; x++) {
-                for (int z = -bounds ; z <= bounds ; z++) {
+            for (int x = -bounds; x <= bounds; x++) {
+                for (int z = -bounds; z <= bounds; z++) {
                     world.setBlockState(new BlockPos(x + midx, starty + 4, z + midz), Blocks.STAINED_HARDENED_CLAY.getStateFromMeta(9), 2);
                 }
             }
@@ -471,10 +529,17 @@ public class GenericWorldGenerator implements IWorldGenerator {
 
         Block cornerBlock;
         switch (random.nextInt(3)) {
-            case 0: cornerBlock = ModBlocks.dimensionalCrossBlock; break;
-            case 1: cornerBlock = ModBlocks.dimensionalPattern1Block; break;
-            case 2: cornerBlock = ModBlocks.dimensionalPattern2Block; break;
-            default: cornerBlock = ModBlocks.dimensionalCross2Block;
+            case 0:
+                cornerBlock = ModBlocks.dimensionalCrossBlock;
+                break;
+            case 1:
+                cornerBlock = ModBlocks.dimensionalPattern1Block;
+                break;
+            case 2:
+                cornerBlock = ModBlocks.dimensionalPattern2Block;
+                break;
+            default:
+                cornerBlock = ModBlocks.dimensionalCross2Block;
         }
 
         Block buildingBlock = Blocks.STAINED_HARDENED_CLAY;
@@ -491,13 +556,13 @@ public class GenericWorldGenerator implements IWorldGenerator {
         }
 
         // Spawn the building
-        for (int x = midx - 3 ; x  <= midx + 3 ; x++) {
-            for (int z = midz - 3 ; z  <= midz + 3 ;z ++) {
-                boolean corner = (x == midx-3 || x == midx+3) && (z == midz-3 || z == midz+3);
-                boolean xside = x == midx-3 || x == midx+3;
-                boolean zside = z == midz-3 || z == midz+3;
-                boolean antenna = (x == midx-2 && z == midz-2);
-                boolean smallAntenna = doSmallAntenna && (x == midx+2 && z == midz+2);
+        for (int x = midx - 3; x <= midx + 3; x++) {
+            for (int z = midz - 3; z <= midz + 3; z++) {
+                boolean corner = (x == midx - 3 || x == midx + 3) && (z == midz - 3 || z == midz + 3);
+                boolean xside = x == midx - 3 || x == midx + 3;
+                boolean zside = z == midz - 3 || z == midz + 3;
+                boolean antenna = (x == midx - 2 && z == midz - 2);
+                boolean smallAntenna = doSmallAntenna && (x == midx + 2 && z == midz + 2);
                 world.setBlockState(new BlockPos(x, starty, z), Blocks.DOUBLE_STONE_SLAB.getDefaultState(), 2);
                 if (corner) {
                     world.setBlockState(new BlockPos(x, starty + 1, z), cornerBlock.getStateFromMeta(1), 2);
@@ -505,7 +570,7 @@ public class GenericWorldGenerator implements IWorldGenerator {
                     world.setBlockState(new BlockPos(x, starty + 3, z), cornerBlock.getStateFromMeta(1), 2);
                 } else if (xside) {
                     world.setBlockState(new BlockPos(x, starty + 1, z), buildingBlock.getStateFromMeta(color), 2);
-                    if (z >= midz-1 && z <= midz+1) {
+                    if (z >= midz - 1 && z <= midz + 1) {
                         world.setBlockState(new BlockPos(x, starty + 2, z), Blocks.GLASS_PANE.getStateFromMeta(0), 2);
                     } else {
                         world.setBlockState(new BlockPos(x, starty + 2, z), buildingBlock.getStateFromMeta(color), 2);
@@ -516,9 +581,9 @@ public class GenericWorldGenerator implements IWorldGenerator {
                     world.setBlockState(new BlockPos(x, starty + 2, z), buildingBlock.getStateFromMeta(color), 2);
                     world.setBlockState(new BlockPos(x, starty + 3, z), buildingBlock.getStateFromMeta(color), 2);
                 } else {
-                    world.setBlockToAir(new BlockPos(x, starty+1, z));
-                    world.setBlockToAir(new BlockPos(x, starty+2, z));
-                    world.setBlockToAir(new BlockPos(x, starty+3, z));
+                    world.setBlockToAir(new BlockPos(x, starty + 1, z));
+                    world.setBlockToAir(new BlockPos(x, starty + 2, z));
+                    world.setBlockToAir(new BlockPos(x, starty + 3, z));
                 }
                 if (antenna) {
                     world.setBlockState(new BlockPos(x, starty + 4, z), Blocks.DOUBLE_STONE_SLAB.getDefaultState(), 2);
@@ -534,36 +599,36 @@ public class GenericWorldGenerator implements IWorldGenerator {
                     world.setBlockToAir(new BlockPos(x, starty + 8, z));
                 } else {
                     world.setBlockState(new BlockPos(x, starty + 4, z), Blocks.STONE_SLAB.getDefaultState(), 2);
-                    world.setBlockToAir(new BlockPos(x, starty+5, z));
-                    world.setBlockToAir(new BlockPos(x, starty+6, z));
-                    world.setBlockToAir(new BlockPos(x, starty+7, z));
-                    world.setBlockToAir(new BlockPos(x, starty+8, z));
+                    world.setBlockToAir(new BlockPos(x, starty + 5, z));
+                    world.setBlockToAir(new BlockPos(x, starty + 6, z));
+                    world.setBlockToAir(new BlockPos(x, starty + 7, z));
+                    world.setBlockToAir(new BlockPos(x, starty + 8, z));
                 }
 
                 // Spawn stone under the building for as long as it is air.
-                WorldGenerationTools.fillEmptyWithStone(world, x, starty-1, z);
+                WorldGenerationTools.fillEmptyWithStone(world, x, starty - 1, z);
             }
         }
 
         if (doExtraFeature) {
-            if (!WorldGenerationTools.isSolid(world, midx+4, starty, midz-3)) {
+            if (!WorldGenerationTools.isSolid(world, midx + 4, starty, midz - 3)) {
                 world.setBlockState(new BlockPos(midx + 4, starty, midz - 3), Blocks.IRON_BARS.getDefaultState(), 2);
             }
             world.setBlockState(new BlockPos(midx + 4, starty + 1, midz - 3), Blocks.IRON_BARS.getDefaultState(), 2);
             world.setBlockState(new BlockPos(midx + 4, starty + 2, midz - 3), Blocks.IRON_BARS.getDefaultState(), 2);
-            if (!WorldGenerationTools.isSolid(world, midx+5, starty, midz-3)) {
+            if (!WorldGenerationTools.isSolid(world, midx + 5, starty, midz - 3)) {
                 world.setBlockState(new BlockPos(midx + 5, starty, midz - 3), buildingBlock.getStateFromMeta(color), 2);
             }
             world.setBlockState(new BlockPos(midx + 5, starty + 1, midz - 3), buildingBlock.getStateFromMeta(color), 2);
             world.setBlockState(new BlockPos(midx + 5, starty + 2, midz - 3), buildingBlock.getStateFromMeta(color), 2);
             WorldGenerationTools.fillEmptyWithStone(world, midx + 4, starty - 1, midz - 3);
-            WorldGenerationTools.fillEmptyWithStone(world, midx+5, starty-1, midz-3);
+            WorldGenerationTools.fillEmptyWithStone(world, midx + 5, starty - 1, midz - 3);
         }
 
         // Clear the space before the door.
-        for (int x = midx-3 ; x <= midx+3 ; x++) {
-            for (int y = starty+1 ; y <= starty + 3 ; y++) {
-                world.setBlockToAir(new BlockPos(x, y, midz-4));
+        for (int x = midx - 3; x <= midx + 3; x++) {
+            for (int y = starty + 1; y <= starty + 3; y++) {
+                world.setBlockToAir(new BlockPos(x, y, midz - 4));
             }
         }
 
@@ -584,8 +649,8 @@ public class GenericWorldGenerator implements IWorldGenerator {
 
         RarityRandomSelector.Distribution<Integer> bestDistribution = DimletRandomizer.getRandomDimlets().createDistribution(0.2f);
 
-        TileEntityChest chest = (TileEntityChest) world.getTileEntity(new BlockPos(midx+2, starty+1, midz-2));
-        for (int i = 0 ; i < random.nextInt(4)+3 ; i++) {
+        TileEntityChest chest = (TileEntityChest) world.getTileEntity(new BlockPos(midx + 2, starty + 1, midz - 2));
+        for (int i = 0; i < random.nextInt(4) + 3; i++) {
             ItemStack stack = DimletRandomizer.getRandomPart(random);
             chest.setInventorySlotContents(random.nextInt(chest.getSizeInventory()), stack);
         }
@@ -609,7 +674,7 @@ public class GenericWorldGenerator implements IWorldGenerator {
             }
         }
 
-        for (int i = 0 ; i < random.nextInt(2) ; i++) {
+        for (int i = 0; i < random.nextInt(2); i++) {
             chest.setInventorySlotContents(random.nextInt(chest.getSizeInventory()), new ItemStack(ModItems.dimletParcelItem));
         }
 
@@ -638,7 +703,7 @@ public class GenericWorldGenerator implements IWorldGenerator {
     }
 
     private EntityItemFrame spawnItemFrame(World world, int x, int y, int z) {
-        EntityItemFrame frame = new EntityItemFrame(world, new BlockPos(x, y, z+1), EnumFacing.NORTH);
+        EntityItemFrame frame = new EntityItemFrame(world, new BlockPos(x, y, z + 1), EnumFacing.NORTH);
         WorldTools.spawnEntity(world, frame);
         frame.setPosition(x, y, z);
         return frame;
@@ -647,7 +712,7 @@ public class GenericWorldGenerator implements IWorldGenerator {
     public void addOreSpawn(IBlockState block, IBlockState targetBlock,
                             World world, Random random, int blockXPos, int blockZPos, int minVeinSize, int maxVeinSize, int chancesToSpawn, int minY, int maxY) {
         WorldGenMinable minable = new WorldGenMinable(block, (minVeinSize - random.nextInt(maxVeinSize - minVeinSize)), p -> p == targetBlock);
-        for (int i = 0 ; i < chancesToSpawn ; i++) {
+        for (int i = 0; i < chancesToSpawn; i++) {
             int posX = blockXPos + random.nextInt(16);
             int posY = minY + random.nextInt(maxY - minY);
             int posZ = blockZPos + random.nextInt(16);

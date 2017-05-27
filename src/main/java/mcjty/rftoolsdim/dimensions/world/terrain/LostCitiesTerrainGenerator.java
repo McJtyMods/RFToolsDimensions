@@ -3,6 +3,7 @@ package mcjty.rftoolsdim.dimensions.world.terrain;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.config.WorldgenConfiguration;
 import net.minecraft.block.BlockSilverfish;
+import net.minecraft.block.BlockStoneBrick;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.ResourceLocation;
@@ -1563,6 +1564,7 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
     private IBlockState glass;
     private IBlockState quartz;
     private IBlockState bricks;
+    private IBlockState bricks_cracked;
 
     @Override
     public void generate(int chunkX, int chunkZ, ChunkPrimer primer) {
@@ -1574,6 +1576,7 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
         glass = Blocks.GLASS.getDefaultState();
         quartz = Blocks.QUARTZ_BLOCK.getDefaultState();
         bricks = Blocks.STONEBRICK.getDefaultState();
+        bricks_cracked = Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CRACKED);
 
         byte groundLevel = height;
         byte waterLevel = (byte) (groundLevel-3);
@@ -1613,7 +1616,7 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
                         height++;
                     }
                     while (height < buildingtop) {
-                        IBlockState b = getBlockForLevel(chunkX, chunkZ, info, x, z, height);
+                        IBlockState b = getBlockForLevel(rand, chunkX, chunkZ, info, x, z, height);
                         BaseTerrainGenerator.setBlockState(primer, index++, b);
                         height++;
                     }
@@ -1669,7 +1672,7 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
         }
     }
 
-    private IBlockState getBlockForLevel(int chunkX, int chunkZ, BuildingInfo info, int x, int z, int height) {
+    private IBlockState getBlockForLevel(Random rand, int chunkX, int chunkZ, BuildingInfo info, int x, int z, int height) {
         int f = getFloor(height);
         int l = getLevel(height) + info.floorsBelowGround;
         Level level = FLOORS[info.floorTypes[l]];
@@ -1713,6 +1716,10 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
             }
         } else if (b.getBlock() == Blocks.LADDER && f == 0 && l == 0) {
             b = bricks;
+        }
+
+        if (b == bricks && rand.nextFloat() < 0.06f) {
+            b = bricks_cracked;
         }
 
         return b;
