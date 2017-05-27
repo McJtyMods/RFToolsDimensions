@@ -180,6 +180,9 @@ public class GenericWorldGenerator implements IWorldGenerator {
             case 5:
                 world.setBlockState(pos, Blocks.CAULDRON.getDefaultState());
                 break;
+            case 6:
+                world.setBlockState(pos, Blocks.ENCHANTING_TABLE.getDefaultState());
+                break;
             case 10:
             case 11:
             case 12:
