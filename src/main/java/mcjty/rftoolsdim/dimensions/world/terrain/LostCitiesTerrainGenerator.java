@@ -2,12 +2,10 @@ package mcjty.rftoolsdim.dimensions.world.terrain;
 
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.config.WorldgenConfiguration;
-import net.minecraft.block.BlockPlanks;
-import net.minecraft.block.BlockSapling;
-import net.minecraft.block.BlockSilverfish;
-import net.minecraft.block.BlockStoneBrick;
+import net.minecraft.block.*;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.chunk.ChunkPrimer;
@@ -1623,6 +1621,8 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
         public final boolean[] connectionAtZ;
         public final int topType;
         public final int glassType;
+        public final int glassColor;
+        public final int buildingStyle;
 
         public BuildingInfo(int chunkX, int chunkZ, long seed) {
             Random rand = getBuildingRandom(chunkX, chunkZ, seed);
@@ -1644,6 +1644,8 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
             }
             topType = rand.nextInt(TOPS.length);
             glassType = rand.nextInt(4);
+            glassColor = rand.nextInt(5);
+            buildingStyle = rand.nextInt(4);
         }
 
         public boolean hasConnectionAtX(int level) {
@@ -1680,17 +1682,42 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
         IBlockState baseBlock = provider.dimensionInformation.getBaseBlockForTerrain();
         IBlockState baseLiquid = provider.dimensionInformation.getFluidForTerrain().getDefaultState();
 
+        BuildingInfo info = new BuildingInfo(chunkX, chunkZ, provider.seed);
+
         street = Blocks.DOUBLE_STONE_SLAB.getDefaultState();
         air = Blocks.AIR.getDefaultState();
-        glass = Blocks.GLASS.getDefaultState();
+
+        switch (info.glassColor) {
+            case 0: glass = Blocks.STAINED_GLASS.getDefaultState().withProperty(BlockStainedGlass.COLOR, EnumDyeColor.WHITE); break;
+            case 1: glass = Blocks.STAINED_GLASS.getDefaultState().withProperty(BlockStainedGlass.COLOR, EnumDyeColor.GRAY); break;
+            case 2: glass = Blocks.STAINED_GLASS.getDefaultState().withProperty(BlockStainedGlass.COLOR, EnumDyeColor.LIGHT_BLUE); break;
+            case 3: glass = Blocks.STAINED_GLASS.getDefaultState().withProperty(BlockStainedGlass.COLOR, EnumDyeColor.BLUE); break;
+            default: glass = Blocks.GLASS.getDefaultState(); break;
+        }
+
         quartz = Blocks.QUARTZ_BLOCK.getDefaultState();
-        bricks = Blocks.STONEBRICK.getDefaultState();
-        bricks_cracked = Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CRACKED);
+
+        switch (info.buildingStyle) {
+            case 0:
+                bricks = Blocks.STAINED_HARDENED_CLAY.getDefaultState().withProperty(BlockColored.COLOR, EnumDyeColor.CYAN);
+                bricks_cracked = Blocks.STAINED_HARDENED_CLAY.getDefaultState().withProperty(BlockColored.COLOR, EnumDyeColor.CYAN);
+                break;
+            case 1:
+                bricks = Blocks.STAINED_HARDENED_CLAY.getDefaultState().withProperty(BlockColored.COLOR, EnumDyeColor.GRAY);
+                bricks_cracked = Blocks.STAINED_HARDENED_CLAY.getDefaultState().withProperty(BlockColored.COLOR, EnumDyeColor.GRAY);
+                break;
+            case 2:
+                bricks = Blocks.STAINED_HARDENED_CLAY.getDefaultState().withProperty(BlockColored.COLOR, EnumDyeColor.SILVER);
+                bricks_cracked = Blocks.STAINED_HARDENED_CLAY.getDefaultState().withProperty(BlockColored.COLOR, EnumDyeColor.SILVER);
+                break;
+            default:
+                bricks = Blocks.STONEBRICK.getDefaultState();
+                bricks_cracked = Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CRACKED);
+                break;
+        }
 
         byte groundLevel = height;
         byte waterLevel = (byte) (groundLevel-3);
-
-        BuildingInfo info = new BuildingInfo(chunkX, chunkZ, provider.seed);
 
         int buildingtop = 0;
         boolean building = info.hasBuilding;
@@ -1832,6 +1859,8 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
             }
         } else if (b.getBlock() == Blocks.LADDER && down) {
             b = bricks;
+        } else if (b.getBlock() == Blocks.GLASS) {
+            b = glass;
         } else if (b.getBlock() == Blocks.SAPLING) {
             switch (rand.nextInt(11)) {
                 case 0:
@@ -1862,8 +1891,11 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
             }
         }
 
-        if (b == bricks && rand.nextFloat() < 0.06f) {
-            b = bricks_cracked;
+        if (b == bricks || b.getBlock() == Blocks.STONEBRICK) {
+            b = bricks;
+            if (rand.nextFloat() < 0.06f) {
+                b = bricks_cracked;
+            }
         }
         return b;
     }
