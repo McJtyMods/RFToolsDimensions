@@ -33,6 +33,5 @@ public interface BaseTerrainGenerator {
     static IBlockState getBlockState(ChunkPrimer primer, int index) {
         IBlockState iblockstate = Block.BLOCK_STATE_IDS.getByValue(primer.data[index]);
         return iblockstate == null ? defaultState : iblockstate;
-
     }
 }

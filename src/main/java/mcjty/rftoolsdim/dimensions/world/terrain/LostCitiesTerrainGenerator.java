@@ -7,6 +7,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.chunk.ChunkPrimer;
 
@@ -1633,7 +1634,7 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
                 fountainType = -1;
             }
             floors = rand.nextInt(7);
-            floorsBelowGround = rand.nextInt(3);
+            floorsBelowGround = rand.nextInt(4);
             floorTypes = new int[floors+floorsBelowGround + 2];
             connectionAtX = new boolean[floors+floorsBelowGround + 2];
             connectionAtZ = new boolean[floors+floorsBelowGround + 2];
@@ -1683,7 +1684,148 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
         IBlockState baseLiquid = provider.dimensionInformation.getFluidForTerrain().getDefaultState();
 
         BuildingInfo info = new BuildingInfo(chunkX, chunkZ, provider.seed);
+        setStyle(info);
 
+        DamageArea damageArea = new DamageArea(provider.seed, chunkX, chunkZ);
+
+        byte groundLevel = height;
+        byte waterLevel = (byte) (groundLevel-8);
+
+        int buildingtop = 0;
+        boolean building = info.hasBuilding;
+        if (building) {
+            buildingtop = 69 + info.floors * 6;
+        }
+
+        Random rand = new Random(provider.seed * 377 + chunkZ * 341873128712L + chunkX * 132897987541L);
+        rand.nextFloat();
+        rand.nextFloat();
+
+        int cx = chunkX * 16;
+        int cz = chunkZ * 16;
+        int index = 0;
+        for (int x = 0; x < 16; ++x) {
+            for (int z = 0; z < 16; ++z) {
+
+                int height = 0;
+                while (height < WorldgenConfiguration.bedrockLayer) {
+                    BaseTerrainGenerator.setBlockState(primer, index++, Blocks.BEDROCK.getDefaultState());
+                    height++;
+                }
+
+                while (height < WorldgenConfiguration.bedrockLayer + 30 + rand.nextInt(3)) {
+                    BaseTerrainGenerator.setBlockState(primer, index++, baseBlock);
+                    height++;
+                }
+
+                if (building) {
+                    int belowGround = info.floorsBelowGround;
+
+                    while (height < groundLevel - belowGround*6) {
+                        BaseTerrainGenerator.setBlockState(primer, index++, height < waterLevel ? baseLiquid : damageArea.damageBlock(baseBlock, rand, damageArea.getDamage(cx + x, height, cz + z), index, bricks, bricks_cracked, quartz, air));
+                        height++;
+                    }
+                    while (height < buildingtop) {
+                        IBlockState b = getBlockForLevel(rand, chunkX, chunkZ, info, x, z, height);
+                        b = damageArea.damageBlock(b, rand, damageArea.getDamage(cx + x, height, cz + z), index, bricks, bricks_cracked, quartz, air);
+                        BaseTerrainGenerator.setBlockState(primer, index++, b);
+                        height++;
+                    }
+                    while (height < buildingtop + 6) {
+                        int f = getFloor(height);
+                        int floortype = info.topType;
+                        Level level = TOPS[floortype];
+                        IBlockState b = level.get(x, f, z);
+                        b = getReplacementBlock(rand, info, b, false);
+                        b = damageArea.damageBlock(b, rand, damageArea.getDamage(cx + x, height, cz + z), index, bricks, bricks_cracked, quartz, air);
+                        BaseTerrainGenerator.setBlockState(primer, index++, b);
+                        height++;
+                    }
+                } else {
+                    while (height < groundLevel) {
+                        BaseTerrainGenerator.setBlockState(primer, index++, height < waterLevel ? baseLiquid : damageArea.damageBlock(baseBlock, rand, damageArea.getDamage(cx + x, height, cz + z), index, bricks, bricks_cracked, quartz, air));
+                        height++;
+                    }
+
+                    if (isBorder(x, z)) {
+                        IBlockState b = baseBlock;
+                        if (x <= STREETBORDER && z > STREETBORDER && z < (15 - STREETBORDER) && !new BuildingInfo(chunkX - 1, chunkZ, provider.seed).hasBuilding) {
+                            b = street;
+                        } else if (x >= (15 - STREETBORDER) && z > STREETBORDER && z < (15 - STREETBORDER) && !new BuildingInfo(chunkX + 1, chunkZ, provider.seed).hasBuilding) {
+                            b = street;
+                        } else if (z <= STREETBORDER && x > STREETBORDER && x < (15 - STREETBORDER) && !new BuildingInfo(chunkX, chunkZ - 1, provider.seed).hasBuilding) {
+                            b = street;
+                        } else if (z >= (15 - STREETBORDER) && x > STREETBORDER && x < (15 - STREETBORDER) && !new BuildingInfo(chunkX, chunkZ + 1, provider.seed).hasBuilding) {
+                            b = street;
+                        }
+                        BaseTerrainGenerator.setBlockState(primer, index++, damageArea.damageBlock(b, rand, damageArea.getDamage(cx + x, height, cz + z), index, bricks, bricks_cracked, quartz, air));
+                        height++;
+                    } else {
+                        BaseTerrainGenerator.setBlockState(primer, index++, damageArea.damageBlock(street, rand, damageArea.getDamage(cx + x, height, cz + z), index, bricks, bricks_cracked, quartz, air));
+                        height++;
+                    }
+
+                    if (info.fountainType >= 0) {
+                        int l = 0;
+                        Level level = FOUNTAINS[info.fountainType];
+                        while (l < level.floor.length) {
+                            IBlockState b = level.get(x, l, z);
+                            b = damageArea.damageBlock(b, rand, damageArea.getDamage(cx + x, height, cz + z), index, bricks, bricks_cracked, quartz, air);
+                            BaseTerrainGenerator.setBlockState(primer, index++, b);
+                            height++;
+                            l++;
+                        }
+                    }
+                }
+
+                int blocks = 256 - height;
+                BaseTerrainGenerator.setBlockStateRange(primer, index, index + blocks, air);
+                index += blocks;
+            }
+        }
+
+        if (building) {
+            char a = (char) Block.BLOCK_STATE_IDS.get(air);
+            char b1 = (char) Block.BLOCK_STATE_IDS.get(bricks);
+            char b2 = (char) Block.BLOCK_STATE_IDS.get(bricks_cracked);
+            char iron = (char) Block.BLOCK_STATE_IDS.get(Blocks.IRON_BARS.getDefaultState());
+            for (int i = 0 ; i < 2 ; i++) {
+                index = 0;
+                for (int x = 0; x < 16; ++x) {
+                    for (int z = 0; z < 16; ++z) {
+                        int belowGround = info.floorsBelowGround;
+                        int height = groundLevel - belowGround * 6;
+                        index += height;
+                        while (height < buildingtop + 6) {
+                            if (primer.data[index] != a) {
+                                if (primer.data[index + 1] == a
+                                        && primer.data[index - 1] == a
+                                        && (z == 0 || primer.data[index - 256] == a)
+                                        && (z == 15 || primer.data[index + 256] == a)
+                                        && (x == 0 || primer.data[index - 256 * 16] == a)
+                                        && (x == 15 || primer.data[index + 256 * 16] == a)
+                                        ) {
+                                    primer.data[index] = a;
+                                } else if (primer.data[index - 1] == a && damageArea.damaged[index - 1]) {
+                                    if (primer.data[index - 1] == b1 || primer.data[index - 1] == b2) {
+                                        primer.data[index - 1] = iron;
+                                    } else {
+                                        primer.data[index] = a;
+                                    }
+                                }
+                            }
+                            index++;
+                            height++;
+                        }
+                        int blocks = 256 - height;
+                        index += blocks;
+                    }
+                }
+            }
+        }
+    }
+
+    private void setStyle(BuildingInfo info) {
         street = Blocks.DOUBLE_STONE_SLAB.getDefaultState();
         air = Blocks.AIR.getDefaultState();
 
@@ -1714,98 +1856,6 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
                 bricks = Blocks.STONEBRICK.getDefaultState();
                 bricks_cracked = Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CRACKED);
                 break;
-        }
-
-        byte groundLevel = height;
-        byte waterLevel = (byte) (groundLevel-3);
-
-        int buildingtop = 0;
-        boolean building = info.hasBuilding;
-        if (building) {
-            buildingtop = 69 + info.floors * 6;
-        }
-
-        Random rand = new Random(provider.seed * 377 + chunkZ * 341873128712L + chunkX * 132897987541L);
-        rand.nextFloat();
-        rand.nextFloat();
-
-        int index = 0;
-        for (int x = 0; x < 16; ++x) {
-            for (int z = 0; z < 16; ++z) {
-
-                int height = 0;
-                while (height < WorldgenConfiguration.bedrockLayer) {
-                    BaseTerrainGenerator.setBlockState(primer, index++, Blocks.BEDROCK.getDefaultState());
-                    height++;
-                }
-
-                while (height < WorldgenConfiguration.bedrockLayer + 30 + rand.nextInt(3)) {
-                    BaseTerrainGenerator.setBlockState(primer, index++, baseBlock);
-                    height++;
-                }
-
-                if (building) {
-                    int belowGround = info.floorsBelowGround;
-
-                    while (height < groundLevel - belowGround*6) {
-                        BaseTerrainGenerator.setBlockState(primer, index++, height < waterLevel ? baseLiquid : baseBlock);
-                        height++;
-                    }
-                    while (height < buildingtop) {
-                        IBlockState b = getBlockForLevel(rand, chunkX, chunkZ, info, x, z, height);
-                        BaseTerrainGenerator.setBlockState(primer, index++, b);
-                        height++;
-                    }
-                    while (height < buildingtop + 6) {
-                        int f = getFloor(height);
-                        int floortype = info.topType;
-                        Level level = TOPS[floortype];
-                        IBlockState b = level.get(x, f, z);
-                        b = getReplacementBlock(rand, info, b, false);
-                        BaseTerrainGenerator.setBlockState(primer, index++, b);
-                        height++;
-                    }
-                } else {
-                    while (height < groundLevel) {
-                        BaseTerrainGenerator.setBlockState(primer, index++, height < waterLevel ? baseLiquid : baseBlock);
-                        height++;
-                    }
-
-                    if (isBorder(x, z)) {
-                        IBlockState b = baseBlock;
-                        if (x <= STREETBORDER && z > STREETBORDER && z < (15 - STREETBORDER) && !new BuildingInfo(chunkX - 1, chunkZ, provider.seed).hasBuilding) {
-                            b = street;
-                        } else if (x >= (15 - STREETBORDER) && z > STREETBORDER && z < (15 - STREETBORDER) && !new BuildingInfo(chunkX + 1, chunkZ, provider.seed).hasBuilding) {
-                            b = street;
-                        } else if (z <= STREETBORDER && x > STREETBORDER && x < (15 - STREETBORDER) && !new BuildingInfo(chunkX, chunkZ - 1, provider.seed).hasBuilding) {
-                            b = street;
-                        } else if (z >= (15 - STREETBORDER) && x > STREETBORDER && x < (15 - STREETBORDER) && !new BuildingInfo(chunkX, chunkZ + 1, provider.seed).hasBuilding) {
-                            b = street;
-                        }
-                        BaseTerrainGenerator.setBlockState(primer, index++, b);
-                        height++;
-                    } else {
-                        BaseTerrainGenerator.setBlockState(primer, index++, street);
-                        height++;
-                    }
-
-                    if (info.fountainType >= 0) {
-                        int l = 0;
-                        Level level = FOUNTAINS[info.fountainType];
-                        while (l < level.floor.length) {
-                            IBlockState b = level.get(x, l, z);
-                            BaseTerrainGenerator.setBlockState(primer, index++, b);
-                            height++;
-                            l++;
-                        }
-                    }
-                }
-
-                int blocks = 256 - height;
-                BaseTerrainGenerator.setBlockStateRange(primer, index, index + blocks, air);
-//                BaseTerrainGenerator.setBlockState(primer, index++, air);
-                index += blocks;
-            }
         }
     }
 
@@ -1918,5 +1968,126 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
 
     private boolean isBorder(int x, int z) {
         return x <= STREETBORDER || x >= (15 - STREETBORDER) || z <= STREETBORDER || z >= (15 - STREETBORDER);
+    }
+
+    public static class Explosion {
+        private final int radius;
+        private final int sqradius;
+        private final BlockPos center;
+
+        public Explosion(int radius, BlockPos center) {
+            this.radius = radius;
+            this.center = center;
+            sqradius = radius * radius;
+        }
+
+        public int getRadius() {
+            return radius;
+        }
+
+        public int getSqradius() {
+            return sqradius;
+        }
+
+        public BlockPos getCenter() {
+            return center;
+        }
+    }
+
+    public static class DamageArea {
+
+        private final long seed;
+        private final List<Explosion> explosions = new ArrayList<>();
+        private final AxisAlignedBB chunkBox;
+        private final boolean damaged[];
+
+        public DamageArea(long seed, int chunkX, int chunkZ) {
+            this.seed = seed;
+            chunkBox = new AxisAlignedBB(chunkX*16, 0, chunkZ*16, chunkX*16+15, 256, chunkZ*16+15);
+
+            for (int cx = chunkX-5 ; cx <= chunkX+5 ; cx++) {
+                for (int cz = chunkZ-5 ; cz <= chunkZ+5 ; cz++) {
+                    Explosion explosion = getExplosionAt(cx, cz);
+                    if (explosion != null) {
+                        if (intersectsWith(explosion.getCenter(), explosion.getRadius())) {
+                            explosions.add(explosion);
+                        }
+                    }
+                }
+            }
+            damaged = new boolean[16*16*256];
+            for (int i = 0 ; i < damaged.length ; i++) {
+                damaged[i] = false;
+            }
+        }
+
+        public IBlockState damageBlock(IBlockState b, Random rand, float damage, int index, IBlockState bricks, IBlockState bricks_cracked, IBlockState quartz, IBlockState air) {
+            if (rand.nextFloat() <= damage) {
+                if (damage < .5f && (b == bricks || b == bricks_cracked || b == quartz)) {
+                    if (rand.nextFloat() < .8f) {
+                        b = Blocks.IRON_BARS.getDefaultState();
+                    } else {
+                        damaged[index] = true;
+                        b = air;
+                    }
+                } else {
+                    damaged[index] = true;
+                    b = air;
+                }
+            }
+            return b;
+        }
+
+        private boolean intersectsWith(BlockPos center, int radius) {
+            double dmin = distance(center);
+            return dmin <= radius * radius;
+        }
+
+        private double distance(BlockPos center) {
+            double dmin = 0;
+
+            if (center.getX() < chunkBox.minX) {
+                dmin += Math.pow(center.getX() - chunkBox.minX, 2);
+            } else if (center.getX() > chunkBox.maxX) {
+                dmin += Math.pow(center.getX() - chunkBox.maxX, 2);
+            }
+
+            if (center.getY() < chunkBox.minY) {
+                dmin += Math.pow(center.getY() - chunkBox.minY, 2);
+            } else if (center.getY() > chunkBox.maxY) {
+                dmin += Math.pow(center.getY() - chunkBox.maxY, 2);
+            }
+
+            if (center.getZ() < chunkBox.minZ) {
+                dmin += Math.pow(center.getZ() - chunkBox.minZ, 2);
+            } else if (center.getZ() > chunkBox.maxZ) {
+                dmin += Math.pow(center.getZ() - chunkBox.maxZ, 2);
+            }
+            return dmin;
+        }
+
+        private Explosion getExplosionAt(int chunkX, int chunkZ) {
+            Random rand = new Random(seed + chunkZ * 295075153L + chunkX * 797003437L);
+            rand.nextFloat();
+            rand.nextFloat();
+            if (rand.nextFloat() < .005f) {
+                return new Explosion(17+rand.nextInt(4*16), new BlockPos(chunkX * 16 + rand.nextInt(16), 70+rand.nextInt(50), chunkZ * 16 + rand.nextInt(16)));
+            }
+            return null;
+        }
+
+
+        // Get a number indicating how much damage this point should get. 0 Means no damage
+        public float getDamage(int x, int y, int z) {
+            float damage = 0.0f;
+            for (Explosion explosion : explosions) {
+                double sq = explosion.getCenter().distanceSq(x, y, z);
+                if (sq < explosion.getSqradius()) {
+                    double d = Math.sqrt(sq);
+                    damage += 3.0f * (explosion.getRadius() - d) / explosion.getRadius();
+                }
+            }
+            return damage;
+        }
     }
 }

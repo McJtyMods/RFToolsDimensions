@@ -136,28 +136,36 @@ public class GenericWorldGenerator implements IWorldGenerator {
                 LostCitiesTerrainGenerator.GenInfo getInfo = LostCitiesTerrainGenerator.getGenInfos().get(floortype);
                 for (BlockPos p : getInfo.getChest()) {
                     BlockPos pos = floorpos.add(p);
-                    createLootChest(random, world, pos);
+                    if (!world.isAirBlock(pos)) {
+                        createLootChest(random, world, pos);
+                    }
                 }
                 for (BlockPos p : getInfo.getRandomFeatures()) {
                     BlockPos pos = floorpos.add(p);
-                    createRandomFeature(random, world, pos);
+                    if (!world.isAirBlock(pos)) {
+                        createRandomFeature(random, world, pos);
+                    }
                 }
                 for (BlockPos p : getInfo.getSpawnerType1()) {
                     BlockPos pos = floorpos.add(p);
-                    world.setBlockState(pos, Blocks.MOB_SPAWNER.getDefaultState());
-                    TileEntity tileentity = world.getTileEntity(pos);
-                    if (tileentity instanceof TileEntityMobSpawner) {
-                        TileEntityMobSpawner spawner = (TileEntityMobSpawner) tileentity;
-                        EntityTools.setSpawnerEntity(world, spawner, new ResourceLocation("minecraft:zombie"), "Zombie");
+                    if (!world.isAirBlock(pos)) {
+                        world.setBlockState(pos, Blocks.MOB_SPAWNER.getDefaultState());
+                        TileEntity tileentity = world.getTileEntity(pos);
+                        if (tileentity instanceof TileEntityMobSpawner) {
+                            TileEntityMobSpawner spawner = (TileEntityMobSpawner) tileentity;
+                            EntityTools.setSpawnerEntity(world, spawner, new ResourceLocation("minecraft:zombie"), "Zombie");
+                        }
                     }
                 }
                 for (BlockPos p : getInfo.getSpawnerType2()) {
                     BlockPos pos = floorpos.add(p);
-                    world.setBlockState(pos, Blocks.MOB_SPAWNER.getDefaultState());
-                    TileEntity tileentity = world.getTileEntity(pos);
-                    if (tileentity instanceof TileEntityMobSpawner) {
-                        TileEntityMobSpawner spawner = (TileEntityMobSpawner) tileentity;
-                        EntityTools.setSpawnerEntity(world, spawner, new ResourceLocation("minecraft:skeleton"), "Skeleton");
+                    if (!world.isAirBlock(pos)) {
+                        world.setBlockState(pos, Blocks.MOB_SPAWNER.getDefaultState());
+                        TileEntity tileentity = world.getTileEntity(pos);
+                        if (tileentity instanceof TileEntityMobSpawner) {
+                            TileEntityMobSpawner spawner = (TileEntityMobSpawner) tileentity;
+                            EntityTools.setSpawnerEntity(world, spawner, new ResourceLocation("minecraft:skeleton"), "Skeleton");
+                        }
                     }
                 }
             }
