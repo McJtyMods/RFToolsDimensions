@@ -1,4 +1,4 @@
-package mcjty.rftoolsdim.dimensions.world.terrain;
+package mcjty.rftoolsdim.dimensions.world.terrain.lost;
 
 import net.minecraft.block.state.IBlockState;
 

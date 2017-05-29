@@ -6,7 +6,6 @@ import mcjty.lib.tools.ItemStackTools;
 import mcjty.lib.tools.WorldTools;
 import mcjty.lib.varia.Logging;
 import mcjty.rftools.blocks.storage.ModularStorageContainer;
-import mcjty.rftools.blocks.storage.ModularStorageItemContainer;
 import mcjty.rftools.blocks.storage.ModularStorageTileEntity;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.blocks.ModBlocks;
@@ -19,7 +18,8 @@ import mcjty.rftoolsdim.dimensions.dimlets.KnownDimletConfiguration;
 import mcjty.rftoolsdim.dimensions.dimlets.types.Patreons;
 import mcjty.rftoolsdim.dimensions.types.FeatureType;
 import mcjty.rftoolsdim.dimensions.types.TerrainType;
-import mcjty.rftoolsdim.dimensions.world.terrain.LostCitiesTerrainGenerator;
+import mcjty.rftoolsdim.dimensions.world.terrain.lost.BuildingInfo;
+import mcjty.rftoolsdim.dimensions.world.terrain.lost.LostCitiesTerrainGenerator;
 import mcjty.rftoolsdim.items.ModItems;
 import mcjty.rftoolsdim.varia.RarityRandomSelector;
 import net.minecraft.block.Block;
@@ -27,7 +27,6 @@ import net.minecraft.block.BlockChest;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItemFrame;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -117,7 +116,7 @@ public class GenericWorldGenerator implements IWorldGenerator {
     }
 
     private void generateLootSpawners(Random random, int chunkX, int chunkZ, World world) {
-        LostCitiesTerrainGenerator.BuildingInfo info = new LostCitiesTerrainGenerator.BuildingInfo(chunkX, chunkZ, world.getSeed());
+        BuildingInfo info = new BuildingInfo(chunkX, chunkZ, world.getSeed());
 
         int buildingtop = 0;
         boolean building = info.hasBuilding;

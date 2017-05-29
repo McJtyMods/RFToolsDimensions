@@ -1,13 +1,14 @@
-package mcjty.rftoolsdim.dimensions.world.terrain;
+package mcjty.rftoolsdim.dimensions.world.terrain.lost;
 
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.config.WorldgenConfiguration;
+import mcjty.rftoolsdim.dimensions.world.terrain.BaseTerrainGenerator;
+import mcjty.rftoolsdim.dimensions.world.terrain.NormalTerrainGenerator;
 import net.minecraft.block.*;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.chunk.ChunkPrimer;
 
@@ -127,68 +128,6 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
             }
         }
         return genInfos;
-    }
-
-    public static class BuildingInfo {
-        public final boolean isCity;
-        public final boolean hasBuilding;
-        public final int fountainType;
-        public final int floors;
-        public final int floorsBelowGround;
-        public final int[] floorTypes;
-        public final boolean[] connectionAtX;
-        public final boolean[] connectionAtZ;
-        public final int topType;
-        public final int glassType;
-        public final int glassColor;
-        public final int buildingStyle;
-
-        public BuildingInfo(int chunkX, int chunkZ, long seed) {
-            Random rand = getBuildingRandom(chunkX, chunkZ, seed);
-            float cityFactor = City.getCityFactor(seed, chunkX, chunkZ);
-            isCity = cityFactor > .2f;
-            hasBuilding = isCity && (chunkX != 0 || chunkZ != 0) && rand.nextFloat() < .3f;
-            if (rand.nextFloat() < .05f) {
-                fountainType = rand.nextInt(LostCityData.FOUNTAINS.length);
-            } else {
-                fountainType = -1;
-            }
-            floors = rand.nextInt((int) (4 + (cityFactor+.1f) * 3));
-            floorsBelowGround = rand.nextInt(4);
-            floorTypes = new int[floors+floorsBelowGround + 2];
-            connectionAtX = new boolean[floors+floorsBelowGround + 2];
-            connectionAtZ = new boolean[floors+floorsBelowGround + 2];
-            for (int i = 0; i <= floors+floorsBelowGround + 1; i++) {
-                floorTypes[i] = rand.nextInt(LostCityData.FLOORS.length);
-                connectionAtX[i] = rand.nextFloat() < .6f;
-                connectionAtZ[i] = rand.nextFloat() < .6f;
-            }
-            topType = rand.nextInt(LostCityData.TOPS.length);
-            glassType = rand.nextInt(4);
-            glassColor = rand.nextInt(5);
-            buildingStyle = rand.nextInt(4);
-        }
-
-        public static Random getBuildingRandom(int chunkX, int chunkZ, long seed) {
-            Random rand = new Random(seed + chunkZ * 341873128712L + chunkX * 132897987541L);
-            rand.nextFloat();
-            rand.nextFloat();
-            return rand;
-        }
-
-        public boolean hasConnectionAtX(int level) {
-            if (level >= connectionAtX.length) {
-                return false;
-            }
-            return connectionAtX[level];
-        }
-
-        public boolean hasConnectionAtZ(int level) {
-            if (level >= connectionAtZ.length) {
-                return false;
-            }
-            return connectionAtZ[level];
-        }
     }
 
     private IBlockState street;
@@ -628,161 +567,5 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
         return x <= STREETBORDER || x >= (15 - STREETBORDER) || z <= STREETBORDER || z >= (15 - STREETBORDER);
     }
 
-    public static class Explosion {
-        private final int radius;
-        private final int sqradius;
-        private final BlockPos center;
 
-        public Explosion(int radius, BlockPos center) {
-            this.radius = radius;
-            this.center = center;
-            sqradius = radius * radius;
-        }
-
-        public int getRadius() {
-            return radius;
-        }
-
-        public int getSqradius() {
-            return sqradius;
-        }
-
-        public BlockPos getCenter() {
-            return center;
-        }
-    }
-
-    // A city is defined as a big sphere. Buildings are where the radius is less then 70%
-    public static class City {
-
-        private static boolean isCityCenter(long seed, int chunkX, int chunkZ) {
-            Random rand = new Random(seed + chunkZ * 797003437L + chunkX * 295075153L);
-            rand.nextFloat();
-            rand.nextFloat();
-            return rand.nextFloat() < .02f;
-        }
-
-        private static float getCityRadius(long seed, int chunkX, int chunkZ) {
-            Random rand = new Random(seed + chunkZ * 100001653L + chunkX * 295075153L);
-            rand.nextFloat();
-            rand.nextFloat();
-            return 50 + rand.nextInt(78);
-        }
-
-        public static float getCityFactor(long seed, int chunkX, int chunkZ) {
-            float factor = 0;
-            for (int cx = chunkX - 8 ; cx <= chunkX + 8 ; cx++) {
-                for (int cz = chunkZ - 8 ; cz <= chunkZ + 8 ; cz++) {
-                    if (isCityCenter(seed, cx, cz)) {
-                        float radius = getCityRadius(seed, cx, cz);
-                        float sqdist = (cx*16 - chunkX*16) * (cx*16 - chunkX*16) + (cz*16 - chunkZ*16) * (cz*16 - chunkZ*16);
-                        if (sqdist < radius*radius) {
-                            float dist = (float) Math.sqrt(sqdist);
-                            factor += (radius - dist) / radius;
-                        }
-                    }
-                }
-            }
-            return factor;
-        }
-
-    }
-
-
-    public static class DamageArea {
-
-        private final long seed;
-        private final List<Explosion> explosions = new ArrayList<>();
-        private final AxisAlignedBB chunkBox;
-        private final boolean damaged[];
-
-        public DamageArea(long seed, int chunkX, int chunkZ) {
-            this.seed = seed;
-            chunkBox = new AxisAlignedBB(chunkX*16, 0, chunkZ*16, chunkX*16+15, 256, chunkZ*16+15);
-
-            for (int cx = chunkX-5 ; cx <= chunkX+5 ; cx++) {
-                for (int cz = chunkZ-5 ; cz <= chunkZ+5 ; cz++) {
-                    Explosion explosion = getExplosionAt(cx, cz);
-                    if (explosion != null) {
-                        if (intersectsWith(explosion.getCenter(), explosion.getRadius())) {
-                            explosions.add(explosion);
-                        }
-                    }
-                }
-            }
-            damaged = new boolean[16*16*256];
-            for (int i = 0 ; i < damaged.length ; i++) {
-                damaged[i] = false;
-            }
-        }
-
-        public IBlockState damageBlock(IBlockState b, IBlockState replacement, Random rand, float damage, int index, IBlockState bricks, IBlockState bricks_cracked, IBlockState quartz) {
-            if (rand.nextFloat() <= damage) {
-                if (damage < .5f && (b == bricks || b == bricks_cracked || b == quartz)) {
-                    if (rand.nextFloat() < .8f) {
-                        b = Blocks.IRON_BARS.getDefaultState();
-                    } else {
-                        damaged[index] = true;
-                        b = replacement;
-                    }
-                } else {
-                    damaged[index] = true;
-                    b = replacement;
-                }
-            }
-            return b;
-        }
-
-        private boolean intersectsWith(BlockPos center, int radius) {
-            double dmin = distance(center);
-            return dmin <= radius * radius;
-        }
-
-        private double distance(BlockPos center) {
-            double dmin = 0;
-
-            if (center.getX() < chunkBox.minX) {
-                dmin += Math.pow(center.getX() - chunkBox.minX, 2);
-            } else if (center.getX() > chunkBox.maxX) {
-                dmin += Math.pow(center.getX() - chunkBox.maxX, 2);
-            }
-
-            if (center.getY() < chunkBox.minY) {
-                dmin += Math.pow(center.getY() - chunkBox.minY, 2);
-            } else if (center.getY() > chunkBox.maxY) {
-                dmin += Math.pow(center.getY() - chunkBox.maxY, 2);
-            }
-
-            if (center.getZ() < chunkBox.minZ) {
-                dmin += Math.pow(center.getZ() - chunkBox.minZ, 2);
-            } else if (center.getZ() > chunkBox.maxZ) {
-                dmin += Math.pow(center.getZ() - chunkBox.maxZ, 2);
-            }
-            return dmin;
-        }
-
-        private Explosion getExplosionAt(int chunkX, int chunkZ) {
-            Random rand = new Random(seed + chunkZ * 295075153L + chunkX * 797003437L);
-            rand.nextFloat();
-            rand.nextFloat();
-            if (rand.nextFloat() < .005f) {
-                return new Explosion(17+rand.nextInt(4*16), new BlockPos(chunkX * 16 + rand.nextInt(16), 70+rand.nextInt(50), chunkZ * 16 + rand.nextInt(16)));
-            }
-            return null;
-        }
-
-
-        // Get a number indicating how much damage this point should get. 0 Means no damage
-        public float getDamage(int x, int y, int z) {
-            float damage = 0.0f;
-            for (Explosion explosion : explosions) {
-                double sq = explosion.getCenter().distanceSq(x, y, z);
-                if (sq < explosion.getSqradius()) {
-                    double d = Math.sqrt(sq);
-                    damage += 3.0f * (explosion.getRadius() - d) / explosion.getRadius();
-                }
-            }
-            return damage;
-        }
-    }
 }
