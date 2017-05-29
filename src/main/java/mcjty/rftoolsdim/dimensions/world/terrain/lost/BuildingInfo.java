@@ -9,7 +9,8 @@ public class BuildingInfo {
 
     public final boolean isCity;
     public final boolean hasBuilding;
-    public final int fountainType;
+    public final int fountainType;  // Used for PARKS and FOUNTAINS
+    public final StreetType streetType;
     public final int floors;
     public final int floorsBelowGround;
     public final int[] floorTypes;
@@ -61,8 +62,13 @@ public class BuildingInfo {
         float cityFactor = City.getCityFactor(seed, chunkX, chunkZ);
         isCity = cityFactor > .2f;
         hasBuilding = isCity && (chunkX != 0 || chunkZ != 0) && rand.nextFloat() < .3f;
+        if (rand.nextDouble() < .1f) {
+            streetType = StreetType.values()[rand.nextInt(StreetType.values().length)];
+        } else {
+            streetType = StreetType.NORMAL;
+        }
         if (rand.nextFloat() < .05f) {
-            fountainType = rand.nextInt(LostCityData.FOUNTAINS.length);
+            fountainType = rand.nextInt(streetType == StreetType.PARK ? LostCityData.PARKS.length : LostCityData.FOUNTAINS.length);
         } else {
             fountainType = -1;
         }
@@ -106,5 +112,11 @@ public class BuildingInfo {
             return false;
         }
         return connectionAtZ[level];
+    }
+
+    enum StreetType {
+        NORMAL,
+        FULL,
+        PARK
     }
 }
