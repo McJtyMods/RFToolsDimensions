@@ -23,6 +23,8 @@ public class BuildingInfo {
 
     public final boolean xRailCorridor;
     public final boolean zRailCorridor;
+    public final boolean xWaterCorridor;
+    public final boolean zWaterCorridor;
 
     private BuildingInfo xmin = null;
     private BuildingInfo xmax = null;
@@ -105,12 +107,20 @@ public class BuildingInfo {
         glassColor = rand.nextInt(5);
         buildingStyle = rand.nextInt(4);
 
-        if (hasBuilding) {
+        if (hasBuilding && floorsBelowGround > 0) {
             xRailCorridor = false;
             zRailCorridor = false;
         } else {
             xRailCorridor = rand.nextFloat() < .7f;
             zRailCorridor = rand.nextFloat() < .7f;
+        }
+
+        if (hasBuilding && floorsBelowGround > 1) {
+            xWaterCorridor = false;
+            zWaterCorridor = false;
+        } else {
+            xWaterCorridor = rand.nextFloat() < .8f;
+            zWaterCorridor = rand.nextFloat() < .8f;
         }
     }
 
@@ -122,14 +132,56 @@ public class BuildingInfo {
         while (i.canRailGoThrough() && i.xRailCorridor) {
             i = i.getXmin();
         }
-        if (!i.hasBuilding) {
+        if ((!i.hasBuilding) || i.floorsBelowGround == 0) {
             return false;
         }
         i = getXmax();
         while (i.canRailGoThrough() && i.xRailCorridor) {
             i = i.getXmax();
         }
-        if (!i.hasBuilding) {
+        if ((!i.hasBuilding) || i.floorsBelowGround == 0) {
+            return false;
+        }
+        return true;
+    }
+
+    public boolean hasXWaterCorridor() {
+        if (!xWaterCorridor) {
+            return false;
+        }
+        BuildingInfo i = getXmin();
+        while (i.canWaterCorridorGoThrough() && i.xWaterCorridor) {
+            i = i.getXmin();
+        }
+        if ((!i.hasBuilding) || i.floorsBelowGround <= 1) {
+            return false;
+        }
+        i = getXmax();
+        while (i.canWaterCorridorGoThrough() && i.xWaterCorridor) {
+            i = i.getXmax();
+        }
+        if ((!i.hasBuilding) || i.floorsBelowGround <= 1) {
+            return false;
+        }
+        return true;
+    }
+
+    public boolean hasZWaterCorridor() {
+        if (!zWaterCorridor) {
+            return false;
+        }
+        BuildingInfo i = getZmin();
+        while (i.canWaterCorridorGoThrough() && i.zWaterCorridor) {
+            i = i.getZmin();
+        }
+        if ((!i.hasBuilding) || i.floorsBelowGround <= 1) {
+            return false;
+        }
+        i = getZmax();
+        while (i.canWaterCorridorGoThrough() && i.zWaterCorridor) {
+            i = i.getZmax();
+        }
+        if ((!i.hasBuilding) || i.floorsBelowGround <= 1) {
             return false;
         }
         return true;
@@ -143,14 +195,14 @@ public class BuildingInfo {
         while (i.canRailGoThrough() && i.zRailCorridor) {
             i = i.getZmin();
         }
-        if (!i.hasBuilding) {
+        if ((!i.hasBuilding) || i.floorsBelowGround == 0) {
             return false;
         }
         i = getZmax();
         while (i.canRailGoThrough() && i.zRailCorridor) {
             i = i.getZmax();
         }
-        if (!i.hasBuilding) {
+        if ((!i.hasBuilding) || i.floorsBelowGround == 0) {
             return false;
         }
         return true;
@@ -168,6 +220,20 @@ public class BuildingInfo {
         }
         // Otherwise we can only pass if this building has no floors below ground
         return floorsBelowGround == 0;
+    }
+
+    // Return true if it is possible for a water corridor to go through here
+    public boolean canWaterCorridorGoThrough() {
+        if (!isCity) {
+            // There is no city here so no passing possible
+            return false;
+        }
+        if (!hasBuilding) {
+            // There is no building here but we have a city so we can pass
+            return true;
+        }
+        // Otherwise we can only pass if this building has at most one floor below ground
+        return floorsBelowGround <= 1;
     }
 
     // Return true if the road from a neighbouring chunk can extend into this chunk
