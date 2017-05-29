@@ -8,21 +8,38 @@ public class LostCityData {
                     new Level(new String[]{
                             "" +
                                     "wwww        wwww" +
-                                    "w              w" +
-                                    "w              w" +
-                                    "w              w" +
-                                    "                " +
-                                    "                " +
+                                    "w   p          w" +
+                                    "w      p p  p  w" +
+                                    "wp   p         w" +
+                                    "             p  " +
+                                    "       p   p    " +
+                                    "  p    xx       " +
+                                    "      xWWx  p   " +
+                                    "    p xWWx      " +
                                     "       xx       " +
-                                    "      xWWx      " +
-                                    "      xWWx      " +
-                                    "       xx       " +
-                                    "                " +
-                                    "                " +
+                                    "  p       p     " +
+                                    "      p     p   " +
                                     "w              w" +
-                                    "w              w" +
-                                    "w              w" +
+                                    "w  p     p     w" +
+                                    "w    p         w" +
                                     "wwww        wwww",
+                            "" +
+                                    "w              w" +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "w              w",
                             "" +
                                     "w              w" +
                                     "                " +
@@ -43,6 +60,43 @@ public class LostCityData {
                     }),
                     new Level(new String[]{
                             "" +
+                                    "wwww        wwww" +
+                                    "w   p          w" +
+                                    "w      p p  p  w" +
+                                    "wp   p         w" +
+                                    "             p  " +
+                                    "      xxxx p    " +
+                                    "  p  xWWWWx     " +
+                                    "     xWWWWx p   " +
+                                    "    pxWWWWx     " +
+                                    "     xWWWWx     " +
+                                    "  p   xxxxp     " +
+                                    "      p     p   " +
+                                    "w              w" +
+                                    "w  p     p     w" +
+                                    "w    p         w" +
+                                    "wwww        wwww",
+                            "" +
+                                    "w  w        w  w" +
+                                    "                " +
+                                    "                " +
+                                    "w              w" +
+                                    "                " +
+                                    "      w  w      " +
+                                    "     w    w     " +
+                                    "                " +
+                                    "                " +
+                                    "     w    w     " +
+                                    "      w  w      " +
+                                    "                " +
+                                    "w              w" +
+                                    "                " +
+                                    "                " +
+                                    "w  w        w  w",
+                            "" +
+                                    "w  w        w  w" +
+                                    "                " +
+                                    "                " +
                                     "w              w" +
                                     "                " +
                                     "                " +
@@ -52,13 +106,27 @@ public class LostCityData {
                                     "                " +
                                     "                " +
                                     "                " +
+                                    "w              w" +
+                                    "                " +
+                                    "                " +
+                                    "w  w        w  w",
+                            "" +
+                                    "____        ____" +
+                                    "_              _" +
+                                    "_              _" +
+                                    "_              _" +
                                     "                " +
                                     "                " +
                                     "                " +
                                     "                " +
                                     "                " +
                                     "                " +
-                                    "w              w"
+                                    "                " +
+                                    "                " +
+                                    "_              _" +
+                                    "_              _" +
+                                    "_              _" +
+                                    "____        ____"
                     })
             };
     static Level[] FOUNTAINS = new Level[]

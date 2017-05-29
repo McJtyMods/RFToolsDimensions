@@ -63,6 +63,7 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
             mapping.put('L', Blocks.BOOKSHELF.getDefaultState());
             mapping.put('W', Blocks.WATER.getDefaultState());
             mapping.put('w', Blocks.COBBLESTONE_WALL.getDefaultState());
+            mapping.put('_', Blocks.STONE_SLAB2.getDefaultState());
         }
         return mapping;
     }
@@ -276,6 +277,7 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
             char a = (char) Block.BLOCK_STATE_IDS.get(air);
             char b1 = (char) Block.BLOCK_STATE_IDS.get(style.bricks);
             char b2 = (char) Block.BLOCK_STATE_IDS.get(style.bricks_cracked);
+            char b3 = (char) Block.BLOCK_STATE_IDS.get(style.bricks_mossy);
             char iron = (char) Block.BLOCK_STATE_IDS.get(Blocks.IRON_BARS.getDefaultState());
             for (int i = 0 ; i < 2 ; i++) {
                 index = 0;
@@ -295,7 +297,7 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
                                         ) {
                                     primer.data[index] = a;
                                 } else if (primer.data[index - 1] == a && damageArea.damaged[index - 1]) {
-                                    if (primer.data[index - 1] == b1 || primer.data[index - 1] == b2) {
+                                    if (primer.data[index - 1] == b1 || primer.data[index - 1] == b2 || primer.data[index - 1] == b3) {
                                         primer.data[index - 1] = iron;
                                     } else {
                                         primer.data[index] = a;
@@ -416,18 +418,22 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
             case 0:
                 style.bricks = Blocks.STAINED_HARDENED_CLAY.getDefaultState().withProperty(BlockColored.COLOR, EnumDyeColor.CYAN);
                 style.bricks_cracked = Blocks.STAINED_HARDENED_CLAY.getDefaultState().withProperty(BlockColored.COLOR, EnumDyeColor.CYAN);
+                style.bricks_mossy = Blocks.STAINED_HARDENED_CLAY.getDefaultState().withProperty(BlockColored.COLOR, EnumDyeColor.CYAN);
                 break;
             case 1:
                 style.bricks = Blocks.STAINED_HARDENED_CLAY.getDefaultState().withProperty(BlockColored.COLOR, EnumDyeColor.GRAY);
                 style.bricks_cracked = Blocks.STAINED_HARDENED_CLAY.getDefaultState().withProperty(BlockColored.COLOR, EnumDyeColor.GRAY);
+                style.bricks_mossy = Blocks.STAINED_HARDENED_CLAY.getDefaultState().withProperty(BlockColored.COLOR, EnumDyeColor.GRAY);
                 break;
             case 2:
                 style.bricks = Blocks.STAINED_HARDENED_CLAY.getDefaultState().withProperty(BlockColored.COLOR, EnumDyeColor.SILVER);
                 style.bricks_cracked = Blocks.STAINED_HARDENED_CLAY.getDefaultState().withProperty(BlockColored.COLOR, EnumDyeColor.SILVER);
+                style.bricks_mossy = Blocks.STAINED_HARDENED_CLAY.getDefaultState().withProperty(BlockColored.COLOR, EnumDyeColor.SILVER);
                 break;
             default:
                 style.bricks = Blocks.STONEBRICK.getDefaultState();
                 style.bricks_cracked = Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CRACKED);
+                style.bricks_mossy = Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.MOSSY);
                 break;
         }
     }
@@ -518,6 +524,8 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
             b = style.bricks;
             if (rand.nextFloat() < 0.06f) {
                 b = style.bricks_cracked;
+            } else if (rand.nextFloat() < 0.06f) {
+                b = style.bricks_mossy;
             }
         }
         return b;
