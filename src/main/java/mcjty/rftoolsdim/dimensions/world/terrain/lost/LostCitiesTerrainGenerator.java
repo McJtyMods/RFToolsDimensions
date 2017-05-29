@@ -317,8 +317,27 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
     }
 
     private int generateStreet(ChunkPrimer primer, BuildingInfo info, DamageArea damageArea, Random rand, int cx, int cz, int index, int x, int z, int height) {
+        boolean xRail = info.hasXCorridor();
+        boolean zRail = info.hasZCorridor();
+
         while (height < groundLevel) {
-            BaseTerrainGenerator.setBlockState(primer, index++, height < waterLevel ? baseLiquid : damageArea.damageBlock(baseBlock, height < waterLevel ? baseLiquid : air, rand, damageArea.getDamage(cx + x, height, cz + z), index, style));
+            IBlockState rail = Blocks.RAIL.getDefaultState();
+            if (height >= groundLevel-6 && height <= groundLevel-4) {
+                if ((xRail && z >= 7 && z <= 10) || (zRail && x >= 7 && x <= 10)) {
+                    IBlockState b = air;
+                    if (height == groundLevel-6 && xRail && z == 10) {
+                        b = rail;
+                    }
+                    if (height == groundLevel-6 && zRail && x == 10) {
+                        b = rail;
+                    }
+                    BaseTerrainGenerator.setBlockState(primer, index++, b);
+                } else {
+                    BaseTerrainGenerator.setBlockState(primer, index++, height < waterLevel ? baseLiquid : damageArea.damageBlock(baseBlock, height < waterLevel ? baseLiquid : air, rand, damageArea.getDamage(cx + x, height, cz + z), index, style));
+                }
+            } else {
+                BaseTerrainGenerator.setBlockState(primer, index++, height < waterLevel ? baseLiquid : damageArea.damageBlock(baseBlock, height < waterLevel ? baseLiquid : air, rand, damageArea.getDamage(cx + x, height, cz + z), index, style));
+            }
             height++;
         }
 
@@ -406,14 +425,29 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
     private int generateBuilding(ChunkPrimer primer, BuildingInfo info, DamageArea damageArea, Random rand, int cx, int cz, int index, int x, int z, int height) {
         int belowGround = info.floorsBelowGround;
         int buildingtop = 69 + info.floors * 6;
+        boolean corridor;
+        if (isSide(x, z)) {
+            BuildingInfo adjacent = info.getAdjacent(x, z);
+            corridor = adjacent.hasXCorridor() || adjacent.hasZCorridor();
+        } else {
+            corridor = false;
+        }
 
         while (height < groundLevel - belowGround * 6) {
             BaseTerrainGenerator.setBlockState(primer, index++, height < waterLevel ? baseLiquid : damageArea.damageBlock(baseBlock, air, rand, damageArea.getDamage(cx + x, height, cz + z), index, style));
             height++;
         }
         while (height < buildingtop) {
-            IBlockState b = getBlockForLevel(rand, info, x, z, height);
-            b = damageArea.damageBlock(b, height < waterLevel ? baseLiquid : air, rand, damageArea.getDamage(cx + x, height, cz + z), index, style);
+            IBlockState b;
+
+            // Make a connection to a corridor if needed
+            if (corridor && height >= belowGround-6 && height <= belowGround-4 && isRailDoorway(x, z)) {
+                b = air;
+            } else {
+                b = getBlockForLevel(rand, info, x, z, height);
+                b = damageArea.damageBlock(b, height < waterLevel ? baseLiquid : air, rand, damageArea.getDamage(cx + x, height, cz + z), index, style);
+            }
+
             BaseTerrainGenerator.setBlockState(primer, index++, b);
             height++;
         }
@@ -483,9 +517,18 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
 
     private IBlockState getBlockForLevel(Random rand, BuildingInfo info, int x, int z, int height) {
         int f = getFloor(height);
-        int l = getLevel(height) + info.floorsBelowGround;
+        int l2 = getLevel(height);
+        boolean isFull = l2 == -1;      // The level directly underground has no windows
+        int l = l2 + info.floorsBelowGround;
         LostCityData.Level level = LostCityData.FLOORS[info.floorTypes[l]];
         IBlockState b = level.get(x, f, z);
+
+        // If we are directly underground, the block is glass, we are on the side and the chunk next to
+        // us doesn't have a building we replace the glass with a solid block
+        if (isFull && b == style.glass && isSide(x, z) && !info.getAdjacent(x, z).hasBuilding) {
+            b = style.bricks;
+        }
+
         if (x == 0 && z == 8 && f >= 1 && f <= 2 && info.hasConnectionAtX(l)) {
             BuildingInfo info2 = info.getXmin();
             if (info2.hasBuilding && l <= info2.floors + 1) {
@@ -600,5 +643,15 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
 
     private boolean isStreetBorder(int x, int z) {
         return x <= STREETBORDER || x >= (15 - STREETBORDER) || z <= STREETBORDER || z >= (15 - STREETBORDER);
+    }
+
+    private boolean isRailDoorway(int x, int z) {
+        if (x == 0 || x == 15) {
+            return z >= 7 && z <= 10;
+        }
+        if (z == 0 || z == 15) {
+            return x >= 7 && x <= 10;
+        }
+        return false;
     }
 }

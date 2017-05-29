@@ -65,12 +65,12 @@ public class LostCityData {
                                     "w      p p  p  w" +
                                     "wp   p         w" +
                                     "             p  " +
-                                    "      xxxx p    " +
-                                    "  p  xWWWWx     " +
-                                    "     xWWWWx p   " +
-                                    "    pxWWWWx     " +
-                                    "     xWWWWx     " +
-                                    "  p   xxxxp     " +
+                                    "           p    " +
+                                    "  p    xxx      " +
+                                    "      xWWWx p   " +
+                                    "    p xWWWx     " +
+                                    "      xWWWx     " +
+                                    "  p    xxxp     " +
                                     "      p     p   " +
                                     "w              w" +
                                     "w  p     p     w" +
@@ -82,12 +82,12 @@ public class LostCityData {
                                     "                " +
                                     "w              w" +
                                     "                " +
-                                    "      w  w      " +
-                                    "     w    w     " +
                                     "                " +
-                                    "                " +
-                                    "     w    w     " +
-                                    "      w  w      " +
+                                    "       w w      " +
+                                    "      w   w     " +
+                                    "        W       " +
+                                    "      w   w     " +
+                                    "       w w      " +
                                     "                " +
                                     "w              w" +
                                     "                " +
@@ -102,7 +102,7 @@ public class LostCityData {
                                     "                " +
                                     "                " +
                                     "                " +
-                                    "                " +
+                                    "        W       " +
                                     "                " +
                                     "                " +
                                     "                " +

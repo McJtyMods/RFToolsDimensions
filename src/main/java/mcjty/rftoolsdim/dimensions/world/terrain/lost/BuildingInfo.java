@@ -21,10 +21,28 @@ public class BuildingInfo {
     public final int glassColor;
     public final int buildingStyle;
 
+    public final boolean xRailCorridor;
+    public final boolean zRailCorridor;
+
     private BuildingInfo xmin = null;
     private BuildingInfo xmax = null;
     private BuildingInfo zmin = null;
     private BuildingInfo zmax = null;
+
+    // x between 0 and 15, z between 0 and 15
+    public BuildingInfo getAdjacent(int x, int z) {
+        if (x == 0) {
+            return getXmin();
+        } else if (x == 15) {
+            return getXmax();
+        } else if (z == 0) {
+            return getZmin();
+        } else if (z == 15) {
+            return getZmax();
+        } else {
+            return null;
+        }
+    }
 
     public BuildingInfo getXmin() {
         if (xmin == null) {
@@ -86,6 +104,70 @@ public class BuildingInfo {
         glassType = rand.nextInt(4);
         glassColor = rand.nextInt(5);
         buildingStyle = rand.nextInt(4);
+
+        if (hasBuilding) {
+            xRailCorridor = false;
+            zRailCorridor = false;
+        } else {
+            xRailCorridor = rand.nextFloat() < .7f;
+            zRailCorridor = rand.nextFloat() < .7f;
+        }
+    }
+
+    public boolean hasXCorridor() {
+        if (!xRailCorridor) {
+            return false;
+        }
+        BuildingInfo i = getXmin();
+        while (i.canRailGoThrough() && i.xRailCorridor) {
+            i = i.getXmin();
+        }
+        if (!i.hasBuilding) {
+            return false;
+        }
+        i = getXmax();
+        while (i.canRailGoThrough() && i.xRailCorridor) {
+            i = i.getXmax();
+        }
+        if (!i.hasBuilding) {
+            return false;
+        }
+        return true;
+    }
+
+    public boolean hasZCorridor() {
+        if (!zRailCorridor) {
+            return false;
+        }
+        BuildingInfo i = getZmin();
+        while (i.canRailGoThrough() && i.zRailCorridor) {
+            i = i.getZmin();
+        }
+        if (!i.hasBuilding) {
+            return false;
+        }
+        i = getZmax();
+        while (i.canRailGoThrough() && i.zRailCorridor) {
+            i = i.getZmax();
+        }
+        if (!i.hasBuilding) {
+            return false;
+        }
+        return true;
+    }
+
+    // Return true if it is possible for a rail section to go through here
+    public boolean canRailGoThrough() {
+        if (!isCity) {
+            // There is no city here so no passing possible
+            return false;
+        }
+        if (!hasBuilding) {
+            // There is no building here but we have a city so we can pass
+            return true;
+        }
+        // Otherwise we can only pass if this building has no floors below ground
+        return floorsBelowGround == 0;
     }
 
     // Return true if the road from a neighbouring chunk can extend into this chunk
