@@ -4,6 +4,7 @@ import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.config.WorldgenConfiguration;
 import mcjty.rftoolsdim.dimensions.world.terrain.BaseTerrainGenerator;
 import mcjty.rftoolsdim.dimensions.world.terrain.NormalTerrainGenerator;
+import mcjty.rftoolsdim.varia.GeometryTools;
 import net.minecraft.block.*;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -183,50 +184,79 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
             }
         }
 
-        BuildingInfo info2 = new BuildingInfo(chunkX - 1, chunkZ, provider.seed);
-        if (info2.isCity) {
-            for (int x = 0 ; x < 4 ; x++) {
-                int offset = x * 2;
-                for (int z = 0 ; z < 16 ; z++) {
+        List<GeometryTools.AxisAlignedBB2D> boxes = new ArrayList<>();
+        for (int x = -1 ; x <= 1 ; x++) {
+            for (int z = -1 ; z <= 1 ; z++) {
+                if (x != 0 || z != 0) {
+                    int ccx = chunkX + x;
+                    int ccz = chunkZ + z;
+                    BuildingInfo info2 = new BuildingInfo(ccx, ccz, provider.seed);
+                    if (info2.isCity) {
+                        boxes.add(new GeometryTools.AxisAlignedBB2D(ccx*16, ccz*16, ccx*16+15, ccz*16+15));
+                    }
+                }
+            }
+        }
+        if (!boxes.isEmpty()) {
+            for (int x = 0; x < 16; x++) {
+                for (int z = 0; z < 16; z++) {
+                    double mindist = 1000000000.0;
+                    for (GeometryTools.AxisAlignedBB2D box : boxes) {
+                        double dist = GeometryTools.squaredDistanceBoxPoint(box, cx + x, cz + z);
+                        if (dist < mindist) {
+                            mindist = dist;
+                        }
+                    }
+                    int offset = (int) (Math.sqrt(mindist) * 2);
                     flattenChunkBorder(primer, x, offset, z, provider.rand, damageArea, cx, cz);
                 }
             }
         }
-
-        info2 = new BuildingInfo(chunkX + 1, chunkZ, provider.seed);
-        if (info2.isCity) {
-            for (int x = 12 ; x < 16 ; x++) {
-                int offset = (15-x) * 2;
-                for (int z = 0 ; z < 16 ; z++) {
-                    flattenChunkBorder(primer, x, offset, z, provider.rand, damageArea, cx, cz);
-                }
-            }
-        }
-
-        info2 = new BuildingInfo(chunkX, chunkZ-1, provider.seed);
-        if (info2.isCity) {
-            for (int x = 0 ; x < 16 ; x++) {
-                for (int z = 0 ; z < 4 ; z++) {
-                    int offset = z * 2;
-                    flattenChunkBorder(primer, x, offset, z, provider.rand, damageArea, cx, cz);
-                }
-            }
-        }
-        info2 = new BuildingInfo(chunkX, chunkZ+1, provider.seed);
-        if (info2.isCity) {
-            for (int x = 0 ; x < 16 ; x++) {
-                for (int z = 12 ; z < 16 ; z++) {
-                    int offset = (15-z) * 2;
-                    flattenChunkBorder(primer, x, offset, z, provider.rand, damageArea, cx, cz);
-                }
-            }
-        }
+//
+//        BuildingInfo info2 = new BuildingInfo(chunkX - 1, chunkZ, provider.seed);
+//        if (info2.isCity) {
+//            for (int x = 0 ; x < 4 ; x++) {
+//                int offset = x * 2;
+//                for (int z = 0 ; z < 16 ; z++) {
+//                    flattenChunkBorder(primer, x, offset, z, provider.rand, damageArea, cx, cz);
+//                }
+//            }
+//        }
+//
+//        info2 = new BuildingInfo(chunkX + 1, chunkZ, provider.seed);
+//        if (info2.isCity) {
+//            for (int x = 12 ; x < 16 ; x++) {
+//                int offset = (15-x) * 2;
+//                for (int z = 0 ; z < 16 ; z++) {
+//                    flattenChunkBorder(primer, x, offset, z, provider.rand, damageArea, cx, cz);
+//                }
+//            }
+//        }
+//
+//        info2 = new BuildingInfo(chunkX, chunkZ-1, provider.seed);
+//        if (info2.isCity) {
+//            for (int x = 0 ; x < 16 ; x++) {
+//                for (int z = 0 ; z < 4 ; z++) {
+//                    int offset = z * 2;
+//                    flattenChunkBorder(primer, x, offset, z, provider.rand, damageArea, cx, cz);
+//                }
+//            }
+//        }
+//        info2 = new BuildingInfo(chunkX, chunkZ+1, provider.seed);
+//        if (info2.isCity) {
+//            for (int x = 0 ; x < 16 ; x++) {
+//                for (int z = 12 ; z < 16 ; z++) {
+//                    int offset = (15-z) * 2;
+//                    flattenChunkBorder(primer, x, offset, z, provider.rand, damageArea, cx, cz);
+//                }
+//            }
+//        }
 
     }
 
     private void flattenChunkBorder(ChunkPrimer primer, int x, int offset, int z, Random rand, DamageArea damageArea, int cx, int cz) {
         int index = (x << 12) | (z << 8);
-        for (int y = 0; y < (groundLevel - offset - rand.nextInt(3)) ; y++) {
+        for (int y = 0; y <= (groundLevel - offset - rand.nextInt(3)) ; y++) {
             IBlockState b = BaseTerrainGenerator.getBlockState(primer, index);
             if (b != Blocks.BEDROCK.getDefaultState()) {
                 if (b != baseBlock) {

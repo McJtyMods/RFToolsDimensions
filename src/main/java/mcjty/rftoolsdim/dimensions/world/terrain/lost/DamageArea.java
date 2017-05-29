@@ -1,5 +1,6 @@
 package mcjty.rftoolsdim.dimensions.world.terrain.lost;
 
+import mcjty.rftoolsdim.varia.GeometryTools;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -54,31 +55,8 @@ public class DamageArea {
     }
 
     private boolean intersectsWith(BlockPos center, int radius) {
-        double dmin = distance(center);
+        double dmin = GeometryTools.squaredDistanceBoxPoint(chunkBox, center);
         return dmin <= radius * radius;
-    }
-
-    private double distance(BlockPos center) {
-        double dmin = 0;
-
-        if (center.getX() < chunkBox.minX) {
-            dmin += Math.pow(center.getX() - chunkBox.minX, 2);
-        } else if (center.getX() > chunkBox.maxX) {
-            dmin += Math.pow(center.getX() - chunkBox.maxX, 2);
-        }
-
-        if (center.getY() < chunkBox.minY) {
-            dmin += Math.pow(center.getY() - chunkBox.minY, 2);
-        } else if (center.getY() > chunkBox.maxY) {
-            dmin += Math.pow(center.getY() - chunkBox.maxY, 2);
-        }
-
-        if (center.getZ() < chunkBox.minZ) {
-            dmin += Math.pow(center.getZ() - chunkBox.minZ, 2);
-        } else if (center.getZ() > chunkBox.maxZ) {
-            dmin += Math.pow(center.getZ() - chunkBox.maxZ, 2);
-        }
-        return dmin;
     }
 
     private Explosion getExplosionAt(int chunkX, int chunkZ) {
