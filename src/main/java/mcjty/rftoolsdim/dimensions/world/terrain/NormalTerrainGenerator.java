@@ -24,7 +24,7 @@ public class NormalTerrainGenerator implements BaseTerrainGenerator {
     private World world;
     protected GenericChunkGenerator provider;
 
-    private final double[] heightMap;
+    protected final double[] heightMap;
     private double[] mainNoiseRegion;
     private double[] minLimitRegion;
     private double[] maxLimitRegion;
@@ -80,7 +80,7 @@ public class NormalTerrainGenerator implements BaseTerrainGenerator {
 //        this.field_185985_d = ctx.getForest();
     }
 
-    private void generateHeightmap(int chunkX4, int chunkY4, int chunkZ4) {
+    protected void generateHeightmap(int chunkX4, int chunkY4, int chunkZ4) {
         ChunkProviderSettings settings = provider.getSettings();
         this.depthRegion = this.depthNoise.generateNoiseOctaves(this.depthRegion, chunkX4, chunkZ4, 5, 5, (double)settings.depthNoiseScaleX, (double)settings.depthNoiseScaleZ, (double)settings.depthNoiseScaleExponent);
         float f = settings.coordinateScale;
