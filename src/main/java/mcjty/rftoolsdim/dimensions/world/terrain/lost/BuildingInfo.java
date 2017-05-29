@@ -82,7 +82,7 @@ public class BuildingInfo {
         float cityFactor = City.getCityFactor(seed, chunkX, chunkZ);
         isCity = cityFactor > .2f;
         hasBuilding = isCity && (chunkX != 0 || chunkZ != 0) && rand.nextFloat() < .3f;
-        if (rand.nextDouble() < .1f) {
+        if (rand.nextDouble() < .2f) {
             streetType = StreetType.values()[rand.nextInt(StreetType.values().length)];
         } else {
             streetType = StreetType.NORMAL;

@@ -64,7 +64,7 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
             mapping.put('L', Blocks.BOOKSHELF.getDefaultState());
             mapping.put('W', Blocks.WATER.getDefaultState());
             mapping.put('w', Blocks.COBBLESTONE_WALL.getDefaultState());
-            mapping.put('_', Blocks.STONE_SLAB2.getDefaultState());
+            mapping.put('_', Blocks.STONE_SLAB.getDefaultState());
         }
         return mapping;
     }
@@ -321,17 +321,23 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
         boolean zRail = info.hasZCorridor();
 
         while (height < groundLevel) {
-            IBlockState rail = Blocks.RAIL.getDefaultState();
-            if (height >= groundLevel-6 && height <= groundLevel-4) {
-                if ((xRail && z >= 7 && z <= 10) || (zRail && x >= 7 && x <= 10)) {
-                    IBlockState b = air;
-                    if (height == groundLevel-6 && xRail && z == 10) {
-                        b = rail;
+            IBlockState railx = Blocks.RAIL.getDefaultState().withProperty(BlockRail.SHAPE, BlockRailBase.EnumRailDirection.EAST_WEST);
+            IBlockState railz = Blocks.RAIL.getDefaultState();
+            IBlockState b;
+            if (height >= groundLevel-5 && height <= groundLevel-1) {
+                if (height <= groundLevel-3 && ((xRail && z >= 7 && z <= 10) || (zRail && x >= 7 && x <= 10))) {
+                    b = air;
+                    if (height == groundLevel - 5 && xRail && z == 10) {
+                        b = damageArea.damageBlock(railx, height < waterLevel ? baseLiquid : air, rand, damageArea.getDamage(cx + x, height, cz + z), index, style);
                     }
-                    if (height == groundLevel-6 && zRail && x == 10) {
-                        b = rail;
+                    if (height == groundLevel - 5 && zRail && x == 10) {
+                        b = damageArea.damageBlock(railz, height < waterLevel ? baseLiquid : air, rand, damageArea.getDamage(cx + x, height, cz + z), index, style);
                     }
                     BaseTerrainGenerator.setBlockState(primer, index++, b);
+                } else if (height == groundLevel-2 && ((xRail && x == 7 && (z == 8 || z == 9)) || (zRail && z == 7 && (x == 8 || x == 9)))) {
+                    BaseTerrainGenerator.setBlockState(primer, index++, height < waterLevel ? baseLiquid : damageArea.damageBlock(Blocks.GLASS.getDefaultState(), height < waterLevel ? baseLiquid : air, rand, damageArea.getDamage(cx + x, height, cz + z), index, style));
+                } else if (height == groundLevel-1 && ((xRail && x == 7 && (z == 8 || z == 9)) || (zRail && z == 7 && (x == 8 || x == 9)))) {
+                    BaseTerrainGenerator.setBlockState(primer, index++, height < waterLevel ? baseLiquid : damageArea.damageBlock(Blocks.GLOWSTONE.getDefaultState(), height < waterLevel ? baseLiquid : air, rand, damageArea.getDamage(cx + x, height, cz + z), index, style));
                 } else {
                     BaseTerrainGenerator.setBlockState(primer, index++, height < waterLevel ? baseLiquid : damageArea.damageBlock(baseBlock, height < waterLevel ? baseLiquid : air, rand, damageArea.getDamage(cx + x, height, cz + z), index, style));
                 }
@@ -363,6 +369,7 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
                 break;
             case FULL:
                 BaseTerrainGenerator.setBlockState(primer, index++, damageArea.damageBlock(style.street, air, rand, damageArea.getDamage(cx + x, height, cz + z), index, style));
+                height++;
                 break;
             case PARK:
                 if (x == 0 || x == 15 || z == 0 || z == 15) {
@@ -370,6 +377,7 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
                 } else {
                     BaseTerrainGenerator.setBlockState(primer, index++, damageArea.damageBlock(Blocks.GRASS.getDefaultState(), air, rand, damageArea.getDamage(cx + x, height, cz + z), index, style));
                 }
+                height++;
                 break;
         }
 
@@ -428,7 +436,7 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
         boolean corridor;
         if (isSide(x, z)) {
             BuildingInfo adjacent = info.getAdjacent(x, z);
-            corridor = adjacent.hasXCorridor() || adjacent.hasZCorridor();
+            corridor = (adjacent.hasXCorridor() || adjacent.hasZCorridor()) && isRailDoorway(x, z);
         } else {
             corridor = false;
         }
@@ -441,7 +449,7 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
             IBlockState b;
 
             // Make a connection to a corridor if needed
-            if (corridor && height >= belowGround-6 && height <= belowGround-4 && isRailDoorway(x, z)) {
+            if (corridor && height >= groundLevel-5 && height <= groundLevel-3) {
                 b = air;
             } else {
                 b = getBlockForLevel(rand, info, x, z, height);
@@ -525,7 +533,8 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
 
         // If we are directly underground, the block is glass, we are on the side and the chunk next to
         // us doesn't have a building we replace the glass with a solid block
-        if (isFull && b == style.glass && isSide(x, z) && !info.getAdjacent(x, z).hasBuilding) {
+        // Gravel will later be replaced with either glass or solid block so we have to count that too
+        if (isFull && (b == Blocks.GLASS.getDefaultState() || b == Blocks.GRAVEL.getDefaultState()) && isSide(x, z) && (!info.getAdjacent(x, z).hasBuilding || info.getAdjacent(x, z).floorsBelowGround == 0)) {
             b = style.bricks;
         }
 
@@ -630,7 +639,7 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
     }
 
     public static int getLevel(int height) {
-        return (height - 63) / 6;
+        return ((height - 3) / 6) - 10;
     }
 
     private boolean isCorner(int x, int z) {

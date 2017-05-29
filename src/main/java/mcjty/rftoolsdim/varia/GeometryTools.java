@@ -1,5 +1,6 @@
 package mcjty.rftoolsdim.varia;
 
+import mcjty.rftoolsdim.dimensions.world.terrain.lost.LostCitiesTerrainGenerator;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 
@@ -73,5 +74,16 @@ public class GeometryTools {
         public double getMaxY() {
             return maxY;
         }
+    }
+
+    public static void main(String[] args) {
+        int l;
+        l = LostCitiesTerrainGenerator.getLevel(60);
+        System.out.println("l = " + l);
+        l = LostCitiesTerrainGenerator.getLevel(63);
+        System.out.println("l = " + l);
+
+        l = LostCitiesTerrainGenerator.getLevel(66);
+        System.out.println("l = " + l);
     }
 }
