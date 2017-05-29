@@ -19,6 +19,7 @@ import mcjty.rftoolsdim.dimensions.dimlets.types.Patreons;
 import mcjty.rftoolsdim.dimensions.types.FeatureType;
 import mcjty.rftoolsdim.dimensions.types.TerrainType;
 import mcjty.rftoolsdim.dimensions.world.terrain.lost.BuildingInfo;
+import mcjty.rftoolsdim.dimensions.world.terrain.lost.GenInfo;
 import mcjty.rftoolsdim.dimensions.world.terrain.lost.LostCitiesTerrainGenerator;
 import mcjty.rftoolsdim.items.ModItems;
 import mcjty.rftoolsdim.varia.RarityRandomSelector;
@@ -132,7 +133,7 @@ public class GenericWorldGenerator implements IWorldGenerator {
             if (f == 0) {
                 BlockPos floorpos = new BlockPos(chunkX * 16, height, chunkZ * 16);
                 int floortype = info.floorTypes[LostCitiesTerrainGenerator.getLevel(height) + info.floorsBelowGround];
-                LostCitiesTerrainGenerator.GenInfo getInfo = LostCitiesTerrainGenerator.getGenInfos().get(floortype);
+                GenInfo getInfo = LostCitiesTerrainGenerator.getGenInfos().get(floortype);
                 for (BlockPos p : getInfo.getChest()) {
                     BlockPos pos = floorpos.add(p);
                     if (!world.isAirBlock(pos)) {
