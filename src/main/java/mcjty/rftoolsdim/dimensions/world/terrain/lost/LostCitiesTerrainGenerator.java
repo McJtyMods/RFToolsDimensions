@@ -6,6 +6,7 @@ import mcjty.rftoolsdim.dimensions.world.terrain.BaseTerrainGenerator;
 import mcjty.rftoolsdim.dimensions.world.terrain.NormalTerrainGenerator;
 import mcjty.rftoolsdim.varia.GeometryTools;
 import net.minecraft.block.*;
+import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumDyeColor;
@@ -186,14 +187,14 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
         }
 
         List<GeometryTools.AxisAlignedBB2D> boxes = new ArrayList<>();
-        for (int x = -1 ; x <= 1 ; x++) {
-            for (int z = -1 ; z <= 1 ; z++) {
+        for (int x = -1; x <= 1; x++) {
+            for (int z = -1; z <= 1; z++) {
                 if (x != 0 || z != 0) {
                     int ccx = chunkX + x;
                     int ccz = chunkZ + z;
                     BuildingInfo info2 = new BuildingInfo(ccx, ccz, provider.seed);
                     if (info2.isCity) {
-                        boxes.add(new GeometryTools.AxisAlignedBB2D(ccx*16, ccz*16, ccx*16+15, ccz*16+15));
+                        boxes.add(new GeometryTools.AxisAlignedBB2D(ccx * 16, ccz * 16, ccx * 16 + 15, ccz * 16 + 15));
                     }
                 }
             }
@@ -217,7 +218,7 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
 
     private void flattenChunkBorder(ChunkPrimer primer, int x, int offset, int z, Random rand, DamageArea damageArea, int cx, int cz) {
         int index = (x << 12) | (z << 8);
-        for (int y = 0; y <= (groundLevel - offset - rand.nextInt(3)) ; y++) {
+        for (int y = 0; y <= (groundLevel - offset - rand.nextInt(3)); y++) {
             IBlockState b = BaseTerrainGenerator.getBlockState(primer, index);
             if (b != bedrock) {
                 if (b != baseBlock) {
@@ -229,7 +230,7 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
         }
         int r = rand.nextInt(3);
         index = (x << 12) | (z << 8) + groundLevel + offset + r;
-        for (int y = groundLevel + offset + 3; y < 256 ; y++) {
+        for (int y = groundLevel + offset + 3; y < 256; y++) {
             IBlockState b = BaseTerrainGenerator.getBlockState(primer, index);
             if (b != air) {
                 BaseTerrainGenerator.setBlockState(primer, index, air);
@@ -279,7 +280,7 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
             char b2 = (char) Block.BLOCK_STATE_IDS.get(style.bricks_cracked);
             char b3 = (char) Block.BLOCK_STATE_IDS.get(style.bricks_mossy);
             char iron = (char) Block.BLOCK_STATE_IDS.get(Blocks.IRON_BARS.getDefaultState());
-            for (int i = 0 ; i < 2 ; i++) {
+            for (int i = 0; i < 2; i++) {
                 index = 0;
                 for (int x = 0; x < 16; ++x) {
                     for (int z = 0; z < 16; ++z) {
@@ -323,7 +324,7 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
 
         switch (info.streetType) {
             case NORMAL:
-                if (isBorder(x, z)) {
+                if (isStreetBorder(x, z)) {
                     IBlockState b = baseBlock;
                     if (x <= STREETBORDER && z > STREETBORDER && z < (15 - STREETBORDER) && info.getXmin().doesRoadExtendTo()) {
                         b = style.street;
@@ -364,9 +365,41 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
                 l++;
             }
         }
-        int blocks = 256 - height;
-        BaseTerrainGenerator.setBlockStateRange(primer, index, index + blocks, air);
-        index += blocks;
+        if (x == 0 && info.getXmin().hasBuilding) {
+            PropertyBool vineside = BlockVine.WEST;
+            BuildingInfo infoAside = info.getXmin();
+            index = createVines(primer, damageArea, rand, cx, cz, index, x, z, height, vineside, infoAside);
+        } else if (x == 15 && info.getXmax().hasBuilding) {
+            PropertyBool vineside = BlockVine.EAST;
+            BuildingInfo infoAside = info.getXmax();
+            index = createVines(primer, damageArea, rand, cx, cz, index, x, z, height, vineside, infoAside);
+        } else if (z == 0 && info.getZmin().hasBuilding) {
+            PropertyBool vineside = BlockVine.NORTH;
+            BuildingInfo infoAside = info.getZmin();
+            index = createVines(primer, damageArea, rand, cx, cz, index, x, z, height, vineside, infoAside);
+        } else if (z == 15 && info.getZmax().hasBuilding) {
+            PropertyBool vineside = BlockVine.SOUTH;
+            BuildingInfo infoAside = info.getZmax();
+            index = createVines(primer, damageArea, rand, cx, cz, index, x, z, height, vineside, infoAside);
+        } else {
+            int blocks = 256 - height;
+            BaseTerrainGenerator.setBlockStateRange(primer, index, index + blocks, air);
+            index += blocks;
+        }
+        return index;
+    }
+
+    private int createVines(ChunkPrimer primer, DamageArea damageArea, Random rand, int cx, int cz, int index, int x, int z, int height, PropertyBool vineside, BuildingInfo infoAside) {
+        int buildingtop = 69 + infoAside.floors * 6;
+        // Check for vines
+        while (height < 256) {
+            if (height < buildingtop && rand.nextFloat() < 0.002f) {
+                BaseTerrainGenerator.setBlockState(primer, index++, damageArea.damageBlock(Blocks.VINE.getDefaultState().withProperty(vineside, true), air, rand, damageArea.getDamage(cx + x, height, cz + z), index, style));
+            } else {
+                BaseTerrainGenerator.setBlockState(primer, index++, air);
+            }
+            height++;
+        }
         return index;
     }
 
@@ -374,7 +407,7 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
         int belowGround = info.floorsBelowGround;
         int buildingtop = 69 + info.floors * 6;
 
-        while (height < groundLevel - belowGround*6) {
+        while (height < groundLevel - belowGround * 6) {
             BaseTerrainGenerator.setBlockState(primer, index++, height < waterLevel ? baseLiquid : damageArea.damageBlock(baseBlock, air, rand, damageArea.getDamage(cx + x, height, cz + z), index, style));
             height++;
         }
@@ -405,11 +438,21 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
         style.street = Blocks.DOUBLE_STONE_SLAB.getDefaultState();
 
         switch (info.glassColor) {
-            case 0: style.glass = Blocks.STAINED_GLASS.getDefaultState().withProperty(BlockStainedGlass.COLOR, EnumDyeColor.WHITE); break;
-            case 1: style.glass = Blocks.STAINED_GLASS.getDefaultState().withProperty(BlockStainedGlass.COLOR, EnumDyeColor.GRAY); break;
-            case 2: style.glass = Blocks.STAINED_GLASS.getDefaultState().withProperty(BlockStainedGlass.COLOR, EnumDyeColor.LIGHT_BLUE); break;
-            case 3: style.glass = Blocks.STAINED_GLASS.getDefaultState().withProperty(BlockStainedGlass.COLOR, EnumDyeColor.BLUE); break;
-            default: style.glass = Blocks.GLASS.getDefaultState(); break;
+            case 0:
+                style.glass = Blocks.STAINED_GLASS.getDefaultState().withProperty(BlockStainedGlass.COLOR, EnumDyeColor.WHITE);
+                break;
+            case 1:
+                style.glass = Blocks.STAINED_GLASS.getDefaultState().withProperty(BlockStainedGlass.COLOR, EnumDyeColor.GRAY);
+                break;
+            case 2:
+                style.glass = Blocks.STAINED_GLASS.getDefaultState().withProperty(BlockStainedGlass.COLOR, EnumDyeColor.LIGHT_BLUE);
+                break;
+            case 3:
+                style.glass = Blocks.STAINED_GLASS.getDefaultState().withProperty(BlockStainedGlass.COLOR, EnumDyeColor.BLUE);
+                break;
+            default:
+                style.glass = Blocks.GLASS.getDefaultState();
+                break;
         }
 
         style.quartz = Blocks.QUARTZ_BLOCK.getDefaultState();
@@ -481,10 +524,18 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
     private IBlockState getReplacementBlock(Random rand, BuildingInfo info, IBlockState b, boolean down) {
         if (b.getBlock() == Blocks.GRAVEL) {
             switch (info.glassType) {
-                case 0: b = style.glass; break;
-                case 1: b = style.street; break;
-                case 2: b = style.bricks; break;
-                case 3: b = style.quartz; break;
+                case 0:
+                    b = style.glass;
+                    break;
+                case 1:
+                    b = style.street;
+                    break;
+                case 2:
+                    b = style.bricks;
+                    break;
+                case 3:
+                    b = style.quartz;
+                    break;
             }
         } else if (b.getBlock() == Blocks.LADDER && down) {
             b = style.bricks;
@@ -524,7 +575,7 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
             b = style.bricks;
             if (rand.nextFloat() < 0.06f) {
                 b = style.bricks_cracked;
-            } else if (rand.nextFloat() < 0.06f) {
+            } else if (rand.nextFloat() < 0.05f) {
                 b = style.bricks_mossy;
             }
         }
@@ -547,9 +598,7 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
         return x == 0 || x == 15 || z == 0 || z == 15;
     }
 
-    private boolean isBorder(int x, int z) {
+    private boolean isStreetBorder(int x, int z) {
         return x <= STREETBORDER || x >= (15 - STREETBORDER) || z <= STREETBORDER || z >= (15 - STREETBORDER);
     }
-
-
 }
