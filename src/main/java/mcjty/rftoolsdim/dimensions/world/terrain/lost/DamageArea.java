@@ -37,9 +37,9 @@ public class DamageArea {
         }
     }
 
-    public IBlockState damageBlock(IBlockState b, IBlockState replacement, Random rand, float damage, int index, IBlockState bricks, IBlockState bricks_cracked, IBlockState quartz) {
+    public IBlockState damageBlock(IBlockState b, IBlockState replacement, Random rand, float damage, int index, Style style) {
         if (rand.nextFloat() <= damage) {
-            if (damage < .5f && (b == bricks || b == bricks_cracked || b == quartz)) {
+            if (damage < .5f && style.canBeDamagedToIronBars(b)) {
                 if (rand.nextFloat() < .8f) {
                     b = Blocks.IRON_BARS.getDefaultState();
                 } else {
