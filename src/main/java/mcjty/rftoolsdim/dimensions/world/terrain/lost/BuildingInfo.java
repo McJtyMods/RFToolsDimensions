@@ -3,6 +3,10 @@ package mcjty.rftoolsdim.dimensions.world.terrain.lost;
 import java.util.Random;
 
 public class BuildingInfo {
+    public final int chunkX;
+    public final int chunkZ;
+    public final long seed;
+
     public final boolean isCity;
     public final boolean hasBuilding;
     public final int fountainType;
@@ -16,7 +20,43 @@ public class BuildingInfo {
     public final int glassColor;
     public final int buildingStyle;
 
+    private BuildingInfo xmin = null;
+    private BuildingInfo xmax = null;
+    private BuildingInfo zmin = null;
+    private BuildingInfo zmax = null;
+
+    public BuildingInfo getXmin() {
+        if (xmin == null) {
+            xmin = new BuildingInfo(chunkX-1, chunkZ, seed);
+        }
+        return xmin;
+    }
+
+    public BuildingInfo getXmax() {
+        if (xmax == null) {
+            xmax = new BuildingInfo(chunkX+1, chunkZ, seed);
+        }
+        return xmax;
+    }
+
+    public BuildingInfo getZmin() {
+        if (zmin == null) {
+            zmin = new BuildingInfo(chunkX, chunkZ-1, seed);
+        }
+        return zmin;
+    }
+
+    public BuildingInfo getZmax() {
+        if (zmax == null) {
+            zmax = new BuildingInfo(chunkX, chunkZ+1, seed);
+        }
+        return zmax;
+    }
+
     public BuildingInfo(int chunkX, int chunkZ, long seed) {
+        this.chunkX = chunkX;
+        this.chunkZ = chunkZ;
+        this.seed = seed;
         Random rand = getBuildingRandom(chunkX, chunkZ, seed);
         float cityFactor = City.getCityFactor(seed, chunkX, chunkZ);
         isCity = cityFactor > .2f;
@@ -40,6 +80,11 @@ public class BuildingInfo {
         glassType = rand.nextInt(4);
         glassColor = rand.nextInt(5);
         buildingStyle = rand.nextInt(4);
+    }
+
+    // Return true if the road from a neighbouring chunk can extend into this chunk
+    public boolean doesRoadExtendTo() {
+        return isCity && !hasBuilding;
     }
 
     public static Random getBuildingRandom(int chunkX, int chunkZ, long seed) {
