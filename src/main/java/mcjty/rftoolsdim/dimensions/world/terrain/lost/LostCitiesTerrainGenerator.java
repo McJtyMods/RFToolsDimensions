@@ -402,29 +402,7 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
         boolean xRail = info.hasXCorridor();
         boolean zRail = info.hasZCorridor();
 
-        boolean doOceanBorder = false;
-        if (x == 0 && !info.getXmin().isCity) {
-            Biome[] biomes = provider.worldObj.getBiomeProvider().getBiomesForGeneration(null, (chunkX - 1) * 4 - 2, chunkZ * 4 - 2, 10, 10);
-            if (isOcean(biomes)) {
-                doOceanBorder = true;
-            }
-        } else if (x == 15 && !info.getXmax().isCity) {
-            Biome[] biomes = provider.worldObj.getBiomeProvider().getBiomesForGeneration(null, (chunkX + 1) * 4 - 2, chunkZ * 4 - 2, 10, 10);
-            if (isOcean(biomes)) {
-                doOceanBorder = true;
-            }
-        }
-        if (z == 0 && !info.getZmin().isCity) {
-            Biome[] biomes = provider.worldObj.getBiomeProvider().getBiomesForGeneration(null, chunkX * 4 - 2, (chunkZ - 1) * 4 - 2, 10, 10);
-            if (isOcean(biomes)) {
-                doOceanBorder = true;
-            }
-        } else if (z == 15 && !info.getZmax().isCity) {
-            Biome[] biomes = provider.worldObj.getBiomeProvider().getBiomesForGeneration(null, chunkX * 4 - 2, (chunkZ + 1) * 4 - 2, 10, 10);
-            if (isOcean(biomes)) {
-                doOceanBorder = true;
-            }
-        }
+        boolean doOceanBorder = isDoOceanBorder(info, chunkX, chunkZ, x, z);
 
         while (height < groundLevel) {
             IBlockState railx = Blocks.RAIL.getDefaultState().withProperty(BlockRail.SHAPE, BlockRailBase.EnumRailDirection.EAST_WEST);
@@ -518,6 +496,32 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
         BaseTerrainGenerator.setBlockStateRange(primer, index, index + blocks, air);
         index += blocks;
         return index;
+    }
+
+    private boolean isDoOceanBorder(BuildingInfo info, int chunkX, int chunkZ, int x, int z) {
+        if (x == 0 && !info.getXmin().isCity) {
+            Biome[] biomes = provider.worldObj.getBiomeProvider().getBiomesForGeneration(null, (chunkX - 1) * 4 - 2, chunkZ * 4 - 2, 10, 10);
+            if (isOcean(biomes)) {
+                return true;
+            }
+        } else if (x == 15 && !info.getXmax().isCity) {
+            Biome[] biomes = provider.worldObj.getBiomeProvider().getBiomesForGeneration(null, (chunkX + 1) * 4 - 2, chunkZ * 4 - 2, 10, 10);
+            if (isOcean(biomes)) {
+                return true;
+            }
+        }
+        if (z == 0 && !info.getZmin().isCity) {
+            Biome[] biomes = provider.worldObj.getBiomeProvider().getBiomesForGeneration(null, chunkX * 4 - 2, (chunkZ - 1) * 4 - 2, 10, 10);
+            if (isOcean(biomes)) {
+                return true;
+            }
+        } else if (z == 15 && !info.getZmax().isCity) {
+            Biome[] biomes = provider.worldObj.getBiomeProvider().getBiomesForGeneration(null, chunkX * 4 - 2, (chunkZ + 1) * 4 - 2, 10, 10);
+            if (isOcean(biomes)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private int generateBuilding(ChunkPrimer primer, BuildingInfo info, DamageArea damageArea, Random rand, int chunkX, int chunkZ, int index, int x, int z, int height) {
@@ -643,7 +647,7 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
             if (info2.hasBuilding && ((l >= 0 && l <= info2.floors) || (l < 0 && (-l) <= info2.floorsBelowGround))) {
                 b = air;
             } else if ((!info2.hasBuilding && l == 0) || (info2.hasBuilding && l == info2.floors+1)) {
-                b = Blocks.BIRCH_DOOR.getDefaultState()
+                b = info.doorBlock.getDefaultState()
                         .withProperty(BlockDoor.HALF, f == 1 ? BlockDoor.EnumDoorHalf.LOWER : BlockDoor.EnumDoorHalf.UPPER)
                         .withProperty(BlockDoor.HINGE, z == 7 ? BlockDoor.EnumHingePosition.LEFT : BlockDoor.EnumHingePosition.RIGHT)
                         .withProperty(BlockDoor.FACING, EnumFacing.EAST);
@@ -653,7 +657,7 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
             if (info2.hasBuilding && ((l >= 0 && l <= info2.floors) || (l < 0 && (-l) <= info2.floorsBelowGround)) && info2.hasConnectionAtX(l + info2.floorsBelowGround)) {
                 b = air;
             } else if ((!info2.hasBuilding && l == 0) || (info2.hasBuilding && l == info2.floors+1)) {
-                b = Blocks.BIRCH_DOOR.getDefaultState()
+                b = info.doorBlock.getDefaultState()
                         .withProperty(BlockDoor.HALF, f == 1 ? BlockDoor.EnumDoorHalf.LOWER : BlockDoor.EnumDoorHalf.UPPER)
                         .withProperty(BlockDoor.HINGE, z == 8 ? BlockDoor.EnumHingePosition.LEFT : BlockDoor.EnumHingePosition.RIGHT)
                         .withProperty(BlockDoor.FACING, EnumFacing.WEST);
@@ -664,7 +668,7 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
             if (info2.hasBuilding && ((l >= 0 && l <= info2.floors) || (l < 0 && (-l) <= info2.floorsBelowGround))) {
                 b = air;
             } else if ((!info2.hasBuilding && l == 0) || (info2.hasBuilding && l == info2.floors+1)) {
-                b = Blocks.BIRCH_DOOR.getDefaultState()
+                b = info.doorBlock.getDefaultState()
                         .withProperty(BlockDoor.HALF, f == 1 ? BlockDoor.EnumDoorHalf.LOWER : BlockDoor.EnumDoorHalf.UPPER)
                         .withProperty(BlockDoor.HINGE, x == 8 ? BlockDoor.EnumHingePosition.LEFT : BlockDoor.EnumHingePosition.RIGHT)
                         .withProperty(BlockDoor.FACING, EnumFacing.SOUTH);
@@ -674,7 +678,7 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
             if (info2.hasBuilding && ((l >= 0 && l <= info2.floors) || (l < 0 && (-l) <= info2.floorsBelowGround)) && info2.hasConnectionAtZ(l + info2.floorsBelowGround)) {
                 b = air;
             } else if ((!info2.hasBuilding && l == 0) || (info2.hasBuilding && l == info2.floors+1)) {
-                b = Blocks.BIRCH_DOOR.getDefaultState()
+                b = info.doorBlock.getDefaultState()
                         .withProperty(BlockDoor.HALF, f == 1 ? BlockDoor.EnumDoorHalf.LOWER : BlockDoor.EnumDoorHalf.UPPER)
                         .withProperty(BlockDoor.HINGE, x == 7 ? BlockDoor.EnumHingePosition.LEFT : BlockDoor.EnumHingePosition.RIGHT)
                         .withProperty(BlockDoor.FACING, EnumFacing.NORTH);

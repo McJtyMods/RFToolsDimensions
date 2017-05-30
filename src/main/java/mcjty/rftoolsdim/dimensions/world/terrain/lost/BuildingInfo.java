@@ -1,5 +1,8 @@
 package mcjty.rftoolsdim.dimensions.world.terrain.lost;
 
+import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
+
 import java.util.Random;
 
 public class BuildingInfo {
@@ -26,6 +29,8 @@ public class BuildingInfo {
     public final boolean zRailCorridor;
     public final boolean xWaterCorridor;
     public final boolean zWaterCorridor;
+
+    public final Block doorBlock;
 
     private BuildingInfo xmin = null;
     private BuildingInfo xmax = null;
@@ -134,6 +139,22 @@ public class BuildingInfo {
             xWaterCorridor = rand.nextFloat() < .8f;
             zWaterCorridor = rand.nextFloat() < .8f;
         }
+        doorBlock = getRandomDoor(rand);
+    }
+
+    private Block getRandomDoor(Random rand) {
+        Block doorBlock;
+        switch (rand.nextInt(7)) {
+            case 0: doorBlock = Blocks.BIRCH_DOOR; break;
+            case 1: doorBlock = Blocks.ACACIA_DOOR; break;
+            case 2: doorBlock = Blocks.DARK_OAK_DOOR; break;
+            case 3: doorBlock = Blocks.SPRUCE_DOOR; break;
+            case 4: doorBlock = Blocks.OAK_DOOR; break;
+            case 5: doorBlock = Blocks.JUNGLE_DOOR; break;
+            case 6: doorBlock = Blocks.IRON_DOOR; break;
+            default: doorBlock = Blocks.OAK_DOOR;
+        }
+        return doorBlock;
     }
 
     public boolean hasXCorridor() {
