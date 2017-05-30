@@ -503,10 +503,9 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
 
     private IBlockState getBlockForLevel(Random rand, BuildingInfo info, int x, int z, int height) {
         int f = getFloor(height);
-        int l2 = getLevel(height);
-        boolean isFull = l2 == -1;      // The level directly underground has no windows
-        int l = l2 + info.floorsBelowGround;
-        LostCityData.Level level = LostCityData.FLOORS[info.floorTypes[l]];
+        int l = getLevel(height);
+        boolean isFull = l == -1;      // The level directly underground has no windows
+        LostCityData.Level level = LostCityData.FLOORS[info.floorTypes[l + info.floorsBelowGround]];
         IBlockState b = level.get(x, f, z);
 
         // If we are directly underground, the block is glass, we are on the side and the chunk next to
@@ -516,37 +515,37 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
             b = style.bricks;
         }
 
-        if (x == 0 && z == 8 && f >= 1 && f <= 2 && info.hasConnectionAtX(l)) {
+        if (x == 0 && z == 8 && f >= 1 && f <= 2 && info.hasConnectionAtX(l+info.floorsBelowGround)) {
             BuildingInfo info2 = info.getXmin();
-            if (info2.hasBuilding && l <= info2.floors + 1) {
+            if (info2.hasBuilding && ((l >= 0 && l <= info2.floors + 1) || (l < 0 && (-l) <= info2.floorsBelowGround))) {
                 b = air;
             } else if (!info2.hasBuilding && l == 0) {
                 b = air;
             }
         } else if (x == 15 && z == 8 && f >= 1 && f <= 2) {
             BuildingInfo info2 = info.getXmax();
-            if (info2.hasBuilding && l <= info2.floors + 1 && info2.hasConnectionAtX(l)) {
+            if (info2.hasBuilding && ((l >= 0 && l <= info2.floors + 1) || (l < 0 && (-l) <= info2.floorsBelowGround)) && info2.hasConnectionAtX(l+info2.floorsBelowGround)) {
                 b = air;
             } else if (!info2.hasBuilding && l == 0) {
                 b = air;
             }
         }
-        if (z == 0 && x == 8 && f >= 1 && f <= 2 && info.hasConnectionAtZ(l)) {
+        if (z == 0 && x == 8 && f >= 1 && f <= 2 && info.hasConnectionAtZ(l+info.floorsBelowGround)) {
             BuildingInfo info2 = info.getZmin();
-            if (info2.hasBuilding && l <= info2.floors + 1) {
+            if (info2.hasBuilding && ((l >= 0 && l <= info2.floors + 1) || (l < 0 && (-l) <= info2.floorsBelowGround))) {
                 b = air;
             } else if (!info2.hasBuilding && l == 0) {
                 b = air;
             }
         } else if (z == 15 && x == 8 && f >= 1 && f <= 2) {
             BuildingInfo info2 = info.getZmax();
-            if (info2.hasBuilding && l <= info2.floors + 1 && info2.hasConnectionAtZ(l)) {
+            if (info2.hasBuilding && ((l >= 0 && l <= info2.floors + 1) || (l < 0 && (-l) <= info2.floorsBelowGround)) && info2.hasConnectionAtZ(l+info2.floorsBelowGround)) {
                 b = air;
             } else if (!info2.hasBuilding && l == 0) {
                 b = air;
             }
         }
-        boolean down = f == 0 && l == 0;
+        boolean down = f == 0 && (l + info.floorsBelowGround) == 0;
 
         return getReplacementBlock(rand, info, b, down);
     }

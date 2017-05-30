@@ -249,14 +249,14 @@ public class BuildingInfo {
     }
 
     public boolean hasConnectionAtX(int level) {
-        if (level >= connectionAtX.length) {
+        if (level < 0 || level >= connectionAtX.length) {
             return false;
         }
         return connectionAtX[level];
     }
 
     public boolean hasConnectionAtZ(int level) {
-        if (level >= connectionAtZ.length) {
+        if (level < 0 || level >= connectionAtZ.length) {
             return false;
         }
         return connectionAtZ[level];
