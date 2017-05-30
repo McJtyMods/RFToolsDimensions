@@ -121,7 +121,7 @@ public class BuildingInfo {
         }
         topType = rand.nextInt(LostCityData.TOPS.length);
         glassType = rand.nextInt(4);
-        glassColor = rand.nextInt(5);
+        glassColor = rand.nextInt(5+5);
         buildingStyle = rand.nextInt(4);
 
         if (hasBuilding && floorsBelowGround > 0) {

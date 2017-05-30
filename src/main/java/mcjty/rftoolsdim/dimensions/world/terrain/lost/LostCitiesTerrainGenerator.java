@@ -588,6 +588,21 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
             case 3:
                 style.glass = Blocks.STAINED_GLASS.getDefaultState().withProperty(BlockStainedGlass.COLOR, EnumDyeColor.BLUE);
                 break;
+            case 4:
+                style.glass = Blocks.STAINED_GLASS_PANE.getDefaultState().withProperty(BlockStainedGlass.COLOR, EnumDyeColor.WHITE);
+                break;
+            case 5:
+                style.glass = Blocks.STAINED_GLASS_PANE.getDefaultState().withProperty(BlockStainedGlass.COLOR, EnumDyeColor.GRAY);
+                break;
+            case 6:
+                style.glass = Blocks.STAINED_GLASS_PANE.getDefaultState().withProperty(BlockStainedGlass.COLOR, EnumDyeColor.LIGHT_BLUE);
+                break;
+            case 7:
+                style.glass = Blocks.STAINED_GLASS_PANE.getDefaultState().withProperty(BlockStainedGlass.COLOR, EnumDyeColor.BLUE);
+                break;
+            case 8:
+                style.glass = Blocks.GLASS_PANE.getDefaultState();
+                break;
             default:
                 style.glass = Blocks.GLASS.getDefaultState();
                 break;
