@@ -48,6 +48,7 @@ import net.minecraft.world.gen.feature.WorldGenMinable;
 import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.fml.common.IWorldGenerator;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.Random;
 
@@ -184,7 +185,7 @@ public class GenericWorldGenerator implements IWorldGenerator {
             if (f == 0) {
                 BlockPos floorpos = new BlockPos(chunkX * 16, height, chunkZ * 16);
                 int floortype = info.floorTypes[LostCitiesTerrainGenerator.getLevel(height) + info.floorsBelowGround];
-                GenInfo getInfo = LostCitiesTerrainGenerator.getGenInfos().get(floortype);
+                GenInfo getInfo = LostCitiesTerrainGenerator.getGenInfos().get(Pair.of(info.buildingType, floortype));
                 for (BlockPos p : getInfo.getChest()) {
                     BlockPos pos = floorpos.add(p);
                     if (!world.isAirBlock(pos)) {

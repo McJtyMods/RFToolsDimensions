@@ -9,6 +9,7 @@ public class BuildingInfo {
 
     public final boolean isCity;
     public final boolean hasBuilding;
+    public final int buildingType;
     public final int fountainType;  // Used for PARKS and FOUNTAINS
     public final StreetType streetType;
     public final int floors;
@@ -74,6 +75,10 @@ public class BuildingInfo {
         return zmax;
     }
 
+    public LostCityData.Level[] getFloorData() {
+        return buildingType == 0 ? LostCityData.FLOORS : LostCityData.FLOORS2;
+    }
+
     public BuildingInfo(int chunkX, int chunkZ, long seed) {
         this.chunkX = chunkX;
         this.chunkZ = chunkZ;
@@ -82,6 +87,7 @@ public class BuildingInfo {
         float cityFactor = City.getCityFactor(seed, chunkX, chunkZ);
         isCity = cityFactor > .2f;
         hasBuilding = isCity && (chunkX != 0 || chunkZ != 0) && rand.nextFloat() < .3f;
+        buildingType = rand.nextInt(2);
         if (rand.nextDouble() < .2f) {
             streetType = StreetType.values()[rand.nextInt(StreetType.values().length)];
         } else {
@@ -98,7 +104,7 @@ public class BuildingInfo {
         connectionAtX = new boolean[floors + floorsBelowGround + 2];
         connectionAtZ = new boolean[floors + floorsBelowGround + 2];
         for (int i = 0; i <= floors + floorsBelowGround + 1; i++) {
-            floorTypes[i] = rand.nextInt(LostCityData.FLOORS.length);
+            floorTypes[i] = rand.nextInt(getFloorData().length);
             connectionAtX[i] = rand.nextFloat() < .6f;
             connectionAtZ[i] = rand.nextFloat() < .6f;
         }
