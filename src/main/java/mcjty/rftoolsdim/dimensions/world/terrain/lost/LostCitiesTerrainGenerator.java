@@ -657,9 +657,11 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
             b = style.bricks;
         }
 
-        if (x == 0 && (z == 7 || z == 8) && f >= 1 && f <= 2 && info.hasConnectionAtX(l + info.floorsBelowGround)) {
+        if (x == 0 && (z == 7 || z == 8) && f >= 1 && f <= 3 && info.hasConnectionAtX(l + info.floorsBelowGround)) {
             BuildingInfo info2 = info.getXmin();
-            if (info2.hasBuilding && ((l >= 0 && l <= info2.floors) || (l < 0 && (-l) <= info2.floorsBelowGround))) {
+            if (f == 3) {
+                b = style.bricks;
+            } else if (info2.hasBuilding && ((l >= 0 && l <= info2.floors) || (l < 0 && (-l) <= info2.floorsBelowGround))) {
                 b = air;
             } else if ((!info2.hasBuilding && l == 0) || (info2.hasBuilding && l == info2.floors+1)) {
                 b = info.doorBlock.getDefaultState()
@@ -667,9 +669,11 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
                         .withProperty(BlockDoor.HINGE, z == 7 ? BlockDoor.EnumHingePosition.LEFT : BlockDoor.EnumHingePosition.RIGHT)
                         .withProperty(BlockDoor.FACING, EnumFacing.EAST);
             }
-        } else if (x == 15 && (z == 7 || z == 8) && f >= 1 && f <= 2) {
+        } else if (x == 15 && (z == 7 || z == 8) && f >= 1 && f <= 3) {
             BuildingInfo info2 = info.getXmax();
-            if (info2.hasBuilding && ((l >= 0 && l <= info2.floors) || (l < 0 && (-l) <= info2.floorsBelowGround)) && info2.hasConnectionAtX(l + info2.floorsBelowGround)) {
+            if (f == 3) {
+                b = style.bricks;
+            } else if (info2.hasBuilding && ((l >= 0 && l <= info2.floors) || (l < 0 && (-l) <= info2.floorsBelowGround)) && info2.hasConnectionAtX(l + info2.floorsBelowGround)) {
                 b = air;
             } else if ((!info2.hasBuilding && l == 0) || (info2.hasBuilding && l == info2.floors+1)) {
                 b = info.doorBlock.getDefaultState()
@@ -678,9 +682,11 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
                         .withProperty(BlockDoor.FACING, EnumFacing.WEST);
             }
         }
-        if (z == 0 && (x == 7 || x == 8) && f >= 1 && f <= 2 && info.hasConnectionAtZ(l + info.floorsBelowGround)) {
+        if (z == 0 && (x == 7 || x == 8) && f >= 1 && f <= 3 && info.hasConnectionAtZ(l + info.floorsBelowGround)) {
             BuildingInfo info2 = info.getZmin();
-            if (info2.hasBuilding && ((l >= 0 && l <= info2.floors) || (l < 0 && (-l) <= info2.floorsBelowGround))) {
+            if (f == 3) {
+                b = style.bricks;
+            } else if (info2.hasBuilding && ((l >= 0 && l <= info2.floors) || (l < 0 && (-l) <= info2.floorsBelowGround))) {
                 b = air;
             } else if ((!info2.hasBuilding && l == 0) || (info2.hasBuilding && l == info2.floors+1)) {
                 b = info.doorBlock.getDefaultState()
@@ -688,9 +694,11 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
                         .withProperty(BlockDoor.HINGE, x == 8 ? BlockDoor.EnumHingePosition.LEFT : BlockDoor.EnumHingePosition.RIGHT)
                         .withProperty(BlockDoor.FACING, EnumFacing.SOUTH);
             }
-        } else if (z == 15 && (x == 7 || x == 8) && f >= 1 && f <= 2) {
+        } else if (z == 15 && (x == 7 || x == 8) && f >= 1 && f <= 3) {
             BuildingInfo info2 = info.getZmax();
-            if (info2.hasBuilding && ((l >= 0 && l <= info2.floors) || (l < 0 && (-l) <= info2.floorsBelowGround)) && info2.hasConnectionAtZ(l + info2.floorsBelowGround)) {
+            if (f == 3) {
+                b = style.bricks;
+            } else if (info2.hasBuilding && ((l >= 0 && l <= info2.floors) || (l < 0 && (-l) <= info2.floorsBelowGround)) && info2.hasConnectionAtZ(l + info2.floorsBelowGround)) {
                 b = air;
             } else if ((!info2.hasBuilding && l == 0) || (info2.hasBuilding && l == info2.floors+1)) {
                 b = info.doorBlock.getDefaultState()
