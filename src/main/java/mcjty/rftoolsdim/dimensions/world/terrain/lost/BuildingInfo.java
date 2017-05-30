@@ -100,14 +100,6 @@ public class BuildingInfo {
         }
         floors = rand.nextInt((int) (4 + (cityFactor + .1f) * 3));
         floorsBelowGround = rand.nextInt(4);
-        floorTypes = new int[floors + floorsBelowGround + 2];
-        connectionAtX = new boolean[floors + floorsBelowGround + 2];
-        connectionAtZ = new boolean[floors + floorsBelowGround + 2];
-        for (int i = 0; i <= floors + floorsBelowGround + 1; i++) {
-            floorTypes[i] = rand.nextInt(getFloorData().length);
-            connectionAtX[i] = rand.nextFloat() < .6f;
-            connectionAtZ[i] = rand.nextFloat() < .6f;
-        }
         topType = rand.nextInt(LostCityData.TOPS.length);
         glassType = rand.nextInt(4);
         glassColor = rand.nextInt(5);
@@ -127,6 +119,15 @@ public class BuildingInfo {
         } else {
             xWaterCorridor = rand.nextFloat() < .8f;
             zWaterCorridor = rand.nextFloat() < .8f;
+        }
+
+        floorTypes = new int[floors + floorsBelowGround + 2];
+        connectionAtX = new boolean[floors + floorsBelowGround + 2];
+        connectionAtZ = new boolean[floors + floorsBelowGround + 2];
+        for (int i = 0; i <= floors + floorsBelowGround + 1; i++) {
+            floorTypes[i] = rand.nextInt(getFloorData().length);
+            connectionAtX[i] = getXmin().isCity ? (rand.nextFloat() < .6f) : false;
+            connectionAtZ[i] = getZmax().isCity ? (rand.nextFloat() < .6f) : false;
         }
     }
 
