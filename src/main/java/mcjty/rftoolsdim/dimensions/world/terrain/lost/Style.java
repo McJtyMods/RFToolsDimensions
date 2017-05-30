@@ -10,6 +10,7 @@ public class Style {
     public IBlockState bricks;
     public IBlockState bricks_cracked;
     public IBlockState bricks_mossy;
+    public IBlockState bricks_monster;
 
     public boolean canBeDamagedToIronBars(IBlockState b) {
         return b != null && (b == bricks || b == bricks_cracked || b == bricks_mossy || b == quartz);

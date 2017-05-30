@@ -14,13 +14,14 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.chunk.ChunkPrimer;
 
 import java.util.*;
+import java.util.function.BiFunction;
 
 public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
 
     private final byte groundLevel;
     private final byte waterLevel;
-    private IBlockState bedrock;
-    private IBlockState air;
+    private static IBlockState bedrock;
+    private static IBlockState air;
     private IBlockState baseBlock;
     private IBlockState baseLiquid;
 
@@ -37,33 +38,90 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
     }
 
 
-    private static Map<Character, IBlockState> mapping = null;
+    private static Map<Character, BiFunction<Style, BuildingInfo, IBlockState>> mapping = null;
     private static List<GenInfo> genInfos = null;
 
-    public static Map<Character, IBlockState> getMapping() {
+    // Use this random when it doesn't really matter i fit is generated the same every time
+    private static Random globalRandom = new Random();
+
+    public static Map<Character, BiFunction<Style, BuildingInfo, IBlockState>> getMapping() {
         if (mapping == null) {
             mapping = new HashMap<>();
-            mapping.put('#', Blocks.STONEBRICK.getDefaultState());
-            mapping.put('=', Blocks.GLASS.getDefaultState());
-            mapping.put('@', Blocks.GRAVEL.getDefaultState());      // Will be replaced with glass
-            mapping.put(' ', Blocks.AIR.getDefaultState());
-            mapping.put('x', Blocks.STONEBRICK.getDefaultState());
-            mapping.put('l', Blocks.LADDER.getDefaultState());
-            mapping.put('1', Blocks.PLANKS.getDefaultState());      // Monster spawner 1
-            mapping.put('2', Blocks.PLANKS.getDefaultState());      // Monster spawner 2
-            mapping.put('C', Blocks.PLANKS.getDefaultState());      // Chest
-            mapping.put('F', Blocks.PLANKS.getDefaultState());      // Random feature
-            mapping.put(':', Blocks.IRON_BARS.getDefaultState());
-            mapping.put('D', Blocks.DIRT.getDefaultState());
-            mapping.put('G', Blocks.GRASS.getDefaultState());
-            mapping.put('p', Blocks.SAPLING.getDefaultState());
-            mapping.put('*', Blocks.FLOWER_POT.getDefaultState());
-            mapping.put('X', Blocks.MONSTER_EGG.getDefaultState().withProperty(BlockSilverfish.VARIANT, BlockSilverfish.EnumType.STONEBRICK));
-            mapping.put('Q', Blocks.QUARTZ_BLOCK.getDefaultState());
-            mapping.put('L', Blocks.BOOKSHELF.getDefaultState());
-            mapping.put('W', Blocks.WATER.getDefaultState());
-            mapping.put('w', Blocks.COBBLESTONE_WALL.getDefaultState());
-            mapping.put('_', Blocks.STONE_SLAB.getDefaultState());
+            mapping.put('#', (style, info) -> {
+                        if (globalRandom.nextFloat() < 0.06f) {
+                            return style.bricks_cracked;
+                        } else if (globalRandom.nextFloat() < 0.05f) {
+                            return style.bricks_mossy;
+                        } else {
+                            return style.bricks;
+                        }
+                    }
+            );
+            mapping.put('x', (style, info) -> {
+                        if (globalRandom.nextFloat() < 0.06f) {
+                            return style.bricks_cracked;
+                        } else if (globalRandom.nextFloat() < 0.05f) {
+                            return style.bricks_mossy;
+                        } else {
+                            return style.bricks;
+                        }
+                    }
+            );
+            mapping.put('=', (style, info) -> style.glass);
+            mapping.put('@', (style, info) -> {
+                        switch (info.glassType) {
+                            case 0:
+                                return style.glass;
+                            case 1:
+                                return style.street;
+                            case 2:
+                                return style.bricks;
+                            case 3:
+                                return style.quartz;
+                            default:
+                                return style.glass;
+                        }
+                    }
+            );
+            mapping.put(' ', (style, info) -> Blocks.AIR.getDefaultState());
+            mapping.put('l', (style, info) -> Blocks.LADDER.getDefaultState());
+            mapping.put('1', (style, info) -> Blocks.PLANKS.getDefaultState());      // Monster spawner 1
+            mapping.put('2', (style, info) -> Blocks.PLANKS.getDefaultState());      // Monster spawner 2
+            mapping.put('C', (style, info) -> Blocks.PLANKS.getDefaultState());      // Chest
+            mapping.put('F', (style, info) -> Blocks.PLANKS.getDefaultState());      // Random feature
+            mapping.put(':', (style, info) -> Blocks.IRON_BARS.getDefaultState());
+            mapping.put('D', (style, info) -> Blocks.DIRT.getDefaultState());
+            mapping.put('G', (style, info) -> Blocks.GRASS.getDefaultState());
+            mapping.put('p', (style, info) -> {
+                        switch (globalRandom.nextInt(11)) {
+                            case 0:
+                            case 1:
+                            case 2:
+                                return Blocks.RED_FLOWER.getDefaultState();
+                            case 3:
+                            case 4:
+                            case 5:
+                                return Blocks.YELLOW_FLOWER.getDefaultState();
+                            case 6:
+                                return Blocks.SAPLING.getDefaultState().withProperty(BlockSapling.TYPE, BlockPlanks.EnumType.ACACIA);
+                            case 7:
+                                return Blocks.SAPLING.getDefaultState().withProperty(BlockSapling.TYPE, BlockPlanks.EnumType.BIRCH);
+                            case 8:
+                                return Blocks.SAPLING.getDefaultState().withProperty(BlockSapling.TYPE, BlockPlanks.EnumType.OAK);
+                            case 9:
+                                return Blocks.SAPLING.getDefaultState().withProperty(BlockSapling.TYPE, BlockPlanks.EnumType.SPRUCE);
+                            default:
+                                return air;
+                        }
+                    }
+            );
+            mapping.put('*', (style, info) -> Blocks.FLOWER_POT.getDefaultState());
+            mapping.put('X', (style, info) -> Blocks.MONSTER_EGG.getDefaultState().withProperty(BlockSilverfish.VARIANT, BlockSilverfish.EnumType.STONEBRICK));
+            mapping.put('Q', (style, info) -> Blocks.QUARTZ_BLOCK.getDefaultState());
+            mapping.put('L', (style, info) -> Blocks.BOOKSHELF.getDefaultState());
+            mapping.put('W', (style, info) -> Blocks.WATER.getDefaultState());
+            mapping.put('w', (style, info) -> Blocks.COBBLESTONE_WALL.getDefaultState());
+            mapping.put('_', (style, info) -> Blocks.STONE_SLAB.getDefaultState());
         }
         return mapping;
     }
@@ -323,8 +381,8 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
             IBlockState railx = Blocks.RAIL.getDefaultState().withProperty(BlockRail.SHAPE, BlockRailBase.EnumRailDirection.EAST_WEST);
             IBlockState railz = Blocks.RAIL.getDefaultState();
             IBlockState b;
-            if (height >= groundLevel-5 && height <= groundLevel-1) {
-                if (height <= groundLevel-2 && ((xRail && z >= 7 && z <= 10) || (zRail && x >= 7 && x <= 10))) {
+            if (height >= groundLevel - 5 && height <= groundLevel - 1) {
+                if (height <= groundLevel - 2 && ((xRail && z >= 7 && z <= 10) || (zRail && x >= 7 && x <= 10))) {
                     b = air;
                     if (height == groundLevel - 5 && xRail && z == 10) {
                         b = damageArea.damageBlock(railx, height < waterLevel ? baseLiquid : air, rand, cx + x, height, cz + z, index, style);
@@ -340,7 +398,7 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
                         }
                     }
                     BaseTerrainGenerator.setBlockState(primer, index++, b);
-                } else if (height == groundLevel-1 && ((xRail && x == 7 && (z == 8 || z == 9)) || (zRail && z == 7 && (x == 8 || x == 9)))) {
+                } else if (height == groundLevel - 1 && ((xRail && x == 7 && (z == 8 || z == 9)) || (zRail && z == 7 && (x == 8 || x == 9)))) {
                     BaseTerrainGenerator.setBlockState(primer, index++, height < waterLevel ? baseLiquid : damageArea.damageBlock(Blocks.GLOWSTONE.getDefaultState(), height < waterLevel ? baseLiquid : air, rand, cx + x, height, cz + z, index, style));
                 } else {
                     BaseTerrainGenerator.setBlockState(primer, index++, height < waterLevel ? baseLiquid : damageArea.damageBlock(baseBlock, height < waterLevel ? baseLiquid : air, rand, cx + x, height, cz + z, index, style));
@@ -393,8 +451,7 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
             int l = 0;
             LostCityData.Level level = info.streetType == BuildingInfo.StreetType.PARK ? LostCityData.PARKS[info.fountainType] : LostCityData.FOUNTAINS[info.fountainType];
             while (l < level.getFloor().length) {
-                IBlockState b = level.get(x, l, z);
-                b = getReplacementBlock(rand, info, b, false);
+                IBlockState b = level.get(style, info, x, l, z);
                 b = damageArea.damageBlock(b, air, rand, cx + x, height, cz + z, index, style);
                 BaseTerrainGenerator.setBlockState(primer, index++, b);
                 height++;
@@ -426,7 +483,7 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
             IBlockState b;
 
             // Make a connection to a corridor if needed
-            if (corridor && height >= groundLevel-5 && height <= groundLevel-3) {
+            if (corridor && height >= groundLevel - 5 && height <= groundLevel - 3) {
                 b = air;
             } else {
                 b = getBlockForLevel(rand, info, x, z, height);
@@ -440,8 +497,7 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
             int f = getFloor(height);
             int floortype = info.topType;
             LostCityData.Level level = LostCityData.TOPS[floortype];
-            IBlockState b = level.get(x, f, z);
-            b = getReplacementBlock(rand, info, b, false);
+            IBlockState b = level.get(style, info, x, f, z);
             b = damageArea.damageBlock(b, air, rand, cx + x, height, cz + z, index, style);
             BaseTerrainGenerator.setBlockState(primer, index++, b);
             height++;
@@ -506,16 +562,16 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
         int l = getLevel(height);
         boolean isFull = l == -1;      // The level directly underground has no windows
         LostCityData.Level level = LostCityData.FLOORS[info.floorTypes[l + info.floorsBelowGround]];
-        IBlockState b = level.get(x, f, z);
+        IBlockState b = level.get(style, info, x, f, z);
 
         // If we are directly underground, the block is glass, we are on the side and the chunk next to
         // us doesn't have a building we replace the glass with a solid block
         // Gravel will later be replaced with either glass or solid block so we have to count that too
-        if (isFull && (b == Blocks.GLASS.getDefaultState() || b == Blocks.GRAVEL.getDefaultState()) && isSide(x, z) && (!info.getAdjacent(x, z).hasBuilding || info.getAdjacent(x, z).floorsBelowGround == 0)) {
+        if (isFull && (b == Blocks.GLASS.getDefaultState() || b == style.glass) && isSide(x, z) && (!info.getAdjacent(x, z).hasBuilding || info.getAdjacent(x, z).floorsBelowGround == 0)) {
             b = style.bricks;
         }
 
-        if (x == 0 && z == 8 && f >= 1 && f <= 2 && info.hasConnectionAtX(l+info.floorsBelowGround)) {
+        if (x == 0 && z == 8 && f >= 1 && f <= 2 && info.hasConnectionAtX(l + info.floorsBelowGround)) {
             BuildingInfo info2 = info.getXmin();
             if (info2.hasBuilding && ((l >= 0 && l <= info2.floors + 1) || (l < 0 && (-l) <= info2.floorsBelowGround))) {
                 b = air;
@@ -524,13 +580,13 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
             }
         } else if (x == 15 && z == 8 && f >= 1 && f <= 2) {
             BuildingInfo info2 = info.getXmax();
-            if (info2.hasBuilding && ((l >= 0 && l <= info2.floors + 1) || (l < 0 && (-l) <= info2.floorsBelowGround)) && info2.hasConnectionAtX(l+info2.floorsBelowGround)) {
+            if (info2.hasBuilding && ((l >= 0 && l <= info2.floors + 1) || (l < 0 && (-l) <= info2.floorsBelowGround)) && info2.hasConnectionAtX(l + info2.floorsBelowGround)) {
                 b = air;
             } else if (!info2.hasBuilding && l == 0) {
                 b = air;
             }
         }
-        if (z == 0 && x == 8 && f >= 1 && f <= 2 && info.hasConnectionAtZ(l+info.floorsBelowGround)) {
+        if (z == 0 && x == 8 && f >= 1 && f <= 2 && info.hasConnectionAtZ(l + info.floorsBelowGround)) {
             BuildingInfo info2 = info.getZmin();
             if (info2.hasBuilding && ((l >= 0 && l <= info2.floors + 1) || (l < 0 && (-l) <= info2.floorsBelowGround))) {
                 b = air;
@@ -539,7 +595,7 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
             }
         } else if (z == 15 && x == 8 && f >= 1 && f <= 2) {
             BuildingInfo info2 = info.getZmax();
-            if (info2.hasBuilding && ((l >= 0 && l <= info2.floors + 1) || (l < 0 && (-l) <= info2.floorsBelowGround)) && info2.hasConnectionAtZ(l+info2.floorsBelowGround)) {
+            if (info2.hasBuilding && ((l >= 0 && l <= info2.floors + 1) || (l < 0 && (-l) <= info2.floorsBelowGround)) && info2.hasConnectionAtZ(l + info2.floorsBelowGround)) {
                 b = air;
             } else if (!info2.hasBuilding && l == 0) {
                 b = air;
@@ -547,66 +603,8 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
         }
         boolean down = f == 0 && (l + info.floorsBelowGround) == 0;
 
-        return getReplacementBlock(rand, info, b, down);
-    }
-
-    private IBlockState getReplacementBlock(Random rand, BuildingInfo info, IBlockState b, boolean down) {
-        if (b.getBlock() == Blocks.GRAVEL) {
-            switch (info.glassType) {
-                case 0:
-                    b = style.glass;
-                    break;
-                case 1:
-                    b = style.street;
-                    break;
-                case 2:
-                    b = style.bricks;
-                    break;
-                case 3:
-                    b = style.quartz;
-                    break;
-            }
-        } else if (b.getBlock() == Blocks.LADDER && down) {
+        if (b.getBlock() == Blocks.LADDER && down) {
             b = style.bricks;
-        } else if (b.getBlock() == Blocks.GLASS) {
-            b = style.glass;
-        } else if (b.getBlock() == Blocks.SAPLING) {
-            switch (rand.nextInt(11)) {
-                case 0:
-                case 1:
-                case 2:
-                    b = Blocks.RED_FLOWER.getDefaultState();
-                    break;
-                case 3:
-                case 4:
-                case 5:
-                    b = Blocks.YELLOW_FLOWER.getDefaultState();
-                    break;
-                case 6:
-                    b = Blocks.SAPLING.getDefaultState().withProperty(BlockSapling.TYPE, BlockPlanks.EnumType.ACACIA);
-                    break;
-                case 7:
-                    b = Blocks.SAPLING.getDefaultState().withProperty(BlockSapling.TYPE, BlockPlanks.EnumType.BIRCH);
-                    break;
-                case 8:
-                    b = Blocks.SAPLING.getDefaultState().withProperty(BlockSapling.TYPE, BlockPlanks.EnumType.OAK);
-                    break;
-                case 9:
-                    b = Blocks.SAPLING.getDefaultState().withProperty(BlockSapling.TYPE, BlockPlanks.EnumType.SPRUCE);
-                    break;
-                default:
-                    b = air;
-                    break;
-            }
-        }
-
-        if (b == style.bricks || b.getBlock() == Blocks.STONEBRICK) {
-            b = style.bricks;
-            if (rand.nextFloat() < 0.06f) {
-                b = style.bricks_cracked;
-            } else if (rand.nextFloat() < 0.05f) {
-                b = style.bricks_mossy;
-            }
         }
         return b;
     }

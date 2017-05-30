@@ -1610,8 +1610,8 @@ public class LostCityData {
             return floor;
         }
 
-        IBlockState get(int x, int y, int z) {
-            return LostCitiesTerrainGenerator.getMapping().get(floor[y].charAt(z * 16 + x));
+        IBlockState get(Style style, BuildingInfo info, int x, int y, int z) {
+            return LostCitiesTerrainGenerator.getMapping().get(floor[y].charAt(z * 16 + x)).apply(style, info);
         }
 
         Character getC(int x, int y, int z) {
