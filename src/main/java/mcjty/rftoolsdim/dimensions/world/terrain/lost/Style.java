@@ -4,6 +4,7 @@ import net.minecraft.block.state.IBlockState;
 
 public class Style {
     public IBlockState street;
+    public IBlockState street2;
     public IBlockState glass;
     public IBlockState quartz;
     public IBlockState bricks;

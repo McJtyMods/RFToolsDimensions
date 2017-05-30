@@ -18,13 +18,17 @@ import mcjty.rftoolsdim.dimensions.dimlets.KnownDimletConfiguration;
 import mcjty.rftoolsdim.dimensions.dimlets.types.Patreons;
 import mcjty.rftoolsdim.dimensions.types.FeatureType;
 import mcjty.rftoolsdim.dimensions.types.TerrainType;
+import mcjty.rftoolsdim.dimensions.world.terrain.BaseTerrainGenerator;
 import mcjty.rftoolsdim.dimensions.world.terrain.lost.BuildingInfo;
+import mcjty.rftoolsdim.dimensions.world.terrain.lost.DamageArea;
 import mcjty.rftoolsdim.dimensions.world.terrain.lost.GenInfo;
 import mcjty.rftoolsdim.dimensions.world.terrain.lost.LostCitiesTerrainGenerator;
 import mcjty.rftoolsdim.items.ModItems;
 import mcjty.rftoolsdim.varia.RarityRandomSelector;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
+import net.minecraft.block.BlockVine;
+import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItemFrame;
 import net.minecraft.init.Blocks;
@@ -37,6 +41,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.chunk.IChunkGenerator;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.feature.WorldGenMinable;
@@ -99,6 +104,7 @@ public class GenericWorldGenerator implements IWorldGenerator {
 
         if (information.getTerrainType() == TerrainType.TERRAIN_LOSTCITIES) {
             generateLootSpawners(random, chunkX, chunkZ, world);
+            generateVines(random, chunkX, chunkZ, world);
         }
 
     }
@@ -113,6 +119,51 @@ public class GenericWorldGenerator implements IWorldGenerator {
         int starty = (starty1 + starty2 + starty3 + starty4) / 4;
         if (starty > 1 && starty < world.getHeight() - 20) {
             generateDungeon(world, random, midx, starty, midz);
+        }
+    }
+
+    private void generateVines(Random random, int chunkX, int chunkZ, World world) {
+        int cx = chunkX * 16;
+        int cz = chunkZ * 16;
+        BuildingInfo info = new BuildingInfo(chunkX, chunkZ, world.getSeed());
+
+        int bottom = Math.max(66, info.hasBuilding ? (69 + info.floors * 6) : 66);
+
+        if (info.getXmin().hasBuilding) {
+            for (int z = 0 ; z < 15 ; z++) {
+                for (int y =  bottom ; y < (63 + info.getXmin().floors * 6) ; y++) {
+                    if (random.nextFloat() < 0.005f) {
+                        world.setBlockState(new BlockPos(cx + 0, y, cz + z), Blocks.VINE.getDefaultState().withProperty(BlockVine.WEST, true));
+                    }
+                }
+            }
+        }
+        if (info.getXmax().hasBuilding) {
+            for (int z = 0 ; z < 15 ; z++) {
+                for (int y = bottom ; y < (63 + info.getXmax().floors * 6) ; y++) {
+                    if (random.nextFloat() < 0.005f) {
+                        world.setBlockState(new BlockPos(cx + 15, y, cz + z), Blocks.VINE.getDefaultState().withProperty(BlockVine.EAST, true));
+                    }
+                }
+            }
+        }
+        if (info.getZmin().hasBuilding) {
+            for (int x = 0 ; x < 15 ; x++) {
+                for (int y = bottom ; y < (63 + info.getZmin().floors * 6) ; y++) {
+                    if (random.nextFloat() < 0.005f) {
+                        world.setBlockState(new BlockPos(cx + x, y, cz + 0), Blocks.VINE.getDefaultState().withProperty(BlockVine.NORTH, true));
+                    }
+                }
+            }
+        }
+        if (info.getZmax().hasBuilding) {
+            for (int x = 0 ; x < 15 ; x++) {
+                for (int y = bottom ; y < (63 + info.getZmax().floors * 6) ; y++) {
+                    if (random.nextFloat() < 0.005f) {
+                        world.setBlockState(new BlockPos(cx + x, y, cz + 15), Blocks.VINE.getDefaultState().withProperty(BlockVine.SOUTH, true));
+                    }
+                }
+            }
         }
     }
 

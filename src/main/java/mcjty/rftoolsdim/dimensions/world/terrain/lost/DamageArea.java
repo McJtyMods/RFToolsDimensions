@@ -37,7 +37,8 @@ public class DamageArea {
         }
     }
 
-    public IBlockState damageBlock(IBlockState b, IBlockState replacement, Random rand, float damage, int index, Style style) {
+    public IBlockState damageBlock(IBlockState b, IBlockState replacement, Random rand, int x, int y, int z, int index, Style style) {
+        float damage = getDamage(x, y, z);
         if (rand.nextFloat() <= damage) {
             if (damage < .5f && style.canBeDamagedToIronBars(b)) {
                 if (rand.nextFloat() < .8f) {
@@ -71,7 +72,7 @@ public class DamageArea {
 
 
     // Get a number indicating how much damage this point should get. 0 Means no damage
-    public float getDamage(int x, int y, int z) {
+    private float getDamage(int x, int y, int z) {
         float damage = 0.0f;
         for (Explosion explosion : explosions) {
             double sq = explosion.getCenter().distanceSq(x, y, z);
