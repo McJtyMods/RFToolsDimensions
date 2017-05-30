@@ -657,54 +657,78 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
             b = style.bricks;
         }
 
-        if (x == 0 && (z == 7 || z == 8) && f >= 1 && f <= 3 && info.hasConnectionAtX(l + info.floorsBelowGround)) {
+        if (x == 0 && (z >= 6 && z <= 9) && f >= 1 && f <= 3 && info.hasConnectionAtX(l + info.floorsBelowGround)) {
             BuildingInfo info2 = info.getXmin();
-            if (f == 3) {
-                b = style.bricks;
-            } else if (info2.hasBuilding && ((l >= 0 && l <= info2.floors) || (l < 0 && (-l) <= info2.floorsBelowGround))) {
-                b = air;
+            if (info2.hasBuilding && ((l >= 0 && l <= info2.floors) || (l < 0 && (-l) <= info2.floorsBelowGround))) {
+                if (f == 3 || z == 6 || z == 9) {
+                    b = style.bricks;
+                } else {
+                    b = air;
+                }
             } else if ((!info2.hasBuilding && l == 0) || (info2.hasBuilding && l == info2.floors+1)) {
-                b = info.doorBlock.getDefaultState()
-                        .withProperty(BlockDoor.HALF, f == 1 ? BlockDoor.EnumDoorHalf.LOWER : BlockDoor.EnumDoorHalf.UPPER)
-                        .withProperty(BlockDoor.HINGE, z == 7 ? BlockDoor.EnumHingePosition.LEFT : BlockDoor.EnumHingePosition.RIGHT)
-                        .withProperty(BlockDoor.FACING, EnumFacing.EAST);
+                if (f == 3 || z == 6 || z == 9) {
+                    b = style.bricks;
+                } else {
+                    b = info.doorBlock.getDefaultState()
+                            .withProperty(BlockDoor.HALF, f == 1 ? BlockDoor.EnumDoorHalf.LOWER : BlockDoor.EnumDoorHalf.UPPER)
+                            .withProperty(BlockDoor.HINGE, z == 7 ? BlockDoor.EnumHingePosition.LEFT : BlockDoor.EnumHingePosition.RIGHT)
+                            .withProperty(BlockDoor.FACING, EnumFacing.EAST);
+                }
             }
-        } else if (x == 15 && (z == 7 || z == 8) && f >= 1 && f <= 3) {
+        } else if (x == 15 && (z >= 6 && z <= 9) && f >= 1 && f <= 3) {
             BuildingInfo info2 = info.getXmax();
-            if (f == 3) {
-                b = style.bricks;
-            } else if (info2.hasBuilding && ((l >= 0 && l <= info2.floors) || (l < 0 && (-l) <= info2.floorsBelowGround)) && info2.hasConnectionAtX(l + info2.floorsBelowGround)) {
-                b = air;
+            if (info2.hasBuilding && ((l >= 0 && l <= info2.floors) || (l < 0 && (-l) <= info2.floorsBelowGround)) && info2.hasConnectionAtX(l + info2.floorsBelowGround)) {
+                if (f == 3 || z == 6 || z == 9) {
+                    b = style.bricks;
+                } else {
+                    b = air;
+                }
             } else if ((!info2.hasBuilding && l == 0) || (info2.hasBuilding && l == info2.floors+1)) {
-                b = info.doorBlock.getDefaultState()
-                        .withProperty(BlockDoor.HALF, f == 1 ? BlockDoor.EnumDoorHalf.LOWER : BlockDoor.EnumDoorHalf.UPPER)
-                        .withProperty(BlockDoor.HINGE, z == 8 ? BlockDoor.EnumHingePosition.LEFT : BlockDoor.EnumHingePosition.RIGHT)
-                        .withProperty(BlockDoor.FACING, EnumFacing.WEST);
+                if (f == 3 || z == 6 || z == 9) {
+                    b = style.bricks;
+                } else {
+                    b = info.doorBlock.getDefaultState()
+                            .withProperty(BlockDoor.HALF, f == 1 ? BlockDoor.EnumDoorHalf.LOWER : BlockDoor.EnumDoorHalf.UPPER)
+                            .withProperty(BlockDoor.HINGE, z == 8 ? BlockDoor.EnumHingePosition.LEFT : BlockDoor.EnumHingePosition.RIGHT)
+                            .withProperty(BlockDoor.FACING, EnumFacing.WEST);
+                }
             }
         }
-        if (z == 0 && (x == 7 || x == 8) && f >= 1 && f <= 3 && info.hasConnectionAtZ(l + info.floorsBelowGround)) {
+        if (z == 0 && (x >= 6 && x <= 9) && f >= 1 && f <= 3 && info.hasConnectionAtZ(l + info.floorsBelowGround)) {
             BuildingInfo info2 = info.getZmin();
-            if (f == 3) {
-                b = style.bricks;
-            } else if (info2.hasBuilding && ((l >= 0 && l <= info2.floors) || (l < 0 && (-l) <= info2.floorsBelowGround))) {
-                b = air;
+            if (info2.hasBuilding && ((l >= 0 && l <= info2.floors) || (l < 0 && (-l) <= info2.floorsBelowGround))) {
+                if (f == 3 || x == 6 || x == 9) {
+                    b = style.bricks;
+                } else {
+                    b = air;
+                }
             } else if ((!info2.hasBuilding && l == 0) || (info2.hasBuilding && l == info2.floors+1)) {
-                b = info.doorBlock.getDefaultState()
-                        .withProperty(BlockDoor.HALF, f == 1 ? BlockDoor.EnumDoorHalf.LOWER : BlockDoor.EnumDoorHalf.UPPER)
-                        .withProperty(BlockDoor.HINGE, x == 8 ? BlockDoor.EnumHingePosition.LEFT : BlockDoor.EnumHingePosition.RIGHT)
-                        .withProperty(BlockDoor.FACING, EnumFacing.SOUTH);
+                if (f == 3 || x == 6 || x == 9) {
+                    b = style.bricks;
+                } else {
+                    b = info.doorBlock.getDefaultState()
+                            .withProperty(BlockDoor.HALF, f == 1 ? BlockDoor.EnumDoorHalf.LOWER : BlockDoor.EnumDoorHalf.UPPER)
+                            .withProperty(BlockDoor.HINGE, x == 8 ? BlockDoor.EnumHingePosition.LEFT : BlockDoor.EnumHingePosition.RIGHT)
+                            .withProperty(BlockDoor.FACING, EnumFacing.SOUTH);
+                }
             }
-        } else if (z == 15 && (x == 7 || x == 8) && f >= 1 && f <= 3) {
+        } else if (z == 15 && (x >= 6 && x <= 9) && f >= 1 && f <= 3) {
             BuildingInfo info2 = info.getZmax();
-            if (f == 3) {
-                b = style.bricks;
-            } else if (info2.hasBuilding && ((l >= 0 && l <= info2.floors) || (l < 0 && (-l) <= info2.floorsBelowGround)) && info2.hasConnectionAtZ(l + info2.floorsBelowGround)) {
-                b = air;
+            if (info2.hasBuilding && ((l >= 0 && l <= info2.floors) || (l < 0 && (-l) <= info2.floorsBelowGround)) && info2.hasConnectionAtZ(l + info2.floorsBelowGround)) {
+                if (f == 3 || x == 6 || x == 9) {
+                    b = style.bricks;
+                } else {
+                    b = air;
+                }
             } else if ((!info2.hasBuilding && l == 0) || (info2.hasBuilding && l == info2.floors+1)) {
-                b = info.doorBlock.getDefaultState()
-                        .withProperty(BlockDoor.HALF, f == 1 ? BlockDoor.EnumDoorHalf.LOWER : BlockDoor.EnumDoorHalf.UPPER)
-                        .withProperty(BlockDoor.HINGE, x == 7 ? BlockDoor.EnumHingePosition.LEFT : BlockDoor.EnumHingePosition.RIGHT)
-                        .withProperty(BlockDoor.FACING, EnumFacing.NORTH);
+                if (f == 3 || x == 6 || x == 9) {
+                    b = style.bricks;
+                } else {
+                    b = info.doorBlock.getDefaultState()
+                            .withProperty(BlockDoor.HALF, f == 1 ? BlockDoor.EnumDoorHalf.LOWER : BlockDoor.EnumDoorHalf.UPPER)
+                            .withProperty(BlockDoor.HINGE, x == 7 ? BlockDoor.EnumHingePosition.LEFT : BlockDoor.EnumHingePosition.RIGHT)
+                            .withProperty(BlockDoor.FACING, EnumFacing.NORTH);
+                }
             }
         }
         boolean down = f == 0 && (l + info.floorsBelowGround) == 0;
