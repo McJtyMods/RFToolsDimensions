@@ -355,43 +355,57 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
         }
 
         if (building) {
-            int buildingtop = 69 + info.floors * 6;
-            char a = (char) Block.BLOCK_STATE_IDS.get(air);
-            char b1 = (char) Block.BLOCK_STATE_IDS.get(style.bricks);
-            char b2 = (char) Block.BLOCK_STATE_IDS.get(style.bricks_cracked);
-            char b3 = (char) Block.BLOCK_STATE_IDS.get(style.bricks_mossy);
-            char iron = (char) Block.BLOCK_STATE_IDS.get(Blocks.IRON_BARS.getDefaultState());
-            for (int i = 0; i < 2; i++) {
-                index = 0;
-                for (int x = 0; x < 16; ++x) {
-                    for (int z = 0; z < 16; ++z) {
-                        int belowGround = info.floorsBelowGround;
-                        int height = groundLevel - belowGround * 6;
-                        index += height;
-                        while (height < buildingtop + 6) {
-                            if (primer.data[index] != a) {
-                                if (primer.data[index + 1] == a
-                                        && primer.data[index - 1] == a
-                                        && (z == 0 || primer.data[index - 256] == a)
-                                        && (z == 15 || primer.data[index + 256] == a)
-                                        && (x == 0 || primer.data[index - 256 * 16] == a)
-                                        && (x == 15 || primer.data[index + 256 * 16] == a)
-                                        ) {
+            if (damageArea.hasExplosions()) {
+                fixAfterExplosion(primer, info, damageArea);
+            }
+        }
+    }
+
+    private static class Blob {
+        private final Set<Integer> connectedBlocks = new HashSet<>();
+
+
+    }
+
+    /// Fix floating blocks after an explosion
+    private void fixAfterExplosion(ChunkPrimer primer, BuildingInfo info, DamageArea damageArea) {
+        int index;
+        int buildingtop = 69 + info.floors * 6;
+        char a = (char) Block.BLOCK_STATE_IDS.get(air);
+        char b1 = (char) Block.BLOCK_STATE_IDS.get(style.bricks);
+        char b2 = (char) Block.BLOCK_STATE_IDS.get(style.bricks_cracked);
+        char b3 = (char) Block.BLOCK_STATE_IDS.get(style.bricks_mossy);
+        char iron = (char) Block.BLOCK_STATE_IDS.get(Blocks.IRON_BARS.getDefaultState());
+        for (int i = 0; i < 1; i++) {//@todo
+            index = 0;
+            for (int x = 0; x < 16; ++x) {
+                for (int z = 0; z < 16; ++z) {
+                    int belowGround = info.floorsBelowGround;
+                    int height = groundLevel - belowGround * 6;
+                    index += height;
+                    while (height < buildingtop + 6) {
+                        if (primer.data[index] != a) {
+                            if (primer.data[index + 1] == a
+                                    && primer.data[index - 1] == a
+                                    && (z == 0 || primer.data[index - 256] == a)
+                                    && (z == 15 || primer.data[index + 256] == a)
+                                    && (x == 0 || primer.data[index - 256 * 16] == a)
+                                    && (x == 15 || primer.data[index + 256 * 16] == a)
+                                    ) {
+                                primer.data[index] = a;
+                            } else if (primer.data[index - 1] == a && damageArea.damaged[index - 1]) {
+                                if (primer.data[index - 1] == b1 || primer.data[index - 1] == b2 || primer.data[index - 1] == b3) {
+                                    primer.data[index - 1] = iron;
+                                } else {
                                     primer.data[index] = a;
-                                } else if (primer.data[index - 1] == a && damageArea.damaged[index - 1]) {
-                                    if (primer.data[index - 1] == b1 || primer.data[index - 1] == b2 || primer.data[index - 1] == b3) {
-                                        primer.data[index - 1] = iron;
-                                    } else {
-                                        primer.data[index] = a;
-                                    }
                                 }
                             }
-                            index++;
-                            height++;
                         }
-                        int blocks = 256 - height;
-                        index += blocks;
+                        index++;
+                        height++;
                     }
+                    int blocks = 256 - height;
+                    index += blocks;
                 }
             }
         }

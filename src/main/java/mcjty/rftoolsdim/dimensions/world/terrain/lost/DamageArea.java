@@ -73,6 +73,10 @@ public class DamageArea {
         return null;
     }
 
+    // Return true if this chunk is affected by explosions
+    public boolean hasExplosions() {
+        return !explosions.isEmpty();
+    }
 
     // Get a number indicating how much damage this point should get. 0 Means no damage
     private float getDamage(int x, int y, int z) {
