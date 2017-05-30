@@ -57,7 +57,7 @@ public class GenericChunkGenerator implements CompatChunkGenerator {
     public Random rand;
     public long seed;
 
-    private World worldObj;
+    public World worldObj;
     public DimensionInformation dimensionInformation;
     public WorldType worldType;
     private final BaseTerrainGenerator terrainGenerator;
