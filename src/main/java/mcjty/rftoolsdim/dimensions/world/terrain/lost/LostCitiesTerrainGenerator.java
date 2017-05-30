@@ -9,6 +9,7 @@ import net.minecraft.block.*;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumDyeColor;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.chunk.ChunkPrimer;
@@ -128,7 +129,6 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
         return mapping;
     }
 
-    // @todo for other floors!
     public static Map<Pair<Integer, Integer>, GenInfo> getGenInfos() {
         if (genInfos == null) {
             genInfos = new HashMap<>();
@@ -590,32 +590,44 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
 
         if (x == 0 && (z == 7 || z == 8) && f >= 1 && f <= 2 && info.hasConnectionAtX(l + info.floorsBelowGround)) {
             BuildingInfo info2 = info.getXmin();
-            if (info2.hasBuilding && ((l >= 0 && l <= info2.floors + 1) || (l < 0 && (-l) <= info2.floorsBelowGround))) {
+            if (info2.hasBuilding && ((l >= 0 && l <= info2.floors) || (l < 0 && (-l) <= info2.floorsBelowGround))) {
                 b = air;
-            } else if (!info2.hasBuilding && l == 0) {
-                b = air;
+            } else if ((!info2.hasBuilding && l == 0) || (info2.hasBuilding && l == info2.floors+1)) {
+                b = Blocks.BIRCH_DOOR.getDefaultState()
+                        .withProperty(BlockDoor.HALF, f == 1 ? BlockDoor.EnumDoorHalf.LOWER : BlockDoor.EnumDoorHalf.UPPER)
+                        .withProperty(BlockDoor.HINGE, z == 7 ? BlockDoor.EnumHingePosition.LEFT : BlockDoor.EnumHingePosition.RIGHT)
+                        .withProperty(BlockDoor.FACING, EnumFacing.EAST);
             }
         } else if (x == 15 && (z == 7 || z == 8) && f >= 1 && f <= 2) {
             BuildingInfo info2 = info.getXmax();
-            if (info2.hasBuilding && ((l >= 0 && l <= info2.floors + 1) || (l < 0 && (-l) <= info2.floorsBelowGround)) && info2.hasConnectionAtX(l + info2.floorsBelowGround)) {
+            if (info2.hasBuilding && ((l >= 0 && l <= info2.floors) || (l < 0 && (-l) <= info2.floorsBelowGround)) && info2.hasConnectionAtX(l + info2.floorsBelowGround)) {
                 b = air;
-            } else if (!info2.hasBuilding && l == 0) {
-                b = air;
+            } else if ((!info2.hasBuilding && l == 0) || (info2.hasBuilding && l == info2.floors+1)) {
+                b = Blocks.BIRCH_DOOR.getDefaultState()
+                        .withProperty(BlockDoor.HALF, f == 1 ? BlockDoor.EnumDoorHalf.LOWER : BlockDoor.EnumDoorHalf.UPPER)
+                        .withProperty(BlockDoor.HINGE, z == 8 ? BlockDoor.EnumHingePosition.LEFT : BlockDoor.EnumHingePosition.RIGHT)
+                        .withProperty(BlockDoor.FACING, EnumFacing.WEST);
             }
         }
         if (z == 0 && (x == 7 || x == 8) && f >= 1 && f <= 2 && info.hasConnectionAtZ(l + info.floorsBelowGround)) {
             BuildingInfo info2 = info.getZmin();
-            if (info2.hasBuilding && ((l >= 0 && l <= info2.floors + 1) || (l < 0 && (-l) <= info2.floorsBelowGround))) {
+            if (info2.hasBuilding && ((l >= 0 && l <= info2.floors) || (l < 0 && (-l) <= info2.floorsBelowGround))) {
                 b = air;
-            } else if (!info2.hasBuilding && l == 0) {
-                b = air;
+            } else if ((!info2.hasBuilding && l == 0) || (info2.hasBuilding && l == info2.floors+1)) {
+                b = Blocks.BIRCH_DOOR.getDefaultState()
+                        .withProperty(BlockDoor.HALF, f == 1 ? BlockDoor.EnumDoorHalf.LOWER : BlockDoor.EnumDoorHalf.UPPER)
+                        .withProperty(BlockDoor.HINGE, x == 8 ? BlockDoor.EnumHingePosition.LEFT : BlockDoor.EnumHingePosition.RIGHT)
+                        .withProperty(BlockDoor.FACING, EnumFacing.SOUTH);
             }
         } else if (z == 15 && (x == 7 || x == 8) && f >= 1 && f <= 2) {
             BuildingInfo info2 = info.getZmax();
-            if (info2.hasBuilding && ((l >= 0 && l <= info2.floors + 1) || (l < 0 && (-l) <= info2.floorsBelowGround)) && info2.hasConnectionAtZ(l + info2.floorsBelowGround)) {
+            if (info2.hasBuilding && ((l >= 0 && l <= info2.floors) || (l < 0 && (-l) <= info2.floorsBelowGround)) && info2.hasConnectionAtZ(l + info2.floorsBelowGround)) {
                 b = air;
-            } else if (!info2.hasBuilding && l == 0) {
-                b = air;
+            } else if ((!info2.hasBuilding && l == 0) || (info2.hasBuilding && l == info2.floors+1)) {
+                b = Blocks.BIRCH_DOOR.getDefaultState()
+                        .withProperty(BlockDoor.HALF, f == 1 ? BlockDoor.EnumDoorHalf.LOWER : BlockDoor.EnumDoorHalf.UPPER)
+                        .withProperty(BlockDoor.HINGE, x == 7 ? BlockDoor.EnumHingePosition.LEFT : BlockDoor.EnumHingePosition.RIGHT)
+                        .withProperty(BlockDoor.FACING, EnumFacing.NORTH);
             }
         }
         boolean down = f == 0 && (l + info.floorsBelowGround) == 0;
