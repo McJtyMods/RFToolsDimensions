@@ -9,6 +9,7 @@ import mcjty.rftools.blocks.storage.ModularStorageContainer;
 import mcjty.rftools.blocks.storage.ModularStorageTileEntity;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.blocks.ModBlocks;
+import mcjty.rftoolsdim.config.LostCityConfiguration;
 import mcjty.rftoolsdim.config.WorldgenConfiguration;
 import mcjty.rftoolsdim.dimensions.DimensionInformation;
 import mcjty.rftoolsdim.dimensions.RfToolsDimensionManager;
@@ -133,7 +134,7 @@ public class GenericWorldGenerator implements IWorldGenerator {
         if (info.getXmin().hasBuilding) {
             for (int z = 0 ; z < 15 ; z++) {
                 for (int y =  bottom ; y < (63 + info.getXmin().floors * 6) ; y++) {
-                    if (random.nextFloat() < 0.005f) {
+                    if (random.nextFloat() < LostCityConfiguration.VINE_CHANCE) {
                         world.setBlockState(new BlockPos(cx + 0, y, cz + z), Blocks.VINE.getDefaultState().withProperty(BlockVine.WEST, true));
                     }
                 }
@@ -142,7 +143,7 @@ public class GenericWorldGenerator implements IWorldGenerator {
         if (info.getXmax().hasBuilding) {
             for (int z = 0 ; z < 15 ; z++) {
                 for (int y = bottom ; y < (63 + info.getXmax().floors * 6) ; y++) {
-                    if (random.nextFloat() < 0.005f) {
+                    if (random.nextFloat() < LostCityConfiguration.VINE_CHANCE) {
                         world.setBlockState(new BlockPos(cx + 15, y, cz + z), Blocks.VINE.getDefaultState().withProperty(BlockVine.EAST, true));
                     }
                 }
@@ -151,7 +152,7 @@ public class GenericWorldGenerator implements IWorldGenerator {
         if (info.getZmin().hasBuilding) {
             for (int x = 0 ; x < 15 ; x++) {
                 for (int y = bottom ; y < (63 + info.getZmin().floors * 6) ; y++) {
-                    if (random.nextFloat() < 0.005f) {
+                    if (random.nextFloat() < LostCityConfiguration.VINE_CHANCE) {
                         world.setBlockState(new BlockPos(cx + x, y, cz + 0), Blocks.VINE.getDefaultState().withProperty(BlockVine.NORTH, true));
                     }
                 }
@@ -160,7 +161,7 @@ public class GenericWorldGenerator implements IWorldGenerator {
         if (info.getZmax().hasBuilding) {
             for (int x = 0 ; x < 15 ; x++) {
                 for (int y = bottom ; y < (63 + info.getZmax().floors * 6) ; y++) {
-                    if (random.nextFloat() < 0.005f) {
+                    if (random.nextFloat() < LostCityConfiguration.VINE_CHANCE) {
                         world.setBlockState(new BlockPos(cx + x, y, cz + 15), Blocks.VINE.getDefaultState().withProperty(BlockVine.SOUTH, true));
                     }
                 }

@@ -59,6 +59,7 @@ public abstract class CommonProxy {
             cfg.addCustomCategoryComment(MobConfiguration.CATEGORY_MOBS, "Mob related settings");
             cfg.addCustomCategoryComment(OresAPlentyConfiguration.CATEGORY_ORESAPLENTY, "Settings for the OresAPlenty dimlet");
             cfg.addCustomCategoryComment(DimletConstructionConfiguration.CATEGORY_DIMLET_CONSTRUCTION, "Dimlet construction related settings");
+            cfg.addCustomCategoryComment(LostCityConfiguration.CATEGORY_LOSTCITY, "Settings related to the Lost City dimlet");
 
             GeneralConfiguration.init(cfg);
             MachineConfiguration.init(cfg);
@@ -67,6 +68,7 @@ public abstract class CommonProxy {
             DimletConfiguration.init(cfg);
             MobConfiguration.init(cfg);
             OresAPlentyConfiguration.init(cfg);
+            LostCityConfiguration.init(cfg);
             DimletConstructionConfiguration.init(cfg);
         } catch (Exception e1) {
             FMLLog.log(Level.ERROR, e1, "Problem loading config file!");

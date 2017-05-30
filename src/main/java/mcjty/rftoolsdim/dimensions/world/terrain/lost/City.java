@@ -1,5 +1,7 @@
 package mcjty.rftoolsdim.dimensions.world.terrain.lost;
 
+import mcjty.rftoolsdim.config.LostCityConfiguration;
+
 import java.util.Random;
 
 /**
@@ -11,20 +13,21 @@ public class City {
         Random rand = new Random(seed + chunkZ * 797003437L + chunkX * 295075153L);
         rand.nextFloat();
         rand.nextFloat();
-        return rand.nextFloat() < .02f;
+        return rand.nextFloat() < LostCityConfiguration.CITY_CHANCE;
     }
 
     private static float getCityRadius(long seed, int chunkX, int chunkZ) {
         Random rand = new Random(seed + chunkZ * 100001653L + chunkX * 295075153L);
         rand.nextFloat();
         rand.nextFloat();
-        return 50 + rand.nextInt(78);
+        return LostCityConfiguration.CITY_MINRADIUS + rand.nextInt(LostCityConfiguration.CITY_MAXRADIUS - LostCityConfiguration.CITY_MINRADIUS);
     }
 
     public static float getCityFactor(long seed, int chunkX, int chunkZ) {
         float factor = 0;
-        for (int cx = chunkX - 8; cx <= chunkX + 8; cx++) {
-            for (int cz = chunkZ - 8; cz <= chunkZ + 8; cz++) {
+        int offset = (LostCityConfiguration.CITY_MAXRADIUS+15) / 16;
+        for (int cx = chunkX - offset; cx <= chunkX + offset; cx++) {
+            for (int cz = chunkZ - offset; cz <= chunkZ + offset; cz++) {
                 if (isCityCenter(seed, cx, cz)) {
                     float radius = getCityRadius(seed, cx, cz);
                     float sqdist = (cx * 16 - chunkX * 16) * (cx * 16 - chunkX * 16) + (cz * 16 - chunkZ * 16) * (cz * 16 - chunkZ * 16);

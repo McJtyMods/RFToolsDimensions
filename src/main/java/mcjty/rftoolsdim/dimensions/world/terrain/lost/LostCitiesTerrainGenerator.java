@@ -1,6 +1,7 @@
 package mcjty.rftoolsdim.dimensions.world.terrain.lost;
 
 import mcjty.rftoolsdim.RFToolsDim;
+import mcjty.rftoolsdim.config.LostCityConfiguration;
 import mcjty.rftoolsdim.config.WorldgenConfiguration;
 import mcjty.rftoolsdim.dimensions.world.terrain.BaseTerrainGenerator;
 import mcjty.rftoolsdim.dimensions.world.terrain.NormalTerrainGenerator;
@@ -38,7 +39,7 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
     public LostCitiesTerrainGenerator() {
         super();
         this.groundLevel = 63;
-        this.waterLevel = 63 - 8;
+        this.waterLevel = (byte) (63 - LostCityConfiguration.WATERLEVEL_OFFSET);
     }
 
 
@@ -52,9 +53,9 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
         if (mapping == null) {
             mapping = new HashMap<>();
             mapping.put('#', (style, info) -> {
-                        if (globalRandom.nextFloat() < 0.06f) {
+                        if (globalRandom.nextFloat() < LostCityConfiguration.STYLE_CHANCE_CRACKED) {
                             return style.bricks_cracked;
-                        } else if (globalRandom.nextFloat() < 0.05f) {
+                        } else if (globalRandom.nextFloat() < LostCityConfiguration.STYLE_CHANCE_MOSSY) {
                             return style.bricks_mossy;
                         } else {
                             return style.bricks;
@@ -62,9 +63,9 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
                     }
             );
             mapping.put('x', (style, info) -> {
-                        if (globalRandom.nextFloat() < 0.06f) {
+                        if (globalRandom.nextFloat() < LostCityConfiguration.STYLE_CHANCE_CRACKED) {
                             return style.bricks_cracked;
-                        } else if (globalRandom.nextFloat() < 0.05f) {
+                        } else if (globalRandom.nextFloat() < LostCityConfiguration.STYLE_CHANCE_MOSSY) {
                             return style.bricks_mossy;
                         } else {
                             return style.bricks;

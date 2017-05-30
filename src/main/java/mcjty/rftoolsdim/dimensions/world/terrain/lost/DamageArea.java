@@ -1,5 +1,6 @@
 package mcjty.rftoolsdim.dimensions.world.terrain.lost;
 
+import mcjty.rftoolsdim.config.LostCityConfiguration;
 import mcjty.rftoolsdim.varia.GeometryTools;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -21,8 +22,9 @@ public class DamageArea {
         this.seed = seed;
         chunkBox = new AxisAlignedBB(chunkX * 16, 0, chunkZ * 16, chunkX * 16 + 15, 256, chunkZ * 16 + 15);
 
-        for (int cx = chunkX - 5; cx <= chunkX + 5; cx++) {
-            for (int cz = chunkZ - 5; cz <= chunkZ + 5; cz++) {
+        int offset = (LostCityConfiguration.EXPLOSION_MAXRADIUS+15) / 16;
+        for (int cx = chunkX - offset; cx <= chunkX + offset; cx++) {
+            for (int cz = chunkZ - offset; cz <= chunkZ + offset; cz++) {
                 Explosion explosion = getExplosionAt(cx, cz);
                 if (explosion != null) {
                     if (intersectsWith(explosion.getCenter(), explosion.getRadius())) {
@@ -64,8 +66,9 @@ public class DamageArea {
         Random rand = new Random(seed + chunkZ * 295075153L + chunkX * 797003437L);
         rand.nextFloat();
         rand.nextFloat();
-        if (rand.nextFloat() < .005f) {
-            return new Explosion(17 + rand.nextInt(4 * 16), new BlockPos(chunkX * 16 + rand.nextInt(16), 70 + rand.nextInt(50), chunkZ * 16 + rand.nextInt(16)));
+        if (rand.nextFloat() < LostCityConfiguration.EXPLOSION_CHANCE) {
+            return new Explosion(LostCityConfiguration.EXPLOSION_MINRADIUS + rand.nextInt(LostCityConfiguration.EXPLOSION_MAXRADIUS - LostCityConfiguration.EXPLOSION_MINRADIUS),
+                    new BlockPos(chunkX * 16 + rand.nextInt(16), LostCityConfiguration.EXPLOSION_MINHEIGHT + rand.nextInt(LostCityConfiguration.EXPLOSION_MAXHEIGHT - LostCityConfiguration.EXPLOSION_MINHEIGHT), chunkZ * 16 + rand.nextInt(16)));
         }
         return null;
     }

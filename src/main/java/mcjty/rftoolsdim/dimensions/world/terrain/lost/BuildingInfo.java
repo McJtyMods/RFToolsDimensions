@@ -1,5 +1,6 @@
 package mcjty.rftoolsdim.dimensions.world.terrain.lost;
 
+import mcjty.rftoolsdim.config.LostCityConfiguration;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 
@@ -87,7 +88,7 @@ public class BuildingInfo {
     private static boolean isCity(int chunkX, int chunkZ, long seed) {
         Random rand = getBuildingRandom(chunkX, chunkZ, seed);
         float cityFactor = City.getCityFactor(seed, chunkX, chunkZ);
-        return cityFactor > .2f;
+        return cityFactor > LostCityConfiguration.CITY_THRESSHOLD;
     }
 
     public BuildingInfo(int chunkX, int chunkZ, long seed) {
@@ -96,28 +97,32 @@ public class BuildingInfo {
         this.seed = seed;
         Random rand = getBuildingRandom(chunkX, chunkZ, seed);
         float cityFactor = City.getCityFactor(seed, chunkX, chunkZ);
-        isCity = cityFactor > .2f;
-        hasBuilding = isCity && (chunkX != 0 || chunkZ != 0) && rand.nextFloat() < .3f;
+        isCity = cityFactor > LostCityConfiguration.CITY_THRESSHOLD;
+        hasBuilding = isCity && (chunkX != 0 || chunkZ != 0) && rand.nextFloat() < LostCityConfiguration.BUILDING_CHANCE;
         buildingType = rand.nextInt(2);
         if (rand.nextDouble() < .2f) {
             streetType = StreetType.values()[rand.nextInt(StreetType.values().length)];
         } else {
             streetType = StreetType.NORMAL;
         }
-        if (rand.nextFloat() < .05f) {
+        if (rand.nextFloat() < LostCityConfiguration.FOUNTAIN_CHANCE) {
             fountainType = rand.nextInt(streetType == StreetType.PARK ? LostCityData.PARKS.length : LostCityData.FOUNTAINS.length);
         } else {
             fountainType = -1;
         }
-        floors = rand.nextInt((int) (4 + (cityFactor + .1f) * 3));
-        floorsBelowGround = rand.nextInt(4);
+        int f = LostCityConfiguration.BUILDING_MINFLOORS + rand.nextInt((int) (LostCityConfiguration.BUILDING_MINFLOORS_CHANCE + (cityFactor + .1f) * (LostCityConfiguration.BUILDING_MAXFLOORS_CHANCE - LostCityConfiguration.BUILDING_MINFLOORS_CHANCE)));
+        if (f > LostCityConfiguration.BUILDING_MAXFLOORS) {
+            f = LostCityConfiguration.BUILDING_MAXFLOORS;
+        }
+        floors = f;
+        floorsBelowGround = LostCityConfiguration.BUILDING_MINCELLARS + (LostCityConfiguration.BUILDING_MAXCELLARS <= 0 ? 0 : rand.nextInt(LostCityConfiguration.BUILDING_MAXCELLARS));
         floorTypes = new int[floors + floorsBelowGround + 2];
         connectionAtX = new boolean[floors + floorsBelowGround + 2];
         connectionAtZ = new boolean[floors + floorsBelowGround + 2];
         for (int i = 0; i <= floors + floorsBelowGround + 1; i++) {
             floorTypes[i] = rand.nextInt(getFloorData().length);
-            connectionAtX[i] = isCity(chunkX-1, chunkZ, seed) ? (rand.nextFloat() < .6f) : false;
-            connectionAtZ[i] = isCity(chunkX, chunkZ-1, seed) ? (rand.nextFloat() < .6f) : false;
+            connectionAtX[i] = isCity(chunkX-1, chunkZ, seed) ? (rand.nextFloat() < LostCityConfiguration.BUILDING_DOORWAYCHANCE) : false;
+            connectionAtZ[i] = isCity(chunkX, chunkZ-1, seed) ? (rand.nextFloat() < LostCityConfiguration.BUILDING_DOORWAYCHANCE) : false;
         }
         topType = rand.nextInt(LostCityData.TOPS.length);
         glassType = rand.nextInt(4);
@@ -128,8 +133,8 @@ public class BuildingInfo {
             xRailCorridor = false;
             zRailCorridor = false;
         } else {
-            xRailCorridor = rand.nextFloat() < .7f;
-            zRailCorridor = rand.nextFloat() < .7f;
+            xRailCorridor = rand.nextFloat() < LostCityConfiguration.CORRIDOR_CHANCE;
+            zRailCorridor = rand.nextFloat() < LostCityConfiguration.CORRIDOR_CHANCE;
         }
 
         if (hasBuilding && floorsBelowGround > 1) {
