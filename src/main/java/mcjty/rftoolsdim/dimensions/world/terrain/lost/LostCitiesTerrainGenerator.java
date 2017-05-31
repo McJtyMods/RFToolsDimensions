@@ -18,6 +18,7 @@ import net.minecraft.world.chunk.ChunkPrimer;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.*;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
@@ -176,6 +177,7 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
         } else {
             doNormalChunk(chunkX, chunkZ, primer, info);
         }
+        generateDebris(primer, provider.rand, info);
     }
 
     private void doNormalChunk(int chunkX, int chunkZ, ChunkPrimer primer, BuildingInfo info) {
@@ -618,10 +620,62 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
             BaseTerrainGenerator.setBlockState(primer, index++, b);
             height++;
         }
+
         int blocks = 256 - height;
         BaseTerrainGenerator.setBlockStateRange(primer, index, index + blocks, air);
         index += blocks;
         return index;
+    }
+
+    private void generateDebris(ChunkPrimer primer, Random rand, BuildingInfo info) {
+        generateDebrisFromChunk(primer, rand, info.getXmin(), (xx, zz) -> (15.0f-xx) / 16.0f);
+        generateDebrisFromChunk(primer, rand, info.getXmax(), (xx, zz) -> xx / 16.0f);
+        generateDebrisFromChunk(primer, rand, info.getZmin(), (xx, zz) -> (15.0f-zz) / 16.0f);
+        generateDebrisFromChunk(primer, rand, info.getZmax(), (xx, zz) -> zz / 16.0f);
+        generateDebrisFromChunk(primer, rand, info.getXmin().getZmin(), (xx, zz) -> ((15.0f-xx) * (15.0f-zz)) / 256.0f);
+        generateDebrisFromChunk(primer, rand, info.getXmax().getZmax(), (xx, zz) -> (xx * zz) / 256.0f);
+        generateDebrisFromChunk(primer, rand, info.getXmin().getZmax(), (xx, zz) -> ((15.0f-xx) * zz) / 256.0f);
+        generateDebrisFromChunk(primer, rand, info.getXmax().getZmin(), (xx, zz) -> (xx * (15.0f-zz)) / 256.0f);
+    }
+
+    private void generateDebrisFromChunk(ChunkPrimer primer, Random rand, BuildingInfo adjacentInfo, BiFunction<Integer, Integer, Float> locationFactor) {
+        if (adjacentInfo.hasBuilding) {
+            char air = (char) Block.BLOCK_STATE_IDS.get(LostCitiesTerrainGenerator.air);
+            char liquid = (char) Block.BLOCK_STATE_IDS.get(provider.dimensionInformation.getFluidForTerrain().getDefaultState());
+            float damageFactor = adjacentInfo.getDamageArea().getDamageFactor();
+            if (damageFactor > .5f) {
+                // An estimate of the amount of blocks
+                int blocks = (1 + adjacentInfo.floors) * 1000;
+                float damage = Math.max(1.0f, damageFactor * DamageArea.BLOCK_DAMAGE_CHANCE);
+                int destroyedBlocks = (int) (blocks * damage);
+                // How many go this direction (approx, based on cardinal directions from building as well as number that simply fall down)
+                destroyedBlocks /= LostCityConfiguration.DEBRIS_TO_NEARBYCHUNK_FACTOR;
+                for (int i = 0; i < destroyedBlocks; i++) {
+                    int x = rand.nextInt(16);
+                    int z = rand.nextInt(16);
+                    if (rand.nextFloat() < locationFactor.apply(x, z)) {
+                        int index = (x << 12) | (z << 8) + 255;
+                        while (primer.data[index] == air || primer.data[index] == liquid) {
+                            index--;
+                        }
+                        index++;
+                        IBlockState b;
+                        switch (rand.nextInt(5)) {
+                            case 0:
+                                b = Blocks.IRON_BARS.getDefaultState();
+                                break;
+                            case 1:
+                                b = adjacentInfo.getStyle().bricks;
+                                break;
+                            default:
+                                b = adjacentInfo.getStyle().bricks_cracked;
+                                break;
+                        }
+                        BaseTerrainGenerator.setBlockState(primer, index, b);
+                    }
+                }
+            }
+        }
     }
 
     private boolean isDoOceanBorder(BuildingInfo info, int chunkX, int chunkZ, int x, int z) {

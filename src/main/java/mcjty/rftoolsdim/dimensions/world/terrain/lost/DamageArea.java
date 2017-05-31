@@ -13,6 +13,8 @@ import java.util.Random;
 
 public class DamageArea {
 
+    public static final float BLOCK_DAMAGE_CHANCE = .7f;
+
     private final long seed;
     private final int chunkX;
     private final int chunkZ;
@@ -53,7 +55,7 @@ public class DamageArea {
             damage *= 10f;
         }
         if (rand.nextFloat() <= damage) {
-            if (damage < .7f && style.canBeDamagedToIronBars(b)) {
+            if (damage < BLOCK_DAMAGE_CHANCE && style.canBeDamagedToIronBars(b)) {
                 if (rand.nextFloat() < .7f) {
                     b = Blocks.IRON_BARS.getDefaultState();
                 } else {

@@ -6,6 +6,8 @@ public class LostCityConfiguration {
 
     public static final String CATEGORY_LOSTCITY = "lostcity";
 
+    public static int DEBRIS_TO_NEARBYCHUNK_FACTOR = 200;
+
     public static float VINE_CHANCE = 0.005f;
     public static int WATERLEVEL_OFFSET = 8;
 
@@ -48,6 +50,8 @@ public class LostCityConfiguration {
         VINE_CHANCE = cfg.getFloat("vineChance", CATEGORY_LOSTCITY, VINE_CHANCE, 0.0f, 1.0f, "The chance that a block on the outside of a building will be covered with a vine");
 
         WATERLEVEL_OFFSET = cfg.getInt("waterLevelOffset", CATEGORY_LOSTCITY, WATERLEVEL_OFFSET, 1, 30, "How much lower the water level is compared to the ground level (63)");
+
+        DEBRIS_TO_NEARBYCHUNK_FACTOR = cfg.getInt("debrisToNearbyChunkFactor", CATEGORY_LOSTCITY, DEBRIS_TO_NEARBYCHUNK_FACTOR, 1, 10000, "A factor that determines how much debris will overflow from nearby damaged chunks. Bigger numbers mean less debris");
 
         EXPLOSION_CHANCE = cfg.getFloat("explosionChance", CATEGORY_LOSTCITY, EXPLOSION_CHANCE, 0.0f, 1.0f, "The chance that a chunk will contain an explosion");
         EXPLOSION_MINRADIUS = cfg.getInt("explosionMinRadius", CATEGORY_LOSTCITY, EXPLOSION_MINRADIUS, 1, 1000, "The minimum radius of an explosion");
