@@ -37,6 +37,14 @@ public class BuildingInfo {
     private BuildingInfo xmax = null;
     private BuildingInfo zmin = null;
     private BuildingInfo zmax = null;
+    private DamageArea damageArea = null;
+
+    public DamageArea getDamageArea() {
+        if (damageArea == null) {
+            damageArea = new DamageArea(seed, chunkX, chunkZ);
+        }
+        return damageArea;
+    }
 
     // x between 0 and 15, z between 0 and 15
     public BuildingInfo getAdjacent(int x, int z) {

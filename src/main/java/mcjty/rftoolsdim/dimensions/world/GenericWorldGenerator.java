@@ -132,40 +132,57 @@ public class GenericWorldGenerator implements IWorldGenerator {
         int bottom = Math.max(66, info.hasBuilding ? (69 + info.floors * 6) : 66);
 
         if (info.getXmin().hasBuilding) {
-            for (int z = 0 ; z < 15 ; z++) {
-                for (int y =  bottom ; y < (63 + info.getXmin().floors * 6) ; y++) {
-                    if (random.nextFloat() < LostCityConfiguration.VINE_CHANCE) {
-                        world.setBlockState(new BlockPos(cx + 0, y, cz + z), Blocks.VINE.getDefaultState().withProperty(BlockVine.WEST, true));
+            if (info.getXmin().getDamageArea().getDamageFactor() < .4f) {
+                for (int z = 0; z < 15; z++) {
+                    for (int y = bottom; y < (63 + info.getXmin().floors * 6); y++) {
+                        if (random.nextFloat() < LostCityConfiguration.VINE_CHANCE) {
+                            createVineStrip(random, world, bottom, y, BlockVine.WEST, cx + 0, cz + z);
+                        }
                     }
                 }
             }
         }
         if (info.getXmax().hasBuilding) {
-            for (int z = 0 ; z < 15 ; z++) {
-                for (int y = bottom ; y < (63 + info.getXmax().floors * 6) ; y++) {
-                    if (random.nextFloat() < LostCityConfiguration.VINE_CHANCE) {
-                        world.setBlockState(new BlockPos(cx + 15, y, cz + z), Blocks.VINE.getDefaultState().withProperty(BlockVine.EAST, true));
+            if (info.getXmax().getDamageArea().getDamageFactor() < .4f) {
+                for (int z = 0; z < 15; z++) {
+                    for (int y = bottom; y < (63 + info.getXmax().floors * 6); y++) {
+                        if (random.nextFloat() < LostCityConfiguration.VINE_CHANCE) {
+                            createVineStrip(random, world, bottom, y, BlockVine.EAST, cx + 15, cz + z);
+                        }
                     }
                 }
             }
         }
         if (info.getZmin().hasBuilding) {
-            for (int x = 0 ; x < 15 ; x++) {
-                for (int y = bottom ; y < (63 + info.getZmin().floors * 6) ; y++) {
-                    if (random.nextFloat() < LostCityConfiguration.VINE_CHANCE) {
-                        world.setBlockState(new BlockPos(cx + x, y, cz + 0), Blocks.VINE.getDefaultState().withProperty(BlockVine.NORTH, true));
+            if (info.getZmin().getDamageArea().getDamageFactor() < .4f) {
+                for (int x = 0; x < 15; x++) {
+                    for (int y = bottom; y < (63 + info.getZmin().floors * 6); y++) {
+                        if (random.nextFloat() < LostCityConfiguration.VINE_CHANCE) {
+                            createVineStrip(random, world, bottom, y, BlockVine.NORTH, cx + x, cz + 0);
+                        }
                     }
                 }
             }
         }
         if (info.getZmax().hasBuilding) {
-            for (int x = 0 ; x < 15 ; x++) {
-                for (int y = bottom ; y < (63 + info.getZmax().floors * 6) ; y++) {
-                    if (random.nextFloat() < LostCityConfiguration.VINE_CHANCE) {
-                        world.setBlockState(new BlockPos(cx + x, y, cz + 15), Blocks.VINE.getDefaultState().withProperty(BlockVine.SOUTH, true));
+            if (info.getZmax().getDamageArea().getDamageFactor() < .4f) {
+                for (int x = 0; x < 15; x++) {
+                    for (int y = bottom; y < (63 + info.getZmax().floors * 6); y++) {
+                        if (random.nextFloat() < LostCityConfiguration.VINE_CHANCE) {
+                            createVineStrip(random, world, bottom, y, BlockVine.SOUTH, cx + x, cz + 15);
+                        }
                     }
                 }
             }
+        }
+    }
+
+    private void createVineStrip(Random random, World world, int bottom, int y, PropertyBool direction, int vinex, int vinez) {
+        world.setBlockState(new BlockPos(vinex, y, vinez), Blocks.VINE.getDefaultState().withProperty(direction, true));
+        int yy = y-1;
+        while (yy >= bottom && random.nextFloat() < .8f) {
+            world.setBlockState(new BlockPos(vinex, yy, vinez), Blocks.VINE.getDefaultState().withProperty(direction, true));
+            yy--;
         }
     }
 

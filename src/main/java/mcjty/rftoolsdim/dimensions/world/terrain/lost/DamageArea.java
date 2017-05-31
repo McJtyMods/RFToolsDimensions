@@ -14,11 +14,15 @@ import java.util.Random;
 public class DamageArea {
 
     private final long seed;
+    private final int chunkX;
+    private final int chunkZ;
     private final List<Explosion> explosions = new ArrayList<>();
     private final AxisAlignedBB chunkBox;
 
     public DamageArea(long seed, int chunkX, int chunkZ) {
         this.seed = seed;
+        this.chunkX = chunkX;
+        this.chunkZ = chunkZ;
         chunkBox = new AxisAlignedBB(chunkX * 16, 0, chunkZ * 16, chunkX * 16 + 15, 256, chunkZ * 16 + 15);
 
         int offset = (LostCityConfiguration.EXPLOSION_MAXRADIUS+15) / 16;
@@ -92,6 +96,19 @@ public class DamageArea {
     // Return true if this chunk is affected by explosions
     public boolean hasExplosions() {
         return !explosions.isEmpty();
+    }
+
+    // Give an indication of how much damage this chunk got
+    public float getDamageFactor() {
+        float damage = 0.0f;
+        for (Explosion explosion : explosions) {
+            double sq = explosion.getCenter().distanceSq(chunkX * 16, explosion.getCenter().getY(), chunkZ * 16);
+            if (sq < explosion.getSqradius()) {
+                double d = Math.sqrt(sq);
+                damage += 3.0f * (explosion.getRadius() - d) / explosion.getRadius();
+            }
+        }
+        return damage;
     }
 
     // Get a number indicating how much damage this point should get. 0 Means no damage

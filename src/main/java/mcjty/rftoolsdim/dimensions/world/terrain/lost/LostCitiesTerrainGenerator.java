@@ -171,19 +171,17 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
         baseLiquid = provider.dimensionInformation.getFluidForTerrain().getDefaultState();
 
         BuildingInfo info = new BuildingInfo(chunkX, chunkZ, provider.seed);
-
-        DamageArea damageArea = new DamageArea(provider.seed, chunkX, chunkZ);
         air = Blocks.AIR.getDefaultState();
         bedrock = Blocks.BEDROCK.getDefaultState();
 
         if (info.isCity) {
-            doCityChunk(chunkX, chunkZ, primer, info, damageArea);
+            doCityChunk(chunkX, chunkZ, primer, info);
         } else {
-            doNormalChunk(chunkX, chunkZ, primer, damageArea);
+            doNormalChunk(chunkX, chunkZ, primer, info);
         }
     }
 
-    private void doNormalChunk(int chunkX, int chunkZ, ChunkPrimer primer, DamageArea damageArea) {
+    private void doNormalChunk(int chunkX, int chunkZ, ChunkPrimer primer, BuildingInfo info) {
         int cx = chunkX * 16;
         int cz = chunkZ * 16;
 
@@ -228,7 +226,7 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
                             for (int z = 0; z < 4; ++z) {
                                 index += maxheight;
                                 if ((d15 += d16) > 0.0D) {
-                                    IBlockState b = damageArea.damageBlock(baseBlock, height < waterLevel ? baseLiquid : air, provider.rand, cx + (x4 * 4) + x, height, cz + (z4 * 4) + z, index, style);
+                                    IBlockState b = info.getDamageArea().damageBlock(baseBlock, height < waterLevel ? baseLiquid : air, provider.rand, cx + (x4 * 4) + x, height, cz + (z4 * 4) + z, index, style);
                                     BaseTerrainGenerator.setBlockState(primer, index, b);
                                     // @todo find a way to support this 127 feature
 //                                    if (baseMeta == 127) {
@@ -284,7 +282,7 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
                         }
                     }
                     int offset = (int) (Math.sqrt(mindist) * 2);
-                    flattenChunkBorder(primer, x, offset, z, provider.rand, damageArea, cx, cz, level);
+                    flattenChunkBorder(primer, x, offset, z, provider.rand, info.getDamageArea(), cx, cz, level);
                 }
             }
         }
@@ -322,7 +320,7 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
         }
     }
 
-    private void doCityChunk(int chunkX, int chunkZ, ChunkPrimer primer, BuildingInfo info, DamageArea damageArea) {
+    private void doCityChunk(int chunkX, int chunkZ, ChunkPrimer primer, BuildingInfo info) {
         setStyle(info);
 
         boolean building = info.hasBuilding;
@@ -347,16 +345,15 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
                 }
 
                 if (building) {
-                    index = generateBuilding(primer, info, damageArea, rand, chunkX, chunkZ, index, x, z, height);
+                    index = generateBuilding(primer, info, rand, chunkX, chunkZ, index, x, z, height);
                 } else {
-                    index = generateStreet(primer, info, damageArea, rand, chunkX, chunkZ, index, x, z, height);
+                    index = generateStreet(primer, info, rand, chunkX, chunkZ, index, x, z, height);
                 }
             }
         }
 
         if (building) {
-            if (damageArea.hasExplosions()) {
-                System.out.println("########### Fix after explosions");
+            if (info.getDamageArea().hasExplosions()) {
                 fixAfterExplosion(primer, info, rand);
             }
         }
@@ -531,7 +528,8 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
         }
     }
 
-    private int generateStreet(ChunkPrimer primer, BuildingInfo info, DamageArea damageArea, Random rand, int chunkX, int chunkZ, int index, int x, int z, int height) {
+    private int generateStreet(ChunkPrimer primer, BuildingInfo info, Random rand, int chunkX, int chunkZ, int index, int x, int z, int height) {
+        DamageArea damageArea = info.getDamageArea();
         int cx = chunkX * 16;
         int cz = chunkZ * 16;
         boolean xRail = info.hasXCorridor();
@@ -659,7 +657,8 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
         return false;
     }
 
-    private int generateBuilding(ChunkPrimer primer, BuildingInfo info, DamageArea damageArea, Random rand, int chunkX, int chunkZ, int index, int x, int z, int height) {
+    private int generateBuilding(ChunkPrimer primer, BuildingInfo info, Random rand, int chunkX, int chunkZ, int index, int x, int z, int height) {
+        DamageArea damageArea = info.getDamageArea();
         int cx = chunkX * 16;
         int cz = chunkZ * 16;
         int belowGround = info.floorsBelowGround;
