@@ -1,6 +1,7 @@
 package mcjty.rftoolsdim.dimensions.world.terrain.lost;
 
 import mcjty.rftoolsdim.config.LostCityConfiguration;
+import mcjty.rftoolsdim.dimensions.world.GenericChunkGenerator;
 import net.minecraft.block.*;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumDyeColor;
@@ -26,12 +27,15 @@ public class BuildingInfo {
     public final int glassType;
     public final int glassColor;
     public final int buildingStyle;
+    public final boolean xBridge;
+    public final boolean zBridge;
 
     public final boolean xRailCorridor;
     public final boolean zRailCorridor;
 
     public final Block doorBlock;
 
+    // Transient info that is calculated on demand
     private BuildingInfo xmin = null;
     private BuildingInfo xmax = null;
     private BuildingInfo zmin = null;
@@ -231,6 +235,14 @@ public class BuildingInfo {
             zRailCorridor = rand.nextFloat() < LostCityConfiguration.CORRIDOR_CHANCE;
         }
 
+        if (isCity) {
+            xBridge = false;
+            zBridge = false;
+        } else {
+            xBridge = rand.nextFloat() < LostCityConfiguration.BRIDGE_CHANCE;
+            zBridge = rand.nextFloat() < LostCityConfiguration.BRIDGE_CHANCE;
+        }
+
         doorBlock = getRandomDoor(rand);
     }
 
@@ -247,6 +259,54 @@ public class BuildingInfo {
             default: doorBlock = Blocks.OAK_DOOR;
         }
         return doorBlock;
+    }
+
+    public boolean hasXBridge(GenericChunkGenerator provider) {
+        if (!xBridge) {
+            return false;
+        }
+        if (!LostCitiesTerrainGenerator.isWaterBiome(provider, chunkX, chunkZ)) {
+            return false;
+        }
+        BuildingInfo i = getXmin();
+        while ((!i.isCity) && i.xBridge && LostCitiesTerrainGenerator.isWaterBiome(provider, i.chunkX, i.chunkZ)) {
+            i = i.getXmin();
+        }
+        if ((!i.isCity) || i.hasBuilding) {
+            return false;
+        }
+        i = getXmax();
+        while ((!i.isCity) && i.xBridge && LostCitiesTerrainGenerator.isWaterBiome(provider, i.chunkX, i.chunkZ)) {
+            i = i.getXmax();
+        }
+        if ((!i.isCity) || i.hasBuilding) {
+            return false;
+        }
+        return true;
+    }
+
+    public boolean hasZBridge(GenericChunkGenerator provider) {
+        if (!zBridge) {
+            return false;
+        }
+        if (!LostCitiesTerrainGenerator.isWaterBiome(provider, chunkX, chunkZ)) {
+            return false;
+        }
+        BuildingInfo i = getZmin();
+        while ((!i.isCity) && i.zBridge && LostCitiesTerrainGenerator.isWaterBiome(provider, i.chunkX, i.chunkZ)) {
+            i = i.getZmin();
+        }
+        if ((!i.isCity) || i.hasBuilding) {
+            return false;
+        }
+        i = getZmax();
+        while ((!i.isCity) && i.zBridge && LostCitiesTerrainGenerator.isWaterBiome(provider, i.chunkX, i.chunkZ)) {
+            i = i.getZmax();
+        }
+        if ((!i.isCity) || i.hasBuilding) {
+            return false;
+        }
+        return true;
     }
 
     public boolean hasXCorridor() {

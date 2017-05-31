@@ -3,6 +3,81 @@ package mcjty.rftoolsdim.dimensions.world.terrain.lost;
 import net.minecraft.block.state.IBlockState;
 
 public class LostCityData {
+
+    static Level[] BRIDGES = new Level[]
+            {
+                    new Level(new String[]{
+                            "" +
+                                    "                " +
+                                    "                " +
+                                    "################" +
+                                    "SSSSSSSSSSSSSSSS" +
+                                    "SSSSSSSSSSSSSSSS" +
+                                    "SSSSSSSSSSSSSSSS" +
+                                    "SSSSSSSSSSSSSSSS" +
+                                    "SSSSSSSSSSSSSSSS" +
+                                    "SSSSSSSSSSSSSSSS" +
+                                    "SSSSSSSSSSSSSSSS" +
+                                    "SSSSSSSSSSSSSSSS" +
+                                    "SSSSSSSSSSSSSSSS" +
+                                    "SSSSSSSSSSSSSSSS" +
+                                    "################" +
+                                    "                " +
+                                    "                ",
+                            "" +
+                                    "                " +
+                                    "                " +
+                                    "wwww#wwwwwww#www" +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "wwww#wwwwwww#www" +
+                                    "                " +
+                                    "                ",
+                            "" +
+                                    "                " +
+                                    "                " +
+                                    "    w       w   " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "    w       w   " +
+                                    "                " +
+                                    "                ",
+                            "" +
+                                    "                " +
+                                    "                " +
+                                    "    w       w   " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "    w       w   " +
+                                    "                " +
+                                    "                "
+                    })
+            };
+
     static Level[] PARKS = new Level[]
             {
                     new Level(new String[]{

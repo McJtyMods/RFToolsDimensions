@@ -41,6 +41,7 @@ public class LostCityConfiguration {
     public static float BUILDING_DOORWAYCHANCE = .6f;
 
     public static float CORRIDOR_CHANCE = .7f;
+    public static float BRIDGE_CHANCE = .5f;
     public static float FOUNTAIN_CHANCE = .05f;
 
     public static void init(Configuration cfg) {
@@ -84,6 +85,8 @@ public class LostCityConfiguration {
 
         CORRIDOR_CHANCE = cfg.getFloat("corridorChance", CATEGORY_LOSTCITY, CORRIDOR_CHANCE, 0.0f, 1.0f, "The chance that a chunk can possibly contain a corridor. " +
                 "There actually being a corridor also depends on the presence of adjacent corridors");
+        BRIDGE_CHANCE = cfg.getFloat("bridgeChance", CATEGORY_LOSTCITY, BRIDGE_CHANCE, 0.0f, 1.0f, "The chance that a chunk can possibly contain a bridge. " +
+                "There actually being a bridge also depends on the presence of adjacent bridges and other conditions");
 
         FOUNTAIN_CHANCE = cfg.getFloat("fountainChance", CATEGORY_LOSTCITY, FOUNTAIN_CHANCE, 0.0f, 1.0f, "The chance that a street section contains a fountain");
     }
