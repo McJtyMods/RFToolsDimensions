@@ -137,6 +137,10 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
             genInfos = new HashMap<>();
             getGenInfos(LostCityData.FLOORS, 0);
             getGenInfos(LostCityData.FLOORS2, 1);
+            getGenInfos(LostCityData.LIBRARY00, 10);
+            getGenInfos(LostCityData.LIBRARY10, 11);
+            getGenInfos(LostCityData.LIBRARY01, 12);
+            getGenInfos(LostCityData.LIBRARY11, 13);
         }
         return genInfos;
     }

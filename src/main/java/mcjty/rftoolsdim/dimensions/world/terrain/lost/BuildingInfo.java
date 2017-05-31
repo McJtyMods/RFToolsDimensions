@@ -29,6 +29,7 @@ public class BuildingInfo {
     public final int glassType;
     public final int glassColor;
     public final int buildingStyle;
+    public final boolean isLibrary;     // If true this is a library (only if it is also a 2x2 building)
 
     public final boolean xBridge;       // A boolean indicating that this chunk is a candidate for holding a bridge (no guarantee)
     public final boolean zBridge;       // A boolean indicating that this chunk is a candidate for holding a bridge (no guarantee)
@@ -183,7 +184,23 @@ public class BuildingInfo {
     }
 
     public LostCityData.Level[] getFloorData() {
+        if (isLibrary) {
+            switch (building2x2Section) {
+                case 0: return LostCityData.LIBRARY00;
+                case 1: return LostCityData.LIBRARY10;
+                case 2: return LostCityData.LIBRARY01;
+                case 3: return LostCityData.LIBRARY11;
+            }
+        }
         return buildingType == 0 ? LostCityData.FLOORS : LostCityData.FLOORS2;
+    }
+
+    // @todo not ideal
+    public int getGenInfoIndex() {
+        if (isLibrary) {
+            return building2x2Section + 10;
+        }
+        return buildingType;
     }
 
     private static boolean isCity(int chunkX, int chunkZ, long seed) {
@@ -246,18 +263,23 @@ public class BuildingInfo {
                 case 3: topleft = getXmin().getZmin(); break;
                 default: throw new RuntimeException("What!");
             }
+            isLibrary = topleft.isLibrary;
             buildingType = topleft.buildingType;
             streetType = topleft.streetType;
             fountainType = topleft.fountainType;
             floors = topleft.floors;
             floorsBelowGround = topleft.floorsBelowGround;
-            topType = topleft.topType;
             glassType = topleft.glassType;
             glassColor = topleft.glassColor;
             buildingStyle = topleft.buildingStyle;
             doorBlock = topleft.doorBlock;
         } else {
             buildingType = rand.nextInt(2);
+            if (building2x2Section == 0) {
+                isLibrary = rand.nextFloat() < LostCityConfiguration.LIBRARY_CHANCE;
+            } else {
+                isLibrary = false;
+            }
             if (rand.nextDouble() < .2f) {
                 streetType = StreetType.values()[rand.nextInt(StreetType.values().length)];
             } else {
@@ -274,12 +296,13 @@ public class BuildingInfo {
             }
             floors = f;
             floorsBelowGround = LostCityConfiguration.BUILDING_MINCELLARS + (LostCityConfiguration.BUILDING_MAXCELLARS <= 0 ? 0 : rand.nextInt(LostCityConfiguration.BUILDING_MAXCELLARS));
-            topType = rand.nextInt(LostCityData.TOPS.length);
             glassType = rand.nextInt(4);
             glassColor = rand.nextInt(5 + 5);
             buildingStyle = rand.nextInt(4);
             doorBlock = getRandomDoor(rand);
         }
+
+        topType = rand.nextInt(LostCityData.TOPS.length);
 
         floorTypes = new int[floors + floorsBelowGround + 2];
         connectionAtX = new boolean[floors + floorsBelowGround + 2];

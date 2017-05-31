@@ -39,11 +39,12 @@ public class LostCityConfiguration {
     public static int BUILDING_MINCELLARS = 0;
     public static int BUILDING_MAXCELLARS = 4;
     public static float BUILDING_DOORWAYCHANCE = .6f;
+    public static float LIBRARY_CHANCE = .5f; //@todo lower?
 
     public static float CORRIDOR_CHANCE = .7f;
     public static float BRIDGE_CHANCE = .5f;
     public static float FOUNTAIN_CHANCE = .05f;
-    public static float BUILDING2X2_CHANCE = .04f;
+    public static float BUILDING2X2_CHANCE = .03f;
 
 
     public static void init(Configuration cfg) {
@@ -84,6 +85,7 @@ public class LostCityConfiguration {
         BUILDING_MINCELLARS = cfg.getInt("buildingMinCellars", CATEGORY_LOSTCITY, BUILDING_MINCELLARS, 0, 7, "The minimum number of cellars (below ground). 0 means no cellar");
         BUILDING_MAXCELLARS = cfg.getInt("buildingMaxCellars", CATEGORY_LOSTCITY, BUILDING_MAXCELLARS, 0, 7, "The maximum number of cellars (below ground). 0 means no cellar");
         BUILDING_DOORWAYCHANCE = cfg.getFloat("buildingDoorwayChance", CATEGORY_LOSTCITY, BUILDING_DOORWAYCHANCE, 0.0f, 1.0f, "The chance that a doorway will be generated at a side of a building (on any level). Only when possible");
+        LIBRARY_CHANCE = cfg.getFloat("libraryChance", CATEGORY_LOSTCITY, LIBRARY_CHANCE, 0.0f, 1.0f, "The chance that a 2x2 building will be a library");
 
         BUILDING2X2_CHANCE = cfg.getFloat("building2x2Chance", CATEGORY_LOSTCITY, BUILDING2X2_CHANCE, 0.0f, 1.0f, "The chance that a chunk can possibly be the top-left chunk of 2x2 building. " +
                 "There actually being a 2x2 building also depends on the condition of those other chunks");

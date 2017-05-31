@@ -203,7 +203,7 @@ public class GenericWorldGenerator implements IWorldGenerator {
             if (f == 0) {
                 BlockPos floorpos = new BlockPos(chunkX * 16, height, chunkZ * 16);
                 int floortype = info.floorTypes[LostCitiesTerrainGenerator.getLevel(height) + info.floorsBelowGround];
-                GenInfo getInfo = LostCitiesTerrainGenerator.getGenInfos().get(Pair.of(info.buildingType, floortype));
+                GenInfo getInfo = LostCitiesTerrainGenerator.getGenInfos().get(Pair.of(info.getGenInfoIndex(), floortype));
                 for (BlockPos p : getInfo.getChest()) {
                     BlockPos pos = floorpos.add(p);
                     if (!world.isAirBlock(pos)) {
