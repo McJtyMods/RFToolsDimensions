@@ -43,6 +43,8 @@ public class LostCityConfiguration {
     public static float CORRIDOR_CHANCE = .7f;
     public static float BRIDGE_CHANCE = .5f;
     public static float FOUNTAIN_CHANCE = .05f;
+    public static float BUILDING2X2_CHANCE = .04f;
+
 
     public static void init(Configuration cfg) {
         STYLE_CHANCE_CRACKED = cfg.getFloat("styleChanceCracked", CATEGORY_LOSTCITY, STYLE_CHANCE_CRACKED, 0.0f, 1.0f, "The chance that a brick will be cracked");
@@ -83,6 +85,8 @@ public class LostCityConfiguration {
         BUILDING_MAXCELLARS = cfg.getInt("buildingMaxCellars", CATEGORY_LOSTCITY, BUILDING_MAXCELLARS, 0, 7, "The maximum number of cellars (below ground). 0 means no cellar");
         BUILDING_DOORWAYCHANCE = cfg.getFloat("buildingDoorwayChance", CATEGORY_LOSTCITY, BUILDING_DOORWAYCHANCE, 0.0f, 1.0f, "The chance that a doorway will be generated at a side of a building (on any level). Only when possible");
 
+        BUILDING2X2_CHANCE = cfg.getFloat("building2x2Chance", CATEGORY_LOSTCITY, BUILDING2X2_CHANCE, 0.0f, 1.0f, "The chance that a chunk can possibly be the top-left chunk of 2x2 building. " +
+                "There actually being a 2x2 building also depends on the condition of those other chunks");
         CORRIDOR_CHANCE = cfg.getFloat("corridorChance", CATEGORY_LOSTCITY, CORRIDOR_CHANCE, 0.0f, 1.0f, "The chance that a chunk can possibly contain a corridor. " +
                 "There actually being a corridor also depends on the presence of adjacent corridors");
         BRIDGE_CHANCE = cfg.getFloat("bridgeChance", CATEGORY_LOSTCITY, BRIDGE_CHANCE, 0.0f, 1.0f, "The chance that a chunk can possibly contain a bridge. " +

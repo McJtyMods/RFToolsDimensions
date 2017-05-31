@@ -10,9 +10,8 @@ public class LostCityData {
                             "" +
                                     "                " +
                                     "                " +
+                                    "                " +
                                     "################" +
-                                    "SSSSSSSSSSSSSSSS" +
-                                    "SSSSSSSSSSSSSSSS" +
                                     "SSSSSSSSSSSSSSSS" +
                                     "SSSSSSSSSSSSSSSS" +
                                     "SSSSSSSSSSSSSSSS" +
@@ -23,8 +22,10 @@ public class LostCityData {
                                     "SSSSSSSSSSSSSSSS" +
                                     "################" +
                                     "                " +
+                                    "                " +
                                     "                ",
                             "" +
+                                    "                " +
                                     "                " +
                                     "                " +
                                     "wwww#wwwwwww#www" +
@@ -36,31 +37,31 @@ public class LostCityData {
                                     "                " +
                                     "                " +
                                     "                " +
-                                    "                " +
-                                    "                " +
                                     "wwww#wwwwwww#www" +
                                     "                " +
-                                    "                ",
-                            "" +
-                                    "                " +
-                                    "                " +
-                                    "    w       w   " +
-                                    "                " +
-                                    "                " +
-                                    "                " +
-                                    "                " +
-                                    "                " +
-                                    "                " +
-                                    "                " +
-                                    "                " +
-                                    "                " +
-                                    "                " +
-                                    "    w       w   " +
                                     "                " +
                                     "                ",
                             "" +
                                     "                " +
                                     "                " +
+                                    "                " +
+                                    "    w       w   " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "                " +
+                                    "    w       w   " +
+                                    "                " +
+                                    "                " +
+                                    "                ",
+                            "" +
+                                    "                " +
+                                    "                " +
+                                    "                " +
                                     "    w       w   " +
                                     "                " +
                                     "                " +
@@ -70,9 +71,8 @@ public class LostCityData {
                                     "                " +
                                     "                " +
                                     "                " +
-                                    "                " +
-                                    "                " +
                                     "    w       w   " +
+                                    "                " +
                                     "                " +
                                     "                "
                     })

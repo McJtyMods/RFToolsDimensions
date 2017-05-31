@@ -15,6 +15,8 @@ public class BuildingInfo {
 
     public final boolean isCity;
     public final boolean hasBuilding;
+    public final int building2x2Section;    // -1 for not, 0 for top left, 1 for top right, 2 for bottom left, 3 for bottom right
+
     public final int buildingType;
     public final int fountainType;  // Used for PARKS and FOUNTAINS
     public final StreetType streetType;
@@ -27,11 +29,12 @@ public class BuildingInfo {
     public final int glassType;
     public final int glassColor;
     public final int buildingStyle;
-    public final boolean xBridge;
-    public final boolean zBridge;
 
-    public final boolean xRailCorridor;
-    public final boolean zRailCorridor;
+    public final boolean xBridge;       // A boolean indicating that this chunk is a candidate for holding a bridge (no guarantee)
+    public final boolean zBridge;       // A boolean indicating that this chunk is a candidate for holding a bridge (no guarantee)
+
+    public final boolean xRailCorridor; // A boolean indicating that this chunk is a candidate for holding a corridor (no guarantee)
+    public final boolean zRailCorridor; // A boolean indicating that this chunk is a candidate for holding a corridor (no guarantee)
 
     public final Block doorBlock;
 
@@ -184,48 +187,108 @@ public class BuildingInfo {
     }
 
     private static boolean isCity(int chunkX, int chunkZ, long seed) {
-        Random rand = getBuildingRandom(chunkX, chunkZ, seed);
         float cityFactor = City.getCityFactor(seed, chunkX, chunkZ);
         return cityFactor > LostCityConfiguration.CITY_THRESSHOLD;
+    }
+
+    private static boolean isCandidateForTopLeftOf2x2Building(int chunkX, int chunkZ, long seed) {
+        if (chunkX == 0 && chunkZ == 0) {
+            return false;
+        }
+        float cityFactor = City.getCityFactor(seed, chunkX, chunkZ);
+        if (cityFactor > LostCityConfiguration.CITY_THRESSHOLD) {
+            Random rand = getBuildingRandom(chunkX, chunkZ, seed);
+            return rand.nextFloat() < LostCityConfiguration.BUILDING2X2_CHANCE;
+        } else {
+            return false;
+        }
+    }
+
+    private static boolean isTopLeftOf2x2Building(int chunkX, int chunkZ, long seed) {
+        if (isCandidateForTopLeftOf2x2Building(chunkX, chunkZ, seed)
+                && !isCandidateForTopLeftOf2x2Building(chunkX-1, chunkZ, seed)
+                && !isCandidateForTopLeftOf2x2Building(chunkX-1, chunkZ-1, seed)
+                && !isCandidateForTopLeftOf2x2Building(chunkX, chunkZ-1, seed)) {
+            return isCity(chunkX + 1, chunkZ, seed) && isCity(chunkX + 1, chunkZ + 1, seed) && isCity(chunkX, chunkZ + 1, seed);
+        } else {
+            return false;
+        }
     }
 
     public BuildingInfo(int chunkX, int chunkZ, long seed) {
         this.chunkX = chunkX;
         this.chunkZ = chunkZ;
         this.seed = seed;
-        Random rand = getBuildingRandom(chunkX, chunkZ, seed);
         float cityFactor = City.getCityFactor(seed, chunkX, chunkZ);
         isCity = cityFactor > LostCityConfiguration.CITY_THRESSHOLD;
-        hasBuilding = isCity && (chunkX != 0 || chunkZ != 0) && rand.nextFloat() < LostCityConfiguration.BUILDING_CHANCE;
-        buildingType = rand.nextInt(2);
-        if (rand.nextDouble() < .2f) {
-            streetType = StreetType.values()[rand.nextInt(StreetType.values().length)];
+
+        if (isTopLeftOf2x2Building(chunkX, chunkZ, seed)) {
+            building2x2Section = 0;
+        } else if (isTopLeftOf2x2Building(chunkX-1, chunkZ, seed)) {
+            building2x2Section = 1;
+        } else if (isTopLeftOf2x2Building(chunkX, chunkZ-1, seed)) {
+            building2x2Section = 2;
+        } else if (isTopLeftOf2x2Building(chunkX-1, chunkZ-1, seed)) {
+            building2x2Section = 3;
         } else {
-            streetType = StreetType.NORMAL;
+            building2x2Section = -1;
         }
-        if (rand.nextFloat() < LostCityConfiguration.FOUNTAIN_CHANCE) {
-            fountainType = rand.nextInt(streetType == StreetType.PARK ? LostCityData.PARKS.length : LostCityData.FOUNTAINS.length);
+
+        Random rand = getBuildingRandom(chunkX, chunkZ, seed);
+        hasBuilding = building2x2Section >= 0 || (isCity && (chunkX != 0 || chunkZ != 0) && rand.nextFloat() < LostCityConfiguration.BUILDING_CHANCE);
+
+        // In a 2x2 building we copy all information from the top-left chunk
+        if (building2x2Section >= 1) {
+            BuildingInfo topleft;
+            switch (building2x2Section) {
+                case 1: topleft = getXmin(); break;
+                case 2: topleft = getZmin(); break;
+                case 3: topleft = getXmin().getZmin(); break;
+                default: throw new RuntimeException("What!");
+            }
+            buildingType = topleft.buildingType;
+            streetType = topleft.streetType;
+            fountainType = topleft.fountainType;
+            floors = topleft.floors;
+            floorsBelowGround = topleft.floorsBelowGround;
+            topType = topleft.topType;
+            glassType = topleft.glassType;
+            glassColor = topleft.glassColor;
+            buildingStyle = topleft.buildingStyle;
+            doorBlock = topleft.doorBlock;
         } else {
-            fountainType = -1;
+            buildingType = rand.nextInt(2);
+            if (rand.nextDouble() < .2f) {
+                streetType = StreetType.values()[rand.nextInt(StreetType.values().length)];
+            } else {
+                streetType = StreetType.NORMAL;
+            }
+            if (rand.nextFloat() < LostCityConfiguration.FOUNTAIN_CHANCE) {
+                fountainType = rand.nextInt(streetType == StreetType.PARK ? LostCityData.PARKS.length : LostCityData.FOUNTAINS.length);
+            } else {
+                fountainType = -1;
+            }
+            int f = LostCityConfiguration.BUILDING_MINFLOORS + rand.nextInt((int) (LostCityConfiguration.BUILDING_MINFLOORS_CHANCE + (cityFactor + .1f) * (LostCityConfiguration.BUILDING_MAXFLOORS_CHANCE - LostCityConfiguration.BUILDING_MINFLOORS_CHANCE)));
+            if (f > LostCityConfiguration.BUILDING_MAXFLOORS) {
+                f = LostCityConfiguration.BUILDING_MAXFLOORS;
+            }
+            floors = f;
+            floorsBelowGround = LostCityConfiguration.BUILDING_MINCELLARS + (LostCityConfiguration.BUILDING_MAXCELLARS <= 0 ? 0 : rand.nextInt(LostCityConfiguration.BUILDING_MAXCELLARS));
+            topType = rand.nextInt(LostCityData.TOPS.length);
+            glassType = rand.nextInt(4);
+            glassColor = rand.nextInt(5 + 5);
+            buildingStyle = rand.nextInt(4);
+            doorBlock = getRandomDoor(rand);
         }
-        int f = LostCityConfiguration.BUILDING_MINFLOORS + rand.nextInt((int) (LostCityConfiguration.BUILDING_MINFLOORS_CHANCE + (cityFactor + .1f) * (LostCityConfiguration.BUILDING_MAXFLOORS_CHANCE - LostCityConfiguration.BUILDING_MINFLOORS_CHANCE)));
-        if (f > LostCityConfiguration.BUILDING_MAXFLOORS) {
-            f = LostCityConfiguration.BUILDING_MAXFLOORS;
-        }
-        floors = f;
-        floorsBelowGround = LostCityConfiguration.BUILDING_MINCELLARS + (LostCityConfiguration.BUILDING_MAXCELLARS <= 0 ? 0 : rand.nextInt(LostCityConfiguration.BUILDING_MAXCELLARS));
+
         floorTypes = new int[floors + floorsBelowGround + 2];
         connectionAtX = new boolean[floors + floorsBelowGround + 2];
         connectionAtZ = new boolean[floors + floorsBelowGround + 2];
         for (int i = 0; i <= floors + floorsBelowGround + 1; i++) {
             floorTypes[i] = rand.nextInt(getFloorData().length);
-            connectionAtX[i] = isCity(chunkX-1, chunkZ, seed) ? (rand.nextFloat() < LostCityConfiguration.BUILDING_DOORWAYCHANCE) : false;
-            connectionAtZ[i] = isCity(chunkX, chunkZ-1, seed) ? (rand.nextFloat() < LostCityConfiguration.BUILDING_DOORWAYCHANCE) : false;
+            connectionAtX[i] = isCity(chunkX - 1, chunkZ, seed) ? (rand.nextFloat() < LostCityConfiguration.BUILDING_DOORWAYCHANCE) : false;
+            connectionAtZ[i] = isCity(chunkX, chunkZ - 1, seed) ? (rand.nextFloat() < LostCityConfiguration.BUILDING_DOORWAYCHANCE) : false;
         }
-        topType = rand.nextInt(LostCityData.TOPS.length);
-        glassType = rand.nextInt(4);
-        glassColor = rand.nextInt(5+5);
-        buildingStyle = rand.nextInt(4);
 
         if (hasBuilding && floorsBelowGround > 0) {
             xRailCorridor = false;
@@ -242,8 +305,6 @@ public class BuildingInfo {
             xBridge = rand.nextFloat() < LostCityConfiguration.BRIDGE_CHANCE;
             zBridge = rand.nextFloat() < LostCityConfiguration.BRIDGE_CHANCE;
         }
-
-        doorBlock = getRandomDoor(rand);
     }
 
     private Block getRandomDoor(Random rand) {

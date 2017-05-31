@@ -867,7 +867,7 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
                 } else {
                     b = air;
                 }
-            } else if ((!info2.hasBuilding && l == 0) || (info2.hasBuilding && l == info2.floors+1) && info2.hasConnectionAtX(l + info2.floorsBelowGround)) {
+            } else if (((!info2.hasBuilding && l == 0) || (info2.hasBuilding && l == info2.floors+1)) && info2.hasConnectionAtX(l + info2.floorsBelowGround)) {
                 if (f == 3 || z == 6 || z == 9) {
                     b = style.bricks;
                 } else {
@@ -904,7 +904,7 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
                 } else {
                     b = air;
                 }
-            } else if ((!info2.hasBuilding && l == 0) || (info2.hasBuilding && l == info2.floors+1) && info2.hasConnectionAtZ(l + info2.floorsBelowGround)) {
+            } else if (((!info2.hasBuilding && l == 0) || (info2.hasBuilding && l == info2.floors+1)) && info2.hasConnectionAtZ(l + info2.floorsBelowGround)) {
                 if (f == 3 || x == 6 || x == 9) {
                     b = style.bricks;
                 } else {
