@@ -29,8 +29,6 @@ public class BuildingInfo {
 
     public final boolean xRailCorridor;
     public final boolean zRailCorridor;
-    public final boolean xWaterCorridor;
-    public final boolean zWaterCorridor;
 
     public final Block doorBlock;
 
@@ -233,13 +231,6 @@ public class BuildingInfo {
             zRailCorridor = rand.nextFloat() < LostCityConfiguration.CORRIDOR_CHANCE;
         }
 
-        if (hasBuilding && floorsBelowGround > 1) {
-            xWaterCorridor = false;
-            zWaterCorridor = false;
-        } else {
-            xWaterCorridor = rand.nextFloat() < .8f;
-            zWaterCorridor = rand.nextFloat() < .8f;
-        }
         doorBlock = getRandomDoor(rand);
     }
 
@@ -274,48 +265,6 @@ public class BuildingInfo {
             i = i.getXmax();
         }
         if ((!i.hasBuilding) || i.floorsBelowGround == 0) {
-            return false;
-        }
-        return true;
-    }
-
-    public boolean hasXWaterCorridor() {
-        if (!xWaterCorridor) {
-            return false;
-        }
-        BuildingInfo i = getXmin();
-        while (i.canWaterCorridorGoThrough() && i.xWaterCorridor) {
-            i = i.getXmin();
-        }
-        if ((!i.hasBuilding) || i.floorsBelowGround <= 1) {
-            return false;
-        }
-        i = getXmax();
-        while (i.canWaterCorridorGoThrough() && i.xWaterCorridor) {
-            i = i.getXmax();
-        }
-        if ((!i.hasBuilding) || i.floorsBelowGround <= 1) {
-            return false;
-        }
-        return true;
-    }
-
-    public boolean hasZWaterCorridor() {
-        if (!zWaterCorridor) {
-            return false;
-        }
-        BuildingInfo i = getZmin();
-        while (i.canWaterCorridorGoThrough() && i.zWaterCorridor) {
-            i = i.getZmin();
-        }
-        if ((!i.hasBuilding) || i.floorsBelowGround <= 1) {
-            return false;
-        }
-        i = getZmax();
-        while (i.canWaterCorridorGoThrough() && i.zWaterCorridor) {
-            i = i.getZmax();
-        }
-        if ((!i.hasBuilding) || i.floorsBelowGround <= 1) {
             return false;
         }
         return true;
