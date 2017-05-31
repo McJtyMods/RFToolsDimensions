@@ -195,6 +195,20 @@ public class BuildingInfo {
         return buildingType == 0 ? LostCityData.FLOORS : LostCityData.FLOORS2;
     }
 
+    public LostCityData.Level getTopData(int floortype) {
+        switch (building2x2Section) {
+            case 0:
+                return LostCityData.TOPS_LIBRARY00[floortype];
+            case 1:
+            case 2:
+            case 3:
+                return LostCityData.TOPS_LIBRARY[floortype];
+            default:
+                return LostCityData.TOPS[floortype];
+        }
+    }
+
+
     // @todo not ideal
     public int getGenInfoIndex() {
         if (isLibrary) {
@@ -302,7 +316,16 @@ public class BuildingInfo {
             doorBlock = getRandomDoor(rand);
         }
 
-        topType = rand.nextInt(LostCityData.TOPS.length);
+        switch (building2x2Section) {
+            case 0:
+                topType = rand.nextInt(LostCityData.TOPS_LIBRARY00.length); break;
+            case 1:
+            case 2:
+            case 3:
+                topType = rand.nextInt(LostCityData.TOPS_LIBRARY.length); break;
+            default:
+                topType = rand.nextInt(LostCityData.TOPS.length);
+        }
 
         floorTypes = new int[floors + floorsBelowGround + 2];
         connectionAtX = new boolean[floors + floorsBelowGround + 2];
@@ -479,6 +502,9 @@ public class BuildingInfo {
         if (!isCity) {
             return false;
         }
+        if (building2x2Section == 1 || building2x2Section == 3) {
+            return false;
+        }
         if (level < 0 || level >= connectionAtX.length) {
             return false;
         }
@@ -487,6 +513,9 @@ public class BuildingInfo {
 
     public boolean hasConnectionAtZ(int level) {
         if (!isCity) {
+            return false;
+        }
+        if (building2x2Section == 2 || building2x2Section == 3) {
             return false;
         }
         if (level < 0 || level >= connectionAtZ.length) {

@@ -127,6 +127,8 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
             mapping.put('W', info -> Blocks.WATER.getDefaultState());
             mapping.put('w', info -> Blocks.COBBLESTONE_WALL.getDefaultState());
             mapping.put('S', info -> Blocks.DOUBLE_STONE_SLAB.getDefaultState());
+            mapping.put('<', info -> Blocks.QUARTZ_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.NORTH));
+            mapping.put('>', info -> Blocks.QUARTZ_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.SOUTH));
             mapping.put('_', info -> Blocks.STONE_SLAB.getDefaultState());
         }
         return mapping;
@@ -817,7 +819,10 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
         while (height < buildingtop + 6) {
             int f = getFloor(height);
             int floortype = info.topType;
-            LostCityData.Level level = LostCityData.TOPS[floortype];
+            LostCityData.Level level = info.getTopData(floortype);
+            if (f >= level.getFloor().length) {
+                break;
+            }
             IBlockState b = level.get(info, x, f, z);
             b = damageArea.damageBlock(b, air, rand, cx + x, height, cz + z, index, style);
             BaseTerrainGenerator.setBlockState(primer, index++, b);
