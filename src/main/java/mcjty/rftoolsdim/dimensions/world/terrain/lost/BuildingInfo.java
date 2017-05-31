@@ -1,8 +1,9 @@
 package mcjty.rftoolsdim.dimensions.world.terrain.lost;
 
 import mcjty.rftoolsdim.config.LostCityConfiguration;
-import net.minecraft.block.Block;
+import net.minecraft.block.*;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.EnumDyeColor;
 
 import java.util.Random;
 
@@ -38,12 +39,95 @@ public class BuildingInfo {
     private BuildingInfo zmin = null;
     private BuildingInfo zmax = null;
     private DamageArea damageArea = null;
+    private Style style = null;
 
     public DamageArea getDamageArea() {
         if (damageArea == null) {
             damageArea = new DamageArea(seed, chunkX, chunkZ);
         }
         return damageArea;
+    }
+
+    public Style getStyle() {
+        if (style != null) {
+            return style;
+        }
+        style = new Style();
+
+        if (!isCity) {
+            style.bricks = Blocks.STONEBRICK.getDefaultState();
+            return style;
+        }
+
+        style.street = Blocks.DOUBLE_STONE_SLAB.getDefaultState();
+        style.street2 = Blocks.BRICK_BLOCK.getDefaultState();
+
+        switch (glassColor) {
+            case 0:
+                style.glass = Blocks.STAINED_GLASS.getDefaultState().withProperty(BlockStainedGlass.COLOR, EnumDyeColor.WHITE);
+                break;
+            case 1:
+                style.glass = Blocks.STAINED_GLASS.getDefaultState().withProperty(BlockStainedGlass.COLOR, EnumDyeColor.GRAY);
+                break;
+            case 2:
+                style.glass = Blocks.STAINED_GLASS.getDefaultState().withProperty(BlockStainedGlass.COLOR, EnumDyeColor.LIGHT_BLUE);
+                break;
+            case 3:
+                style.glass = Blocks.STAINED_GLASS.getDefaultState().withProperty(BlockStainedGlass.COLOR, EnumDyeColor.BLUE);
+                break;
+            case 4:
+                style.glass = Blocks.STAINED_GLASS_PANE.getDefaultState().withProperty(BlockStainedGlass.COLOR, EnumDyeColor.WHITE);
+                break;
+            case 5:
+                style.glass = Blocks.STAINED_GLASS_PANE.getDefaultState().withProperty(BlockStainedGlass.COLOR, EnumDyeColor.GRAY);
+                break;
+            case 6:
+                style.glass = Blocks.STAINED_GLASS_PANE.getDefaultState().withProperty(BlockStainedGlass.COLOR, EnumDyeColor.LIGHT_BLUE);
+                break;
+            case 7:
+                style.glass = Blocks.STAINED_GLASS_PANE.getDefaultState().withProperty(BlockStainedGlass.COLOR, EnumDyeColor.BLUE);
+                break;
+            case 8:
+                style.glass = Blocks.GLASS_PANE.getDefaultState();
+                break;
+            default:
+                style.glass = Blocks.GLASS.getDefaultState();
+                break;
+        }
+
+        style.quartz = Blocks.QUARTZ_BLOCK.getDefaultState();
+
+        switch (buildingStyle) {
+            case 0:
+                style.bricks = Blocks.STAINED_HARDENED_CLAY.getDefaultState().withProperty(BlockColored.COLOR, EnumDyeColor.CYAN);
+                style.bricks_variant = Blocks.STAINED_HARDENED_CLAY.getDefaultState().withProperty(BlockColored.COLOR, EnumDyeColor.BLACK);
+                style.bricks_cracked = Blocks.STAINED_HARDENED_CLAY.getDefaultState().withProperty(BlockColored.COLOR, EnumDyeColor.CYAN);
+                style.bricks_mossy = Blocks.STAINED_HARDENED_CLAY.getDefaultState().withProperty(BlockColored.COLOR, EnumDyeColor.CYAN);
+                style.bricks_monster = Blocks.STAINED_HARDENED_CLAY.getDefaultState().withProperty(BlockColored.COLOR, EnumDyeColor.CYAN);
+                break;
+            case 1:
+                style.bricks = Blocks.STAINED_HARDENED_CLAY.getDefaultState().withProperty(BlockColored.COLOR, EnumDyeColor.GRAY);
+                style.bricks_variant = Blocks.STAINED_HARDENED_CLAY.getDefaultState().withProperty(BlockColored.COLOR, EnumDyeColor.BLACK);
+                style.bricks_cracked = Blocks.STAINED_HARDENED_CLAY.getDefaultState().withProperty(BlockColored.COLOR, EnumDyeColor.GRAY);
+                style.bricks_mossy = Blocks.STAINED_HARDENED_CLAY.getDefaultState().withProperty(BlockColored.COLOR, EnumDyeColor.GRAY);
+                style.bricks_monster = Blocks.STAINED_HARDENED_CLAY.getDefaultState().withProperty(BlockColored.COLOR, EnumDyeColor.GRAY);
+                break;
+            case 2:
+                style.bricks = Blocks.STAINED_HARDENED_CLAY.getDefaultState().withProperty(BlockColored.COLOR, EnumDyeColor.SILVER);
+                style.bricks_variant = Blocks.STAINED_HARDENED_CLAY.getDefaultState().withProperty(BlockColored.COLOR, EnumDyeColor.BROWN);
+                style.bricks_cracked = Blocks.STAINED_HARDENED_CLAY.getDefaultState().withProperty(BlockColored.COLOR, EnumDyeColor.SILVER);
+                style.bricks_mossy = Blocks.STAINED_HARDENED_CLAY.getDefaultState().withProperty(BlockColored.COLOR, EnumDyeColor.SILVER);
+                style.bricks_monster = Blocks.STAINED_HARDENED_CLAY.getDefaultState().withProperty(BlockColored.COLOR, EnumDyeColor.SILVER);
+                break;
+            default:
+                style.bricks = Blocks.STONEBRICK.getDefaultState();
+                style.bricks_variant = Blocks.DOUBLE_STONE_SLAB.getDefaultState();
+                style.bricks_cracked = Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CRACKED);
+                style.bricks_mossy = Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.MOSSY);
+                style.bricks_monster = Blocks.MONSTER_EGG.getDefaultState().withProperty(BlockSilverfish.VARIANT, BlockSilverfish.EnumType.STONEBRICK);
+                break;
+        }
+        return style;
     }
 
     // x between 0 and 15, z between 0 and 15
