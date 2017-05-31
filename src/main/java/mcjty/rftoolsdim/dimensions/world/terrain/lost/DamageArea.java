@@ -30,6 +30,12 @@ public class DamageArea {
                         explosions.add(explosion);
                     }
                 }
+                explosion = getMiniExplosionAt(cx, cz);
+                if (explosion != null) {
+                    if (intersectsWith(explosion.getCenter(), explosion.getRadius())) {
+                        explosions.add(explosion);
+                    }
+                }
             }
         }
     }
@@ -68,6 +74,17 @@ public class DamageArea {
         if (rand.nextFloat() < LostCityConfiguration.EXPLOSION_CHANCE) {
             return new Explosion(LostCityConfiguration.EXPLOSION_MINRADIUS + rand.nextInt(LostCityConfiguration.EXPLOSION_MAXRADIUS - LostCityConfiguration.EXPLOSION_MINRADIUS),
                     new BlockPos(chunkX * 16 + rand.nextInt(16), LostCityConfiguration.EXPLOSION_MINHEIGHT + rand.nextInt(LostCityConfiguration.EXPLOSION_MAXHEIGHT - LostCityConfiguration.EXPLOSION_MINHEIGHT), chunkZ * 16 + rand.nextInt(16)));
+        }
+        return null;
+    }
+
+    private Explosion getMiniExplosionAt(int chunkX, int chunkZ) {
+        Random rand = new Random(seed + chunkZ * 1400305337L + chunkX * 573259391L);
+        rand.nextFloat();
+        rand.nextFloat();
+        if (rand.nextFloat() < LostCityConfiguration.MINI_EXPLOSION_CHANCE) {
+            return new Explosion(LostCityConfiguration.MINI_EXPLOSION_MINRADIUS + rand.nextInt(LostCityConfiguration.MINI_EXPLOSION_MAXRADIUS - LostCityConfiguration.MINI_EXPLOSION_MINRADIUS),
+                    new BlockPos(chunkX * 16 + rand.nextInt(16), LostCityConfiguration.MINI_EXPLOSION_MINHEIGHT + rand.nextInt(LostCityConfiguration.MINI_EXPLOSION_MAXHEIGHT - LostCityConfiguration.MINI_EXPLOSION_MINHEIGHT), chunkZ * 16 + rand.nextInt(16)));
         }
         return null;
     }

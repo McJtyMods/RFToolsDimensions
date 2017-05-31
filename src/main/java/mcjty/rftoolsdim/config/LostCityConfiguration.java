@@ -15,6 +15,12 @@ public class LostCityConfiguration {
     public static int EXPLOSION_MINHEIGHT = 70;
     public static int EXPLOSION_MAXHEIGHT = 120;
 
+    public static float MINI_EXPLOSION_CHANCE = .05f;
+    public static int MINI_EXPLOSION_MINRADIUS = 5;
+    public static int MINI_EXPLOSION_MAXRADIUS = 15;
+    public static int MINI_EXPLOSION_MINHEIGHT = 60;
+    public static int MINI_EXPLOSION_MAXHEIGHT = 100;
+
     public static float STYLE_CHANCE_CRACKED = 0.06f;
     public static float STYLE_CHANCE_MOSSY = 0.05f;
 
@@ -48,6 +54,12 @@ public class LostCityConfiguration {
         EXPLOSION_MAXRADIUS = cfg.getInt("explosionMaxRadius", CATEGORY_LOSTCITY, EXPLOSION_MAXRADIUS, 1, 3000, "The maximum radius of an explosion");
         EXPLOSION_MINHEIGHT = cfg.getInt("explosionMinHeight", CATEGORY_LOSTCITY, EXPLOSION_MINHEIGHT, 1, 256, "The minimum height of an explosion");
         EXPLOSION_MAXHEIGHT = cfg.getInt("explosionMaxHeight", CATEGORY_LOSTCITY, EXPLOSION_MAXHEIGHT, 1, 256, "The maximum height of an explosion");
+
+        MINI_EXPLOSION_CHANCE = cfg.getFloat("miniExplosionChance", CATEGORY_LOSTCITY, MINI_EXPLOSION_CHANCE, 0.0f, 1.0f, "The chance that a chunk will contain a mini explosion");
+        MINI_EXPLOSION_MINRADIUS = cfg.getInt("miniExplosionMinRadius", CATEGORY_LOSTCITY, MINI_EXPLOSION_MINRADIUS, 1, 1000, "The minimum radius of a mini explosion");
+        MINI_EXPLOSION_MAXRADIUS = cfg.getInt("miniExplosionMaxRadius", CATEGORY_LOSTCITY, MINI_EXPLOSION_MAXRADIUS, 1, 3000, "The maximum radius of a mini explosion");
+        MINI_EXPLOSION_MINHEIGHT = cfg.getInt("miniExplosionMinHeight", CATEGORY_LOSTCITY, MINI_EXPLOSION_MINHEIGHT, 1, 256, "The minimum height of a mini explosion");
+        MINI_EXPLOSION_MAXHEIGHT = cfg.getInt("miniExplosionMaxHeight", CATEGORY_LOSTCITY, MINI_EXPLOSION_MAXHEIGHT, 1, 256, "The maximum height of a mini explosion");
 
         CITY_CHANCE = cfg.getFloat("cityChance", CATEGORY_LOSTCITY, CITY_CHANCE, 0.0f, 1.0f, "The chance this chunk will be the center of a city");
         CITY_MINRADIUS = cfg.getInt("cityMinRadius", CATEGORY_LOSTCITY, CITY_MINRADIUS, 1, 1000, "The minimum radius of a city");
