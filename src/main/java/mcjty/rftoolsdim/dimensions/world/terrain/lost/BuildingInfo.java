@@ -81,6 +81,10 @@ public class BuildingInfo {
         return zmax;
     }
 
+    public int getMaxHeight() {
+        return hasBuilding ? (69 + floors * 6) : 63;
+    }
+
     public LostCityData.Level[] getFloorData() {
         return buildingType == 0 ? LostCityData.FLOORS : LostCityData.FLOORS2;
     }

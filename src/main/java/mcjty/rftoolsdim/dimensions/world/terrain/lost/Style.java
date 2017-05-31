@@ -1,5 +1,7 @@
 package mcjty.rftoolsdim.dimensions.world.terrain.lost;
 
+import net.minecraft.block.BlockDynamicLiquid;
+import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.state.IBlockState;
 
 public class Style {
@@ -16,5 +18,13 @@ public class Style {
     public boolean canBeDamagedToIronBars(IBlockState b) {
         return b != null && (b == bricks || b == bricks_cracked || b == bricks_mossy
                 || b == bricks_variant || b == quartz);
+    }
+
+    public boolean isEasyToDestroy(IBlockState b) {
+        return b != null && b == glass;
+    }
+
+    public boolean isLiquid(IBlockState b) {
+        return b != null && (b.getBlock() instanceof BlockLiquid || b.getBlock() instanceof BlockDynamicLiquid);
     }
 }

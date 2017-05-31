@@ -188,7 +188,7 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
         int cz = chunkZ * 16;
 
         Style style = new Style();
-        style.bricks = baseBlock;
+        style.bricks = Blocks.STONEBRICK.getDefaultState();
 
         generateHeightmap(chunkX * 4, 0, chunkZ * 4);
         for (int x4 = 0; x4 < 4; ++x4) {
@@ -356,58 +356,178 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
 
         if (building) {
             if (damageArea.hasExplosions()) {
-                fixAfterExplosion(primer, info, damageArea);
+                System.out.println("########### Fix after explosions");
+                fixAfterExplosion(primer, info, rand);
             }
         }
     }
 
     private static class Blob {
+        private final int starty;
+        private final int endy;
         private final Set<Integer> connectedBlocks = new HashSet<>();
+        private boolean connectsToXmin = false;
+        private boolean connectsToXmax = false;
+        private boolean connectsToZmin = false;
+        private boolean connectsToZmax = false;
+        private boolean connectsToGround = false;
+        private int lowestY;
 
+        public Blob(int starty, int endy) {
+            this.starty = starty;
+            this.endy = endy;
+            lowestY = 256;
+        }
 
+        public boolean contains(int index) {
+            return connectedBlocks.contains(index);
+        }
+
+        public boolean destroyThis(BuildingInfo info) {
+            if (connectsToGround) {
+                return false;
+            }
+            if (connectsToXmin && info.getXmin().getMaxHeight() >= lowestY) {
+                return false;
+            }
+            if (connectsToXmax && info.getXmax().getMaxHeight() >= lowestY) {
+                return false;
+            }
+            if (connectsToZmin && info.getZmin().getMaxHeight() >= lowestY) {
+                return false;
+            }
+            if (connectsToZmax && info.getZmax().getMaxHeight() >= lowestY) {
+                return false;
+            }
+            return true;
+        }
+
+        private boolean isOutside(int x, int y, int z) {
+            if (x < 0) {
+                connectsToXmin = true;
+                return true;
+            }
+            if (x > 15) {
+                connectsToXmax = true;
+                return true;
+            }
+            if (z < 0) {
+                connectsToZmin = true;
+                return true;
+            }
+            if (z > 15) {
+                connectsToZmax = true;
+                return true;
+            }
+            if (y < starty) {
+                connectsToGround = true;
+                return true;
+            }
+            return false;
+        }
+
+        public void scan(ChunkPrimer primer, char a, BlockPos pos) {
+            Queue<BlockPos> todo = new ArrayDeque<>();
+            todo.add(pos);
+
+            while (!todo.isEmpty()) {
+                pos = todo.poll();
+                int index = calcIndex(pos.getX(), pos.getY(), pos.getZ());
+                if (connectedBlocks.contains(index)) {
+                    continue;
+                }
+                if (isOutside(pos.getX(), pos.getY(), pos.getZ())) {
+                    continue;
+                }
+                if (primer.data[index] == a) {
+                    continue;
+                }
+                connectedBlocks.add(index);
+                if (pos.getY() < lowestY) {
+                    lowestY = pos.getY();
+                }
+                todo.add(pos.up());
+                todo.add(pos.down());
+                todo.add(pos.east());
+                todo.add(pos.west());
+                todo.add(pos.south());
+                todo.add(pos.north());
+            }
+        }
+
+        private int calcIndex(int x, int y, int z) {
+            return (x << 12) | (z << 8) + y;
+        }
+    }
+
+    private Blob findBlob(List<Blob> blobs, int index) {
+        for (Blob blob : blobs) {
+            if (blob.contains(index)) {
+                return blob;
+            }
+        }
+        return null;
     }
 
     /// Fix floating blocks after an explosion
-    private void fixAfterExplosion(ChunkPrimer primer, BuildingInfo info, DamageArea damageArea) {
-        int index;
-        int buildingtop = 69 + info.floors * 6;
-        char a = (char) Block.BLOCK_STATE_IDS.get(air);
-        char b1 = (char) Block.BLOCK_STATE_IDS.get(style.bricks);
-        char b2 = (char) Block.BLOCK_STATE_IDS.get(style.bricks_cracked);
-        char b3 = (char) Block.BLOCK_STATE_IDS.get(style.bricks_mossy);
-        char iron = (char) Block.BLOCK_STATE_IDS.get(Blocks.IRON_BARS.getDefaultState());
-        for (int i = 0; i < 1; i++) {//@todo
-            index = 0;
-            for (int x = 0; x < 16; ++x) {
-                for (int z = 0; z < 16; ++z) {
-                    int belowGround = info.floorsBelowGround;
-                    int height = groundLevel - belowGround * 6;
-                    index += height;
-                    while (height < buildingtop + 6) {
-                        if (primer.data[index] != a) {
-                            if (primer.data[index + 1] == a
-                                    && primer.data[index - 1] == a
-                                    && (z == 0 || primer.data[index - 256] == a)
-                                    && (z == 15 || primer.data[index + 256] == a)
-                                    && (x == 0 || primer.data[index - 256 * 16] == a)
-                                    && (x == 15 || primer.data[index + 256 * 16] == a)
-                                    ) {
-                                primer.data[index] = a;
-                            } else if (primer.data[index - 1] == a && damageArea.damaged[index - 1]) {
-                                if (primer.data[index - 1] == b1 || primer.data[index - 1] == b2 || primer.data[index - 1] == b3) {
-                                    primer.data[index - 1] = iron;
-                                } else {
-                                    primer.data[index] = a;
-                                }
-                            }
+    private void fixAfterExplosion(ChunkPrimer primer, BuildingInfo info, Random rand) {
+        int start = groundLevel - info.floorsBelowGround * 6;
+        int end = 63 + (info.floors+2) * 6;
+        char air = (char) Block.BLOCK_STATE_IDS.get(LostCitiesTerrainGenerator.air);
+        char liquid = (char) Block.BLOCK_STATE_IDS.get(provider.dimensionInformation.getFluidForTerrain().getDefaultState());
+
+        List<Blob> blobs = new ArrayList<>();
+
+        for (int x = 0; x < 16; ++x) {
+            for (int z = 0; z < 16; ++z) {
+                int index = (x << 12) | (z << 8) + start;
+                for (int y = start ; y < end ; y++) {
+                    char p = primer.data[index];
+                    if (p != air) {
+                        Blob blob = findBlob(blobs, index);
+                        if (blob == null) {
+                            blob = new Blob(start, end + 6);
+                            blob.scan(primer, air, new BlockPos(x, y, z));
+                            blobs.add(blob);
                         }
-                        index++;
-                        height++;
                     }
-                    int blocks = 256 - height;
-                    index += blocks;
+                    index++;
                 }
             }
+        }
+
+        // Sort all blobs we delete with lowest first
+        blobs.sort((o1, o2) -> {
+            int y1 = o1.destroyThis(info) ? o1.lowestY : 1000;
+            int y2 = o2.destroyThis(info) ? o2.lowestY : 1000;
+            return y1-y2;
+        });
+
+        Blob blocksToMove = new Blob(0, 256);
+        for (Blob blob : blobs) {
+            if (!blob.destroyThis(info)) {
+                // The rest of the blobs doesn't have to be destroyed anymore
+                break;
+            }
+            if (rand.nextFloat() < .4f && blob.connectedBlocks.size() < 50) {
+                for (Integer index : blob.connectedBlocks) {
+                    primer.data[index] = ((index&0xff) < waterLevel) ? liquid : air;
+                }
+            } else {
+                for (Integer index : blob.connectedBlocks) {
+                    blocksToMove.connectedBlocks.add(index);
+                }
+            }
+        }
+        for (Integer index : blocksToMove.connectedBlocks) {
+            char c = primer.data[index];
+            primer.data[index] = ((index&0xff) < waterLevel) ? liquid : air;
+            index--;
+            while (blocksToMove.contains(index) || primer.data[index] == air || primer.data[index] == liquid) {
+                index--;
+            }
+            index++;
+            primer.data[index] = c;
         }
     }
 
@@ -563,7 +683,7 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
             if (corridor && height >= groundLevel - 5 && height <= groundLevel - 3) {
                 b = air;
             } else {
-                b = getBlockForLevel(rand, info, x, z, height);
+                b = getBlockForLevel(info, x, z, height);
                 b = damageArea.damageBlock(b, height < waterLevel ? baseLiquid : air, rand, cx + x, height, cz + z, index, style);
             }
 
@@ -657,7 +777,7 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
         }
     }
 
-    private IBlockState getBlockForLevel(Random rand, BuildingInfo info, int x, int z, int height) {
+    private IBlockState getBlockForLevel(BuildingInfo info, int x, int z, int height) {
         int f = getFloor(height);
         int l = getLevel(height);
         boolean isFull = l == -1;      // The level directly underground has no windows

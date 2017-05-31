@@ -16,7 +16,6 @@ public class DamageArea {
     private final long seed;
     private final List<Explosion> explosions = new ArrayList<>();
     private final AxisAlignedBB chunkBox;
-    public final boolean damaged[];
 
     public DamageArea(long seed, int chunkX, int chunkZ) {
         this.seed = seed;
@@ -33,24 +32,24 @@ public class DamageArea {
                 }
             }
         }
-        damaged = new boolean[16 * 16 * 256];
-        for (int i = 0; i < damaged.length; i++) {
-            damaged[i] = false;
-        }
     }
 
     public IBlockState damageBlock(IBlockState b, IBlockState replacement, Random rand, int x, int y, int z, int index, Style style) {
         float damage = getDamage(x, y, z);
+        if (style.isEasyToDestroy(b)) {
+            damage *= 2.5f;    // As if this block gets double the damage
+        }
+        if (style.isLiquid(b)) {
+            damage *= 10f;
+        }
         if (rand.nextFloat() <= damage) {
-            if (damage < .5f && style.canBeDamagedToIronBars(b)) {
-                if (rand.nextFloat() < .8f) {
+            if (damage < .7f && style.canBeDamagedToIronBars(b)) {
+                if (rand.nextFloat() < .7f) {
                     b = Blocks.IRON_BARS.getDefaultState();
                 } else {
-                    damaged[index] = true;
                     b = replacement;
                 }
             } else {
-                damaged[index] = true;
                 b = replacement;
             }
         }
