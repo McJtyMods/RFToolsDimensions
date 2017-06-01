@@ -18,7 +18,8 @@ public class BuildingInfo {
     public final int building2x2Section;    // -1 for not, 0 for top left, 1 for top right, 2 for bottom left, 3 for bottom right
 
     public final int buildingType;
-    public final int fountainType;  // Used for PARKS and FOUNTAINS
+    public final int fountainType;
+    public final int parkType;
     public final StreetType streetType;
     public final int floors;
     public final int floorsBelowGround;
@@ -285,6 +286,7 @@ public class BuildingInfo {
             buildingType = topleft.buildingType;
             streetType = topleft.streetType;
             fountainType = topleft.fountainType;
+            parkType = topleft.parkType;
             floors = topleft.floors;
             floorsBelowGround = topleft.floorsBelowGround;
             glassType = topleft.glassType;
@@ -304,10 +306,11 @@ public class BuildingInfo {
                 streetType = StreetType.NORMAL;
             }
             if (rand.nextFloat() < LostCityConfiguration.FOUNTAIN_CHANCE) {
-                fountainType = rand.nextInt(streetType == StreetType.PARK ? LostCityData.PARKS.length : LostCityData.FOUNTAINS.length);
+                fountainType = rand.nextInt(LostCityData.FOUNTAINS.length);
             } else {
                 fountainType = -1;
             }
+            parkType = rand.nextInt(LostCityData.PARKS.length);
             int f = LostCityConfiguration.BUILDING_MINFLOORS + rand.nextInt((int) (LostCityConfiguration.BUILDING_MINFLOORS_CHANCE + (cityFactor + .1f) * (LostCityConfiguration.BUILDING_MAXFLOORS_CHANCE - LostCityConfiguration.BUILDING_MINFLOORS_CHANCE)));
             if (f > LostCityConfiguration.BUILDING_MAXFLOORS) {
                 f = LostCityConfiguration.BUILDING_MAXFLOORS;
@@ -376,6 +379,34 @@ public class BuildingInfo {
             default: doorBlock = Blocks.OAK_DOOR;
         }
         return doorBlock;
+    }
+
+    public boolean isStreetSection() {
+        return isCity && !hasBuilding;
+    }
+
+    public boolean isElevatedParkSection() {
+        if (!isStreetSection()) {
+            return false;
+        }
+        if (!getXmin().isStreetSection()) {
+            return false;
+        }
+        if (!getXmax().isStreetSection()) {
+            return false;
+        }
+        if (!getZmin().isStreetSection()) {
+            return false;
+        }
+        if (!getZmax().isStreetSection()) {
+            return false;
+        }
+        int cnt = 0;
+        cnt += getXmin().getZmin().isStreetSection() ? 1 : 0;
+        cnt += getXmin().getZmax().isStreetSection() ? 1 : 0;
+        cnt += getXmax().getZmin().isStreetSection() ? 1 : 0;
+        cnt += getXmax().getZmax().isStreetSection() ? 1 : 0;
+        return cnt >= 3;
     }
 
     public boolean hasXBridge(GenericChunkGenerator provider) {
@@ -498,7 +529,11 @@ public class BuildingInfo {
 
     // Return true if the road from a neighbouring chunk can extend into this chunk
     public boolean doesRoadExtendTo() {
-        return isCity && !hasBuilding;
+        boolean b = isCity && !hasBuilding;
+        if (b) {
+            return !isElevatedParkSection();
+        }
+        return false;
     }
 
     public static Random getBuildingRandom(int chunkX, int chunkZ, long seed) {

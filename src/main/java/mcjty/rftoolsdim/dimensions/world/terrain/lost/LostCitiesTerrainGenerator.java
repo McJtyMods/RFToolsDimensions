@@ -668,8 +668,18 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
             height++;
         }
 
-        IBlockState b = baseBlock;
-        switch (info.streetType) {
+        IBlockState b;
+
+        BuildingInfo.StreetType streetType = info.streetType;
+        boolean elevated = info.isElevatedParkSection();
+        if (elevated) {
+            streetType = BuildingInfo.StreetType.PARK;
+            BaseTerrainGenerator.setBlockState(primer, index++, damageArea.damageBlock(Blocks.STONEBRICK.getDefaultState(), air, rand, cx + x, height, cz + z, index, style));
+            height++;
+        }
+
+        b = baseBlock;
+        switch (streetType) {
             case NORMAL:
                 if (isStreetBorder(x, z)) {
                     if (x <= STREETBORDER && z > STREETBORDER && z < (15 - STREETBORDER)
@@ -699,6 +709,49 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
             case PARK:
                 if (x == 0 || x == 15 || z == 0 || z == 15) {
                     b = style.street;
+                    if (elevated) {
+                        boolean el00 = info.getXmin().getZmin().isElevatedParkSection();
+                        boolean el10 = info.getZmin().isElevatedParkSection();
+                        boolean el20 = info.getXmax().getZmin().isElevatedParkSection();
+                        boolean el01 = info.getXmin().isElevatedParkSection();
+                        boolean el21 = info.getXmax().isElevatedParkSection();
+                        boolean el02 = info.getXmin().getZmax().isElevatedParkSection();
+                        boolean el12 = info.getZmax().isElevatedParkSection();
+                        boolean el22 = info.getXmax().getZmax().isElevatedParkSection();
+                        if (x == 0 && z == 0) {
+                            if (el01 && el00 && el10) {
+                                b = Blocks.GRASS.getDefaultState();
+                            }
+                        }  else if (x == 15 && z == 0) {
+                            if (el21 && el20 && el10) {
+                                b = Blocks.GRASS.getDefaultState();
+                            }
+                        }  else if (x == 0 && z == 15) {
+                            if (el01 && el02 && el12) {
+                                b = Blocks.GRASS.getDefaultState();
+                            }
+                        }  else if (x == 15 && z == 15) {
+                            if (el12 && el22 && el21) {
+                                b = Blocks.GRASS.getDefaultState();
+                            }
+                        } else if (x == 0) {
+                            if (el01) {
+                                b = Blocks.GRASS.getDefaultState();
+                            }
+                        } else if (x == 15) {
+                            if (el21) {
+                                b = Blocks.GRASS.getDefaultState();
+                            }
+                        } else if (z == 0) {
+                            if (el10) {
+                                b = Blocks.GRASS.getDefaultState();
+                            }
+                        } else if (z == 15) {
+                            if (el12) {
+                                b = Blocks.GRASS.getDefaultState();
+                            }
+                        }
+                    }
                 } else {
                     b = Blocks.GRASS.getDefaultState();
                 }
@@ -710,9 +763,9 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
         BaseTerrainGenerator.setBlockState(primer, index++, damageArea.damageBlock(b, air, rand, cx + x, height, cz + z, index, style));
         height++;
 
-        if (info.fountainType >= 0) {
+        if (streetType == BuildingInfo.StreetType.PARK || info.fountainType >= 0) {
             int l = 0;
-            LostCityData.Level level = info.streetType == BuildingInfo.StreetType.PARK ? LostCityData.PARKS[info.fountainType] : LostCityData.FOUNTAINS[info.fountainType];
+            LostCityData.Level level = streetType == BuildingInfo.StreetType.PARK ? LostCityData.PARKS[info.parkType] : LostCityData.FOUNTAINS[info.fountainType];
             while (l < level.getFloor().length) {
                 if (l == 0 && doOceanBorder) {
                     b = Blocks.COBBLESTONE_WALL.getDefaultState();
