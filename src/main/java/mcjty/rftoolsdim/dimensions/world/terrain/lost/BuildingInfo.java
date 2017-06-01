@@ -21,6 +21,7 @@ public class BuildingInfo {
     public final int buildingType;
     public final int fountainType;
     public final int parkType;
+    public final int bridgeType;
     public final StreetType streetType;
     public final int floors;
     public final int floorsBelowGround;
@@ -65,6 +66,9 @@ public class BuildingInfo {
 
         if (!isCity) {
             style.bricks = Blocks.STONEBRICK.getDefaultState();
+            style.bricks_variant = Blocks.DOUBLE_STONE_SLAB.getDefaultState();
+            style.bricks_cracked = Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CRACKED);
+            style.bricks_mossy = Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.MOSSY);
             return style;
         }
 
@@ -350,6 +354,7 @@ public class BuildingInfo {
             glassColor = topleft.glassColor;
             buildingStyle = topleft.buildingStyle;
             doorBlock = topleft.doorBlock;
+            bridgeType = topleft.bridgeType;
         } else {
             buildingType = rand.nextInt(2);
             if (building2x2Section == 0) {
@@ -383,6 +388,7 @@ public class BuildingInfo {
             glassColor = rand.nextInt(5 + 5);
             buildingStyle = rand.nextInt(4);
             doorBlock = getRandomDoor(rand);
+            bridgeType = rand.nextInt(BridgeData.BRIDGES.length);
         }
 
         if (isLibrary) {
@@ -500,52 +506,66 @@ public class BuildingInfo {
         return cnt >= 3;
     }
 
-    public boolean hasXBridge(GenericChunkGenerator provider) {
+    public int hasXBridge(GenericChunkGenerator provider) {
         if (!xBridge) {
-            return false;
+            return -1;
         }
         if (!LostCitiesTerrainGenerator.isWaterBiome(provider, chunkX, chunkZ)) {
-            return false;
+            return -1;
         }
+        int bt = bridgeType;
         BuildingInfo i = getXmin();
         while ((!i.isCity) && i.xBridge && LostCitiesTerrainGenerator.isWaterBiome(provider, i.chunkX, i.chunkZ)) {
+            bt = i.bridgeType;
             i = i.getXmin();
         }
         if ((!i.isCity) || i.hasBuilding) {
-            return false;
+            return -1;
         }
         i = getXmax();
         while ((!i.isCity) && i.xBridge && LostCitiesTerrainGenerator.isWaterBiome(provider, i.chunkX, i.chunkZ)) {
             i = i.getXmax();
         }
         if ((!i.isCity) || i.hasBuilding) {
-            return false;
+            return -1;
         }
-        return true;
+        return bt;
     }
 
-    public boolean hasZBridge(GenericChunkGenerator provider) {
+    public int hasZBridge(GenericChunkGenerator provider) {
         if (!zBridge) {
-            return false;
+            return -1;
         }
         if (!LostCitiesTerrainGenerator.isWaterBiome(provider, chunkX, chunkZ)) {
-            return false;
+            return -1;
         }
+        if (hasXBridge(provider) >= 0) {
+            return -1;
+        }
+
+        int bt = bridgeType;
         BuildingInfo i = getZmin();
         while ((!i.isCity) && i.zBridge && LostCitiesTerrainGenerator.isWaterBiome(provider, i.chunkX, i.chunkZ)) {
+            if (i.hasXBridge(provider) >= 0) {
+                return -1;
+            }
+            bt = i.bridgeType;
             i = i.getZmin();
         }
         if ((!i.isCity) || i.hasBuilding) {
-            return false;
+            return -1;
         }
         i = getZmax();
         while ((!i.isCity) && i.zBridge && LostCitiesTerrainGenerator.isWaterBiome(provider, i.chunkX, i.chunkZ)) {
+            if (i.hasXBridge(provider) >= 0) {
+                return -1;
+            }
             i = i.getZmax();
         }
         if ((!i.isCity) || i.hasBuilding) {
-            return false;
+            return -1;
         }
-        return true;
+        return bt;
     }
 
     public boolean hasXCorridor() {
