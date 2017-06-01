@@ -2,6 +2,7 @@ package mcjty.rftoolsdim.dimensions.world.terrain.lost;
 
 import mcjty.rftoolsdim.config.LostCityConfiguration;
 import mcjty.rftoolsdim.dimensions.world.GenericChunkGenerator;
+import mcjty.rftoolsdim.dimensions.world.terrain.lost.data.*;
 import net.minecraft.block.*;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumDyeColor;
@@ -184,32 +185,32 @@ public class BuildingInfo {
         return hasBuilding ? (69 + floors * 6) : 63;
     }
 
-    public LostCityData.Level[] getFloorData() {
+    public Level[] getFloorData() {
         if (isLibrary) {
             switch (building2x2Section) {
-                case 0: return LostCityData.LIBRARY00;
-                case 1: return LostCityData.LIBRARY10;
-                case 2: return LostCityData.LIBRARY01;
-                case 3: return LostCityData.LIBRARY11;
+                case 0: return LibraryData.LIBRARY00;
+                case 1: return LibraryData.LIBRARY10;
+                case 2: return LibraryData.LIBRARY01;
+                case 3: return LibraryData.LIBRARY11;
             }
         }
-        return buildingType == 0 ? LostCityData.FLOORS : LostCityData.FLOORS2;
+        return buildingType == 0 ? FloorsData.FLOORS : FloorsData.FLOORS2;
     }
 
-    public LostCityData.Level getTopData(int floortype) {
+    public Level getTopData(int floortype) {
         if (isLibrary) {
             switch (building2x2Section) {
                 case 0:
-                    return LostCityData.TOPS_LIBRARY00[floortype];
+                    return LibraryData.TOPS_LIBRARY00[floortype];
                 case 1:
                 case 2:
                 case 3:
-                    return LostCityData.TOPS_LIBRARY[floortype];
+                    return LibraryData.TOPS_LIBRARY[floortype];
                 default:
-                    return LostCityData.TOPS[floortype];
+                    return RoofTopsData.TOPS[floortype];
             }
         } else {
-            return LostCityData.TOPS[floortype];
+            return RoofTopsData.TOPS[floortype];
         }
     }
 
@@ -306,11 +307,11 @@ public class BuildingInfo {
                 streetType = StreetType.NORMAL;
             }
             if (rand.nextFloat() < LostCityConfiguration.FOUNTAIN_CHANCE) {
-                fountainType = rand.nextInt(LostCityData.FOUNTAINS.length);
+                fountainType = rand.nextInt(FountainData.FOUNTAINS.length);
             } else {
                 fountainType = -1;
             }
-            parkType = rand.nextInt(LostCityData.PARKS.length);
+            parkType = rand.nextInt(ParkData.PARKS.length);
             int f = LostCityConfiguration.BUILDING_MINFLOORS + rand.nextInt((int) (LostCityConfiguration.BUILDING_MINFLOORS_CHANCE + (cityFactor + .1f) * (LostCityConfiguration.BUILDING_MAXFLOORS_CHANCE - LostCityConfiguration.BUILDING_MINFLOORS_CHANCE)));
             if (f > LostCityConfiguration.BUILDING_MAXFLOORS) {
                 f = LostCityConfiguration.BUILDING_MAXFLOORS;
@@ -326,18 +327,18 @@ public class BuildingInfo {
         if (isLibrary) {
             switch (building2x2Section) {
                 case 0:
-                    topType = rand.nextInt(LostCityData.TOPS_LIBRARY00.length);
+                    topType = rand.nextInt(LibraryData.TOPS_LIBRARY00.length);
                     break;
                 case 1:
                 case 2:
                 case 3:
-                    topType = rand.nextInt(LostCityData.TOPS_LIBRARY.length);
+                    topType = rand.nextInt(LibraryData.TOPS_LIBRARY.length);
                     break;
                 default:
-                    topType = rand.nextInt(LostCityData.TOPS.length);
+                    topType = rand.nextInt(RoofTopsData.TOPS.length);
             }
         } else {
-            topType = rand.nextInt(LostCityData.TOPS.length);
+            topType = rand.nextInt(RoofTopsData.TOPS.length);
         }
 
         floorTypes = new int[floors + floorsBelowGround + 2];

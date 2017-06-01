@@ -6,6 +6,7 @@ import mcjty.rftoolsdim.config.WorldgenConfiguration;
 import mcjty.rftoolsdim.dimensions.world.GenericChunkGenerator;
 import mcjty.rftoolsdim.dimensions.world.terrain.BaseTerrainGenerator;
 import mcjty.rftoolsdim.dimensions.world.terrain.NormalTerrainGenerator;
+import mcjty.rftoolsdim.dimensions.world.terrain.lost.data.*;
 import mcjty.rftoolsdim.varia.GeometryTools;
 import net.minecraft.block.*;
 import net.minecraft.block.state.IBlockState;
@@ -149,20 +150,20 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
     public static Map<Pair<Integer, Integer>, GenInfo> getGenInfos() {
         if (genInfos == null) {
             genInfos = new HashMap<>();
-            getGenInfos(LostCityData.FLOORS, 0);
-            getGenInfos(LostCityData.FLOORS2, 1);
-            getGenInfos(LostCityData.LIBRARY00, 10);
-            getGenInfos(LostCityData.LIBRARY10, 11);
-            getGenInfos(LostCityData.LIBRARY01, 12);
-            getGenInfos(LostCityData.LIBRARY11, 13);
+            getGenInfos(FloorsData.FLOORS, 0);
+            getGenInfos(FloorsData.FLOORS2, 1);
+            getGenInfos(LibraryData.LIBRARY00, 10);
+            getGenInfos(LibraryData.LIBRARY10, 11);
+            getGenInfos(LibraryData.LIBRARY01, 12);
+            getGenInfos(LibraryData.LIBRARY11, 13);
         }
         return genInfos;
     }
 
-    private static void getGenInfos(LostCityData.Level[] floors, int floorIdx) {
+    private static void getGenInfos(Level[] floors, int floorIdx) {
         for (int i = 0; i < floors.length; i++) {
             GenInfo gi = new GenInfo();
-            LostCityData.Level level = floors[i];
+            Level level = floors[i];
             for (int y = 0; y < 6; y++) {
                 for (int x = 0; x < 16; x++) {
                     for (int z = 0; z < 16; z++) {
@@ -284,7 +285,7 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
             int cz = chunkZ * 16;
             DamageArea damageArea = info.getDamageArea();
             Style style = info.getStyle();
-            LostCityData.Level level = LostCityData.BRIDGES[0]; // @todo
+            Level level = BridgeData.BRIDGES[0]; // @todo
             for (int x = 0 ; x < 16 ; x++) {
                 for (int z = 0 ; z < 16 ; z++) {
                     int index = (x << 12) | (z << 8) + groundLevel + 1;
@@ -313,7 +314,7 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
             int cz = chunkZ * 16;
             DamageArea damageArea = info.getDamageArea();
             Style style = info.getStyle();
-            LostCityData.Level level = LostCityData.BRIDGES[0]; // @todo
+            Level level = BridgeData.BRIDGES[0]; // @todo
             for (int x = 0 ; x < 16 ; x++) {
                 for (int z = 0 ; z < 16 ; z++) {
                     int index = (x << 12) | (z << 8) + groundLevel + 1;
@@ -765,7 +766,7 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
 
         if (streetType == BuildingInfo.StreetType.PARK || info.fountainType >= 0) {
             int l = 0;
-            LostCityData.Level level = streetType == BuildingInfo.StreetType.PARK ? LostCityData.PARKS[info.parkType] : LostCityData.FOUNTAINS[info.fountainType];
+            Level level = streetType == BuildingInfo.StreetType.PARK ? ParkData.PARKS[info.parkType] : FountainData.FOUNTAINS[info.fountainType];
             while (l < level.getFloor().length) {
                 if (l == 0 && doOceanBorder) {
                     b = Blocks.COBBLESTONE_WALL.getDefaultState();
@@ -903,7 +904,7 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
         while (height < buildingtop + 6) {
             int f = getFloor(height);
             int floortype = info.topType;
-            LostCityData.Level level = info.getTopData(floortype);
+            Level level = info.getTopData(floortype);
             if (f >= level.getFloor().length) {
                 break;
             }
@@ -922,8 +923,8 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
         int f = getFloor(height);
         int l = getLevel(height);
         boolean isFull = l == -1;      // The level directly underground has no windows
-        LostCityData.Level[] floors = info.getFloorData();
-        LostCityData.Level level = floors[info.floorTypes[l + info.floorsBelowGround]];
+        Level[] floors = info.getFloorData();
+        Level level = floors[info.floorTypes[l + info.floorsBelowGround]];
         IBlockState b = level.get(info, x, f, z);
         Style style = info.getStyle();
 
