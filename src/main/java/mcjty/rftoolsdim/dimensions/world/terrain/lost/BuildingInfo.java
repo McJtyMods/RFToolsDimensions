@@ -32,6 +32,7 @@ public class BuildingInfo {
     public final int glassColor;
     public final int buildingStyle;
     public final boolean isLibrary;     // If true this is a library (only if it is also a 2x2 building)
+    public final boolean isDataCenter;  // If true this is a data center (only if it is also a 2x2 building)
 
     public final boolean xBridge;       // A boolean indicating that this chunk is a candidate for holding a bridge (no guarantee)
     public final boolean zBridge;       // A boolean indicating that this chunk is a candidate for holding a bridge (no guarantee)
@@ -155,28 +156,28 @@ public class BuildingInfo {
 
     public BuildingInfo getXmin() {
         if (xmin == null) {
-            xmin = new BuildingInfo(chunkX-1, chunkZ, seed);
+            xmin = new BuildingInfo(chunkX - 1, chunkZ, seed);
         }
         return xmin;
     }
 
     public BuildingInfo getXmax() {
         if (xmax == null) {
-            xmax = new BuildingInfo(chunkX+1, chunkZ, seed);
+            xmax = new BuildingInfo(chunkX + 1, chunkZ, seed);
         }
         return xmax;
     }
 
     public BuildingInfo getZmin() {
         if (zmin == null) {
-            zmin = new BuildingInfo(chunkX, chunkZ-1, seed);
+            zmin = new BuildingInfo(chunkX, chunkZ - 1, seed);
         }
         return zmin;
     }
 
     public BuildingInfo getZmax() {
         if (zmax == null) {
-            zmax = new BuildingInfo(chunkX, chunkZ+1, seed);
+            zmax = new BuildingInfo(chunkX, chunkZ + 1, seed);
         }
         return zmax;
     }
@@ -188,10 +189,26 @@ public class BuildingInfo {
     public Level[] getFloorData() {
         if (isLibrary) {
             switch (building2x2Section) {
-                case 0: return LibraryData.LIBRARY00;
-                case 1: return LibraryData.LIBRARY10;
-                case 2: return LibraryData.LIBRARY01;
-                case 3: return LibraryData.LIBRARY11;
+                case 0:
+                    return LibraryData.LIBRARY00;
+                case 1:
+                    return LibraryData.LIBRARY10;
+                case 2:
+                    return LibraryData.LIBRARY01;
+                case 3:
+                    return LibraryData.LIBRARY11;
+            }
+        }
+        if (isDataCenter) {
+            switch (building2x2Section) {
+                case 0:
+                    return DataCenterData.CENTER00;
+                case 1:
+                    return DataCenterData.CENTER10;
+                case 2:
+                    return DataCenterData.CENTER01;
+                case 3:
+                    return DataCenterData.CENTER11;
             }
         }
         return buildingType == 0 ? FloorsData.FLOORS : FloorsData.FLOORS2;
@@ -209,6 +226,17 @@ public class BuildingInfo {
                 default:
                     return RoofTopsData.TOPS[floortype];
             }
+        } else if (isDataCenter) {
+            switch (building2x2Section) {
+                case 0:
+                    return DataCenterData.TOPS_CENTER00[floortype];
+                case 1:
+                case 2:
+                case 3:
+                    return DataCenterData.TOPS_CENTER[floortype];
+                default:
+                    return RoofTopsData.TOPS[floortype];
+            }
         } else {
             return RoofTopsData.TOPS[floortype];
         }
@@ -219,6 +247,9 @@ public class BuildingInfo {
     public int getGenInfoIndex() {
         if (isLibrary) {
             return building2x2Section + 10;
+        }
+        if (isDataCenter) {
+            return building2x2Section + 20;
         }
         return buildingType;
     }
@@ -243,9 +274,9 @@ public class BuildingInfo {
 
     private static boolean isTopLeftOf2x2Building(int chunkX, int chunkZ, long seed) {
         if (isCandidateForTopLeftOf2x2Building(chunkX, chunkZ, seed)
-                && !isCandidateForTopLeftOf2x2Building(chunkX-1, chunkZ, seed)
-                && !isCandidateForTopLeftOf2x2Building(chunkX-1, chunkZ-1, seed)
-                && !isCandidateForTopLeftOf2x2Building(chunkX, chunkZ-1, seed)) {
+                && !isCandidateForTopLeftOf2x2Building(chunkX - 1, chunkZ, seed)
+                && !isCandidateForTopLeftOf2x2Building(chunkX - 1, chunkZ - 1, seed)
+                && !isCandidateForTopLeftOf2x2Building(chunkX, chunkZ - 1, seed)) {
             return isCity(chunkX + 1, chunkZ, seed) && isCity(chunkX + 1, chunkZ + 1, seed) && isCity(chunkX, chunkZ + 1, seed);
         } else {
             return false;
@@ -261,11 +292,11 @@ public class BuildingInfo {
 
         if (isTopLeftOf2x2Building(chunkX, chunkZ, seed)) {
             building2x2Section = 0;
-        } else if (isTopLeftOf2x2Building(chunkX-1, chunkZ, seed)) {
+        } else if (isTopLeftOf2x2Building(chunkX - 1, chunkZ, seed)) {
             building2x2Section = 1;
-        } else if (isTopLeftOf2x2Building(chunkX, chunkZ-1, seed)) {
+        } else if (isTopLeftOf2x2Building(chunkX, chunkZ - 1, seed)) {
             building2x2Section = 2;
-        } else if (isTopLeftOf2x2Building(chunkX-1, chunkZ-1, seed)) {
+        } else if (isTopLeftOf2x2Building(chunkX - 1, chunkZ - 1, seed)) {
             building2x2Section = 3;
         } else {
             building2x2Section = -1;
@@ -278,12 +309,20 @@ public class BuildingInfo {
         if (building2x2Section >= 1) {
             BuildingInfo topleft;
             switch (building2x2Section) {
-                case 1: topleft = getXmin(); break;
-                case 2: topleft = getZmin(); break;
-                case 3: topleft = getXmin().getZmin(); break;
-                default: throw new RuntimeException("What!");
+                case 1:
+                    topleft = getXmin();
+                    break;
+                case 2:
+                    topleft = getZmin();
+                    break;
+                case 3:
+                    topleft = getXmin().getZmin();
+                    break;
+                default:
+                    throw new RuntimeException("What!");
             }
             isLibrary = topleft.isLibrary;
+            isDataCenter = topleft.isDataCenter;
             buildingType = topleft.buildingType;
             streetType = topleft.streetType;
             fountainType = topleft.fountainType;
@@ -300,6 +339,11 @@ public class BuildingInfo {
                 isLibrary = rand.nextFloat() < LostCityConfiguration.LIBRARY_CHANCE;
             } else {
                 isLibrary = false;
+            }
+            if (building2x2Section == 0 && !isLibrary) {
+                isDataCenter = rand.nextFloat() < LostCityConfiguration.LIBRARY_CHANCE;
+            } else {
+                isDataCenter = false;
             }
             if (rand.nextDouble() < .2f) {
                 streetType = StreetType.values()[rand.nextInt(StreetType.values().length)];
@@ -337,6 +381,20 @@ public class BuildingInfo {
                 default:
                     topType = rand.nextInt(RoofTopsData.TOPS.length);
             }
+        } else if (isDataCenter) {
+            switch (building2x2Section) {
+                case 0:
+                    topType = rand.nextInt(DataCenterData.TOPS_CENTER00.length);
+                    break;
+                case 1:
+                case 2:
+                case 3:
+                    topType = rand.nextInt(DataCenterData.TOPS_CENTER.length);
+                    break;
+                default:
+                    topType = rand.nextInt(RoofTopsData.TOPS.length);
+            }
+
         } else {
             topType = rand.nextInt(RoofTopsData.TOPS.length);
         }
@@ -370,14 +428,29 @@ public class BuildingInfo {
     private Block getRandomDoor(Random rand) {
         Block doorBlock;
         switch (rand.nextInt(7)) {
-            case 0: doorBlock = Blocks.BIRCH_DOOR; break;
-            case 1: doorBlock = Blocks.ACACIA_DOOR; break;
-            case 2: doorBlock = Blocks.DARK_OAK_DOOR; break;
-            case 3: doorBlock = Blocks.SPRUCE_DOOR; break;
-            case 4: doorBlock = Blocks.OAK_DOOR; break;
-            case 5: doorBlock = Blocks.JUNGLE_DOOR; break;
-            case 6: doorBlock = Blocks.IRON_DOOR; break;
-            default: doorBlock = Blocks.OAK_DOOR;
+            case 0:
+                doorBlock = Blocks.BIRCH_DOOR;
+                break;
+            case 1:
+                doorBlock = Blocks.ACACIA_DOOR;
+                break;
+            case 2:
+                doorBlock = Blocks.DARK_OAK_DOOR;
+                break;
+            case 3:
+                doorBlock = Blocks.SPRUCE_DOOR;
+                break;
+            case 4:
+                doorBlock = Blocks.OAK_DOOR;
+                break;
+            case 5:
+                doorBlock = Blocks.JUNGLE_DOOR;
+                break;
+            case 6:
+                doorBlock = Blocks.IRON_DOOR;
+                break;
+            default:
+                doorBlock = Blocks.OAK_DOOR;
         }
         return doorBlock;
     }

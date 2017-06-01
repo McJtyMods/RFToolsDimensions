@@ -36,13 +36,14 @@ public class LostCityConfiguration {
 
     public static float BUILDING_CHANCE = .3f;
     public static int BUILDING_MINFLOORS = 0;
-    public static int BUILDING_MAXFLOORS = 10;
+    public static int BUILDING_MAXFLOORS = 9;
     public static int BUILDING_MINFLOORS_CHANCE = 4;
-    public static int BUILDING_MAXFLOORS_CHANCE = 7;
+    public static int BUILDING_MAXFLOORS_CHANCE = 6;
     public static int BUILDING_MINCELLARS = 0;
     public static int BUILDING_MAXCELLARS = 4;
     public static float BUILDING_DOORWAYCHANCE = .6f;
     public static float LIBRARY_CHANCE = .5f; //@todo lower?
+    public static float DATACENTER_CHANCE = .5f; //@todo lower?
 
     public static float CORRIDOR_CHANCE = .7f;
     public static float BRIDGE_CHANCE = .7f;
@@ -92,11 +93,14 @@ public class LostCityConfiguration {
         BUILDING_MAXFLOORS = cfg.getInt("buildingMaxFloors", CATEGORY_LOSTCITY, BUILDING_MAXFLOORS, 0, 30, "A cap for the amount of floors a city can have (above ground)");
         BUILDING_MINFLOORS_CHANCE = cfg.getInt("buildingMinFloorsChance", CATEGORY_LOSTCITY, BUILDING_MINFLOORS_CHANCE, 1, 30, "The amount of floors of a building is equal to: " +
                 "MINFLOORS + random(MINFLOORS_CHANCE + (cityFactor + .1f) * (MAXFLOORS_CHANCE - MINFLOORS_CHANCE))");
+        BUILDING_MAXFLOORS_CHANCE = cfg.getInt("buildingMaxFloorsChance", CATEGORY_LOSTCITY, BUILDING_MAXFLOORS_CHANCE, 1, 30, "The amount of floors of a building is equal to: " +
+                "MINFLOORS + random(MINFLOORS_CHANCE + (cityFactor + .1f) * (MAXFLOORS_CHANCE - MINFLOORS_CHANCE))");
 
         BUILDING_MINCELLARS = cfg.getInt("buildingMinCellars", CATEGORY_LOSTCITY, BUILDING_MINCELLARS, 0, 7, "The minimum number of cellars (below ground). 0 means no cellar");
         BUILDING_MAXCELLARS = cfg.getInt("buildingMaxCellars", CATEGORY_LOSTCITY, BUILDING_MAXCELLARS, 0, 7, "The maximum number of cellars (below ground). 0 means no cellar");
         BUILDING_DOORWAYCHANCE = cfg.getFloat("buildingDoorwayChance", CATEGORY_LOSTCITY, BUILDING_DOORWAYCHANCE, 0.0f, 1.0f, "The chance that a doorway will be generated at a side of a building (on any level). Only when possible");
         LIBRARY_CHANCE = cfg.getFloat("libraryChance", CATEGORY_LOSTCITY, LIBRARY_CHANCE, 0.0f, 1.0f, "The chance that a 2x2 building will be a library");
+        DATACENTER_CHANCE = cfg.getFloat("dataCenterChance", CATEGORY_LOSTCITY, DATACENTER_CHANCE, 0.0f, 1.0f, "The chance that a 2x2 building will be a data center");
 
         BUILDING2X2_CHANCE = cfg.getFloat("building2x2Chance", CATEGORY_LOSTCITY, BUILDING2X2_CHANCE, 0.0f, 1.0f, "The chance that a chunk can possibly be the top-left chunk of 2x2 building. " +
                 "There actually being a 2x2 building also depends on the condition of those other chunks");

@@ -156,6 +156,10 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
             getGenInfos(LibraryData.LIBRARY10, 11);
             getGenInfos(LibraryData.LIBRARY01, 12);
             getGenInfos(LibraryData.LIBRARY11, 13);
+            getGenInfos(DataCenterData.CENTER00, 20);
+            getGenInfos(DataCenterData.CENTER10, 21);
+            getGenInfos(DataCenterData.CENTER01, 22);
+            getGenInfos(DataCenterData.CENTER11, 23);
         }
         return genInfos;
     }
@@ -873,7 +877,7 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
         Style style = info.getStyle();
         int cx = chunkX * 16;
         int cz = chunkZ * 16;
-        int belowGround = info.floorsBelowGround;
+        int lowestLevel = groundLevel - info.floorsBelowGround * 6;
         int buildingtop = 69 + info.floors * 6;
         boolean corridor;
         if (isSide(x, z)) {
@@ -883,7 +887,7 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
             corridor = false;
         }
 
-        while (height < groundLevel - belowGround * 6) {
+        while (height < lowestLevel) {
             BaseTerrainGenerator.setBlockState(primer, index++, height < waterLevel ? baseLiquid : damageArea.damageBlock(baseBlock, air, rand, cx + x, height, cz + z, index, style));
             height++;
         }
@@ -932,6 +936,18 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
         // us doesn't have a building we replace the glass with a solid block
         // Gravel will later be replaced with either glass or solid block so we have to count that too
         if (isFull && (b == Blocks.GLASS.getDefaultState() || b == style.glass) && isSide(x, z) && (!info.getAdjacent(x, z).hasBuilding || info.getAdjacent(x, z).floorsBelowGround == 0)) {
+            b = style.bricks;
+        }
+
+        // For buildings that have a style which causes gaps at the side we fill in that gap if we are
+        // at ground level
+        if (b == air && height == groundLevel && isSide(x, z)) {
+            b = baseBlock;
+        }
+
+        // for buildings that have a hole in the bottom floor we fill that hole if we are
+        // at the bottom of the building
+        if (b == air && f == 0 && (l+info.floorsBelowGround) == 0) {
             b = style.bricks;
         }
 
