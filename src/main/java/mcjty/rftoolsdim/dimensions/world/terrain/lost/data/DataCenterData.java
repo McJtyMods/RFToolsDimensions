@@ -1051,7 +1051,7 @@ public class DataCenterData {
                                     "############### " +
                                     "############### " +
                                     "################" +
-                                    "#   #====#   ###"
+                                    "##   #====#   ##"
                     })
             };
     public static Level[] TOPS_CENTER00 = new Level[]

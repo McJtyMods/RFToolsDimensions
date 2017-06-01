@@ -283,10 +283,17 @@ public class BuildingInfo {
     }
 
     private static boolean isTopLeftOf2x2Building(int chunkX, int chunkZ, long seed) {
-        if (isCandidateForTopLeftOf2x2Building(chunkX, chunkZ, seed)
-                && !isCandidateForTopLeftOf2x2Building(chunkX - 1, chunkZ, seed)
-                && !isCandidateForTopLeftOf2x2Building(chunkX - 1, chunkZ - 1, seed)
-                && !isCandidateForTopLeftOf2x2Building(chunkX, chunkZ - 1, seed)) {
+        if (isCandidateForTopLeftOf2x2Building(chunkX, chunkZ, seed) &&
+                !isCandidateForTopLeftOf2x2Building(chunkX - 1, chunkZ, seed) &&
+                !isCandidateForTopLeftOf2x2Building(chunkX - 1, chunkZ - 1, seed) &&
+                !isCandidateForTopLeftOf2x2Building(chunkX, chunkZ - 1, seed) &&
+
+                !isCandidateForTopLeftOf2x2Building(chunkX + 1, chunkZ - 1, seed) &&
+                !isCandidateForTopLeftOf2x2Building(chunkX + 1, chunkZ, seed) &&
+                !isCandidateForTopLeftOf2x2Building(chunkX + 1, chunkZ + 1, seed) &&
+                !isCandidateForTopLeftOf2x2Building(chunkX, chunkZ + 1, seed) &&
+                !isCandidateForTopLeftOf2x2Building(chunkX - 1, chunkZ + 1, seed)
+                ) {
             return isCity(chunkX + 1, chunkZ, seed) && isCity(chunkX + 1, chunkZ + 1, seed) && isCity(chunkX, chunkZ + 1, seed);
         } else {
             return false;
