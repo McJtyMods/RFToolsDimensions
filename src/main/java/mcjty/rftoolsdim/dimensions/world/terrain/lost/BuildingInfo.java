@@ -225,7 +225,15 @@ public class BuildingInfo {
                     return DataCenterData.CENTER11;
             }
         }
-        return buildingType == 0 ? FloorsData.FLOORS : FloorsData.FLOORS2;
+        switch (buildingType) {
+            case 0:
+                return FloorsData.FLOORS;
+            case 1:
+                return FloorsData.FLOORS2;
+            case 2:
+                return FloorsData.FLOORS3;
+        }
+        return FloorsData.FLOORS;
     }
 
     public Level getTopData(int floortype) {
@@ -356,7 +364,14 @@ public class BuildingInfo {
             doorBlock = topleft.doorBlock;
             bridgeType = topleft.bridgeType;
         } else {
-            buildingType = rand.nextInt(2);
+            int bt = rand.nextInt(3);
+            if (bt == 2) {
+                // Make some types more rare
+                if (rand.nextFloat() < .5f) {
+                    bt = rand.nextInt(3);
+                }
+            }
+            buildingType = bt;
             if (building2x2Section == 0) {
                 isLibrary = rand.nextFloat() < LostCityConfiguration.LIBRARY_CHANCE;
             } else {
