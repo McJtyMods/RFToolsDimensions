@@ -5,11 +5,14 @@ import net.minecraftforge.common.config.Configuration;
 public class LostCityConfiguration {
 
     public static final String CATEGORY_LOSTCITY = "lostcity";
-
     public static int DEBRIS_TO_NEARBYCHUNK_FACTOR = 200;
 
     public static float VINE_CHANCE = 0.009f;
     public static int WATERLEVEL_OFFSET = 8;
+
+    public static float DESTROY_LONE_BLOCKS_FACTOR = .05f;
+    public static float DESTROY_OR_MOVE_CHANCE = .4f;
+    public static int DESTROY_SMALL_SECTIONS_SIZE = 50;
 
     public static float EXPLOSION_CHANCE = .005f;
     public static int EXPLOSION_MINRADIUS = 17;
@@ -56,6 +59,14 @@ public class LostCityConfiguration {
         WATERLEVEL_OFFSET = cfg.getInt("waterLevelOffset", CATEGORY_LOSTCITY, WATERLEVEL_OFFSET, 1, 30, "How much lower the water level is compared to the ground level (63)");
 
         DEBRIS_TO_NEARBYCHUNK_FACTOR = cfg.getInt("debrisToNearbyChunkFactor", CATEGORY_LOSTCITY, DEBRIS_TO_NEARBYCHUNK_FACTOR, 1, 10000, "A factor that determines how much debris will overflow from nearby damaged chunks. Bigger numbers mean less debris");
+
+        DESTROY_LONE_BLOCKS_FACTOR = cfg.getFloat("destroyLoneBlocksFactor", CATEGORY_LOSTCITY, DESTROY_LONE_BLOCKS_FACTOR, 0.0f, 1.0f, "When a section of blocks in in an explosion the generator will count the number of " +
+                "blocks that are connected. The number of connections divided by the total number of blocks in a connected section is compared with this number. " +
+                "If it is smaller then the section of blocks is destroyed or moved down with gravity");
+        DESTROY_OR_MOVE_CHANCE = cfg.getFloat("destroyOrMoveChance", CATEGORY_LOSTCITY, DESTROY_OR_MOVE_CHANCE, 0.0f, 1.0f, "When a section of blocks is to be moved or destroyed " +
+                "this chance gives the chance of remval (as opposed to moving with gravity)");
+        DESTROY_SMALL_SECTIONS_SIZE = cfg.getInt("destroySmallSectionsSize", CATEGORY_LOSTCITY, DESTROY_SMALL_SECTIONS_SIZE, 1, 5000, "A section of blocks that is about to be moved or destroyed " +
+                "is always destroyed if it is smaller then this size");
 
         EXPLOSION_CHANCE = cfg.getFloat("explosionChance", CATEGORY_LOSTCITY, EXPLOSION_CHANCE, 0.0f, 1.0f, "The chance that a chunk will contain an explosion");
         EXPLOSION_MINRADIUS = cfg.getInt("explosionMinRadius", CATEGORY_LOSTCITY, EXPLOSION_MINRADIUS, 1, 1000, "The minimum radius of an explosion");
