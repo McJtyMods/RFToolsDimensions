@@ -74,6 +74,7 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
             );
             mapping.put('$', info -> info.getStyle().bricks_variant);
             mapping.put('=', info -> info.getStyle().glass);
+            mapping.put('+', info -> info.getStyle().glass_full);
             mapping.put('@', info -> {
                         switch (info.glassType) {
                             case 0:
@@ -934,7 +935,7 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
         // If we are underground, the block is glass, we are on the side and the chunk next to
         // us doesn't have a building or floor there we replace the glass with a solid block
         // Gravel will later be replaced with either glass or solid block so we have to count that too
-        if (l < 0 && (b == Blocks.GLASS.getDefaultState() || b == style.glass) && isSide(x, z) && (!info.getAdjacent(x, z).hasBuilding || info.getAdjacent(x, z).floorsBelowGround < -l)) {
+        if (l < 0 && (b == Blocks.GLASS.getDefaultState() || style.isGlass(b)) && isSide(x, z) && (!info.getAdjacent(x, z).hasBuilding || info.getAdjacent(x, z).floorsBelowGround < -l)) {
             b = style.bricks;
         }
 

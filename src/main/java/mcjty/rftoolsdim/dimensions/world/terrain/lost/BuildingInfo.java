@@ -74,33 +74,43 @@ public class BuildingInfo {
         switch (glassColor) {
             case 0:
                 style.glass = Blocks.STAINED_GLASS.getDefaultState().withProperty(BlockStainedGlass.COLOR, EnumDyeColor.WHITE);
+                style.glass_full = style.glass;
                 break;
             case 1:
                 style.glass = Blocks.STAINED_GLASS.getDefaultState().withProperty(BlockStainedGlass.COLOR, EnumDyeColor.GRAY);
+                style.glass_full = style.glass;
                 break;
             case 2:
                 style.glass = Blocks.STAINED_GLASS.getDefaultState().withProperty(BlockStainedGlass.COLOR, EnumDyeColor.LIGHT_BLUE);
+                style.glass_full = style.glass;
                 break;
             case 3:
                 style.glass = Blocks.STAINED_GLASS.getDefaultState().withProperty(BlockStainedGlass.COLOR, EnumDyeColor.BLUE);
+                style.glass_full = style.glass;
                 break;
             case 4:
                 style.glass = Blocks.STAINED_GLASS_PANE.getDefaultState().withProperty(BlockStainedGlass.COLOR, EnumDyeColor.WHITE);
+                style.glass_full = Blocks.STAINED_GLASS.getDefaultState().withProperty(BlockStainedGlass.COLOR, EnumDyeColor.WHITE);
                 break;
             case 5:
                 style.glass = Blocks.STAINED_GLASS_PANE.getDefaultState().withProperty(BlockStainedGlass.COLOR, EnumDyeColor.GRAY);
+                style.glass_full = Blocks.STAINED_GLASS.getDefaultState().withProperty(BlockStainedGlass.COLOR, EnumDyeColor.GRAY);
                 break;
             case 6:
                 style.glass = Blocks.STAINED_GLASS_PANE.getDefaultState().withProperty(BlockStainedGlass.COLOR, EnumDyeColor.LIGHT_BLUE);
+                style.glass_full = Blocks.STAINED_GLASS.getDefaultState().withProperty(BlockStainedGlass.COLOR, EnumDyeColor.LIGHT_BLUE);
                 break;
             case 7:
                 style.glass = Blocks.STAINED_GLASS_PANE.getDefaultState().withProperty(BlockStainedGlass.COLOR, EnumDyeColor.BLUE);
+                style.glass_full = Blocks.STAINED_GLASS.getDefaultState().withProperty(BlockStainedGlass.COLOR, EnumDyeColor.BLUE);
                 break;
             case 8:
                 style.glass = Blocks.GLASS_PANE.getDefaultState();
+                style.glass_full = Blocks.GLASS.getDefaultState();
                 break;
             default:
                 style.glass = Blocks.GLASS.getDefaultState();
+                style.glass_full = style.glass;
                 break;
         }
 
