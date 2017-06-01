@@ -8,7 +8,7 @@ public class LostCityConfiguration {
 
     public static int DEBRIS_TO_NEARBYCHUNK_FACTOR = 200;
 
-    public static float VINE_CHANCE = 0.005f;
+    public static float VINE_CHANCE = 0.009f;
     public static int WATERLEVEL_OFFSET = 8;
 
     public static float EXPLOSION_CHANCE = .005f;
@@ -42,7 +42,7 @@ public class LostCityConfiguration {
     public static float LIBRARY_CHANCE = .5f; //@todo lower?
 
     public static float CORRIDOR_CHANCE = .7f;
-    public static float BRIDGE_CHANCE = .5f;
+    public static float BRIDGE_CHANCE = .7f;
     public static float FOUNTAIN_CHANCE = .05f;
     public static float BUILDING2X2_CHANCE = .03f;
 

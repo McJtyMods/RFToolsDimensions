@@ -92,7 +92,10 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
             mapping.put('l', info -> Blocks.LADDER.getDefaultState());
             mapping.put('1', info -> Blocks.PLANKS.getDefaultState());      // Monster spawner 1
             mapping.put('2', info -> Blocks.PLANKS.getDefaultState());      // Monster spawner 2
+            mapping.put('3', info -> Blocks.PLANKS.getDefaultState());      // Monster spawner 3
+            mapping.put('4', info -> Blocks.PLANKS.getDefaultState());      // Monster spawner 4
             mapping.put('C', info -> Blocks.PLANKS.getDefaultState());      // Chest
+            mapping.put('M', info -> Blocks.PLANKS.getDefaultState());      // Modular storage
             mapping.put('F', info -> Blocks.PLANKS.getDefaultState());      // Random feature
             mapping.put(':', info -> Blocks.IRON_BARS.getDefaultState());
             mapping.put('D', info -> Blocks.DIRT.getDefaultState());
@@ -130,6 +133,15 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
             mapping.put('<', info -> Blocks.QUARTZ_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.NORTH));
             mapping.put('>', info -> Blocks.QUARTZ_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.SOUTH));
             mapping.put('_', info -> Blocks.STONE_SLAB.getDefaultState());
+            mapping.put('.', info -> Blocks.OAK_FENCE.getDefaultState());
+            mapping.put('-', info -> Blocks.WOODEN_PRESSURE_PLATE.getDefaultState());
+            mapping.put('%', info -> {
+                if (globalRandom.nextFloat() < .3f) {
+                    return Blocks.WEB.getDefaultState();
+                } else {
+                    return air;
+                }
+            });
         }
         return mapping;
     }
@@ -156,11 +168,17 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
                     for (int z = 0; z < 16; z++) {
                         Character c = level.getC(x, y, z);
                         if (c == '1') {
-                            gi.addSpawnerType1(new BlockPos(x, y, z));
+                            gi.addSpawnerType(new BlockPos(x, y, z), 1);
                         } else if (c == '2') {
-                            gi.addSpawnerType2(new BlockPos(x, y, z));
+                            gi.addSpawnerType(new BlockPos(x, y, z), 2);
+                        } else if (c == '3') {
+                            gi.addSpawnerType(new BlockPos(x, y, z), 3);
+                        } else if (c == '4') {
+                            gi.addSpawnerType(new BlockPos(x, y, z), 4);
                         } else if (c == 'C') {
                             gi.addChest(new BlockPos(x, y, z));
+                        } else if (c == 'M') {
+                            gi.addModularStorage(new BlockPos(x, y, z));
                         } else if (c == 'F') {
                             gi.addRandomFeatures(new BlockPos(x, y, z));
                         }
@@ -281,6 +299,15 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
                     }
                 }
             }
+            if (info.getXmin().hasXBridge(provider) && info.getXmax().hasXBridge(provider)) {
+                // Needs support
+                for (int y = waterLevel-10 ; y <= groundLevel ; y++) {
+                    setBridgeSupport(primer, cx, cz, damageArea, style, 7, y, 7);
+                    setBridgeSupport(primer, cx, cz, damageArea, style, 7, y, 8);
+                    setBridgeSupport(primer, cx, cz, damageArea, style, 8, y, 7);
+                    setBridgeSupport(primer, cx, cz, damageArea, style, 8, y, 8);
+                }
+            }
         } else if (info.hasZBridge(provider)) {
             int cx = chunkX * 16;
             int cz = chunkZ * 16;
@@ -301,7 +328,22 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
                     }
                 }
             }
+            if (info.getZmin().hasZBridge(provider) && info.getZmax().hasZBridge(provider)) {
+                // Needs support
+                for (int y = waterLevel-10 ; y <= groundLevel ; y++) {
+                    setBridgeSupport(primer, cx, cz, damageArea, style, 7, y, 7);
+                    setBridgeSupport(primer, cx, cz, damageArea, style, 7, y, 8);
+                    setBridgeSupport(primer, cx, cz, damageArea, style, 8, y, 7);
+                    setBridgeSupport(primer, cx, cz, damageArea, style, 8, y, 8);
+                }
+            }
         }
+    }
+
+    private void setBridgeSupport(ChunkPrimer primer, int cx, int cz, DamageArea damageArea, Style style, int x, int y, int z) {
+        int index = (x << 12) | (z << 8) + y;
+        IBlockState b = damageArea.damageBlock(Blocks.STONEBRICK.getDefaultState(), air, provider.rand, cx + x, y, cz + z, index, style);
+        BaseTerrainGenerator.setBlockState(primer, index, b);
     }
 
     private void flattenChunkToCityBorder(int chunkX, int chunkZ, ChunkPrimer primer, BuildingInfo info) {

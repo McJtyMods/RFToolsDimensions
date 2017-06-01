@@ -19,9 +19,7 @@ import mcjty.rftoolsdim.dimensions.dimlets.KnownDimletConfiguration;
 import mcjty.rftoolsdim.dimensions.dimlets.types.Patreons;
 import mcjty.rftoolsdim.dimensions.types.FeatureType;
 import mcjty.rftoolsdim.dimensions.types.TerrainType;
-import mcjty.rftoolsdim.dimensions.world.terrain.BaseTerrainGenerator;
 import mcjty.rftoolsdim.dimensions.world.terrain.lost.BuildingInfo;
-import mcjty.rftoolsdim.dimensions.world.terrain.lost.DamageArea;
 import mcjty.rftoolsdim.dimensions.world.terrain.lost.GenInfo;
 import mcjty.rftoolsdim.dimensions.world.terrain.lost.LostCitiesTerrainGenerator;
 import mcjty.rftoolsdim.items.ModItems;
@@ -42,7 +40,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.chunk.IChunkGenerator;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.feature.WorldGenMinable;
@@ -51,6 +48,7 @@ import net.minecraftforge.fml.common.IWorldGenerator;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import org.apache.commons.lang3.tuple.Pair;
 
+import java.util.Map;
 import java.util.Random;
 
 public class GenericWorldGenerator implements IWorldGenerator {
@@ -216,25 +214,33 @@ public class GenericWorldGenerator implements IWorldGenerator {
                         createRandomFeature(random, world, pos);
                     }
                 }
-                for (BlockPos p : getInfo.getSpawnerType1()) {
+                for (BlockPos p : getInfo.getModularStorages()) {
                     BlockPos pos = floorpos.add(p);
                     if (!world.isAirBlock(pos)) {
-                        world.setBlockState(pos, Blocks.MOB_SPAWNER.getDefaultState());
-                        TileEntity tileentity = world.getTileEntity(pos);
-                        if (tileentity instanceof TileEntityMobSpawner) {
-                            TileEntityMobSpawner spawner = (TileEntityMobSpawner) tileentity;
-                            EntityTools.setSpawnerEntity(world, spawner, new ResourceLocation("minecraft:zombie"), "Zombie");
-                        }
+                        createModularStorage(random, world, pos);
                     }
                 }
-                for (BlockPos p : getInfo.getSpawnerType2()) {
-                    BlockPos pos = floorpos.add(p);
+                for (Map.Entry<BlockPos, Integer> entry : getInfo.getSpawnerType().entrySet()) {
+                    BlockPos pos = floorpos.add(entry.getKey());
                     if (!world.isAirBlock(pos)) {
                         world.setBlockState(pos, Blocks.MOB_SPAWNER.getDefaultState());
                         TileEntity tileentity = world.getTileEntity(pos);
                         if (tileentity instanceof TileEntityMobSpawner) {
                             TileEntityMobSpawner spawner = (TileEntityMobSpawner) tileentity;
-                            EntityTools.setSpawnerEntity(world, spawner, new ResourceLocation("minecraft:skeleton"), "Skeleton");
+                            switch (entry.getValue()) {
+                                case 1:
+                                    EntityTools.setSpawnerEntity(world, spawner, new ResourceLocation("minecraft:zombie"), "Zombie");
+                                    break;
+                                case 2:
+                                    EntityTools.setSpawnerEntity(world, spawner, new ResourceLocation("minecraft:skeleton"), "Skeleton");
+                                    break;
+                                case 3:
+                                    EntityTools.setSpawnerEntity(world, spawner, new ResourceLocation("minecraft:spider"), "Spider");
+                                    break;
+                                case 4:
+                                    EntityTools.setSpawnerEntity(world, spawner, new ResourceLocation("minecraft:blaze"), "Blaze");
+                                    break;
+                            }
                         }
                     }
                 }
@@ -270,25 +276,36 @@ public class GenericWorldGenerator implements IWorldGenerator {
             case 16:
                 world.setBlockState(pos, Blocks.CRAFTING_TABLE.getDefaultState());
                 break;
-            case 20: {
-                Item storageModule = ForgeRegistries.ITEMS.getValue(new ResourceLocation("rftools", "storage_module"));
-                ItemStack module = new ItemStack(storageModule);
-
-                Block storageBlock = ForgeRegistries.BLOCKS.getValue(new ResourceLocation("rftools", "modular_storage"));
-                world.setBlockState(pos, storageBlock.getDefaultState().withProperty(GenericBlock.FACING, EnumFacing.HORIZONTALS[random.nextInt(EnumFacing.HORIZONTALS.length)]));
-                TileEntity te = world.getTileEntity(pos);
-                if (te instanceof ModularStorageTileEntity) {
-                    ModularStorageTileEntity storage = (ModularStorageTileEntity) te;
-                    storage.setInventorySlotContents(ModularStorageContainer.SLOT_STORAGE_MODULE, module);
-                    for (int i = 0 ; i < 5 + random.nextInt(10) ; i++) {
-                        storage.setInventorySlotContents(i+ModularStorageContainer.SLOT_STORAGE, randomLoot(random));
-                    }
-                }
-            }
-            break;
+            case 20:
+                createModularStorage(random, world, pos);
+                break;
+            case 25:
+            case 26:
+            case 27:
+            case 28:
+            case 29:
+            case 30:
+                world.setBlockState(pos, Blocks.WEB.getDefaultState());
+                break;
             default:
                 world.setBlockState(pos, Blocks.FURNACE.getDefaultState());
                 break;
+        }
+    }
+
+    private void createModularStorage(Random random, World world, BlockPos pos) {
+        Item storageModule = ForgeRegistries.ITEMS.getValue(new ResourceLocation("rftools", "storage_module"));
+        ItemStack module = new ItemStack(storageModule);
+
+        Block storageBlock = ForgeRegistries.BLOCKS.getValue(new ResourceLocation("rftools", "modular_storage"));
+        world.setBlockState(pos, storageBlock.getDefaultState().withProperty(GenericBlock.FACING, EnumFacing.HORIZONTALS[random.nextInt(EnumFacing.HORIZONTALS.length)]));
+        TileEntity te = world.getTileEntity(pos);
+        if (te instanceof ModularStorageTileEntity) {
+            ModularStorageTileEntity storage = (ModularStorageTileEntity) te;
+            storage.setInventorySlotContents(ModularStorageContainer.SLOT_STORAGE_MODULE, module);
+            for (int i = 0 ; i < 5 + random.nextInt(10) ; i++) {
+                storage.setInventorySlotContents(i+ModularStorageContainer.SLOT_STORAGE, randomLoot(random));
+            }
         }
     }
 

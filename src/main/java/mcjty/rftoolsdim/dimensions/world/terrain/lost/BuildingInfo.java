@@ -196,15 +196,19 @@ public class BuildingInfo {
     }
 
     public LostCityData.Level getTopData(int floortype) {
-        switch (building2x2Section) {
-            case 0:
-                return LostCityData.TOPS_LIBRARY00[floortype];
-            case 1:
-            case 2:
-            case 3:
-                return LostCityData.TOPS_LIBRARY[floortype];
-            default:
-                return LostCityData.TOPS[floortype];
+        if (isLibrary) {
+            switch (building2x2Section) {
+                case 0:
+                    return LostCityData.TOPS_LIBRARY00[floortype];
+                case 1:
+                case 2:
+                case 3:
+                    return LostCityData.TOPS_LIBRARY[floortype];
+                default:
+                    return LostCityData.TOPS[floortype];
+            }
+        } else {
+            return LostCityData.TOPS[floortype];
         }
     }
 
@@ -316,15 +320,21 @@ public class BuildingInfo {
             doorBlock = getRandomDoor(rand);
         }
 
-        switch (building2x2Section) {
-            case 0:
-                topType = rand.nextInt(LostCityData.TOPS_LIBRARY00.length); break;
-            case 1:
-            case 2:
-            case 3:
-                topType = rand.nextInt(LostCityData.TOPS_LIBRARY.length); break;
-            default:
-                topType = rand.nextInt(LostCityData.TOPS.length);
+        if (isLibrary) {
+            switch (building2x2Section) {
+                case 0:
+                    topType = rand.nextInt(LostCityData.TOPS_LIBRARY00.length);
+                    break;
+                case 1:
+                case 2:
+                case 3:
+                    topType = rand.nextInt(LostCityData.TOPS_LIBRARY.length);
+                    break;
+                default:
+                    topType = rand.nextInt(LostCityData.TOPS.length);
+            }
+        } else {
+            topType = rand.nextInt(LostCityData.TOPS.length);
         }
 
         floorTypes = new int[floors + floorsBelowGround + 2];
