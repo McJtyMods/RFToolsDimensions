@@ -316,6 +316,24 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
                     setBridgeSupport(primer, cx, cz, damageArea, style, 8, y, 8);
                 }
             }
+            if (info.getXmin().hasXBridge(provider) < 0) {
+                // Connection to the side section
+                int x = 0;
+                for (int z = 6 ; z <= 9 ; z++) {
+                    int index = (x << 12) | (z << 8) + groundLevel;
+                    IBlockState b = damageArea.damageBlock(Blocks.STONEBRICK.getDefaultState(), air, provider.rand, cx + x, groundLevel, cz + z, index, style);
+                    BaseTerrainGenerator.setBlockState(primer, index, b);
+                }
+            }
+            if (info.getXmax().hasXBridge(provider) < 0) {
+                // Connection to the side section
+                int x = 15;
+                for (int z = 6 ; z <= 9 ; z++) {
+                    int index = (x << 12) | (z << 8) + groundLevel;
+                    IBlockState b = damageArea.damageBlock(Blocks.STONEBRICK.getDefaultState(), air, provider.rand, cx + x, groundLevel, cz + z, index, style);
+                    BaseTerrainGenerator.setBlockState(primer, index, b);
+                }
+            }
         } else {
             bt = info.hasZBridge(provider);
             if (bt >= 0) {
@@ -345,6 +363,24 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
                         setBridgeSupport(primer, cx, cz, damageArea, style, 7, y, 8);
                         setBridgeSupport(primer, cx, cz, damageArea, style, 8, y, 7);
                         setBridgeSupport(primer, cx, cz, damageArea, style, 8, y, 8);
+                    }
+                }
+                if (info.getZmin().hasZBridge(provider) < 0) {
+                    // Connection to the side section
+                    int z = 0;
+                    for (int x = 6 ; x <= 9 ; x++) {
+                        int index = (x << 12) | (z << 8) + groundLevel;
+                        IBlockState b = damageArea.damageBlock(Blocks.STONEBRICK.getDefaultState(), air, provider.rand, cx + x, groundLevel, cz + z, index, style);
+                        BaseTerrainGenerator.setBlockState(primer, index, b);
+                    }
+                }
+                if (info.getZmax().hasZBridge(provider) < 0) {
+                    // Connection to the side section
+                    int z = 15;
+                    for (int x = 6 ; x <= 9 ; x++) {
+                        int index = (x << 12) | (z << 8) + groundLevel;
+                        IBlockState b = damageArea.damageBlock(Blocks.STONEBRICK.getDefaultState(), air, provider.rand, cx + x, groundLevel, cz + z, index, style);
+                        BaseTerrainGenerator.setBlockState(primer, index, b);
                     }
                 }
             }

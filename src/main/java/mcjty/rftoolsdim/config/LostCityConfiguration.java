@@ -42,8 +42,8 @@ public class LostCityConfiguration {
     public static int BUILDING_MINCELLARS = 0;
     public static int BUILDING_MAXCELLARS = 4;
     public static float BUILDING_DOORWAYCHANCE = .6f;
-    public static float LIBRARY_CHANCE = .5f; //@todo lower?
-    public static float DATACENTER_CHANCE = .5f; //@todo lower?
+    public static float LIBRARY_CHANCE = .2f;
+    public static float DATACENTER_CHANCE = .2f;
 
     public static float CORRIDOR_CHANCE = .7f;
     public static float BRIDGE_CHANCE = .7f;
