@@ -1,5 +1,6 @@
 package mcjty.rftoolsdim.dimensions.world;
 
+import mcjty.lib.CompatLayer;
 import mcjty.lib.container.GenericBlock;
 import mcjty.lib.tools.EntityTools;
 import mcjty.lib.tools.ItemStackTools;
@@ -375,12 +376,11 @@ public class GenericWorldGenerator implements IWorldGenerator {
                     ((TileEntityChest) tileentity).setLootTable(LootTableList.CHESTS_VILLAGE_BLACKSMITH, random.nextLong());
                     break;
                 case 3:
-                    ((TileEntityChest) tileentity).setLootTable(LootTableList.CHESTS_WOODLAND_MANSION, random.nextLong());
+                    ((TileEntityChest) tileentity).setLootTable(LootTableList.CHESTS_ABANDONED_MINESHAFT, random.nextLong());
                     break;
                 case 4:
-                    ((TileEntityChest) tileentity).setLootTable(LootTableList.CHESTS_WOODLAND_MANSION, random.nextLong());
+                    ((TileEntityChest) tileentity).setLootTable(LootTableList.CHESTS_NETHER_BRIDGE, random.nextLong());
                     break;
-                case 5:
                 case 6:
                 case 7:
                 case 8:
