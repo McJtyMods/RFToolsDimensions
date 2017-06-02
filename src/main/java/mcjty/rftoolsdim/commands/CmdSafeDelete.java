@@ -31,7 +31,7 @@ public class CmdSafeDelete extends AbstractRfToolsCommand {
 
     @Override
     public int getPermissionLevel() {
-        return GeneralConfiguration.playersCanDeleteDimensions ? 0 : 3;
+        return 0;
     }
 
     @Override
@@ -41,6 +41,13 @@ public class CmdSafeDelete extends AbstractRfToolsCommand {
 
     @Override
     public void execute(ICommandSender sender, String[] args) {
+
+        if (!(GeneralConfiguration.playersCanDeleteDimensions || CompatCommandBase.canUseCommand(sender, 3, getCommand()))) {
+            ChatTools.addChatMessage(sender, new TextComponentString(TextFormatting.RED + "You have no permission to execute this command!"));
+            return;
+        }
+
+
         if (args.length < 2) {
             ChatTools.addChatMessage(sender, new TextComponentString(TextFormatting.RED + "The dimension parameter is missing!"));
             return;
