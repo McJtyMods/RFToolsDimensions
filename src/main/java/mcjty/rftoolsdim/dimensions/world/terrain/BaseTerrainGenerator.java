@@ -7,7 +7,8 @@ import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.ChunkPrimer;
-import scala.actors.threadpool.Arrays;
+
+import java.util.Arrays;
 
 /**
  * The base terrain generator.
