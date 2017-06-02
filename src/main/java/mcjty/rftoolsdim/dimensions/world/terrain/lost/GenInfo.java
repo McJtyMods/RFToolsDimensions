@@ -12,6 +12,7 @@ public class GenInfo {
     private final List<BlockPos> chest = new ArrayList<>();
     private final List<BlockPos> modularStorages = new ArrayList<>();
     private final List<BlockPos> randomFeatures = new ArrayList<>();
+    private final List<BlockPos> randomRFToolsMachines = new ArrayList<>();
 
     public void addSpawnerType(BlockPos p, int type) {
         spawnerType.put(p, type);
@@ -29,6 +30,10 @@ public class GenInfo {
         randomFeatures.add(p);
     }
 
+    public void addRandomRFToolsMachine(BlockPos p) {
+        randomRFToolsMachines.add(p);
+    }
+
     public Map<BlockPos, Integer> getSpawnerType() {
         return spawnerType;
     }
@@ -43,5 +48,9 @@ public class GenInfo {
 
     public List<BlockPos> getRandomFeatures() {
         return randomFeatures;
+    }
+
+    public List<BlockPos> getRandomRFToolsMachines() {
+        return randomRFToolsMachines;
     }
 }

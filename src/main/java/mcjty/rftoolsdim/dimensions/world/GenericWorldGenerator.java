@@ -220,6 +220,12 @@ public class GenericWorldGenerator implements IWorldGenerator {
                         createModularStorage(random, world, pos);
                     }
                 }
+                for (BlockPos p : getInfo.getRandomRFToolsMachines()) {
+                    BlockPos pos = floorpos.add(p);
+                    if (!world.isAirBlock(pos)) {
+                        createRFToolsMachine(random, world, pos);
+                    }
+                }
                 for (Map.Entry<BlockPos, Integer> entry : getInfo.getSpawnerType().entrySet()) {
                     BlockPos pos = floorpos.add(entry.getKey());
                     if (!world.isAirBlock(pos)) {
@@ -307,6 +313,30 @@ public class GenericWorldGenerator implements IWorldGenerator {
                 storage.setInventorySlotContents(i+ModularStorageContainer.SLOT_STORAGE, randomLoot(random));
             }
         }
+    }
+
+    private void createRFToolsMachine(Random random, World world, BlockPos pos) {
+        Block machine;
+        IBlockState state;
+        switch (random.nextInt(3)) {
+            case 0:
+                machine = ForgeRegistries.BLOCKS.getValue(new ResourceLocation("rftools", "crafter1"));
+                state = machine.getDefaultState().withProperty(GenericBlock.FACING, EnumFacing.HORIZONTALS[random.nextInt(EnumFacing.HORIZONTALS.length)]);
+                break;
+            case 1:
+                machine = ForgeRegistries.BLOCKS.getValue(new ResourceLocation("rftools", "powercell_simple"));
+                state = machine.getDefaultState();
+                break;
+            case 2:
+                machine = ForgeRegistries.BLOCKS.getValue(new ResourceLocation("rftools", "rf_monitor"));
+                state = machine.getDefaultState().withProperty(GenericBlock.FACING, EnumFacing.HORIZONTALS[random.nextInt(EnumFacing.HORIZONTALS.length)]);
+                break;
+            default:
+                machine = ForgeRegistries.BLOCKS.getValue(new ResourceLocation("rftools", "crafter2"));
+                state = machine.getDefaultState().withProperty(GenericBlock.FACING, EnumFacing.HORIZONTALS[random.nextInt(EnumFacing.HORIZONTALS.length)]);
+                break;
+        }
+        world.setBlockState(pos, state);
     }
 
     private ItemStack randomLoot(Random rand) {

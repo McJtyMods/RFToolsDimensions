@@ -569,13 +569,13 @@ public class DataCenterData {
                                     "              = " +
                                     "              = " +
                                     "  xxx   xxx   ##" +
-                                    "  +x+   +x+    =" +
+                                    "  +x+   +R+    =" +
                                     "  :x:   :x:    =" +
-                                    "  +x+   +x+    =" +
+                                    "  +R+   +R+    =" +
                                     "  :x:   :x:    =" +
-                                    "  +x+   +x+   ##" +
+                                    "  +x+   +R+   ##" +
                                     "  :x:   :x:   = " +
-                                    "  +x+   +x+   = " +
+                                    "  +R+   +x+   = " +
                                     "  :x:   :x:   = " +
                                     "  +x+   +x+   ##" +
                                     "  xxx   xxx   ##",
@@ -880,15 +880,15 @@ public class DataCenterData {
                             "" +
                                     "##              " +
                                     "##    x+:+:+:+x " +
-                                    " =    xxxxxxxxx " +
+                                    " =    xRxxxRxxx " +
                                     " =    x+:+:+:+x " +
                                     " =              " +
                                     "##    x+:+:+:+x " +
-                                    "=     xxxxxxxxx " +
+                                    "=     xxxRxRxRx " +
                                     "=     x+:+:+:+x " +
                                     "=               " +
                                     "=     x+:+:+:+x " +
-                                    "##    xxxxxxxxx " +
+                                    "##    xRxxxRxxx " +
                                     " =    x+:+:+:+x " +
                                     " =              " +
                                     " =              " +

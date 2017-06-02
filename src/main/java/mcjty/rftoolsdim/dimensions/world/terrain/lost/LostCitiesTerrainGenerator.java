@@ -99,6 +99,7 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
             mapping.put('C', info -> Blocks.PLANKS.getDefaultState());      // Chest
             mapping.put('M', info -> Blocks.PLANKS.getDefaultState());      // Modular storage
             mapping.put('F', info -> Blocks.PLANKS.getDefaultState());      // Random feature
+            mapping.put('R', info -> Blocks.PLANKS.getDefaultState());      // Random rftools machine
             mapping.put(':', info -> Blocks.IRON_BARS.getDefaultState());
             mapping.put('D', info -> Blocks.DIRT.getDefaultState());
             mapping.put('G', info -> Blocks.GRASS.getDefaultState());
@@ -188,6 +189,8 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
                             gi.addModularStorage(new BlockPos(x, y, z));
                         } else if (c == 'F') {
                             gi.addRandomFeatures(new BlockPos(x, y, z));
+                        } else if (c == 'R') {
+                            gi.addRandomRFToolsMachine(new BlockPos(x, y, z));
                         }
                     }
                 }
@@ -916,6 +919,12 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
     }
 
     private int generateBuilding(ChunkPrimer primer, BuildingInfo info, Random rand, int chunkX, int chunkZ, int index, int x, int z, int height) {
+        if (info.isLibrary && info.building2x2Section == 0) {
+            System.out.println("Library at: " + chunkX*16 + ","+ chunkZ*16);
+        }
+        if (info.isDataCenter && info.building2x2Section == 0) {
+            System.out.println("Data center at: " + chunkX*16 + ","+ chunkZ*16);
+        }
         DamageArea damageArea = info.getDamageArea();
         Style style = info.getStyle();
         int cx = chunkX * 16;
