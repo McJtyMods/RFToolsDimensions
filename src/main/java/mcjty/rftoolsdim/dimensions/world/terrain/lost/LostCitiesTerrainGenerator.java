@@ -919,12 +919,6 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
     }
 
     private int generateBuilding(ChunkPrimer primer, BuildingInfo info, Random rand, int chunkX, int chunkZ, int index, int x, int z, int height) {
-        if (info.isLibrary && info.building2x2Section == 0) {
-            System.out.println("Library at: " + chunkX*16 + ","+ chunkZ*16);
-        }
-        if (info.isDataCenter && info.building2x2Section == 0) {
-            System.out.println("Data center at: " + chunkX*16 + ","+ chunkZ*16);
-        }
         DamageArea damageArea = info.getDamageArea();
         Style style = info.getStyle();
         int cx = chunkX * 16;
