@@ -711,7 +711,8 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
                     b = Blocks.GLOWSTONE.getDefaultState();
                 }
             }
-            BaseTerrainGenerator.setBlockState(primer, index++, height < waterLevel ? baseLiquid : damageArea.damageBlock(b, height < waterLevel ? baseLiquid : air, rand, cx + x, height, cz + z, index, style));
+//            BaseTerrainGenerator.setBlockState(primer, index++, height < waterLevel ? baseLiquid : damageArea.damageBlock(b, height < waterLevel ? baseLiquid : air, rand, cx + x, height, cz + z, index, style));
+            BaseTerrainGenerator.setBlockState(primer, index++, damageArea.damageBlock(b, height < waterLevel ? baseLiquid : air, rand, cx + x, height, cz + z, index, style));
             height++;
         }
 
@@ -930,7 +931,8 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
         }
 
         while (height < lowestLevel) {
-            BaseTerrainGenerator.setBlockState(primer, index++, height < waterLevel ? baseLiquid : damageArea.damageBlock(baseBlock, air, rand, cx + x, height, cz + z, index, style));
+//            BaseTerrainGenerator.setBlockState(primer, index++, height < waterLevel ? baseLiquid : damageArea.damageBlock(baseBlock, air, rand, cx + x, height, cz + z, index, style));
+            BaseTerrainGenerator.setBlockState(primer, index++, damageArea.damageBlock(baseBlock, height < waterLevel ? baseLiquid : air, rand, cx + x, height, cz + z, index, style));
             height++;
         }
         while (height < buildingtop) {
@@ -968,7 +970,7 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
     private IBlockState getBlockForLevel(BuildingInfo info, int x, int z, int height) {
         int f = getFloor(height);
         int l = getLevel(height);
-        boolean isFull = l == -1;      // The level directly underground has no windows
+//        boolean isFull = l == -1;      // The level directly underground has no windows
         Level[] floors = info.getFloorData();
         Level level = floors[info.floorTypes[l + info.floorsBelowGround]];
         IBlockState b = level.get(info, x, f, z);
@@ -977,7 +979,8 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
         // If we are underground, the block is glass, we are on the side and the chunk next to
         // us doesn't have a building or floor there we replace the glass with a solid block
         // Gravel will later be replaced with either glass or solid block so we have to count that too
-        if (isFull && (b == Blocks.GLASS.getDefaultState() || style.isGlass(b)) && isSide(x, z) && (!info.getAdjacent(x, z).hasBuilding || info.getAdjacent(x, z).floorsBelowGround == 0)) {
+//        if (isFull && (b == Blocks.GLASS.getDefaultState() || style.isGlass(b)) && isSide(x, z) && (!info.getAdjacent(x, z).hasBuilding || info.getAdjacent(x, z).floorsBelowGround == 0)) {
+        if (l < 0 && (b == Blocks.GLASS.getDefaultState() || b == style.glass) && isSide(x, z) && (!info.getAdjacent(x, z).hasBuilding || info.getAdjacent(x, z).floorsBelowGround < -l)) {
             b = style.bricks;
         }
 
