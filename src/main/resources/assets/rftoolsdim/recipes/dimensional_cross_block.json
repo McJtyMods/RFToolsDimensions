@@ -1,0 +1,17 @@
+{
+  "result": {
+    "item": "rftoolsdim:dimensional_cross_block",
+    "count": 5
+  },
+  "pattern": [
+    " b ",
+    "bbb",
+    " b "
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "b": {
+      "item": "rftoolsdim:dimensional_blank_block"
+    }
+  }
+}

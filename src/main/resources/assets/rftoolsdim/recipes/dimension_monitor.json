@@ -1,0 +1,22 @@
+{
+  "result": {
+    "item": "rftoolsdim:dimension_monitor"
+  },
+  "pattern": [
+    " u ",
+    "rCr",
+    " r "
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "r": {
+      "item": "minecraft:redstone"
+    },
+    "C": {
+      "item": "minecraft:comparator"
+    },
+    "u": {
+      "item": "rftools:dimensional_shard"
+    }
+  }
+}

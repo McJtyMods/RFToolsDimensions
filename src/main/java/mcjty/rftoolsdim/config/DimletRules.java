@@ -3,7 +3,6 @@ package mcjty.rftoolsdim.config;
 import com.google.gson.*;
 import mcjty.lib.varia.Logging;
 import mcjty.rftoolsdim.RFToolsDim;
-import mcjty.rftoolsdim.api.dimlet.IDimletConfigurationManager;
 import mcjty.rftoolsdim.apiimpl.DimletConfigurationManager;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletKey;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletRandomizer;
@@ -14,7 +13,6 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import java.io.*;
 import java.util.*;
-import java.util.stream.Stream;
 
 public class DimletRules {
 

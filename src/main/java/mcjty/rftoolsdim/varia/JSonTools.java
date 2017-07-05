@@ -4,7 +4,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-import jdk.nashorn.api.scripting.JSObject;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.Collection;

@@ -1,8 +1,8 @@
 package mcjty.rftoolsdim.config;
 
-import mcjty.rftoolsdim.varia.EntityTools;
 import mcjty.lib.varia.Logging;
 import mcjty.rftoolsdim.dimensions.description.MobDescriptor;
+import mcjty.rftoolsdim.varia.EntityTools;
 import net.minecraft.entity.Entity;
 import net.minecraftforge.common.config.Configuration;
 

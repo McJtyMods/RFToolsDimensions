@@ -1,0 +1,28 @@
+{
+  "result": {
+    "item": "rftoolsdim:dimension_editor"
+  },
+  "pattern": [
+    "oEo",
+    "DMD",
+    "ggg"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "D": {
+      "item": "minecraft:diamond"
+    },
+    "E": {
+      "item": "minecraft:emerald"
+    },
+    "g": {
+      "item": "minecraft:gold_ingot"
+    },
+    "M": {
+      "item": "rftools:machine_frame"
+    },
+    "o": {
+      "item": "minecraft:redstone"
+    }
+  }
+}

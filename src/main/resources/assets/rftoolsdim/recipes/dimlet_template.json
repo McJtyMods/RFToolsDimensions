@@ -1,0 +1,19 @@
+{
+  "result": {
+    "item": "rftoolsdim:dimlet_template"
+  },
+  "pattern": [
+    "sss",
+    "sps",
+    "sss"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "p": {
+      "item": "minecraft:paper"
+    },
+    "s": {
+      "item": "rftools:dimensional_shard"
+    }
+  }
+}

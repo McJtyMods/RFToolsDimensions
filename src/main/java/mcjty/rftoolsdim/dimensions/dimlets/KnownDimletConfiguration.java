@@ -2,7 +2,6 @@ package mcjty.rftoolsdim.dimensions.dimlets;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
-import mcjty.rftoolsdim.varia.EntityTools;
 import mcjty.lib.varia.Logging;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.compat.ChiselCompat;
@@ -16,6 +15,7 @@ import mcjty.rftoolsdim.dimensions.dimlets.types.DimletType;
 import mcjty.rftoolsdim.dimensions.types.*;
 import mcjty.rftoolsdim.dimensions.world.BiomeControllerMapping;
 import mcjty.rftoolsdim.items.ModItems;
+import mcjty.rftoolsdim.varia.EntityTools;
 import mcjty.rftoolsdim.varia.RFToolsTools;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;

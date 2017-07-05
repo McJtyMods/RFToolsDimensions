@@ -1,7 +1,6 @@
 package mcjty.rftoolsdim.dimensions.world;
 
 import mcjty.lib.container.GenericBlock;
-import mcjty.rftoolsdim.varia.EntityTools;
 import mcjty.lib.varia.Logging;
 import mcjty.rftools.blocks.storage.ModularStorageContainer;
 import mcjty.rftools.blocks.storage.ModularStorageTileEntity;
@@ -21,6 +20,7 @@ import mcjty.rftoolsdim.dimensions.world.terrain.lost.BuildingInfo;
 import mcjty.rftoolsdim.dimensions.world.terrain.lost.GenInfo;
 import mcjty.rftoolsdim.dimensions.world.terrain.lost.LostCitiesTerrainGenerator;
 import mcjty.rftoolsdim.items.ModItems;
+import mcjty.rftoolsdim.varia.EntityTools;
 import mcjty.rftoolsdim.varia.RarityRandomSelector;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;

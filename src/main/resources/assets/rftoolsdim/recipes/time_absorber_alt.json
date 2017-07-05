@@ -1,0 +1,11 @@
+{
+  "result": {
+    "item": "rftoolsdim:time_absorber"
+  },
+  "ingredients": [
+    {
+      "item": "rftoolsdim:time_absorber"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless"
+}

@@ -1,0 +1,28 @@
+{
+  "result": {
+    "item": "rftoolsdim:biome_absorber"
+  },
+  "pattern": [
+    "dws",
+    "wMw",
+    "swd"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "s": {
+      "item": "minecraft:sapling",
+      "data": 0
+    },
+    "d": {
+      "item": "minecraft:dirt",
+      "data": 0
+    },
+    "w": {
+      "item": "minecraft:wool",
+      "data": 0
+    },
+    "M": {
+      "item": "rftools:machine_frame"
+    }
+  }
+}

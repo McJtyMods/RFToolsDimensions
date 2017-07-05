@@ -4,8 +4,6 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import mcjty.lib.varia.Logging;
 import mcjty.rftoolsdim.dimensions.ModDimensions;
-import mcjty.rftoolsdim.dimensions.world.GenericWorldProvider;
-import net.minecraft.world.DimensionType;
 import net.minecraftforge.common.DimensionManager;
 
 public class DimensionSyncPacket {

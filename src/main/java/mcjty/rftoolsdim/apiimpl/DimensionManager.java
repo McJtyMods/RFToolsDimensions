@@ -4,7 +4,6 @@ import mcjty.rftoolsdim.api.dimension.IDimensionInformation;
 import mcjty.rftoolsdim.api.dimension.IDimensionManager;
 import mcjty.rftoolsdim.dimensions.DimensionStorage;
 import mcjty.rftoolsdim.dimensions.RfToolsDimensionManager;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
 
 public class DimensionManager implements IDimensionManager {

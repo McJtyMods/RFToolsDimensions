@@ -1,0 +1,11 @@
+{
+  "result": {
+    "item": "rftoolsdim:terrain_absorber"
+  },
+  "ingredients": [
+    {
+      "item": "rftoolsdim:terrain_absorber"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless"
+}

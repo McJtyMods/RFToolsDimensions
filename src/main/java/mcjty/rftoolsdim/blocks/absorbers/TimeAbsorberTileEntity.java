@@ -1,18 +1,13 @@
 package mcjty.rftoolsdim.blocks.absorbers;
 
 import mcjty.lib.entity.GenericTileEntity;
-import mcjty.lib.varia.BlockTools;
 import mcjty.rftoolsdim.config.DimletConstructionConfiguration;
-import mcjty.rftoolsdim.dimensions.DimensionInformation;
-import mcjty.rftoolsdim.dimensions.RfToolsDimensionManager;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletKey;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletObjectMapping;
-import mcjty.rftoolsdim.dimensions.types.TerrainType;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ITickable;
 
-import java.util.Map;
 import java.util.Random;
 
 public class TimeAbsorberTileEntity extends GenericTileEntity implements ITickable {

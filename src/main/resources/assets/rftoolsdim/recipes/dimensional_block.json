@@ -1,0 +1,11 @@
+{
+  "result": {
+    "item": "rftoolsdim:dimensional_block"
+  },
+  "ingredients": [
+    {
+      "item": "rftoolsdim:dimensional_blank_block"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless"
+}
