@@ -115,6 +115,9 @@ public class DimensionMonitorItem extends GenericRFToolsItem {
     @Override
     public void addInformation(ItemStack itemStack, World world, List<String> list, ITooltipFlag whatIsThis) {
         super.addInformation(itemStack, world, list, whatIsThis);
+        if (world == null || world.provider == null) {
+            return;
+        }
         int id = world.provider.getDimension();
         RfToolsDimensionManager dimensionManager = RfToolsDimensionManager.getDimensionManagerNullable(world);
         DimensionInformation dimensionInformation = dimensionManager == null ? null : dimensionManager.getDimensionInformation(id);

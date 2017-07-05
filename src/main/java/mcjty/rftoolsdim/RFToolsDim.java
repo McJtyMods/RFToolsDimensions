@@ -38,20 +38,15 @@ import java.util.function.Function;
 @Mod(modid = RFToolsDim.MODID, name="RFTools Dimensions",
         dependencies =
                         "required-after:mcjtylib_ng@[" + RFToolsDim.MIN_MCJTYLIB_VER + ",);" +
-                        "required-after:compatlayer@[" + RFToolsDim.COMPATLAYER_VER + ",);" +
                         "required-after:rftools@[" + RFToolsDim.MIN_RFTOOLS_VER + ",);" +
-                        "after:Forge@[" + RFToolsDim.MIN_FORGE10_VER + ",);" +
                         "after:forge@[" + RFToolsDim.MIN_FORGE11_VER + ",)",
-        version = RFToolsDim.VERSION,
-        acceptedMinecraftVersions = "[1.10,1.12)")
+        version = RFToolsDim.VERSION)
 public class RFToolsDim implements ModBase {
     public static final String MODID = "rftoolsdim";
     public static final String VERSION = "5.02";
     public static final String MIN_RFTOOLS_VER = "5.81";
-    public static final String MIN_FORGE10_VER = "12.18.1.2082";
     public static final String MIN_FORGE11_VER = "13.19.0.2176";
-    public static final String MIN_MCJTYLIB_VER = "2.3.2";
-    public static final String COMPATLAYER_VER = "0.1.6";
+    public static final String MIN_MCJTYLIB_VER = "2.4.3";
 
     @SidedProxy(clientSide="mcjty.rftoolsdim.proxy.ClientProxy", serverSide="mcjty.rftoolsdim.proxy.ServerProxy")
     public static CommonProxy proxy;
