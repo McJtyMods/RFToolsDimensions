@@ -2,9 +2,7 @@ package mcjty.rftoolsdim.dimensions.dimlets;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
-import mcjty.lib.compat.CompatBlock;
-import mcjty.lib.tools.EntityTools;
-import mcjty.lib.tools.ItemStackTools;
+import mcjty.rftoolsdim.varia.EntityTools;
 import mcjty.lib.varia.Logging;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.compat.ChiselCompat;
@@ -251,7 +249,7 @@ public class KnownDimletConfiguration {
             int meta = state.getBlock().getMetaFromState(state);
             ItemStack stack = new ItemStack(state.getBlock(), 1, state.getBlock().getMetaFromState(state));
             if (stack.getItem() != null) {      // Protection
-                List<IProperty<?>> propertyNames = new ArrayList<>(CompatBlock.getPropertyKeys(state));
+                List<IProperty<?>> propertyNames = new ArrayList<>(state.getPropertyKeys());
                 propertyNames.sort((o1, o2) -> o1.getName().compareTo(o2.getName()));
 
                 ImmutableMap<IProperty<?>, Comparable<?>> properties = state.getProperties();
@@ -280,7 +278,7 @@ public class KnownDimletConfiguration {
             return features;
         }
         int[] iDs = null;
-        if (ItemStackTools.isValid(stack) && stack.getItem() != null) {
+        if (!stack.isEmpty() && stack.getItem() != null) {
             iDs = OreDictionary.getOreIDs(stack);
         }
         if (iDs != null && iDs.length > 0) {

@@ -1,6 +1,5 @@
 package mcjty.rftoolsdim.items;
 
-import mcjty.lib.tools.MinecraftTools;
 import mcjty.lib.varia.Logging;
 import mcjty.rftoolsdim.config.PowerConfiguration;
 import mcjty.rftoolsdim.dimensions.DimensionInformation;
@@ -49,7 +48,7 @@ public class DimensionMonitorItem extends GenericRFToolsItem {
         ModelLoader.setCustomMeshDefinition(this, new ItemMeshDefinition() {
             @Override
             public ModelResourceLocation getModelLocation(ItemStack stack) {
-                WorldClient world = MinecraftTools.getWorld(Minecraft.getMinecraft());
+                WorldClient world = Minecraft.getMinecraft().world;
                 int id = world.provider.getDimension();
                 DimensionStorage storage = DimensionStorage.getDimensionStorage(world);
                 int energyLevel = storage.getEnergyLevel(id);
@@ -72,7 +71,7 @@ public class DimensionMonitorItem extends GenericRFToolsItem {
     }
 
     @Override
-    protected ActionResult<ItemStack> clOnItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
         ItemStack stack = player.getHeldItem(hand);
         if (!world.isRemote) {
             int id = player.getEntityWorld().provider.getDimension();

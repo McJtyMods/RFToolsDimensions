@@ -1,13 +1,12 @@
 package mcjty.rftoolsdim.commands;
 
-import mcjty.lib.compat.CompatCommand;
-import mcjty.lib.compat.CompatCommandBase;
-import mcjty.lib.tools.ChatTools;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
@@ -18,7 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public abstract class DefaultCommand implements CompatCommand {
+public abstract class DefaultCommand implements ICommand {
     protected final Map<String,RfToolsCommand> commands = new HashMap<String, RfToolsCommand>();
 
     public DefaultCommand() {
@@ -30,9 +29,19 @@ public abstract class DefaultCommand implements CompatCommand {
     }
 
     public void showHelp(ICommandSender sender) {
-        ChatTools.addChatMessage(sender, new TextComponentString(TextFormatting.BLUE + getName() + " <subcommand> <args>"));
+        ITextComponent component1 = new TextComponentString(TextFormatting.BLUE + getName() + " <subcommand> <args>");
+        if (sender instanceof EntityPlayer) {
+            ((EntityPlayer) sender).sendStatusMessage(component1, false);
+        } else {
+            sender.sendMessage(component1);
+        }
         for (Map.Entry<String,RfToolsCommand> me : commands.entrySet()) {
-            ChatTools.addChatMessage(sender, new TextComponentString("    " + me.getKey() + " " + me.getValue().getHelp()));
+            ITextComponent component = new TextComponentString("    " + me.getKey() + " " + me.getValue().getHelp());
+            if (sender instanceof EntityPlayer) {
+                ((EntityPlayer) sender).sendStatusMessage(component, false);
+            } else {
+                sender.sendMessage(component);
+            }
         }
     }
 
@@ -99,7 +108,12 @@ public abstract class DefaultCommand implements CompatCommand {
             RfToolsCommand command = commands.get(args[0]);
             if (command == null) {
                 if (!world.isRemote) {
-                    ChatTools.addChatMessage(sender, new TextComponentString(TextFormatting.RED + "Unknown RfTools command: " + args[0]));
+                    ITextComponent component = new TextComponentString(TextFormatting.RED + "Unknown RfTools command: " + args[0]);
+                    if (sender instanceof EntityPlayer) {
+                        ((EntityPlayer) sender).sendStatusMessage(component, false);
+                    } else {
+                        sender.sendMessage(component);
+                    }
                 }
             } else {
                 if (world.isRemote) {
@@ -109,8 +123,13 @@ public abstract class DefaultCommand implements CompatCommand {
                     }
                 } else {
                     // Server-side.
-                    if (!CompatCommandBase.canUseCommand(sender, command.getPermissionLevel(), getName())) {
-                        ChatTools.addChatMessage(sender, new TextComponentString(TextFormatting.RED + "Command is not allowed!"));
+                    if (!sender.canUseCommand(command.getPermissionLevel(), getName())) {
+                        ITextComponent component = new TextComponentString(TextFormatting.RED + "Command is not allowed!");
+                        if (sender instanceof EntityPlayer) {
+                            ((EntityPlayer) sender).sendStatusMessage(component, false);
+                        } else {
+                            sender.sendMessage(component);
+                        }
                     } else {
                         command.execute(sender, args);
                     }

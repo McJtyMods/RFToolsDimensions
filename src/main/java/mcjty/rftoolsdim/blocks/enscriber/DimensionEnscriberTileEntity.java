@@ -4,7 +4,6 @@ import mcjty.lib.container.DefaultSidedInventory;
 import mcjty.lib.container.InventoryHelper;
 import mcjty.lib.entity.GenericTileEntity;
 import mcjty.lib.network.Argument;
-import mcjty.lib.tools.ItemStackTools;
 import mcjty.lib.varia.Logging;
 import mcjty.rftoolsdim.config.GeneralConfiguration;
 import mcjty.rftoolsdim.config.Settings;
@@ -119,7 +118,7 @@ public class DimensionEnscriberTileEntity extends GenericTileEntity implements D
         boolean owner = false;
         for (int i = 0 ; i < DimensionEnscriberContainer.SIZE_DIMLETS ; i++) {
             ItemStack stack = inventoryHelper.getStackInSlot(i + DimensionEnscriberContainer.SLOT_DIMLETS);
-            if (ItemStackTools.isValid(stack)) {
+            if (!stack.isEmpty()) {
                 DimletKey key = KnownDimletConfiguration.getDimletKey(stack);
                 if (key.getType() == DimletType.DIMLET_SPECIAL && DimletObjectMapping.getSpecial(key) == SpecialType.SPECIAL_OWNER) {
                     owner = true;
@@ -162,7 +161,7 @@ public class DimensionEnscriberTileEntity extends GenericTileEntity implements D
 
         for (int i = 0 ; i < DimensionEnscriberContainer.SIZE_DIMLETS ; i++) {
             ItemStack stack = inventoryHelper.getStackInSlot(i + DimensionEnscriberContainer.SLOT_DIMLETS);
-            if (ItemStackTools.isValid(stack)) {
+            if (!stack.isEmpty()) {
                 DimletKey key = KnownDimletConfiguration.getDimletKey(stack);
                 Settings settings = KnownDimletConfiguration.getSettings(key);
                 if (settings != null) {
@@ -174,7 +173,7 @@ public class DimensionEnscriberTileEntity extends GenericTileEntity implements D
                     }
                 }
             }
-            inventoryHelper.setStackInSlot(i + DimensionEnscriberContainer.SLOT_DIMLETS, ItemStackTools.getEmptyStack());
+            inventoryHelper.setStackInSlot(i + DimensionEnscriberContainer.SLOT_DIMLETS, ItemStack.EMPTY);
         }
         return new DimensionDescriptor(descriptors, forcedSeed);
     }
@@ -204,7 +203,7 @@ public class DimensionEnscriberTileEntity extends GenericTileEntity implements D
 
     private void setName(String name) {
         ItemStack realizedTab = inventoryHelper.getStackInSlot(DimensionEnscriberContainer.SLOT_TAB);
-        if (ItemStackTools.isValid(realizedTab)) {
+        if (!realizedTab.isEmpty()) {
             NBTTagCompound tagCompound = realizedTab.getTagCompound();
             if (tagCompound == null) {
                 tagCompound = new NBTTagCompound();

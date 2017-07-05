@@ -1,11 +1,12 @@
 package mcjty.rftoolsdim.commands;
 
-import mcjty.lib.tools.ChatTools;
 import mcjty.rftoolsdim.dimensions.DimensionInformation;
 import mcjty.rftoolsdim.dimensions.DimensionStorage;
 import mcjty.rftoolsdim.dimensions.RfToolsDimensionManager;
 import mcjty.rftoolsdim.dimensions.description.DimensionDescriptor;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
@@ -39,7 +40,12 @@ public class CmdListDimensions extends AbstractRfToolsCommand {
         for (WorldServer world : worlds) {
             int id = world.provider.getDimension();
             String dimName = world.provider.getDimensionType().getName();
-            ChatTools.addChatMessage(sender, new TextComponentString("    Loaded: id:" + id + ", " + dimName));
+            ITextComponent component = new TextComponentString("    Loaded: id:" + id + ", " + dimName);
+            if (sender instanceof EntityPlayer) {
+                ((EntityPlayer) sender).sendStatusMessage(component, false);
+            } else {
+                sender.sendMessage(component);
+            }
         }
 
         RfToolsDimensionManager dimensionManager = RfToolsDimensionManager.getDimensionManager(sender.getEntityWorld());
@@ -51,9 +57,19 @@ public class CmdListDimensions extends AbstractRfToolsCommand {
             int energy = dimensionStorage.getEnergyLevel(id);
             String ownerName = dimensionInformation.getOwnerName();
             if (ownerName != null && !ownerName.isEmpty()) {
-                ChatTools.addChatMessage(sender, new TextComponentString("    RfTools: id:" + id + ", " + dimName + " (power " + energy + ") (owner " + ownerName + ")"));
+                ITextComponent component = new TextComponentString("    RfTools: id:" + id + ", " + dimName + " (power " + energy + ") (owner " + ownerName + ")");
+                if (sender instanceof EntityPlayer) {
+                    ((EntityPlayer) sender).sendStatusMessage(component, false);
+                } else {
+                    sender.sendMessage(component);
+                }
             } else {
-                ChatTools.addChatMessage(sender, new TextComponentString("    RfTools: id:" + id + ", " + dimName + " (power " + energy + ")"));
+                ITextComponent component = new TextComponentString("    RfTools: id:" + id + ", " + dimName + " (power " + energy + ")");
+                if (sender instanceof EntityPlayer) {
+                    ((EntityPlayer) sender).sendStatusMessage(component, false);
+                } else {
+                    sender.sendMessage(component);
+                }
             }
         }
     }

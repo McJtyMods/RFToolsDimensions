@@ -1,6 +1,5 @@
 package mcjty.rftoolsdim.dimensions.types;
 
-import mcjty.lib.tools.BiomeTools;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
 
@@ -95,7 +94,7 @@ public enum ControllerType {
     CONTROLLER_MAGICAL("Magical", 0, new BiomeFilter() {
         @Override
         public boolean match(Biome biome) {
-            return BiomeTools.isBiomeOfType(biome, BiomeDictionary.Type.MAGICAL) || BiomeTools.isBiomeOfType(biome, BiomeDictionary.Type.SPOOKY);
+            return BiomeDictionary.getTypes(biome).contains(BiomeDictionary.Type.MAGICAL) || BiomeDictionary.getTypes(biome).contains(BiomeDictionary.Type.SPOOKY);
         }
 
         @Override

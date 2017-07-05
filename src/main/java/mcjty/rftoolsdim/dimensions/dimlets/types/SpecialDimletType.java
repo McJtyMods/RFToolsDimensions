@@ -1,6 +1,5 @@
 package mcjty.rftoolsdim.dimensions.dimlets.types;
 
-import mcjty.lib.tools.ItemStackTools;
 import mcjty.rftoolsdim.dimensions.DimensionInformation;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletKey;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletObjectMapping;
@@ -131,7 +130,7 @@ public class SpecialDimletType implements IDimletType {
         } else if (SpecialType.SPECIAL_EFFICIENCY_LOW.getId().equals(key.getId())) {
             return new ItemStack(ModItems.mediocreEfficiencyEssenceItem);
         }
-        return ItemStackTools.getEmptyStack();
+        return ItemStack.EMPTY;
     }
 
 

@@ -1,11 +1,9 @@
 package mcjty.rftoolsdim.config;
 
-import mcjty.lib.tools.EntityTools;
+import mcjty.rftoolsdim.varia.EntityTools;
 import mcjty.lib.varia.Logging;
 import mcjty.rftoolsdim.dimensions.description.MobDescriptor;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityList;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.config.Configuration;
 
 import java.util.HashMap;

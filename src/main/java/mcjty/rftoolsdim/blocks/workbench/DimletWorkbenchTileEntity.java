@@ -5,7 +5,6 @@ import mcjty.lib.container.InventoryHelper;
 import mcjty.lib.entity.GenericEnergyReceiverTileEntity;
 import mcjty.lib.network.Argument;
 import mcjty.lib.network.PacketRequestIntegerFromServer;
-import mcjty.lib.tools.ItemStackTools;
 import mcjty.lib.varia.BlockTools;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.config.MachineConfiguration;
@@ -76,8 +75,8 @@ public class DimletWorkbenchTileEntity extends GenericEnergyReceiverTileEntity i
     private void checkCrafting() {
         if (inhibitCrafting == 0) {
             if (!checkDimletCrafting()) {
-                if (ItemStackTools.isValid(inventoryHelper.getStackInSlot(DimletWorkbenchContainer.SLOT_OUTPUT))) {
-                    inventoryHelper.setInventorySlotContents(0, DimletWorkbenchContainer.SLOT_OUTPUT, ItemStackTools.getEmptyStack());
+                if (!inventoryHelper.getStackInSlot(DimletWorkbenchContainer.SLOT_OUTPUT).isEmpty()) {
+                    inventoryHelper.setInventorySlotContents(0, DimletWorkbenchContainer.SLOT_OUTPUT, ItemStack.EMPTY);
                 }
             }
         }
@@ -127,27 +126,27 @@ public class DimletWorkbenchTileEntity extends GenericEnergyReceiverTileEntity i
 
     private boolean checkDimletCrafting() {
         ItemStack stackBase = inventoryHelper.getStackInSlot(DimletWorkbenchContainer.SLOT_BASE);
-        if (ItemStackTools.isEmpty(stackBase)) {
+        if (stackBase.isEmpty()) {
             return false;
         }
         ItemStack stackController = inventoryHelper.getStackInSlot(DimletWorkbenchContainer.SLOT_CONTROLLER);
-        if (ItemStackTools.isEmpty(stackController)) {
+        if (stackController.isEmpty()) {
             return false;
         }
         ItemStack stackTypeController = inventoryHelper.getStackInSlot(DimletWorkbenchContainer.SLOT_TYPE_CONTROLLER);
-        if (ItemStackTools.isEmpty(stackTypeController)) {
+        if (stackTypeController.isEmpty()) {
             return false;
         }
         ItemStack stackMemory = inventoryHelper.getStackInSlot(DimletWorkbenchContainer.SLOT_MEMORY);
-        if (ItemStackTools.isEmpty(stackMemory)) {
+        if (stackMemory.isEmpty()) {
             return false;
         }
         ItemStack stackEnergy = inventoryHelper.getStackInSlot(DimletWorkbenchContainer.SLOT_ENERGY);
-        if (ItemStackTools.isEmpty(stackEnergy)) {
+        if (stackEnergy.isEmpty()) {
             return false;
         }
         ItemStack stackEssence = inventoryHelper.getStackInSlot(DimletWorkbenchContainer.SLOT_ESSENCE);
-        if (ItemStackTools.isEmpty(stackEssence)) {
+        if (stackEssence.isEmpty()) {
             return false;
         }
 
@@ -205,7 +204,7 @@ public class DimletWorkbenchTileEntity extends GenericEnergyReceiverTileEntity i
             return;
         }
         ItemStack stack = inventoryHelper.getStackInSlot(DimletWorkbenchContainer.SLOT_INPUT);
-        if (ItemStackTools.isValid(stack)) {
+        if (!stack.isEmpty()) {
             if (ModItems.knownDimletItem.equals(stack.getItem())) {
                 DimletKey key = KnownDimletConfiguration.getDimletKey(stack);
                 Settings settings = KnownDimletConfiguration.getSettings(key);
@@ -301,15 +300,19 @@ public class DimletWorkbenchTileEntity extends GenericEnergyReceiverTileEntity i
 
     private void setAsideIfPossible(EntityPlayerMP playerMP, int slot) {
         ItemStack stack = inventoryHelper.getStackInSlot(slot);
-        if (ItemStackTools.isValid(stack)) {
+        if (!stack.isEmpty()) {
             int result = InventoryHelper.mergeItemStack(this, false, stack, DimletWorkbenchContainer.SLOT_BUFFER, DimletWorkbenchContainer.SLOT_BUFFER + DimletWorkbenchContainer.SIZE_BUFFER, null);
             if (result > 0) {
-                ItemStackTools.setStackSize(stack, result);
+                if (result <= 0) {
+                    stack.setCount(0);
+                } else {
+                    stack.setCount(result);
+                }
                 if (playerMP.inventory.addItemStackToInventory(stack)) {
-                    inventoryHelper.setInventorySlotContents(64, slot, ItemStackTools.getEmptyStack());
+                    inventoryHelper.setInventorySlotContents(64, slot, ItemStack.EMPTY);
                 }
             } else {
-                inventoryHelper.setInventorySlotContents(64, slot, ItemStackTools.getEmptyStack());
+                inventoryHelper.setInventorySlotContents(64, slot, ItemStack.EMPTY);
             }
         }
     }
@@ -320,9 +323,9 @@ public class DimletWorkbenchTileEntity extends GenericEnergyReceiverTileEntity i
         }
         for (int i = DimletWorkbenchContainer.SLOT_BUFFER ; i < DimletWorkbenchContainer.SLOT_BUFFER + DimletWorkbenchContainer.SIZE_BUFFER ; i++) {
             ItemStack stack = inventoryHelper.getStackInSlot(i);
-            if (ItemStackTools.isValid(stack) && stack.isItemEqual(part)) {
+            if (!stack.isEmpty() && stack.isItemEqual(part)) {
                 ItemStack partStack = inventoryHelper.decrStackSize(i, 1);
-                if (ItemStackTools.isValid(partStack)) {
+                if (!partStack.isEmpty()) {
                     inventoryHelper.setInventorySlotContents(64, slot, partStack);
                     return;
                 }
@@ -330,9 +333,9 @@ public class DimletWorkbenchTileEntity extends GenericEnergyReceiverTileEntity i
         }
         for (int i = 0 ; i < playerMP.inventory.getSizeInventory() ; i++) {
             ItemStack stack = playerMP.inventory.getStackInSlot(i);
-            if (ItemStackTools.isValid(stack) && stack.isItemEqual(part)) {
+            if (!stack.isEmpty() && stack.isItemEqual(part)) {
                 ItemStack partStack = playerMP.inventory.decrStackSize(i, 1);
-                if (ItemStackTools.isValid(partStack)) {
+                if (!partStack.isEmpty()) {
                     inventoryHelper.setInventorySlotContents(64, slot, partStack);
                     playerMP.openContainer.detectAndSendChanges();
                     return;
@@ -347,9 +350,9 @@ public class DimletWorkbenchTileEntity extends GenericEnergyReceiverTileEntity i
         }
         for (int i = DimletWorkbenchContainer.SLOT_BUFFER ; i < DimletWorkbenchContainer.SLOT_BUFFER + DimletWorkbenchContainer.SIZE_BUFFER ; i++) {
             ItemStack stack = inventoryHelper.getStackInSlot(i);
-            if (ItemStackTools.isValid(stack) && key.equals(type.isValidEssence(stack))) {
+            if (!stack.isEmpty() && key.equals(type.isValidEssence(stack))) {
                 ItemStack partStack = inventoryHelper.decrStackSize(i, 1);
-                if (ItemStackTools.isValid(partStack)) {
+                if (!partStack.isEmpty()) {
                     inventoryHelper.setInventorySlotContents(64, slot, partStack);
                     return;
                 }
@@ -357,9 +360,9 @@ public class DimletWorkbenchTileEntity extends GenericEnergyReceiverTileEntity i
         }
         for (int i = 0 ; i < playerMP.inventory.getSizeInventory() ; i++) {
             ItemStack stack = playerMP.inventory.getStackInSlot(i);
-            if (ItemStackTools.isValid(stack) && key.equals(type.isValidEssence(stack))) {
+            if (!stack.isEmpty() && key.equals(type.isValidEssence(stack))) {
                 ItemStack partStack = playerMP.inventory.decrStackSize(i, 1);
-                if (ItemStackTools.isValid(partStack)) {
+                if (!partStack.isEmpty()) {
                     inventoryHelper.setInventorySlotContents(64, slot, partStack);
                     playerMP.openContainer.detectAndSendChanges();
                     return;

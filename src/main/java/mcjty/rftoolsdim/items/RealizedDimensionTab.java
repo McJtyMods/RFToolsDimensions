@@ -36,7 +36,7 @@ public class RealizedDimensionTab extends GenericRFToolsItem {
     }
 
     @Override
-    protected ActionResult<ItemStack> clOnItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
         ItemStack stack = player.getHeldItem(hand);
         if ((!world.isRemote) && player.isSneaking()) {
             NBTTagCompound tagCompound = stack.getTagCompound();

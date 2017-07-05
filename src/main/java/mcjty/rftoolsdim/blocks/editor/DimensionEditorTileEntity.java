@@ -1,12 +1,10 @@
 package mcjty.rftoolsdim.blocks.editor;
 
-import mcjty.lib.compat.CompatBlock;
 import mcjty.lib.container.DefaultSidedInventory;
 import mcjty.lib.container.InventoryHelper;
 import mcjty.lib.entity.GenericEnergyReceiverTileEntity;
 import mcjty.lib.network.Argument;
 import mcjty.lib.network.PacketRequestIntegerFromServer;
-import mcjty.lib.tools.ItemStackTools;
 import mcjty.lib.varia.BlockTools;
 import mcjty.lib.varia.Broadcaster;
 import mcjty.rftoolsdim.RFToolsDim;
@@ -91,12 +89,12 @@ public class DimensionEditorTileEntity extends GenericEnergyReceiverTileEntity i
             return;
         }
         ItemStack injectableItemStack = validateInjectableItemStack();
-        if (ItemStackTools.isEmpty(injectableItemStack)) {
+        if (injectableItemStack.isEmpty()) {
             return;
         }
 
         ItemStack dimensionItemStack = validateDimensionItemStack();
-        if (ItemStackTools.isEmpty(dimensionItemStack)) {
+        if (dimensionItemStack.isEmpty()) {
             return;
         }
 
@@ -149,9 +147,8 @@ public class DimensionEditorTileEntity extends GenericEnergyReceiverTileEntity i
                             dimWorld.setBlockState(pos, state, 2);
                             Block block = dimWorld.getBlockState(pos).getBlock();
                             // @todo @@@@@@@@@@@@@@ check if right?
-                            CompatBlock.activateBlock(block, dimWorld, pos, state, FakePlayerFactory.getMinecraft((WorldServer) dimWorld),
-                                    EnumHand.MAIN_HAND, EnumFacing.DOWN, 0, 0, 0);
-//                            block.onBlockPlaced(dimWorld, pos, EnumFacing.DOWN, 0, 0, 0, 0, null);
+                            block.onBlockActivated(dimWorld, pos, state, FakePlayerFactory.getMinecraft((WorldServer) dimWorld), EnumHand.MAIN_HAND, EnumFacing.DOWN, (float) 0, (float) 0, (float) 0);
+                            //                            block.onBlockPlaced(dimWorld, pos, EnumFacing.DOWN, 0, 0, 0, 0, null);
                             block.onBlockPlacedBy(dimWorld, pos, state, null, injectableItemStack);
                             dimWorld.setBlockToAir(pos.up());
                             dimWorld.setBlockToAir(pos.up(2));
@@ -235,9 +232,9 @@ public class DimensionEditorTileEntity extends GenericEnergyReceiverTileEntity i
 
     private ItemStack validateInjectableItemStack() {
         ItemStack itemStack = inventoryHelper.getStackInSlot(DimensionEditorContainer.SLOT_INJECTINPUT);
-        if (ItemStackTools.isEmpty(itemStack)) {
+        if (itemStack.isEmpty()) {
             stopInjecting();
-            return ItemStackTools.getEmptyStack();
+            return ItemStack.EMPTY;
         }
 
         if (isMatterReceiver(itemStack)) {
@@ -253,28 +250,28 @@ public class DimensionEditorTileEntity extends GenericEnergyReceiverTileEntity i
         if (itype.isInjectable()) {
             return itemStack;
         } else {
-            return ItemStackTools.getEmptyStack();
+            return ItemStack.EMPTY;
         }
     }
 
     private ItemStack canDeleteDimension(ItemStack itemStack) {
         if (!GeneralConfiguration.playersCanDeleteDimensions) {
             Broadcaster.broadcast(getWorld(), pos.getX(), pos.getY(), pos.getZ(), "Players cannot delete dimensions!", 10);
-            return ItemStackTools.getEmptyStack();
+            return ItemStack.EMPTY;
         }
         if (!GeneralConfiguration.editorCanDeleteDimensions) {
             Broadcaster.broadcast(getWorld(), pos.getX(), pos.getY(), pos.getZ(), "Dimension deletion with the editor is not enabled!", 10);
-            return ItemStackTools.getEmptyStack();
+            return ItemStack.EMPTY;
         }
         ItemStack dimensionStack = inventoryHelper.getStackInSlot(DimensionEditorContainer.SLOT_DIMENSIONTARGET);
-        if (ItemStackTools.isEmpty(dimensionStack)) {
-            return ItemStackTools.getEmptyStack();
+        if (dimensionStack.isEmpty()) {
+            return ItemStack.EMPTY;
         }
 
         NBTTagCompound tagCompound = dimensionStack.getTagCompound();
         int id = tagCompound.getInteger("id");
         if (id == 0) {
-            return ItemStackTools.getEmptyStack();
+            return ItemStack.EMPTY;
         }
         DimensionInformation information = RfToolsDimensionManager.getDimensionManager(getWorld()).getDimensionInformation(id);
 
@@ -283,7 +280,7 @@ public class DimensionEditorTileEntity extends GenericEnergyReceiverTileEntity i
         }
 
         Broadcaster.broadcast(getWorld(), pos.getX(), pos.getY(), pos.getZ(), "This machine's owner differs from the dimensions owner!", 10);
-        return ItemStackTools.getEmptyStack();
+        return ItemStack.EMPTY;
     }
 
     private boolean isMatterReceiver(ItemStack itemStack) {
@@ -307,9 +304,9 @@ public class DimensionEditorTileEntity extends GenericEnergyReceiverTileEntity i
 
     private ItemStack validateDimensionItemStack() {
         ItemStack itemStack = inventoryHelper.getStackInSlot(DimensionEditorContainer.SLOT_DIMENSIONTARGET);
-        if (ItemStackTools.isEmpty(itemStack)) {
+        if (itemStack.isEmpty()) {
             stopInjecting();
-            return ItemStackTools.getEmptyStack();
+            return ItemStack.EMPTY;
         }
 
         NBTTagCompound tagCompound = itemStack.getTagCompound();
@@ -317,7 +314,7 @@ public class DimensionEditorTileEntity extends GenericEnergyReceiverTileEntity i
         if (id == 0) {
             // Not a valid dimension.
             stopInjecting();
-            return ItemStackTools.getEmptyStack();
+            return ItemStack.EMPTY;
         }
 
         return itemStack;

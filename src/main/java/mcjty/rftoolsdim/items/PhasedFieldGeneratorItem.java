@@ -1,7 +1,6 @@
 package mcjty.rftoolsdim.items;
 
 import cofh.redstoneflux.api.IEnergyContainerItem;
-import mcjty.lib.tools.ItemStackTools;
 import mcjty.lib.varia.IEnergyItem;
 import mcjty.lib.varia.ItemCapabilityProvider;
 import mcjty.rftoolsdim.config.PowerConfiguration;
@@ -10,7 +9,6 @@ import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
@@ -74,7 +72,7 @@ public class PhasedFieldGeneratorItem extends GenericRFToolsItem implements IEne
 
     @Override
     public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
-        if (ItemStackTools.isEmpty(oldStack) != ItemStackTools.isEmpty(newStack)) {
+        if (oldStack.isEmpty() != newStack.isEmpty()) {
             return true;
         }
         return oldStack.getItem() != newStack.getItem();

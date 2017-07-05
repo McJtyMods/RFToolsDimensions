@@ -1,10 +1,10 @@
 package mcjty.rftoolsdim.commands;
 
-import mcjty.lib.tools.ChatTools;
 import mcjty.rftoolsdim.dimensions.DimensionInformation;
 import mcjty.rftoolsdim.dimensions.RfToolsDimensionManager;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
@@ -38,7 +38,12 @@ public class CmdInfo extends AbstractRfToolsCommand {
         if (args.length == 2) {
             dim = fetchInt(sender, args, 1, 0);
         } else if (args.length > 2) {
-            ChatTools.addChatMessage(sender, new TextComponentString(TextFormatting.RED + "Too many parameters!"));
+            ITextComponent component = new TextComponentString(TextFormatting.RED + "Too many parameters!");
+            if (sender instanceof EntityPlayer) {
+                ((EntityPlayer) sender).sendStatusMessage(component, false);
+            } else {
+                sender.sendMessage(component);
+            }
             return;
         } else {
             dim = world.provider.getDimension();
@@ -47,14 +52,34 @@ public class CmdInfo extends AbstractRfToolsCommand {
         RfToolsDimensionManager dimensionManager = RfToolsDimensionManager.getDimensionManager(world);
         DimensionInformation information = dimensionManager.getDimensionInformation(dim);
         if (information == null) {
-            ChatTools.addChatMessage(sender, new TextComponentString(TextFormatting.RED + "Not an RFTools dimension!"));
+            ITextComponent component = new TextComponentString(TextFormatting.RED + "Not an RFTools dimension!");
+            if (sender instanceof EntityPlayer) {
+                ((EntityPlayer) sender).sendStatusMessage(component, false);
+            } else {
+                sender.sendMessage(component);
+            }
             return;
         }
-        ChatTools.addChatMessage(sender, new TextComponentString(TextFormatting.YELLOW + "Dimension ID " + dim));
-        ChatTools.addChatMessage(sender, new TextComponentString(TextFormatting.YELLOW + "Description string " + information.getDescriptor().getDescriptionString()));
+        ITextComponent component2 = new TextComponentString(TextFormatting.YELLOW + "Dimension ID " + dim);
+        if (sender instanceof EntityPlayer) {
+            ((EntityPlayer) sender).sendStatusMessage(component2, false);
+        } else {
+            sender.sendMessage(component2);
+        }
+        ITextComponent component1 = new TextComponentString(TextFormatting.YELLOW + "Description string " + information.getDescriptor().getDescriptionString());
+        if (sender instanceof EntityPlayer) {
+            ((EntityPlayer) sender).sendStatusMessage(component1, false);
+        } else {
+            sender.sendMessage(component1);
+        }
         String ownerName = information.getOwnerName();
         if (ownerName != null && !ownerName.isEmpty()) {
-            ChatTools.addChatMessage(sender, new TextComponentString(TextFormatting.YELLOW + "Owned by: " + ownerName));
+            ITextComponent component = new TextComponentString(TextFormatting.YELLOW + "Owned by: " + ownerName);
+            if (sender instanceof EntityPlayer) {
+                ((EntityPlayer) sender).sendStatusMessage(component, false);
+            } else {
+                sender.sendMessage(component);
+            }
         }
         if (sender instanceof EntityPlayer) {
             information.dump((EntityPlayer) sender);

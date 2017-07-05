@@ -1,7 +1,6 @@
 package mcjty.rftoolsdim;
 
 import mcjty.lib.base.ModBase;
-import mcjty.lib.compat.CompatCreativeTabs;
 import mcjty.lib.compat.MainCompatHandler;
 import mcjty.lib.varia.Logging;
 import mcjty.rftools.api.teleportation.ITeleportationManager;
@@ -21,7 +20,7 @@ import mcjty.rftoolsdim.network.DimensionSyncChannelHandler;
 import mcjty.rftoolsdim.proxy.CommonProxy;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -71,11 +70,11 @@ public class RFToolsDim implements ModBase {
     public static final int GUI_DIMLET_WORKBENCH = modGuiIndex++;
     public static final int GUI_ESSENCE_PAINTER = modGuiIndex++;
 
-    public static CreativeTabs tabRfToolsDim = new CompatCreativeTabs("RfToolsDim") {
+    public static CreativeTabs tabRfToolsDim = new CreativeTabs("RfToolsDim") {
 
         @Override
-        protected Item getItem() {
-            return ModItems.realizedDimensionTabItem;
+        public ItemStack getTabIconItem() {
+            return new ItemStack(ModItems.realizedDimensionTabItem);
         }
     };
 

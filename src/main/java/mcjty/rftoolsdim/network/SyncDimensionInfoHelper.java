@@ -1,6 +1,5 @@
 package mcjty.rftoolsdim.network;
 
-import mcjty.lib.tools.MinecraftTools;
 import mcjty.lib.varia.Logging;
 import mcjty.rftoolsdim.dimensions.RfToolsDimensionManager;
 import net.minecraft.client.Minecraft;
@@ -12,7 +11,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class SyncDimensionInfoHelper {
 
     public static void syncDimensionManagerFromServer(PacketSyncDimensionInfo message) {
-        World world = MinecraftTools.getWorld(Minecraft.getMinecraft());
+        World world = Minecraft.getMinecraft().world;
         Logging.log("Received dimension information from server");
         RfToolsDimensionManager dimensionManager = RfToolsDimensionManager.getDimensionManagerClient();
 

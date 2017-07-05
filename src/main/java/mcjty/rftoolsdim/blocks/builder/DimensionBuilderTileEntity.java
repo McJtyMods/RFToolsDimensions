@@ -5,7 +5,6 @@ import mcjty.lib.container.InventoryHelper;
 import mcjty.lib.entity.GenericEnergyReceiverTileEntity;
 import mcjty.lib.network.Argument;
 import mcjty.lib.network.PacketRequestIntegerFromServer;
-import mcjty.lib.tools.ItemStackTools;
 import mcjty.lib.varia.Logging;
 import mcjty.lib.varia.RedstoneMode;
 import mcjty.rftoolsdim.RFToolsDim;
@@ -122,7 +121,7 @@ public class DimensionBuilderTileEntity extends GenericEnergyReceiverTileEntity 
 
     public NBTTagCompound hasTab() {
         ItemStack itemStack = inventoryHelper.getStackInSlot(0);
-        if (ItemStackTools.isEmpty(itemStack)) {
+        if (itemStack.isEmpty()) {
             return null;
         }
 
@@ -290,7 +289,7 @@ public class DimensionBuilderTileEntity extends GenericEnergyReceiverTileEntity 
         }
         if (CMD_GETBUILDING.equals(command)) {
             ItemStack itemStack = inventoryHelper.getStackInSlot(0);
-            if (ItemStackTools.isEmpty(itemStack)) {
+            if (itemStack.isEmpty()) {
                 return 0;
             } else {
                 NBTTagCompound tagCompound = itemStack.getTagCompound();

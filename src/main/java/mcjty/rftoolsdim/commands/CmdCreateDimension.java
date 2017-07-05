@@ -1,6 +1,5 @@
 package mcjty.rftoolsdim.commands;
 
-import mcjty.lib.tools.ChatTools;
 import mcjty.rftoolsdim.dimensions.RfToolsDimensionManager;
 import mcjty.rftoolsdim.dimensions.description.DimensionDescriptor;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletKey;
@@ -8,6 +7,7 @@ import mcjty.rftoolsdim.dimensions.dimlets.types.DimletType;
 import mcjty.rftoolsdim.dimensions.types.TerrainType;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 
@@ -38,10 +38,20 @@ public class CmdCreateDimension extends AbstractRfToolsCommand {
     @Override
     public void execute(ICommandSender sender, String[] args) {
         if (args.length < 3) {
-            ChatTools.addChatMessage(sender, new TextComponentString(TextFormatting.RED + "The name and terrain parameters are missing!"));
+            ITextComponent component = new TextComponentString(TextFormatting.RED + "The name and terrain parameters are missing!");
+            if (sender instanceof EntityPlayer) {
+                ((EntityPlayer) sender).sendStatusMessage(component, false);
+            } else {
+                sender.sendMessage(component);
+            }
             return;
         } else if (args.length > 3) {
-            ChatTools.addChatMessage(sender, new TextComponentString(TextFormatting.RED + "Too many parameters!"));
+            ITextComponent component = new TextComponentString(TextFormatting.RED + "Too many parameters!");
+            if (sender instanceof EntityPlayer) {
+                ((EntityPlayer) sender).sendStatusMessage(component, false);
+            } else {
+                sender.sendMessage(component);
+            }
             return;
         }
 
@@ -50,12 +60,22 @@ public class CmdCreateDimension extends AbstractRfToolsCommand {
         String terrainName = fetchString(sender, args, 2, "Void");
         TerrainType terrainType = TerrainType.getTerrainById(terrainName);
         if (terrainType == null) {
-            ChatTools.addChatMessage(sender, new TextComponentString(TextFormatting.RED + "Unknown terrain type!"));
+            ITextComponent component = new TextComponentString(TextFormatting.RED + "Unknown terrain type!");
+            if (sender instanceof EntityPlayer) {
+                ((EntityPlayer) sender).sendStatusMessage(component, false);
+            } else {
+                sender.sendMessage(component);
+            }
             return;
         }
 
         if (!(sender instanceof EntityPlayer)) {
-            ChatTools.addChatMessage(sender, new TextComponentString(TextFormatting.RED + "You must be a player to use this command!"));
+            ITextComponent component = new TextComponentString(TextFormatting.RED + "You must be a player to use this command!");
+            if (sender instanceof EntityPlayer) {
+                ((EntityPlayer) sender).sendStatusMessage(component, false);
+            } else {
+                sender.sendMessage(component);
+            }
             return;
         }
 
@@ -72,7 +92,12 @@ public class CmdCreateDimension extends AbstractRfToolsCommand {
             e.printStackTrace();
             throw new RuntimeException(e);
         }
-        ChatTools.addChatMessage(sender, new TextComponentString(TextFormatting.GREEN + "Created dimension: " + dim));
+        ITextComponent component = new TextComponentString(TextFormatting.GREEN + "Created dimension: " + dim);
+        if (sender instanceof EntityPlayer) {
+            ((EntityPlayer) sender).sendStatusMessage(component, false);
+        } else {
+            sender.sendMessage(component);
+        }
 
         dimensionManager.save(sender.getEntityWorld());
     }

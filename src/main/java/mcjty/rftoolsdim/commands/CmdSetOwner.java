@@ -1,11 +1,11 @@
 package mcjty.rftoolsdim.commands;
 
-import mcjty.lib.tools.ChatTools;
-import mcjty.lib.tools.WorldTools;
 import mcjty.rftoolsdim.dimensions.DimensionInformation;
 import mcjty.rftoolsdim.dimensions.RfToolsDimensionManager;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
@@ -35,10 +35,20 @@ public class CmdSetOwner extends AbstractRfToolsCommand {
     @Override
     public void execute(ICommandSender sender, String[] args) {
         if (args.length < 3) {
-            ChatTools.addChatMessage(sender, new TextComponentString(TextFormatting.RED + "The dimension and player parameters are missing!"));
+            ITextComponent component = new TextComponentString(TextFormatting.RED + "The dimension and player parameters are missing!");
+            if (sender instanceof EntityPlayer) {
+                ((EntityPlayer) sender).sendStatusMessage(component, false);
+            } else {
+                sender.sendMessage(component);
+            }
             return;
         } else if (args.length > 3) {
-            ChatTools.addChatMessage(sender, new TextComponentString(TextFormatting.RED + "Too many parameters!"));
+            ITextComponent component = new TextComponentString(TextFormatting.RED + "Too many parameters!");
+            if (sender instanceof EntityPlayer) {
+                ((EntityPlayer) sender).sendStatusMessage(component, false);
+            } else {
+                sender.sendMessage(component);
+            }
             return;
         }
 
@@ -48,20 +58,35 @@ public class CmdSetOwner extends AbstractRfToolsCommand {
         World world = sender.getEntityWorld();
         RfToolsDimensionManager dimensionManager = RfToolsDimensionManager.getDimensionManager(world);
         if (dimensionManager.getDimensionDescriptor(dim) == null) {
-            ChatTools.addChatMessage(sender, new TextComponentString(TextFormatting.RED + "Not an RFTools dimension!"));
+            ITextComponent component = new TextComponentString(TextFormatting.RED + "Not an RFTools dimension!");
+            if (sender instanceof EntityPlayer) {
+                ((EntityPlayer) sender).sendStatusMessage(component, false);
+            } else {
+                sender.sendMessage(component);
+            }
             return;
         }
 
 
-        for (EntityPlayerMP entityPlayerMP : WorldTools.getPlayerList((WorldServer)world)) {
+        for (EntityPlayerMP entityPlayerMP : ((WorldServer) world).getMinecraftServer().getPlayerList().getPlayers()) {
             if (playerName.equals(entityPlayerMP.getDisplayName())) {
                 DimensionInformation information = dimensionManager.getDimensionInformation(dim);
                 information.setOwner(playerName, entityPlayerMP.getGameProfile().getId());
-                ChatTools.addChatMessage(sender, new TextComponentString(TextFormatting.GREEN + "Owner of dimension changed!"));
+                ITextComponent component = new TextComponentString(TextFormatting.GREEN + "Owner of dimension changed!");
+                if (sender instanceof EntityPlayer) {
+                    ((EntityPlayer) sender).sendStatusMessage(component, false);
+                } else {
+                    sender.sendMessage(component);
+                }
                 dimensionManager.save(world);
                 return;
             }
         }
-        ChatTools.addChatMessage(sender, new TextComponentString(TextFormatting.RED + "Could not find player!"));
+        ITextComponent component = new TextComponentString(TextFormatting.RED + "Could not find player!");
+        if (sender instanceof EntityPlayer) {
+            ((EntityPlayer) sender).sendStatusMessage(component, false);
+        } else {
+            sender.sendMessage(component);
+        }
     }
 }

@@ -1,6 +1,5 @@
 package mcjty.rftoolsdim.dimensions;
 
-import mcjty.lib.tools.ItemStackTools;
 import mcjty.lib.varia.Logging;
 import mcjty.lib.varia.MathTools;
 import mcjty.rftoolsdim.config.DimletRules;
@@ -179,8 +178,8 @@ public class RfToolsDimensionManager extends WorldSavedData {
         int i = MathTools.floor((c.getY() - radius) / 16.0D);
         int j = MathTools.floor((c.getY() + 1 + radius) / 16.0D);
 
-        i = mcjty.lib.tools.MathTools.clamp(i, 0, chunk.getEntityLists().length - 1);
-        j = mcjty.lib.tools.MathTools.clamp(j, 0, chunk.getEntityLists().length - 1);
+        i = i < 0 ? 0 : (i > chunk.getEntityLists().length - 1 ? chunk.getEntityLists().length - 1 : i);
+        j = j < 0 ? 0 : (j > chunk.getEntityLists().length - 1 ? chunk.getEntityLists().length - 1 : j);
 
         for (int k = i; k <= j; ++k) {
             ClassInheritanceMultiMap<Entity> entityList = chunk.getEntityLists()[k];
@@ -222,7 +221,7 @@ public class RfToolsDimensionManager extends WorldSavedData {
         InventoryPlayer inventory = player.inventory;
         for (int i = 0 ; i < inventory.getHotbarSize() ; i++) {
             ItemStack slot = inventory.getStackInSlot(i);
-            if (ItemStackTools.isValid(slot) && slot.getItem() == ModItems.phasedFieldGeneratorItem) {
+            if (!slot.isEmpty() && slot.getItem() == ModItems.phasedFieldGeneratorItem) {
                 PhasedFieldGeneratorItem pfg = (PhasedFieldGeneratorItem) slot.getItem();
                 int energyStored = pfg.getEnergyStored(slot);
                 int toConsume;

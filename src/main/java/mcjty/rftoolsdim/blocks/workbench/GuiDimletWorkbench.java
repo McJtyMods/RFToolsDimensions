@@ -12,8 +12,6 @@ import mcjty.lib.gui.widgets.Label;
 import mcjty.lib.gui.widgets.Panel;
 import mcjty.lib.gui.widgets.TextField;
 import mcjty.lib.network.Argument;
-import mcjty.lib.tools.ItemStackTools;
-import mcjty.lib.tools.MinecraftTools;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.config.Settings;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletKey;
@@ -74,7 +72,7 @@ public class GuiDimletWorkbench extends GenericGuiContainer<DimletWorkbenchTileE
 
             @Override
             public void doubleClick(Widget widget, int i) {
-                EntityPlayerSP player = MinecraftTools.getPlayer(Minecraft.getMinecraft());
+                EntityPlayerSP player = Minecraft.getMinecraft().player;
                 if (player.isCreative() && (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT))) {
                     cheatDimlet();
                 } else {
@@ -245,15 +243,15 @@ public class GuiDimletWorkbench extends GenericGuiContainer<DimletWorkbenchTileE
                 ItemStack typectrl = new ItemStack(ModItems.dimletTypeControllerItem, 1, key.getType().ordinal());
                 ItemStack essence = key.getType().dimletType.getDefaultEssence(key);
 
-                if (MinecraftTools.getPlayer(Minecraft.getMinecraft()).isCreative()) {
-                    if (ItemStackTools.isEmpty(essence)) {
+                if (Minecraft.getMinecraft().player.isCreative()) {
+                    if (essence.isEmpty()) {
                         widget.setTooltips(TextFormatting.RED + "Shift-Double-Click to cheat", "Type: " + key.getType().dimletType.getName(), "Rarity: " + settings.getRarity(), "@0@1@2", "@3@4@5",
                                 TextFormatting.RED + "(currently not craftable)");
                     } else {
                         widget.setTooltips(TextFormatting.RED + "Shift-Double-Click to cheat", "Type: " + key.getType().dimletType.getName(), "Rarity: " + settings.getRarity(), "@0@1@2", "@3@4@5");
                     }
                 } else {
-                    if (ItemStackTools.isEmpty(essence)) {
+                    if (essence.isEmpty()) {
                         widget.setTooltips("Type: " + key.getType().dimletType.getName(), "Rarity: " + settings.getRarity(), "@0@1@2", "@3@4@5",
                             TextFormatting.RED + "(currently not craftable)");
                     } else {

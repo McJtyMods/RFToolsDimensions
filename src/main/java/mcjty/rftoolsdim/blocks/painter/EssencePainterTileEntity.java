@@ -4,7 +4,6 @@ import mcjty.lib.container.DefaultSidedInventory;
 import mcjty.lib.container.InventoryHelper;
 import mcjty.lib.entity.GenericTileEntity;
 import mcjty.lib.network.Argument;
-import mcjty.lib.tools.ItemStackTools;
 import mcjty.lib.varia.Logging;
 import mcjty.rftoolsdim.config.GeneralConfiguration;
 import mcjty.rftoolsdim.config.Settings;
@@ -119,7 +118,7 @@ public class EssencePainterTileEntity extends GenericTileEntity implements Defau
         boolean owner = false;
         for (int i = 0; i < EssencePainterContainer.SIZE_DIMLETS ; i++) {
             ItemStack stack = inventoryHelper.getStackInSlot(i + EssencePainterContainer.SLOT_DIMLETS);
-            if (ItemStackTools.isValid(stack)) {
+            if (!stack.isEmpty()) {
                 DimletKey key = KnownDimletConfiguration.getDimletKey(stack);
                 if (key.getType() == DimletType.DIMLET_SPECIAL && DimletObjectMapping.getSpecial(key) == SpecialType.SPECIAL_OWNER) {
                     owner = true;
@@ -162,7 +161,7 @@ public class EssencePainterTileEntity extends GenericTileEntity implements Defau
 
         for (int i = 0; i < EssencePainterContainer.SIZE_DIMLETS ; i++) {
             ItemStack stack = inventoryHelper.getStackInSlot(i + EssencePainterContainer.SLOT_DIMLETS);
-            if (ItemStackTools.isValid(stack)) {
+            if (!stack.isEmpty()) {
                 DimletKey key = KnownDimletConfiguration.getDimletKey(stack);
                 Settings settings = KnownDimletConfiguration.getSettings(key);
                 if (settings != null) {
@@ -174,7 +173,7 @@ public class EssencePainterTileEntity extends GenericTileEntity implements Defau
                     }
                 }
             }
-            inventoryHelper.setStackInSlot(i + EssencePainterContainer.SLOT_DIMLETS, ItemStackTools.getEmptyStack());
+            inventoryHelper.setStackInSlot(i + EssencePainterContainer.SLOT_DIMLETS, ItemStack.EMPTY);
         }
         return new DimensionDescriptor(descriptors, forcedSeed);
     }

@@ -1,10 +1,7 @@
 package mcjty.rftoolsdim.dimensions.world;
 
-import mcjty.lib.CompatLayer;
 import mcjty.lib.container.GenericBlock;
-import mcjty.lib.tools.EntityTools;
-import mcjty.lib.tools.ItemStackTools;
-import mcjty.lib.tools.WorldTools;
+import mcjty.rftoolsdim.varia.EntityTools;
 import mcjty.lib.varia.Logging;
 import mcjty.rftools.blocks.storage.ModularStorageContainer;
 import mcjty.rftools.blocks.storage.ModularStorageTileEntity;
@@ -352,7 +349,7 @@ public class GenericWorldGenerator implements IWorldGenerator {
                 if (key != null) {
                     return KnownDimletConfiguration.getDimletStack(key);
                 } else {
-                    return ItemStackTools.getEmptyStack();
+                    return ItemStack.EMPTY;
                 }
             case 3:
                 return new ItemStack(ModItems.dimletParcelItem, 1+rand.nextInt(3));
@@ -832,7 +829,7 @@ public class GenericWorldGenerator implements IWorldGenerator {
 
     private EntityItemFrame spawnItemFrame(World world, int x, int y, int z) {
         EntityItemFrame frame = new EntityItemFrame(world, new BlockPos(x, y, z + 1), EnumFacing.NORTH);
-        WorldTools.spawnEntity(world, frame);
+        world.spawnEntity(frame);
         frame.setPosition(x, y, z);
         return frame;
     }

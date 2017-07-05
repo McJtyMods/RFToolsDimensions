@@ -1,8 +1,8 @@
 package mcjty.rftoolsdim.blocks;
 
 import mcjty.lib.McJtyRegister;
-import mcjty.lib.compat.CompatBlock;
 import mcjty.rftoolsdim.RFToolsDim;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -19,7 +19,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.Collections;
 import java.util.List;
 
-public class FakeSandBlock extends CompatBlock {
+public class FakeSandBlock extends Block {
 
     public FakeSandBlock() {
         super(Material.SAND);

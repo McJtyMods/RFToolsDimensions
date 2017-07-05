@@ -10,6 +10,7 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
@@ -72,9 +73,11 @@ public class DimletTypeControllerItem extends GenericRFToolsItem {
     }
 
     @Override
-    protected void clGetSubItems(Item itemIn, CreativeTabs tab, List<ItemStack> subItems) {
-        for (DimletType type : DimletType.values()) {
-            subItems.add(new ItemStack(this, 1, type.ordinal()));
+    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> subItems) {
+        if (isInCreativeTab(tab)) {
+            for (DimletType type : DimletType.values()) {
+                subItems.add(new ItemStack(this, 1, type.ordinal()));
+            }
         }
     }
 }

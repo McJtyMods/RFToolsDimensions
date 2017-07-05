@@ -1,6 +1,5 @@
 package mcjty.rftoolsdim.dimensions.world;
 
-import mcjty.lib.tools.MinecraftTools;
 import mcjty.lib.varia.MathTools;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.dimensions.DimensionInformation;
@@ -371,8 +370,8 @@ public class SkyRenderer {
     private static void renderSky(float partialTickTime, DimensionInformation information) {
         initialize();
 
-        EntityPlayerSP player = MinecraftTools.getPlayer(Minecraft.getMinecraft());
-        WorldClient world = MinecraftTools.getWorld(Minecraft.getMinecraft());
+        EntityPlayerSP player = Minecraft.getMinecraft().player;
+        WorldClient world = Minecraft.getMinecraft().world;
         TextureManager renderEngine = Minecraft.getMinecraft().getTextureManager();
 
         GlStateManager.disableTexture2D();

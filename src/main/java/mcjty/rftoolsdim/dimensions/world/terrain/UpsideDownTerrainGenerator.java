@@ -1,6 +1,5 @@
 package mcjty.rftoolsdim.dimensions.world.terrain;
 
-import mcjty.lib.tools.MathTools;
 import mcjty.lib.varia.Logging;
 import mcjty.rftoolsdim.blocks.ModBlocks;
 import mcjty.rftoolsdim.dimensions.types.FeatureType;
@@ -220,7 +219,7 @@ public class UpsideDownTerrainGenerator implements BaseTerrainGenerator {
                     double d7 = this.minLimitRegion[i] / 512.0D;
                     double d8 = this.maxLimitRegion[i] / 512.0D;
                     double d9 = (this.mainNoiseRegion[i] / 10.0D + 1.0D) / 2.0D;
-                    double d10 = MathTools.clamp(d7, d8, d9) - d6;
+                    double d10 = (d9 < 0.0D ? d7 : (d9 > 1.0D ? d8 : d7 + (d8 - d7) * d9)) - d6;
 
                     if (j2 > 29) {
                         double d11 = ((j2 - 29) / 3.0F);
