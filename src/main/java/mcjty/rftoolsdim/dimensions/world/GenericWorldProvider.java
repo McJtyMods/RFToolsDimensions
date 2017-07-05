@@ -1,6 +1,5 @@
 package mcjty.rftoolsdim.dimensions.world;
 
-import mcjty.lib.compat.CompatWorldProvider;
 import mcjty.lib.varia.Logging;
 import mcjty.rftoolsdim.api.dimension.IRFToolsWorldProvider;
 import mcjty.rftoolsdim.config.GeneralConfiguration;
@@ -21,11 +20,13 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.DimensionType;
+import net.minecraft.world.World;
+import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeProvider;
 import net.minecraft.world.biome.BiomeProviderSingle;
-import net.minecraft.world.chunk.IChunkGenerator;
+import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraft.world.storage.WorldInfo;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -33,7 +34,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.Set;
 
 //@Optional.InterfaceList(@Optional.Interface(iface = "ivorius.reccomplex.dimensions.DimensionDictionary$Handler", modid = "reccomplex"))
-public class GenericWorldProvider extends CompatWorldProvider implements  /*@todo implements DimensionDictionary.Handler,*/ IRFToolsWorldProvider {
+public class GenericWorldProvider extends WorldProvider implements  /*@todo implements DimensionDictionary.Handler,*/ IRFToolsWorldProvider {
 
     public static final String RFTOOLS_DIMENSION = "rftools_dimension";
 
@@ -44,6 +45,10 @@ public class GenericWorldProvider extends CompatWorldProvider implements  /*@tod
 
     private long calculateSeed(long seed, int dim) {
         return dim * 13L + seed;
+    }
+
+    public World getWorld() {
+        return world;
     }
 
     @Override
@@ -66,7 +71,7 @@ public class GenericWorldProvider extends CompatWorldProvider implements  /*@tod
             // is always correct here. So we have to use the overworld.
 //            WorldServer overworld = DimensionManager.getWorld(0);
             int dim = getDimension();
-            dimensionInformation = RfToolsDimensionManager.getDimensionManager(getWorld()).getDimensionInformation(dim);
+            dimensionInformation = RfToolsDimensionManager.getDimensionManager(world).getDimensionInformation(dim);
             if (dimensionInformation == null) {
                 Logging.log("Dimension information for dimension " + dim + " is missing!");
             } else {
@@ -131,10 +136,10 @@ public class GenericWorldProvider extends CompatWorldProvider implements  /*@tod
 //
     private void setSeed(int dim) {
         if (dimensionInformation == null) {
-            if (getWorld() == null) {
+            if (world == null) {
                 return;
             }
-            dimensionInformation = RfToolsDimensionManager.getDimensionManager(getWorld()).getDimensionInformation(dim);
+            dimensionInformation = RfToolsDimensionManager.getDimensionManager(world).getDimensionInformation(dim);
             if (dimensionInformation == null) {
                 Logging.log("Error: setSeed() called with null diminfo. Error ignored!");
                 return;
@@ -149,7 +154,7 @@ public class GenericWorldProvider extends CompatWorldProvider implements  /*@tod
             if (baseSeed != 0) {
                 seed = calculateSeed(baseSeed, dim) ;
             } else {
-                seed = calculateSeed(getWorld().getSeed(), dim) ;
+                seed = calculateSeed(world.getSeed(), dim) ;
             }
         }
 //        seed = dimensionInformation.getBaseSeed();
@@ -158,7 +163,7 @@ public class GenericWorldProvider extends CompatWorldProvider implements  /*@tod
 
     private DimensionStorage getStorage() {
         if (storage == null) {
-            storage = DimensionStorage.getDimensionStorage(getWorld());
+            storage = DimensionStorage.getDimensionStorage(world);
         }
         return storage;
     }
@@ -194,8 +199,9 @@ public class GenericWorldProvider extends CompatWorldProvider implements  /*@tod
     }
 
     @Override
-    protected void initialize() {
-        if (getWorld() instanceof WorldServer) {
+    protected void init() {
+        super.init();
+        if (world instanceof WorldServer) {
             createBiomeProviderInternal();
             return;
         }
@@ -211,7 +217,7 @@ public class GenericWorldProvider extends CompatWorldProvider implements  /*@tod
             if (type == ControllerType.CONTROLLER_SINGLE) {
                 this.biomeProvider = new BiomeProviderSingle(dimensionInformation.getBiomes().get(0));
             } else if (type == ControllerType.CONTROLLER_DEFAULT) {
-                WorldInfo worldInfo = getWorld().getWorldInfo();
+                WorldInfo worldInfo = world.getWorldInfo();
                 worldInfo = new WorldInfo(worldInfo) {
                     @Override
                     public long getSeed() {
@@ -221,19 +227,19 @@ public class GenericWorldProvider extends CompatWorldProvider implements  /*@tod
                 this.biomeProvider = new BiomeProvider(worldInfo);
             } else {
                 GenericBiomeProvider.hackyDimensionInformation = dimensionInformation;      // Hack to get the dimension information in the superclass.
-                this.biomeProvider = new GenericBiomeProvider(seed, getWorld().getWorldInfo(), dimensionInformation);
+                this.biomeProvider = new GenericBiomeProvider(seed, world.getWorldInfo(), dimensionInformation);
             }
         } else {
-            this.biomeProvider = new BiomeProvider(getWorld().getWorldInfo());
+            this.biomeProvider = new BiomeProvider(world.getWorldInfo());
         }
 
         if (dimensionInformation != null) {
-            hasNoSky = !dimensionInformation.getTerrainType().hasSky();
+            this.hasSkyLight = dimensionInformation.getTerrainType().hasSky();
 
-            if (getWorld().isRemote) {
+            if (world.isRemote) {
                 // Only on client!
                 SkyType skyType = dimensionInformation.getSkyDescriptor().getSkyType();
-                if (hasNoSky) {
+                if (!hasSkyLight) {
                     SkyRenderer.registerNoSky(this);
                 } else if (skyType == SkyType.SKY_ENDER) {
                     SkyRenderer.registerEnderSky(this);
@@ -274,10 +280,12 @@ public class GenericWorldProvider extends CompatWorldProvider implements  /*@tod
 //        return RFTOOLS_DIMENSION;
 //    }
 
-    @Override
-    public String getWelcomeMessage() {
-        return "Entering the rftools dimension!";
-    }
+
+//
+//    @Override
+//    public String getWelcomeMessage() {
+//        return "Entering the rftools dimension!";
+//    }
 
     @Override
     public boolean canRespawnHere() {
@@ -303,7 +311,7 @@ public class GenericWorldProvider extends CompatWorldProvider implements  /*@tod
     public IChunkGenerator createChunkGenerator() {
         int dim = getDimension();
         setSeed(dim);
-        return new GenericChunkGenerator(getWorld(), seed);
+        return new GenericChunkGenerator(world, seed);
     }
 
     @Override
@@ -352,7 +360,7 @@ public class GenericWorldProvider extends CompatWorldProvider implements  /*@tod
         }
 
         Vec3d color = super.getFogColor(angle, dt);
-        return new Vec3d(color.xCoord * r, color.yCoord * g, color.zCoord * b);
+        return new Vec3d(color.x * r, color.y * g, color.z * b);
     }
 
     private static long lastTime = 0;
@@ -381,7 +389,7 @@ public class GenericWorldProvider extends CompatWorldProvider implements  /*@tod
         }
 
         Vec3d skyColor = super.getSkyColor(cameraEntity, partialTicks);
-        return new Vec3d(skyColor.xCoord * r, skyColor.yCoord * g, skyColor.zCoord * b);
+        return new Vec3d(skyColor.x * r, skyColor.y * g, skyColor.z * b);
     }
 
     private float calculatePowerBlackout(int dim) {
@@ -424,27 +432,27 @@ public class GenericWorldProvider extends CompatWorldProvider implements  /*@tod
     @Override
     public void updateWeather() {
         super.updateWeather();
-        if (!getWorld().isRemote) {
+        if (!world.isRemote) {
             getDimensionInformation();
             if (dimensionInformation != null) {
                 WeatherDescriptor descriptor = dimensionInformation.getWeatherDescriptor();
                 float rs = descriptor.getRainStrength();
                 if (rs > -0.5f) {
-                    getWorld().rainingStrength = rs;
-                    if (Math.abs(getWorld().rainingStrength) < 0.001) {
-                        getWorld().prevRainingStrength = 0;
-                        getWorld().rainingStrength = 0;
-                        getWorld().getWorldInfo().setRaining(false);
+                    world.rainingStrength = rs;
+                    if (Math.abs(world.rainingStrength) < 0.001) {
+                        world.prevRainingStrength = 0;
+                        world.rainingStrength = 0;
+                        world.getWorldInfo().setRaining(false);
                     }
                 }
 
                 float ts = descriptor.getThunderStrength();
                 if (ts > -0.5f) {
-                    getWorld().thunderingStrength = ts;
-                    if (Math.abs(getWorld().thunderingStrength) < 0.001) {
-                        getWorld().prevThunderingStrength = 0;
-                        getWorld().thunderingStrength = 0;
-                        getWorld().getWorldInfo().setThundering(false);
+                    world.thunderingStrength = ts;
+                    if (Math.abs(world.thunderingStrength) < 0.001) {
+                        world.prevThunderingStrength = 0;
+                        world.thunderingStrength = 0;
+                        world.getWorldInfo().setThundering(false);
                     }
                 }
             }

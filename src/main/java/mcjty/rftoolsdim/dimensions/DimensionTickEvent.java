@@ -438,7 +438,7 @@ public class DimensionTickEvent {
                     Random random = new Random();
                     for (EntityPlayer player : players) {
                         if (!RfToolsDimensionManager.checkValidPhasedFieldGenerator(player, true, phasedCost)) {
-                            WorldServer worldServerForDimension = player.getEntityWorld().getMinecraftServer().worldServerForDimension(GeneralConfiguration.spawnDimension);
+                            WorldServer worldServerForDimension = player.getEntityWorld().getMinecraftServer().getWorld(GeneralConfiguration.spawnDimension);
                             int x = random.nextInt(2000) - 1000;
                             int z = random.nextInt(2000) - 1000;
                             int y = worldServerForDimension.getTopSolidOrLiquidBlock(new BlockPos(x, 0, z)).getY();

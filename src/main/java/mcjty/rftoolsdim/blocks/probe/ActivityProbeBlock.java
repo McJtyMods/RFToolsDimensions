@@ -1,6 +1,6 @@
 package mcjty.rftoolsdim.blocks.probe;
 
-import mcjty.lib.compat.CompatBlock;
+import mcjty.lib.McJtyRegister;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.dimensions.DimensionInformation;
 import mcjty.rftoolsdim.dimensions.RfToolsDimensionManager;
@@ -16,11 +16,10 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ActivityProbeBlock extends CompatBlock {
+public class ActivityProbeBlock extends Block {
 
     public ActivityProbeBlock() {
         super(Material.IRON);
@@ -30,8 +29,7 @@ public class ActivityProbeBlock extends CompatBlock {
         setHardness(2.0f);
         setSoundType(SoundType.METAL);
         setHarvestLevel("pickaxe", 0);
-        GameRegistry.register(this);
-        GameRegistry.register(new ItemBlock(this), getRegistryName());
+        McJtyRegister.registerLater(this, RFToolsDim.instance, ItemBlock.class, null);
     }
 
     @SideOnly(Side.CLIENT)
@@ -40,8 +38,8 @@ public class ActivityProbeBlock extends CompatBlock {
     }
 
     @Override
-    protected IBlockState clGetStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
-        IBlockState state = super.clGetStateForPlacement(world, pos, facing, hitX, hitY, hitZ, meta, placer);
+    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
+        IBlockState state = super.getStateForPlacement(world, pos, facing, hitX, hitY, hitZ, meta, placer);
         if (!world.isRemote) {
             RfToolsDimensionManager dimensionManager = RfToolsDimensionManager.getDimensionManager(world);
             DimensionInformation information = dimensionManager.getDimensionInformation(world.provider.getDimension());

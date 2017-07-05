@@ -10,6 +10,7 @@ import mcjty.rftoolsdim.dimensions.dimlets.DimletObjectMapping;
 import mcjty.rftoolsdim.dimensions.dimlets.types.DimletType;
 import mcjty.rftoolsdim.network.PacketGetDimensionEnergy;
 import mcjty.rftoolsdim.network.RFToolsDimMessages;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -54,8 +55,8 @@ public class RealizedDimensionTab extends GenericRFToolsItem {
 
     @SideOnly(Side.CLIENT)
     @Override
-    public void addInformation(ItemStack itemStack, EntityPlayer player, List<String> list, boolean whatIsThis) {
-        super.addInformation(itemStack, player, list, whatIsThis);
+    public void addInformation(ItemStack itemStack, World world, List<String> list, ITooltipFlag whatIsThis) {
+        super.addInformation(itemStack, world, list, whatIsThis);
         NBTTagCompound tagCompound = itemStack.getTagCompound();
         if (tagCompound != null) {
             String name = tagCompound.getString("name");
@@ -74,7 +75,7 @@ public class RealizedDimensionTab extends GenericRFToolsItem {
 
             Integer ticksLeft = tagCompound.getInteger("ticksLeft");
             if (ticksLeft == 0) {
-                DimensionInformation information = RfToolsDimensionManager.getDimensionManager(player.getEntityWorld()).getDimensionInformation(id);
+                DimensionInformation information = RfToolsDimensionManager.getDimensionManager(world).getDimensionInformation(id);
                 if (information == null) {
                     list.add(TextFormatting.RED + "Dimension information Missing!");
                 } else {
@@ -92,7 +93,7 @@ public class RealizedDimensionTab extends GenericRFToolsItem {
                             RFToolsDimMessages.INSTANCE.sendToServer(new PacketGetDimensionEnergy(id));
                         }
 
-                        DimensionStorage storage = DimensionStorage.getDimensionStorage(player.getEntityWorld());
+                        DimensionStorage storage = DimensionStorage.getDimensionStorage(world);
                         int power = storage.getEnergyLevel(id);
                         list.add(TextFormatting.YELLOW + "    Current power: " + power + " RF");
                     }

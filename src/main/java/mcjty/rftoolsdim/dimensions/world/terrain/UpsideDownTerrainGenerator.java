@@ -12,7 +12,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldType;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.ChunkPrimer;
-import net.minecraft.world.gen.ChunkProviderSettings;
+import net.minecraft.world.gen.ChunkGeneratorSettings;
 import net.minecraft.world.gen.NoiseGeneratorOctaves;
 import net.minecraft.world.gen.NoiseGeneratorPerlin;
 import net.minecraftforge.common.MinecraftForge;
@@ -82,7 +82,7 @@ public class UpsideDownTerrainGenerator implements BaseTerrainGenerator {
     }
 
     private void generateHeightmap(int chunkX4, int chunkY4, int chunkZ4) {
-        ChunkProviderSettings settings = provider.getSettings();
+        ChunkGeneratorSettings settings = provider.getSettings();
         this.depthRegion = this.depthNoise.generateNoiseOctaves(this.depthRegion, chunkX4, chunkZ4, 5, 5, settings.depthNoiseScaleX, (double)settings.depthNoiseScaleZ, (double)settings.depthNoiseScaleExponent);
         float f = settings.coordinateScale;
         float f1 = settings.heightScale;

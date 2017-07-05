@@ -23,10 +23,10 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ClassInheritanceMultiMap;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldSavedData;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.ChunkProviderServer;
+import net.minecraft.world.storage.WorldSavedData;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.util.Constants;
 
@@ -211,7 +211,7 @@ public class RfToolsDimensionManager extends WorldSavedData {
 
     public static void unfreezeChunk(Chunk chunk) {
 //        chunk.setChunkLoaded(true);
-        chunk.isChunkLoaded = true;
+        chunk.loaded = true;
         chunk.getWorld().addTileEntities(chunk.getTileEntityMap().values());
         for (ClassInheritanceMultiMap<Entity> entityList : chunk.getEntityLists()) {
             chunk.getWorld().loadedEntityList.addAll(entityList);
@@ -324,7 +324,7 @@ public class RfToolsDimensionManager extends WorldSavedData {
     public static World getWorldForDimension(World world, int id) {
         World w = DimensionManager.getWorld(id);
         if (w == null) {
-            w = world.getMinecraftServer().worldServerForDimension(id);
+            w = world.getMinecraftServer().getWorld(id);
         }
         return w;
     }
@@ -406,7 +406,7 @@ public class RfToolsDimensionManager extends WorldSavedData {
     private void touchSpawnChunk(World world, int id) {
         // Make sure world generation kicks in for at least one chunk so that our matter receiver
         // is generated and registered.
-        WorldServer worldServerForDimension = world.getMinecraftServer().worldServerForDimension(id);
+        WorldServer worldServerForDimension = world.getMinecraftServer().getWorld(id);
         ChunkProviderServer providerServer = worldServerForDimension.getChunkProvider();
         if (!providerServer.chunkExists(0, 0)) {
             try {

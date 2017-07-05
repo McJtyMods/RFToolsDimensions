@@ -8,12 +8,13 @@ import mcjty.rftoolsdim.dimensions.dimlets.types.DimletType;
 import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -96,11 +97,11 @@ public class KnownDimlet extends GenericRFToolsItem {
 
     @SideOnly(Side.CLIENT)
     @Override
-    public void addInformation(ItemStack itemStack, EntityPlayer player, List<String> list, boolean showExtended) {
+    public void addInformation(ItemStack itemStack, World player, List<String> list, ITooltipFlag showExtended) {
         super.addInformation(itemStack, player, list, showExtended);
         DimletKey key = KnownDimletConfiguration.getDimletKey(itemStack);
         Settings settings = KnownDimletConfiguration.getSettings(key);
-        if (showExtended) {
+        if (showExtended.isAdvanced()) {
             list.add(TextFormatting.GOLD + "Key: " + key.getId());
         }
         if (settings == null) {

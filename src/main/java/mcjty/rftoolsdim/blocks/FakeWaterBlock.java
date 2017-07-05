@@ -1,5 +1,6 @@
 package mcjty.rftoolsdim.blocks;
 
+import mcjty.lib.McJtyRegister;
 import mcjty.lib.compat.CompatBlock;
 import mcjty.rftoolsdim.RFToolsDim;
 import net.minecraft.block.material.Material;
@@ -35,8 +36,7 @@ public class FakeWaterBlock extends CompatBlock {
         setRegistryName("fake_water");
 //        setLightLevel(0.6f);
 //        setCreativeTab(RFToolsDim.tabRfToolsDim);
-        GameRegistry.register(this);
-        GameRegistry.register(new ItemBlock(this), getRegistryName());
+        McJtyRegister.registerLater(this, RFToolsDim.instance, ItemBlock.class, null);
     }
 
     @Override

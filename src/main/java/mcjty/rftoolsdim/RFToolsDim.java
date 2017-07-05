@@ -1,7 +1,5 @@
 package mcjty.rftoolsdim;
 
-import com.google.common.base.Function;
-import com.google.common.base.Optional;
 import mcjty.lib.base.ModBase;
 import mcjty.lib.compat.CompatCreativeTabs;
 import mcjty.lib.compat.MainCompatHandler;
@@ -34,6 +32,8 @@ import net.minecraftforge.fml.relauncher.Side;
 
 import javax.annotation.Nullable;
 import java.util.EnumMap;
+import java.util.Optional;
+import java.util.function.Function;
 
 @Mod(modid = RFToolsDim.MODID, name="RFTools Dimensions",
         dependencies =

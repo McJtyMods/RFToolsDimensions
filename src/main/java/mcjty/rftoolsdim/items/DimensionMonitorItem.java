@@ -13,6 +13,7 @@ import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
@@ -112,10 +113,10 @@ public class DimensionMonitorItem extends GenericRFToolsItem {
 //    }
 
     @Override
-    public void addInformation(ItemStack itemStack, EntityPlayer player, List<String> list, boolean whatIsThis) {
-        super.addInformation(itemStack, player, list, whatIsThis);
-        int id = player.getEntityWorld().provider.getDimension();
-        RfToolsDimensionManager dimensionManager = RfToolsDimensionManager.getDimensionManagerNullable(player.getEntityWorld());
+    public void addInformation(ItemStack itemStack, World world, List<String> list, ITooltipFlag whatIsThis) {
+        super.addInformation(itemStack, world, list, whatIsThis);
+        int id = world.provider.getDimension();
+        RfToolsDimensionManager dimensionManager = RfToolsDimensionManager.getDimensionManagerNullable(world);
         DimensionInformation dimensionInformation = dimensionManager == null ? null : dimensionManager.getDimensionInformation(id);
         if (dimensionInformation == null) {
             list.add("Not an RFTools dimension!");
@@ -125,7 +126,7 @@ public class DimensionMonitorItem extends GenericRFToolsItem {
                 RFToolsDimMessages.INSTANCE.sendToServer(new PacketGetDimensionEnergy(id));
             }
             String name = dimensionInformation.getName();
-            DimensionStorage storage = DimensionStorage.getDimensionStorage(player.getEntityWorld());
+            DimensionStorage storage = DimensionStorage.getDimensionStorage(world);
             int power = storage != null ? storage.getEnergyLevel(id) : 0;
 
             list.add(TextFormatting.BLUE + "Name: " + name + " (Id " + id + ")");

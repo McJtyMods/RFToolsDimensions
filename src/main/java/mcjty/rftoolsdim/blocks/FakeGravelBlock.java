@@ -1,5 +1,6 @@
 package mcjty.rftoolsdim.blocks;
 
+import mcjty.lib.McJtyRegister;
 import mcjty.lib.compat.CompatBlock;
 import mcjty.rftoolsdim.RFToolsDim;
 import net.minecraft.block.material.Material;
@@ -12,7 +13,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -28,8 +28,7 @@ public class FakeGravelBlock extends CompatBlock {
         setRegistryName("fake_gravel");
 //        setLightLevel(0.6f);
 //        setCreativeTab(RFToolsDim.tabRfToolsDim);
-        GameRegistry.register(this);
-        GameRegistry.register(new ItemBlock(this), getRegistryName());
+        McJtyRegister.registerLater(this, RFToolsDim.instance, ItemBlock.class, null);
     }
 
     @Override

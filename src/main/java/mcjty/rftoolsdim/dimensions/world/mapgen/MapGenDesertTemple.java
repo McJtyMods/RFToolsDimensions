@@ -1,20 +1,17 @@
 package mcjty.rftoolsdim.dimensions.world.mapgen;
 
 import com.google.common.collect.Lists;
-import mcjty.lib.compat.CompatMapGenStructure;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.ChunkPrimer;
-import net.minecraft.world.gen.structure.ComponentScatteredFeaturePieces;
-import net.minecraft.world.gen.structure.MapGenScatteredFeature;
-import net.minecraft.world.gen.structure.StructureComponent;
-import net.minecraft.world.gen.structure.StructureStart;
+import net.minecraft.world.gen.structure.*;
 
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
 
-public class MapGenDesertTemple extends CompatMapGenStructure {
+public class MapGenDesertTemple extends MapGenStructure {
     private List<Biome.SpawnListEntry> scatteredFeatureSpawnList;
 
     private int maxDistance;
@@ -36,11 +33,6 @@ public class MapGenDesertTemple extends CompatMapGenStructure {
     @Override
     public String getStructureName() {
         return "RFTDesertTemple";
-    }
-
-    @Override
-    public BlockPos clGetClosestStrongholdPos(World worldIn, BlockPos position) {
-        return null;
     }
 
     @Override
@@ -105,4 +97,10 @@ public class MapGenDesertTemple extends CompatMapGenStructure {
         }
     }
 
+    @Nullable
+    @Override
+    public BlockPos getNearestStructurePos(World worldIn, BlockPos pos, boolean findUnexplored) {
+        this.world = worldIn;
+        return findNearestStructurePosBySpacing(worldIn, this, pos, this.maxDistance, 8, 14357617, false, 100, findUnexplored);
+    }
 }

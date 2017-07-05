@@ -106,7 +106,7 @@ public enum ControllerType {
     CONTROLLER_FOREST("Forest", 0, new BiomeFilter() {
         @Override
         public boolean match(Biome biome) {
-            return biome.theBiomeDecorator.treesPerChunk >= 5;
+            return biome.decorator.treesPerChunk >= 5;
         }
 
         @Override

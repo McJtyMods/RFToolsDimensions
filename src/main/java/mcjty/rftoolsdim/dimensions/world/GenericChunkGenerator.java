@@ -1,7 +1,5 @@
 package mcjty.rftoolsdim.dimensions.world;
 
-import mcjty.lib.compat.CompatChunkGenerator;
-import mcjty.lib.compat.CompatMapGenStructure;
 import mcjty.rftoolsdim.blocks.ModBlocks;
 import mcjty.rftoolsdim.config.OresAPlentyConfiguration;
 import mcjty.rftoolsdim.config.WorldgenConfiguration;
@@ -45,6 +43,7 @@ import net.minecraftforge.event.terraingen.OreGenEvent;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 import net.minecraftforge.event.terraingen.TerrainGen;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -52,7 +51,7 @@ import java.util.Random;
 
 import static net.minecraftforge.event.terraingen.InitMapGenEvent.EventType.*;
 
-public class GenericChunkGenerator implements CompatChunkGenerator {
+public class GenericChunkGenerator implements IChunkGenerator {
 
     public Random rand;
     public long seed;
@@ -62,7 +61,7 @@ public class GenericChunkGenerator implements CompatChunkGenerator {
     public WorldType worldType;
     private final BaseTerrainGenerator terrainGenerator;
 
-    private ChunkProviderSettings settings = null;
+    private ChunkGeneratorSettings settings = null;
 
     private List<Biome.SpawnListEntry> extraSpawns;
     private List<Integer> extraSpawnsMax;
@@ -179,10 +178,10 @@ public class GenericChunkGenerator implements CompatChunkGenerator {
     // Holds ravine generator
     private MapGenBase ravineGenerator = new MapGenRavine();
 
-    public ChunkProviderSettings getSettings() {
+    public ChunkGeneratorSettings getSettings() {
         if (settings == null) {
             System.out.println("dimensionInformation = " + dimensionInformation);
-            ChunkProviderSettings.Factory factory = new ChunkProviderSettings.Factory();
+            ChunkGeneratorSettings.Factory factory = new ChunkGeneratorSettings.Factory();
             factory.lapisCount *= 5;
             factory.lapisSize *= 5;
             factory.diamondCount *= 5;
@@ -311,7 +310,7 @@ public class GenericChunkGenerator implements CompatChunkGenerator {
     }
 
     @Override
-    public Chunk provideChunk(int chunkX, int chunkZ) {
+    public Chunk generateChunk(int chunkX, int chunkZ) {
         this.rand.setSeed(chunkX * 341873128712L + chunkZ * 132897987541L);
         ChunkPrimer chunkprimer = new ChunkPrimer();
 
@@ -710,13 +709,6 @@ public class GenericChunkGenerator implements CompatChunkGenerator {
     }
 
     @Override
-    public BlockPos clGetStrongholdGen(World worldIn, String structureName, BlockPos position) {
-        return "Stronghold".equals(structureName) && this.strongholdGenerator != null
-                ? CompatMapGenStructure.getClosestStrongholdPos(this.strongholdGenerator, worldIn, position)
-                : null;
-    }
-
-    @Override
     public void recreateStructures(Chunk chunkIn, int x, int z) {
         if (dimensionInformation.hasStructureType(StructureType.STRUCTURE_FORTRESS)) {
             this.genNetherBridge.generate(this.worldObj, x, z, null);
@@ -790,4 +782,38 @@ public class GenericChunkGenerator implements CompatChunkGenerator {
         }
     }
 
+    @Nullable
+    @Override
+    public BlockPos getNearestStructurePos(World worldIn, String structureName, BlockPos position, boolean findUnexplored) {
+        if ("Stronghold".equals(structureName) && this.strongholdGenerator != null) {
+            return this.strongholdGenerator.getNearestStructurePos(worldIn, position, findUnexplored);
+//        } else if ("Mansion".equals(structureName) && this.woodlandMansionGenerator != null) {
+//            return this.woodlandMansionGenerator.getNearestStructurePos(worldIn, position, findUnexplored);
+        } else if ("Monument".equals(structureName) && this.oceanMonumentGenerator != null) {
+            return this.oceanMonumentGenerator.getNearestStructurePos(worldIn, position, findUnexplored);
+        } else if ("Village".equals(structureName) && this.villageGenerator != null) {
+            return this.villageGenerator.getNearestStructurePos(worldIn, position, findUnexplored);
+        } else if ("Mineshaft".equals(structureName) && this.mineshaftGenerator != null) {
+            return this.mineshaftGenerator.getNearestStructurePos(worldIn, position, findUnexplored);
+        } else {
+            return "Temple".equals(structureName) && this.scatteredFeatureGenerator != null ? this.scatteredFeatureGenerator.getNearestStructurePos(worldIn, position, findUnexplored) : null;
+        }
+    }
+
+    @Override
+    public boolean isInsideStructure(World worldIn, String structureName, BlockPos pos) {
+        if ("Stronghold".equals(structureName) && this.strongholdGenerator != null) {
+            return this.strongholdGenerator.isInsideStructure(pos);
+//        } else if ("Mansion".equals(structureName) && this.woodlandMansionGenerator != null) {
+//            return this.woodlandMansionGenerator.isInsideStructure(pos);
+        } else if ("Monument".equals(structureName) && this.oceanMonumentGenerator != null) {
+            return this.oceanMonumentGenerator.isInsideStructure(pos);
+        } else if ("Village".equals(structureName) && this.villageGenerator != null) {
+            return this.villageGenerator.isInsideStructure(pos);
+        } else if ("Mineshaft".equals(structureName) && this.mineshaftGenerator != null) {
+            return this.mineshaftGenerator.isInsideStructure(pos);
+        } else {
+            return "Temple".equals(structureName) && this.scatteredFeatureGenerator != null ? this.scatteredFeatureGenerator.isInsideStructure(pos) : false;
+        }
+    }
 }

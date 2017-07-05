@@ -1,10 +1,10 @@
 package mcjty.rftoolsdim.items;
 
+import mcjty.lib.McJtyRegister;
 import mcjty.lib.compat.CompatItem;
 import mcjty.rftoolsdim.RFToolsDim;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -14,7 +14,7 @@ public class GenericRFToolsItem extends CompatItem {
         setUnlocalizedName(name);
         setRegistryName(name);
         setCreativeTab(RFToolsDim.tabRfToolsDim);
-        GameRegistry.register(this);
+        McJtyRegister.registerLater(this, RFToolsDim.instance);
     }
 
     @SideOnly(Side.CLIENT)

@@ -1,5 +1,6 @@
 package mcjty.rftoolsdim.blocks.shards;
 
+import mcjty.lib.McJtyRegister;
 import mcjty.rftoolsdim.RFToolsDim;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -15,7 +16,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -29,8 +29,7 @@ public abstract class AbstractDirectionalBlock extends Block {
         setUnlocalizedName(RFToolsDim.MODID + "." + name);
         setRegistryName(name);
         setCreativeTab(RFToolsDim.tabRfToolsDim);
-        GameRegistry.register(this);
-        GameRegistry.register(new ItemBlock(this), getRegistryName());
+        McJtyRegister.registerLater(this, RFToolsDim.instance, ItemBlock.class, null);
     }
 
     @SideOnly(Side.CLIENT)

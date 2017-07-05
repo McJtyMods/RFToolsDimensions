@@ -1,7 +1,6 @@
 package mcjty.rftoolsdim.dimensions.world.mapgen;
 
 import com.google.common.collect.Lists;
-import mcjty.lib.compat.CompatMapGenStructure;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
@@ -12,7 +11,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
 
-public class MapGenJungleTemple extends CompatMapGenStructure {
+public class MapGenJungleTemple extends MapGenStructure {
     private List<Biome.SpawnListEntry> scatteredFeatureSpawnList;
 
     private int maxDistance;
@@ -69,11 +68,6 @@ public class MapGenJungleTemple extends CompatMapGenStructure {
         return new MapGenJungleTemple.Start(this.rand, chunkX, chunkZ);
     }
 
-    @Override
-    public BlockPos clGetClosestStrongholdPos(World worldIn, BlockPos position) {
-        return null;
-    }
-
     public boolean func_175798_a(BlockPos p_175798_1_) {
         StructureStart structurestart = this.getStructureAt(p_175798_1_);
 
@@ -102,4 +96,10 @@ public class MapGenJungleTemple extends CompatMapGenStructure {
         }
     }
 
+    @Nullable
+    @Override
+    public BlockPos getNearestStructurePos(World worldIn, BlockPos pos, boolean findUnexplored) {
+        this.world = worldIn;
+        return findNearestStructurePosBySpacing(worldIn, this, pos, this.maxDistance, 8, 14357617, false, 100, findUnexplored);
+    }
 }

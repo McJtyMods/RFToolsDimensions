@@ -1,6 +1,7 @@
 package mcjty.rftoolsdim.blocks.energyextractor;
 
-import cofh.api.energy.IEnergyConnection;
+import mcjty.lib.McJtyLib;
+import mcjty.lib.compat.RedstoneFluxCompatibility;
 import mcjty.lib.entity.GenericEnergyProviderTileEntity;
 import mcjty.lib.varia.EnergyTools;
 import mcjty.rftoolsdim.config.MachineConfiguration;
@@ -9,6 +10,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.energy.CapabilityEnergy;
 
 public class EnergyExtractorTileEntity extends GenericEnergyProviderTileEntity implements ITickable {
 
@@ -54,14 +56,13 @@ public class EnergyExtractorTileEntity extends GenericEnergyProviderTileEntity i
         for (EnumFacing facing : EnumFacing.values()) {
             BlockPos pos = getPos().offset(facing);
             TileEntity te = getWorld().getTileEntity(pos);
-            if (EnergyTools.isEnergyTE(te)) {
-                EnumFacing opposite = facing.getOpposite();
+            EnumFacing opposite = facing.getOpposite();
+            if (EnergyTools.isEnergyTE(te) || (te != null && te.hasCapability(CapabilityEnergy.ENERGY, opposite))) {
                 int rfToGive = rf <= energyStored ? rf : energyStored;
                 int received;
 
-                if (te instanceof IEnergyConnection) {
-                    IEnergyConnection connection = (IEnergyConnection) te;
-                    if (connection.canConnectEnergy(opposite)) {
+                if (McJtyLib.redstoneflux && RedstoneFluxCompatibility.isEnergyConnection(te)) {
+                    if (RedstoneFluxCompatibility.canConnectEnergy(te, opposite)) {
                         received = EnergyTools.receiveEnergy(te, opposite, rfToGive);
                     } else {
                         received = 0;

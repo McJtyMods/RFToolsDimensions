@@ -1,7 +1,6 @@
 package mcjty.rftoolsdim.dimensions.world.mapgen;
 
 import com.google.common.collect.Lists;
-import mcjty.lib.compat.CompatMapGenStructure;
 import net.minecraft.entity.monster.EntityWitch;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -13,7 +12,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
 
-public class MapGenSwampHut extends CompatMapGenStructure {
+public class MapGenSwampHut extends MapGenStructure {
     private List<Biome.SpawnListEntry> scatteredFeatureSpawnList;
 
     private int maxDistance;
@@ -69,11 +68,6 @@ public class MapGenSwampHut extends CompatMapGenStructure {
     }
 
     @Override
-    public BlockPos clGetClosestStrongholdPos(World worldIn, BlockPos position) {
-        return null;
-    }
-
-    @Override
     protected StructureStart getStructureStart(int chunkX, int chunkZ) {
         return new MapGenSwampHut.Start(this.rand, chunkX, chunkZ);
     }
@@ -105,4 +99,10 @@ public class MapGenSwampHut extends CompatMapGenStructure {
         }
     }
 
+    @Nullable
+    @Override
+    public BlockPos getNearestStructurePos(World worldIn, BlockPos pos, boolean findUnexplored) {
+        this.world = worldIn;
+        return findNearestStructurePosBySpacing(worldIn, this, pos, this.maxDistance, 8, 14357617, false, 100, findUnexplored);
+    }
 }

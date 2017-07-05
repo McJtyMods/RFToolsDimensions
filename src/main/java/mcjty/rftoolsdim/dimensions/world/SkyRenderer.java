@@ -67,7 +67,7 @@ public class SkyRenderer {
             GlStateManager.popMatrix();
 
             Tessellator tessellator = Tessellator.getInstance();
-            VertexBuffer renderer = tessellator.getBuffer();
+            BufferBuilder renderer = tessellator.getBuffer();
             glSkyList = GLAllocation.generateDisplayLists(1);
             GL11.glNewList(glSkyList, GL11.GL_COMPILE);
             byte b2 = 64;
@@ -232,7 +232,7 @@ public class SkyRenderer {
         GlStateManager.depthMask(false);
 
         Tessellator tessellator = Tessellator.getInstance();
-        VertexBuffer renderer = tessellator.getBuffer();
+        BufferBuilder renderer = tessellator.getBuffer();
 
         for (int i = 0; i < 6; ++i) {
             GlStateManager.pushMatrix();
@@ -323,7 +323,7 @@ public class SkyRenderer {
 
         renderEngine.bindTexture(locationEndSkyPng);
         Tessellator tessellator = Tessellator.getInstance();
-        VertexBuffer renderer = tessellator.getBuffer();
+        BufferBuilder renderer = tessellator.getBuffer();
 
         for (int i = 0; i < 6; ++i) {
             GlStateManager.pushMatrix();
@@ -377,9 +377,9 @@ public class SkyRenderer {
 
         GlStateManager.disableTexture2D();
         Vec3d vec3 = world.getSkyColor(player, partialTickTime);
-        float skyRed = (float) vec3.xCoord;
-        float skyGreen = (float) vec3.yCoord;
-        float skyBlue = (float) vec3.zCoord;
+        float skyRed = (float) vec3.x;
+        float skyGreen = (float) vec3.y;
+        float skyBlue = (float) vec3.z;
 
         boolean anaglyph = Minecraft.getMinecraft().gameSettings.anaglyph;
         if (anaglyph) {
@@ -393,7 +393,7 @@ public class SkyRenderer {
 
         GlStateManager.color(skyRed, skyGreen, skyBlue);
         Tessellator tessellator = Tessellator.getInstance();
-        VertexBuffer renderer = tessellator.getBuffer();
+        BufferBuilder renderer = tessellator.getBuffer();
         GlStateManager.depthMask(false);
         GlStateManager.enableFog();
         GlStateManager.color(skyRed, skyGreen, skyBlue);
@@ -533,7 +533,7 @@ public class SkyRenderer {
         ResourceLocation sun = getSun(information);
         ResourceLocation moon = getMoon(information);
 
-        VertexBuffer renderer = tessellator.getBuffer();
+        BufferBuilder renderer = tessellator.getBuffer();
 
         if (celestialBodies.isEmpty()) {
             GlStateManager.color(1.0F, 1.0F, 1.0F, f6);
@@ -709,7 +709,7 @@ public class SkyRenderer {
             f16 = (l + 1) / 4.0F;
             f17 = (i1 + 1) / 2.0F;
         }
-        VertexBuffer renderer = tessellator.getBuffer();
+        BufferBuilder renderer = tessellator.getBuffer();
         renderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
         renderer.pos((-size), -100.0D, size).tex(f16, f17).endVertex();
         renderer.pos(size, -100.0D, size).tex(f14, f17).endVertex();
@@ -725,7 +725,7 @@ public class SkyRenderer {
         angle = angle * factor + offset;
         GlStateManager.rotate(angle * 360.0F, 1.0F, 0.0F, 0.0F);
         renderEngine.bindTexture(sun);
-        VertexBuffer renderer = tessellator.getBuffer();
+        BufferBuilder renderer = tessellator.getBuffer();
         renderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
         renderer.pos((-size), 100.0D, (-size)).tex(0.0D, 0.0D).endVertex();
         renderer.pos(size, 100.0D, (-size)).tex(1.0D, 0.0D).endVertex();
@@ -741,7 +741,7 @@ public class SkyRenderer {
         angle = angle * factor + offset;
         GlStateManager.rotate(angle * 360.0F, 1.0F, 0.0F, 0.0F);
         renderEngine.bindTexture(locationPlanetPng);
-        VertexBuffer renderer = tessellator.getBuffer();
+        BufferBuilder renderer = tessellator.getBuffer();
         renderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
         renderer.pos((-size), 100.0D, (-size)).tex(0.0D, 0.0D).endVertex();
         renderer.pos(size, 100.0D, (-size)).tex(1.0D, 0.0D).endVertex();
@@ -753,7 +753,7 @@ public class SkyRenderer {
     private static void renderStars() {
         Random random = new Random(10842L);
         Tessellator tessellator = Tessellator.getInstance();
-        VertexBuffer renderer = tessellator.getBuffer();
+        BufferBuilder renderer = tessellator.getBuffer();
         renderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
 
         for (int i = 0; i < 1500; ++i) {
@@ -826,9 +826,9 @@ public class SkyRenderer {
         GlStateManager.enableBlend();
         GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
         Vec3d vec3 = provider.getWorld().getCloudColour(partialTicks);
-        float red = (float) vec3.xCoord;
-        float green = (float) vec3.yCoord;
-        float blue = (float) vec3.zCoord;
+        float red = (float) vec3.x;
+        float green = (float) vec3.y;
+        float blue = (float) vec3.z;
         float f8;
         float f9;
         float f10;
@@ -857,7 +857,7 @@ public class SkyRenderer {
         float cb = information.getSkyDescriptor().getCloudColorFactorB();
         boolean randomColors = information.isPatreonBitSet(Patreons.PATREON_KENNEY);
 
-        VertexBuffer renderer = tessellator.getBuffer();
+        BufferBuilder renderer = tessellator.getBuffer();
 
         for (int k = 0; k < 2; ++k) {
             if (k == 0) {
