@@ -1,0 +1,26 @@
+{
+  "result": {
+    "nbt": {
+      "dkey": "Normal"
+    },
+    "item": "rftoolsdim:known_dimlet",
+    "data": 4
+  },
+  "pattern": [
+    " r ",
+    "rwr",
+    "ppp"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "p": {
+      "item": "rftoolsdim:dimlet_template"
+    },
+    "r": {
+      "item": "minecraft:redstone"
+    },
+    "w": {
+      "item": "minecraft:feather"
+    }
+  }
+}

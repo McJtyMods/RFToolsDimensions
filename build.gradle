@@ -60,9 +60,9 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 minecraft {
-    version = "1.12-14.21.0.2385"
+    version = "1.12-14.21.1.2406"
     runDir = "run"
-    mappings = "snapshot_20170628"
+    mappings = "snapshot_20170710"
     useDepAts = true
 }
 
@@ -84,7 +84,7 @@ dependencies {
     deobfCompile "cofh:RedstoneFlux:1.12-2.0.0.1:universal"
     deobfCompile "com.github.mcjty:intwheel:1.12-1.2.7"
     deobfCompile "com.github.mcjty:mcjtylib:1.12-2.4.3-SNAPSHOT"
-    deobfCompile "com.github.mcjty:rftools:1.12-6.10beta3"
+    deobfCompile "com.github.mcjty:rftools:1.12-6.10beta4"
     deobfCompile "team.chisel:Chisel:MC1.11.2-0.0.10.14:api"
     //compile "li.cil.oc:OpenComputers:MC1.7.10-1.5.+:api"
 }

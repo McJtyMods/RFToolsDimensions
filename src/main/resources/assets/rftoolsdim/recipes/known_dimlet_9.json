@@ -1,0 +1,26 @@
+{
+  "result": {
+    "nbt": {
+      "dkey": "0"
+    },
+    "item": "rftoolsdim:known_dimlet",
+    "data": 9
+  },
+  "pattern": [
+    " r ",
+    "rtr",
+    "ppp"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "p": {
+      "item": "minecraft:paper"
+    },
+    "r": {
+      "item": "minecraft:redstone"
+    },
+    "t": {
+      "item": "minecraft:redstone_torch"
+    }
+  }
+}

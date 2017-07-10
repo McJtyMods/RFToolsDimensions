@@ -1,0 +1,26 @@
+{
+  "result": {
+    "nbt": {
+      "dkey": "Default"
+    },
+    "item": "rftoolsdim:known_dimlet",
+    "data": 13
+  },
+  "pattern": [
+    " r ",
+    "rwr",
+    "ppp"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "p": {
+      "item": "minecraft:paper"
+    },
+    "r": {
+      "item": "minecraft:redstone"
+    },
+    "w": {
+      "item": "minecraft:snowball"
+    }
+  }
+}

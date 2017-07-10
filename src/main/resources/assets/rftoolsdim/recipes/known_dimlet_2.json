@@ -1,0 +1,27 @@
+{
+  "result": {
+    "nbt": {
+      "dkey": "minecraft:stone@0"
+    },
+    "item": "rftoolsdim:known_dimlet",
+    "data": 2
+  },
+  "pattern": [
+    " r ",
+    "rwr",
+    "ppp"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "p": {
+      "item": "minecraft:paper"
+    },
+    "r": {
+      "item": "minecraft:redstone"
+    },
+    "w": {
+      "item": "minecraft:dirt",
+      "data": 0
+    }
+  }
+}

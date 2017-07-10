@@ -2,8 +2,10 @@ package mcjty.rftoolsdim;
 
 import mcjty.rftoolsdim.config.GeneralConfiguration;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletObjectMapping;
+import mcjty.rftoolsdim.dimensions.dimlets.KnownDimletConfiguration;
 import mcjty.rftoolsdim.dimensions.dimlets.types.DimletType;
 import mcjty.rftoolsdim.items.ModItems;
+import mcjty.rftoolsdim.varia.MyGameReg;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -12,17 +14,16 @@ import net.minecraft.init.Enchantments;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.item.crafting.ShapedRecipes;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
-import net.minecraftforge.oredict.RecipeSorter;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class ModCrafting {
-    static {
-        RecipeSorter.register("rftoolsdim:nbtmatchingrecipe", NBTMatchingRecipe.class, RecipeSorter.Category.SHAPED, "after:minecraft:shaped");
-    }
 
     public static void init() {
         initDimletRecipes();
@@ -34,23 +35,23 @@ public class ModCrafting {
     }
 
     private static void initEssenceRecipes() {
-        String[] pickMatcher = new String[] { "ench" };
+        String[] pickMatcher = new String[]{"ench"};
 
         ItemStack diamondPick = createEnchantedItem(Items.DIAMOND_PICKAXE, Enchantments.EFFICIENCY, 3);
-//        MyGameReg.addRecipe(new NBTMatchingRecipe(3, 3,
-//                new ItemStack[] {ItemStackTools.getEmptyStack(), diamondPick, ItemStackTools.getEmptyStack(),
-//                        new ItemStack(Items.ENDER_EYE), new ItemStack(Items.NETHER_STAR), new ItemStack(Items.ENDER_EYE),
-//                        ItemStackTools.getEmptyStack(), new ItemStack(Items.ENDER_EYE), ItemStackTools.getEmptyStack()},
-//                new String[][] {null, pickMatcher, null, null, null, null, null, null, null},
-//                new ItemStack(ModItems.efficiencyEssenceItem)));
+        ForgeRegistries.RECIPES.register(new NBTMatchingRecipe(3, 3,
+                new ItemStack[]{ItemStack.EMPTY, diamondPick, ItemStack.EMPTY,
+                        new ItemStack(Items.ENDER_EYE), new ItemStack(Items.NETHER_STAR), new ItemStack(Items.ENDER_EYE),
+                        ItemStack.EMPTY, new ItemStack(Items.ENDER_EYE), ItemStack.EMPTY},
+                new String[][]{null, pickMatcher, null, null, null, null, null, null, null},
+                new ItemStack(ModItems.efficiencyEssenceItem)).setRegistryName(new ResourceLocation(RFToolsDim.MODID, "efficiency")));
 
         ItemStack ironPick = createEnchantedItem(Items.IRON_PICKAXE, Enchantments.EFFICIENCY, 2);
-//        MyGameReg.addRecipe(new NBTMatchingRecipe(3, 3,
-//                new ItemStack[] {ItemStackTools.getEmptyStack(), ironPick, ItemStackTools.getEmptyStack(),
-//                        new ItemStack(Items.ENDER_EYE), new ItemStack(Items.GHAST_TEAR), new ItemStack(Items.ENDER_EYE),
-//                        ItemStackTools.getEmptyStack(), new ItemStack(Items.ENDER_EYE), ItemStackTools.getEmptyStack()},
-//                new String[][] {null, pickMatcher, null, null, null, null, null, null, null},
-//                new ItemStack(ModItems.mediocreEfficiencyEssenceItem)));
+        ForgeRegistries.RECIPES.register(new NBTMatchingRecipe(3, 3,
+                new ItemStack[]{ItemStack.EMPTY, ironPick, ItemStack.EMPTY,
+                        new ItemStack(Items.ENDER_EYE), new ItemStack(Items.GHAST_TEAR), new ItemStack(Items.ENDER_EYE),
+                        ItemStack.EMPTY, new ItemStack(Items.ENDER_EYE), ItemStack.EMPTY},
+                new String[][]{null, pickMatcher, null, null, null, null, null, null, null},
+                new ItemStack(ModItems.mediocreEfficiencyEssenceItem)).setRegistryName(new ResourceLocation(RFToolsDim.MODID, "mediocre")));
     }
 
     public static ItemStack createEnchantedItem(Item item, Enchantment enchantment, int amount) {
@@ -95,13 +96,14 @@ public class ModCrafting {
     }
 
     private static void addDigitRecipe(String source, String dest) {
-//        MyGameReg.addRecipe(new NBTMatchingRecipe(1, 1,
-//                                                     new ItemStack[] { KnownDimletConfiguration.getDimletStack(DimletType.DIMLET_DIGIT, source) },
-//                                                     new String[][] { new String[] { "dkey" } },
-//                                                     KnownDimletConfiguration.getDimletStack(DimletType.DIMLET_DIGIT, dest)));
+        ForgeRegistries.RECIPES.register(new NBTMatchingRecipe(1, 1,
+                new ItemStack[]{KnownDimletConfiguration.getDimletStack(DimletType.DIMLET_DIGIT, source)},
+                new String[][]{new String[]{"dkey"}},
+                KnownDimletConfiguration.getDimletStack(DimletType.DIMLET_DIGIT, dest))
+                .setRegistryName(new ResourceLocation(RFToolsDim.MODID, "digit" + dest)));
     }
 
     private static void addRecipe(DimletType type, String id, Object... params) {
-//        MyGameReg.addRecipe(KnownDimletConfiguration.getDimletStack(type, id), params);
+        MyGameReg.addRecipe(KnownDimletConfiguration.getDimletStack(type, id), params);
     }
 }
