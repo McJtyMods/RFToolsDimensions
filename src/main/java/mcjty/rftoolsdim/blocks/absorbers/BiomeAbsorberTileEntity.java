@@ -65,7 +65,7 @@ public class BiomeAbsorberTileEntity extends GenericTileEntity implements ITicka
             return null;
         }
         Biome biome = Biome.REGISTRY.getObject(new ResourceLocation(biomeId));
-        return biome == null ? null : biome.getBiomeName();
+        return biome == null ? null : biome.biomeName;
     }
 
     public void placeDown() {

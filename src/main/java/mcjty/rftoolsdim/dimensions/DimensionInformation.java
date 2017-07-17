@@ -720,7 +720,7 @@ public class DimensionInformation implements IDimensionInformation {
         logDebug(player, "    Biome controller: " + (controllerType == null ? "<null>" : controllerType.name()));
         for (Biome biome : getBiomes()) {
             if (biome != null) {
-                logDebug(player, "    Biome: " + biome.getBiomeName());
+                logDebug(player, "    Biome: " + biome.biomeName);
             }
         }
         for (FeatureType featureType : getFeatureTypes()) {

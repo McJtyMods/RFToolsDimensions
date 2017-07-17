@@ -402,7 +402,7 @@ public class KnownDimletConfiguration {
         switch (key.getType()) {
             case DIMLET_BIOME:
                 Biome biome = Biome.REGISTRY.getObject(new ResourceLocation(key.getId()));
-                return biome == null ? "<invalid>" : biome.getBiomeName();
+                return biome == null ? "<invalid>" : biome.biomeName;
             case DIMLET_LIQUID:
                 Block fluid = DimletObjectMapping.getFluid(key);
                 if (fluid != null) {

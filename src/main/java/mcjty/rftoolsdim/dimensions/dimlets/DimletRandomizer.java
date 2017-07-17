@@ -224,7 +224,7 @@ public class DimletRandomizer {
         while(true) {
             Biome biome = Biome.REGISTRY.getObject(keys.get(random.nextInt(size)));
             if (biome != null) {
-                return new DimletKey(DimletType.DIMLET_BIOME, biome.getBiomeName());
+                return new DimletKey(DimletType.DIMLET_BIOME, biome.biomeName);
             }
         }
     }
