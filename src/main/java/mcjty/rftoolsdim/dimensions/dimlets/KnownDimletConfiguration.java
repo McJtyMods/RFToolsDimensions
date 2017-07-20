@@ -411,7 +411,7 @@ public class KnownDimletConfiguration {
                 break;
             case DIMLET_MATERIAL:
                 IBlockState state = DimletObjectMapping.getBlock(key);
-                if (state != null) {
+                if (state != null && state.getBlock() != null && state.getBlock().getRegistryName() != null) {
                     String modid = state.getBlock().getRegistryName().getResourceDomain();
                     int meta = state.getBlock().getMetaFromState(state);
                     ItemStack stack = new ItemStack(state.getBlock(), 1, meta);
