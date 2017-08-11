@@ -39,6 +39,7 @@ import java.util.function.Function;
                         "required-after:mcjtylib_ng@[" + RFToolsDim.MIN_MCJTYLIB_VER + ",);" +
                         "required-after:rftools@[" + RFToolsDim.MIN_RFTOOLS_VER + ",);" +
                         "after:forge@[" + RFToolsDim.MIN_FORGE11_VER + ",)",
+        acceptedMinecraftVersions = "[1.12,1.13)",
         version = RFToolsDim.VERSION)
 public class RFToolsDim implements ModBase {
     public static final String MODID = "rftoolsdim";
