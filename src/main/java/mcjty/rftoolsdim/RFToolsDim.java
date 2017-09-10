@@ -44,11 +44,8 @@ import java.util.function.Function;
         version = RFToolsDim.VERSION)
 public class RFToolsDim implements ModBase {
     public static final String MODID = "rftoolsdim";
-    public static final String VERSION = "5.04";
     public static final String MIN_RFTOOLS_VER = "6.10";
     public static final String VERSION = "5.05";
-    public static final String MIN_RFTOOLS_VER = "5.81";
-    public static final String MIN_FORGE10_VER = "12.18.1.2082";
     public static final String MIN_FORGE11_VER = "13.19.0.2176";
     public static final String MIN_MCJTYLIB_VER = "2.4.3";
 
