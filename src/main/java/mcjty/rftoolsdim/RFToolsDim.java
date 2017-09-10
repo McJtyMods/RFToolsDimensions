@@ -16,6 +16,7 @@ import mcjty.rftoolsdim.dimensions.RfToolsDimensionManager;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletRandomizer;
 import mcjty.rftoolsdim.dimensions.dimlets.KnownDimletConfiguration;
 import mcjty.rftoolsdim.items.ModItems;
+import mcjty.rftoolsdim.items.manual.GuiRFToolsManual;
 import mcjty.rftoolsdim.network.DimensionSyncChannelHandler;
 import mcjty.rftoolsdim.proxy.CommonProxy;
 import net.minecraft.creativetab.CreativeTabs;
@@ -45,6 +46,9 @@ public class RFToolsDim implements ModBase {
     public static final String MODID = "rftoolsdim";
     public static final String VERSION = "5.04";
     public static final String MIN_RFTOOLS_VER = "6.10";
+    public static final String VERSION = "5.05";
+    public static final String MIN_RFTOOLS_VER = "5.81";
+    public static final String MIN_FORGE10_VER = "12.18.1.2082";
     public static final String MIN_FORGE11_VER = "13.19.0.2176";
     public static final String MIN_MCJTYLIB_VER = "2.4.3";
 
@@ -163,7 +167,7 @@ public class RFToolsDim implements ModBase {
 
     @Override
     public void openManual(EntityPlayer player, int bookIndex, String page) {
-//        GuiRFToolsManual.locatePage = page;
+        GuiRFToolsManual.locatePage = page;
         player.openGui(RFToolsDim.instance, bookIndex, player.getEntityWorld(), (int) player.posX, (int) player.posY, (int) player.posZ);
     }
 
