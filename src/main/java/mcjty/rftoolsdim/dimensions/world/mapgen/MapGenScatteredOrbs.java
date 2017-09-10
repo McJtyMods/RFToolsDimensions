@@ -48,12 +48,13 @@ public class MapGenScatteredOrbs {
 
     private void fillSphere(ChunkPrimer primer, int centerx, int centery, int centerz, int radius, IBlockState block,
                             Random random) {
+        int miny = Math.max(1, centery - radius);
         for (int x = 0 ; x < 16 ; x++) {
             double dxdx = (x-centerx) * (x-centerx);
             for (int z = 0 ; z < 16 ; z++) {
                 double dzdz = (z-centerz) * (z-centerz);
                 int index = (x * 16 + z) * 256;
-                for (int y = centery-radius ; y <= centery+radius ; y++) {
+                for (int y = miny; y <= centery+radius ; y++) {
                     double dydy = (y-centery) * (y-centery);
                     double dist = Math.sqrt(dxdx + dydy + dzdz);
                     if (dist < radius) {
