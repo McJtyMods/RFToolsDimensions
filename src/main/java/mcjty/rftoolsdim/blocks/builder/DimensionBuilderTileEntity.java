@@ -139,7 +139,7 @@ public class DimensionBuilderTileEntity extends GenericEnergyReceiverTileEntity 
             if (isCheaterDimension(tagCompound)) {
                 rf = MachineConfiguration.BUILDER_MAXENERGY;
             } else {
-                rf = getEnergyStored(EnumFacing.DOWN);
+                rf = getEnergyStored();
             }
             int energy = dimensionStorage.getEnergyLevel(id);
             int maxEnergy = PowerConfiguration.MAX_DIMENSION_POWER - energy;      // Max energy the dimension can still get.
@@ -189,7 +189,7 @@ public class DimensionBuilderTileEntity extends GenericEnergyReceiverTileEntity 
         int createCost = tagCompound.getInteger("rfCreateCost");
         createCost = (int) (createCost * (2.0f - getInfusedFactor()) / 2.0f);
 
-        if (isCheaterDimension(tagCompound) || (getEnergyStored(EnumFacing.DOWN) >= createCost)) {
+        if (isCheaterDimension(tagCompound) || (getEnergyStored() >= createCost)) {
             if (isCheaterDimension(tagCompound)) {
                 ticksLeft = 0;
             } else {

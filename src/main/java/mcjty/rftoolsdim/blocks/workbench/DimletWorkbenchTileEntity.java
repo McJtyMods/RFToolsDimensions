@@ -222,7 +222,7 @@ public class DimletWorkbenchTileEntity extends GenericEnergyReceiverTileEntity i
 
     private boolean doExtract() {
         int rf = MachineConfiguration.workbenchRfPerDimlet;
-        if (getEnergyStored(EnumFacing.DOWN) < rf) {
+        if (getEnergyStored() < rf) {
             // Not enough energy.
             return false;
         }

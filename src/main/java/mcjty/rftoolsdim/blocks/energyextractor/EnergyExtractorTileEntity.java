@@ -26,7 +26,7 @@ public class EnergyExtractorTileEntity extends GenericEnergyProviderTileEntity i
     }
 
     private void checkStateServer() {
-        int energyStored = getEnergyStored(EnumFacing.DOWN);
+        int energyStored = getEnergyStored();
 
         if (energyStored < MachineConfiguration.EXTRACTOR_MAXENERGY) {
             // Get energy out of the dimension.

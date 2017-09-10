@@ -116,7 +116,7 @@ public class DimensionEditorTileEntity extends GenericEnergyReceiverTileEntity i
                 rfPerTick = DimletCosts.baseDimensionCreationCost + settings.getCreateCost();
             }
         } else {
-            int rf = getEnergyStored(EnumFacing.DOWN);
+            int rf = getEnergyStored();
             int rfpt = rfPerTick;
             rfpt = (int) (rfpt * (2.0f - getInfusedFactor()) / 2.0f);
 

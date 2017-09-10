@@ -32,7 +32,7 @@ public class GuiDimensionEditor extends GenericGuiContainer<DimensionEditorTileE
 
     public GuiDimensionEditor(DimensionEditorTileEntity dimensionEditorTileEntity, DimensionEditorContainer container) {
         super(RFToolsDim.instance, RFToolsDimMessages.INSTANCE, dimensionEditorTileEntity, container, RFToolsDim.GUI_MANUAL_DIMENSION, "editor");
-        GenericEnergyStorageTileEntity.setCurrentRF(dimensionEditorTileEntity.getEnergyStored(EnumFacing.DOWN));
+        GenericEnergyStorageTileEntity.setCurrentRF(dimensionEditorTileEntity.getEnergyStored());
 
         xSize = EDITOR_WIDTH;
         ySize = EDITOR_HEIGHT;
@@ -42,7 +42,7 @@ public class GuiDimensionEditor extends GenericGuiContainer<DimensionEditorTileE
     public void initGui() {
         super.initGui();
 
-        int maxEnergyStored = tileEntity.getMaxEnergyStored(EnumFacing.DOWN);
+        int maxEnergyStored = tileEntity.getMaxEnergyStored();
         energyBar = new EnergyBar(mc, this).setVertical().setMaxValue(maxEnergyStored).setLayoutHint(new PositionalLayout.PositionalHint(10, 7, 8, 54)).setShowText(false);
         energyBar.setValue(GenericEnergyStorageTileEntity.getCurrentRF());
 
