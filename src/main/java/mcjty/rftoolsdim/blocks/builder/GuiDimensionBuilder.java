@@ -3,7 +3,6 @@ package mcjty.rftoolsdim.blocks.builder;
 import mcjty.lib.container.GenericGuiContainer;
 import mcjty.lib.entity.GenericEnergyStorageTileEntity;
 import mcjty.lib.gui.Window;
-import mcjty.lib.gui.events.ChoiceEvent;
 import mcjty.lib.gui.layout.HorizontalAlignment;
 import mcjty.lib.gui.layout.PositionalLayout;
 import mcjty.lib.gui.widgets.*;
