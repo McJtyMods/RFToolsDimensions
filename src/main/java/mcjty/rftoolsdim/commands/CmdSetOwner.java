@@ -68,9 +68,7 @@ public class CmdSetOwner extends AbstractRfToolsCommand {
         }
 
 
-        for (EntityPlayerMP entityPlayerMP : ((WorldServer) world).getMinecraftServer().getPlayerList().getPlayers()) {
-            if (playerName.equals(entityPlayerMP.getDisplayName())) {
-        for (EntityPlayerMP entityPlayerMP : WorldTools.getPlayerList((WorldServer)world)) {
+        for (EntityPlayerMP entityPlayerMP : world.getMinecraftServer().getPlayerList().getPlayers()) {
             if (playerName.equals(entityPlayerMP.getName())) {
                 DimensionInformation information = dimensionManager.getDimensionInformation(dim);
                 information.setOwner(playerName, entityPlayerMP.getGameProfile().getId());
