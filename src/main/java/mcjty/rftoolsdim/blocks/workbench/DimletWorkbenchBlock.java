@@ -1,6 +1,7 @@
 package mcjty.rftoolsdim.blocks.workbench;
 
 import mcjty.lib.api.Infusable;
+import mcjty.lib.container.BaseBlock;
 import mcjty.lib.container.GenericGuiContainer;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.blocks.GenericRFToolsBlock;
@@ -23,8 +24,8 @@ public class DimletWorkbenchBlock extends GenericRFToolsBlock<DimletWorkbenchTil
     }
 
     @Override
-    public boolean hasNoRotation() {
-        return true;
+    public RotationType getRotationType() {
+        return RotationType.NONE;
     }
 
     @SideOnly(Side.CLIENT)

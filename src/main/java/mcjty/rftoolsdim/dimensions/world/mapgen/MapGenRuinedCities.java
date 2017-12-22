@@ -1,11 +1,15 @@
 package mcjty.rftoolsdim.dimensions.world.mapgen;
 
-import mcjty.lib.varia.BlockMeta;
 import mcjty.rftoolsdim.blocks.ModBlocks;
+import mcjty.rftoolsdim.blocks.shards.AbstractDirectionalBlock;
 import mcjty.rftoolsdim.dimensions.world.GenericChunkGenerator;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockStainedGlass;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.EnumDyeColor;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 
 import java.util.HashMap;
@@ -146,15 +150,15 @@ public class MapGenRuinedCities {
         if (blockMap != null) {
             return;
         }
-        blockMap = new HashMap<Character, BlockMeta>();
+        blockMap = new HashMap<>();
         blockMap.put(' ', null);
-        blockMap.put('B', new BlockMeta(ModBlocks.dimensionalBlock, 0));
-        blockMap.put('b', new BlockMeta(ModBlocks.dimensionalBlankBlock, 0));
-        blockMap.put('p', new BlockMeta(ModBlocks.dimensionalCrossBlock, 2));
-        blockMap.put('P', new BlockMeta(ModBlocks.dimensionalCrossBlock, 0));
-        blockMap.put('X', new BlockMeta(ModBlocks.dimensionalPattern1Block, 0));
-        blockMap.put('x', new BlockMeta(ModBlocks.dimensionalPattern2Block, 0));
-        blockMap.put('g', new BlockMeta(Blocks.STAINED_GLASS, 11));
+        blockMap.put('B', ModBlocks.dimensionalBlock.getDefaultState());
+        blockMap.put('b', ModBlocks.dimensionalBlankBlock.getDefaultState());
+        blockMap.put('p', ModBlocks.dimensionalCrossBlock.getDefaultState().withProperty(AbstractDirectionalBlock.FACING, EnumFacing.NORTH));
+        blockMap.put('P', ModBlocks.dimensionalCrossBlock.getDefaultState());
+        blockMap.put('X', ModBlocks.dimensionalPattern1Block.getDefaultState());
+        blockMap.put('x', ModBlocks.dimensionalPattern2Block.getDefaultState());
+        blockMap.put('g', Blocks.STAINED_GLASS.getDefaultState().withProperty(BlockStainedGlass.COLOR, EnumDyeColor.BLUE));
     }
 
     private void createBuilding(Block[] ablock, byte[] ameta, Span span) {
@@ -169,17 +173,17 @@ public class MapGenRuinedCities {
                 for (int z = 0 ; z < 16 ; z++) {
                     int index = (x * 16 + z) * 256 + y;
                     char c = level[z].charAt(x);
-                    BlockMeta blockMeta = blockMap.get(c);
+                    IBlockState blockMeta = blockMap.get(c);
                     if (blockMeta != null) {
                         ablock[index] = blockMeta.getBlock();
-                        ameta[index] = blockMeta.getMeta();
+                        ameta[index] = (byte) blockMeta.getBlock().getMetaFromState(blockMeta);
                     }
                 }
             }
         }
     }
 
-    private static Map<Character, BlockMeta> blockMap = null;
+    private static Map<Character, IBlockState> blockMap = null;
 
     private static String[] LevelBase = new String[] {
             "BBBBBBBBBBBBBBB ",

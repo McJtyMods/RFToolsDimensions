@@ -21,7 +21,7 @@ public class DimensionalBlankBlock extends Block {
         setRegistryName("dimensional_blank_block");
         setLightLevel(0.6f);
         setCreativeTab(RFToolsDim.tabRfToolsDim);
-        McJtyRegister.registerLater(this, RFToolsDim.instance, ItemBlock.class, null);
+        McJtyRegister.registerLater(this, RFToolsDim.instance, ItemBlock.class);
     }
 
     @SideOnly(Side.CLIENT)

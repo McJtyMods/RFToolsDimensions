@@ -29,7 +29,7 @@ public abstract class AbstractDirectionalBlock extends Block {
         setUnlocalizedName(RFToolsDim.MODID + "." + name);
         setRegistryName(name);
         setCreativeTab(RFToolsDim.tabRfToolsDim);
-        McJtyRegister.registerLater(this, RFToolsDim.instance, ItemBlock.class, null);
+        McJtyRegister.registerLater(this, RFToolsDim.instance, ItemBlock.class);
     }
 
     @SideOnly(Side.CLIENT)

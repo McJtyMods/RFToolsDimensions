@@ -1,5 +1,6 @@
 package mcjty.rftoolsdim.blocks.absorbers;
 
+import mcjty.lib.container.BaseBlock;
 import mcjty.lib.container.EmptyContainer;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.blocks.GenericRFToolsBlock;
@@ -35,8 +36,8 @@ public class MaterialAbsorberBlock extends GenericRFToolsBlock<MaterialAbsorberT
     }
 
     @Override
-    public boolean hasNoRotation() {
-        return true;
+    public RotationType getRotationType() {
+        return  RotationType.NONE;
     }
 
     @Override
