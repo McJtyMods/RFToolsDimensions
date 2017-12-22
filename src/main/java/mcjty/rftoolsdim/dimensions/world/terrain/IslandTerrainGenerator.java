@@ -349,7 +349,7 @@ public class IslandTerrainGenerator implements BaseTerrainGenerator {
                                 }
 
                                 if (height < 63 && (block == null || block.getBlock().getMaterial(block) == Material.AIR)) {
-                                    if (Biome.getFloatTemperature(new BlockPos(x, height, z)) < 0.15F) {
+                                    if (Biome.getTemperature(new BlockPos(x, height, z)) < 0.15F) {
                                         block = Blocks.ICE.getDefaultState();
                                     } else {
                                         block = baseLiquid.getDefaultState();

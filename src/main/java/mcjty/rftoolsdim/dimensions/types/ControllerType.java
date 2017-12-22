@@ -169,7 +169,7 @@ public enum ControllerType {
             if (ignoreRain) {
                 dr = 0.0f;
             }
-            float dt = a.getTemperature() - b.getTemperature();
+            float dt = a.getDefaultTemperature() - b.getDefaultTemperature();
             if (ignoreTemperature) {
                 dt = 0.0f;
             }

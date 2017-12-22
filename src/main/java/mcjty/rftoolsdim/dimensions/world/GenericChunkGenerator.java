@@ -663,7 +663,7 @@ public class GenericChunkGenerator implements IChunkGenerator {
             }
             if (dimensionInformation.hasStructureType(StructureType.STRUCTURE_SCATTERED)) {
                 if (this.scatteredFeatureGenerator.isInsideStructure(pos)) {
-                    return this.scatteredFeatureGenerator.getScatteredFeatureSpawnList();
+                    return this.scatteredFeatureGenerator.getMonsters();
                 }
             }
             if (dimensionInformation.hasStructureType(StructureType.STRUCTURE_SWAMPHUT)) {
@@ -697,7 +697,7 @@ public class GenericChunkGenerator implements IChunkGenerator {
                 }
             }
             if (dimensionInformation.hasStructureType(StructureType.STRUCTURE_OCEAN_MONUMENT) && this.oceanMonumentGenerator.isPositionInStructure(this.worldObj, pos)) {
-                return this.oceanMonumentGenerator.getScatteredFeatureSpawnList();
+                return this.oceanMonumentGenerator.getMonsters();
             }
         } else if (creatureType == EnumCreatureType.AMBIENT) {
             if (dimensionInformation.isNoanimals()) {
