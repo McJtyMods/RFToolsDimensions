@@ -1,10 +1,13 @@
 package mcjty.rftoolsdim.config;
 
+import mcjty.lib.varia.EntityTools;
 import mcjty.lib.varia.Logging;
 import mcjty.rftoolsdim.dimensions.description.MobDescriptor;
-import mcjty.rftoolsdim.varia.EntityTools;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.fml.common.registry.EntityEntry;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -59,7 +62,8 @@ public class MobConfiguration {
     private static void initMobItem(Configuration cfg, String name,
                                     int chance, int mingroup, int maxgroup, int maxentity) {
         String id = EntityTools.fixEntityId(name);
-        Class<? extends Entity> entityClass = EntityTools.findClassById(id);
+        EntityEntry entry = ForgeRegistries.ENTITIES.getValue(new ResourceLocation(id));
+        Class<? extends Entity> entityClass = entry == null ? null : entry.getEntityClass();
         if (entityClass == null) {
             Logging.logError("Cannot find mob with id '" + id +"'!");
             return;

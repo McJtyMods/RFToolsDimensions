@@ -2,6 +2,7 @@ package mcjty.rftoolsdim.dimensions.dimlets;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
+import mcjty.lib.varia.EntityTools;
 import mcjty.lib.varia.Logging;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.compat.ChiselCompat;
@@ -15,8 +16,6 @@ import mcjty.rftoolsdim.dimensions.dimlets.types.DimletType;
 import mcjty.rftoolsdim.dimensions.types.*;
 import mcjty.rftoolsdim.dimensions.world.BiomeControllerMapping;
 import mcjty.rftoolsdim.items.ModItems;
-import mcjty.rftoolsdim.varia.EntityTools;
-import mcjty.rftoolsdim.varia.RFToolsTools;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.block.BlockLiquid;
@@ -32,6 +31,8 @@ import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fml.common.registry.EntityEntry;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.oredict.OreDictionary;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Level;
@@ -82,7 +83,8 @@ public class KnownDimletConfiguration {
 
         Biome.REGISTRY.iterator().forEachRemaining(KnownDimletConfiguration::initBiomeDimlet);
 
-        EntityTools.getEntities().forEach(KnownDimletConfiguration::initMobDimlet);
+        Set<ResourceLocation> keys = ForgeRegistries.ENTITIES.getKeys();
+        keys.stream().map(ResourceLocation::toString).forEach(KnownDimletConfiguration::initMobDimlet);
         initMobDimlet(DimletObjectMapping.DEFAULT_ID);
 
         FluidRegistry.getRegisteredFluids().entrySet().stream().forEach(KnownDimletConfiguration::initFluidDimlet);
@@ -191,7 +193,7 @@ public class KnownDimletConfiguration {
         ResourceLocation registryName = biome.getRegistryName();
         if (registryName != null) {
             DimletKey key = new DimletKey(DimletType.DIMLET_BIOME, registryName.toString());
-            initDimlet(key, RFToolsTools.findModID(biome));
+            initDimlet(key, biome.getRegistryName().getResourceDomain());
         }
     }
 
@@ -200,10 +202,10 @@ public class KnownDimletConfiguration {
             DimletKey key = new DimletKey(DimletType.DIMLET_MOB, id);
             initDimlet(key, RFToolsDim.MODID);
         } else {
-            Class<? extends Entity> entityClass = EntityTools.findClassById(id);
-            if (isValidMobClass(entityClass)) {
+            EntityEntry entry = ForgeRegistries.ENTITIES.getValue(new ResourceLocation(id));
+            if (entry != null) {
                 DimletKey key = new DimletKey(DimletType.DIMLET_MOB, id);
-                initDimlet(key, RFToolsTools.findModID(entityClass));
+                initDimlet(key, entry.getRegistryName().getResourceDomain());
             }
         }
     }
@@ -297,14 +299,16 @@ public class KnownDimletConfiguration {
     }
 
     public static void dumpMobs() {
-        EntityTools.getEntities().forEach(KnownDimletConfiguration::dumpMob);
+        Set<ResourceLocation> keys = ForgeRegistries.ENTITIES.getKeys();
+        keys.stream().map(ResourceLocation::toString).forEach(KnownDimletConfiguration::dumpMob);
     }
 
     private static void dumpMob(String id) {
-        Class<? extends Entity> entityClass = EntityTools.findClassById(id);
-        if (isValidMobClass(entityClass)) {
+        EntityEntry entry = ForgeRegistries.ENTITIES.getValue(new ResourceLocation(id));
+        Class<? extends Entity> entityClass = entry == null ? null : entry.getEntityClass();
+        if (entry != null) {
             DimletKey key = new DimletKey(DimletType.DIMLET_MOB, id);
-            String mod = RFToolsTools.findModID(entityClass);
+            String mod = entry.getRegistryName().getResourceDomain();
             Settings settings = DimletRules.getSettings(key, mod);
 
             String resourceName = EntityTools.findEntityIdByClass(entityClass);
@@ -435,7 +439,8 @@ public class KnownDimletConfiguration {
                 if (DimletObjectMapping.DEFAULT_ID.equals(key.getId())) {
                     return key.getId();
                 }
-                Class<? extends Entity> entityClass = EntityTools.findClassById(EntityTools.fixEntityId(key.getId()));
+                EntityEntry entry = ForgeRegistries.ENTITIES.getValue(new ResourceLocation(EntityTools.fixEntityId(key.getId())));
+                Class<? extends Entity> entityClass = entry == null ? null : entry.getEntityClass();
                 if (entityClass == null) {
                     return "<Unknown>";
                 }

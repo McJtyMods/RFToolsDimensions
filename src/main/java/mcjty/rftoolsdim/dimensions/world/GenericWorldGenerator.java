@@ -20,7 +20,6 @@ import mcjty.rftoolsdim.dimensions.world.terrain.lost.BuildingInfo;
 import mcjty.rftoolsdim.dimensions.world.terrain.lost.GenInfo;
 import mcjty.rftoolsdim.dimensions.world.terrain.lost.LostCitiesTerrainGenerator;
 import mcjty.rftoolsdim.items.ModItems;
-import mcjty.rftoolsdim.varia.EntityTools;
 import mcjty.rftoolsdim.varia.RarityRandomSelector;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
@@ -31,6 +30,7 @@ import net.minecraft.entity.item.EntityItemFrame;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.MobSpawnerBaseLogic;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.tileentity.TileEntityMobSpawner;
@@ -233,16 +233,24 @@ public class GenericWorldGenerator implements IWorldGenerator {
                             TileEntityMobSpawner spawner = (TileEntityMobSpawner) tileentity;
                             switch (entry.getValue()) {
                                 case 1:
-                                    EntityTools.setSpawnerEntity(world, spawner, new ResourceLocation("minecraft:zombie"), "Zombie");
+                                    MobSpawnerBaseLogic mobspawnerbaselogic3 = spawner.getSpawnerBaseLogic();
+                                    mobspawnerbaselogic3.setEntityId(new ResourceLocation("minecraft:zombie"));
+                                    spawner.markDirty();
                                     break;
                                 case 2:
-                                    EntityTools.setSpawnerEntity(world, spawner, new ResourceLocation("minecraft:skeleton"), "Skeleton");
+                                    MobSpawnerBaseLogic mobspawnerbaselogic2 = spawner.getSpawnerBaseLogic();
+                                    mobspawnerbaselogic2.setEntityId(new ResourceLocation("minecraft:skeleton"));
+                                    spawner.markDirty();
                                     break;
                                 case 3:
-                                    EntityTools.setSpawnerEntity(world, spawner, new ResourceLocation("minecraft:spider"), "Spider");
+                                    MobSpawnerBaseLogic mobspawnerbaselogic1 = spawner.getSpawnerBaseLogic();
+                                    mobspawnerbaselogic1.setEntityId(new ResourceLocation("minecraft:spider"));
+                                    spawner.markDirty();
                                     break;
                                 case 4:
-                                    EntityTools.setSpawnerEntity(world, spawner, new ResourceLocation("minecraft:blaze"), "Blaze");
+                                    MobSpawnerBaseLogic mobspawnerbaselogic = spawner.getSpawnerBaseLogic();
+                                    mobspawnerbaselogic.setEntityId(new ResourceLocation("minecraft:blaze"));
+                                    spawner.markDirty();
                                     break;
                             }
                         }
