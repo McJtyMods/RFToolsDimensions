@@ -48,7 +48,7 @@ repositories {
     }
 }
 
-version = "1.12-5.06"
+version = "1.12-5.10"
 def ENV = System.getenv()
 if (ENV.DRONE_BUILD_NUMBER) {
     version += ".n" + ENV.DRONE_BUILD_NUMBER
@@ -83,8 +83,8 @@ dependencies {
     deobfCompile "mcjty.theoneprobe:TheOneProbe-1.12:1.12-1.4.11-5"
     deobfCompile "cofh:RedstoneFlux:1.12-2.0.0.1:universal"
     deobfCompile "com.github.mcjty:intwheel:1.12-1.2.7"
-    deobfCompile "com.github.mcjty:mcjtylib:1.12-2.5.5-SNAPSHOT"
-    deobfCompile "com.github.mcjty:rftools:1.12-7.18"
+    deobfCompile "com.github.mcjty:mcjtylib:1.12-2.6.0-SNAPSHOT"
+    deobfCompile "com.github.mcjty:rftools:1.12-7.20"
     deobfCompile "team.chisel:Chisel:MC1.11.2-0.0.10.14:api"
     //compile "li.cil.oc:OpenComputers:MC1.7.10-1.5.+:api"
 }
