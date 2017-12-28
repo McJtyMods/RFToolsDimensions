@@ -184,7 +184,7 @@ public class DimensionEnscriberTileEntity extends GenericTileEntity implements D
         if (tagCompound != null) {
             int idx = DimensionEnscriberContainer.SLOT_DIMLETS;
             List<DimletKey> descriptors = DimensionDescriptor.parseDescriptionString(tagCompound.getString("descriptionString"));
-            int skip = DimensionEnscriberContainer.SIZE_DIMLETS / descriptors.size();
+            int skip = DimensionEnscriberContainer.SIZE_DIMLETS / Math.max(descriptors.size(), 1);
             if(skip < 1) {
                 skip = 1;
                 Logging.logError("A realized tab contained more dimlets than can fit in the inscriber's inventory!");
