@@ -5,7 +5,7 @@ import mcjty.rftoolsdim.dimensions.dimlets.types.DimletType;
 /**
 * Created by jorrit on 8/12/14.
 */
-public class DimletKey {
+public class DimletKey implements Comparable<DimletKey> {
     private final DimletType type;
     private final String id;
 
@@ -61,5 +61,12 @@ public class DimletKey {
         String opcode = skey.substring(0, 1);
         String name = skey.substring(1);
         return new DimletKey(DimletType.getTypeByOpcode(opcode), name);
+    }
+
+    @Override
+    public int compareTo(DimletKey o) {
+        int result = type.compareTo(o.type);
+        if(result != 0) return result;
+        return id.compareTo(o.id);
     }
 }

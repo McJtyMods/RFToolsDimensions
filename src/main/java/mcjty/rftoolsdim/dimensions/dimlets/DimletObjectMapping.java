@@ -160,12 +160,12 @@ public class DimletObjectMapping {
         return null;
     }
 
-    private static Map<DimletKey, Float> dimletToCelestialAngle;
+    private static SortedMap<DimletKey, Float> dimletToCelestialAngle;
     private static Map<DimletKey, Float> dimletToSpeed;
 
     private static void setupTimeTables() {
         if (dimletToCelestialAngle == null) {
-            dimletToCelestialAngle = new HashMap<>();
+            dimletToCelestialAngle = new TreeMap<>();
             dimletToCelestialAngle.put(new DimletKey(DimletType.DIMLET_TIME, "Normal"), null);
             dimletToCelestialAngle.put(new DimletKey(DimletType.DIMLET_TIME, "Noon"), 0.0f);
             dimletToCelestialAngle.put(new DimletKey(DimletType.DIMLET_TIME, "Midnight"), 0.5f);
@@ -187,7 +187,7 @@ public class DimletObjectMapping {
     }
 
 
-    public static Collection<DimletKey> getTimeDimlets() {
+    public static List<DimletKey> getTimeDimlets() {
         setupTimeTables();
         List<DimletKey> dimlets = new ArrayList<>();
         for (DimletKey dimletKey : dimletToCelestialAngle.keySet()) {

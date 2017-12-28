@@ -117,10 +117,10 @@ public class RarityRandomSelector<K,E> {
 
     public static class Distribution<K> {
         // A map associating every key with the chance that this key in total must be selected.
-        private final Map<K,Float> keysChance = new HashMap<K, Float>();
+        private final SortedMap<K,Float> keysChance = new TreeMap<K, Float>();
         private float totalChance = 0.0f;
 
-        public Map<K, Float> getKeysChance() {
+        public SortedMap<K, Float> getKeysChance() {
             return keysChance;
         }
 
