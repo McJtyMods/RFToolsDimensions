@@ -36,4 +36,9 @@ public class MobDescriptor {
     public int getMaxLoaded() {
         return maxLoaded;
     }
+
+    @Override
+    public String toString() {
+        return (entityClass == null ? "null" : entityClass.getName()) + ", chance " + spawnChance + ", " + minGroup + " to " + maxGroup + " per group, up to " + maxLoaded;
+    }
 }
