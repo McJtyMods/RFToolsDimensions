@@ -44,14 +44,14 @@ import java.util.*;
 public class KnownDimletConfiguration {
 
     private static Set<DimletKey> craftableDimlets = new HashSet<>();
-    private static Map<DimletKey, Settings> knownDimlets = new HashMap<>();
+    private static SortedMap<DimletKey, Settings> knownDimlets = new TreeMap<>();
 
     public static Settings getSettings(DimletKey key) {
         initDimlets();
         return knownDimlets.get(key);
     }
 
-    public static Map<DimletKey, Settings> getKnownDimlets() {
+    public static SortedMap<DimletKey, Settings> getKnownDimlets() {
         initDimlets();
         return knownDimlets;
     }

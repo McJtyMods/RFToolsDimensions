@@ -10,7 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.config.Configuration;
 import org.apache.commons.lang3.tuple.Pair;
 
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
@@ -74,7 +74,7 @@ public class StructureDimletType implements IDimletType {
     @Override
     public void constructDimension(List<Pair<DimletKey, List<DimletKey>>> dimlets, Random random, DimensionInformation dimensionInformation) {
         Set<StructureType> structureTypes = dimensionInformation.getStructureTypes();
-        Set<String> dimensionTypes = new HashSet<>();
+        Set<String> dimensionTypes = new LinkedHashSet<>();
         dimlets = DimensionInformation.extractType(DimletType.DIMLET_STRUCTURE, dimlets);
         if (dimlets.isEmpty()) {
             while (random.nextFloat() < WorldgenConfiguration.randomStructureChance) {

@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.SortedMap;
 
 public class DimletRandomizer {
 
@@ -58,7 +59,7 @@ public class DimletRandomizer {
             return;
         }
 
-        Map<DimletKey, Settings> knownDimlets = KnownDimletConfiguration.getKnownDimlets();
+        SortedMap<DimletKey, Settings> knownDimlets = KnownDimletConfiguration.getKnownDimlets();
         float rarity0 = DimletConfiguration.rarity0;
         float rarity1 = DimletConfiguration.rarity1;
         float rarity2 = DimletConfiguration.rarity2;
@@ -220,6 +221,7 @@ public class DimletRandomizer {
 
     public static DimletKey getRandomBiome(Random random) {
         List<ResourceLocation> keys = new ArrayList<>(Biome.REGISTRY.getKeys());
+        keys.sort(null);
         int size = keys.size();
         while(true) {
             Biome biome = Biome.REGISTRY.getObject(keys.get(random.nextInt(size)));
