@@ -61,6 +61,7 @@ public class DimensionInformation implements IDimensionInformation {
     private int worldVersion = VERSION_OLD;             // Used for compatilibity checking between generated worlds.
     public static final int VERSION_OLD = 0;            // Old version of worlds. Seed is incorrect.
     public static final int VERSION_CORRECTSEED = 1;    // New version of worlds. Seed is correct.
+    public static final int VERSION_WORLDSEED = 2;      // Newer version of worlds. Seed is correct and based only on the world seed and dimlets.
 
     private TerrainType terrainType = TerrainType.TERRAIN_VOID;
     private IBlockState baseBlockForTerrain = null;
@@ -124,7 +125,7 @@ public class DimensionInformation implements IDimensionInformation {
             baseSeed = world.getSeed();
         }
 
-        worldVersion = VERSION_CORRECTSEED;
+        worldVersion = VERSION_WORLDSEED;
 
         setupFromDescriptor(world.getSeed());
         setupBiomeMapping();
