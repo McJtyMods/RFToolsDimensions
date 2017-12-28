@@ -11,12 +11,14 @@ import mcjty.rftoolsdim.dimensions.dimlets.types.DimletType;
 import mcjty.rftoolsdim.network.PacketGetDimensionEnergy;
 import mcjty.rftoolsdim.network.RFToolsDimMessages;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -33,6 +35,11 @@ public class RealizedDimensionTab extends GenericRFToolsItem {
     public RealizedDimensionTab() {
         super("realized_dimension_tab");
         setMaxStackSize(1);
+    }
+
+    @Override
+    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
+        // do nothing - this item doesn't belong in the creative inventory
     }
 
     @Override
