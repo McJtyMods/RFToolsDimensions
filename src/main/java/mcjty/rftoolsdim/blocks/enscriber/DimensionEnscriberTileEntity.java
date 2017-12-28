@@ -183,8 +183,13 @@ public class DimensionEnscriberTileEntity extends GenericTileEntity implements D
         NBTTagCompound tagCompound = realizedTab.getTagCompound();
         if (tagCompound != null) {
             int idx = DimensionEnscriberContainer.SLOT_DIMLETS;
-            String descriptionString = tagCompound.getString("descriptionString");
-            for (DimletKey descriptor : DimensionDescriptor.parseDescriptionString(descriptionString)) {
+            List<DimletKey> descriptors = DimensionDescriptor.parseDescriptionString(tagCompound.getString("descriptionString"));
+            int skip = DimensionEnscriberContainer.SIZE_DIMLETS / descriptors.size();
+            if(skip < 1) {
+                skip = 1;
+                Logging.logError("A realized tab contained more dimlets than can fit in the inscriber's inventory!");
+            }
+            for (DimletKey descriptor : descriptors) {
                 int id = tagCompound.getInteger("id");
                 if (GeneralConfiguration.ownerDimletsNeeded && id != 0) {
                     // If we need owner dimlets and the dimension is created we don't extract the owern dimlet.
@@ -193,7 +198,8 @@ public class DimensionEnscriberTileEntity extends GenericTileEntity implements D
                     }
                 }
 
-                inventoryHelper.setStackInSlot(idx++, KnownDimletConfiguration.getDimletStack(descriptor));
+                inventoryHelper.setStackInSlot(idx, KnownDimletConfiguration.getDimletStack(descriptor));
+                idx += skip;
             }
         }
 
