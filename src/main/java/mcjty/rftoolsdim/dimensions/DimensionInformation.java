@@ -636,6 +636,10 @@ public class DimensionInformation implements IDimensionInformation {
     }
 
     public static String getDisplayName(Block block) {
+        if (block == null) {
+            return "null";
+        }
+
         return getDisplayName(block.getDefaultState());
     }
 
