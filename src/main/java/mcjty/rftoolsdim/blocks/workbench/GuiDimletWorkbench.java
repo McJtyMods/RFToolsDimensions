@@ -45,7 +45,6 @@ public class GuiDimletWorkbench extends GenericGuiContainer<DimletWorkbenchTileE
     private boolean listDirty = true;
 
     private static final ResourceLocation iconLocation = new ResourceLocation(RFToolsDim.MODID, "textures/gui/dimletworkbench.png");
-    private static final ResourceLocation iconGuiElements = new ResourceLocation(RFToolsDim.MODID, "textures/gui/guielements.png");
 
     public GuiDimletWorkbench(DimletWorkbenchTileEntity dimletWorkbenchTileEntity, DimletWorkbenchContainer container) {
         super(RFToolsDim.instance, RFToolsDimMessages.INSTANCE, dimletWorkbenchTileEntity, container, RFToolsDim.GUI_MANUAL_DIMENSION, "create");
