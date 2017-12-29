@@ -12,7 +12,6 @@ import mcjty.lib.network.Argument;
 import mcjty.lib.varia.RedstoneMode;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.network.RFToolsDimMessages;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 
 import java.awt.*;

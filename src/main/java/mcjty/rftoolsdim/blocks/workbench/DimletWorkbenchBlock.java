@@ -1,7 +1,6 @@
 package mcjty.rftoolsdim.blocks.workbench;
 
 import mcjty.lib.api.Infusable;
-import mcjty.lib.container.BaseBlock;
 import mcjty.lib.container.GenericGuiContainer;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.blocks.GenericRFToolsBlock;
