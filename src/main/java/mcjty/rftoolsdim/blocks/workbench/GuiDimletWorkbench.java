@@ -89,7 +89,7 @@ public class GuiDimletWorkbench extends GenericGuiContainer<DimletWorkbenchTileE
         ).setTooltips("If on dimlets will be reconstructed into parts");
         extractButton.setPressed(tileEntity.isExtractMode());
 
-        Widget toplevel = new Panel(mc, this).setBackground(iconLocation).setLayout(new PositionalLayout())
+        Panel toplevel = new Panel(mc, this).setBackground(iconLocation).setLayout(new PositionalLayout())
                 .addChild(extractButton).addChild(energyBar).addChild(itemList).addChild(slider).addChild(searchBar);
         toplevel.setBounds(new Rectangle(guiLeft, guiTop, xSize, ySize));
 

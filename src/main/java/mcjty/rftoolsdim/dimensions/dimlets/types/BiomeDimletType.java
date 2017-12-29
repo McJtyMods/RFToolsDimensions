@@ -78,7 +78,7 @@ public class BiomeDimletType implements IDimletType {
 
     @Override
     public void constructDimension(List<Pair<DimletKey, List<DimletKey>>> dimlets, Random random, DimensionInformation dimensionInformation) {
-        Set<DimletKey> biomeKeys = new LinkedHashSet<DimletKey>();
+        Set<DimletKey> biomeKeys = new LinkedHashSet<>();
         List<Pair<DimletKey, List<DimletKey>>> biomeDimlets = DimensionInformation.extractType(DimletType.DIMLET_BIOME, dimlets);
         List<Pair<DimletKey, List<DimletKey>>> controllerDimlets = DimensionInformation.extractType(DimletType.DIMLET_CONTROLLER, dimlets);
 

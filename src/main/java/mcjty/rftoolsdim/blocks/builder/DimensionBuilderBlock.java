@@ -1,7 +1,6 @@
 package mcjty.rftoolsdim.blocks.builder;
 
 import mcjty.lib.api.Infusable;
-import mcjty.lib.container.GenericGuiContainer;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.blocks.GenericRFToolsBlock;
 import mcjty.rftoolsdim.theoneprobe.TheOneProbeSupport;
@@ -67,7 +66,7 @@ public class DimensionBuilderBlock extends GenericRFToolsBlock<DimensionBuilderT
 
     @SideOnly(Side.CLIENT)
     @Override
-    public Class<? extends GenericGuiContainer> getGuiClass() {
+    public Class<GuiDimensionBuilder> getGuiClass() {
         return GuiDimensionBuilder.class;
     }
 

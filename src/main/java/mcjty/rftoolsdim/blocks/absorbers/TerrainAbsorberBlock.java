@@ -70,7 +70,7 @@ public class TerrainAbsorberBlock extends GenericRFToolsBlock<TerrainAbsorberTil
 
     @SideOnly(Side.CLIENT)
     @Override
-    public void addInformation(ItemStack itemStack, World player, List list, ITooltipFlag whatIsThis) {
+    public void addInformation(ItemStack itemStack, World player, List<String> list, ITooltipFlag whatIsThis) {
         super.addInformation(itemStack, player, list, whatIsThis);
 
         NBTTagCompound tagCompound = itemStack.getTagCompound();

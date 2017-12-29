@@ -9,14 +9,14 @@ public class RarityRandomSelector<K,E> {
     private boolean dirty = true;
 
     // A map associating every key with the chance that items of this key should be selected.
-    private final Map<K,Float> keys = new HashMap<K, Float>();
+    private final Map<K,Float> keys = new HashMap<>();
     private float minChance = Float.MAX_VALUE;    // Used for calculation distribution with bonus.
     private float maxChance = Float.MIN_VALUE;
 
-    private final Distribution<K> defaultDistribution = new Distribution<K>();
+    private final Distribution<K> defaultDistribution = new Distribution<>();
 
     // All items for every key.
-    private final Map<K,List<E>> items = new HashMap<K, List<E>>();
+    private final Map<K,List<E>> items = new HashMap<>();
 
     public RarityRandomSelector() {
     }
@@ -82,7 +82,7 @@ public class RarityRandomSelector<K,E> {
      * the most common elements.
      */
     public Distribution<K> createDistribution(float bonus) {
-        Distribution<K> distribution = new Distribution<K>();
+        Distribution<K> distribution = new Distribution<>();
         setupDistribution(distribution, bonus);
         return distribution;
     }
@@ -117,7 +117,7 @@ public class RarityRandomSelector<K,E> {
 
     public static class Distribution<K> {
         // A map associating every key with the chance that this key in total must be selected.
-        private final SortedMap<K,Float> keysChance = new TreeMap<K, Float>();
+        private final SortedMap<K,Float> keysChance = new TreeMap<>();
         private float totalChance = 0.0f;
 
         public SortedMap<K, Float> getKeysChance() {

@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class DefaultCommand implements ICommand {
-    protected final Map<String,RfToolsCommand> commands = new HashMap<String, RfToolsCommand>();
+    protected final Map<String,RfToolsCommand> commands = new HashMap<>();
 
     public DefaultCommand() {
         registerCommand(new CmdHelp());

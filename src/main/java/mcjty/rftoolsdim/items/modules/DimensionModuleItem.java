@@ -1,8 +1,6 @@
 package mcjty.rftoolsdim.items.modules;
 
-import mcjty.rftools.api.screens.IClientScreenModule;
 import mcjty.rftools.api.screens.IModuleProvider;
-import mcjty.rftools.api.screens.IScreenModule;
 import mcjty.rftoolsdim.config.GeneralConfiguration;
 import mcjty.rftoolsdim.items.GenericRFToolsItem;
 import net.minecraft.client.util.ITooltipFlag;
@@ -28,12 +26,12 @@ public class DimensionModuleItem extends GenericRFToolsItem implements IModulePr
     }
 
     @Override
-    public Class<? extends IScreenModule> getServerScreenModule() {
+    public Class<DimensionScreenModule> getServerScreenModule() {
         return DimensionScreenModule.class;
     }
 
     @Override
-    public Class<? extends IClientScreenModule> getClientScreenModule() {
+    public Class<DimensionClientScreenModule> getClientScreenModule() {
         return DimensionClientScreenModule.class;
     }
 
@@ -44,7 +42,7 @@ public class DimensionModuleItem extends GenericRFToolsItem implements IModulePr
 
     @SideOnly(Side.CLIENT)
     @Override
-    public void addInformation(ItemStack itemStack, World player, List list, ITooltipFlag whatIsThis) {
+    public void addInformation(ItemStack itemStack, World player, List<String> list, ITooltipFlag whatIsThis) {
         super.addInformation(itemStack, player, list, whatIsThis);
         list.add(TextFormatting.GREEN + "Uses " + GeneralConfiguration.DIMENSIONMODULE_RFPERTICK + " RF/tick");
         NBTTagCompound tagCompound = itemStack.getTagCompound();

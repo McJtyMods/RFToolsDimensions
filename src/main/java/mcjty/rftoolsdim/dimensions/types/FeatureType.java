@@ -52,12 +52,12 @@ public enum FeatureType {
         if (terrainTypes == null) {
             supportedTerrains = Collections.emptySet();
         } else {
-            supportedTerrains = new HashSet<TerrainType>(terrainTypes);
+            supportedTerrains = new HashSet<>(terrainTypes);
         }
         if (modifiers == null) {
             supportedModifiers = Collections.emptyMap();
         } else {
-            supportedModifiers = new HashMap<DimletType, Integer>(modifiers);
+            supportedModifiers = new HashMap<>(modifiers);
         }
         this.materialClass = materialClass;
         this.liquidClass = liquidClass;

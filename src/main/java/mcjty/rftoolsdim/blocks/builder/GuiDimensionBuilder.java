@@ -59,7 +59,7 @@ public class GuiDimensionBuilder extends GenericGuiContainer<DimensionBuilderTil
 
         initRedstoneMode();
 
-        Widget toplevel = new Panel(mc, this).setBackground(iconLocation).setLayout(new PositionalLayout()).addChild(energyBar).
+        Panel toplevel = new Panel(mc, this).setBackground(iconLocation).setLayout(new PositionalLayout()).addChild(energyBar).
                 addChild(stages).addChild(percentage).addChild(error1).addChild(error2).addChild(redstoneMode);
         toplevel.setBounds(new Rectangle(guiLeft, guiTop, xSize, ySize));
 

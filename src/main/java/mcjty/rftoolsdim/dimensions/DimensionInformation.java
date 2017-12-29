@@ -85,7 +85,7 @@ public class DimensionInformation implements IDimensionInformation {
     private IBlockState[] extraOregen = new IBlockState[] {};
     private Block[] fluidsForLakes = new Block[] {};
 
-    private List<MobDescriptor> extraMobs = new ArrayList<MobDescriptor>();
+    private List<MobDescriptor> extraMobs = new ArrayList<>();
     private boolean peaceful = false;
     private boolean noanimals = false;
     private boolean shelter = false;
@@ -487,7 +487,7 @@ public class DimensionInformation implements IDimensionInformation {
         tagCompound.setIntArray("structures", toIntArray(structureTypes));
         tagCompound.setIntArray("effects", toIntArray(effectTypes));
 
-        List<Integer> c = new ArrayList<Integer>(biomes.size());
+        List<Integer> c = new ArrayList<>(biomes.size());
         for (Biome t : biomes) {
             if (t != null) {
                 c.add(Biome.getIdForBiome(t));
@@ -596,7 +596,7 @@ public class DimensionInformation implements IDimensionInformation {
     private static void writeBlocksToNBT(NBTTagCompound tagCompound, IBlockState[] blocks, String name) {
         NBTTagList list = new NBTTagList();
 //        List<Integer> ids = new ArrayList<Integer>(blocks.length);
-        List<Integer> meta = new ArrayList<Integer>(blocks.length);
+        List<Integer> meta = new ArrayList<>(blocks.length);
         for (IBlockState t : blocks) {
 //            ids.add(Block.REGISTRY.getIDForObject(t.getBlock()));
             list.appendTag(new NBTTagString(t.getBlock().getRegistryName().toString()));
@@ -608,16 +608,16 @@ public class DimensionInformation implements IDimensionInformation {
         tagCompound.setIntArray(name + "_meta", ArrayUtils.toPrimitive(meta.toArray(new Integer[meta.size()])));
     }
 
-    private static <T extends Enum> int[] toIntArray(Collection<T> collection) {
-        List<Integer> c = new ArrayList<Integer>(collection.size());
+    private static <T extends Enum<T>> int[] toIntArray(Collection<T> collection) {
+        List<Integer> c = new ArrayList<>(collection.size());
         for (T t : collection) {
             c.add(t.ordinal());
         }
         return ArrayUtils.toPrimitive(c.toArray(new Integer[c.size()]));
     }
 
-    private static <T extends Enum> Set<T> toEnumSet(int[] arr, T[] values) {
-        Set<T> list = new HashSet<T>();
+    private static <T extends Enum<T>> Set<T> toEnumSet(int[] arr, T[] values) {
+        Set<T> list = new HashSet<>();
         for (int a : arr) {
             list.add(values[a]);
         }
@@ -1057,7 +1057,7 @@ public class DimensionInformation implements IDimensionInformation {
     }
 
     private static Block[] readFluidArrayFromBuf(ByteBuf buf) {
-        List<Block> blocks = new ArrayList<Block>();
+        List<Block> blocks = new ArrayList<>();
         int size = buf.readInt();
         for (int i = 0 ; i < size ; i++) {
             blocks.add((Block) Block.REGISTRY.getObjectById(buf.readInt()));
@@ -1111,7 +1111,7 @@ public class DimensionInformation implements IDimensionInformation {
         // Always the same random series.
         Random random = new Random(123);
         random.nextFloat();
-        celestialBodyDescriptors = new ArrayList<CelestialBodyDescriptor>();
+        celestialBodyDescriptors = new ArrayList<>();
         for (int i = 0 ; i < celestialBodies.size() ; i++) {
             CelestialBodyType type = celestialBodies.get(i);
             celestialBodyDescriptors.add(new CelestialBodyDescriptor(type, i == sunidx || i == moonidx));
@@ -1119,7 +1119,7 @@ public class DimensionInformation implements IDimensionInformation {
     }
 
     public static List<Pair<DimletKey,List<DimletKey>>> extractType(DimletType type, List<Pair<DimletKey,List<DimletKey>>> dimlets) {
-        List<Pair<DimletKey,List<DimletKey>>> result = new ArrayList<Pair<DimletKey, List<DimletKey>>>();
+        List<Pair<DimletKey,List<DimletKey>>> result = new ArrayList<>();
         for (Pair<DimletKey, List<DimletKey>> dimlet : dimlets) {
             if (dimlet.getLeft().getType() == type) {
                 result.add(dimlet);

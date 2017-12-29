@@ -42,7 +42,7 @@ public class SkyDescriptor {
         cloudColorFactorG = builder.cloudColorFactorG;
         cloudColorFactorB = builder.cloudColorFactorB;
         skyType = builder.skyType;
-        celestialBodies = new ArrayList<CelestialBodyType>(builder.celestialBodies);
+        celestialBodies = new ArrayList<>(builder.celestialBodies);
     }
 
     public void toBytes(ByteBuf buf) {
@@ -204,7 +204,7 @@ public class SkyDescriptor {
         private Float cloudColorFactorG = null;
         private Float cloudColorFactorB = null;
         private SkyType skyType;
-        private List<CelestialBodyType> celestialBodies = new ArrayList<CelestialBodyType>();
+        private List<CelestialBodyType> celestialBodies = new ArrayList<>();
 
         public Builder fromBytes(ByteBuf buf) {
             sunBrightnessFactor = readFloat(buf);

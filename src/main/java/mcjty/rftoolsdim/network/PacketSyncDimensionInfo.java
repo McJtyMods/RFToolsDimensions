@@ -25,7 +25,7 @@ public class PacketSyncDimensionInfo implements IMessage {
     @Override
     public void fromBytes(ByteBuf buf) {
         int size = buf.readInt();
-        dimensions = new HashMap<Integer, DimensionDescriptor>();
+        dimensions = new HashMap<>();
         for (int i = 0 ; i < size ; i++) {
             int id = buf.readInt();
             PacketBuffer buffer = new PacketBuffer(buf);
@@ -41,7 +41,7 @@ public class PacketSyncDimensionInfo implements IMessage {
         }
 
         size = buf.readInt();
-        dimensionInformation = new HashMap<Integer, DimensionInformation>();
+        dimensionInformation = new HashMap<>();
         for (int i = 0 ; i < size ; i++) {
             int id = buf.readInt();
             String name = NetworkTools.readString(buf);
@@ -82,8 +82,8 @@ public class PacketSyncDimensionInfo implements IMessage {
     }
 
     public PacketSyncDimensionInfo(Map<Integer, DimensionDescriptor> dimensions, Map<Integer, DimensionInformation> dimensionInformation) {
-        this.dimensions = new HashMap<Integer, DimensionDescriptor>(dimensions);
-        this.dimensionInformation = new HashMap<Integer, DimensionInformation>(dimensionInformation);
+        this.dimensions = new HashMap<>(dimensions);
+        this.dimensionInformation = new HashMap<>(dimensionInformation);
     }
 
     public static class Handler implements IMessageHandler<PacketSyncDimensionInfo, IMessage> {

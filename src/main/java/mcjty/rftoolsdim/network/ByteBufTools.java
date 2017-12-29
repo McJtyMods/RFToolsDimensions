@@ -64,7 +64,7 @@ public class ByteBufTools {
         }
     }
 
-    public static <T extends Enum> void writeSetAsEnums(ByteBuf buf, Set<T> s) {
+    public static <T extends Enum<T>> void writeSetAsEnums(ByteBuf buf, Set<T> s) {
         if (s == null) {
             buf.writeInt(-1);
         } else {

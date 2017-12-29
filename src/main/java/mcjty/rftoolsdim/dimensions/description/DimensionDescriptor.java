@@ -31,10 +31,10 @@ public class DimensionDescriptor {
         StringBuilder s = new StringBuilder();
 
         // List of all non-modifier dimlets with all associated modifiers.
-        List<Pair<DimletKey,List<DimletKey>>> dimlets = new ArrayList<Pair<DimletKey, List<DimletKey>>>();
+        List<Pair<DimletKey,List<DimletKey>>> dimlets = new ArrayList<>();
 
         // A list of all current modifier that haven't been fitted into a type yet.
-        List<DimletKey> currentModifiers = new ArrayList<DimletKey>();
+        List<DimletKey> currentModifiers = new ArrayList<>();
 
         groupDimletsAndModifiers(descriptors, dimlets, currentModifiers);
         constructDescriptionStringNew(s, dimlets, currentModifiers);
@@ -94,10 +94,10 @@ public class DimensionDescriptor {
                 // Keep the modifier here until we find a dimlet for which it fits.
                 currentModifiers.add(key);
             } else {
-                List<DimletKey> modifiers = new ArrayList<DimletKey>();
+                List<DimletKey> modifiers = new ArrayList<>();
                 if (!currentModifiers.isEmpty()) {
                     // Check if we collected modifiers that fit with this type.
-                    List<DimletKey> copy = new ArrayList<DimletKey>(currentModifiers);
+                    List<DimletKey> copy = new ArrayList<>(currentModifiers);
                     // Iterate over a copy so that we can delete from original list.
                     for (DimletKey modifier : copy) {
                         if (type.dimletType.isModifiedBy(modifier.getType())) {
@@ -120,7 +120,7 @@ public class DimensionDescriptor {
     }
 
     public List<Pair<DimletKey,List<DimletKey>>> getDimletsWithModifiers() {
-        List<Pair<DimletKey,List<DimletKey>>> result = new ArrayList<Pair<DimletKey, List<DimletKey>>>();
+        List<Pair<DimletKey,List<DimletKey>>> result = new ArrayList<>();
 
         String ds = descriptionString;
         if (ds.startsWith("@")) {
@@ -128,7 +128,7 @@ public class DimensionDescriptor {
         }
 
         if (!ds.isEmpty()) {
-            List<DimletKey> modifiers = new ArrayList<DimletKey>();
+            List<DimletKey> modifiers = new ArrayList<>();
 
             String[] opcodes = StringUtils.split(ds, ",");
             for (String oc : opcodes) {
@@ -141,7 +141,7 @@ public class DimensionDescriptor {
                 } else {
                     key = DimletKey.parseKey(oc);
                     result.add(Pair.of(key, modifiers));
-                    modifiers = new ArrayList<DimletKey>();
+                    modifiers = new ArrayList<>();
                 }
             }
         }
@@ -272,10 +272,10 @@ public class DimensionDescriptor {
         List<DimletKey> dimletKeys = parseDescriptionString(descriptionString);
 
         // List of all non-modifier dimlets with all associated modifiers.
-        List<Pair<DimletKey,List<DimletKey>>> dimlets = new ArrayList<Pair<DimletKey, List<DimletKey>>>();
+        List<Pair<DimletKey,List<DimletKey>>> dimlets = new ArrayList<>();
 
         // A list of all current modifier that haven't been fitted into a type yet.
-        List<DimletKey> currentModifiers = new ArrayList<DimletKey>();
+        List<DimletKey> currentModifiers = new ArrayList<>();
 
         groupDimletsAndModifiers(dimletKeys, dimlets, currentModifiers);
 

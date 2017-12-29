@@ -66,7 +66,7 @@ public class FeatureAbsorberTileEntity extends GenericTileEntity implements ITic
         if (featureTypes.isEmpty()) {
             return null;
         }
-        List<FeatureType> list = new ArrayList<FeatureType>(featureTypes);
+        List<FeatureType> list = new ArrayList<>(featureTypes);
         return list.get(getWorld().rand.nextInt(list.size())).getId();
     }
 

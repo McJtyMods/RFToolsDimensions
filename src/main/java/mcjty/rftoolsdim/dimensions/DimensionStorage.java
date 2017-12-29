@@ -15,7 +15,7 @@ public class DimensionStorage extends WorldSavedData {
     public static final String DIMSTORAGE_NAME = "RFToolsDimensionStorage";
     private static DimensionStorage instance = null;
 
-    private final Map<Integer,Integer> energy = new HashMap<Integer, Integer>();
+    private final Map<Integer,Integer> energy = new HashMap<>();
 
     public static void clearInstance() {
         if (instance != null) {

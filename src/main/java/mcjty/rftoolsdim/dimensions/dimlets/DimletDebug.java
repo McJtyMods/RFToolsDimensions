@@ -47,7 +47,7 @@ public class DimletDebug {
 
         for (IBlockState state : block.getBlockState().getValidStates()) {
             int meta = state.getBlock().getMetaFromState(state);
-            List<IProperty> propertyNames = new ArrayList<>(state.getPropertyKeys());
+            List<IProperty<?>> propertyNames = new ArrayList<>(state.getPropertyKeys());
             propertyNames.sort((o1, o2) -> o1.getName().compareTo(o2.getName()));
 
             ImmutableMap<IProperty<?>, Comparable<?>> properties = state.getProperties();

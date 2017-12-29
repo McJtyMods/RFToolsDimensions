@@ -159,7 +159,7 @@ public class FeatureDimletType implements IDimletType {
             }
         }
 
-        Map<FeatureType,List<DimletKey>> modifiersForFeature = new HashMap<FeatureType, List<DimletKey>>();
+        Map<FeatureType,List<DimletKey>> modifiersForFeature = new HashMap<>();
         for (Pair<DimletKey, List<DimletKey>> dimlet : dimlets) {
             FeatureType featureType = DimletObjectMapping.getFeature(dimlet.getLeft());
             featureTypes.add(featureType);
@@ -219,7 +219,7 @@ public class FeatureDimletType implements IDimletType {
         IBlockState[] blockArray;
         if (featureTypes.contains(t)) {
             List<IBlockState> blocks = new ArrayList<>();
-            List<Block> fluids = new ArrayList<Block>();
+            List<Block> fluids = new ArrayList<>();
             DimensionInformation.getMaterialAndFluidModifiers(modifiersForFeature.get(t), blocks, fluids);
 
             // If no blocks are specified we will generate a few random ores.

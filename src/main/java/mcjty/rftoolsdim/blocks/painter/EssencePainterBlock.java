@@ -1,6 +1,5 @@
 package mcjty.rftoolsdim.blocks.painter;
 
-import mcjty.lib.container.GenericGuiContainer;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.blocks.GenericRFToolsBlock;
 import net.minecraft.block.material.Material;
@@ -27,7 +26,7 @@ public class EssencePainterBlock extends GenericRFToolsBlock<EssencePainterTileE
 
     @SideOnly(Side.CLIENT)
     @Override
-    public Class<? extends GenericGuiContainer> getGuiClass() {
+    public Class<GuiEssencePainter> getGuiClass() {
         return GuiEssencePainter.class;
     }
 

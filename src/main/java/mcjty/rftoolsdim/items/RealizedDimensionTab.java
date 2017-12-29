@@ -118,7 +118,7 @@ public class RealizedDimensionTab extends GenericRFToolsItem {
         }
     }
 
-    private void constructDescriptionHelp(List list, String descriptionString) {
+    private void constructDescriptionHelp(List<String> list, String descriptionString) {
         Map<DimletType,List<DimletKey>> dimletTypeListMap = new HashMap<>();
         for (DimletKey descriptor : DimensionDescriptor.parseDescriptionString(descriptionString)) {
             DimletType type = descriptor.getType();

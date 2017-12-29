@@ -622,15 +622,15 @@ public class GenericChunkGenerator implements IChunkGenerator {
 
     @Override
     public List<Biome.SpawnListEntry> getPossibleCreatures(EnumCreatureType creatureType, BlockPos pos) {
-        List creatures = getDefaultCreatures(creatureType, pos);
+        List<Biome.SpawnListEntry> creatures = getDefaultCreatures(creatureType, pos);
         if (extraSpawns.isEmpty() || worldObj == null) {        // null pointer protection here
             return creatures;
         }
 
         if (creatureType == EnumCreatureType.AMBIENT) {
-            creatures = new ArrayList(creatures);
+            creatures = new ArrayList<>(creatures);
             for (int i = 0; i < extraSpawns.size(); i++) {
-                Class entityClass = extraSpawns.get(i).entityClass;
+                Class<? extends EntityLiving> entityClass = extraSpawns.get(i).entityClass;
                 if (entityClass != null && IAnimals.class.isAssignableFrom(entityClass)) {
                     int count = worldObj.countEntities(entityClass);
                     if (count < extraSpawnsMax.get(i)) {
@@ -639,9 +639,9 @@ public class GenericChunkGenerator implements IChunkGenerator {
                 }
             }
         } else if (creatureType == EnumCreatureType.MONSTER) {
-            creatures = new ArrayList(creatures);
+            creatures = new ArrayList<>(creatures);
             for (int i = 0; i < extraSpawns.size(); i++) {
-                Class entityClass = extraSpawns.get(i).entityClass;
+                Class<? extends EntityLiving> entityClass = extraSpawns.get(i).entityClass;
                 if (entityClass != null && IMob.class.isAssignableFrom(entityClass)) {
                     int count = worldObj.countEntities(entityClass);
                     if (count < extraSpawnsMax.get(i)) {
@@ -655,7 +655,7 @@ public class GenericChunkGenerator implements IChunkGenerator {
         return creatures;
     }
 
-    private List getDefaultCreatures(EnumCreatureType creatureType, BlockPos pos) {
+    private List<Biome.SpawnListEntry> getDefaultCreatures(EnumCreatureType creatureType, BlockPos pos) {
         Biome Biome = this.worldObj.getBiomeForCoordsBody(pos);
         if (creatureType == EnumCreatureType.MONSTER) {
             if (dimensionInformation.isPeaceful()) {

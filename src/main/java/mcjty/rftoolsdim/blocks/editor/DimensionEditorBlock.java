@@ -1,7 +1,6 @@
 package mcjty.rftoolsdim.blocks.editor;
 
 import mcjty.lib.api.Infusable;
-import mcjty.lib.container.GenericGuiContainer;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.blocks.GenericRFToolsBlock;
 import net.minecraft.block.material.Material;
@@ -54,7 +53,7 @@ public class DimensionEditorBlock extends GenericRFToolsBlock<DimensionEditorTil
     }
 
     @Override
-    public Class<? extends GenericGuiContainer> getGuiClass() {
+    public Class<GuiDimensionEditor> getGuiClass() {
         return GuiDimensionEditor.class;
     }
 

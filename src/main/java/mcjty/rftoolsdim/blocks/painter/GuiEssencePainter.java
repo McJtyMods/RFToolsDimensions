@@ -85,7 +85,7 @@ public class GuiEssencePainter extends GenericGuiContainer<EssencePainterTileEnt
 
         setNameFromDimensionTab();
 
-        Widget toplevel = new Panel(mc, this).setBackground(iconLocation).setLayout(new PositionalLayout()).addChild(extractButton).addChild(storeButton).
+        Panel toplevel = new Panel(mc, this).setBackground(iconLocation).setLayout(new PositionalLayout()).addChild(extractButton).addChild(storeButton).
                 addChild(nameField).addChild(validateField);
         toplevel.setBounds(new Rectangle(guiLeft, guiTop, xSize, ySize));
 
@@ -126,7 +126,7 @@ public class GuiEssencePainter extends GenericGuiContainer<EssencePainterTileEnt
     }
 
     private List<DimletKey> extractModifiersForType(List<DimletKey> modifiers, DimletType type) {
-        List<DimletKey> modifiersForType = new ArrayList<DimletKey>();
+        List<DimletKey> modifiersForType = new ArrayList<>();
         int i = 0;
         while (i < modifiers.size()) {
             DimletKey modifier = modifiers.get(i);
@@ -150,7 +150,7 @@ public class GuiEssencePainter extends GenericGuiContainer<EssencePainterTileEnt
     }
 
     private void validateDimlets() {
-        List<String> tooltips = new ArrayList<String>();
+        List<String> tooltips = new ArrayList<>();
 
         TerrainType terrainType = null;
         int cntTerrain = 0;
@@ -189,7 +189,7 @@ public class GuiEssencePainter extends GenericGuiContainer<EssencePainterTileEnt
             tooltips.add("Using more then one CONTROLLER is not useful!");
         }
 
-        List<DimletKey> modifiers = new ArrayList<DimletKey>();
+        List<DimletKey> modifiers = new ArrayList<>();
         for (int i = EssencePainterContainer.SLOT_DIMLETS; i < EssencePainterContainer.SLOT_TAB ; i++) {
             Slot slot = inventorySlots.getSlot(i);
             if (slot != null && !slot.getStack().isEmpty()) {
@@ -206,7 +206,7 @@ public class GuiEssencePainter extends GenericGuiContainer<EssencePainterTileEnt
                         }
                     } else if (type == DimletType.DIMLET_FEATURE) {
                         FeatureType featureType = DimletObjectMapping.getFeature(key);
-                        Counter<DimletType> modifierAmountUsed = new Counter<DimletType>();
+                        Counter<DimletType> modifierAmountUsed = new Counter<>();
                         for (DimletKey modifier : modifiersForType) {
                             modifierAmountUsed.increment(modifier.getType());
                         }

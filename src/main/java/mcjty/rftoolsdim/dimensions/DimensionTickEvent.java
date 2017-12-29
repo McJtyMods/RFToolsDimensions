@@ -380,7 +380,7 @@ public class DimensionTickEvent {
         WorldServer world = DimensionManager.getWorld(id);
         if (world != null) {
             Set<EffectType> effects = information.getEffectTypes();
-            List<EntityPlayer> players = new ArrayList<EntityPlayer>(world.playerEntities);
+            List<EntityPlayer> players = new ArrayList<>(world.playerEntities);
             for (EntityPlayer player : players) {
                 for (EffectType effect : effects) {
                     Potion potionEffect = effectsMap.get(effect);
@@ -420,7 +420,7 @@ public class DimensionTickEvent {
             // We ran out of power!
             WorldServer world = DimensionManager.getWorld(id);
             if (world != null) {
-                List<EntityPlayer> players = new ArrayList<EntityPlayer>(world.playerEntities);
+                List<EntityPlayer> players = new ArrayList<>(world.playerEntities);
                 if (PowerConfiguration.dimensionDifficulty >= 1) {
                     for (EntityPlayer player : players) {
                         if (!RfToolsDimensionManager.checkValidPhasedFieldGenerator(player, true, phasedCost)) {

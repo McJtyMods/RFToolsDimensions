@@ -35,11 +35,11 @@ public class RfToolsDimensionManager extends WorldSavedData {
     public static final String DIMMANAGER_NAME = "RFToolsDimensionManager";
     private static RfToolsDimensionManager instance = null;
 
-    private final Map<Integer, DimensionDescriptor> dimensions = new HashMap<Integer, DimensionDescriptor>();
-    private final Map<DimensionDescriptor, Integer> dimensionToID = new HashMap<DimensionDescriptor, Integer>();
-    private final Map<Integer, DimensionInformation> dimensionInformation = new HashMap<Integer, DimensionInformation>();
+    private final Map<Integer, DimensionDescriptor> dimensions = new HashMap<>();
+    private final Map<DimensionDescriptor, Integer> dimensionToID = new HashMap<>();
+    private final Map<Integer, DimensionInformation> dimensionInformation = new HashMap<>();
 
-    private final Set<Integer> reclaimedIds = new HashSet<Integer>();
+    private final Set<Integer> reclaimedIds = new HashSet<>();
 
     public void syncFromServer(Map<Integer, DimensionDescriptor> dims, Map<Integer, DimensionInformation> dimInfo) {
         for (Map.Entry<Integer, DimensionDescriptor> entry : dims.entrySet()) {
@@ -144,7 +144,7 @@ public class RfToolsDimensionManager extends WorldSavedData {
         }
 
         // If there are players with a valid PFG then we check if there are entities we want to keep.
-        List tokeep = new ArrayList();
+        List<Entity> tokeep = new ArrayList<>();
         tokeep.addAll(world.playerEntities);    // We want to keep all players for sure.
         // Add all entities that are within range of a PFG.
         for (BlockPos coordinate : pfgList) {
@@ -157,7 +157,7 @@ public class RfToolsDimensionManager extends WorldSavedData {
         world.loadedTileEntityList.clear();
     }
 
-    private static void getEntitiesInSphere(World world, BlockPos c, float radius, List tokeep) {
+    private static void getEntitiesInSphere(World world, BlockPos c, float radius, List<Entity> tokeep) {
         int i = MathTools.floor((c.getX() - radius) / 16.0D);
         int j = MathTools.floor((c.getX() + 1 + radius) / 16.0D);
         int k = MathTools.floor((c.getZ() - radius) / 16.0D);
@@ -173,7 +173,7 @@ public class RfToolsDimensionManager extends WorldSavedData {
         }
     }
 
-    private static void getEntitiesInSphere(Chunk chunk, BlockPos c, float radius, List entities) {
+    private static void getEntitiesInSphere(Chunk chunk, BlockPos c, float radius, List<Entity> entities) {
         float squaredRange = radius * radius;
         int i = MathTools.floor((c.getY() - radius) / 16.0D);
         int j = MathTools.floor((c.getY() + 1 + radius) / 16.0D);
@@ -460,7 +460,7 @@ public class RfToolsDimensionManager extends WorldSavedData {
         }
         tagCompound.setTag("dimensions", lst);
 
-        List<Integer> ids = new ArrayList<Integer>(reclaimedIds);
+        List<Integer> ids = new ArrayList<>(reclaimedIds);
         int[] lstIds = new int[ids.size()];
         for (int i = 0 ; i < ids.size() ; i++) {
             lstIds[i] = ids.get(i);
