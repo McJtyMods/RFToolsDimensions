@@ -378,7 +378,7 @@ public class BuildingInfo {
                 isLibrary = false;
             }
             if (building2x2Section == 0 && !isLibrary) {
-                isDataCenter = rand.nextFloat() < LostCityConfiguration.LIBRARY_CHANCE;
+                isDataCenter = rand.nextFloat() < LostCityConfiguration.DATACENTER_CHANCE;
             } else {
                 isDataCenter = false;
             }
