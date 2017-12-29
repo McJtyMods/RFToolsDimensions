@@ -236,21 +236,19 @@ public class GuiDimletWorkbench extends GenericGuiContainer<DimletWorkbenchTileE
                 ItemStack typectrl = new ItemStack(ModItems.dimletTypeControllerItem, 1, key.getType().ordinal());
                 ItemStack essence = key.getType().dimletType.getDefaultEssence(key);
 
+                List<String> tooltips = new ArrayList<>();
                 if (Minecraft.getMinecraft().player.isCreative()) {
-                    if (essence.isEmpty()) {
-                        widget.setTooltips(TextFormatting.RED + "Shift-Double-Click to cheat", "Type: " + key.getType().dimletType.getName(), "Rarity: " + settings.getRarity(), "@0@1@2", "@3@4@5",
-                                TextFormatting.RED + "(currently not craftable)");
-                    } else {
-                        widget.setTooltips(TextFormatting.RED + "Shift-Double-Click to cheat", "Type: " + key.getType().dimletType.getName(), "Rarity: " + settings.getRarity(), "@0@1@2", "@3@4@5");
-                    }
-                } else {
-                    if (essence.isEmpty()) {
-                        widget.setTooltips("Type: " + key.getType().dimletType.getName(), "Rarity: " + settings.getRarity(), "@0@1@2", "@3@4@5",
-                            TextFormatting.RED + "(currently not craftable)");
-                    } else {
-                        widget.setTooltips("Type: " + key.getType().dimletType.getName(), "Rarity: " + settings.getRarity(), "@0@1@2", "@3@4@5");
-                    }
+                    tooltips.add(TextFormatting.RED + "Shift-Double-Click to cheat");
                 }
+                tooltips.add("Type: " + key.getType().dimletType.getName());
+                tooltips.add("Rarity: " + settings.getRarity());
+                tooltips.add("@0@1@2");
+                tooltips.add("@3@4@5");
+                if (essence.isEmpty()) {
+                    tooltips.add(TextFormatting.RED + "(currently not craftable)");
+                }
+                widget.setTooltips(tooltips.toArray(new String[tooltips.size()]));
+
                 widget.setTooltipItems(base, ctrl, energy, memory, typectrl, essence);
 //                itemList.setTooltips("Type: " + key.getType().dimletType.getName(), "Rarity: " + settings.getRarity(), "Y: @0 @1 @2 @3 @4 @5");
 //                itemList.setTooltipItems(base, ctrl, energy, memory, typectrl, essence);
