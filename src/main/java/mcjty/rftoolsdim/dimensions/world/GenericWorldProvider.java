@@ -44,10 +44,10 @@ public class GenericWorldProvider extends WorldProvider implements  /*@todo impl
     private Set<String> dimensionTypes = null;  // Used for Recurrent Complex support
 
     private long calculateSeed(long seed, int dim) {
-        if (dimensionInformation == null || dimensionInformation.getWorldVersion() < DimensionInformation.VERSION_WORLDSEED) {
+        if (dimensionInformation == null || dimensionInformation.getWorldVersion() < DimensionInformation.VERSION_DIMLETSSEED) {
             return dim * 13L + seed;
         } else {
-            return 31L + seed;
+            return dimensionInformation.getDescriptor().calculateSeed(seed);
         }
     }
 
