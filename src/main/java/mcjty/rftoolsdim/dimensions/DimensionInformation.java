@@ -193,10 +193,8 @@ public class DimensionInformation implements IDimensionInformation {
         String json = buffer.toString();
 //        String json = tagCompound.toString();
 
-        try {
-            FileWriter writer = new FileWriter(filename);
+        try(FileWriter writer = new FileWriter(filename)) {
             writer.write(json);
-            writer.close();
         } catch (IOException e) {
             return "Error writing file!";
         }

@@ -129,17 +129,10 @@ public class DimletRules {
     }
 
     private static List<Pair<Filter,Settings>> readRulesFromFile(File file) {
-        FileInputStream inputstream;
-        try {
-            inputstream = new FileInputStream(file);
-        } catch (FileNotFoundException e) {
-            Logging.logError("Error reading file: " + file.getName());
-            return Collections.emptyList();
-        }
-        try {
+        try(FileInputStream inputstream = new FileInputStream(file)) {
             return readRulesFromFile(inputstream, file.getName());
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (IOException e) {
+            Logging.logError("Error reading file: " + file.getName(), e);
             return Collections.emptyList();
         }
     }
