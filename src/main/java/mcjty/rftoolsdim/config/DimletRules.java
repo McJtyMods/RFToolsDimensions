@@ -140,19 +140,22 @@ public class DimletRules {
 
     private static List<Pair<Filter,Settings>> readRulesFromFile(InputStream inputstream, String name) {
         List<Pair<Filter, Settings>> rules = new ArrayList<>();
-        BufferedReader br = new BufferedReader(new InputStreamReader(inputstream, StandardCharsets.UTF_8));
-        JsonParser parser = new JsonParser();
-        JsonElement element = parser.parse(br);
-        for (JsonElement entry : element.getAsJsonArray()) {
-            Pair<Filter, Settings> rule = readRule(entry);
-            if (rule == null) {
-                // We add the null rule so that we know that it was there.
-                rules.add(null);
-                return rules;
+        try(BufferedReader br = new BufferedReader(new InputStreamReader(inputstream, StandardCharsets.UTF_8))) {
+            JsonParser parser = new JsonParser();
+            JsonElement element = parser.parse(br);
+            for (JsonElement entry : element.getAsJsonArray()) {
+                Pair<Filter, Settings> rule = readRule(entry);
+                if (rule == null) {
+                    // We add the null rule so that we know that it was there.
+                    rules.add(null);
+                    return rules;
+                }
+                rules.add(rule);
             }
-            rules.add(rule);
+            return rules;
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
         }
-        return rules;
     }
 
     private static Pair<Filter,Settings> readRule(JsonElement ruleElement) {
