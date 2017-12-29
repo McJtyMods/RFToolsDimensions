@@ -139,36 +139,22 @@ public class GuiDimletWorkbench extends GenericGuiContainer<DimletWorkbenchTileE
         }
         listDirty = false;
         itemList.removeChildren();
-        Map<DimletKey, Settings> dimlets = KnownDimletConfiguration.getKnownDimlets();
 
         String filter = searchBar.getText().toLowerCase();
 
-        // First remove all dimlets with the same name and also apply the filter already
-        Map<Pair<DimletType, String>, DimletKey> uniquelyNamedDimlets = new HashMap<>();
-        for (DimletKey key : dimlets.keySet()) {
-            String name = KnownDimletConfiguration.getDisplayName(key);
-            if (dimletMatches(filter, key, name)) {
-                Pair<DimletType, String> k = Pair.of(key.getType(), name);
-                if (!uniquelyNamedDimlets.containsKey(k)) {
-                    uniquelyNamedDimlets.put(k, key);
-                }
-            }
-        }
+        KnownDimletConfiguration.getKnownDimlets().keySet().stream()
+                .filter(key -> dimletMatches(filter, key))
+                .sorted()
+                .forEach(key -> addItemToList(key, itemList));
 
-        List<DimletKey> keys = new ArrayList<>(uniquelyNamedDimlets.values());
-        keys.sort(null);
-        keys.stream().forEach(key -> addItemToList(key, itemList));
         if (itemList.getFirstSelected() >= itemList.getChildCount()) {
             itemList.setFirstSelected(0);
         }
     }
 
-    private boolean dimletMatches(String filter, DimletKey key, String name) {
-        if (name.toLowerCase().contains(filter)) {
-            return true;
-        }
-        String typeName = key.getType().dimletType.getName();
-        return typeName.toLowerCase().contains(filter);
+    private boolean dimletMatches(String filter, DimletKey key) {
+        return KnownDimletConfiguration.getDisplayName(key).toLowerCase().contains(filter)
+                || key.getType().dimletType.getName().toLowerCase().contains(filter);
     }
 
     private void addItemToList(DimletKey key, WidgetList itemList) {
