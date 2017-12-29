@@ -354,11 +354,9 @@ public class RfToolsDimensionManager extends WorldSavedData {
 
     public int countOwnedDimensions(UUID player) {
         int cnt = 0;
-        for (Map.Entry<Integer, DimensionInformation> entry : dimensionInformation.entrySet()) {
-            int id = entry.getKey();
-            DimensionInformation information = entry.getValue();
+        for (DimensionInformation information : dimensionInformation.values()) {
             if (player.equals(information.getOwner())) {
-                cnt++;
+                ++cnt;
             }
 
         }
