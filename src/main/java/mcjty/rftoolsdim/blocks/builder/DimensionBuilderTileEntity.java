@@ -146,10 +146,10 @@ public class DimensionBuilderTileEntity extends GenericEnergyReceiverTileEntity 
             if (rf > maxEnergy) {
                 rf = maxEnergy;
             }
-            counter--;
-            if (counter < 0) {
-                counter = 20;
-                if (Logging.debugMode) {
+            if (Logging.debugMode) {
+	            counter--;
+	            if (counter < 0) {
+	                counter = 20;
                     Logging.log("#################### id:" + id + ", rf:" + rf + ", energy:" + energy + ", max:" + maxEnergy);
                 }
             }
