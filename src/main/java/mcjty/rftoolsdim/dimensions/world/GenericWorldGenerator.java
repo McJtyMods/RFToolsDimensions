@@ -324,7 +324,7 @@ public class GenericWorldGenerator implements IWorldGenerator {
     private void createRFToolsMachine(Random random, World world, BlockPos pos) {
         Block machine;
         IBlockState state;
-        switch (random.nextInt(3)) {
+        switch (random.nextInt(4)) {
             case 0:
                 machine = ForgeRegistries.BLOCKS.getValue(new ResourceLocation("rftools", "crafter1"));
                 state = machine.getDefaultState().withProperty(BaseBlock.FACING, EnumFacing.HORIZONTALS[random.nextInt(EnumFacing.HORIZONTALS.length)]);
@@ -673,7 +673,7 @@ public class GenericWorldGenerator implements IWorldGenerator {
         boolean doExtraFeature = random.nextInt(4) == 0;
 
         Block cornerBlock;
-        switch (random.nextInt(3)) {
+        switch (random.nextInt(4)) {
             case 0:
                 cornerBlock = ModBlocks.dimensionalCrossBlock;
                 break;
