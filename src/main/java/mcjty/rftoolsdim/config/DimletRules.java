@@ -100,32 +100,28 @@ public class DimletRules {
         if (file.exists()) {
             file.delete();
         }
-        PrintWriter writer;
-        try {
-            writer = new PrintWriter(file);
+        // Check if the last rule is null. In that case we have to append the builtin ruiles.
+        boolean addBuiltin = false;
+        try(PrintWriter writer = new PrintWriter(file)){
+            if (userRules.isEmpty()) {
+                addBuiltin = true;
+            } else if (userRules.get(userRules.size()-1) == null) {
+                addBuiltin = true;
+                userRules.remove(userRules.size()-1);       // Remove the null line
+            }
+
+            // Make a dummy array of rules to output with the 'regen' line added.
+            List<Pair<Filter, Settings>> outputRules = new ArrayList<>(userRules);
+            // If the last user rule is a null then we add the builtin stuff. Otherwise we don't
+            if (addBuiltin) {
+                outputRules.add(null);  // Add the regen line but for output only.
+                outputRules.addAll(builtinRules);
+            }
+            writeRules(writer, outputRules);
         } catch (FileNotFoundException e) {
             Logging.logError("Error writing dimlets.json!");
             return;
         }
-
-        // Check if the last rule is null. In that case we have to append the builtin ruiles.
-        boolean addBuiltin = false;
-        if (userRules.isEmpty()) {
-            addBuiltin = true;
-        } else if (userRules.get(userRules.size()-1) == null) {
-            addBuiltin = true;
-            userRules.remove(userRules.size()-1);       // Remove the null line
-        }
-
-        // Make a dummy array of rules to output with the 'regen' line added.
-        List<Pair<Filter, Settings>> outputRules = new ArrayList<>(userRules);
-        // If the last user rule is a null then we add the builtin stuff. Otherwise we don't
-        if (addBuiltin) {
-            outputRules.add(null);  // Add the regen line but for output only.
-            outputRules.addAll(builtinRules);
-        }
-        writeRules(writer, outputRules);
-        writer.close();
 
         rules = new ArrayList<>(userRules);
         if (addBuiltin) {
