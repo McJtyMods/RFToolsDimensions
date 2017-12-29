@@ -790,7 +790,7 @@ public class GenericWorldGenerator implements IWorldGenerator {
         world.setBlockState(new BlockPos(midx, starty + 3, midz + 3), Blocks.REDSTONE_LAMP.getDefaultState(), 2);
         world.setBlockState(new BlockPos(midx, starty + 3, midz + 2), Blocks.LEVER.getStateFromMeta(4), 2);
 
-        world.setBlockState(new BlockPos(midx + 2, starty + 1, midz - 2), Blocks.CHEST.getDefaultState(), 2);
+        world.setBlockState(new BlockPos(midx + 2, starty + 1, midz - 2), Blocks.CHEST.getDefaultState().withProperty(BlockChest.FACING, EnumFacing.SOUTH), 2);
 
         RarityRandomSelector.Distribution<Integer> bestDistribution = DimletRandomizer.getRandomDimlets().createDistribution(0.2f);
 
