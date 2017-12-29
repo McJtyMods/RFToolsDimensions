@@ -90,8 +90,12 @@ public class DimletRules {
         }
 
         Logging.log("Reading default dimlets.json");
-        InputStream inputstream = RFToolsDim.class.getResourceAsStream("/assets/rftoolsdim/text/dimlets.json");
-        List<Pair<Filter, Settings>> builtinRules = readRulesFromFile(inputstream, "Builtin dimlets.json");
+        List<Pair<Filter, Settings>> builtinRules;
+        try(InputStream inputstream = RFToolsDim.class.getResourceAsStream("/assets/rftoolsdim/text/dimlets.json")) {
+            builtinRules = readRulesFromFile(inputstream, "Builtin dimlets.json");
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
 
         if (file.exists()) {
             file.delete();
