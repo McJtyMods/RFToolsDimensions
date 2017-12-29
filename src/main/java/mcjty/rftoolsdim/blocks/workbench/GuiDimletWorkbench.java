@@ -156,14 +156,7 @@ public class GuiDimletWorkbench extends GenericGuiContainer<DimletWorkbenchTileE
         }
 
         List<DimletKey> keys = new ArrayList<>(uniquelyNamedDimlets.values());
-        keys.sort((a, b) -> {
-            int rc = a.getType().compareTo(b.getType());
-            if (rc == 0) {
-                return a.getId().compareTo(b.getId());
-            } else {
-                return rc;
-            }
-        });
+        keys.sort(null);
         keys.stream().forEach(key -> addItemToList(key, itemList));
         if (itemList.getFirstSelected() >= itemList.getChildCount()) {
             itemList.setFirstSelected(0);
