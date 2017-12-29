@@ -63,13 +63,7 @@ public class CmdCreateDimension extends AbstractRfToolsCommand {
         List<DimletKey> descriptors = new ArrayList<>();
         descriptors.add(new DimletKey(DimletType.DIMLET_TERRAIN, terrainType.getId()));
         DimensionDescriptor descriptor = new DimensionDescriptor(descriptors, 0);
-        int dim = 0;
-        try {
-            dim = dimensionManager.createNewDimension(player.getEntityWorld(), descriptor, name, player.getDisplayName().toString(), player.getPersistentID());
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
+        int dim = dimensionManager.createNewDimension(player.getEntityWorld(), descriptor, name, player.getDisplayName().toString(), player.getPersistentID());
         player.sendStatusMessage(new TextComponentString(TextFormatting.GREEN + "Created dimension: " + dim), false);
 
         dimensionManager.save(player.getEntityWorld());
