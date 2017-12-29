@@ -12,6 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class DimletRules {
@@ -139,13 +140,7 @@ public class DimletRules {
 
     private static List<Pair<Filter,Settings>> readRulesFromFile(InputStream inputstream, String name) {
         List<Pair<Filter, Settings>> rules = new ArrayList<>();
-        BufferedReader br;
-        try {
-            br = new BufferedReader(new InputStreamReader(inputstream, "UTF-8"));
-        } catch (UnsupportedEncodingException e) {
-            Logging.logError("Error reading file: " + name);
-            return rules;
-        }
+        BufferedReader br = new BufferedReader(new InputStreamReader(inputstream, StandardCharsets.UTF_8));
         JsonParser parser = new JsonParser();
         JsonElement element = parser.parse(br);
         for (JsonElement entry : element.getAsJsonArray()) {
