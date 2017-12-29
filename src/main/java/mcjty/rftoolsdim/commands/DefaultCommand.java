@@ -1,6 +1,5 @@
 package mcjty.rftoolsdim.commands;
 
-import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
@@ -98,7 +97,7 @@ public abstract class DefaultCommand implements ICommand {
     }
 
     @Override
-    public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
+    public void execute(MinecraftServer server, ICommandSender sender, String[] args) {
         World world = sender.getEntityWorld();
         if (args.length <= 0) {
             if (!world.isRemote) {

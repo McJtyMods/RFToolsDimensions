@@ -147,7 +147,7 @@ public class DimensionEditorTileEntity extends GenericEnergyReceiverTileEntity i
                             dimWorld.setBlockState(pos, state, 2);
                             Block block = dimWorld.getBlockState(pos).getBlock();
                             // @todo @@@@@@@@@@@@@@ check if right?
-                            block.onBlockActivated(dimWorld, pos, state, FakePlayerFactory.getMinecraft((WorldServer) dimWorld), EnumHand.MAIN_HAND, EnumFacing.DOWN, (float) 0, (float) 0, (float) 0);
+                            block.onBlockActivated(dimWorld, pos, state, FakePlayerFactory.getMinecraft((WorldServer) dimWorld), EnumHand.MAIN_HAND, EnumFacing.DOWN, 0.0F, 0.0F, 0.0F);
                             //                            block.onBlockPlaced(dimWorld, pos, EnumFacing.DOWN, 0, 0, 0, 0, null);
                             block.onBlockPlacedBy(dimWorld, pos, state, null, injectableItemStack);
                             dimWorld.setBlockToAir(pos.up());

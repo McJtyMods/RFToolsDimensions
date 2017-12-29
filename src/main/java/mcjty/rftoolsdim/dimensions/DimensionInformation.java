@@ -300,13 +300,13 @@ public class DimensionInformation implements IDimensionInformation {
         baseBlockForTerrain = getBlockMeta(tagCompound, "baseBlock");
         tendrilBlock = getBlockMeta(tagCompound, "tendrilBlock");
         canyonBlock = getBlockMeta(tagCompound, "canyonBlock");
-        fluidForTerrain = (Block) Block.REGISTRY.getObjectById(tagCompound.getInteger("fluidBlock"));
+        fluidForTerrain = Block.REGISTRY.getObjectById(tagCompound.getInteger("fluidBlock"));
 
         hugeLiquidSphereFluids = readFluidsFromNBT(tagCompound, "hugeLiquidSphereFluids");
         hugeLiquidSphereBlocks = readBlockArrayFromNBT(tagCompound, "hugeLiquidSphereBlocks");
 
         // Support for the old format with only one liquid block.
-        Block oldLiquidSphereFluid = (Block) Block.REGISTRY.getObjectById(tagCompound.getInteger("liquidSphereFluid"));
+        Block oldLiquidSphereFluid = Block.REGISTRY.getObjectById(tagCompound.getInteger("liquidSphereFluid"));
         liquidSphereFluids = readFluidsFromNBT(tagCompound, "liquidSphereFluids");
         if (liquidSphereFluids.length == 0) {
             liquidSphereFluids = new Block[] { oldLiquidSphereFluid };
@@ -1060,7 +1060,7 @@ public class DimensionInformation implements IDimensionInformation {
         List<Block> blocks = new ArrayList<>();
         int size = buf.readInt();
         for (int i = 0 ; i < size ; i++) {
-            blocks.add((Block) Block.REGISTRY.getObjectById(buf.readInt()));
+            blocks.add(Block.REGISTRY.getObjectById(buf.readInt()));
         }
         return blocks.toArray(new Block[blocks.size()]);
     }

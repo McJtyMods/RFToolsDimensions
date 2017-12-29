@@ -159,7 +159,7 @@ public class MapGenDenseCaves extends MapGenCaves {
 
                                         if (d12 > -0.7D && d13 * d13 + d12 * d12 + d14 * d14 < 1.0D) {
                                             IBlockState iblockstate1 = chunkPrimer.getBlockState(k2, l3, j3);
-                                            IBlockState iblockstate2 = (IBlockState) MoreObjects.firstNonNull(chunkPrimer.getBlockState(k2, l3 + 1, j3), Blocks.AIR.getDefaultState());
+                                            IBlockState iblockstate2 = MoreObjects.firstNonNull(chunkPrimer.getBlockState(k2, l3 + 1, j3), Blocks.AIR.getDefaultState());
 
                                             if (isTopBlock(chunkPrimer, k2, l3, j3, chunkX, chunkZ)) {
                                                 flag1 = true;
