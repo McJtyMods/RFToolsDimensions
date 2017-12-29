@@ -22,13 +22,13 @@ import mcjty.rftoolsdim.dimensions.world.terrain.lost.LostCitiesTerrainGenerator
 import mcjty.rftoolsdim.items.ModItems;
 import mcjty.rftoolsdim.varia.RarityRandomSelector;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockAir;
 import net.minecraft.block.BlockChest;
 import net.minecraft.block.BlockVine;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItemFrame;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.MobSpawnerBaseLogic;
 import net.minecraft.tileentity.TileEntity;
@@ -46,8 +46,11 @@ import net.minecraftforge.fml.common.IWorldGenerator;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import org.apache.commons.lang3.tuple.Pair;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.function.Function;
 
 public class GenericWorldGenerator implements IWorldGenerator {
 
@@ -306,10 +309,10 @@ public class GenericWorldGenerator implements IWorldGenerator {
     }
 
     private void createModularStorage(Random random, World world, BlockPos pos) {
-        Item storageModule = ForgeRegistries.ITEMS.getValue(new ResourceLocation("rftools", "storage_module"));
-        ItemStack module = new ItemStack(storageModule);
-
         Block storageBlock = ForgeRegistries.BLOCKS.getValue(new ResourceLocation("rftools", "modular_storage"));
+        if(storageBlock instanceof BlockAir) return;
+
+        ItemStack module = new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation("rftools", "storage_module")));
         world.setBlockState(pos, storageBlock.getDefaultState().withProperty(BaseBlock.FACING, EnumFacing.HORIZONTALS[random.nextInt(EnumFacing.HORIZONTALS.length)]));
         TileEntity te = world.getTileEntity(pos);
         if (te instanceof ModularStorageTileEntity) {
@@ -321,28 +324,36 @@ public class GenericWorldGenerator implements IWorldGenerator {
         }
     }
 
-    private void createRFToolsMachine(Random random, World world, BlockPos pos) {
-        Block machine;
-        IBlockState state;
-        switch (random.nextInt(4)) {
-            case 0:
-                machine = ForgeRegistries.BLOCKS.getValue(new ResourceLocation("rftools", "crafter1"));
-                state = machine.getDefaultState().withProperty(BaseBlock.FACING, EnumFacing.HORIZONTALS[random.nextInt(EnumFacing.HORIZONTALS.length)]);
-                break;
-            case 1:
-                machine = ForgeRegistries.BLOCKS.getValue(new ResourceLocation("rftools", "powercell_simple"));
-                state = machine.getDefaultState();
-                break;
-            case 2:
-                machine = ForgeRegistries.BLOCKS.getValue(new ResourceLocation("rftools", "rf_monitor"));
-                state = machine.getDefaultState().withProperty(BaseBlock.FACING, EnumFacing.HORIZONTALS[random.nextInt(EnumFacing.HORIZONTALS.length)]);
-                break;
-            default:
-                machine = ForgeRegistries.BLOCKS.getValue(new ResourceLocation("rftools", "crafter2"));
-                state = machine.getDefaultState().withProperty(BaseBlock.FACING, EnumFacing.HORIZONTALS[random.nextInt(EnumFacing.HORIZONTALS.length)]);
-                break;
+    private static List<Function<Random, IBlockState>> machines = null;
+    private static void initMachines() {
+        machines = new ArrayList<>();
+
+        Block crafter1 = ForgeRegistries.BLOCKS.getValue(new ResourceLocation("rftools", "crafter1"));
+        if(!(crafter1 instanceof BlockAir)) {
+            machines.add(random -> crafter1.getDefaultState().withProperty(BaseBlock.FACING, EnumFacing.HORIZONTALS[random.nextInt(EnumFacing.HORIZONTALS.length)]));
         }
-        world.setBlockState(pos, state);
+
+        Block powercell_simple = ForgeRegistries.BLOCKS.getValue(new ResourceLocation("rftools", "powercell_simple"));
+        if(!(powercell_simple  instanceof BlockAir)) {
+            machines.add(random -> powercell_simple.getDefaultState());
+        }
+
+        Block rf_monitor = ForgeRegistries.BLOCKS.getValue(new ResourceLocation("rftools", "rf_monitor"));
+        if(!(rf_monitor  instanceof BlockAir)) {
+            machines.add(random -> rf_monitor.getDefaultState().withProperty(BaseBlock.FACING, EnumFacing.HORIZONTALS[random.nextInt(EnumFacing.HORIZONTALS.length)]));
+        }
+
+        Block crafter2 = ForgeRegistries.BLOCKS.getValue(new ResourceLocation("rftools", "crafter2"));
+        if(!(crafter2  instanceof BlockAir)) {
+            machines.add(random -> crafter2.getDefaultState().withProperty(BaseBlock.FACING, EnumFacing.HORIZONTALS[random.nextInt(EnumFacing.HORIZONTALS.length)]));
+        }
+    }
+
+    private void createRFToolsMachine(Random random, World world, BlockPos pos) {
+        if(machines == null)
+            initMachines();
+        if(!machines.isEmpty())
+            world.setBlockState(pos, machines.get(random.nextInt(machines.size())).apply(random));
     }
 
     private ItemStack randomLoot(Random rand) {
