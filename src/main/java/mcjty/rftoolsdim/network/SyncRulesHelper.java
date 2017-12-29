@@ -11,7 +11,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class SyncRulesHelper {
 
     public static void syncRulesFromServer(PacketSyncRules message) {
-        World world = Minecraft.getMinecraft().world;
         Logging.log("Received dimlet rules from server");
         DimletRules.syncRulesFromServer(message.getRules());
     }

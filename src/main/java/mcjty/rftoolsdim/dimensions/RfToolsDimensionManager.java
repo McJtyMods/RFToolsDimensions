@@ -124,8 +124,7 @@ public class RfToolsDimensionManager extends WorldSavedData {
         List<BlockPos> pfgList = new ArrayList<>();
         int radius = PowerConfiguration.phasedFieldGeneratorRange;
         if (radius > 0) {
-            for (Object ent : world.playerEntities) {
-                EntityPlayer player = (EntityPlayer) ent;
+            for (EntityPlayer player : world.playerEntities) {
                 // Check if this player has a valid PFG but don't consume energy.
                 int cost = 0;
                 if (PowerConfiguration.dimensionDifficulty != -1) {

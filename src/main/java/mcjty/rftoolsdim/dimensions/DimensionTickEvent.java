@@ -142,8 +142,7 @@ public class DimensionTickEvent {
     }
 
     private void playHowl(WorldServer world) {
-        for (Object playerEntity : world.playerEntities) {
-            EntityPlayer player = (EntityPlayer) playerEntity;
+        for (EntityPlayer player : world.playerEntities) {
             //@todo
 //            world.playSound(player.posX, player.posY, player.posZ, RFToolsDim.MODID+":wolfhowl", 1.0f, 1.0f);
         }
@@ -156,8 +155,7 @@ public class DimensionTickEvent {
             double minPosZ = 1000000000.0f;
             double maxPosX = -1000000000.0f;
             double maxPosZ = -1000000000.0f;
-            for (Object playerEntity : world.playerEntities) {
-                EntityPlayer player = (EntityPlayer) playerEntity;
+            for (EntityPlayer player : world.playerEntities) {
                 if (player.posX > maxPosX) {
                     maxPosX = player.posX;
                 }

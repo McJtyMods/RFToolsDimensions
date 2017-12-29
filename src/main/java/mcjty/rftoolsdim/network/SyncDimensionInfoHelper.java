@@ -11,7 +11,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class SyncDimensionInfoHelper {
 
     public static void syncDimensionManagerFromServer(PacketSyncDimensionInfo message) {
-        World world = Minecraft.getMinecraft().world;
         Logging.log("Received dimension information from server");
         RfToolsDimensionManager dimensionManager = RfToolsDimensionManager.getDimensionManagerClient();
 
