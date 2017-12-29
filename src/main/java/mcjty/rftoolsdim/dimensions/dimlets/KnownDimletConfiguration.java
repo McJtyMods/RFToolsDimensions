@@ -5,11 +5,11 @@ import com.google.common.collect.Lists;
 import mcjty.lib.varia.EntityTools;
 import mcjty.lib.varia.Logging;
 import mcjty.rftoolsdim.RFToolsDim;
-import mcjty.rftoolsdim.compat.ChiselCompat;
 import mcjty.rftoolsdim.config.DimletRules;
 import mcjty.rftoolsdim.config.Filter;
 import mcjty.rftoolsdim.config.GeneralConfiguration;
 import mcjty.rftoolsdim.config.Settings;
+import mcjty.rftoolsdim.dimensions.DimensionInformation;
 import mcjty.rftoolsdim.dimensions.description.SkyDescriptor;
 import mcjty.rftoolsdim.dimensions.description.WeatherDescriptor;
 import mcjty.rftoolsdim.dimensions.dimlets.types.DimletType;
@@ -408,33 +408,9 @@ public class KnownDimletConfiguration {
                 Biome biome = Biome.REGISTRY.getObject(new ResourceLocation(key.getId()));
                 return biome == null ? "<invalid>" : biome.biomeName;
             case DIMLET_LIQUID:
-                Block fluid = DimletObjectMapping.getFluid(key);
-                if (fluid != null) {
-                    return fluid.getLocalizedName();
-                }
-                break;
+                return DimensionInformation.getDisplayName(DimletObjectMapping.getFluid(key));
             case DIMLET_MATERIAL:
-                IBlockState state = DimletObjectMapping.getBlock(key);
-                if (state != null && state.getBlock() != null && state.getBlock().getRegistryName() != null) {
-                    String modid = state.getBlock().getRegistryName().getResourceDomain();
-                    int meta = state.getBlock().getMetaFromState(state);
-                    ItemStack stack = new ItemStack(state.getBlock(), 1, meta);
-                    String suffix = "";
-                    if ("chisel".equals(modid) && RFToolsDim.chisel) {
-                        // Special case for chisel as it has the same name as the base block for all its variants
-                        String readableName = ChiselCompat.getReadableName(state);
-                        if (readableName != null) {
-                            suffix = ", " + readableName;
-                        }
-                    }
-                    try {
-                        return stack.getItem() == null ? "?" : (stack.getDisplayName() + suffix);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        return "<Bug>";
-                    }
-                }
-                break;
+                return DimensionInformation.getDisplayName(DimletObjectMapping.getBlock(key));
             case DIMLET_MOB:
                 if (DimletObjectMapping.DEFAULT_ID.equals(key.getId())) {
                     return key.getId();

@@ -5,7 +5,9 @@ import mcjty.lib.network.NetworkTools;
 import mcjty.lib.varia.BlockPosTools;
 import mcjty.lib.varia.Logging;
 import mcjty.lib.varia.NBTTools;
+import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.api.dimension.IDimensionInformation;
+import mcjty.rftoolsdim.compat.ChiselCompat;
 import mcjty.rftoolsdim.config.GeneralConfiguration;
 import mcjty.rftoolsdim.config.PowerConfiguration;
 import mcjty.rftoolsdim.config.Settings;
@@ -21,6 +23,7 @@ import mcjty.rftoolsdim.dimensions.dimlets.types.Patreons;
 import mcjty.rftoolsdim.dimensions.types.*;
 import mcjty.rftoolsdim.dimensions.world.BiomeControllerMapping;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
@@ -34,6 +37,9 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.ArrayUtils;
@@ -629,29 +635,40 @@ public class DimensionInformation implements IDimensionInformation {
         }
     }
 
-    private static String getDisplayName(Block block) {
-        if (block == null) {
-            return "null";
-        }
-
-        ItemStack itemStack = new ItemStack(block);
-        if (itemStack.getItem() == null) {
-            return "null";
-        }
-
-        return itemStack.getDisplayName();
+    public static String getDisplayName(Block block) {
+        return getDisplayName(block.getDefaultState());
     }
 
-    private static String getDisplayName(IBlockState state) {
+    public static String getDisplayName(IBlockState state) {
         if (state == null) {
             return "null";
         }
-        ItemStack itemStack = new ItemStack(state.getBlock(), 1, state.getBlock().getMetaFromState(state));
-        if (itemStack.getItem() == null) {
-            return "null";
+
+        Block block = state.getBlock();
+
+        String suffix = "";
+        if ("chisel".equals(block.getRegistryName().getResourceDomain()) && RFToolsDim.chisel) {
+            // Special case for chisel as it has the same name as the base block for all its variants
+            String readableName = ChiselCompat.getReadableName(state);
+            if (readableName != null) {
+                suffix = ", " + readableName;
+            }
         }
 
-        return itemStack.getDisplayName();
+        if (block instanceof BlockLiquid) {
+            Fluid fluid = FluidRegistry.lookupFluidForBlock(block);
+            if (fluid != null) {
+                FluidStack stack = new FluidStack(fluid, 1);
+                return stack.getLocalizedName() + suffix;
+            }
+        }
+
+        ItemStack itemStack = new ItemStack(block, 1, block.getMetaFromState(state));
+        if (itemStack.isEmpty()) {
+            return block.getLocalizedName() + suffix;
+        }
+
+        return itemStack.getDisplayName() + suffix;
     }
 
     public void dump(EntityPlayer player) {
