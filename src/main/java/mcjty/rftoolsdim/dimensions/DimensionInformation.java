@@ -22,6 +22,7 @@ import mcjty.rftoolsdim.dimensions.dimlets.types.IDimletType;
 import mcjty.rftoolsdim.dimensions.dimlets.types.Patreons;
 import mcjty.rftoolsdim.dimensions.types.*;
 import mcjty.rftoolsdim.dimensions.world.BiomeControllerMapping;
+import mcjty.rftoolsdim.varia.GenericTools;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.state.IBlockState;
@@ -373,7 +374,7 @@ public class DimensionInformation implements IDimensionInformation {
             int maxLoaded = tc.getInteger("maxLoaded");
             Class<? extends EntityLiving> c = null;
             try {
-                c = (Class<? extends EntityLiving>) Class.forName(className);
+                c = GenericTools.castClass(Class.forName(className), EntityLiving.class);
             } catch (ClassNotFoundException e) {
                 throw new RuntimeException(e);
             }
@@ -1038,7 +1039,7 @@ public class DimensionInformation implements IDimensionInformation {
             int maxLoaded = buf.readInt();
 
             try {
-                Class<? extends EntityLiving> c = (Class<? extends EntityLiving>) Class.forName(className);
+                Class<? extends EntityLiving> c = GenericTools.castClass(Class.forName(className), EntityLiving.class);
                 MobDescriptor mob = new MobDescriptor(c, chance, minGroup, maxGroup, maxLoaded);
                 extraMobs.add(mob);
             } catch (ClassNotFoundException e) {
