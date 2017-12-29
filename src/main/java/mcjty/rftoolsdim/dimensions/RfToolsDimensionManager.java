@@ -219,7 +219,7 @@ public class RfToolsDimensionManager extends WorldSavedData {
 
     public static boolean checkValidPhasedFieldGenerator(EntityPlayer player, boolean consume, int tickCost) {
         InventoryPlayer inventory = player.inventory;
-        for (int i = 0 ; i < inventory.getHotbarSize() ; i++) {
+        for (int i = 0 ; i < InventoryPlayer.getHotbarSize() ; i++) {
             ItemStack slot = inventory.getStackInSlot(i);
             if (!slot.isEmpty() && slot.getItem() == ModItems.phasedFieldGeneratorItem) {
                 PhasedFieldGeneratorItem pfg = (PhasedFieldGeneratorItem) slot.getItem();

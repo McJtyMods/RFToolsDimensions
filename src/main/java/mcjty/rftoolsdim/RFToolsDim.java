@@ -88,7 +88,7 @@ public class RFToolsDim implements ModBase {
      */
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent e) {
-        this.proxy.preInit(e);
+        proxy.preInit(e);
         MainCompatHandler.registerWaila();
         MainCompatHandler.registerTOP();
 
@@ -118,7 +118,7 @@ public class RFToolsDim implements ModBase {
      */
     @Mod.EventHandler
     public void init(FMLInitializationEvent e) {
-        this.proxy.init(e);
+        proxy.init(e);
 
         chisel = Loader.isModLoaded("chisel");
         channels = NetworkRegistry.INSTANCE.newChannel("RFToolsChannel", DimensionSyncChannelHandler.instance);
@@ -154,7 +154,7 @@ public class RFToolsDim implements ModBase {
      */
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent e) {
-        this.proxy.postInit(e);
+        proxy.postInit(e);
     }
 
     @Override

@@ -1,6 +1,6 @@
 package mcjty.rftoolsdim.dimensions.world;
 
-import mcjty.lib.container.GenericBlock;
+import mcjty.lib.container.BaseBlock;
 import mcjty.lib.varia.Logging;
 import mcjty.rftools.blocks.storage.ModularStorageContainer;
 import mcjty.rftools.blocks.storage.ModularStorageTileEntity;
@@ -310,7 +310,7 @@ public class GenericWorldGenerator implements IWorldGenerator {
         ItemStack module = new ItemStack(storageModule);
 
         Block storageBlock = ForgeRegistries.BLOCKS.getValue(new ResourceLocation("rftools", "modular_storage"));
-        world.setBlockState(pos, storageBlock.getDefaultState().withProperty(GenericBlock.FACING, EnumFacing.HORIZONTALS[random.nextInt(EnumFacing.HORIZONTALS.length)]));
+        world.setBlockState(pos, storageBlock.getDefaultState().withProperty(BaseBlock.FACING, EnumFacing.HORIZONTALS[random.nextInt(EnumFacing.HORIZONTALS.length)]));
         TileEntity te = world.getTileEntity(pos);
         if (te instanceof ModularStorageTileEntity) {
             ModularStorageTileEntity storage = (ModularStorageTileEntity) te;
@@ -327,7 +327,7 @@ public class GenericWorldGenerator implements IWorldGenerator {
         switch (random.nextInt(3)) {
             case 0:
                 machine = ForgeRegistries.BLOCKS.getValue(new ResourceLocation("rftools", "crafter1"));
-                state = machine.getDefaultState().withProperty(GenericBlock.FACING, EnumFacing.HORIZONTALS[random.nextInt(EnumFacing.HORIZONTALS.length)]);
+                state = machine.getDefaultState().withProperty(BaseBlock.FACING, EnumFacing.HORIZONTALS[random.nextInt(EnumFacing.HORIZONTALS.length)]);
                 break;
             case 1:
                 machine = ForgeRegistries.BLOCKS.getValue(new ResourceLocation("rftools", "powercell_simple"));
@@ -335,11 +335,11 @@ public class GenericWorldGenerator implements IWorldGenerator {
                 break;
             case 2:
                 machine = ForgeRegistries.BLOCKS.getValue(new ResourceLocation("rftools", "rf_monitor"));
-                state = machine.getDefaultState().withProperty(GenericBlock.FACING, EnumFacing.HORIZONTALS[random.nextInt(EnumFacing.HORIZONTALS.length)]);
+                state = machine.getDefaultState().withProperty(BaseBlock.FACING, EnumFacing.HORIZONTALS[random.nextInt(EnumFacing.HORIZONTALS.length)]);
                 break;
             default:
                 machine = ForgeRegistries.BLOCKS.getValue(new ResourceLocation("rftools", "crafter2"));
-                state = machine.getDefaultState().withProperty(GenericBlock.FACING, EnumFacing.HORIZONTALS[random.nextInt(EnumFacing.HORIZONTALS.length)]);
+                state = machine.getDefaultState().withProperty(BaseBlock.FACING, EnumFacing.HORIZONTALS[random.nextInt(EnumFacing.HORIZONTALS.length)]);
                 break;
         }
         world.setBlockState(pos, state);

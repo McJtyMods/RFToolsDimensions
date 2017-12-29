@@ -134,7 +134,7 @@ public class DimensionEditorTileEntity extends GenericEnergyReceiverTileEntity i
 
                     injectableItemStack = validateInjectableItemStack();
                     if (isMatterReceiver(injectableItemStack)) {
-                        World dimWorld = dimensionManager.getWorldForDimension(getWorld(), id);
+                        World dimWorld = RfToolsDimensionManager.getWorldForDimension(getWorld(), id);
                         int y = findGoodReceiverLocation(dimWorld);
                         if (y == -1) {
                             y = dimWorld.getHeight() / 2;

@@ -372,7 +372,7 @@ public class DimletWorkbenchTileEntity extends GenericEnergyReceiverTileEntity i
     }
 
     private void mergeItemOrThrowInWorld(ItemStack stack) {
-        int notInserted = inventoryHelper.mergeItemStack(this, false, stack, DimletWorkbenchContainer.SLOT_BUFFER, DimletWorkbenchContainer.SLOT_BUFFER + DimletWorkbenchContainer.SIZE_BUFFER, null);
+        int notInserted = InventoryHelper.mergeItemStack(this, false, stack, DimletWorkbenchContainer.SLOT_BUFFER, DimletWorkbenchContainer.SLOT_BUFFER + DimletWorkbenchContainer.SIZE_BUFFER, null);
         if (notInserted > 0) {
             BlockTools.spawnItemStack(getWorld(), getPos().getX(), getPos().getY(), getPos().getZ(), stack);
         }
