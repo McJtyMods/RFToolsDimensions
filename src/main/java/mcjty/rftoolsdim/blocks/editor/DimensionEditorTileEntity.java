@@ -102,19 +102,17 @@ public class DimensionEditorTileEntity extends GenericEnergyReceiverTileEntity i
             // We were not injecting. Start now.
             if (isMatterReceiver(injectableItemStack)) {
                 ticksCost = DimletCosts.baseDimensionTickCost + 1000;
-                ticksLeft = ticksCost;
                 rfPerTick = DimletCosts.baseDimensionCreationCost + 200;
             } else if (isTNT(injectableItemStack)) {
                 ticksCost = 600;
-                ticksLeft = ticksCost;
                 rfPerTick = 10;
             } else {
                 DimletKey key = KnownDimletConfiguration.getDimletKey(injectableItemStack);
                 Settings settings = KnownDimletConfiguration.getSettings(key);
                 ticksCost = DimletCosts.baseDimensionTickCost + settings.getTickCost();
-                ticksLeft = ticksCost;
                 rfPerTick = DimletCosts.baseDimensionCreationCost + settings.getCreateCost();
             }
+            ticksLeft = ticksCost;
         } else {
             int rf = getEnergyStored();
             int rfpt = rfPerTick;
