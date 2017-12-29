@@ -640,12 +640,11 @@ public class GenericWorldGenerator implements IWorldGenerator {
             world.setBlockState(new BlockPos(midx - 1, starty + 2, midz - bounds - 1), Blocks.STONE_BUTTON.getStateFromMeta(4), 2);
             world.setBlockState(new BlockPos(midx + 1, starty + 2, midz - bounds + 1), Blocks.STONE_BUTTON.getStateFromMeta(3), 2);
 
-            world.setBlockState(new BlockPos(midx + 1, starty, midz - bounds - 1), Blocks.STAINED_HARDENED_CLAY.getStateFromMeta(3), 2);
-            world.setBlockState(new BlockPos(midx, starty, midz - bounds - 1), Blocks.STAINED_HARDENED_CLAY.getStateFromMeta(3), 2);
-            world.setBlockState(new BlockPos(midx - 1, starty, midz - bounds - 1), Blocks.STAINED_HARDENED_CLAY.getStateFromMeta(3), 2);
-            world.setBlockState(new BlockPos(midx + 1, starty, midz - bounds - 2), Blocks.STAINED_HARDENED_CLAY.getStateFromMeta(3), 2);
-            world.setBlockState(new BlockPos(midx, starty, midz - bounds - 2), Blocks.STAINED_HARDENED_CLAY.getStateFromMeta(3), 2);
-            world.setBlockState(new BlockPos(midx - 1, starty, midz - bounds - 2), Blocks.STAINED_HARDENED_CLAY.getStateFromMeta(3), 2);
+            for(int x = -1; x <= 1; ++x) {
+                for(int z = -bounds - 2; z <= -bounds - 1; ++z) {
+                    world.setBlockState(new BlockPos(x + midx, starty, z + midz), Blocks.STAINED_HARDENED_CLAY.getStateFromMeta(3), 2);
+                }
+            }
         }
 
         registerReceiver(world, dimensionManager, information, midx, midz, starty);
