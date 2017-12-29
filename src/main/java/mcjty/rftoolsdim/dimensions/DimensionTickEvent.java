@@ -63,20 +63,20 @@ public class DimensionTickEvent {
 
             for (Map.Entry<Integer, DimensionDescriptor> entry : dimensionManager.getDimensions().entrySet()) {
                 Integer id = entry.getKey();
-                // If there is an activity probe we only drain power if the dimension is loaded (a player is there or a chunkloader)
+                WorldServer world = DimensionManager.getWorld(id);
                 DimensionInformation information = dimensionManager.getDimensionInformation(id);
-                if (!information.isCheater()) {
-                    WorldServer world = DimensionManager.getWorld(id);
 
-                    // Power handling.
+                // Power handling.
+                if (!information.isCheater()) {
+                    // If there is an activity probe we only drain power if the dimension is loaded (a player is there or a chunkloader)
                     if ((world != null && world.getChunkProvider().getLoadedChunkCount() > 0) || information.getProbeCounter() == 0) {
                         handlePower(doEffects, dimensionStorage, entry, id, information);
                     }
+                }
 
-                    // Special effect handling.
-                    if (world != null && !world.playerEntities.isEmpty()) {
-                        handleRandomEffects(world, information);
-                    }
+                // Special effect handling.
+                if (world != null && !world.playerEntities.isEmpty()) {
+                    handleRandomEffects(world, information);
                 }
             }
 
