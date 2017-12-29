@@ -235,7 +235,7 @@ public class KnownDimletConfiguration {
     }
 
     private static void initMaterialDimlet(Block block) {
-        if (block instanceof BlockLiquid) {
+        if (block instanceof BlockLiquid || block == Blocks.LIT_REDSTONE_ORE) {
             return;
         }
 
