@@ -159,7 +159,7 @@ public class GuiDimletWorkbench extends GenericGuiContainer<DimletWorkbenchTileE
                 .setUserObject(key);
         panel.addChild(blockRender);
         String displayName = KnownDimletConfiguration.getDisplayName(key);
-        AbstractWidget label = new Label(mc, this).setText(displayName).setColor(StyleConfig.colorTextInListNormal).setHorizontalAlignment(HorizontalAlignment.ALIGH_LEFT)
+        Label label = new Label(mc, this).setText(displayName).setColor(StyleConfig.colorTextInListNormal).setHorizontalAlignment(HorizontalAlignment.ALIGH_LEFT)
                 .setLayoutHint(new PositionalLayout.PositionalHint(20, 0, 95, 16))
                 .setUserObject(key);
         panel.addChild(label);

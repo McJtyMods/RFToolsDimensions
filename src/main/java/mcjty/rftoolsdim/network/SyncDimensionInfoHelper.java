@@ -2,8 +2,6 @@ package mcjty.rftoolsdim.network;
 
 import mcjty.lib.varia.Logging;
 import mcjty.rftoolsdim.dimensions.RfToolsDimensionManager;
-import net.minecraft.client.Minecraft;
-import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
