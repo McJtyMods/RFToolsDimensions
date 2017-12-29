@@ -126,11 +126,9 @@ public class DimensionEditorTileEntity extends GenericEnergyReceiverTileEntity i
                 if (ticksLeft <= 0) {
                     RfToolsDimensionManager dimensionManager = RfToolsDimensionManager.getDimensionManager(getWorld());
 
-                    ItemStack dimensionTab = validateDimensionItemStack();
-                    NBTTagCompound tagCompound = dimensionTab.getTagCompound();
+                    NBTTagCompound tagCompound = dimensionItemStack.getTagCompound();
                     int id = tagCompound.getInteger("id");
 
-                    injectableItemStack = validateInjectableItemStack();
                     if (isMatterReceiver(injectableItemStack)) {
                         World dimWorld = RfToolsDimensionManager.getWorldForDimension(getWorld(), id);
                         int y = findGoodReceiverLocation(dimWorld);
@@ -153,7 +151,7 @@ public class DimensionEditorTileEntity extends GenericEnergyReceiverTileEntity i
 
                         }
                     } else if (isTNT(injectableItemStack)) {
-                        safeDeleteDimension(id, dimensionTab);
+                        safeDeleteDimension(id, dimensionItemStack);
                     } else {
                         DimletKey key = KnownDimletConfiguration.getDimletKey(injectableItemStack);
 
