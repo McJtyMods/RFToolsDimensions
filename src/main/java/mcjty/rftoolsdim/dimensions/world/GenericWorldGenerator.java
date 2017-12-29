@@ -615,6 +615,7 @@ public class GenericWorldGenerator implements IWorldGenerator {
         }
 
         if (shelter) {
+            // The walls
             for (int y = 1; y <= 3; y++) {
                 for (int x = -bounds; x <= bounds; x++) {
                     for (int z = -bounds; z <= bounds; z++) {
@@ -632,19 +633,31 @@ public class GenericWorldGenerator implements IWorldGenerator {
                     }
                 }
             }
+
+            // The roof
             for (int x = -bounds; x <= bounds; x++) {
                 for (int z = -bounds; z <= bounds; z++) {
                     world.setBlockState(new BlockPos(x + midx, starty + 4, z + midz), Blocks.STAINED_HARDENED_CLAY.getStateFromMeta(9), 2);
                 }
             }
-            world.setBlockState(new BlockPos(midx - 1, starty + 2, midz - bounds - 1), Blocks.STONE_BUTTON.getStateFromMeta(4), 2);
-            world.setBlockState(new BlockPos(midx + 1, starty + 2, midz - bounds + 1), Blocks.STONE_BUTTON.getStateFromMeta(3), 2);
 
+            // The pad outside the door
             for(int x = -1; x <= 1; ++x) {
                 for(int z = -bounds - 2; z <= -bounds - 1; ++z) {
                     world.setBlockState(new BlockPos(x + midx, starty, z + midz), Blocks.STAINED_HARDENED_CLAY.getStateFromMeta(3), 2);
+                    for (int y = 1; y <= 3; y++) {
+                        world.setBlockToAir(new BlockPos(x + midx, starty + y, z + midz));
+                    }
+                    // Check the top layer. If it is something other then air we will replace it with clay as well.
+                    if (!world.isAirBlock(new BlockPos(x + midx, starty + 4, z + midz))) {
+                        world.setBlockState(new BlockPos(x + midx, starty + 4, z + midz), Blocks.STAINED_HARDENED_CLAY.getStateFromMeta(9), 2);
+                    }
                 }
             }
+
+            // The buttons to open the door
+            world.setBlockState(new BlockPos(midx - 1, starty + 2, midz - bounds - 1), Blocks.STONE_BUTTON.getStateFromMeta(4), 2);
+            world.setBlockState(new BlockPos(midx + 1, starty + 2, midz - bounds + 1), Blocks.STONE_BUTTON.getStateFromMeta(3), 2);
         }
 
         registerReceiver(world, dimensionManager, information, midx, midz, starty);
