@@ -241,6 +241,8 @@ public class GuiDimletWorkbench extends GenericGuiContainer<DimletWorkbenchTileE
                     tooltips.add(TextFormatting.RED + "Shift-Double-Click to cheat");
                 }
                 tooltips.add("Type: " + key.getType().dimletType.getName());
+                tooltips.add("Name: " + escapeString(KnownDimletConfiguration.getDisplayName(key)));
+                tooltips.add("Key: " + escapeString(key.getId()));
                 tooltips.add("Rarity: " + settings.getRarity());
                 tooltips.add("@0@1@2");
                 tooltips.add("@3@4@5");
