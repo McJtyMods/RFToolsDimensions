@@ -20,10 +20,6 @@ public class ModCrafting {
     public static void init() {
         initDimletRecipes();
         initEssenceRecipes();
-
-        Item dimensionalShard = ForgeRegistries.ITEMS.getValue(new ResourceLocation("rftools", "dimensional_shard"));
-
-        ItemStack inkSac = new ItemStack(Items.DYE, 1, 0);
     }
 
     private static void initEssenceRecipes() {

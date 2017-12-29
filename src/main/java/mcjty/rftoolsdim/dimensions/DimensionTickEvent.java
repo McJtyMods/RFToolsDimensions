@@ -142,10 +142,10 @@ public class DimensionTickEvent {
     }
 
     private void playHowl(WorldServer world) {
-        for (EntityPlayer player : world.playerEntities) {
-            //@todo
+        //@todo
+//        for (EntityPlayer player : world.playerEntities) {
 //            world.playSound(player.posX, player.posY, player.posZ, RFToolsDim.MODID+":wolfhowl", 1.0f, 1.0f);
-        }
+//        }
     }
 
     private void handleFireworks(WorldServer world) {
