@@ -182,6 +182,7 @@ public class DimensionEnscriberTileEntity extends GenericTileEntity implements D
         ItemStack realizedTab = inventoryHelper.getStackInSlot(DimensionEnscriberContainer.SLOT_TAB);
         NBTTagCompound tagCompound = realizedTab.getTagCompound();
         if (tagCompound != null) {
+            long forcedSeed = tagCompound.getLong("forcedSeed");
             int idx = DimensionEnscriberContainer.SLOT_DIMLETS;
             List<DimletKey> descriptors = DimensionDescriptor.parseDescriptionString(tagCompound.getString("descriptionString"));
             int skip = DimensionEnscriberContainer.SIZE_DIMLETS / Math.max(descriptors.size(), 1);
@@ -198,7 +199,11 @@ public class DimensionEnscriberTileEntity extends GenericTileEntity implements D
                     }
                 }
 
-                inventoryHelper.setStackInSlot(idx, KnownDimletConfiguration.getDimletStack(descriptor));
+                ItemStack dimletStack = KnownDimletConfiguration.getDimletStack(descriptor);
+                if(descriptor.getType() == DimletType.DIMLET_SPECIAL && DimletObjectMapping.getSpecial(descriptor) == SpecialType.SPECIAL_SEED) {
+                    dimletStack.getTagCompound().setLong("forcedSeed", forcedSeed);
+                }
+                inventoryHelper.setStackInSlot(idx, dimletStack);
                 idx += skip;
             }
         }
