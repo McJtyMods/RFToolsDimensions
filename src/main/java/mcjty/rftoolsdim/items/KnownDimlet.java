@@ -1,5 +1,6 @@
 package mcjty.rftoolsdim.items;
 
+import mcjty.lib.varia.Logging;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.config.Settings;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletKey;
@@ -10,8 +11,12 @@ import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
@@ -51,49 +56,46 @@ public class KnownDimlet extends GenericRFToolsItem {
         });
     }
 
+    @Override
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+        ItemStack stack = player.getHeldItem(hand);
 
-    // @todo
-//    @Override
-//    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
-//        if (world.isRemote) {
-//            return stack;
-//        }
-//
-//        DimletKey key = KnownDimletConfiguration.getDimletKey(stack, world);
-//        DimletEntry entry = KnownDimletConfiguration.getEntry(key);
-//        if (entry != null) {
-//            if (isSeedDimlet(entry)) {
-//                NBTTagCompound tagCompound = stack.getTagCompound();
-//                if (tagCompound == null) {
-//                    tagCompound = new NBTTagCompound();
-//                }
-//
-//                boolean locked = tagCompound.getBoolean("locked");
-//                if (locked) {
-//                    Logging.message(player, TextFormatting.YELLOW + "This seed dimlet is locked. You cannot modify it!");
-//                    return stack;
-//                }
-//
-//                long forcedSeed = tagCompound.getLong("forcedSeed");
-//                if (player.isSneaking()) {
-//                    if (forcedSeed == 0) {
-//                        Logging.message(player, TextFormatting.YELLOW + "This dimlet has no seed. You cannot lock it!");
-//                        return stack;
-//                    }
-//                    tagCompound.setBoolean("locked", true);
-//                    Logging.message(player, "Dimlet locked!");
-//                } else {
-//                    long seed = world.getSeed();
-//                    tagCompound.setLong("forcedSeed", seed);
-//                    Logging.message(player, "Seed set to: " + seed);
-//                }
-//
-//                stack.setTagCompound(tagCompound);
-//            }
-//        }
-//
-//        return stack;
-//    }
+        if (world.isRemote) {
+            return new ActionResult<>(EnumActionResult.PASS, stack);
+        }
+
+        DimletKey key = KnownDimletConfiguration.getDimletKey(stack);
+        if (KnownDimletConfiguration.isSeedDimlet(key)) {
+            NBTTagCompound tagCompound = stack.getTagCompound();
+            if (tagCompound == null) {
+                tagCompound = new NBTTagCompound();
+            }
+
+            boolean locked = tagCompound.getBoolean("locked");
+            if (locked) {
+                Logging.message(player, TextFormatting.YELLOW + "This seed dimlet is locked. You cannot modify it!");
+                return new ActionResult<>(EnumActionResult.SUCCESS, stack);
+            }
+
+            long forcedSeed = tagCompound.getLong("forcedSeed");
+            if (player.isSneaking()) {
+                if (forcedSeed == 0) {
+                    Logging.message(player, TextFormatting.YELLOW + "This dimlet has no seed. You cannot lock it!");
+                    return new ActionResult<>(EnumActionResult.SUCCESS, stack);
+                }
+                tagCompound.setBoolean("locked", true);
+                Logging.message(player, "Dimlet locked!");
+            } else {
+                long seed = world.getSeed();
+                tagCompound.setLong("forcedSeed", seed);
+                Logging.message(player, "Seed set to: " + seed);
+            }
+
+            stack.setTagCompound(tagCompound);
+        }
+
+        return new ActionResult<>(EnumActionResult.SUCCESS, stack);
+    }
 
     @SideOnly(Side.CLIENT)
     @Override
