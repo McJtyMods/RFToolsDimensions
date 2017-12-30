@@ -1144,6 +1144,7 @@ public class DimensionInformation implements IDimensionInformation {
 
     private void addToCost(DimletKey key) {
         Settings settings = KnownDimletConfiguration.getSettings(key);
+        if(settings == null) return;
         int rfMaintainCost = settings.getMaintainCost();
 
         if (rfMaintainCost < 0) {
