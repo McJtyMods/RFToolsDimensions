@@ -786,6 +786,10 @@ public class DimensionInformation implements IDimensionInformation {
         g = skyDescriptor.getFogColorFactorG();
         b = skyDescriptor.getFogColorFactorB();
         logDebug(player, "    Fog color: " + r + ", " + g + ", " + b);
+        r = skyDescriptor.getCloudColorFactorR();
+        g = skyDescriptor.getCloudColorFactorG();
+        b = skyDescriptor.getCloudColorFactorB();
+        logDebug(player, "    Cloud color: " + r + ", " + g + ", " + b);
         SkyType skyType = skyDescriptor.getSkyType();
         if (skyType != SkyType.SKY_NORMAL) {
             logDebug(player, "    Sky type: " + skyType.toString());
