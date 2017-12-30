@@ -9,65 +9,53 @@ import net.minecraft.util.text.TextFormatting;
 public abstract class AbstractRfToolsCommand implements RfToolsCommand {
 
     protected String fetchString(ICommandSender sender, String[] args, int index, String defaultValue) {
-        try {
-            return args[index];
-        } catch (ArrayIndexOutOfBoundsException e) {
-            return defaultValue;
-        }
+        if(index < 0 || index >= args.length) return defaultValue;
+        return args[index];
     }
 
     protected boolean fetchBool(ICommandSender sender, String[] args, int index, boolean defaultValue) {
-        boolean value;
-        try {
-            value = Boolean.valueOf(args[index]);
-        } catch (NumberFormatException e) {
-            value = false;
+        if(index < 0 || index >= args.length) return defaultValue;
+        if(args[index].equalsIgnoreCase("true")) {
+            return true;
+        } else if(!args[index].equalsIgnoreCase("false")) {
             ITextComponent component = new TextComponentString(TextFormatting.RED + "Parameter is not a valid boolean!");
             if (sender instanceof EntityPlayer) {
                 ((EntityPlayer) sender).sendStatusMessage(component, false);
             } else {
                 sender.sendMessage(component);
             }
-        } catch (ArrayIndexOutOfBoundsException e) {
-            return defaultValue;
         }
-        return value;
+        return false;
     }
 
     protected int fetchInt(ICommandSender sender, String[] args, int index, int defaultValue) {
-        int value;
+        if(index < 0 || index >= args.length) return defaultValue;
         try {
-            value = Integer.parseInt(args[index]);
+            return Integer.parseInt(args[index]);
         } catch (NumberFormatException e) {
-            value = 0;
             ITextComponent component = new TextComponentString(TextFormatting.RED + "Parameter is not a valid integer!");
             if (sender instanceof EntityPlayer) {
                 ((EntityPlayer) sender).sendStatusMessage(component, false);
             } else {
                 sender.sendMessage(component);
             }
-        } catch (ArrayIndexOutOfBoundsException e) {
-            return defaultValue;
+            return 0;
         }
-        return value;
     }
 
     protected float fetchFloat(ICommandSender sender, String[] args, int index, float defaultValue) {
-        float value;
+        if(index < 0 || index >= args.length) return defaultValue;
         try {
-            value = Float.parseFloat(args[index]);
+            return Float.parseFloat(args[index]);
         } catch (NumberFormatException e) {
-            value = 0.0f;
             ITextComponent component = new TextComponentString(TextFormatting.RED + "Parameter is not a valid real number!");
             if (sender instanceof EntityPlayer) {
                 ((EntityPlayer) sender).sendStatusMessage(component, false);
             } else {
                 sender.sendMessage(component);
             }
-        } catch (ArrayIndexOutOfBoundsException e) {
-            return defaultValue;
+            return 0.0f;
         }
-        return value;
     }
 
     @Override
