@@ -69,7 +69,11 @@ public class GenericWorldProvider extends WorldProvider implements  /*@todo impl
         }
     }
 
-    private DimensionInformation getDimensionInformation() {
+    public void setDimensionInformation(DimensionInformation info) {
+        dimensionInformation = info;
+    }
+
+    public DimensionInformation getDimensionInformation() {
         if (dimensionInformation == null) {
             // Note: we cannot use worldObj here since we are possibly still busy setting up our world so the 'mapStorage'
             // is always correct here. So we have to use the overworld.
@@ -254,7 +258,7 @@ public class GenericWorldProvider extends WorldProvider implements  /*@todo impl
                 }
 
                 if (dimensionInformation.getSkyDescriptor().isCloudColorGiven() || dimensionInformation.isPatreonBitSet(Patreons.PATREON_KENNEY)) {
-                    SkyRenderer.registerCloudRenderer(this, dimensionInformation);
+                    SkyRenderer.registerCloudRenderer(this);
                 }
             }
         }

@@ -6,6 +6,7 @@ import mcjty.rftoolsdim.config.DimletRules;
 import mcjty.rftoolsdim.config.GeneralConfiguration;
 import mcjty.rftoolsdim.config.PowerConfiguration;
 import mcjty.rftoolsdim.dimensions.description.DimensionDescriptor;
+import mcjty.rftoolsdim.dimensions.world.GenericWorldProvider;
 import mcjty.rftoolsdim.items.ModItems;
 import mcjty.rftoolsdim.items.PhasedFieldGeneratorItem;
 import mcjty.rftoolsdim.network.PacketRegisterDimensions;
@@ -56,6 +57,10 @@ public class RfToolsDimensionManager extends WorldSavedData {
             int id = entry.getKey();
             DimensionInformation info = entry.getValue();
             dimensionInformation.put(id, info);
+            World world = DimensionManager.getWorld(id);
+            if(world != null && world.provider instanceof GenericWorldProvider) {
+                ((GenericWorldProvider)world.provider).setDimensionInformation(info);
+            }
         }
     }
 

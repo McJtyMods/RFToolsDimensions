@@ -135,11 +135,11 @@ public class SkyRenderer {
         });
     }
 
-    public static void registerCloudRenderer(final GenericWorldProvider provider, final DimensionInformation information) {
+    public static void registerCloudRenderer(final GenericWorldProvider provider) {
         provider.setCloudRenderer(new IRenderHandler() {
             @Override
             public void render(float partialTicks, WorldClient world, Minecraft mc) {
-                renderClouds(provider, information, partialTicks);
+                renderClouds(provider, partialTicks);
             }
         });
     }
@@ -192,7 +192,7 @@ public class SkyRenderer {
         provider.setSkyRenderer(new IRenderHandler() {
             @Override
             public void render(float partialTicks, WorldClient world, Minecraft mc) {
-                SkyRenderer.renderSky(partialTicks, information);
+                SkyRenderer.renderSky(partialTicks, provider);
             }
         });
     }
@@ -367,7 +367,7 @@ public class SkyRenderer {
      * Renders the sky with the partial tick time. Args: partialTickTime
      */
     @SideOnly(Side.CLIENT)
-    private static void renderSky(float partialTickTime, DimensionInformation information) {
+    private static void renderSky(float partialTickTime, GenericWorldProvider provider) {
         initialize();
 
         EntityPlayerSP player = Minecraft.getMinecraft().player;
@@ -453,7 +453,7 @@ public class SkyRenderer {
             GlStateManager.shadeModel(GL11.GL_FLAT);
         }
 
-        renderCelestialBodies(partialTickTime, information, world, renderEngine, tessellator);
+        renderCelestialBodies(partialTickTime, provider.getDimensionInformation(), world, renderEngine, tessellator);
 
         GlStateManager.color(0.0F, 0.0F, 0.0F);
         double d0 = player.getPosition().getY() - world.getHorizon();
@@ -799,7 +799,7 @@ public class SkyRenderer {
     }
 
     @SideOnly(Side.CLIENT)
-    public static void renderClouds(GenericWorldProvider provider, DimensionInformation information, float partialTicks) {
+    public static void renderClouds(GenericWorldProvider provider, float partialTicks) {
         GlStateManager.disableCull();
         Minecraft mc = Minecraft.getMinecraft();
         TextureManager renderEngine = mc.getTextureManager();
@@ -851,6 +851,7 @@ public class SkyRenderer {
         float f13 = 9.765625E-4F;
         GlStateManager.scale(f2, 1.0F, f2);
 
+        DimensionInformation information = provider.getDimensionInformation();
         float cr = information.getSkyDescriptor().getCloudColorFactorR();
         float cg = information.getSkyDescriptor().getCloudColorFactorG();
         float cb = information.getSkyDescriptor().getCloudColorFactorB();
