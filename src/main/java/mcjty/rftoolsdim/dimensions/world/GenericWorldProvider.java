@@ -356,19 +356,15 @@ public class GenericWorldProvider extends WorldProvider implements  /*@todo impl
         float factor = calculatePowerBlackout(dim);
         getDimensionInformation();
 
-        float r;
-        float g;
-        float b;
-        if (dimensionInformation == null) {
-            r = g = b = 1.0f;
-        } else {
-            r = dimensionInformation.getSkyDescriptor().getFogColorFactorR() * factor;
-            g = dimensionInformation.getSkyDescriptor().getFogColorFactorG() * factor;
-            b = dimensionInformation.getSkyDescriptor().getFogColorFactorB() * factor;
-        }
-
         Vec3d color = super.getFogColor(angle, dt);
-        return new Vec3d(color.x * r, color.y * g, color.z * b);
+        if (dimensionInformation == null) {
+            return color;
+        } else {
+            float r = dimensionInformation.getSkyDescriptor().getFogColorFactorR() * factor;
+            float g = dimensionInformation.getSkyDescriptor().getFogColorFactorG() * factor;
+            float b = dimensionInformation.getSkyDescriptor().getFogColorFactorB() * factor;
+            return new Vec3d(color.x * r, color.y * g, color.z * b);
+        }
     }
 
     private static long lastTime = 0;
@@ -385,19 +381,15 @@ public class GenericWorldProvider extends WorldProvider implements  /*@todo impl
         float factor = calculatePowerBlackout(dim);
         getDimensionInformation();
 
-        float r;
-        float g;
-        float b;
-        if (dimensionInformation == null) {
-            r = g = b = 1.0f;
-        } else {
-            r = dimensionInformation.getSkyDescriptor().getSkyColorFactorR() * factor;
-            g = dimensionInformation.getSkyDescriptor().getSkyColorFactorG() * factor;
-            b = dimensionInformation.getSkyDescriptor().getSkyColorFactorB() * factor;
-        }
-
         Vec3d skyColor = super.getSkyColor(cameraEntity, partialTicks);
-        return new Vec3d(skyColor.x * r, skyColor.y * g, skyColor.z * b);
+        if (dimensionInformation == null) {
+            return skyColor;
+        } else {
+            float r = dimensionInformation.getSkyDescriptor().getSkyColorFactorR() * factor;
+            float g = dimensionInformation.getSkyDescriptor().getSkyColorFactorG() * factor;
+            float b = dimensionInformation.getSkyDescriptor().getSkyColorFactorB() * factor;
+            return new Vec3d(skyColor.x * r, skyColor.y * g, skyColor.z * b);
+        }
     }
 
     private float calculatePowerBlackout(int dim) {
