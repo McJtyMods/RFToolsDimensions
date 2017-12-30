@@ -16,9 +16,11 @@ import mcjty.rftoolsdim.dimensions.DimensionStorage;
 import mcjty.rftoolsdim.dimensions.RfToolsDimensionManager;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletCosts;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletKey;
+import mcjty.rftoolsdim.dimensions.dimlets.DimletObjectMapping;
 import mcjty.rftoolsdim.dimensions.dimlets.KnownDimletConfiguration;
 import mcjty.rftoolsdim.dimensions.dimlets.types.DimletType;
 import mcjty.rftoolsdim.dimensions.dimlets.types.IDimletType;
+import mcjty.rftoolsdim.dimensions.types.SpecialType;
 import mcjty.rftoolsdim.dimensions.world.WorldGenerationTools;
 import mcjty.rftoolsdim.network.RFToolsDimMessages;
 import net.minecraft.block.Block;
@@ -100,7 +102,12 @@ public class DimensionEditorTileEntity extends GenericEnergyReceiverTileEntity i
 
         if (ticksLeft == -1) {
             // We were not injecting. Start now.
-            if (isMatterReceiver(injectableItemStack)) {
+            RfToolsDimensionManager dimensionManager = RfToolsDimensionManager.getDimensionManager(getWorld());
+            int id = dimensionItemStack.getTagCompound().getInteger("id");
+            if (dimensionManager.getDimensionInformation(id).isCheater()) {
+                ticksCost = 1;
+                rfPerTick = 0;
+            } else if (isMatterReceiver(injectableItemStack)) {
                 ticksCost = DimletCosts.baseDimensionTickCost + 1000;
                 rfPerTick = DimletCosts.baseDimensionCreationCost + 200;
             } else if (isTNT(injectableItemStack)) {
@@ -109,8 +116,13 @@ public class DimensionEditorTileEntity extends GenericEnergyReceiverTileEntity i
             } else {
                 DimletKey key = KnownDimletConfiguration.getDimletKey(injectableItemStack);
                 Settings settings = KnownDimletConfiguration.getSettings(key);
-                ticksCost = DimletCosts.baseDimensionTickCost + settings.getTickCost();
-                rfPerTick = DimletCosts.baseDimensionCreationCost + settings.getCreateCost();
+                if(DimletObjectMapping.getSpecial(key) == SpecialType.SPECIAL_CHEATER) {
+                    ticksCost = 1;
+                    rfPerTick = 0;
+                } else {
+                    ticksCost = DimletCosts.baseDimensionTickCost + settings.getTickCost();
+                    rfPerTick = DimletCosts.baseDimensionCreationCost + settings.getCreateCost();
+                }
             }
             ticksLeft = ticksCost;
         } else {
