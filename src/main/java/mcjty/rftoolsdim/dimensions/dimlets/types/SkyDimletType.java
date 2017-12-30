@@ -77,6 +77,9 @@ public class SkyDimletType implements IDimletType {
         if (newDescriptor.specifiesSkyColor()) {
             builder.resetSkyColor();
         }
+        if (newDescriptor.isCloudColorGiven()) {
+            builder.resetCloudColor();
+        }
         if (dimensionInformation.isPatreonBitSet(Patreons.PATREON_DARKCORVUS)) {
             builder.skyType(SkyType.SKY_STARS3);
         }
