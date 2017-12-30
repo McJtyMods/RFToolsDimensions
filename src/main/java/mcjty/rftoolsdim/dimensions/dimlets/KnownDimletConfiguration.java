@@ -125,13 +125,16 @@ public class KnownDimletConfiguration {
     }
 
     private static void initSkyDimlets() {
-        initSkyDimlet("normal", new SkyDescriptor.Builder().skyType(SkyType.SKY_NORMAL).build(), false);
+        // Day brightness
         initSkyDimlet("normal.day", new SkyDescriptor.Builder().sunBrightnessFactor(1.0f).build(), false);
-        initSkyDimlet("normal.night", new SkyDescriptor.Builder().starBrightnessFactor(1.0f).build(), false);
-
         initSkyDimlet("dark.day", new SkyDescriptor.Builder().sunBrightnessFactor(0.4f).skyColorFactor(0.6f, 0.6f, 0.6f).build(), false);
+
+        // Night brightness
+        initSkyDimlet("normal.night", new SkyDescriptor.Builder().starBrightnessFactor(1.0f).build(), false);
         initSkyDimlet("bright.night", new SkyDescriptor.Builder().starBrightnessFactor(1.5f).build(), false);
         initSkyDimlet("dark.night", new SkyDescriptor.Builder().starBrightnessFactor(0.4f).build(), false);
+
+        // Sky color
         initSkyDimlet("red", new SkyDescriptor.Builder().skyColorFactor(1.0f, 0.2f, 0.2f).build(), false);
         initSkyDimlet("dark.red", new SkyDescriptor.Builder().skyColorFactor(0.6f, 0.0f, 0.0f).build(), false);
         initSkyDimlet("green", new SkyDescriptor.Builder().skyColorFactor(0.2f, 1.0f, 0.2f).build(), false);
@@ -146,6 +149,7 @@ public class KnownDimletConfiguration {
         initSkyDimlet("black", new SkyDescriptor.Builder().skyColorFactor(0.0f, 0.0f, 0.0f).build(), false);
         initSkyDimlet("gold", new SkyDescriptor.Builder().skyColorFactor(1.0f, 0.6f, 0.0f).build(), false);
 
+        // Fog color
         initSkyDimlet("normal.fog", new SkyDescriptor.Builder().fogColorFactor(1.0f, 1.0f, 1.0f).build(), false);
         initSkyDimlet("black.fog", new SkyDescriptor.Builder().fogColorFactor(0.0f, 0.0f, 0.0f).build(), false);
         initSkyDimlet("red.fog", new SkyDescriptor.Builder().fogColorFactor(1.0f, 0.2f, 0.2f).build(), false);
@@ -155,11 +159,14 @@ public class KnownDimletConfiguration {
         initSkyDimlet("cyan.fog", new SkyDescriptor.Builder().fogColorFactor(0.2f, 1.0f, 1.0f).build(), false);
         initSkyDimlet("purple.fog", new SkyDescriptor.Builder().fogColorFactor(1.0f, 0.2f, 1.0f).build(), false);
 
+        // Sky type
+        initSkyDimlet("normal", new SkyDescriptor.Builder().skyType(SkyType.SKY_NORMAL).build(), false);
         initSkyDimlet("ender", new SkyDescriptor.Builder().skyType(SkyType.SKY_ENDER).build(), false);
         initSkyDimlet("inferno", new SkyDescriptor.Builder().skyType(SkyType.SKY_INFERNO).build(), false);
         initSkyDimlet("stars1", new SkyDescriptor.Builder().skyType(SkyType.SKY_STARS1).build(), false);
         initSkyDimlet("stars2", new SkyDescriptor.Builder().skyType(SkyType.SKY_STARS2).build(), false);
 
+        // Celestial bodies
         initSkyDimlet("body.none", new SkyDescriptor.Builder().addBody(CelestialBodyType.BODY_NONE).build(), false);   // False because we don't want to select this randomly.
         initSkyDimlet("body.sun", new SkyDescriptor.Builder().addBody(CelestialBodyType.BODY_SUN).build(), true);
         initSkyDimlet("body.large.sun", new SkyDescriptor.Builder().addBody(CelestialBodyType.BODY_LARGESUN).build(), true);
@@ -172,6 +179,7 @@ public class KnownDimletConfiguration {
         initSkyDimlet("body.planet", new SkyDescriptor.Builder().addBody(CelestialBodyType.BODY_PLANET).build(), true);
         initSkyDimlet("body.large.planet", new SkyDescriptor.Builder().addBody(CelestialBodyType.BODY_LARGEPLANET).build(), true);
 
+        // Cloud color
         initSkyDimlet("normal.clouds", new SkyDescriptor.Builder().cloudColorFactor(1.0f, 1.0f, 1.0f).build(), false);
         initSkyDimlet("black.clouds", new SkyDescriptor.Builder().cloudColorFactor(0.0f, 0.0f, 0.0f).build(), false);
         initSkyDimlet("red.clouds", new SkyDescriptor.Builder().cloudColorFactor(1.0f, 0.2f, 0.2f).build(), false);
