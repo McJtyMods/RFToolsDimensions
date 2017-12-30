@@ -16,7 +16,7 @@ import java.util.List;
 public class CmdCreateDimension extends AbstractRfToolsCommand {
     @Override
     public String getHelp() {
-        return "<Name> <Terrain>";
+        return "<Name> [Terrain|Descriptor] [Seed]";
     }
 
     @Override
@@ -42,10 +42,10 @@ public class CmdCreateDimension extends AbstractRfToolsCommand {
         }
         EntityPlayer player = (EntityPlayer) sender;
 
-        if (args.length < 3) {
-            player.sendStatusMessage(new TextComponentString(TextFormatting.RED + "The name and terrain parameters are missing!"), false);
+        if (args.length < 2) {
+            player.sendStatusMessage(new TextComponentString(TextFormatting.RED + "The name parameter is missing!"), false);
             return;
-        } else if (args.length > 3) {
+        } else if (args.length > 4) {
             player.sendStatusMessage(new TextComponentString(TextFormatting.RED + "Too many parameters!"), false);
             return;
         }
@@ -53,16 +53,21 @@ public class CmdCreateDimension extends AbstractRfToolsCommand {
         String name = fetchString(player, args, 1, "");
 
         String terrainName = fetchString(player, args, 2, "Void");
-        TerrainType terrainType = TerrainType.getTerrainById(terrainName);
-        if (terrainType == null) {
-            player.sendStatusMessage(new TextComponentString(TextFormatting.RED + "Unknown terrain type!"), false);
-            return;
+        List<DimletKey> descriptors;
+        if(terrainName.charAt(0) == '@') {
+            descriptors = DimensionDescriptor.parseDescriptionString(terrainName);
+        } else {
+            TerrainType terrainType = TerrainType.getTerrainById(terrainName);
+            if (terrainType == null) {
+                player.sendStatusMessage(new TextComponentString(TextFormatting.RED + "Unknown terrain type!"), false);
+                return;
+            }
+            descriptors = new ArrayList<>(1);
+            descriptors.add(new DimletKey(DimletType.DIMLET_TERRAIN, terrainType.getId()));
         }
 
         RfToolsDimensionManager dimensionManager = RfToolsDimensionManager.getDimensionManager(player.getEntityWorld());
-        List<DimletKey> descriptors = new ArrayList<>();
-        descriptors.add(new DimletKey(DimletType.DIMLET_TERRAIN, terrainType.getId()));
-        DimensionDescriptor descriptor = new DimensionDescriptor(descriptors, 0);
+        DimensionDescriptor descriptor = new DimensionDescriptor(descriptors, fetchInt(player, args, 3, 0));
         int dim = dimensionManager.createNewDimension(player.getEntityWorld(), descriptor, name, player.getDisplayName().toString(), player.getPersistentID());
         player.sendStatusMessage(new TextComponentString(TextFormatting.GREEN + "Created dimension: " + dim), false);
 
