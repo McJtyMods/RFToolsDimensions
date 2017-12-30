@@ -3,6 +3,7 @@ package mcjty.rftoolsdim.commands;
 import mcjty.rftoolsdim.dimensions.RfToolsDimensionManager;
 import mcjty.rftoolsdim.dimensions.description.DimensionDescriptor;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletKey;
+import mcjty.rftoolsdim.dimensions.dimlets.KnownDimletConfiguration;
 import mcjty.rftoolsdim.dimensions.dimlets.types.DimletType;
 import mcjty.rftoolsdim.dimensions.types.TerrainType;
 import net.minecraft.command.ICommandSender;
@@ -56,6 +57,12 @@ public class CmdCreateDimension extends AbstractRfToolsCommand {
         List<DimletKey> descriptors;
         if(terrainName.charAt(0) == '@') {
             descriptors = DimensionDescriptor.parseDescriptionString(terrainName);
+            for(DimletKey key : descriptors) {
+                if(key.getType() == null || KnownDimletConfiguration.getSettings(key) == null) {
+                    player.sendStatusMessage(new TextComponentString(TextFormatting.RED + "Invalid descriptor!"), false);
+                    return;
+                }
+            }
         } else {
             TerrainType terrainType = TerrainType.getTerrainById(terrainName);
             if (terrainType == null) {
