@@ -173,7 +173,7 @@ public class KnownDimletConfiguration {
         initSkyDimlet("body.planet", new SkyDescriptor.Builder().addBody(CelestialBodyType.BODY_PLANET).build(), true);
         initSkyDimlet("body.large.planet", new SkyDescriptor.Builder().addBody(CelestialBodyType.BODY_LARGEPLANET).build(), true);
 
-        initSkyDimlet("normal.clouds", new SkyDescriptor.Builder().resetCloudColor().build(), false);
+        initSkyDimlet("normal.clouds", new SkyDescriptor.Builder().cloudColorFactor(1.0f, 1.0f, 1.0f).build(), false);
         initSkyDimlet("black.clouds", new SkyDescriptor.Builder().cloudColorFactor(0.0f, 0.0f, 0.0f).build(), false);
         initSkyDimlet("red.clouds", new SkyDescriptor.Builder().cloudColorFactor(1.0f, 0.2f, 0.2f).build(), false);
         initSkyDimlet("green.clouds", new SkyDescriptor.Builder().cloudColorFactor(0.2f, 1.0f, 0.2f).build(), false);
