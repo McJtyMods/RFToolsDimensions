@@ -135,11 +135,11 @@ public class SkyRenderer {
         });
     }
 
-    public static void registerCloudRenderer(final GenericWorldProvider provider) {
+    public static void registerKenneyCloudRenderer(final GenericWorldProvider provider) {
         provider.setCloudRenderer(new IRenderHandler() {
             @Override
             public void render(float partialTicks, WorldClient world, Minecraft mc) {
-                renderClouds(provider, partialTicks);
+                renderKenneyClouds(provider, partialTicks);
             }
         });
     }
@@ -799,7 +799,7 @@ public class SkyRenderer {
     }
 
     @SideOnly(Side.CLIENT)
-    public static void renderClouds(GenericWorldProvider provider, float partialTicks) {
+    public static void renderKenneyClouds(GenericWorldProvider provider, float partialTicks) {
         GlStateManager.disableCull();
         Minecraft mc = Minecraft.getMinecraft();
         TextureManager renderEngine = mc.getTextureManager();
@@ -851,12 +851,6 @@ public class SkyRenderer {
         float f13 = 9.765625E-4F;
         GlStateManager.scale(f2, 1.0F, f2);
 
-        DimensionInformation information = provider.getDimensionInformation();
-        float cr = information.getSkyDescriptor().getCloudColorFactorR();
-        float cg = information.getSkyDescriptor().getCloudColorFactorG();
-        float cb = information.getSkyDescriptor().getCloudColorFactorB();
-        boolean randomColors = information.isPatreonBitSet(Patreons.PATREON_KENNEY);
-
         BufferBuilder renderer = tessellator.getBuffer();
 
         for (int k = 0; k < 2; ++k) {
@@ -879,14 +873,12 @@ public class SkyRenderer {
                     float v = (i1 * b0);
                     float x = u - f11;
                     float z = v - f12;
-                    if (randomColors) {
-//                        cr = (float) ((u % 10.0f) / 10.0f);
-//                        cg = (float) (((u + v) % 10.0f) / 10.0f);
-//                        cb = (float) ((v % 10.0f) / 10.0f);
-                        cr = x % 1.0f;
-                        cg = (x+z) % 1.0f;
-                        cb = z % 1.0f;
-                    }
+//                    float cr = (float) ((u % 10.0f) / 10.0f);
+//                    float cg = (float) (((u + v) % 10.0f) / 10.0f);
+//                    float cb = (float) ((v % 10.0f) / 10.0f);
+                    float cr = x % 1.0f;
+                    float cg = (x+z) % 1.0f;
+                    float cb = z % 1.0f;
 
                     if (y > -f3 - 1.0F) {
                         renderer.pos((x + 0.0F), (y + 0.0F), (z + b0)).tex(((u + 0.0F) * f10 + f8), ((v + b0) * f10 + f9)).color(red * 0.7F * cr, green * 0.7F * cg, blue * 0.7F * cb, 0.8F).normal(0.0F, -1.0F, 0.0F).endVertex();

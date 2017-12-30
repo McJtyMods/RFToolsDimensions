@@ -257,8 +257,8 @@ public class GenericWorldProvider extends WorldProvider implements  /*@todo impl
                     SkyRenderer.registerSky(this, dimensionInformation);
                 }
 
-                if (dimensionInformation.getSkyDescriptor().isCloudColorGiven() || dimensionInformation.isPatreonBitSet(Patreons.PATREON_KENNEY)) {
-                    SkyRenderer.registerCloudRenderer(this);
+                if (dimensionInformation.isPatreonBitSet(Patreons.PATREON_KENNEY)) {
+                    SkyRenderer.registerKenneyCloudRenderer(this);
                 }
             }
         }
@@ -389,6 +389,23 @@ public class GenericWorldProvider extends WorldProvider implements  /*@todo impl
             float g = dimensionInformation.getSkyDescriptor().getSkyColorFactorG() * factor;
             float b = dimensionInformation.getSkyDescriptor().getSkyColorFactorB() * factor;
             return new Vec3d(skyColor.x * r, skyColor.y * g, skyColor.z * b);
+        }
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public Vec3d getCloudColor(float partialTicks)
+    {
+        getDimensionInformation();
+
+        Vec3d cloudColor = super.getCloudColor(partialTicks);
+        if (dimensionInformation == null || dimensionInformation.isPatreonBitSet(Patreons.PATREON_KENNEY)) {
+            return cloudColor;
+        } else {
+            float r = dimensionInformation.getSkyDescriptor().getCloudColorFactorR();
+            float g = dimensionInformation.getSkyDescriptor().getCloudColorFactorG();
+            float b = dimensionInformation.getSkyDescriptor().getCloudColorFactorB();
+            return new Vec3d(cloudColor.x * r, cloudColor.y * g, cloudColor.z * b);
         }
     }
 
