@@ -13,6 +13,8 @@ import mcjty.rftoolsdim.network.PacketRegisterDimensions;
 import mcjty.rftoolsdim.network.PacketSyncDimensionInfo;
 import mcjty.rftoolsdim.network.PacketSyncRules;
 import mcjty.rftoolsdim.network.RFToolsDimMessages;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -29,6 +31,8 @@ import net.minecraft.world.gen.ChunkProviderServer;
 import net.minecraft.world.storage.WorldSavedData;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.*;
 
@@ -42,6 +46,7 @@ public class RfToolsDimensionManager extends WorldSavedData {
 
     private final Set<Integer> reclaimedIds = new HashSet<>();
 
+    @SideOnly(Side.CLIENT)
     public void syncFromServer(Map<Integer, DimensionDescriptor> dims, Map<Integer, DimensionInformation> dimInfo) {
         for (Map.Entry<Integer, DimensionDescriptor> entry : dims.entrySet()) {
             int id = entry.getKey();
@@ -53,13 +58,14 @@ public class RfToolsDimensionManager extends WorldSavedData {
             dimensionToID.put(descriptor, id);
         }
 
+        WorldClient world = Minecraft.getMinecraft().world;
+        GenericWorldProvider provider = (world != null && world.provider instanceof GenericWorldProvider) ? (GenericWorldProvider)world.provider : null;
         for (Map.Entry<Integer, DimensionInformation> entry : dimInfo.entrySet()) {
             int id = entry.getKey();
             DimensionInformation info = entry.getValue();
             dimensionInformation.put(id, info);
-            World world = DimensionManager.getWorld(id);
-            if(world != null && world.provider instanceof GenericWorldProvider) {
-                ((GenericWorldProvider)world.provider).setDimensionInformation(info);
+            if(provider.getDimension() == id) {
+                provider.setDimensionInformation(info);
             }
         }
     }
