@@ -130,7 +130,6 @@ public class KnownDimletConfiguration {
         initSkyDimlet("normal.night", new SkyDescriptor.Builder().starBrightnessFactor(1.0f).build(), false);
 
         initSkyDimlet("dark.day", new SkyDescriptor.Builder().sunBrightnessFactor(0.4f).skyColorFactor(0.6f, 0.6f, 0.6f).build(), false);
-        initSkyDimlet("normal.night", new SkyDescriptor.Builder().starBrightnessFactor(1.0f).build(), false);
         initSkyDimlet("bright.night", new SkyDescriptor.Builder().starBrightnessFactor(1.5f).build(), false);
         initSkyDimlet("dark.night", new SkyDescriptor.Builder().starBrightnessFactor(0.4f).build(), false);
         initSkyDimlet("red", new SkyDescriptor.Builder().skyColorFactor(1.0f, 0.2f, 0.2f).build(), false);
