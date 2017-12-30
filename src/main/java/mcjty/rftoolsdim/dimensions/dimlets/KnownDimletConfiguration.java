@@ -148,6 +148,7 @@ public class KnownDimletConfiguration {
         initSkyDimlet("dark.purple", new SkyDescriptor.Builder().skyColorFactor(0.6f, 0, 0.6f).build(), false);
         initSkyDimlet("black", new SkyDescriptor.Builder().skyColorFactor(0.0f, 0.0f, 0.0f).build(), false);
         initSkyDimlet("gold", new SkyDescriptor.Builder().skyColorFactor(1.0f, 0.6f, 0.0f).build(), false);
+        initSkyDimlet("white", new SkyDescriptor.Builder().skyColorFactor(1.0f, 1.0f, 1.0f).build(), false);
 
         // Fog color
         initSkyDimlet("normal.fog", new SkyDescriptor.Builder().fogColorFactor(1.0f, 1.0f, 1.0f).build(), false);
