@@ -171,9 +171,9 @@ public class DimensionEnscriberTileEntity extends GenericTileEntity implements D
                     if (tagCompound != null && tagCompound.getLong("forcedSeed") != 0) {
                         forcedSeed = tagCompound.getLong("forcedSeed");
                     }
+                    inventoryHelper.setStackInSlot(i + DimensionEnscriberContainer.SLOT_DIMLETS, ItemStack.EMPTY);
                 }
             }
-            inventoryHelper.setStackInSlot(i + DimensionEnscriberContainer.SLOT_DIMLETS, ItemStack.EMPTY);
         }
         return new DimensionDescriptor(descriptors, forcedSeed);
     }
