@@ -8,6 +8,7 @@ import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.config.DimletRules;
 import mcjty.rftoolsdim.config.Filter;
 import mcjty.rftoolsdim.config.GeneralConfiguration;
+import mcjty.rftoolsdim.config.MobConfiguration;
 import mcjty.rftoolsdim.config.Settings;
 import mcjty.rftoolsdim.dimensions.DimensionInformation;
 import mcjty.rftoolsdim.dimensions.description.SkyDescriptor;
@@ -83,8 +84,7 @@ public class KnownDimletConfiguration {
 
         Biome.REGISTRY.iterator().forEachRemaining(KnownDimletConfiguration::initBiomeDimlet);
 
-        Set<ResourceLocation> keys = ForgeRegistries.ENTITIES.getKeys();
-        keys.stream().map(ResourceLocation::toString).forEach(KnownDimletConfiguration::initMobDimlet);
+        MobConfiguration.mobClasses.keySet().forEach(KnownDimletConfiguration::initMobDimlet);
         initMobDimlet(DimletObjectMapping.DEFAULT_ID);
 
         FluidRegistry.getRegisteredFluids().entrySet().stream().forEach(KnownDimletConfiguration::initFluidDimlet);
