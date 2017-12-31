@@ -107,7 +107,7 @@ public class DimensionEnscriberTileEntity extends GenericTileEntity implements D
                 return;
             }
         }
-        DimensionDescriptor descriptor = convertToDimensionDescriptor();
+        DimensionDescriptor descriptor = convertToDimensionDescriptor(player);
         ItemStack realizedTab = createRealizedTab(descriptor, getWorld());
         inventoryHelper.setStackInSlot(DimensionEnscriberContainer.SLOT_TAB, realizedTab);
 
@@ -154,7 +154,7 @@ public class DimensionEnscriberTileEntity extends GenericTileEntity implements D
     /**
      * Convert the dimlets in the inventory to a dimension descriptor.
      */
-    private DimensionDescriptor convertToDimensionDescriptor() {
+    private DimensionDescriptor convertToDimensionDescriptor(EntityPlayer player) {
         List<DimletKey> descriptors = new ArrayList<>();
 
         long forcedSeed = 0;
@@ -172,6 +172,8 @@ public class DimensionEnscriberTileEntity extends GenericTileEntity implements D
                         forcedSeed = tagCompound.getLong("forcedSeed");
                     }
                     inventoryHelper.setStackInSlot(i + DimensionEnscriberContainer.SLOT_DIMLETS, ItemStack.EMPTY);
+                } else {
+                    Logging.warn(player, "Dimlet " + key.getType().dimletType.getName() + "." + key.getId() + " was not included in the tab because it is blacklisted");
                 }
             }
         }
