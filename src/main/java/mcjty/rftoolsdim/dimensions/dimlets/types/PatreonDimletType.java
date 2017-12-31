@@ -1,5 +1,6 @@
 package mcjty.rftoolsdim.dimensions.dimlets.types;
 
+import mcjty.lib.varia.Logging;
 import mcjty.rftoolsdim.dimensions.DimensionInformation;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletKey;
 import mcjty.rftoolsdim.dimensions.types.PatreonType;
@@ -58,7 +59,23 @@ public class PatreonDimletType implements IDimletType {
 
     @Override
     public boolean isInjectable(DimletKey key) {
-        return true;
+        switch(key.getId()) {
+        case "McJty":
+        case "SickHippie":
+        case "Nissenfeld":
+        case "DarkCorvuz":
+        case "TomWolf":
+        case "Kenney":
+            return true;
+        default:
+            Logging.logError("Unknown Patreon dimlet ID " + key.getId(), new RuntimeException());
+            //$FALL-THROUGH$
+        case "Lockesly":
+        case "Puppeteer":
+        case "Rouven":
+        case "FireBall":
+            return false;
+        }
     }
 
     @Override
