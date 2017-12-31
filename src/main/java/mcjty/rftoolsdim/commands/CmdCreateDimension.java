@@ -58,7 +58,7 @@ public class CmdCreateDimension extends AbstractRfToolsCommand {
         if(terrainName.charAt(0) == '@') {
             descriptors = DimensionDescriptor.parseDescriptionString(terrainName);
             for(DimletKey key : descriptors) {
-                if(key.getType() == null || KnownDimletConfiguration.getSettings(key) == null) {
+                if(key.getType() == null) {
                     player.sendStatusMessage(new TextComponentString(TextFormatting.RED + "Invalid descriptor!"), false);
                     return;
                 }
