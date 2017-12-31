@@ -63,7 +63,7 @@ public class SpecialDimletType implements IDimletType {
 
     @Override
     public boolean isInjectable(DimletKey key) {
-        return true;
+        return DimletObjectMapping.getSpecial(key).isInjectable();
     }
 
     @Override

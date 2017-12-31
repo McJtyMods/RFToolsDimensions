@@ -4,15 +4,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 public enum SpecialType {
-    SPECIAL_PEACEFUL("Peaceful"),
-    SPECIAL_EFFICIENCY("Efficiency"),
-    SPECIAL_EFFICIENCY_LOW("MediocreEfficiency"),
-    SPECIAL_SHELTER("Shelter"),
-    SPECIAL_SEED("Seed"),
-    SPECIAL_SPAWN("Spawn"),
-    SPECIAL_NOANIMALS("NoAnimals"),
-    SPECIAL_OWNER("Owner"),
-    SPECIAL_CHEATER("Cheater");
+    SPECIAL_PEACEFUL("Peaceful", true),
+    SPECIAL_EFFICIENCY("Efficiency", true),
+    SPECIAL_EFFICIENCY_LOW("MediocreEfficiency", true),
+    SPECIAL_SHELTER("Shelter", false),
+    SPECIAL_SEED("Seed", false),
+    SPECIAL_SPAWN("Spawn", true),
+    SPECIAL_NOANIMALS("NoAnimals", true),
+    SPECIAL_OWNER("Owner", false),
+    SPECIAL_CHEATER("Cheater", true);
 
     private static final Map<String,SpecialType> SPECIAL_TYPE_MAP = new HashMap<>();
 
@@ -22,16 +22,20 @@ public enum SpecialType {
         }
     }
 
-
     private final String id;
+    private final boolean injectable;
 
-
-    SpecialType(String id) {
+    private SpecialType(String id, boolean isInjectable) {
         this.id = id;
+        this.injectable = isInjectable;
     }
 
     public String getId() {
         return id;
+    }
+
+    public boolean isInjectable() {
+        return injectable;
     }
 
     public static SpecialType getSpecialById(String id) {
