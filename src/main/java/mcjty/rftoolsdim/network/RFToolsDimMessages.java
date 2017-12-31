@@ -11,12 +11,12 @@ public class RFToolsDimMessages {
         INSTANCE = net;
 
         // Server side
-        net.registerMessage(PacketGetDimensionEnergy.Handler.class, PacketGetDimensionEnergy.class, PacketHandler.nextID(), Side.SERVER);
+        net.registerMessage(PacketGetDimensionEnergy.Handler.class, PacketGetDimensionEnergy.class, PacketHandler.nextPacketID(), Side.SERVER);
 
         // Client side
-        net.registerMessage(PacketRegisterDimensions.Handler.class, PacketRegisterDimensions.class, PacketHandler.nextID(), Side.CLIENT);
-        net.registerMessage(PacketReturnEnergy.Handler.class, PacketReturnEnergy.class, PacketHandler.nextID(), Side.CLIENT);
-        net.registerMessage(PacketSyncDimensionInfo.Handler.class, PacketSyncDimensionInfo.class, PacketHandler.nextID(), Side.CLIENT);
-        net.registerMessage(PacketSyncRules.Handler.class, PacketSyncRules.class, PacketHandler.nextID(), Side.CLIENT);
+        net.registerMessage(PacketRegisterDimensions.Handler.class, PacketRegisterDimensions.class, PacketHandler.nextPacketID(), Side.CLIENT);
+        net.registerMessage(PacketReturnEnergy.Handler.class, PacketReturnEnergy.class, PacketHandler.nextPacketID(), Side.CLIENT);
+        net.registerMessage(PacketSyncDimensionInfo.Handler.class, PacketSyncDimensionInfo.class, PacketHandler.nextPacketID(), Side.CLIENT);
+        net.registerMessage(PacketSyncRules.Handler.class, PacketSyncRules.class, PacketHandler.nextPacketID(), Side.CLIENT);
     }
 }
