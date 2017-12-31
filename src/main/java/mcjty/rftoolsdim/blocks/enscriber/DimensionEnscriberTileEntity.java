@@ -183,12 +183,14 @@ public class DimensionEnscriberTileEntity extends GenericTileEntity implements D
         NBTTagCompound tagCompound = realizedTab.getTagCompound();
         if (tagCompound != null) {
             long forcedSeed = tagCompound.getLong("forcedSeed");
-            int idx = DimensionEnscriberContainer.SLOT_DIMLETS;
             List<DimletKey> descriptors = DimensionDescriptor.parseDescriptionString(tagCompound.getString("descriptionString"));
-            int skip = DimensionEnscriberContainer.SIZE_DIMLETS / Math.max(descriptors.size(), 1);
-            if(skip < 1) {
+            int idx, skip;
+            if(DimensionEnscriberContainer.SIZE_DIMLETS >= 2 * descriptors.size()) {
+                idx = DimensionEnscriberContainer.SLOT_DIMLETS + 1;
+                skip = 2;
+            } else {
+                idx = DimensionEnscriberContainer.SLOT_DIMLETS;
                 skip = 1;
-                Logging.logError("A realized tab contained more dimlets than can fit in the inscriber's inventory!");
             }
             for (DimletKey descriptor : descriptors) {
                 int id = tagCompound.getInteger("id");
