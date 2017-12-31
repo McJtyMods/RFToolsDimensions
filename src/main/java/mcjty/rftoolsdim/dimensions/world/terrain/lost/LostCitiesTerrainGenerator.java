@@ -520,7 +520,7 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
         }
     }
 
-    private static class Blob {
+    private static class Blob implements Comparable<Blob> {
         private final int starty;
         private final int endy;
         private final Set<Integer> connectedBlocks = new HashSet<>();
@@ -605,6 +605,11 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
         private int calcIndex(int x, int y, int z) {
             return (x << 12) | (z << 8) + y;
         }
+
+        @Override
+        public int compareTo(Blob o) {
+            return lowestY - o.lowestY;
+        }
     }
 
     private Blob findBlob(List<Blob> blobs, int index) {
@@ -645,7 +650,7 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
 
         // Sort all blobs we delete with lowest first
         blobs.removeIf(o -> !o.destroyOrMoveThis());
-        blobs.sort(Comparator.comparingInt(o -> o.lowestY));
+        blobs.sort(null);
 
         Blob blocksToMove = new Blob(0, 256);
         for (Blob blob : blobs) {
