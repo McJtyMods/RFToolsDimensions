@@ -261,7 +261,7 @@ public class DimensionEditorTileEntity extends GenericEnergyReceiverTileEntity i
         DimletKey key = KnownDimletConfiguration.getDimletKey(itemStack);
         DimletType type = key.getType();
         IDimletType itype = type.dimletType;
-        if (itype.isInjectable()) {
+        if (itype.isInjectable(key)) {
             return itemStack;
         } else {
             return ItemStack.EMPTY;

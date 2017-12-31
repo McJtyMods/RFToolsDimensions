@@ -62,7 +62,7 @@ public class SkyDimletType implements IDimletType {
     }
 
     @Override
-    public boolean isInjectable() {
+    public boolean isInjectable(DimletKey key) {
         return true;
     }
 

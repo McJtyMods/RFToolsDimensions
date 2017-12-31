@@ -49,7 +49,7 @@ public interface IDimletType {
     public float getModifierTickCostFactor(DimletType modifierType, DimletKey key);
 
     // Return true if this dimlet can be injected into an existing dimension.
-    boolean isInjectable();
+    boolean isInjectable(DimletKey key);
 
     // Inject this dimlet into a dimension.
     void inject(DimletKey key, DimensionInformation dimensionInformation);

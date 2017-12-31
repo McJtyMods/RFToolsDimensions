@@ -57,7 +57,7 @@ public class FoliageDimletType implements IDimletType {
     }
 
     @Override
-    public boolean isInjectable() {
+    public boolean isInjectable(DimletKey key) {
         return false;
     }
 

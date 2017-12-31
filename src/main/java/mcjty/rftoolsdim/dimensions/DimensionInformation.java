@@ -205,7 +205,7 @@ public class DimensionInformation implements IDimensionInformation {
     public void injectDimlet(DimletKey key) {
         DimletType type = key.getType();
         IDimletType itype = type.dimletType;
-        if (itype.isInjectable()) {
+        if (itype.isInjectable(key)) {
             addToCost(key);
             itype.inject(key, this);
         }
