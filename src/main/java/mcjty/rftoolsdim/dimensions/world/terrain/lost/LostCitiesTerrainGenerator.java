@@ -644,14 +644,11 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
         }
 
         // Sort all blobs we delete with lowest first
-        blobs.sort(Comparator.comparingInt(o -> o.destroyOrMoveThis() ? o.lowestY : 1000));
+        blobs.removeIf(o -> !o.destroyOrMoveThis());
+        blobs.sort(Comparator.comparingInt(o -> o.lowestY));
 
         Blob blocksToMove = new Blob(0, 256);
         for (Blob blob : blobs) {
-            if (!blob.destroyOrMoveThis()) {
-                // The rest of the blobs doesn't have to be destroyed anymore
-                break;
-            }
             if (rand.nextFloat() < LostCityConfiguration.DESTROY_OR_MOVE_CHANCE && blob.connectedBlocks.size() < LostCityConfiguration.DESTROY_SMALL_SECTIONS_SIZE) {
                 for (Integer index : blob.connectedBlocks) {
                     primer.data[index] = ((index&0xff) < waterLevel) ? liquid : air;
