@@ -9,7 +9,6 @@ import mcjty.rftoolsdim.network.PacketGetDimensionEnergy;
 import mcjty.rftoolsdim.network.RFToolsDimMessages;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
-import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.util.ITooltipFlag;
@@ -45,23 +44,20 @@ public class DimensionMonitorItem extends GenericRFToolsItem {
 //            ModelBakery.addVariantName(this, getRegistryName() + i);
         }
 
-        ModelLoader.setCustomMeshDefinition(this, new ItemMeshDefinition() {
-            @Override
-            public ModelResourceLocation getModelLocation(ItemStack stack) {
-                WorldClient world = Minecraft.getMinecraft().world;
-                int id = world.provider.getDimension();
-                DimensionStorage storage = DimensionStorage.getDimensionStorage(world);
-                int energyLevel = storage.getEnergyLevel(id);
-                int level = (9*energyLevel) / PowerConfiguration.MAX_DIMENSION_POWER;
-                if (level < 0) {
-                    level = 0;
-                } else if (level > 8) {
-                    level = 8;
-                }
-                ResourceLocation registryName = getRegistryName();
-                registryName = new ResourceLocation(registryName.getResourceDomain(), registryName.getResourcePath() + (8 - level));
-                return new ModelResourceLocation(registryName, "inventory");
+        ModelLoader.setCustomMeshDefinition(this, stack -> {
+            WorldClient world = Minecraft.getMinecraft().world;
+            int id = world.provider.getDimension();
+            DimensionStorage storage = DimensionStorage.getDimensionStorage(world);
+            int energyLevel = storage.getEnergyLevel(id);
+            int level = (9*energyLevel) / PowerConfiguration.MAX_DIMENSION_POWER;
+            if (level < 0) {
+                level = 0;
+            } else if (level > 8) {
+                level = 8;
             }
+            ResourceLocation registryName = getRegistryName();
+            registryName = new ResourceLocation(registryName.getResourceDomain(), registryName.getResourcePath() + (8 - level));
+            return new ModelResourceLocation(registryName, "inventory");
         });
     }
 

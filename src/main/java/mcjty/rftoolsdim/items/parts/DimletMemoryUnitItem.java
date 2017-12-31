@@ -2,7 +2,6 @@ package mcjty.rftoolsdim.items.parts;
 
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.items.GenericRFToolsItem;
-import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.util.ITooltipFlag;
@@ -39,12 +38,7 @@ public class DimletMemoryUnitItem extends GenericRFToolsItem {
             ModelBakery.registerItemVariants(this, models[i]);
         }
 
-        ModelLoader.setCustomMeshDefinition(this, new ItemMeshDefinition() {
-            @Override
-            public ModelResourceLocation getModelLocation(ItemStack stack) {
-                return models[stack.getItemDamage()];
-            }
-        });
+        ModelLoader.setCustomMeshDefinition(this, stack -> models[stack.getItemDamage()]);
     }
 
     @SideOnly(Side.CLIENT)

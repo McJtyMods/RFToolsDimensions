@@ -3,7 +3,6 @@ package mcjty.rftoolsdim.items.parts;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.dimensions.types.StructureType;
 import mcjty.rftoolsdim.items.GenericRFToolsItem;
-import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
@@ -32,12 +31,7 @@ public class StructureEssenceItem extends GenericRFToolsItem {
     @SideOnly(Side.CLIENT)
     public void initModel() {
         ModelResourceLocation resource = new ModelResourceLocation(getRegistryName(), "inventory");
-        ModelLoader.setCustomMeshDefinition(this, new ItemMeshDefinition() {
-            @Override
-            public ModelResourceLocation getModelLocation(ItemStack stack) {
-                return resource;
-            }
-        });
+        ModelLoader.setCustomMeshDefinition(this, stack -> resource);
     }
 
     private String calculateUnlocalizedNameSuffix(StructureType type) {

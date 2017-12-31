@@ -3,7 +3,6 @@ package mcjty.rftoolsdim.items.parts;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.dimensions.dimlets.types.DimletType;
 import mcjty.rftoolsdim.items.GenericRFToolsItem;
-import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.util.ITooltipFlag;
@@ -40,12 +39,7 @@ public class DimletTypeControllerItem extends GenericRFToolsItem {
             ModelBakery.registerItemVariants(this, models.get(type));
         }
 
-        ModelLoader.setCustomMeshDefinition(this, new ItemMeshDefinition() {
-            @Override
-            public ModelResourceLocation getModelLocation(ItemStack stack) {
-                return models.get(DimletType.values()[stack.getItemDamage()]);
-            }
-        });
+        ModelLoader.setCustomMeshDefinition(this, stack -> models.get(DimletType.values()[stack.getItemDamage()]));
     }
 
     private String calculateUnlocalizedNameSuffix(DimletType type) {

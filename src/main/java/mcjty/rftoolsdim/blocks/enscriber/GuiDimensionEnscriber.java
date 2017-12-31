@@ -2,14 +2,11 @@ package mcjty.rftoolsdim.blocks.enscriber;
 
 import mcjty.lib.container.GenericGuiContainer;
 import mcjty.lib.gui.Window;
-import mcjty.lib.gui.events.ButtonEvent;
-import mcjty.lib.gui.events.TextEvent;
 import mcjty.lib.gui.layout.PositionalLayout;
 import mcjty.lib.gui.widgets.Button;
 import mcjty.lib.gui.widgets.Label;
 import mcjty.lib.gui.widgets.Panel;
 import mcjty.lib.gui.widgets.TextField;
-import mcjty.lib.gui.widgets.*;
 import mcjty.lib.network.Argument;
 import mcjty.lib.varia.Counter;
 import mcjty.lib.varia.Logging;
@@ -58,27 +55,20 @@ public class GuiDimensionEnscriber extends GenericGuiContainer<DimensionEnscribe
         super.initGui();
 
         extractButton = new Button(mc, this).setText("Extract").setLayoutHint(new PositionalLayout.PositionalHint(13, 164, 60, 16)).addButtonEvent(
-                new ButtonEvent() {
-                    @Override
-                    public void buttonClicked(Widget parent) {
-                        extractDimlets();
-                    }
-                }
+            parent -> {
+                extractDimlets();
+            }
         ).setTooltips("Extract the dimlets out of", "a realized dimension tab");
         storeButton = new Button(mc, this).setText("Store").setLayoutHint(new PositionalLayout.PositionalHint(13, 182, 60, 16)).addButtonEvent(
-                new ButtonEvent() {
-                    @Override
-                    public void buttonClicked(Widget parent) {
-                        storeDimlets();
-                    }
-                }
+            parent -> {
+                storeDimlets();
+            }
         ).setTooltips("Store dimlets in a", "empty dimension tab");
-        nameField = new TextField(mc, this).addTextEvent(new TextEvent() {
-            @Override
-            public void textChanged(Widget parent, String newText) {
+        nameField = new TextField(mc, this).addTextEvent(
+            (parent, newText) -> {
                 storeName(newText);
             }
-        }).setLayoutHint(new PositionalLayout.PositionalHint(13, 200, 60, 16));
+        ).setLayoutHint(new PositionalLayout.PositionalHint(13, 200, 60, 16));
         validateField = new Label(mc, this).setText("Val");
         validateField.setTooltips("Hover here for errors...");
         validateField.setLayoutHint(new PositionalLayout.PositionalHint(35, 142, 38, 16));

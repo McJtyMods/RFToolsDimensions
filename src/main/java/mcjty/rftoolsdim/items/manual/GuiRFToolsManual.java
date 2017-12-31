@@ -1,7 +1,6 @@
 package mcjty.rftoolsdim.items.manual;
 
 import mcjty.lib.gui.Window;
-import mcjty.lib.gui.events.ButtonEvent;
 import mcjty.lib.gui.layout.HorizontalLayout;
 import mcjty.lib.gui.layout.VerticalLayout;
 import mcjty.lib.gui.widgets.Button;
@@ -56,21 +55,19 @@ public class GuiRFToolsManual extends GuiScreen {
 
         textPage = new TextPage(RFToolsDim.instance, mc, this).setText(manualText).setArrowImage(iconGuiElements, 144, 0).setCraftingGridImage(iconGuiElements, 0, 192);
 
-        prevButton = new Button(mc, this).setText("<").addButtonEvent(new ButtonEvent() {
-            @Override
-            public void buttonClicked(Widget parent) {
+        prevButton = new Button(mc, this).setText("<").addButtonEvent(
+            parent -> {
                 textPage.prevPage();
                 window.setTextFocus(textPage);
             }
-        });
+        );
         pageLabel = new Label(mc, this).setText("0 / 0");
-        nextButton = new Button(mc, this).setText(">").addButtonEvent(new ButtonEvent() {
-            @Override
-            public void buttonClicked(Widget parent) {
+        nextButton = new Button(mc, this).setText(">").addButtonEvent(
+            parent -> {
                 textPage.nextPage();
                 window.setTextFocus(textPage);
             }
-        });
+        );
         Panel buttonPanel = new Panel(mc, this).setLayout(new HorizontalLayout()).setDesiredHeight(16).addChild(prevButton).addChild(pageLabel).addChild(nextButton);
 
         Panel toplevel = new Panel(mc, this).setFilledRectThickness(2).setLayout(new VerticalLayout()).addChild(textPage).addChild(buttonPanel);

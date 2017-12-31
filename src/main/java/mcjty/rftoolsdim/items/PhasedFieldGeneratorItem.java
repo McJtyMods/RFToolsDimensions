@@ -5,7 +5,6 @@ import mcjty.lib.varia.IEnergyItem;
 import mcjty.lib.varia.ItemCapabilityProvider;
 import mcjty.rftoolsdim.config.PowerConfiguration;
 import mcjty.rftoolsdim.dimensions.DimensionTickEvent;
-import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.util.ITooltipFlag;
@@ -48,24 +47,21 @@ public class PhasedFieldGeneratorItem extends GenericRFToolsItem implements IEne
 //            ModelBakery.addVariantName(this, getRegistryName() + i);
         }
 
-        ModelLoader.setCustomMeshDefinition(this, new ItemMeshDefinition() {
-            @Override
-            public ModelResourceLocation getModelLocation(ItemStack stack) {
-                NBTTagCompound tagCompound = stack.getTagCompound();
-                int energy = 0;
-                if (tagCompound != null) {
-                    energy = tagCompound.getInteger("Energy");
-                }
-                int level = (9*energy) / PowerConfiguration.PHASEDFIELD_MAXENERGY;
-                if (level < 0) {
-                    level = 0;
-                } else if (level > 8) {
-                    level = 8;
-                }
-                ResourceLocation registryName = getRegistryName();
-                registryName = new ResourceLocation(registryName.getResourceDomain(), registryName.getResourcePath() + (8 - level));
-                return new ModelResourceLocation(registryName, "inventory");
+        ModelLoader.setCustomMeshDefinition(this, stack -> {
+            NBTTagCompound tagCompound = stack.getTagCompound();
+            int energy = 0;
+            if (tagCompound != null) {
+                energy = tagCompound.getInteger("Energy");
             }
+            int level = (9*energy) / PowerConfiguration.PHASEDFIELD_MAXENERGY;
+            if (level < 0) {
+                level = 0;
+            } else if (level > 8) {
+                level = 8;
+            }
+            ResourceLocation registryName = getRegistryName();
+            registryName = new ResourceLocation(registryName.getResourceDomain(), registryName.getResourcePath() + (8 - level));
+            return new ModelResourceLocation(registryName, "inventory");
         });
     }
 
