@@ -80,28 +80,41 @@ public class PatreonDimletType implements IDimletType {
 
     @Override
     public void inject(DimletKey key, DimensionInformation dimensionInformation) {
-        if ("McJty".equals(key.getId())) {
+        switch(key.getId()) {
+        case "McJty":
             dimensionInformation.setPatreonBit(PatreonType.PATREON_FIREWORKS);
-        } else if ("SickHippie".equals(key.getId())) {
+            break;
+        case "SickHippie":
             dimensionInformation.setPatreonBit(PatreonType.PATREON_SICKMOON);
             dimensionInformation.setPatreonBit(PatreonType.PATREON_SICKSUN);
-        } else if ("Nissenfeld".equals(key.getId())) {
+            break;
+        case "Nissenfeld":
             dimensionInformation.setPatreonBit(PatreonType.PATREON_RABBITMOON);
             dimensionInformation.setPatreonBit(PatreonType.PATREON_RABBITSUN);
-        } else if ("Lockesly".equals(key.getId())) {
+            break;
+        case "Lockesly":
             dimensionInformation.setPatreonBit(PatreonType.PATREON_PINKPILLARS);
-        } else if ("Puppeteer".equals(key.getId())) {
+            break;
+        case "Puppeteer":
             dimensionInformation.setPatreonBit(PatreonType.PATREON_PUPPETEER);
-        } else if ("Rouven".equals(key.getId())) {
+            break;
+        case "Rouven":
             dimensionInformation.setPatreonBit(PatreonType.PATREON_LAYEREDMETA);
-        } else if ("FireBall".equals(key.getId())) {
+            break;
+        case "FireBall":
             dimensionInformation.setPatreonBit(PatreonType.PATREON_COLOREDPRISMS);
-        } else if ("DarkCorvuz".equals(key.getId())) {
+            break;
+        case "DarkCorvuz":
             dimensionInformation.setPatreonBit(PatreonType.PATREON_DARKCORVUS);
-        } else if ("TomWolf".equals(key.getId())) {
+            break;
+        case "TomWolf":
             dimensionInformation.setPatreonBit(PatreonType.PATREON_TOMWOLF);
-        } else if ("Kenney".equals(key.getId())) {
+            break;
+        case "Kenney":
             dimensionInformation.setPatreonBit(PatreonType.PATREON_KENNEY);
+            break;
+        default:
+            Logging.logError("Unknown Patreon dimlet ID " + key.getId(), new RuntimeException());
         }
     }
 
