@@ -48,7 +48,7 @@ public class ByteBufTools {
     }
 
     public static Set<String> readSetFromStrings(ByteBuf buf) {
-        return readSetFromStringsWithMapper(buf, p -> p);
+        return readSetFromStringsWithMapper(buf, Function.identity());
     }
 
     public static <T> Set<T> readSetFromStringsWithMapper(ByteBuf buf, Function<String, T> mapper) {
@@ -91,7 +91,7 @@ public class ByteBufTools {
             buf.writeInt(-1);
         } else {
             buf.writeInt(s.size());
-            s.stream().forEach(p -> buf.writeShort(p));
+            s.stream().forEach(buf::writeShort);
         }
     }
 

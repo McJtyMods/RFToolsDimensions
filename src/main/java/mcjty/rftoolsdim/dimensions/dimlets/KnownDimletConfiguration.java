@@ -257,7 +257,7 @@ public class KnownDimletConfiguration {
             ItemStack stack = new ItemStack(state.getBlock(), 1, state.getBlock().getMetaFromState(state));
             if (stack.getItem() != null) {      // Protection
                 List<IProperty<?>> propertyNames = new ArrayList<>(state.getPropertyKeys());
-                propertyNames.sort((o1, o2) -> o1.getName().compareTo(o2.getName()));
+                propertyNames.sort(Comparator.comparing(IProperty<?>::getName));
 
                 ImmutableMap<IProperty<?>, Comparable<?>> properties = state.getProperties();
                 Map<String, String> props = new HashMap<>();

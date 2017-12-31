@@ -139,7 +139,7 @@ public class GuiDimletWorkbench extends GenericGuiContainer<DimletWorkbenchTileE
         KnownDimletConfiguration.getKnownDimlets().keySet().stream()
                 .filter(key -> dimletMatches(filter, key))
                 .sorted()
-                .forEach(key -> addItemToList(key, itemList));
+                .forEach(this::addItemToList);
 
         if (itemList.getFirstSelected() >= itemList.getChildCount()) {
             itemList.setFirstSelected(0);
@@ -151,7 +151,7 @@ public class GuiDimletWorkbench extends GenericGuiContainer<DimletWorkbenchTileE
                 || key.getType().dimletType.getName().toLowerCase().contains(filter);
     }
 
-    private void addItemToList(DimletKey key, WidgetList itemList) {
+    private void addItemToList(DimletKey key) {
         Panel panel = new Panel(mc, this).setLayout(new PositionalLayout()).setDesiredWidth(116).setDesiredHeight(16);
         panel.setUserObject(key);
         itemList.addChild(panel);

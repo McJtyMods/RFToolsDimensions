@@ -644,11 +644,7 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
         }
 
         // Sort all blobs we delete with lowest first
-        blobs.sort((o1, o2) -> {
-            int y1 = o1.destroyOrMoveThis() ? o1.lowestY : 1000;
-            int y2 = o2.destroyOrMoveThis() ? o2.lowestY : 1000;
-            return y1-y2;
-        });
+        blobs.sort(Comparator.comparingInt(o -> o.destroyOrMoveThis() ? o.lowestY : 1000));
 
         Blob blocksToMove = new Blob(0, 256);
         for (Blob blob : blobs) {

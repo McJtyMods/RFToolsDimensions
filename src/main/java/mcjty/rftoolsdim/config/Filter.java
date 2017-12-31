@@ -47,7 +47,7 @@ public class Filter {
     public Filter(ByteBuf buf) {
         mods = ByteBufTools.readSetFromStrings(buf);
         names = ByteBufTools.readSetFromStrings(buf);
-        nameRegexps = ByteBufTools.readSetFromStringsWithMapper(buf, p -> Pattern.compile(p));
+        nameRegexps = ByteBufTools.readSetFromStringsWithMapper(buf, Pattern::compile);
         types = ByteBufTools.readSetFromShortsWithMapper(buf, p -> DimletType.values()[p]);
         features = ByteBufTools.readSetFromShortsWithMapper(buf, p -> Feature.values()[p]);
         metas = ByteBufTools.readSetFromShorts(buf);
