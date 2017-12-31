@@ -298,6 +298,10 @@ public class GenericChunkGenerator implements IChunkGenerator {
 
         terrainGenerator.setup(world, this);
 
+        setupExtraSpawns();
+    }
+
+    public void setupExtraSpawns() {
         extraSpawns = new ArrayList<>();
         extraSpawnsMax = new ArrayList<>();
         for (MobDescriptor mob : dimensionInformation.getExtraMobs()) {
