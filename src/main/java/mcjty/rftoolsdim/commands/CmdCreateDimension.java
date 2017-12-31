@@ -74,7 +74,14 @@ public class CmdCreateDimension extends AbstractRfToolsCommand {
 
         RfToolsDimensionManager dimensionManager = RfToolsDimensionManager.getDimensionManager(player.getEntityWorld());
         DimensionDescriptor descriptor = new DimensionDescriptor(descriptors, fetchInt(player, args, 3, 0));
-        int dim = dimensionManager.createNewDimension(player.getEntityWorld(), descriptor, name, player.getDisplayName().toString(), player.getPersistentID());
+
+        Integer dim = dimensionManager.getDimensionID(descriptor);
+        if(dim != null) {
+            player.sendStatusMessage(new TextComponentString(TextFormatting.RED + "A dimension with that descriptor already exists: " + dim), false);
+            return;
+        }
+
+        dim = dimensionManager.createNewDimension(player.getEntityWorld(), descriptor, name, player.getDisplayName().toString(), player.getPersistentID());
         player.sendStatusMessage(new TextComponentString(TextFormatting.GREEN + "Created dimension: " + dim), false);
 
         dimensionManager.save(player.getEntityWorld());
