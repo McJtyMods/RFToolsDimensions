@@ -120,12 +120,7 @@ public class PatreonDimletType implements IDimletType {
 
     @Override
     public void constructDimension(List<Pair<DimletKey, List<DimletKey>>> dimlets, Random random, DimensionInformation dimensionInformation) {
-        dimlets = DimensionInformation.extractType(DimletType.DIMLET_PATREON, dimlets);
-        if (dimlets.isEmpty()) {
-            return;
-        }
-
-        for (Pair<DimletKey, List<DimletKey>> dimlet : dimlets) {
+        for (Pair<DimletKey, List<DimletKey>> dimlet : DimensionInformation.extractType(DimletType.DIMLET_PATREON, dimlets)) {
             inject(dimlet.getKey(), dimensionInformation);
         }
     }
