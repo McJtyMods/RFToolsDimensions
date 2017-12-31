@@ -10,6 +10,9 @@ import net.minecraft.world.MinecraftException;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.chunk.IChunkProvider;
+import net.minecraft.world.chunk.storage.IChunkLoader;
+import net.minecraft.world.gen.ChunkProviderServer;
 import net.minecraft.world.storage.MapStorage;
 import net.minecraft.world.storage.WorldSavedData;
 
@@ -18,10 +21,12 @@ import javax.annotation.Nullable;
 public class UpsidedownWorld extends WorldServer {
 
     public WorldServer worldObj;
+    private final WorldServer ww;
 
     public UpsidedownWorld(WorldServer worldServer) {
         super(worldServer.getMinecraftServer(), worldServer.getSaveHandler(), worldServer.getWorldInfo(), worldServer.provider.getDimension(), worldServer.profiler);
         this.worldObj = worldServer;
+        this.ww = worldServer;
     }
 
     @Override
@@ -130,5 +135,16 @@ public class UpsidedownWorld extends WorldServer {
         } else {
             return worldObj.getBlockState(new BlockPos(pos.getX(), 127 - pos.getY(), pos.getZ()));
         }
+    }
+
+    @Override
+    protected IChunkProvider createChunkProvider() {
+        IChunkLoader ichunkloader = ww.getSaveHandler().getChunkLoader(ww.provider);
+        return new ChunkProviderServer(ww, ichunkloader, ww.provider.createChunkGenerator());
+    }
+
+    @Override
+    public ChunkProviderServer getChunkProvider() {
+        return ww.getChunkProvider();
     }
 }
