@@ -64,7 +64,7 @@ public class RfToolsDimensionManager extends WorldSavedData {
             int id = entry.getKey();
             DimensionInformation info = entry.getValue();
             dimensionInformation.put(id, info);
-            if(provider.getDimension() == id) {
+            if(provider != null && provider.getDimension() == id) {
                 provider.setDimensionInformation(info);
             }
         }
