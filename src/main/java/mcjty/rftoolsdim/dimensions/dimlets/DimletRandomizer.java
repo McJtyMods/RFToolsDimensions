@@ -260,9 +260,10 @@ public class DimletRandomizer {
             dimletPartDistribution.addRarity(RARITY_5, DimletConfiguration.rarity5);
             dimletPartDistribution.addRarity(RARITY_6, DimletConfiguration.rarity6);
             List<List<ItemStack>> stacks = KnownDimletConfiguration.getRandomPartLists();
-            for (int i = 0 ; i < stacks.size() ; i++) {
-                final int finalI = i;
-                stacks.get(i).stream().forEach(s -> dimletPartDistribution.addItem(finalI, s));
+            for (int i = 0; i < stacks.size(); ++i) {
+                for(ItemStack s : stacks.get(i)) {
+                    dimletPartDistribution.addItem(i, s);
+                }
             }
         }
         return dimletPartDistribution.select(random).copy();
