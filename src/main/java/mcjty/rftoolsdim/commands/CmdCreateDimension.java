@@ -3,7 +3,6 @@ package mcjty.rftoolsdim.commands;
 import mcjty.rftoolsdim.dimensions.RfToolsDimensionManager;
 import mcjty.rftoolsdim.dimensions.description.DimensionDescriptor;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletKey;
-import mcjty.rftoolsdim.dimensions.dimlets.KnownDimletConfiguration;
 import mcjty.rftoolsdim.dimensions.dimlets.types.DimletType;
 import mcjty.rftoolsdim.dimensions.types.TerrainType;
 import net.minecraft.command.ICommandSender;
