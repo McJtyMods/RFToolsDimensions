@@ -77,7 +77,7 @@ public class DimensionTickEvent {
                 }
 
                 // Special effect handling.
-                if (doEffects && power >= 0) {
+                if (doEffects && power > 0) {
                     handleEffectsForDimension(power, id, information);
                 }
                 if (world != null && !world.playerEntities.isEmpty()) {
