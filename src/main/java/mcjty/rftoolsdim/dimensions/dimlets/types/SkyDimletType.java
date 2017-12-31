@@ -6,6 +6,7 @@ import mcjty.rftoolsdim.dimensions.description.SkyDescriptor;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletKey;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletObjectMapping;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletRandomizer;
+import mcjty.rftoolsdim.dimensions.types.PatreonType;
 import mcjty.rftoolsdim.dimensions.types.SkyType;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.config.Configuration;
@@ -80,7 +81,7 @@ public class SkyDimletType implements IDimletType {
         if (newDescriptor.isCloudColorGiven()) {
             builder.resetCloudColor();
         }
-        if (dimensionInformation.isPatreonBitSet(Patreons.PATREON_DARKCORVUS)) {
+        if (dimensionInformation.isPatreonBitSet(PatreonType.PATREON_DARKCORVUS)) {
             builder.skyType(SkyType.SKY_STARS3);
         }
         builder.combine(newDescriptor);
@@ -118,7 +119,7 @@ public class SkyDimletType implements IDimletType {
             DimletKey key = dimletWithModifiers.getKey();
             builder.combine(DimletObjectMapping.getSky(key));
         }
-        if (dimensionInformation.isPatreonBitSet(Patreons.PATREON_DARKCORVUS)) {
+        if (dimensionInformation.isPatreonBitSet(PatreonType.PATREON_DARKCORVUS)) {
             builder.skyType(SkyType.SKY_STARS3);
         }
         dimensionInformation.setSkyDescriptor(builder.build());

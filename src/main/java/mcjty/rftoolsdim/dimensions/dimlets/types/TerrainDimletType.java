@@ -9,6 +9,7 @@ import mcjty.rftoolsdim.dimensions.dimlets.DimletKey;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletObjectMapping;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletRandomizer;
 import mcjty.rftoolsdim.dimensions.dimlets.KnownDimletConfiguration;
+import mcjty.rftoolsdim.dimensions.types.PatreonType;
 import mcjty.rftoolsdim.dimensions.types.TerrainType;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -146,7 +147,7 @@ public class TerrainDimletType implements IDimletType {
         dimensionInformation.setTerrainType(terrainType);
 
         IBlockState baseBlockForTerrain;
-        if (dimensionInformation.isPatreonBitSet(Patreons.PATREON_LAYEREDMETA)) {
+        if (dimensionInformation.isPatreonBitSet(PatreonType.PATREON_LAYEREDMETA)) {
             baseBlockForTerrain = Blocks.STONE.getDefaultState();
 //            baseBlockForTerrain = new BlockMeta(Blocks.WOOL, 127);
             // @todo

@@ -13,8 +13,8 @@ import mcjty.rftoolsdim.dimensions.RfToolsDimensionManager;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletKey;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletRandomizer;
 import mcjty.rftoolsdim.dimensions.dimlets.KnownDimletConfiguration;
-import mcjty.rftoolsdim.dimensions.dimlets.types.Patreons;
 import mcjty.rftoolsdim.dimensions.types.FeatureType;
+import mcjty.rftoolsdim.dimensions.types.PatreonType;
 import mcjty.rftoolsdim.dimensions.types.TerrainType;
 import mcjty.rftoolsdim.dimensions.world.terrain.lost.BuildingInfo;
 import mcjty.rftoolsdim.dimensions.world.terrain.lost.GenInfo;
@@ -74,7 +74,7 @@ public class GenericWorldGenerator implements IWorldGenerator {
                 WorldgenConfiguration.oreMinimumVeinSize, WorldgenConfiguration.oreMaximumVeinSize, WorldgenConfiguration.oreMaximumVeinCount,
                 WorldgenConfiguration.oreMinimumHeight, WorldgenConfiguration.oreMaximumHeight);
 
-        if (information.isPatreonBitSet(Patreons.PATREON_PUPPETEER) && Math.abs(chunkX) <= 1 && Math.abs(chunkZ) <= 1) {
+        if (information.isPatreonBitSet(PatreonType.PATREON_PUPPETEER) && Math.abs(chunkX) <= 1 && Math.abs(chunkZ) <= 1) {
             generateBigSpawnPlatform(world, chunkX, chunkZ, puppeteerSpawnPlatform);
         } else if (chunkX == 0 && chunkZ == 0) {
             generateSpawnPlatform(world);
@@ -85,13 +85,13 @@ public class GenericWorldGenerator implements IWorldGenerator {
             }
         }
 
-        if ((Math.abs(chunkX) >= 2 || Math.abs(chunkZ) >= 2) && information.isPatreonBitSet(Patreons.PATREON_COLOREDPRISMS)) {
+        if ((Math.abs(chunkX) >= 2 || Math.abs(chunkZ) >= 2) && information.isPatreonBitSet(PatreonType.PATREON_COLOREDPRISMS)) {
             if (random.nextInt(10) == 1) {
                 generatePrism(chunkX, chunkZ, world);
             }
         }
 
-        if ((Math.abs(chunkX) >= 1 || Math.abs(chunkZ) >= 1) && information.isPatreonBitSet(Patreons.PATREON_PINKPILLARS)) {
+        if ((Math.abs(chunkX) >= 1 || Math.abs(chunkZ) >= 1) && information.isPatreonBitSet(PatreonType.PATREON_PINKPILLARS)) {
             if (random.nextInt(2) == 1) {
                 generatePillar(random, chunkX, chunkZ, world);
             }

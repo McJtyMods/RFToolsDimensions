@@ -19,7 +19,6 @@ import mcjty.rftoolsdim.dimensions.dimlets.DimletRandomizer;
 import mcjty.rftoolsdim.dimensions.dimlets.KnownDimletConfiguration;
 import mcjty.rftoolsdim.dimensions.dimlets.types.DimletType;
 import mcjty.rftoolsdim.dimensions.dimlets.types.IDimletType;
-import mcjty.rftoolsdim.dimensions.dimlets.types.Patreons;
 import mcjty.rftoolsdim.dimensions.types.*;
 import mcjty.rftoolsdim.dimensions.world.BiomeControllerMapping;
 import mcjty.rftoolsdim.varia.GenericTools;
@@ -1479,7 +1478,7 @@ public class DimensionInformation implements IDimensionInformation {
         return patreon1;
     }
 
-    public boolean isPatreonBitSet(Patreons patreon) {
+    public boolean isPatreonBitSet(PatreonType patreon) {
         return (patreon1 & (1L << patreon.getBit())) != 0;
     }
 
@@ -1487,7 +1486,7 @@ public class DimensionInformation implements IDimensionInformation {
         this.patreon1 = patreon1;
     }
 
-    public void setPatreonBit(Patreons patreon) {
+    public void setPatreonBit(PatreonType patreon) {
         patreon1 |= (1L << patreon.getBit());
     }
 

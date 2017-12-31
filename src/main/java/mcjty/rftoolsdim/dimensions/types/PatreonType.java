@@ -1,6 +1,6 @@
-package mcjty.rftoolsdim.dimensions.dimlets.types;
+package mcjty.rftoolsdim.dimensions.types;
 
-public enum Patreons {
+public enum PatreonType {
     PATREON_FIREWORKS(0),
     PATREON_SICKMOON(1),
     PATREON_SICKSUN(2),
@@ -16,7 +16,7 @@ public enum Patreons {
 
     private final int bit;
 
-    Patreons(int bit) {
+    PatreonType(int bit) {
         this.bit = bit;
     }
 

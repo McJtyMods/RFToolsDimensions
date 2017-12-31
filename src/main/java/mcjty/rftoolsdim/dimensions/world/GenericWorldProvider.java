@@ -9,8 +9,8 @@ import mcjty.rftoolsdim.dimensions.DimensionStorage;
 import mcjty.rftoolsdim.dimensions.ModDimensions;
 import mcjty.rftoolsdim.dimensions.RfToolsDimensionManager;
 import mcjty.rftoolsdim.dimensions.description.WeatherDescriptor;
-import mcjty.rftoolsdim.dimensions.dimlets.types.Patreons;
 import mcjty.rftoolsdim.dimensions.types.ControllerType;
+import mcjty.rftoolsdim.dimensions.types.PatreonType;
 import mcjty.rftoolsdim.dimensions.types.SkyType;
 import mcjty.rftoolsdim.dimensions.types.TerrainType;
 import mcjty.rftoolsdim.network.PacketGetDimensionEnergy;
@@ -257,7 +257,7 @@ public class GenericWorldProvider extends WorldProvider implements  /*@todo impl
                     SkyRenderer.registerSky(this, dimensionInformation);
                 }
 
-                if (dimensionInformation.isPatreonBitSet(Patreons.PATREON_KENNEY)) {
+                if (dimensionInformation.isPatreonBitSet(PatreonType.PATREON_KENNEY)) {
                     SkyRenderer.registerKenneyCloudRenderer(this);
                 }
             }
@@ -399,7 +399,7 @@ public class GenericWorldProvider extends WorldProvider implements  /*@todo impl
         getDimensionInformation();
 
         Vec3d cloudColor = super.getCloudColor(partialTicks);
-        if (dimensionInformation == null || dimensionInformation.isPatreonBitSet(Patreons.PATREON_KENNEY)) {
+        if (dimensionInformation == null || dimensionInformation.isPatreonBitSet(PatreonType.PATREON_KENNEY)) {
             return cloudColor;
         } else {
             float r = dimensionInformation.getSkyDescriptor().getCloudColorFactorR();

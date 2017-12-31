@@ -4,8 +4,8 @@ import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.config.GeneralConfiguration;
 import mcjty.rftoolsdim.config.PowerConfiguration;
 import mcjty.rftoolsdim.dimensions.description.DimensionDescriptor;
-import mcjty.rftoolsdim.dimensions.dimlets.types.Patreons;
 import mcjty.rftoolsdim.dimensions.types.EffectType;
+import mcjty.rftoolsdim.dimensions.types.PatreonType;
 import net.minecraft.entity.item.EntityFireworkRocket;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -113,10 +113,10 @@ public class DimensionTickEvent {
 
     private void handleRandomEffects(WorldServer world, DimensionInformation information) {
         // The world is loaded and there are players there.
-        if (information.isPatreonBitSet(Patreons.PATREON_FIREWORKS)) {
+        if (information.isPatreonBitSet(PatreonType.PATREON_FIREWORKS)) {
             handleFireworks(world);
         }
-        if (information.isPatreonBitSet(Patreons.PATREON_TOMWOLF)) {
+        if (information.isPatreonBitSet(PatreonType.PATREON_TOMWOLF)) {
             handleHowlingWolf(world, information);
         }
     }

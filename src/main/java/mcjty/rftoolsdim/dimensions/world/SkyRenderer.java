@@ -4,7 +4,7 @@ import mcjty.lib.varia.MathTools;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.dimensions.DimensionInformation;
 import mcjty.rftoolsdim.dimensions.description.CelestialBodyDescriptor;
-import mcjty.rftoolsdim.dimensions.dimlets.types.Patreons;
+import mcjty.rftoolsdim.dimensions.types.PatreonType;
 import mcjty.rftoolsdim.dimensions.types.SkyType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -661,9 +661,9 @@ public class SkyRenderer {
 
     private static ResourceLocation getSun(DimensionInformation information) {
         ResourceLocation sun;
-        if (information.isPatreonBitSet(Patreons.PATREON_SICKSUN)) {
+        if (information.isPatreonBitSet(PatreonType.PATREON_SICKSUN)) {
             sun = locationSickSunPng;
-        } else if (information.isPatreonBitSet(Patreons.PATREON_RABBITSUN)) {
+        } else if (information.isPatreonBitSet(PatreonType.PATREON_RABBITSUN)) {
             sun = locationRabbitSunPng;
         } else {
             sun = locationSunPng;
@@ -673,11 +673,11 @@ public class SkyRenderer {
 
     private static ResourceLocation getMoon(DimensionInformation information) {
         ResourceLocation moon;
-        if (information.isPatreonBitSet(Patreons.PATREON_SICKMOON)) {
+        if (information.isPatreonBitSet(PatreonType.PATREON_SICKMOON)) {
             moon = locationSickMoonPng;
-        } else if (information.isPatreonBitSet(Patreons.PATREON_RABBITMOON)) {
+        } else if (information.isPatreonBitSet(PatreonType.PATREON_RABBITMOON)) {
             moon = locationRabbitMoonPng;
-        } else if (information.isPatreonBitSet(Patreons.PATREON_TOMWOLF)) {
+        } else if (information.isPatreonBitSet(PatreonType.PATREON_TOMWOLF)) {
             moon = locationWolfMoonPng;
         } else {
             moon = locationMoonPhasesPng;
