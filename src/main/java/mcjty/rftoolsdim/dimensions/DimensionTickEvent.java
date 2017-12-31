@@ -67,14 +67,19 @@ public class DimensionTickEvent {
                 DimensionInformation information = dimensionManager.getDimensionInformation(id);
 
                 // Power handling.
-                if (!information.isCheater()) {
-                    // If there is an activity probe we only drain power if the dimension is loaded (a player is there or a chunkloader)
-                    if ((world != null && world.getChunkProvider().getLoadedChunkCount() > 0) || information.getProbeCounter() == 0) {
-                        handlePower(doEffects, dimensionStorage, entry, id, information);
-                    }
+                int power;
+
+                // If there is an activity probe we only drain power if the dimension is loaded (a player is there or a chunkloader)
+                if (!information.isCheater() && ((world != null && world.getChunkProvider().getLoadedChunkCount() > 0) || information.getProbeCounter() == 0)) {
+                    power = handlePower(doEffects, dimensionStorage, entry, id, information);
+                } else {
+                    power = dimensionStorage.getEnergyLevel(id);
                 }
 
                 // Special effect handling.
+                if (doEffects && power >= 0) {
+                    handleEffectsForDimension(power, id, information);
+                }
                 if (world != null && !world.playerEntities.isEmpty()) {
                     handleRandomEffects(world, information);
                 }
@@ -84,7 +89,7 @@ public class DimensionTickEvent {
         }
     }
 
-    private void handlePower(boolean doEffects, DimensionStorage dimensionStorage, Map.Entry<Integer, DimensionDescriptor> entry, Integer id, DimensionInformation information) {
+    private int handlePower(boolean doEffects, DimensionStorage dimensionStorage, Map.Entry<Integer, DimensionDescriptor> entry, Integer id, DimensionInformation information) {
         int cost = 0;
         if (PowerConfiguration.dimensionDifficulty != -1) {
             cost = information.getActualRfCost();
@@ -100,11 +105,10 @@ public class DimensionTickEvent {
         }
 
         handleLowPower(id, power, doEffects, cost);
-        if (doEffects && power > 0) {
-            handleEffectsForDimension(power, id, information);
-        }
 
         dimensionStorage.setEnergyLevel(id, power);
+
+        return power;
     }
 
     private void handleRandomEffects(WorldServer world, DimensionInformation information) {
