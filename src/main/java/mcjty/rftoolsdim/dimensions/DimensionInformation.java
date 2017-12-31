@@ -50,6 +50,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class DimensionInformation implements IDimensionInformation {
@@ -167,7 +168,7 @@ public class DimensionInformation implements IDimensionInformation {
         File file = new File(filename);
         String json;
         try {
-            json = FileUtils.readFileToString(file);
+            json = FileUtils.readFileToString(file, StandardCharsets.UTF_8);
         } catch (IOException e) {
             return "Error reading file!";
         }
@@ -191,11 +192,10 @@ public class DimensionInformation implements IDimensionInformation {
         buffer.append("{\n");
         NBTTools.convertNBTtoJson(buffer, tagCompound, 4);
         buffer.append("}");
-        String json = buffer.toString();
 //        String json = tagCompound.toString();
 
-        try(FileWriter writer = new FileWriter(filename)) {
-            writer.write(json);
+        try {
+            FileUtils.write(new File(filename), buffer, StandardCharsets.UTF_8);
         } catch (IOException e) {
             return "Error writing file!";
         }
