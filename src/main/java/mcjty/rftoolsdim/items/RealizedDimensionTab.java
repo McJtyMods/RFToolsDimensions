@@ -82,7 +82,7 @@ public class RealizedDimensionTab extends GenericRFToolsItem {
 
             Integer ticksLeft = tagCompound.getInteger("ticksLeft");
             if (ticksLeft == 0) {
-                DimensionInformation information = RfToolsDimensionManager.getDimensionManager(world).getDimensionInformation(id);
+                DimensionInformation information = RfToolsDimensionManager.getDimensionManagerClient().getDimensionInformation(id);
                 if (information == null) {
                     list.add(TextFormatting.RED + "Dimension information Missing!");
                 } else {

@@ -108,6 +108,7 @@ public class DimensionMonitorItem extends GenericRFToolsItem {
 //    }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack itemStack, World world, List<String> list, ITooltipFlag whatIsThis) {
         super.addInformation(itemStack, world, list, whatIsThis);
         if (world == null || world.provider == null) {
