@@ -1,5 +1,8 @@
 package mcjty.rftoolsdim.network;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import mcjty.lib.varia.Logging;
@@ -8,23 +11,22 @@ import net.minecraftforge.common.DimensionManager;
 
 public class DimensionSyncPacket {
 
-    private ByteBuf data = Unpooled.buffer();
-
-    private int[] dimensions;
+    private List<Integer> dimensions = new ArrayList<>();
 
     public void addDimension(int id) {
-        data.writeInt(id);
+        dimensions.add(id);
     }
 
     public void consumePacket(ByteBuf data) {
-        int cnt = data.readableBytes() / 4;
-        dimensions = new int[cnt];
-        for (int i = 0 ; i < cnt ; i++) {
-            dimensions[i] = data.readInt();
+        for (int i = data.readInt(); i > 0; --i) {
+            dimensions.add(data.readInt());
         }
     }
 
     public ByteBuf getData() {
+        ByteBuf data = Unpooled.buffer();
+        data.writeInt(dimensions.size());
+        dimensions.forEach(data::writeInt);
         return data;
     }
 
