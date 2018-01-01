@@ -4,7 +4,6 @@ import io.netty.buffer.ByteBuf;
 import mcjty.lib.network.NetworkTools;
 import mcjty.lib.varia.BlockPosTools;
 import mcjty.lib.varia.Logging;
-import mcjty.lib.varia.NBTTools;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.api.dimension.IDimensionInformation;
 import mcjty.rftoolsdim.compat.ChiselCompat;
@@ -41,14 +40,10 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class DimensionInformation implements IDimensionInformation {
@@ -162,45 +157,6 @@ public class DimensionInformation implements IDimensionInformation {
         actualRfCost += descriptor.getRfMaintainCost();
     }
 
-    public String loadFromJson(String filename) {
-        File file = new File(filename);
-        String json;
-        try {
-            json = FileUtils.readFileToString(file, StandardCharsets.UTF_8);
-        } catch (IOException e) {
-            return "Error reading file!";
-        }
-
-        NBTTagCompound tagCompound;
-        try {
-            tagCompound = JsonToNBT.getTagFromJson(json);
-        } catch (NBTException e) {
-            return "NBT Error: " + e.getMessage();
-        }
-
-        readFromNBT(tagCompound);
-
-        return null;
-    }
-
-    public String buildJson(String filename) {
-        NBTTagCompound tagCompound = new NBTTagCompound();
-        writeToNBT(tagCompound);
-        StringBuffer buffer = new StringBuffer();
-        buffer.append("{\n");
-        NBTTools.convertNBTtoJson(buffer, tagCompound, 4);
-        buffer.append("}");
-//        String json = tagCompound.toString();
-
-        try {
-            FileUtils.write(new File(filename), buffer, StandardCharsets.UTF_8);
-        } catch (IOException e) {
-            return "Error writing file!";
-        }
-
-        return null;
-    }
-
     public void injectDimlet(DimletKey key) {
         DimletType type = key.getType();
         IDimletType itype = type.dimletType;
@@ -221,7 +177,7 @@ public class DimensionInformation implements IDimensionInformation {
         this.descriptor = descriptor;
 
         setSpawnPoint(BlockPosTools.readFromNBT(tagCompound, "spawnPoint"));
-        setProbeCounter(tagCompound.getInteger("probeCounter"));
+        this.probeCounter = tagCompound.getInteger("probeCounter");
 
         int version = tagCompound.getInteger("version");
         if (version == 1) {
@@ -231,21 +187,6 @@ public class DimensionInformation implements IDimensionInformation {
             // This is an older version. Here we have to calculate the random information again.
             setupFromDescriptor(1);
         }
-
-        setupBiomeMapping();
-    }
-
-    public void readFromNBT(NBTTagCompound tagCompound) {
-        this.name = tagCompound.getString("name");
-        this.ownerName = tagCompound.getString("owner");
-        if (tagCompound.hasKey("ownerM")) {
-            this.owner = new UUID(tagCompound.getLong("ownerM"), tagCompound.getLong("ownerL"));
-        } else {
-            this.owner = null;
-        }
-        setSpawnPoint(BlockPosTools.readFromNBT(tagCompound, "spawnPoint"));
-        setProbeCounter(tagCompound.getInteger("probeCounter"));
-        setupFromNBT(tagCompound);
 
         setupBiomeMapping();
     }
@@ -1543,10 +1484,6 @@ public class DimensionInformation implements IDimensionInformation {
 
     public int getProbeCounter() {
         return probeCounter;
-    }
-
-    public void setProbeCounter(int probeCounter) {
-        this.probeCounter = probeCounter;
     }
 
     public int getActualRfCost() {
