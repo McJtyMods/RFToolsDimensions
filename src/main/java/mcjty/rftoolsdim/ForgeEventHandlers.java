@@ -10,6 +10,7 @@ import mcjty.rftoolsdim.dimensions.DimensionStorage;
 import mcjty.rftoolsdim.dimensions.RfToolsDimensionManager;
 import mcjty.rftoolsdim.dimensions.types.EffectType;
 import mcjty.rftoolsdim.dimensions.types.FeatureType;
+import mcjty.rftoolsdim.dimensions.world.GenericWorldProvider;
 import mcjty.rftoolsdim.items.ModItems;
 import mcjty.rftoolsdim.network.DimensionSyncPacket;
 import net.minecraft.block.Block;
@@ -27,7 +28,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetHandlerPlayServer;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldProvider;
 import net.minecraft.world.storage.loot.LootEntryItem;
 import net.minecraft.world.storage.loot.LootPool;
 import net.minecraft.world.storage.loot.LootTableList;
@@ -96,53 +99,40 @@ public class ForgeEventHandlers {
         if (world.isRemote) {
             return;
         }
-        int id = world.provider.getDimension();
 
-        RfToolsDimensionManager dimensionManager = RfToolsDimensionManager.getDimensionManager(world);
-        DimensionInformation dimensionInformation = dimensionManager.getDimensionInformation(id);
+        WorldProvider provider = world.provider;
+        if(!(provider instanceof GenericWorldProvider)) return;
+        DimensionInformation dimensionInformation = ((GenericWorldProvider)provider).getDimensionInformation();
 
-        if (dimensionInformation != null && dimensionInformation.isNoanimals()) {
-            if (event.getEntity() instanceof IAnimals && !(event.getEntity() instanceof IMob)) {
-                event.setCanceled(true);
-                Logging.logDebug("Noanimals dimension: Prevented a spawn of " + event.getEntity().getClass().getName());
-            }
+        if (dimensionInformation.isNoanimals() && event.getEntity() instanceof IAnimals && !(event.getEntity() instanceof IMob)) {
+            event.setCanceled(true);
+            Logging.logDebug("Noanimals dimension: Prevented a spawn of " + event.getEntity().getClass().getName());
         }
     }
 
     @SubscribeEvent
     public void onEntitySpawnEvent(LivingSpawnEvent.CheckSpawn event) {
         World world = event.getWorld();
-        int id = world.provider.getDimension();
 
-        RfToolsDimensionManager dimensionManager = RfToolsDimensionManager.getDimensionManager(world);
-        DimensionInformation dimensionInformation = dimensionManager.getDimensionInformation(id);
+        WorldProvider provider = world.provider;
+        if(!(provider instanceof GenericWorldProvider)) return;
+        DimensionInformation dimensionInformation = ((GenericWorldProvider)provider).getDimensionInformation();
 
         if (PowerConfiguration.preventSpawnUnpowered) {
-            if (dimensionInformation != null) {
-                // RFTools dimension.
-                DimensionStorage storage = DimensionStorage.getDimensionStorage(world);
-                int energy = storage.getEnergyLevel(id);
-                if (energy <= 0) {
-                    event.setResult(Event.Result.DENY);
-                    Logging.logDebug("Dimension power low: Prevented a spawn of " + event.getEntity().getClass().getName());
-                }
+            DimensionStorage storage = DimensionStorage.getDimensionStorage(world);
+            if (storage.getEnergyLevel(provider.getDimension()) <= 0) {
+                event.setResult(Event.Result.DENY);
+                Logging.logDebug("Dimension power low: Prevented a spawn of " + event.getEntity().getClass().getName());
             }
         }
 
-        if (dimensionInformation != null) {
-            if (dimensionInformation.hasEffectType(EffectType.EFFECT_STRONGMOBS) || dimensionInformation.hasEffectType(EffectType.EFFECT_BRUTALMOBS)) {
-                if (event.getEntity() instanceof EntityLivingBase) {
-                    EntityLivingBase entityLivingBase = (EntityLivingBase) event.getEntity();
-                    IAttributeInstance entityAttribute = entityLivingBase.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH);
-                    double newMax;
-                    if (dimensionInformation.hasEffectType(EffectType.EFFECT_BRUTALMOBS)) {
-                        newMax = entityAttribute.getBaseValue() * GeneralConfiguration.brutalMobsFactor;
-                    } else {
-                        newMax = entityAttribute.getBaseValue() * GeneralConfiguration.strongMobsFactor;
-                    }
-                    entityAttribute.setBaseValue(newMax);
-                    entityLivingBase.setHealth((float) newMax);
-                }
+        if (dimensionInformation.hasEffectType(EffectType.EFFECT_STRONGMOBS) || dimensionInformation.hasEffectType(EffectType.EFFECT_BRUTALMOBS)) {
+            if (event.getEntity() instanceof EntityLivingBase) {
+                EntityLivingBase entityLivingBase = (EntityLivingBase) event.getEntity();
+                IAttributeInstance entityAttribute = entityLivingBase.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH);
+                double newMax = entityAttribute.getBaseValue() * (dimensionInformation.hasEffectType(EffectType.EFFECT_BRUTALMOBS) ? GeneralConfiguration.brutalMobsFactor : GeneralConfiguration.strongMobsFactor);
+                entityAttribute.setBaseValue(newMax);
+                entityLivingBase.setHealth((float) newMax);
             }
         }
 
@@ -151,22 +141,18 @@ public class ForgeEventHandlers {
             if (PeacefulAreaManager.isPeaceful(new GlobalCoordinate(coordinate, id))) {
                 event.setResult(Event.Result.DENY);
                 Logging.logDebug("Peaceful manager: Prevented a spawn of " + event.entity.getClass().getName());
-            } else */ if (dimensionInformation != null && dimensionInformation.isPeaceful()) {
+            } else */ if (dimensionInformation.isPeaceful()) {
                 // RFTools dimension.
                 event.setResult(Event.Result.DENY);
                 Logging.logDebug("Peaceful dimension: Prevented a spawn of " + event.getEntity().getClass().getName());
             }
-        } else if (event.getEntity() instanceof IAnimals) {
-            if (dimensionInformation != null && dimensionInformation.isNoanimals()) {
-                // RFTools dimension.
-                event.setResult(Event.Result.DENY);
-                Logging.logDebug("Noanimals dimension: Prevented a spawn of " + event.getEntity().getClass().getName());
-            }
+        } else if (event.getEntity() instanceof IAnimals && dimensionInformation.isNoanimals()) {
+            // RFTools dimension.
+            event.setResult(Event.Result.DENY);
+            Logging.logDebug("Noanimals dimension: Prevented a spawn of " + event.getEntity().getClass().getName());
         }
         // @todo
     }
-
-
 
     @SubscribeEvent
     public void onReplaceBiomeBlocks(ChunkGeneratorEvent.ReplaceBiomeBlocks event) {
@@ -174,10 +160,10 @@ public class ForgeEventHandlers {
         if (world == null) {
             return;
         }
-        int id = world.provider.getDimension();
-        RfToolsDimensionManager dimensionManager = RfToolsDimensionManager.getDimensionManager(world);
-        DimensionInformation information = dimensionManager.getDimensionInformation(id);
-        if (information != null && information.hasFeatureType(FeatureType.FEATURE_CLEAN)) {
+        WorldProvider provider = world.provider;
+        if(!(provider instanceof GenericWorldProvider)) return;
+        DimensionInformation information = ((GenericWorldProvider)provider).getDimensionInformation();
+        if (information.hasFeatureType(FeatureType.FEATURE_CLEAN)) {
             event.setResult(Event.Result.DENY);
         }
     }
@@ -188,9 +174,9 @@ public class ForgeEventHandlers {
         if (world == null) {
             return;
         }
-        int id = world.provider.getDimension();
-        RfToolsDimensionManager dimensionManager = RfToolsDimensionManager.getDimensionManager(world);
-        DimensionInformation information = dimensionManager.getDimensionInformation(id);
+        WorldProvider provider = world.provider;
+        if(!(provider instanceof GenericWorldProvider)) return;
+        DimensionInformation information = ((GenericWorldProvider)provider).getDimensionInformation();
         if (information != null && information.hasFeatureType(FeatureType.FEATURE_CLEAN)) {
             event.setResult(Event.Result.DENY);
         }
@@ -200,13 +186,10 @@ public class ForgeEventHandlers {
 
     @SubscribeEvent
     public void onEntityDrop(LivingDropsEvent event) {
-        if (event.getEntityLiving() instanceof EntityEnderman) {
-            if (random.nextFloat() < GeneralConfiguration.endermanDimletPartDrop) {
-                event.getDrops().add(new EntityItem((event.getEntityLiving()).world, event.getEntityLiving().posX, event.getEntityLiving().posY, event.getEntityLiving().posZ, new ItemStack(ModItems.dimletParcelItem)));
-            }
+        if (event.getEntityLiving() instanceof EntityEnderman && random.nextFloat() < GeneralConfiguration.endermanDimletPartDrop) {
+            event.getDrops().add(new EntityItem((event.getEntityLiving()).world, event.getEntityLiving().posX, event.getEntityLiving().posY, event.getEntityLiving().posZ, new ItemStack(ModItems.dimletParcelItem)));
         }
     }
-
 
     @SubscribeEvent
     public void onLootLoad(LootTableLoadEvent event) {
@@ -228,28 +211,21 @@ public class ForgeEventHandlers {
     @SubscribeEvent
     public void onPlayerRightClickEvent(PlayerInteractEvent.RightClickBlock event) {
         World world = event.getWorld();
-        if (!world.isRemote) {
-            Block block = world.getBlockState(event.getPos()).getBlock();
-            if (block instanceof BlockBed) {
-                RfToolsDimensionManager dimensionManager = RfToolsDimensionManager.getDimensionManager(world);
-                if (dimensionManager.getDimensionInformation(world.provider.getDimension()) != null) {
-                    // We are in an RFTools dimension.
-                    switch (GeneralConfiguration.bedBehaviour) {
-                        case 0:
-                            event.setCanceled(true);
-                            Logging.message(event.getEntityPlayer(), "You cannot sleep in this dimension!");
-                            break;
-                        case 1:
-                            // Just do the usual thing (this typically mean explosion).
-                            break;
-                        case 2:
-                            event.setCanceled(true);
-                            event.getEntityPlayer().setSpawnChunk(event.getPos(), true, event.getWorld().provider.getDimension());
-                            Logging.message(event.getEntityPlayer(), "Spawn point set!");
-                            break;
-                    }
-                }
-            }
+        if (world.isRemote) return;
+        BlockPos pos = event.getPos();
+        WorldProvider provider = world.provider;
+        if (!(world.getBlockState(pos).getBlock() instanceof BlockBed && provider instanceof GenericWorldProvider)) return;
+        // We are in an RFTools dimension.
+        switch (GeneralConfiguration.bedBehaviour) {
+            case 0:
+                event.setCanceled(true);
+                Logging.message(event.getEntityPlayer(), "You cannot sleep in this dimension!");
+                break;
+            // In case 1, just do the usual thing (this typically mean explosion).
+            case 2:
+                event.setCanceled(true);
+                event.getEntityPlayer().setSpawnChunk(pos, true, provider.getDimension());
+                Logging.message(event.getEntityPlayer(), "Spawn point set!");
         }
     }
 
@@ -261,19 +237,12 @@ public class ForgeEventHandlers {
         }
 
         EntityLivingBase entityLiving = event.getEntityLiving();
-        if (entityLiving instanceof EntityDragon) {
-            int id = world.provider.getDimension();
-
-            RfToolsDimensionManager dimensionManager = RfToolsDimensionManager.getDimensionManager(world);
-            DimensionInformation dimensionInformation = dimensionManager.getDimensionInformation(id);
-
-            if (dimensionInformation != null) {
-                // Ender dragon needs to be spawned with an additional NBT key set
-                NBTTagCompound dragonTag = new NBTTagCompound();
-                entityLiving.writeEntityToNBT(dragonTag);
-                dragonTag.setShort("DragonPhase", (short) 0);
-                entityLiving.readEntityFromNBT(dragonTag);
-            }
+        if (entityLiving instanceof EntityDragon && world.provider instanceof GenericWorldProvider) {
+            // Ender dragon needs to be spawned with an additional NBT key set
+            NBTTagCompound dragonTag = new NBTTagCompound();
+            entityLiving.writeEntityToNBT(dragonTag);
+            dragonTag.setShort("DragonPhase", (short) 0);
+            entityLiving.readEntityFromNBT(dragonTag);
         }
     }
 }
