@@ -139,7 +139,7 @@ public class GuiDimletWorkbench extends GenericGuiContainer<DimletWorkbenchTileE
         KnownDimletConfiguration.getKnownDimlets().keySet().stream()
                 .filter(key -> dimletMatches(filter, key))
                 .sorted()
-                .forEach(this::addItemToList);
+                .forEachOrdered(this::addItemToList);
 
         if (itemList.getFirstSelected() >= itemList.getChildCount()) {
             itemList.setFirstSelected(0);
