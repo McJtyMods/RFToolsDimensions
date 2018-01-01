@@ -293,10 +293,9 @@ public class RfToolsDimensionManager extends WorldSavedData {
     }
 
     public static RfToolsDimensionManager getDimensionManagerClient() {
-        if (clientInstance != null) {
-            return clientInstance;
+        if (clientInstance == null) {
+            clientInstance = new RfToolsDimensionManager(DIMMANAGER_NAME);
         }
-        clientInstance = new RfToolsDimensionManager(DIMMANAGER_NAME);
         return clientInstance;
     }
 
