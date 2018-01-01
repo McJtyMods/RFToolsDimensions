@@ -139,11 +139,10 @@ public class RfToolsDimensionManager extends WorldSavedData {
                 // Check if this player has a valid PFG but don't consume energy.
                 int cost = 0;
                 if (PowerConfiguration.dimensionDifficulty != -1) {
-                    RfToolsDimensionManager dimensionManager = RfToolsDimensionManager.getDimensionManager(world);
-                    DimensionInformation information = dimensionManager.getDimensionInformation(world.provider.getDimension());
+                    DimensionInformation information = ((GenericWorldProvider)world.provider).getDimensionInformation();
                     cost = information.getActualRfCost();
                     if (cost == 0) {
-                        DimensionDescriptor descriptor = dimensionManager.getDimensionDescriptor(world.provider.getDimension());
+                        DimensionDescriptor descriptor = information.getDescriptor();
                         cost = descriptor.getRfMaintainCost();
                     }
                 }
