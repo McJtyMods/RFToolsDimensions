@@ -15,7 +15,6 @@ import mcjty.rftoolsdim.dimensions.types.SkyType;
 import mcjty.rftoolsdim.dimensions.types.TerrainType;
 import mcjty.rftoolsdim.network.PacketGetDimensionEnergy;
 import mcjty.rftoolsdim.network.RFToolsDimMessages;
-import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.math.BlockPos;
@@ -29,6 +28,8 @@ import net.minecraft.world.biome.BiomeProvider;
 import net.minecraft.world.biome.BiomeProviderSingle;
 import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraft.world.storage.WorldInfo;
+import net.minecraftforge.common.DimensionManager;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -76,14 +77,13 @@ public class GenericWorldProvider extends WorldProvider implements  /*@todo impl
 
     public DimensionInformation getDimensionInformation() {
         if (dimensionInformation == null) {
-            // Note: we cannot use worldObj here since we are possibly still busy setting up our world so the 'mapStorage'
-            // is always correct here. So we have to use the overworld.
-//            WorldServer overworld = DimensionManager.getWorld(0);
             int dim = getDimension();
-            if(world.isRemote) {
+            if(FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT) {
                 dimensionInformation = RfToolsDimensionManager.getDimensionManagerClient().getDimensionInformation(dim);
             } else {
-                dimensionInformation = RfToolsDimensionManager.getDimensionManager(world).getDimensionInformation(dim);
+                // Note: we cannot use world here since we are possibly still busy setting up our world so the 'mapStorage'
+                // is always correct here. So we have to use the overworld.
+                dimensionInformation = RfToolsDimensionManager.getDimensionManager(DimensionManager.getWorld(0)).getDimensionInformation(dim);
             }
             if (dimensionInformation == null) {
                 Logging.log("Dimension information for dimension " + dim + " is missing!");
