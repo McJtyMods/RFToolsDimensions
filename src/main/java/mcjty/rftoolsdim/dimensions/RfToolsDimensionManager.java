@@ -39,6 +39,7 @@ import java.util.*;
 public class RfToolsDimensionManager extends WorldSavedData {
     public static final String DIMMANAGER_NAME = "RFToolsDimensionManager";
     private static RfToolsDimensionManager instance = null;
+    private static RfToolsDimensionManager clientInstance = null;
 
     private final Map<Integer, DimensionDescriptor> dimensions = new HashMap<>();
     private final Map<DimensionDescriptor, Integer> dimensionToID = new HashMap<>();
@@ -292,15 +293,15 @@ public class RfToolsDimensionManager extends WorldSavedData {
     }
 
     public static RfToolsDimensionManager getDimensionManagerClient() {
-        if (instance != null) {
-            return instance;
+        if (clientInstance != null) {
+            return clientInstance;
         }
-        instance = new RfToolsDimensionManager(DIMMANAGER_NAME);
-        return instance;
+        clientInstance = new RfToolsDimensionManager(DIMMANAGER_NAME);
+        return clientInstance;
     }
 
-    public static RfToolsDimensionManager getDimensionManagerNullable(World world) {
-        return instance;
+    public static RfToolsDimensionManager getDimensionManagerClientNullable(World world) {
+        return clientInstance;
     }
 
     public static RfToolsDimensionManager getDimensionManager(World world) {

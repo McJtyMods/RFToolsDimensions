@@ -115,7 +115,7 @@ public class DimensionMonitorItem extends GenericRFToolsItem {
             return;
         }
         int id = world.provider.getDimension();
-        RfToolsDimensionManager dimensionManager = RfToolsDimensionManager.getDimensionManagerNullable(world);
+        RfToolsDimensionManager dimensionManager = RfToolsDimensionManager.getDimensionManagerClientNullable(world);
         DimensionInformation dimensionInformation = dimensionManager == null ? null : dimensionManager.getDimensionInformation(id);
         if (dimensionInformation == null) {
             list.add("Not an RFTools dimension!");

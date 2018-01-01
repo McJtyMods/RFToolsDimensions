@@ -15,6 +15,7 @@ import mcjty.rftoolsdim.dimensions.types.SkyType;
 import mcjty.rftoolsdim.dimensions.types.TerrainType;
 import mcjty.rftoolsdim.network.PacketGetDimensionEnergy;
 import mcjty.rftoolsdim.network.RFToolsDimMessages;
+import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.math.BlockPos;
@@ -79,7 +80,11 @@ public class GenericWorldProvider extends WorldProvider implements  /*@todo impl
             // is always correct here. So we have to use the overworld.
 //            WorldServer overworld = DimensionManager.getWorld(0);
             int dim = getDimension();
-            dimensionInformation = RfToolsDimensionManager.getDimensionManager(world).getDimensionInformation(dim);
+            if(world.isRemote) {
+                dimensionInformation = RfToolsDimensionManager.getDimensionManagerClient().getDimensionInformation(dim);
+            } else {
+                dimensionInformation = RfToolsDimensionManager.getDimensionManager(world).getDimensionInformation(dim);
+            }
             if (dimensionInformation == null) {
                 Logging.log("Dimension information for dimension " + dim + " is missing!");
             } else {

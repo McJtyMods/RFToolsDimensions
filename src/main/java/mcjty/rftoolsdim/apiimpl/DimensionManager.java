@@ -19,13 +19,13 @@ public class DimensionManager implements IDimensionManager {
 
     @Override
     public boolean isRFToolsDimension(World world, int id) {
-        RfToolsDimensionManager dimensionManager = RfToolsDimensionManager.getDimensionManager(world);
+        RfToolsDimensionManager dimensionManager = world.isRemote ? RfToolsDimensionManager.getDimensionManagerClient() : RfToolsDimensionManager.getDimensionManager(world);
         return dimensionManager.getDimensionInformation(id) != null;
     }
 
     @Override
     public IDimensionInformation getDimensionInformation(World world, int id) {
-        RfToolsDimensionManager dimensionManager = RfToolsDimensionManager.getDimensionManager(world);
+        RfToolsDimensionManager dimensionManager = world.isRemote ? RfToolsDimensionManager.getDimensionManagerClient() : RfToolsDimensionManager.getDimensionManager(world);
         return dimensionManager.getDimensionInformation(id);
     }
 }
