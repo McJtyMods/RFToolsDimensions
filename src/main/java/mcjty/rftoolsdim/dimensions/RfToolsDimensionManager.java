@@ -9,6 +9,7 @@ import mcjty.rftoolsdim.dimensions.description.DimensionDescriptor;
 import mcjty.rftoolsdim.dimensions.world.GenericWorldProvider;
 import mcjty.rftoolsdim.items.ModItems;
 import mcjty.rftoolsdim.items.PhasedFieldGeneratorItem;
+import mcjty.rftoolsdim.network.DimensionSyncPacket;
 import mcjty.rftoolsdim.network.PacketRegisterDimensions;
 import mcjty.rftoolsdim.network.PacketSyncDimensionInfo;
 import mcjty.rftoolsdim.network.PacketSyncRules;
@@ -268,6 +269,10 @@ public class RfToolsDimensionManager extends WorldSavedData {
             Logging.log("Sync dimension info to clients!");
             RFToolsDimMessages.INSTANCE.sendToAll(new PacketSyncDimensionInfo(dimensions, dimensionInformation));
         }
+    }
+
+    public DimensionSyncPacket makeDimensionSyncPacket() {
+        return new DimensionSyncPacket(dimensions, dimensionInformation);
     }
 
     public Map<Integer, DimensionDescriptor> getDimensions() {

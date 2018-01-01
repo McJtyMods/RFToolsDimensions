@@ -12,7 +12,6 @@ import mcjty.rftoolsdim.dimensions.types.EffectType;
 import mcjty.rftoolsdim.dimensions.types.FeatureType;
 import mcjty.rftoolsdim.dimensions.world.GenericWorldProvider;
 import mcjty.rftoolsdim.items.ModItems;
-import mcjty.rftoolsdim.network.DimensionSyncPacket;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBed;
 import net.minecraft.entity.EntityLivingBase;
@@ -72,25 +71,19 @@ public class ForgeEventHandlers {
         Logging.log("SMP: Player logged in: Sync diminfo to clients");
         EntityPlayer player = event.player;
         RfToolsDimensionManager manager = RfToolsDimensionManager.getDimensionManager(player.getEntityWorld());
-        manager.syncDimInfoToClients(player.getEntityWorld());
         manager.syncDimletRules(player);
     }
 
     @SubscribeEvent
     public void onConnectionCreated(FMLNetworkEvent.ServerConnectionFromClientEvent event) {
         Logging.log("SMP: Sync dimensions to client");
-        DimensionSyncPacket packet = new DimensionSyncPacket();
 
         EntityPlayer player = ((NetHandlerPlayServer) event.getHandler()).player;
         RfToolsDimensionManager manager = RfToolsDimensionManager.getDimensionManager(player.getEntityWorld());
-        for (Integer id : manager.getDimensions().keySet()) {
-            Logging.log("Sending over dimension " + id + " to the client");
-            packet.addDimension(id);
-        }
 
         RFToolsDim.channels.get(Side.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.DISPATCHER);
         RFToolsDim.channels.get(Side.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGETARGS).set(event.getManager().channel().attr(NetworkDispatcher.FML_DISPATCHER).get());
-        RFToolsDim.channels.get(Side.SERVER).writeOutbound(packet);
+        RFToolsDim.channels.get(Side.SERVER).writeOutbound(manager.makeDimensionSyncPacket());
     }
 
     @SubscribeEvent

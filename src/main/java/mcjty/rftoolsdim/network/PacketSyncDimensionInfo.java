@@ -70,14 +70,6 @@ public class PacketSyncDimensionInfo implements IMessage {
         }
     }
 
-    public Map<Integer, DimensionDescriptor> getDimensions() {
-        return dimensions;
-    }
-
-    public Map<Integer, DimensionInformation> getDimensionInformation() {
-        return dimensionInformation;
-    }
-
     public PacketSyncDimensionInfo() {
     }
 
@@ -89,7 +81,7 @@ public class PacketSyncDimensionInfo implements IMessage {
     public static class Handler implements IMessageHandler<PacketSyncDimensionInfo, IMessage> {
         @Override
         public IMessage onMessage(PacketSyncDimensionInfo message, MessageContext ctx) {
-            Minecraft.getMinecraft().addScheduledTask(() -> SyncDimensionInfoHelper.syncDimensionManagerFromServer(message));
+            Minecraft.getMinecraft().addScheduledTask(() -> SyncDimensionInfoHelper.syncDimensionManagerFromServer(message.dimensions, message.dimensionInformation));
             return null;
         }
 
