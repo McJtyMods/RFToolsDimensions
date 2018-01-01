@@ -68,7 +68,7 @@ public class PatreonDimletType implements IDimletType {
         case "Kenney":
             return true;
         default:
-            Logging.logError("Unknown Patreon dimlet ID " + key.getId(), new RuntimeException());
+            Logging.getLogger().catching(new RuntimeException("Unknown Patreon dimlet ID " + key.getId()));
             //$FALL-THROUGH$
         case "Lockesly":
         case "Puppeteer":
@@ -114,7 +114,7 @@ public class PatreonDimletType implements IDimletType {
             dimensionInformation.setPatreonBit(PatreonType.PATREON_KENNEY);
             break;
         default:
-            Logging.logError("Unknown Patreon dimlet ID " + key.getId(), new RuntimeException());
+            Logging.getLogger().catching(new RuntimeException("Unknown Patreon dimlet ID " + key.getId()));
         }
     }
 
