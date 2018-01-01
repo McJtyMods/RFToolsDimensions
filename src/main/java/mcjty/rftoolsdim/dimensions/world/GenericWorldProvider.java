@@ -86,7 +86,7 @@ public class GenericWorldProvider extends WorldProvider implements  /*@todo impl
                 dimensionInformation = RfToolsDimensionManager.getDimensionManager(DimensionManager.getWorld(0)).getDimensionInformation(dim);
             }
             if (dimensionInformation == null) {
-                Logging.log("Dimension information for dimension " + dim + " is missing!");
+                Logging.getLogger().catching(new RuntimeException("Dimension information for dimension " + dim + " is missing!"));
             } else {
                 setSeed(dim);
 //                setupProviderInfo();
