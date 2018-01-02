@@ -9,6 +9,10 @@ public enum WeatherType {
     WEATHER_LIGHTTHUNDER(-1.0f, 0.5f),
     WEATHER_HARDTHUNDER(-1.0f, 1.0f);
 
+    // -1: don't affect
+    // 0: force none
+    // 0.5: force light
+    // 1: force heavy
     private final float rainStrength;
     private final float thunderStrength;
 
