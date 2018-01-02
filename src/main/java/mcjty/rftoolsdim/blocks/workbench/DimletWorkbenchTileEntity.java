@@ -105,7 +105,7 @@ public class DimletWorkbenchTileEntity extends GenericEnergyReceiverTileEntity i
     @Override
     public void update() {
         if (!getWorld().isRemote) {
-            checkStateServer();;
+            checkStateServer();
         }
     }
 

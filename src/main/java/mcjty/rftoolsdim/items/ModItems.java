@@ -57,7 +57,7 @@ public class ModItems {
         dimletMemoryUnitItem.initModel();
         dimletTypeControllerItem.initModel();
         structureEssenceItem.initModel();
-        efficiencyEssenceItem.initModel();;
+        efficiencyEssenceItem.initModel();
         mediocreEfficiencyEssenceItem.initModel();
 
         knownDimletItem.initModel();
