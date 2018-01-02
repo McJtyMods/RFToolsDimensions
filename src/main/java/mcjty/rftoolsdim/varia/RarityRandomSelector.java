@@ -67,14 +67,14 @@ public class RarityRandomSelector<K,E> {
     private void setupDistribution(Distribution<K> distribution, float bonus) {
         float add = bonus * (maxChance - minChance);
         distribution.reset();
-        for (Map.Entry<K, Float> entry : keys.entrySet()) {
+        keys.entrySet().stream().sorted(Comparator.comparing(Map.Entry::getValue)).forEachOrdered(entry -> {
             K key = entry.getKey();
             int length = items.get(key).size();
             if (length > 0) {
                 float chance = entry.getValue() + add;
                 distribution.addKey(key, (rarityScalesBySize ? chance * length : chance));
             }
-        }
+        });
     }
 
     /**
@@ -95,15 +95,10 @@ public class RarityRandomSelector<K,E> {
      */
     public E select(Distribution<K> distribution, Random random) {
         distribute();
-        float r = random.nextFloat() * distribution.getTotalChance() - 0.0001f;  // Subtract with small value to ensure we actually get there.
-        K key = null;
-        for (Map.Entry<K, Float> entry : distribution.getKeysChance().entrySet()) {
-            r -= entry.getValue();
-            if (r <= 0.0f && !items.get(entry.getKey()).isEmpty()) {
-                key = entry.getKey();
-                break;
-            }
-        }
+        NavigableMap<Float, K> keysChance = distribution.getKeysChance();
+        if(keysChance.isEmpty()) return null;
+        K key = keysChance.ceilingEntry(random.nextFloat() * distribution.getTotalChance()).getValue();
+        if(key == null) key = keysChance.lastEntry().getValue();
         List<E> list = items.get(key);
         if (list == null) {
             return null;
@@ -120,10 +115,10 @@ public class RarityRandomSelector<K,E> {
 
     public static class Distribution<K> {
         // A map associating every key with the chance that this key in total must be selected.
-        private final SortedMap<K,Float> keysChance = new TreeMap<>();
+        private final NavigableMap<Float, K> keysChance = new TreeMap<>();
         private float totalChance = 0.0f;
 
-        public SortedMap<K, Float> getKeysChance() {
+        public NavigableMap<Float, K> getKeysChance() {
             return keysChance;
         }
 
@@ -137,8 +132,8 @@ public class RarityRandomSelector<K,E> {
         }
 
         public void addKey(K key, float chance) {
-            keysChance.put(key, chance);
             totalChance += chance;
+            keysChance.put(totalChance, key);
         }
     }
 }
