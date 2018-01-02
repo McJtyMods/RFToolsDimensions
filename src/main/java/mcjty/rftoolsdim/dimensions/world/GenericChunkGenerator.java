@@ -599,30 +599,25 @@ public class GenericChunkGenerator implements IChunkGenerator {
             return creatures;
         }
 
-        if (creatureType == EnumCreatureType.AMBIENT) {
-            creatures = new ArrayList<>(creatures);
-            for (MobDescriptor mob : dimensionInformation.getExtraMobs()) {
-                Class<? extends EntityLiving> entityClass = mob.entityClass;
-                if (IAnimals.class.isAssignableFrom(entityClass)) {
-                    int count = worldObj.countEntities(entityClass);
-                    if (count < mob.getMaxLoaded()) {
-                        creatures.add(mob);
-                    }
-                }
-            }
-        } else if (creatureType == EnumCreatureType.MONSTER) {
-            creatures = new ArrayList<>(creatures);
-            for (MobDescriptor mob : dimensionInformation.getExtraMobs()) {
-                Class<? extends EntityLiving> entityClass = mob.entityClass;
-                if (IMob.class.isAssignableFrom(entityClass)) {
-                    int count = worldObj.countEntities(entityClass);
-                    if (count < mob.getMaxLoaded()) {
-                        creatures.add(mob);
-                    }
-                }
-            }
+        Class<?> creatureTypeClass;
+        switch(creatureType) {
+        case AMBIENT:
+            creatureTypeClass = IAnimals.class;
+            break;
+        case MONSTER:
+            creatureTypeClass = IMob.class;
+            break;
+        default:
+            return creatures;
         }
 
+        creatures = new ArrayList<>(creatures);
+        for (MobDescriptor mob : dimensionInformation.getExtraMobs()) {
+            Class<? extends EntityLiving> entityClass = mob.entityClass;
+            if (creatureTypeClass.isAssignableFrom(entityClass) && worldObj.countEntities(entityClass) < mob.getMaxLoaded()) {
+                creatures.add(mob);
+            }
+        }
 
         return creatures;
     }

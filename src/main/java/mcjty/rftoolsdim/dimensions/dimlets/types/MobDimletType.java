@@ -96,17 +96,10 @@ public class MobDimletType implements IDimletType {
                 }
             }
         } else {
-            DimletKey key = dimlets.get(0).getLeft();
-            MobDescriptor mobDescriptor = DimletObjectMapping.getMob(key);
-            if (dimlets.size() == 1 && mobDescriptor == null) {
-                // Just default.
-            } else {
-                for (Pair<DimletKey, List<DimletKey>> dimletWithModifiers : dimlets) {
-                    DimletKey modifierKey = dimletWithModifiers.getLeft();
-                    MobDescriptor descriptor = DimletObjectMapping.getMob(modifierKey);
-                    if (descriptor != null) {
-                        extraMobs.add(descriptor);
-                    }
+            for (Pair<DimletKey, List<DimletKey>> dimletWithModifiers : dimlets) {
+                MobDescriptor descriptor = DimletObjectMapping.getMob(dimletWithModifiers.getLeft());
+                if (descriptor != null) {
+                    extraMobs.add(descriptor);
                 }
             }
         }
