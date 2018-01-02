@@ -90,7 +90,9 @@ public class MobDimletType implements IDimletType {
                 if (key != null) {
                     dimensionInformation.updateCostFactor(key);
                     MobDescriptor mob = DimletObjectMapping.getMob(key);
-                    extraMobs.add(mob);
+                    if (mob != null) {
+                        extraMobs.add(mob);
+                    }
                 }
             }
         } else {
