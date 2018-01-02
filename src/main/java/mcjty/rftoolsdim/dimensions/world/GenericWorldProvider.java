@@ -73,6 +73,7 @@ public class GenericWorldProvider extends WorldProvider implements  /*@todo impl
 
     public void setDimensionInformation(DimensionInformation info) {
         dimensionInformation = info;
+        setupSkyRenderers();
     }
 
     public DimensionInformation getDimensionInformation() {
@@ -248,23 +249,25 @@ public class GenericWorldProvider extends WorldProvider implements  /*@todo impl
 
         if (dimensionInformation != null) {
             this.hasSkyLight = dimensionInformation.getTerrainType().hasSky();
+            setupSkyRenderers();
+        }
+    }
 
-            if (world.isRemote) {
-                // Only on client!
-                SkyType skyType = dimensionInformation.getSkyDescriptor().getSkyType();
-                if (!hasSkyLight) {
-                    SkyRenderer.registerNoSky(this);
-                } else if (skyType.skyboxType != null) {
-                    SkyRenderer.registerSkybox(this, skyType);
-                } else if (skyType == SkyType.SKY_ENDER) {
-                    SkyRenderer.registerEnderSky(this);
-                } else {
-                    SkyRenderer.registerSky(this, dimensionInformation);
-                }
+    public void setupSkyRenderers() {
+        if (world.isRemote) {
+            SkyType skyType = dimensionInformation.getSkyDescriptor().getSkyType();
+            if (!hasSkyLight) {
+                SkyRenderer.registerNoSky(this);
+            } else if (skyType.skyboxType != null) {
+                SkyRenderer.registerSkybox(this, skyType);
+            } else if (skyType == SkyType.SKY_ENDER) {
+                SkyRenderer.registerEnderSky(this);
+            } else {
+                SkyRenderer.registerSky(this, dimensionInformation);
+            }
 
-                if (dimensionInformation.isPatreonBitSet(PatreonType.PATREON_KENNEY)) {
-                    SkyRenderer.registerKenneyCloudRenderer(this);
-                }
+            if (dimensionInformation.isPatreonBitSet(PatreonType.PATREON_KENNEY)) {
+                SkyRenderer.registerKenneyCloudRenderer(this);
             }
         }
     }

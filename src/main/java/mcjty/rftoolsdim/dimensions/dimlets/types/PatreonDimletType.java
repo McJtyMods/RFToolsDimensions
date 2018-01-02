@@ -2,8 +2,10 @@ package mcjty.rftoolsdim.dimensions.dimlets.types;
 
 import mcjty.lib.varia.Logging;
 import mcjty.rftoolsdim.dimensions.DimensionInformation;
+import mcjty.rftoolsdim.dimensions.description.SkyDescriptor;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletKey;
 import mcjty.rftoolsdim.dimensions.types.PatreonType;
+import mcjty.rftoolsdim.dimensions.types.SkyType;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.config.Configuration;
 import org.apache.commons.lang3.tuple.Pair;
@@ -106,6 +108,10 @@ public class PatreonDimletType implements IDimletType {
             break;
         case "DarkCorvuz":
             dimensionInformation.setPatreonBit(PatreonType.PATREON_DARKCORVUS);
+            SkyDescriptor.Builder builder = new SkyDescriptor.Builder();
+            builder.combine(dimensionInformation.getSkyDescriptor());
+            builder.skyType(SkyType.SKY_STARS3);
+            dimensionInformation.setSkyDescriptor(builder.build());
             break;
         case "TomWolf":
             dimensionInformation.setPatreonBit(PatreonType.PATREON_TOMWOLF);

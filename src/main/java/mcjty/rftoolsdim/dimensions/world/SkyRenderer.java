@@ -145,6 +145,7 @@ public class SkyRenderer {
                 SkyRenderer.renderSky(partialTicks, provider);
             }
         });
+        provider.setCloudRenderer(null);
     }
 
     private static class UV {
