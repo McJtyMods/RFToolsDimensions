@@ -7,6 +7,7 @@ import mcjty.rftoolsdim.dimensions.dimlets.DimletKey;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletObjectMapping;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletRandomizer;
 import mcjty.rftoolsdim.dimensions.dimlets.WeatherRegistry;
+import mcjty.rftoolsdim.dimensions.types.WeatherType;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.config.Configuration;
 import org.apache.commons.lang3.tuple.Pair;
@@ -69,8 +70,8 @@ public class WeatherDimletType implements IDimletType {
     public void inject(DimletKey key, DimensionInformation dimensionInformation) {
         WeatherDescriptor.Builder builder = new WeatherDescriptor.Builder();
         builder.combine(dimensionInformation.getWeatherDescriptor());
-        WeatherDescriptor newDescriptor = DimletObjectMapping.getWeather(key);
-        builder.combine(newDescriptor);
+        WeatherType newType = DimletObjectMapping.getWeather(key);
+        builder.weatherType(newType);
         dimensionInformation.setWeatherDescriptor(builder.build());
     }
 
@@ -83,13 +84,13 @@ public class WeatherDimletType implements IDimletType {
                 DimletKey key = DimletRandomizer.getRandomWeather(random);
                 if (key != null) {
                     dimensionInformation.updateCostFactor(key);
-                    builder.combine(WeatherRegistry.getWeatherDescriptor(key));
+                    builder.weatherType(WeatherRegistry.getWeatherType(key));
                 }
             }
         } else {
             for (Pair<DimletKey, List<DimletKey>> dimlet : dimlets) {
                 DimletKey key = dimlet.getKey();
-                builder.combine(WeatherRegistry.getWeatherDescriptor(key));
+                builder.weatherType(WeatherRegistry.getWeatherType(key));
             }
         }
         dimensionInformation.setWeatherDescriptor(builder.build());

@@ -2,10 +2,8 @@ package mcjty.rftoolsdim.dimensions.dimlets.types;
 
 import mcjty.lib.varia.Logging;
 import mcjty.rftoolsdim.dimensions.DimensionInformation;
-import mcjty.rftoolsdim.dimensions.description.SkyDescriptor;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletKey;
 import mcjty.rftoolsdim.dimensions.types.PatreonType;
-import mcjty.rftoolsdim.dimensions.types.SkyType;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.config.Configuration;
 import org.apache.commons.lang3.tuple.Pair;

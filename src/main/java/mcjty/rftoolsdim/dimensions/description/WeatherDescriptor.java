@@ -69,8 +69,12 @@ public class WeatherDescriptor {
         }
 
         public Builder weatherType(WeatherType weatherType) {
-            this.rainStrength = weatherType.getRainStrength();
-            this.thunderStrength = weatherType.getThunderStrength();
+            if (weatherType.getRainStrength() != null) {
+                this.rainStrength = weatherType.getRainStrength();
+            }
+            if (weatherType.getThunderStrength() != null) {
+                this.thunderStrength = weatherType.getThunderStrength();
+            }
             return this;
         }
 

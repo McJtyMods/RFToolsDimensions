@@ -12,7 +12,6 @@ import mcjty.rftoolsdim.config.MobConfiguration;
 import mcjty.rftoolsdim.config.Settings;
 import mcjty.rftoolsdim.dimensions.DimensionInformation;
 import mcjty.rftoolsdim.dimensions.description.SkyDescriptor;
-import mcjty.rftoolsdim.dimensions.description.WeatherDescriptor;
 import mcjty.rftoolsdim.dimensions.dimlets.types.DimletType;
 import mcjty.rftoolsdim.dimensions.types.*;
 import mcjty.rftoolsdim.dimensions.world.BiomeControllerMapping;
@@ -109,19 +108,19 @@ public class KnownDimletConfiguration {
     }
 
     private static void initWeatherDimlets() {
-        initWeatherDimlet("Default", new WeatherDescriptor.Builder().build());
-        initWeatherDimlet("no.rain", new WeatherDescriptor.Builder().weatherType(WeatherType.WEATHER_NORAIN).build());
-        initWeatherDimlet("light.rain", new WeatherDescriptor.Builder().weatherType(WeatherType.WEATHER_LIGHTRAIN).build());
-        initWeatherDimlet("hard.rain", new WeatherDescriptor.Builder().weatherType(WeatherType.WEATHER_HARDRAIN).build());
-        initWeatherDimlet("no.thunder", new WeatherDescriptor.Builder().weatherType(WeatherType.WEATHER_NOTHUNDER).build());
-        initWeatherDimlet("light.thunder", new WeatherDescriptor.Builder().weatherType(WeatherType.WEATHER_LIGHTTHUNDER).build());
-        initWeatherDimlet("hard.thunder", new WeatherDescriptor.Builder().weatherType(WeatherType.WEATHER_HARDTHUNDER).build());
+        initWeatherDimlet("Default", WeatherType.WEATHER_DEFAULT);
+        initWeatherDimlet("no.rain", WeatherType.WEATHER_NORAIN);
+        initWeatherDimlet("light.rain", WeatherType.WEATHER_LIGHTRAIN);
+        initWeatherDimlet("hard.rain", WeatherType.WEATHER_HARDRAIN);
+        initWeatherDimlet("no.thunder", WeatherType.WEATHER_NOTHUNDER);
+        initWeatherDimlet("light.thunder", WeatherType.WEATHER_LIGHTTHUNDER);
+        initWeatherDimlet("hard.thunder", WeatherType.WEATHER_HARDTHUNDER);
     }
 
-    private static void initWeatherDimlet(String id, WeatherDescriptor weatherDescriptor) {
+    private static void initWeatherDimlet(String id, WeatherType weatherType) {
         DimletKey key = new DimletKey(DimletType.DIMLET_WEATHER, id);
         initDimlet(key, RFToolsDim.MODID);
-        WeatherRegistry.registerWeather(key, weatherDescriptor);
+        WeatherRegistry.registerWeather(key, weatherType);
     }
 
     private static void initSkyDimlets() {
