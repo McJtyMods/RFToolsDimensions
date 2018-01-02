@@ -113,6 +113,8 @@ public class DimensionInformation implements IDimensionInformation {
     // The actual RF cost after taking into account the features we got in our world.
     private int actualRfCost;
 
+    private String injectedDimlets = "";
+
     public DimensionInformation(String name, DimensionDescriptor descriptor, World world, String playerName, UUID player) {
         this.name = name;
         this.descriptor = descriptor;
@@ -163,6 +165,11 @@ public class DimensionInformation implements IDimensionInformation {
         if (itype.isInjectable(key)) {
             addToCost(key);
             itype.inject(key, this);
+            if(injectedDimlets.isEmpty()) {
+                injectedDimlets = key.toString();
+            } else {
+                injectedDimlets = injectedDimlets + "," + key;
+            }
         }
     }
 
@@ -294,6 +301,8 @@ public class DimensionInformation implements IDimensionInformation {
         }
         probeCounter = tagCompound.getInteger("probes");
         actualRfCost = tagCompound.getInteger("actualCost");
+
+        injectedDimlets = tagCompound.getString("injectedDimlets");
 
         skyDescriptor = new SkyDescriptor.Builder().fromNBT(tagCompound).build();
         calculateCelestialBodyDescriptors();
@@ -490,6 +499,8 @@ public class DimensionInformation implements IDimensionInformation {
         tagCompound.setInteger("probes", probeCounter);
         tagCompound.setInteger("actualCost", actualRfCost);
 
+        tagCompound.setString("injectedDimlets", injectedDimlets);
+
         skyDescriptor.writeToNBT(tagCompound);
         weatherDescriptor.writeToNBT(tagCompound);
 
@@ -614,6 +625,9 @@ public class DimensionInformation implements IDimensionInformation {
     }
 
     public void dump(EntityPlayer player) {
+        if (!injectedDimlets.isEmpty()) {
+            logDebug(player, "    Injected dimlets: " + injectedDimlets);
+        }
         String digits = getDigitString();
         if (!digits.isEmpty()) {
             logDebug(player, "    Digits: " + digits);
@@ -846,6 +860,8 @@ public class DimensionInformation implements IDimensionInformation {
         buf.writeInt(probeCounter);
         buf.writeInt(actualRfCost);
 
+        NetworkTools.writeString(buf, injectedDimlets);
+
         skyDescriptor.toBytes(buf);
         weatherDescriptor.toBytes(buf);
 
@@ -964,6 +980,8 @@ public class DimensionInformation implements IDimensionInformation {
 
         probeCounter = buf.readInt();
         actualRfCost = buf.readInt();
+
+        injectedDimlets = NetworkTools.readString(buf);
 
         skyDescriptor = new SkyDescriptor.Builder().fromBytes(buf).build();
         calculateCelestialBodyDescriptors();
