@@ -95,10 +95,7 @@ public class RarityRandomSelector<K,E> {
      */
     public E select(Distribution<K> distribution, Random random) {
         distribute();
-        NavigableMap<Float, K> keysChance = distribution.getKeysChance();
-        if(keysChance.isEmpty()) return null;
-        K key = keysChance.ceilingEntry(random.nextFloat() * distribution.getTotalChance()).getValue();
-        if(key == null) key = keysChance.lastEntry().getValue();
+        K key = distribution.getKeysChance().ceilingEntry(random.nextFloat() * distribution.getTotalChance()).getValue();
         List<E> list = items.get(key);
         if (list == null) {
             return null;
