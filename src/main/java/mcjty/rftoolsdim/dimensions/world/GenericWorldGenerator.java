@@ -363,8 +363,8 @@ public class GenericWorldGenerator implements IWorldGenerator {
             case 1:
                 return DimletRandomizer.getRandomPart(rand);
             case 2:
-                RarityRandomSelector.Distribution<Integer> bestDistribution = DimletRandomizer.getRandomDimlets().createDistribution(0.2f);
-                DimletKey key = DimletRandomizer.getRandomDimlets().select(bestDistribution, rand);
+                RarityRandomSelector<Integer, DimletKey>.Distribution bestDistribution = DimletRandomizer.getRandomDimlets().createDistribution(0.2f);
+                DimletKey key = bestDistribution.select(rand);
                 if (key != null) {
                     return KnownDimletConfiguration.getDimletStack(key);
                 } else {
@@ -803,8 +803,8 @@ public class GenericWorldGenerator implements IWorldGenerator {
 
         world.setBlockState(new BlockPos(midx + 2, starty + 1, midz - 2), Blocks.CHEST.getDefaultState().withProperty(BlockChest.FACING, EnumFacing.SOUTH), 18);
 
-        RarityRandomSelector.Distribution<Integer> randomDimletsBestDistribution = DimletRandomizer.getRandomDimlets().createDistribution(0.2f);
-        RarityRandomSelector.Distribution<Integer> randomUncraftableDimletsBestDistribution = DimletRandomizer.getRandomUncraftableDimlets().createDistribution(0.2f);
+        RarityRandomSelector<Integer, DimletKey>.Distribution randomDimletsBestDistribution = DimletRandomizer.getRandomDimlets().createDistribution(0.2f);
+        RarityRandomSelector<Integer, DimletKey>.Distribution randomUncraftableDimletsBestDistribution = DimletRandomizer.getRandomUncraftableDimlets().createDistribution(0.2f);
 
         TileEntityChest chest = (TileEntityChest) world.getTileEntity(new BlockPos(midx + 2, starty + 1, midz - 2));
         for (int i = 0; i < random.nextInt(4) + 3; i++) {
@@ -813,7 +813,7 @@ public class GenericWorldGenerator implements IWorldGenerator {
         }
         if (WorldgenConfiguration.enableDimletsInRFToolsDungeons > 0) {
             for (int i = 0; i < random.nextInt(WorldgenConfiguration.enableDimletsInRFToolsDungeons); i++) {
-                DimletKey key = DimletRandomizer.getRandomDimlets().select(randomDimletsBestDistribution, random);
+                DimletKey key = randomDimletsBestDistribution.select(random);
                 if (key != null) {
                     ItemStack stack = KnownDimletConfiguration.getDimletStack(key);
                     chest.setInventorySlotContents(random.nextInt(chest.getSizeInventory()), stack);
@@ -823,8 +823,7 @@ public class GenericWorldGenerator implements IWorldGenerator {
 
         // Always generate a few cosmetic dimlets
         for (int i = 0; i < WorldgenConfiguration.uncraftableDimletsInRFToolsDungeons; i++) {
-            RarityRandomSelector<Integer, DimletKey> dimlets = DimletRandomizer.getRandomUncraftableDimlets();
-            DimletKey key = dimlets.select(randomUncraftableDimletsBestDistribution, random);
+            DimletKey key = randomUncraftableDimletsBestDistribution.select(random);
             if (key != null) {
                 ItemStack stack = KnownDimletConfiguration.getDimletStack(key);
                 chest.setInventorySlotContents(random.nextInt(chest.getSizeInventory()), stack);
@@ -840,15 +839,15 @@ public class GenericWorldGenerator implements IWorldGenerator {
         EntityItemFrame frame3 = spawnItemFrame(world, midx + 1, starty + 2, midz + 2);
 
         if (WorldgenConfiguration.enableDimletsInRFToolsFrames) {
-            DimletKey rd1 = DimletRandomizer.getRandomDimlets().select(randomDimletsBestDistribution, random);
+            DimletKey rd1 = randomDimletsBestDistribution.select(random);
             if (rd1 != null) {
                 frame1.setDisplayedItem(KnownDimletConfiguration.getDimletStack(rd1));
             }
-            DimletKey rd2 = DimletRandomizer.getRandomDimlets().select(randomDimletsBestDistribution, random);
+            DimletKey rd2 = randomDimletsBestDistribution.select(random);
             if (rd2 != null) {
                 frame2.setDisplayedItem(KnownDimletConfiguration.getDimletStack(rd2));
             }
-            DimletKey rd3 = DimletRandomizer.getRandomDimlets().select(randomDimletsBestDistribution, random);
+            DimletKey rd3 = randomDimletsBestDistribution.select(random);
             if (rd3 != null) {
                 frame3.setDisplayedItem(KnownDimletConfiguration.getDimletStack(rd3));
             }

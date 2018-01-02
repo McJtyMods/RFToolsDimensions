@@ -7,6 +7,7 @@ import java.util.*;
  */
 public class RarityRandomSelector<K,E> {
     private boolean dirty = true;
+    private boolean createdDistribution = false;
 
     private final boolean rarityScalesBySize;
 
@@ -15,7 +16,7 @@ public class RarityRandomSelector<K,E> {
     private float minChance = Float.MAX_VALUE;    // Used for calculation distribution with bonus.
     private float maxChance = Float.MIN_VALUE;
 
-    private final Distribution<K> defaultDistribution = new Distribution<>();
+    private final Distribution defaultDistribution = new Distribution();
 
     // All items for every key.
     private final Map<K,List<E>> items = new HashMap<>();
@@ -24,20 +25,15 @@ public class RarityRandomSelector<K,E> {
         this.rarityScalesBySize = rarityScalesBySize;
     }
 
-    public void clear() {
-        dirty = true;
-        keys.clear();
-        minChance = Float.MAX_VALUE;
-        maxChance = Float.MIN_VALUE;
-        defaultDistribution.reset();
-        items.clear();
-    }
-
     /**
      * Add a new rarity key. All items associated with this key should
      * have 'chance' chance of being selected.
+     * @throws IllegalStateException If you call this method after calling createDistribution
      */
     public void addRarity(K key, float chance) {
+        if(createdDistribution) {
+            throw new IllegalStateException("Can't modify a RarityRandomSelector after calling createDistribution");
+        }
         keys.put(key, chance);
         items.put(key, new ArrayList<E>());
         if (chance < minChance) {
@@ -51,20 +47,17 @@ public class RarityRandomSelector<K,E> {
 
     /**
      * Add a new item.
+     * @throws IllegalStateException If you call this method after calling createDistribution
      */
     public void addItem(K key, E item) {
+        if(createdDistribution) {
+            throw new IllegalStateException("Can't modify a RarityRandomSelector after calling createDistribution");
+        }
         items.get(key).add(item);
         dirty = true;
     }
 
-    private void distribute() {
-        if (dirty) {
-            dirty = false;
-            setupDistribution(defaultDistribution, 0.0f);
-        }
-    }
-
-    private void setupDistribution(Distribution<K> distribution, float bonus) {
+    private void setupDistribution(Distribution distribution, float bonus) {
         float add = bonus * (maxChance - minChance);
         distribution.reset();
         keys.entrySet().stream().sorted(Comparator.comparing(Map.Entry::getValue)).forEachOrdered(entry -> {
@@ -84,53 +77,46 @@ public class RarityRandomSelector<K,E> {
      * elements. Very large values will make the rarest elements almost as common as
      * the most common elements.
      */
-    public Distribution<K> createDistribution(float bonus) {
-        Distribution<K> distribution = new Distribution<>();
+    public Distribution createDistribution(float bonus) {
+        createdDistribution = true;
+        Distribution distribution = new Distribution();
         setupDistribution(distribution, bonus);
         return distribution;
-    }
-
-    /**
-     * Return a random element given a distribution.
-     */
-    public E select(Distribution<K> distribution, Random random) {
-        distribute();
-        K key = distribution.getKeysChance().ceilingEntry(random.nextFloat() * distribution.getTotalChance()).getValue();
-        List<E> list = items.get(key);
-        if (list == null) {
-            return null;
-        }
-        return list.get(random.nextInt(list.size()));
     }
 
     /**
      * Return a random element.
      */
     public E select(Random random) {
-        return select(defaultDistribution, random);
+        if (dirty) {
+            dirty = false;
+            setupDistribution(defaultDistribution, 0.0f);
+        }
+        return defaultDistribution.select(random);
     }
 
-    public static class Distribution<K> {
+    public class Distribution {
         // A map associating every key with the chance that this key in total must be selected.
         private final NavigableMap<Float, K> keysChance = new TreeMap<>();
         private float totalChance = 0.0f;
 
-        public NavigableMap<Float, K> getKeysChance() {
-            return keysChance;
-        }
-
-        public float getTotalChance() {
-            return totalChance;
-        }
-
-        public void reset() {
+        private void reset() {
             keysChance.clear();
             totalChance = 0.0f;
         }
 
-        public void addKey(K key, float chance) {
+        private void addKey(K key, float chance) {
             totalChance += chance;
             keysChance.put(totalChance, key);
+        }
+
+        public E select(Random random) {
+            K key = keysChance.ceilingEntry(random.nextFloat() * totalChance).getValue();
+            List<E> list = items.get(key);
+            if (list == null) {
+                return null;
+            }
+            return list.get(random.nextInt(list.size()));
         }
     }
 }
