@@ -252,7 +252,7 @@ public class DimletRandomizer {
     // Get a random part item
     public static ItemStack getRandomPart(Random random) {
         if (dimletPartDistribution == null) {
-            dimletPartDistribution = new RarityRandomSelector<>(rarityScalesBySize);
+            dimletPartDistribution = new RarityRandomSelector<>(DimletConfiguration.rarityScalesBySize);
             dimletPartDistribution.addRarity(RARITY_0, DimletConfiguration.rarity0);
             dimletPartDistribution.addRarity(RARITY_1, DimletConfiguration.rarity1);
             dimletPartDistribution.addRarity(RARITY_2, DimletConfiguration.rarity2);
