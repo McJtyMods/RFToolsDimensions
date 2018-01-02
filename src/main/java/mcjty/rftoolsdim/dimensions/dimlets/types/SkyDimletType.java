@@ -81,9 +81,6 @@ public class SkyDimletType implements IDimletType {
         if (newDescriptor.isCloudColorGiven()) {
             builder.resetCloudColor();
         }
-        if (dimensionInformation.isPatreonBitSet(PatreonType.PATREON_DARKCORVUS)) {
-            builder.skyType(SkyType.SKY_STARS3);
-        }
         builder.combine(newDescriptor);
         dimensionInformation.setSkyDescriptor(builder.build());
     }
@@ -118,9 +115,6 @@ public class SkyDimletType implements IDimletType {
         for (Pair<DimletKey, List<DimletKey>> dimletWithModifiers : dimlets) {
             DimletKey key = dimletWithModifiers.getKey();
             builder.combine(DimletObjectMapping.getSky(key));
-        }
-        if (dimensionInformation.isPatreonBitSet(PatreonType.PATREON_DARKCORVUS)) {
-            builder.skyType(SkyType.SKY_STARS3);
         }
         dimensionInformation.setSkyDescriptor(builder.build());
     }

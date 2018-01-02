@@ -255,7 +255,13 @@ public class GenericWorldProvider extends WorldProvider implements  /*@todo impl
 
     public void setupSkyRenderers() {
         if (world.isRemote) {
-            SkyType skyType = dimensionInformation.getSkyDescriptor().getSkyType();
+            SkyType skyType;
+            if (dimensionInformation.isPatreonBitSet(PatreonType.PATREON_DARKCORVUS)) {
+                skyType = SkyType.SKY_STARS3;
+            } else {
+                skyType = dimensionInformation.getSkyDescriptor().getSkyType();
+            }
+
             if (!hasSkyLight) {
                 SkyRenderer.registerNoSky(this);
             } else if (skyType.skyboxType != null) {

@@ -108,10 +108,6 @@ public class PatreonDimletType implements IDimletType {
             break;
         case "DarkCorvuz":
             dimensionInformation.setPatreonBit(PatreonType.PATREON_DARKCORVUS);
-            SkyDescriptor.Builder builder = new SkyDescriptor.Builder();
-            builder.combine(dimensionInformation.getSkyDescriptor());
-            builder.skyType(SkyType.SKY_STARS3);
-            dimensionInformation.setSkyDescriptor(builder.build());
             break;
         case "TomWolf":
             dimensionInformation.setPatreonBit(PatreonType.PATREON_TOMWOLF);
