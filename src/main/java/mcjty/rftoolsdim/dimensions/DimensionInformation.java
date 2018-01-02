@@ -511,14 +511,12 @@ public class DimensionInformation implements IDimensionInformation {
             NBTTagCompound tc = new NBTTagCompound();
 
             if (mob != null) {
-                if (mob.entityClass != null) {
-                    tc.setString("class", mob.entityClass.getName());
-                    tc.setInteger("chance", mob.itemWeight);
-                    tc.setInteger("minGroup", mob.minGroupCount);
-                    tc.setInteger("maxGroup", mob.maxGroupCount);
-                    tc.setInteger("maxLoaded", mob.getMaxLoaded());
-                    list.appendTag(tc);
-                }
+                tc.setString("class", mob.entityClass.getName());
+                tc.setInteger("chance", mob.itemWeight);
+                tc.setInteger("minGroup", mob.minGroupCount);
+                tc.setInteger("maxGroup", mob.maxGroupCount);
+                tc.setInteger("maxLoaded", mob.getMaxLoaded());
+                list.appendTag(tc);
             }
         }
 
@@ -761,11 +759,7 @@ public class DimensionInformation implements IDimensionInformation {
 
         for (MobDescriptor mob : extraMobs) {
             if (mob != null) {
-                if (mob.entityClass == null) {
-                    logDebug(player, "    Mob: " + mob);
-                } else {
-                    logDebug(player, "    Mob: " + mob.entityClass.getName());
-                }
+                logDebug(player, "    Mob: " + mob.entityClass.getName());
             }
         }
         if (peaceful) {
@@ -870,21 +864,17 @@ public class DimensionInformation implements IDimensionInformation {
         int mobsize = 0;
         for (MobDescriptor mob : extraMobs) {
             if (mob != null) {
-                if (mob.entityClass != null) {
-                    mobsize++;
-                }
+                mobsize++;
             }
         }
         buf.writeInt(mobsize);
         for (MobDescriptor mob : extraMobs) {
             if (mob != null) {
-                if (mob.entityClass != null) {
-                    NetworkTools.writeString(buf, mob.entityClass.getName());
-                    buf.writeInt(mob.itemWeight);
-                    buf.writeInt(mob.minGroupCount);
-                    buf.writeInt(mob.maxGroupCount);
-                    buf.writeInt(mob.getMaxLoaded());
-                }
+                NetworkTools.writeString(buf, mob.entityClass.getName());
+                buf.writeInt(mob.itemWeight);
+                buf.writeInt(mob.minGroupCount);
+                buf.writeInt(mob.maxGroupCount);
+                buf.writeInt(mob.getMaxLoaded());
             }
         }
 

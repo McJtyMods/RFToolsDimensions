@@ -603,7 +603,7 @@ public class GenericChunkGenerator implements IChunkGenerator {
             creatures = new ArrayList<>(creatures);
             for (MobDescriptor mob : dimensionInformation.getExtraMobs()) {
                 Class<? extends EntityLiving> entityClass = mob.entityClass;
-                if (entityClass != null && IAnimals.class.isAssignableFrom(entityClass)) {
+                if (IAnimals.class.isAssignableFrom(entityClass)) {
                     int count = worldObj.countEntities(entityClass);
                     if (count < mob.getMaxLoaded()) {
                         creatures.add(mob);
@@ -614,7 +614,7 @@ public class GenericChunkGenerator implements IChunkGenerator {
             creatures = new ArrayList<>(creatures);
             for (MobDescriptor mob : dimensionInformation.getExtraMobs()) {
                 Class<? extends EntityLiving> entityClass = mob.entityClass;
-                if (entityClass != null && IMob.class.isAssignableFrom(entityClass)) {
+                if (IMob.class.isAssignableFrom(entityClass)) {
                     int count = worldObj.countEntities(entityClass);
                     if (count < mob.getMaxLoaded()) {
                         creatures.add(mob);
