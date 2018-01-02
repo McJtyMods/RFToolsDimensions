@@ -3,7 +3,8 @@ package mcjty.rftoolsdim.config;
 import mcjty.lib.varia.EntityTools;
 import mcjty.lib.varia.Logging;
 import mcjty.rftoolsdim.dimensions.description.MobDescriptor;
-import net.minecraft.entity.Entity;
+import mcjty.rftoolsdim.varia.GenericTools;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.registry.EntityEntry;
@@ -63,7 +64,7 @@ public class MobConfiguration {
                                     int chance, int mingroup, int maxgroup, int maxentity) {
         String id = EntityTools.fixEntityId(name);
         EntityEntry entry = ForgeRegistries.ENTITIES.getValue(new ResourceLocation(id));
-        Class<? extends Entity> entityClass = entry == null ? null : entry.getEntityClass();
+        Class<? extends EntityLiving> entityClass = entry == null ? null : GenericTools.castClass(entry.getEntityClass(), EntityLiving.class);
         if (entityClass == null) {
             Logging.logError("Cannot find mob with id '" + id +"'!");
             return;

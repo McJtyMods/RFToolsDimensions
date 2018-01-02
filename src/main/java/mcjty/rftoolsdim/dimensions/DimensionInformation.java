@@ -1004,8 +1004,7 @@ public class DimensionInformation implements IDimensionInformation {
                 MobDescriptor mob = new MobDescriptor(c, chance, minGroup, maxGroup, maxLoaded);
                 extraMobs.add(mob);
             } catch (ClassNotFoundException e) {
-                Logging.logError("Cannot find class: " + className + "!");
-                e.printStackTrace();
+                Logging.logError("Cannot find class: " + className + "!", e);
             }
         }
 

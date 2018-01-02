@@ -12,10 +12,8 @@ import mcjty.rftoolsdim.dimensions.types.TerrainType;
 import mcjty.rftoolsdim.dimensions.world.mapgen.*;
 import mcjty.rftoolsdim.dimensions.world.terrain.*;
 import mcjty.rftoolsdim.dimensions.world.terrain.lost.LostCitiesTerrainGenerator;
-import mcjty.rftoolsdim.varia.GenericTools;
 import net.minecraft.block.*;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.monster.IMob;
@@ -303,9 +301,9 @@ public class GenericChunkGenerator implements IChunkGenerator {
         extraSpawns = new ArrayList<>();
         extraSpawnsMax = new ArrayList<>();
         for (MobDescriptor mob : dimensionInformation.getExtraMobs()) {
-            Class<? extends Entity> entityClass = mob.getEntityClass();
+            Class<? extends EntityLiving> entityClass = mob.getEntityClass();
             if (entityClass != null) {
-                extraSpawns.add(new Biome.SpawnListEntry(GenericTools.castClass(entityClass, EntityLiving.class), mob.getSpawnChance(), mob.getMinGroup(), mob.getMaxGroup()));
+                extraSpawns.add(new Biome.SpawnListEntry(entityClass, mob.getSpawnChance(), mob.getMinGroup(), mob.getMaxGroup()));
                 extraSpawnsMax.add(mob.getMaxLoaded());
             }
         }
