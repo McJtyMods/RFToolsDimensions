@@ -1427,8 +1427,8 @@ public class DimensionInformation implements IDimensionInformation {
         this.patreon1 = patreon1;
     }
 
-    public void setPatreonBit(PatreonType patreon) {
-        patreon1 |= (1L << patreon.getBit());
+    public void togglePatreonBit(PatreonType patreon) {
+        patreon1 ^= (1L << patreon.getBit());
     }
 
     public boolean isShelter() {

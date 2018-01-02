@@ -84,36 +84,36 @@ public class PatreonDimletType implements IDimletType {
     public void inject(DimletKey key, DimensionInformation dimensionInformation) {
         switch(key.getId()) {
         case "McJty":
-            dimensionInformation.setPatreonBit(PatreonType.PATREON_FIREWORKS);
+            dimensionInformation.togglePatreonBit(PatreonType.PATREON_FIREWORKS);
             break;
         case "SickHippie":
-            dimensionInformation.setPatreonBit(PatreonType.PATREON_SICKMOON);
-            dimensionInformation.setPatreonBit(PatreonType.PATREON_SICKSUN);
+            dimensionInformation.togglePatreonBit(PatreonType.PATREON_SICKMOON);
+            dimensionInformation.togglePatreonBit(PatreonType.PATREON_SICKSUN);
             break;
         case "Nissenfeld":
-            dimensionInformation.setPatreonBit(PatreonType.PATREON_RABBITMOON);
-            dimensionInformation.setPatreonBit(PatreonType.PATREON_RABBITSUN);
+            dimensionInformation.togglePatreonBit(PatreonType.PATREON_RABBITMOON);
+            dimensionInformation.togglePatreonBit(PatreonType.PATREON_RABBITSUN);
             break;
         case "Lockesly":
-            dimensionInformation.setPatreonBit(PatreonType.PATREON_PINKPILLARS);
+            dimensionInformation.togglePatreonBit(PatreonType.PATREON_PINKPILLARS);
             break;
         case "Puppeteer":
-            dimensionInformation.setPatreonBit(PatreonType.PATREON_PUPPETEER);
+            dimensionInformation.togglePatreonBit(PatreonType.PATREON_PUPPETEER);
             break;
         case "Rouven":
-            dimensionInformation.setPatreonBit(PatreonType.PATREON_LAYEREDMETA);
+            dimensionInformation.togglePatreonBit(PatreonType.PATREON_LAYEREDMETA);
             break;
         case "FireBall":
-            dimensionInformation.setPatreonBit(PatreonType.PATREON_COLOREDPRISMS);
+            dimensionInformation.togglePatreonBit(PatreonType.PATREON_COLOREDPRISMS);
             break;
         case "DarkCorvuz":
-            dimensionInformation.setPatreonBit(PatreonType.PATREON_DARKCORVUS);
+            dimensionInformation.togglePatreonBit(PatreonType.PATREON_DARKCORVUS);
             break;
         case "TomWolf":
-            dimensionInformation.setPatreonBit(PatreonType.PATREON_TOMWOLF);
+            dimensionInformation.togglePatreonBit(PatreonType.PATREON_TOMWOLF);
             break;
         case "Kenney":
-            dimensionInformation.setPatreonBit(PatreonType.PATREON_KENNEY);
+            dimensionInformation.togglePatreonBit(PatreonType.PATREON_KENNEY);
             break;
         default:
             Logging.getLogger().catching(new RuntimeException("Unknown Patreon dimlet ID " + key.getId()));

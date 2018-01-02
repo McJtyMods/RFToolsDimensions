@@ -70,13 +70,13 @@ public class SpecialDimletType implements IDimletType {
     public void inject(DimletKey key, DimensionInformation dimensionInformation) {
         SpecialType specialType = DimletObjectMapping.getSpecial(key);
         if (specialType == SpecialType.SPECIAL_PEACEFUL) {
-            dimensionInformation.setPeaceful(true);
+            dimensionInformation.setPeaceful(!dimensionInformation.isPeaceful());
         } else if (specialType == SpecialType.SPECIAL_NOANIMALS) {
-            dimensionInformation.setNoanimals(true);
+            dimensionInformation.setNoanimals(!dimensionInformation.isNoanimals());
         } else if (specialType == SpecialType.SPECIAL_SPAWN) {
-            dimensionInformation.setRespawnHere(true);
+            dimensionInformation.setRespawnHere(!dimensionInformation.isRespawnHere());
         } else if (specialType == SpecialType.SPECIAL_CHEATER) {
-            dimensionInformation.setCheater(true);
+            dimensionInformation.setCheater(!dimensionInformation.isCheater());
         }
     }
 
