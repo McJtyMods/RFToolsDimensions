@@ -60,6 +60,7 @@ public class DimletRandomizer {
         }
 
         SortedMap<DimletKey, Settings> knownDimlets = KnownDimletConfiguration.getKnownDimlets();
+        boolean rarityScalesBySize = DimletConfiguration.rarityScalesBySize;
         float rarity0 = DimletConfiguration.rarity0;
         float rarity1 = DimletConfiguration.rarity1;
         float rarity2 = DimletConfiguration.rarity2;
@@ -68,10 +69,10 @@ public class DimletRandomizer {
         float rarity5 = DimletConfiguration.rarity5;
         float rarity6 = DimletConfiguration.rarity6;
 
-        randomDimlets = new RarityRandomSelector<>();
+        randomDimlets = new RarityRandomSelector<>(rarityScalesBySize);
         setupRarity(randomDimlets, rarity0, rarity1, rarity2, rarity3, rarity4, rarity5, rarity6);
 
-        randomUncraftableDimlets = new RarityRandomSelector<>();
+        randomUncraftableDimlets = new RarityRandomSelector<>(rarityScalesBySize);
         setupRarity(randomUncraftableDimlets, rarity0, rarity1, rarity2, rarity3, rarity4, rarity5, rarity6);
 
         for (Map.Entry<DimletKey, Settings> entry : knownDimlets.entrySet()) {
@@ -87,53 +88,53 @@ public class DimletRandomizer {
             randomDimlets.addItem(entry.getValue().getRarity(), key);
             if (key.getType() == DimletType.DIMLET_MATERIAL) {
                 if (randomMaterialDimlets == null) {
-                    randomMaterialDimlets = new RarityRandomSelector<>();
+                    randomMaterialDimlets = new RarityRandomSelector<>(rarityScalesBySize);
                     setupRarity(randomMaterialDimlets, rarity0, rarity1, rarity2, rarity3, rarity4, rarity5, rarity6);
                 }
                 randomMaterialDimlets.addItem(entry.getValue().getRarity(), key);
             } else if (key.getType() == DimletType.DIMLET_LIQUID) {
                 if (randomLiquidDimlets == null) {
-                    randomLiquidDimlets = new RarityRandomSelector<>();
+                    randomLiquidDimlets = new RarityRandomSelector<>(rarityScalesBySize);
                     setupRarity(randomLiquidDimlets, rarity0, rarity1, rarity2, rarity3, rarity4, rarity5, rarity6);
                 }
                 randomLiquidDimlets.addItem(entry.getValue().getRarity(), key);
             } else if (key.getType() == DimletType.DIMLET_MOB) {
                 if (randomMobDimlets == null) {
-                    randomMobDimlets = new RarityRandomSelector<>();
+                    randomMobDimlets = new RarityRandomSelector<>(rarityScalesBySize);
                     setupRarity(randomMobDimlets, rarity0, rarity1, rarity2, rarity3, rarity4, rarity5, rarity6);
                 }
                 randomMobDimlets.addItem(entry.getValue().getRarity(), key);
             } else if (key.getType() == DimletType.DIMLET_EFFECT) {
                 if (randomEffectDimlets == null) {
-                    randomEffectDimlets = new RarityRandomSelector<>();
+                    randomEffectDimlets = new RarityRandomSelector<>(rarityScalesBySize);
                     setupRarity(randomEffectDimlets, rarity0, rarity1, rarity2, rarity3, rarity4, rarity5, rarity6);
                 }
                 randomEffectDimlets.addItem(entry.getValue().getRarity(), key);
                 randomUncraftableDimlets.addItem(entry.getValue().getRarity(), key);
             } else if (key.getType() == DimletType.DIMLET_FEATURE) {
                 if (randomFeatureDimlets == null) {
-                    randomFeatureDimlets = new RarityRandomSelector<>();
+                    randomFeatureDimlets = new RarityRandomSelector<>(rarityScalesBySize);
                     setupRarity(randomFeatureDimlets, rarity0, rarity1, rarity2, rarity3, rarity4, rarity5, rarity6);
                 }
                 randomFeatureDimlets.addItem(entry.getValue().getRarity(), key);
                 randomUncraftableDimlets.addItem(entry.getValue().getRarity(), key);
             } else if (key.getType() == DimletType.DIMLET_STRUCTURE) {
                 if (randomStructureDimlets == null) {
-                    randomStructureDimlets = new RarityRandomSelector<>();
+                    randomStructureDimlets = new RarityRandomSelector<>(rarityScalesBySize);
                     setupRarity(randomStructureDimlets, rarity0, rarity1, rarity2, rarity3, rarity4, rarity5, rarity6);
                 }
                 randomStructureDimlets.addItem(entry.getValue().getRarity(), key);
                 randomUncraftableDimlets.addItem(entry.getValue().getRarity(), key);
             } else if (key.getType() == DimletType.DIMLET_TERRAIN) {
                 if (randomTerrainDimlets == null) {
-                    randomTerrainDimlets = new RarityRandomSelector<>();
+                    randomTerrainDimlets = new RarityRandomSelector<>(rarityScalesBySize);
                     setupRarity(randomTerrainDimlets, rarity0, rarity1, rarity2, rarity3, rarity4, rarity5, rarity6);
                 }
                 randomTerrainDimlets.addItem(entry.getValue().getRarity(), key);
                 randomUncraftableDimlets.addItem(entry.getValue().getRarity(), key);
             } else if (key.getType() == DimletType.DIMLET_WEATHER) {
                 if (randomWeatherDimlets == null) {
-                    randomWeatherDimlets = new RarityRandomSelector<>();
+                    randomWeatherDimlets = new RarityRandomSelector<>(rarityScalesBySize);
                     setupRarity(randomWeatherDimlets, rarity0, rarity1, rarity2, rarity3, rarity4, rarity5, rarity6);
                 }
                 randomWeatherDimlets.addItem(entry.getValue().getRarity(), key);
@@ -142,13 +143,13 @@ public class DimletRandomizer {
                 randomUncraftableDimlets.addItem(entry.getValue().getRarity(), key);
             } else if (key.getType() == DimletType.DIMLET_SKY) {
                 if (randomSkyDimlets == null) {
-                    randomSkyDimlets = new RarityRandomSelector<>();
+                    randomSkyDimlets = new RarityRandomSelector<>(rarityScalesBySize);
                     setupRarity(randomSkyDimlets, rarity0, rarity1, rarity2, rarity3, rarity4, rarity5, rarity6);
                 }
                 randomSkyDimlets.addItem(entry.getValue().getRarity(), key);
                 if (SkyRegistry.isSkyBody(key)) {
                     if (randomSkyBodyDimlets == null) {
-                        randomSkyBodyDimlets = new RarityRandomSelector<>();
+                        randomSkyBodyDimlets = new RarityRandomSelector<>(rarityScalesBySize);
                         setupRarity(randomSkyBodyDimlets, rarity0, rarity1, rarity2, rarity3, rarity4, rarity5, rarity6);
                     }
                     randomSkyBodyDimlets.addItem(entry.getValue().getRarity(), key);
@@ -251,7 +252,7 @@ public class DimletRandomizer {
     // Get a random part item
     public static ItemStack getRandomPart(Random random) {
         if (dimletPartDistribution == null) {
-            dimletPartDistribution = new RarityRandomSelector<>();
+            dimletPartDistribution = new RarityRandomSelector<>(rarityScalesBySize);
             dimletPartDistribution.addRarity(RARITY_0, DimletConfiguration.rarity0);
             dimletPartDistribution.addRarity(RARITY_1, DimletConfiguration.rarity1);
             dimletPartDistribution.addRarity(RARITY_2, DimletConfiguration.rarity2);

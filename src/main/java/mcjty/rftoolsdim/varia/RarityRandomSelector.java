@@ -8,6 +8,8 @@ import java.util.*;
 public class RarityRandomSelector<K,E> {
     private boolean dirty = true;
 
+    private final boolean rarityScalesBySize;
+
     // A map associating every key with the chance that items of this key should be selected.
     private final Map<K,Float> keys = new HashMap<>();
     private float minChance = Float.MAX_VALUE;    // Used for calculation distribution with bonus.
@@ -18,7 +20,8 @@ public class RarityRandomSelector<K,E> {
     // All items for every key.
     private final Map<K,List<E>> items = new HashMap<>();
 
-    public RarityRandomSelector() {
+    public RarityRandomSelector(boolean rarityScalesBySize) {
+        this.rarityScalesBySize = rarityScalesBySize;
     }
 
     public void clear() {
@@ -68,8 +71,8 @@ public class RarityRandomSelector<K,E> {
             K key = entry.getKey();
             int length = items.get(key).size();
             if (length > 0) {
-                float chance = (entry.getValue() + add) * length;
-                distribution.addKey(key, chance);
+                float chance = entry.getValue() + add;
+                distribution.addKey(key, (rarityScalesBySize ? chance * length : chance));
             }
         }
     }
