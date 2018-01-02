@@ -399,9 +399,8 @@ public class SkyDescriptor {
                 if (body == CelestialBodyType.BODY_NONE) {
                     // Reset
                     celestialBodies.clear();
-                } else {
-                    celestialBodies.add(body);
                 }
+                celestialBodies.add(body);
             }
 
 
