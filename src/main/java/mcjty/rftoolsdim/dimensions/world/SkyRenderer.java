@@ -103,31 +103,20 @@ public class SkyRenderer {
         }
     }
 
+    private static final IRenderHandler doNothingRenderHandler = new IRenderHandler() {
+        @Override
+        public void render(float partialTicks, WorldClient world, Minecraft mc) {
+        }
+    };
+
     public static void registerNoSky(GenericWorldProvider provider) {
-        provider.setSkyRenderer(new IRenderHandler() {
-            @Override
-            public void render(float partialTicks, WorldClient world, Minecraft mc) {
-            }
-        });
-        provider.setCloudRenderer(new IRenderHandler() {
-            @Override
-            public void render(float partialTicks, WorldClient world, Minecraft mc) {
-            }
-        });
+        provider.setSkyRenderer(doNothingRenderHandler);
+        provider.setCloudRenderer(doNothingRenderHandler);
     }
 
     public static void registerEnderSky(GenericWorldProvider provider) {
-        provider.setSkyRenderer(new IRenderHandler() {
-            @Override
-            public void render(float partialTicks, WorldClient world, Minecraft mc) {
-                SkyRenderer.renderEnderSky();
-            }
-        });
-        provider.setCloudRenderer(new IRenderHandler() {
-            @Override
-            public void render(float partialTicks, WorldClient world, Minecraft mc) {
-            }
-        });
+        provider.setSkyRenderer(enderSkyRenderHandler);
+        provider.setCloudRenderer(doNothingRenderHandler);
     }
 
     public static void registerKenneyCloudRenderer(final GenericWorldProvider provider) {
@@ -146,11 +135,7 @@ public class SkyRenderer {
                 SkyRenderer.renderSkyTexture(skyType.sky, skyType.sky2, skyType.skyboxType);
             }
         });
-        provider.setCloudRenderer(new IRenderHandler() {
-            @Override
-            public void render(float partialTicks, WorldClient world, Minecraft mc) {
-            }
-        });
+        provider.setCloudRenderer(doNothingRenderHandler);
     }
 
     public static void registerSky(GenericWorldProvider provider, final DimensionInformation information) {
@@ -275,58 +260,61 @@ public class SkyRenderer {
     }
 
     @SideOnly(Side.CLIENT)
-    private static void renderEnderSky() {
-        TextureManager renderEngine = Minecraft.getMinecraft().getTextureManager();
+    private static final IRenderHandler enderSkyRenderHandler = new IRenderHandler() {
+        @Override
+        public void render(float partialTicks, WorldClient world, Minecraft mc) {
+            TextureManager renderEngine = Minecraft.getMinecraft().getTextureManager();
 
-        GlStateManager.disableFog();
-        GlStateManager.disableAlpha();
-        GlStateManager.enableBlend();
-        GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
-        RenderHelper.disableStandardItemLighting();
-        GlStateManager.depthMask(false);
+            GlStateManager.disableFog();
+            GlStateManager.disableAlpha();
+            GlStateManager.enableBlend();
+            GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
+            RenderHelper.disableStandardItemLighting();
+            GlStateManager.depthMask(false);
 
-        renderEngine.bindTexture(locationEndSkyPng);
-        Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder renderer = tessellator.getBuffer();
+            renderEngine.bindTexture(locationEndSkyPng);
+            Tessellator tessellator = Tessellator.getInstance();
+            BufferBuilder renderer = tessellator.getBuffer();
 
-        for (int i = 0; i < 6; ++i) {
-            GlStateManager.pushMatrix();
+            for (int i = 0; i < 6; ++i) {
+                GlStateManager.pushMatrix();
 
-            if (i == 1) {
-                GlStateManager.rotate(90.0F, 1.0F, 0.0F, 0.0F);
+                if (i == 1) {
+                    GlStateManager.rotate(90.0F, 1.0F, 0.0F, 0.0F);
+                }
+
+                if (i == 2) {
+                    GlStateManager.rotate(-90.0F, 1.0F, 0.0F, 0.0F);
+                }
+
+                if (i == 3) {
+                    GlStateManager.rotate(180.0F, 1.0F, 0.0F, 0.0F);
+                }
+
+                if (i == 4) {
+                    GlStateManager.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                }
+
+                if (i == 5) {
+                    GlStateManager.rotate(-90.0F, 0.0F, 0.0F, 1.0F);
+                }
+
+                renderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
+                int cc = 255; // @todo: decode 2631720 into rgb
+                renderer.pos(-100.0D, -100.0D, -100.0D).tex(0, 0).color(cc, cc, cc, 255).endVertex();
+                renderer.pos(-100.0D, -100.0D, 100.0D).tex(0, 16).color(cc, cc, cc, 255).endVertex();
+                renderer.pos(100.0D, -100.0D, 100.0D).tex(16, 16).color(cc, cc, cc, 255).endVertex();
+                renderer.pos(100.0D, -100.0D, -100.0D).tex(16, 0).color(cc, cc, cc, 255).endVertex();
+
+                tessellator.draw();
+                GlStateManager.popMatrix();
             }
 
-            if (i == 2) {
-                GlStateManager.rotate(-90.0F, 1.0F, 0.0F, 0.0F);
-            }
-
-            if (i == 3) {
-                GlStateManager.rotate(180.0F, 1.0F, 0.0F, 0.0F);
-            }
-
-            if (i == 4) {
-                GlStateManager.rotate(90.0F, 0.0F, 0.0F, 1.0F);
-            }
-
-            if (i == 5) {
-                GlStateManager.rotate(-90.0F, 0.0F, 0.0F, 1.0F);
-            }
-
-            renderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
-            int cc = 255; // @todo: decode 2631720 into rgb
-            renderer.pos(-100.0D, -100.0D, -100.0D).tex(0, 0).color(cc, cc, cc, 255).endVertex();
-            renderer.pos(-100.0D, -100.0D, 100.0D).tex(0, 16).color(cc, cc, cc, 255).endVertex();
-            renderer.pos(100.0D, -100.0D, 100.0D).tex(16, 16).color(cc, cc, cc, 255).endVertex();
-            renderer.pos(100.0D, -100.0D, -100.0D).tex(16, 0).color(cc, cc, cc, 255).endVertex();
-
-            tessellator.draw();
-            GlStateManager.popMatrix();
+            GlStateManager.depthMask(true);
+            GlStateManager.enableTexture2D();
+            GlStateManager.enableAlpha();
         }
-
-        GlStateManager.depthMask(true);
-        GlStateManager.enableTexture2D();
-        GlStateManager.enableAlpha();
-    }
+    };
 
     /**
      * Renders the sky with the partial tick time. Args: partialTickTime
