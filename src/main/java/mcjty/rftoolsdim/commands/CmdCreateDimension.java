@@ -81,7 +81,7 @@ public class CmdCreateDimension extends AbstractRfToolsCommand {
             return;
         }
 
-        dim = dimensionManager.createNewDimension(player.getEntityWorld(), descriptor, name, player.getDisplayName().toString(), player.getPersistentID());
+        dim = dimensionManager.createNewDimension(player.getEntityWorld(), descriptor, name, player.getName(), player.getPersistentID());
         player.sendStatusMessage(new TextComponentString(TextFormatting.GREEN + "Created dimension: " + dim), false);
 
         dimensionManager.save(player.getEntityWorld());
