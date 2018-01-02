@@ -396,11 +396,12 @@ public class SkyDescriptor {
             }
 
             for (CelestialBodyType body : descriptor.celestialBodies) {
-                if (body == CelestialBodyType.BODY_NONE) {
-                    // Reset
+                if (body == CelestialBodyType.BODY_NONE || body == CelestialBodyType.BODY_NORMAL) {
                     celestialBodies.clear();
                 }
-                celestialBodies.add(body);
+                if (body != CelestialBodyType.BODY_NORMAL) {
+                    celestialBodies.add(body);
+                }
             }
 
 

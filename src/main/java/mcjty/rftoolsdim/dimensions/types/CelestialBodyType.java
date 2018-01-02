@@ -1,6 +1,7 @@
 package mcjty.rftoolsdim.dimensions.types;
 
 public enum CelestialBodyType {
+    BODY_NORMAL(0, 0),
     BODY_NONE(0, 0),
     BODY_SUN(3, 0),
     BODY_LARGESUN(4,0),

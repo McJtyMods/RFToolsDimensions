@@ -167,6 +167,7 @@ public class KnownDimletConfiguration {
         initSkyDimlet("stars2", new SkyDescriptor.Builder().skyType(SkyType.SKY_STARS2).build(), false);
 
         // Celestial bodies
+        initSkyDimlet("body.normal", new SkyDescriptor.Builder().addBody(CelestialBodyType.BODY_NORMAL).build(), false);   // False because we don't want to select this randomly.
         initSkyDimlet("body.none", new SkyDescriptor.Builder().addBody(CelestialBodyType.BODY_NONE).build(), false);   // False because we don't want to select this randomly.
         initSkyDimlet("body.sun", new SkyDescriptor.Builder().addBody(CelestialBodyType.BODY_SUN).build(), true);
         initSkyDimlet("body.large.sun", new SkyDescriptor.Builder().addBody(CelestialBodyType.BODY_LARGESUN).build(), true);

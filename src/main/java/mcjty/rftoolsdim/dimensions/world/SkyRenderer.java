@@ -536,6 +536,7 @@ public class SkyRenderer {
                     yangle = random.nextFloat() * 180.0f;
                 }
                 switch (body.getType()) {
+                    case BODY_NORMAL:
                     case BODY_NONE:
                         break;
                     case BODY_SUN:
