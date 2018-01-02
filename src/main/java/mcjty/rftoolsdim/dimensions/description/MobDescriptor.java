@@ -11,22 +11,6 @@ public class MobDescriptor extends Biome.SpawnListEntry {
         this.maxLoaded = maxLoaded;
     }
 
-    public Class<? extends EntityLiving> getEntityClass() {
-        return entityClass;
-    }
-
-    public int getSpawnChance() {
-        return itemWeight;
-    }
-
-    public int getMinGroup() {
-        return minGroupCount;
-    }
-
-    public int getMaxGroup() {
-        return maxGroupCount;
-    }
-
     public int getMaxLoaded() {
         return maxLoaded;
     }

@@ -72,7 +72,7 @@ public class MobDimletType implements IDimletType {
     @Override
     public void inject(DimletKey key, DimensionInformation dimensionInformation) {
         MobDescriptor mobDescriptor = DimletObjectMapping.getMob(key);
-        if (mobDescriptor != null && mobDescriptor.getEntityClass() != null) {
+        if (mobDescriptor != null && mobDescriptor.entityClass != null) {
             dimensionInformation.getExtraMobs().add(mobDescriptor);
         } else {
             dimensionInformation.getExtraMobs().clear();
@@ -96,13 +96,13 @@ public class MobDimletType implements IDimletType {
         } else {
             DimletKey key = dimlets.get(0).getLeft();
             MobDescriptor mobDescriptor = DimletObjectMapping.getMob(key);
-            if (dimlets.size() == 1 && (mobDescriptor == null || mobDescriptor.getEntityClass() == null)) {
+            if (dimlets.size() == 1 && (mobDescriptor == null || mobDescriptor.entityClass == null)) {
                 // Just default.
             } else {
                 for (Pair<DimletKey, List<DimletKey>> dimletWithModifiers : dimlets) {
                     DimletKey modifierKey = dimletWithModifiers.getLeft();
                     MobDescriptor descriptor = DimletObjectMapping.getMob(modifierKey);
-                    if (descriptor != null && descriptor.getEntityClass() != null) {
+                    if (descriptor != null && descriptor.entityClass != null) {
                         extraMobs.add(descriptor);
                     }
                 }
