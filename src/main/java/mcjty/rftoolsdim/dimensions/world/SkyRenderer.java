@@ -6,6 +6,7 @@ import mcjty.rftoolsdim.dimensions.DimensionInformation;
 import mcjty.rftoolsdim.dimensions.description.CelestialBodyDescriptor;
 import mcjty.rftoolsdim.dimensions.types.PatreonType;
 import mcjty.rftoolsdim.dimensions.types.SkyType;
+import mcjty.rftoolsdim.dimensions.types.SkyType.SkyboxType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.multiplayer.WorldClient;
@@ -25,12 +26,6 @@ import java.util.Random;
 
 public class SkyRenderer {
     private static final ResourceLocation locationEndSkyPng = new ResourceLocation("textures/environment/end_sky.png");
-    private static final ResourceLocation locationPlasmaSkyPng = new ResourceLocation(RFToolsDim.MODID + ":" +"textures/sky/plasmasky.png");
-    private static final ResourceLocation locationStars1 = new ResourceLocation(RFToolsDim.MODID + ":" +"textures/sky/stars1.png");
-    private static final ResourceLocation locationStars1a = new ResourceLocation(RFToolsDim.MODID + ":" +"textures/sky/stars1a.png");
-    private static final ResourceLocation locationStars2 = new ResourceLocation(RFToolsDim.MODID + ":" +"textures/sky/stars2.png");
-    private static final ResourceLocation locationStars3 = new ResourceLocation(RFToolsDim.MODID + ":" +"textures/sky/stars3.png");
-    private static final ResourceLocation locationStars3a = new ResourceLocation(RFToolsDim.MODID + ":" +"textures/sky/stars3a.png");
 //    private static final ResourceLocation locationDebugSkyPng = new ResourceLocation(RFTools.MODID + ":" +"textures/sky/debugsky.png");
 
     private static final ResourceLocation locationMoonPhasesPng = new ResourceLocation("textures/environment/moon_phases.png");
@@ -144,41 +139,11 @@ public class SkyRenderer {
         });
     }
 
-    private static final int SKYTYPE_DARKTOP = 0;
-    private static final int SKYTYPE_ALLHORIZONTAL = 1;
-    private static final int SKYTYPE_ALL = 2;
-    private static final int SKYTYPE_ALTERNATING = 3;
-
     public static void registerSkybox(GenericWorldProvider provider, final SkyType skyType) {
         provider.setSkyRenderer(new IRenderHandler() {
             @Override
             public void render(float partialTicks, WorldClient world, Minecraft mc) {
-                ResourceLocation sky;
-                ResourceLocation sky2 = null;
-                int type = SKYTYPE_DARKTOP;
-                switch (skyType) {
-                    case SKY_INFERNO:
-                        sky = locationPlasmaSkyPng;
-                        type = SKYTYPE_DARKTOP;
-                        break;
-                    case SKY_STARS1:
-                        sky = locationStars1;
-                        sky2 = locationStars1a;
-                        type = SKYTYPE_ALTERNATING;
-                        break;
-                    case SKY_STARS2:
-                        sky = locationStars2;
-                        type = SKYTYPE_ALL;
-                        break;
-                    case SKY_STARS3:
-                        sky = locationStars3;
-                        sky2 = locationStars3a;
-                        type = SKYTYPE_ALLHORIZONTAL;
-                        break;
-                    default:
-                        return;
-                }
-                SkyRenderer.renderSkyTexture(sky, sky2, type);
+                SkyRenderer.renderSkyTexture(skyType.sky, skyType.sky2, skyType.skyboxType);
             }
         });
         provider.setCloudRenderer(new IRenderHandler() {
@@ -220,7 +185,7 @@ public class SkyRenderer {
     private static UV[] faceEast  = new UV[] { UV.uv(0.0D, 1.0D), UV.uv(1.0D, 1.0D), UV.uv(1.0D, 0.0D), UV.uv(0.0D, 0.0D) };
 
     @SideOnly(Side.CLIENT)
-    private static void renderSkyTexture(ResourceLocation sky, ResourceLocation sky2, int type) {
+    private static void renderSkyTexture(ResourceLocation sky, ResourceLocation sky2, SkyboxType type) {
         TextureManager renderEngine = Minecraft.getMinecraft().getTextureManager();
 
         GlStateManager.disableFog();
@@ -277,7 +242,7 @@ public class SkyRenderer {
                         break;
                 }
             } else if (i == 4) {       // East face
-                if (type == SKYTYPE_ALTERNATING && sky2 != null) {
+                if (type == SkyboxType.SKYTYPE_ALTERNATING && sky2 != null) {
                     renderEngine.bindTexture(sky2);
                 } else {
                     renderEngine.bindTexture(sky);
@@ -285,7 +250,7 @@ public class SkyRenderer {
                 GlStateManager.rotate(90.0F, 0.0F, 0.0F, 1.0F);
                 uv = faceEast;
             } else if (i == 5) {       // West face
-                if (type == SKYTYPE_ALTERNATING && sky2 != null) {
+                if (type == SkyboxType.SKYTYPE_ALTERNATING && sky2 != null) {
                     renderEngine.bindTexture(sky2);
                 } else {
                     renderEngine.bindTexture(sky);

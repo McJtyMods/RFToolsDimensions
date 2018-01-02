@@ -254,10 +254,10 @@ public class GenericWorldProvider extends WorldProvider implements  /*@todo impl
                 SkyType skyType = dimensionInformation.getSkyDescriptor().getSkyType();
                 if (!hasSkyLight) {
                     SkyRenderer.registerNoSky(this);
+                } else if (skyType.skyboxType != null) {
+                    SkyRenderer.registerSkybox(this, skyType);
                 } else if (skyType == SkyType.SKY_ENDER) {
                     SkyRenderer.registerEnderSky(this);
-                } else if (skyType == SkyType.SKY_INFERNO || skyType == SkyType.SKY_STARS1 || skyType == SkyType.SKY_STARS2 || skyType == SkyType.SKY_STARS3) {
-                    SkyRenderer.registerSkybox(this, skyType);
                 } else {
                     SkyRenderer.registerSky(this, dimensionInformation);
                 }
