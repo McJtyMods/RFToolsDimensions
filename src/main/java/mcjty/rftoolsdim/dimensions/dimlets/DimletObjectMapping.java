@@ -1,5 +1,7 @@
 package mcjty.rftoolsdim.dimensions.dimlets;
 
+import mcjty.lib.varia.EntityTools;
+import mcjty.lib.varia.Logging;
 import mcjty.rftoolsdim.config.MobConfiguration;
 import mcjty.rftoolsdim.dimensions.description.MobDescriptor;
 import mcjty.rftoolsdim.dimensions.description.SkyDescriptor;
@@ -7,6 +9,7 @@ import mcjty.rftoolsdim.dimensions.dimlets.types.DimletType;
 import mcjty.rftoolsdim.dimensions.types.*;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.Biome;
@@ -127,12 +130,19 @@ public class DimletObjectMapping {
     }
 
     public static MobDescriptor getMob(DimletKey dimlet) {
-        if (DimletType.DIMLET_MOB.equals(dimlet.getType())) {
-            MobDescriptor descriptor = MobConfiguration.mobClasses.get(dimlet.getId());
-            if (descriptor == null) {
-                return MobConfiguration.defaultDescriptor;
+        String id = dimlet.getId();
+        if (DimletType.DIMLET_MOB.equals(dimlet.getType()) && !DimletObjectMapping.DEFAULT_ID.equals(id)) {
+            MobDescriptor descriptor = MobConfiguration.mobClasses.get(id);
+            if (descriptor != null) {
+                return descriptor;
             }
-            return descriptor;
+            Class<? extends EntityLiving> entityClass = MobConfiguration.getEntityClass(EntityTools.fixEntityId(id));
+            if(entityClass == null) {
+                Logging.logError("Cannot find mob with id '" + id + "'!");
+                return null;
+            }
+            Logging.warn(null, "No mob descriptor found for '" + id + "'; creating a default one");
+            return new MobDescriptor(entityClass, MobConfiguration.chance, MobConfiguration.mingroup, MobConfiguration.maxgroup, MobConfiguration.maxentity);
         }
         return null;
     }

@@ -17,14 +17,13 @@ public class MobConfiguration {
     public static final String CATEGORY_MOBS = "mobs";
 
     public static final Map<String,MobDescriptor> mobClasses = new HashMap<>();
-    public static MobDescriptor defaultDescriptor;
+    public static int chance, mingroup, maxgroup, maxentity;
 
     public static void init(Configuration cfg) {
-        int chance = cfg.get(CATEGORY_MOBS, "default.chance", 6).getInt();
-        int mingroup = cfg.get(CATEGORY_MOBS, "default.mingroup", 1).getInt();
-        int maxgroup = cfg.get(CATEGORY_MOBS, "default.maxgroup", 3).getInt();
-        int maxentity = cfg.get(CATEGORY_MOBS, "default.maxentity", 10).getInt();
-        defaultDescriptor = new MobDescriptor(null, chance, mingroup, maxgroup, maxentity);
+        chance = cfg.get(CATEGORY_MOBS, "default.chance", 6).getInt();
+        mingroup = cfg.get(CATEGORY_MOBS, "default.mingroup", 1).getInt();
+        maxgroup = cfg.get(CATEGORY_MOBS, "default.maxgroup", 3).getInt();
+        maxentity = cfg.get(CATEGORY_MOBS, "default.maxentity", 10).getInt();
 
         initMobItem(cfg, "Zombie", 100, 8, 8, 60);
         initMobItem(cfg, "Skeleton", 100, 8, 8, 60);
@@ -59,12 +58,16 @@ public class MobConfiguration {
         initMobItem(cfg, "EnderDragon", 4, 1, 2, 4);
     }
 
+    public static Class<? extends EntityLiving> getEntityClass(String id) {
+        EntityEntry entry = ForgeRegistries.ENTITIES.getValue(new ResourceLocation(id));
+        return entry == null ? null : GenericTools.castClass(entry.getEntityClass(), EntityLiving.class);
+    }
+
     // Accepts an old-style (1.10) entity ID or a new-style string representation of a resourcelocation
     private static void initMobItem(Configuration cfg, String name,
                                     int chance, int mingroup, int maxgroup, int maxentity) {
         String id = EntityTools.fixEntityId(name);
-        EntityEntry entry = ForgeRegistries.ENTITIES.getValue(new ResourceLocation(id));
-        Class<? extends EntityLiving> entityClass = entry == null ? null : GenericTools.castClass(entry.getEntityClass(), EntityLiving.class);
+        Class<? extends EntityLiving> entityClass = getEntityClass(id);
         if (entityClass == null) {
             Logging.logError("Cannot find mob with id '" + id +"'!");
             return;
