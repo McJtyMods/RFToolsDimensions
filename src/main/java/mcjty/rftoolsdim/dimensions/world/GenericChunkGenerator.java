@@ -60,9 +60,6 @@ public class GenericChunkGenerator implements IChunkGenerator {
 
     private ChunkGeneratorSettings settings = null;
 
-    private List<Biome.SpawnListEntry> extraSpawns;
-    private List<Integer> extraSpawnsMax;
-
     public Biome[] biomesForGeneration;
 
     private MapGenBase caveGenerator = new MapGenCaves();
@@ -293,21 +290,6 @@ public class GenericChunkGenerator implements IChunkGenerator {
         }
 
         terrainGenerator.setup(world, this);
-
-        setupExtraSpawns();
-    }
-
-    public void setupExtraSpawns() {
-        extraSpawns = new ArrayList<>();
-        extraSpawnsMax = new ArrayList<>();
-        for (MobDescriptor mob : dimensionInformation.getExtraMobs()) {
-            Class<? extends EntityLiving> entityClass = mob.getEntityClass();
-            if (entityClass != null) {
-                extraSpawns.add(new Biome.SpawnListEntry(entityClass, mob.getSpawnChance(), mob.getMinGroup(), mob.getMaxGroup()));
-                extraSpawnsMax.add(mob.getMaxLoaded());
-            }
-        }
-
     }
 
     @Override
@@ -613,29 +595,29 @@ public class GenericChunkGenerator implements IChunkGenerator {
     @Override
     public List<Biome.SpawnListEntry> getPossibleCreatures(EnumCreatureType creatureType, BlockPos pos) {
         List<Biome.SpawnListEntry> creatures = getDefaultCreatures(creatureType, pos);
-        if (extraSpawns.isEmpty() || worldObj == null) {        // null pointer protection here
+        if (dimensionInformation.getExtraMobs().isEmpty() || worldObj == null) {        // null pointer protection here
             return creatures;
         }
 
         if (creatureType == EnumCreatureType.AMBIENT) {
             creatures = new ArrayList<>(creatures);
-            for (int i = 0; i < extraSpawns.size(); i++) {
-                Class<? extends EntityLiving> entityClass = extraSpawns.get(i).entityClass;
+            for (MobDescriptor mob : dimensionInformation.getExtraMobs()) {
+                Class<? extends EntityLiving> entityClass = mob.entityClass;
                 if (entityClass != null && IAnimals.class.isAssignableFrom(entityClass)) {
                     int count = worldObj.countEntities(entityClass);
-                    if (count < extraSpawnsMax.get(i)) {
-                        creatures.add(extraSpawns.get(i));
+                    if (count < mob.getMaxLoaded()) {
+                        creatures.add(mob);
                     }
                 }
             }
         } else if (creatureType == EnumCreatureType.MONSTER) {
             creatures = new ArrayList<>(creatures);
-            for (int i = 0; i < extraSpawns.size(); i++) {
-                Class<? extends EntityLiving> entityClass = extraSpawns.get(i).entityClass;
+            for (MobDescriptor mob : dimensionInformation.getExtraMobs()) {
+                Class<? extends EntityLiving> entityClass = mob.entityClass;
                 if (entityClass != null && IMob.class.isAssignableFrom(entityClass)) {
                     int count = worldObj.countEntities(entityClass);
-                    if (count < extraSpawnsMax.get(i)) {
-                        creatures.add(extraSpawns.get(i));
+                    if (count < mob.getMaxLoaded()) {
+                        creatures.add(mob);
                     }
                 }
             }

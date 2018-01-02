@@ -21,7 +21,6 @@ import mcjty.rftoolsdim.dimensions.dimlets.KnownDimletConfiguration;
 import mcjty.rftoolsdim.dimensions.dimlets.types.DimletType;
 import mcjty.rftoolsdim.dimensions.dimlets.types.IDimletType;
 import mcjty.rftoolsdim.dimensions.types.SpecialType;
-import mcjty.rftoolsdim.dimensions.world.GenericChunkGenerator;
 import mcjty.rftoolsdim.dimensions.world.WorldGenerationTools;
 import mcjty.rftoolsdim.network.RFToolsDimMessages;
 import net.minecraft.block.Block;
@@ -41,7 +40,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
-import net.minecraft.world.gen.ChunkProviderServer;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.util.FakePlayerFactory;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
@@ -171,10 +169,6 @@ public class DimensionEditorTileEntity extends GenericEnergyReceiverTileEntity i
 
                         DimensionInformation information = dimensionManager.getDimensionInformation(id);
                         information.injectDimlet(key);
-                        World dimWorld = DimensionManager.getWorld(id);
-                        if(dimWorld != null) {
-                            ((GenericChunkGenerator)((ChunkProviderServer)dimWorld.getChunkProvider()).chunkGenerator).setupExtraSpawns();
-                        }
                         dimensionManager.save(getWorld());
                     }
 
