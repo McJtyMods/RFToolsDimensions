@@ -29,6 +29,8 @@ import net.minecraft.world.WorldType;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkPrimer;
+import net.minecraft.world.chunk.IChunkProvider;
+import net.minecraft.world.chunk.storage.IChunkLoader;
 import net.minecraft.world.gen.*;
 import net.minecraft.world.gen.feature.WorldGenDungeons;
 import net.minecraft.world.gen.feature.WorldGenLakes;
@@ -447,9 +449,20 @@ public class GenericChunkGenerator implements IChunkGenerator {
 
         if (dimensionInformation.getTerrainType() == TerrainType.TERRAIN_INVERTIGO) {
             if (upsidedownWorld == null) {
-                WorldServer ww = (WorldServer) worldObj;
-                upsidedownWorld = new UpsidedownWorld(ww);
-                net.minecraftforge.common.DimensionManager.setWorld(ww.provider.getDimension(), ww, ww.getMinecraftServer());
+                World ww = worldObj;
+                upsidedownWorld = new UpsidedownWorld((WorldServer) worldObj) {
+                    @Override
+                    protected IChunkProvider createChunkProvider() {
+                        IChunkLoader ichunkloader = ww.getSaveHandler().getChunkLoader(ww.provider);
+                        return new ChunkProviderServer((WorldServer) ww, ichunkloader, ww.provider.createChunkGenerator());
+                    }
+
+                    @Override
+                    public ChunkProviderServer getChunkProvider() {
+                        return (ChunkProviderServer) ww.getChunkProvider();
+                    }
+                };
+                net.minecraftforge.common.DimensionManager.setWorld(ww.provider.getDimension(), (WorldServer) ww, ww.getMinecraftServer());
             }
             upsidedownWorld.worldObj = (WorldServer) worldObj;
             w = upsidedownWorld;
