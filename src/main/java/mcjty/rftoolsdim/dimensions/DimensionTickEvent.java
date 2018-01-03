@@ -399,17 +399,17 @@ public class DimensionTickEvent {
                 }
                 if (power < PowerConfiguration.DIMPOWER_WARN3) {
                     // We are VERY low on power. Start bad effects.
-                    player.addPotionEffect(new PotionEffect(moveSlowdown, EFFECTS_MAX*MAXTICKS, 4, true, true));
-                    player.addPotionEffect(new PotionEffect(digSlowdown, EFFECTS_MAX*MAXTICKS, 4, true, true));
-                    player.addPotionEffect(new PotionEffect(poison, EFFECTS_MAX*MAXTICKS, 2, true, true));
-                    player.addPotionEffect(new PotionEffect(hunger, EFFECTS_MAX*MAXTICKS, 2, true, true));
+                    player.addPotionEffect(new PotionEffect(moveSlowdown, EFFECTS_MAX*MAXTICKS*2, 4, true, true));
+                    player.addPotionEffect(new PotionEffect(digSlowdown, EFFECTS_MAX*MAXTICKS*2, 4, true, true));
+                    player.addPotionEffect(new PotionEffect(poison, EFFECTS_MAX*MAXTICKS*2, 2, true, true));
+                    player.addPotionEffect(new PotionEffect(hunger, EFFECTS_MAX*MAXTICKS*2, 2, true, true));
                 } else if (power < PowerConfiguration.DIMPOWER_WARN2) {
-                    player.addPotionEffect(new PotionEffect(moveSlowdown, EFFECTS_MAX*MAXTICKS, 2, true, true));
-                    player.addPotionEffect(new PotionEffect(digSlowdown, EFFECTS_MAX*MAXTICKS, 2, true, true));
-                    player.addPotionEffect(new PotionEffect(hunger, EFFECTS_MAX*MAXTICKS, 1, true, true));
+                    player.addPotionEffect(new PotionEffect(moveSlowdown, EFFECTS_MAX*MAXTICKS*2, 2, true, true));
+                    player.addPotionEffect(new PotionEffect(digSlowdown, EFFECTS_MAX*MAXTICKS*2, 2, true, true));
+                    player.addPotionEffect(new PotionEffect(hunger, EFFECTS_MAX*MAXTICKS*2, 1, true, true));
                 } else if (power < PowerConfiguration.DIMPOWER_WARN1) {
-                    player.addPotionEffect(new PotionEffect(moveSlowdown, EFFECTS_MAX*MAXTICKS, 0, true, true));
-                    player.addPotionEffect(new PotionEffect(digSlowdown, EFFECTS_MAX*MAXTICKS, 0, true, true));
+                    player.addPotionEffect(new PotionEffect(moveSlowdown, EFFECTS_MAX*MAXTICKS*2, 0, true, true));
+                    player.addPotionEffect(new PotionEffect(digSlowdown, EFFECTS_MAX*MAXTICKS*2, 0, true, true));
                 }
             }
 
