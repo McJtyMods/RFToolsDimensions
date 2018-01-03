@@ -60,7 +60,7 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 minecraft {
-    version = "1.12.2-14.23.0.2527"
+    version = "1.12.2-14.23.1.2583"
     runDir = "run"
     mappings = "snapshot_20171011"
     useDepAts = true
@@ -78,9 +78,9 @@ artifacts {
 
 
 dependencies {
-    deobfCompile "mezz.jei:jei_1.12:4.7.0.67"
-    deobfCompile "mcp.mobius.waila:Hwyla:1.8.18-B32_1.12:api"
-    deobfCompile "mcjty.theoneprobe:TheOneProbe-1.12:1.12-1.4.11-5"
+    deobfCompile "mezz.jei:jei_1.12.2:4.8.5.140"
+    deobfCompile "mcp.mobius.waila:Hwyla:1.8.23-B38_1.12:api"
+    deobfCompile "mcjty.theoneprobe:TheOneProbe-1.12:1.12-1.4.19-11"
     deobfCompile "cofh:RedstoneFlux:1.12-2.0.0.1:universal"
     deobfCompile "com.github.mcjty:intwheel:1.12-1.2.7"
     deobfCompile "com.github.mcjty:mcjtylib:1.12-2.6.2-SNAPSHOT"
