@@ -450,6 +450,8 @@ public class GenericChunkGenerator implements IChunkGenerator {
         if (dimensionInformation.getTerrainType() == TerrainType.TERRAIN_INVERTIGO) {
             if (upsidedownWorld == null) {
                 World ww = worldObj;
+                // This anonymous subclass is necessary to store the capture of ww before WorldServer's constructor
+                // is called, as that will call createChunkProvider which needs ww to be set.
                 upsidedownWorld = new UpsidedownWorld((WorldServer) worldObj) {
                     @Override
                     protected IChunkProvider createChunkProvider() {
