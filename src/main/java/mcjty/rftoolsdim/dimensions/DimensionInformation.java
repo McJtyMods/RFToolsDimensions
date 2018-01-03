@@ -35,6 +35,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -122,15 +123,16 @@ public class DimensionInformation implements IDimensionInformation {
         this.owner = player;
 
         this.forcedDimensionSeed = descriptor.getForcedSeed();
+        long overworldSeed = RfToolsDimensionManager.getWorldForDimension(world, 0).getSeed();
         if (GeneralConfiguration.randomizeSeed) {
             baseSeed = (long) (Math.random() * 10000 + 1);
         } else {
-            baseSeed = world.getSeed();
+            baseSeed = overworldSeed;
         }
 
         worldVersion = VERSION_DIMLETSSEED;
 
-        setupFromDescriptor(world.getSeed());
+        setupFromDescriptor(overworldSeed);
         setupBiomeMapping();
 
         dump(null);
