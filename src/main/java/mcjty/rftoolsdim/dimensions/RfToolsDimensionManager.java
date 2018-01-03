@@ -31,10 +31,12 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.ChunkProviderServer;
 import net.minecraft.world.storage.WorldSavedData;
 import net.minecraftforge.common.DimensionManager;
+import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.io.File;
 import java.util.*;
 
 public class RfToolsDimensionManager extends WorldSavedData {
@@ -293,6 +295,12 @@ public class RfToolsDimensionManager extends WorldSavedData {
     private void registerDimensionToServerAndClient(int id) {
         if (!DimensionManager.isDimensionRegistered(id)) {
             DimensionManager.registerDimension(id, ModDimensions.rftoolsType);
+        }
+        if(DimensionManager.getWorld(id) == null) {
+            File chunkDir = new File(DimensionManager.getCurrentSaveRootDirectory(), DimensionManager.createProviderFor(id).getSaveFolder());
+            if(ForgeChunkManager.savedWorldHasForcedChunkTickets(chunkDir)) {
+                DimensionManager.initDimension(id);
+            }
         }
         RFToolsDimMessages.INSTANCE.sendToAll(new PacketRegisterDimensions(id));
     }
