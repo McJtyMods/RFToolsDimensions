@@ -202,7 +202,7 @@ public class GuiDimletWorkbench extends GenericGuiContainer<DimletWorkbenchTileE
         int x = Mouse.getEventX() * this.width / this.mc.displayWidth;
         int y = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
         Widget widget = window.getToplevel().getWidgetAtPosition(x, y);
-        if (widget != null) {
+        if (widget != null && !(widget instanceof BlockRender)) {
             Object userObject = widget.getUserObject();
             if (userObject instanceof DimletKey) {
                 DimletKey key = (DimletKey) userObject;
