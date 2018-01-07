@@ -8,32 +8,20 @@ import net.minecraft.world.gen.layer.GenLayer;
 import net.minecraft.world.gen.layer.GenLayerVoronoiZoom;
 import net.minecraft.world.storage.WorldInfo;
 
-public class GenericBiomeProvider extends BiomeProvider {
-    private DimensionInformation dimensionInformation = null;
+public abstract class GenericBiomeProvider extends BiomeProvider {
 
-    public static DimensionInformation hackyDimensionInformation;       // Hack to get the dimension information here before 'super'.
+    public abstract DimensionInformation getDimensionInformation(); // Hack to get the dimension information here before 'super'.
 
-    public DimensionInformation getDimensionInformation() {
-        return dimensionInformation;
-    }
-
-    public GenericBiomeProvider(long seed, WorldInfo worldInfo, DimensionInformation dimensionInformation) {
+    public GenericBiomeProvider(long seed, WorldInfo worldInfo) {
         super(worldInfo);
-        this.dimensionInformation = dimensionInformation;
     }
 
     @Override
     public GenLayer[] getModdedBiomeGenerators(WorldType worldType, long seed, GenLayer[] original) {
-        if (dimensionInformation == null) {
-            dimensionInformation = hackyDimensionInformation;
-        }
         GenLayer[] layer = super.getModdedBiomeGenerators(worldType, seed, original);
         GenLayer rflayer = null;
         ControllerType type;
-        DimensionInformation di = dimensionInformation;
-        if (di == null) {
-            di = hackyDimensionInformation;
-        }
+        DimensionInformation di = getDimensionInformation();
 
         type = di.getControllerType();
 
