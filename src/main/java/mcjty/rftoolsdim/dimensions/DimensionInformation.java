@@ -92,8 +92,8 @@ public class DimensionInformation implements IDimensionInformation {
     private Set<EffectType> effectTypes = EnumSet.noneOf(EffectType.class);
 
     private ControllerType controllerType = null;
-    private List<Biome> biomes = new ArrayList<>();
-    private static final Map<Integer, Integer> biomeMapping = new HashMap<>();
+    private final List<Biome> biomes = new ArrayList<>();
+    private final Map<Integer, Integer> biomeMapping = new HashMap<>();
 
     private String digitString = "";
 
@@ -1162,7 +1162,7 @@ public class DimensionInformation implements IDimensionInformation {
         biomeMapping.clear();
         if (controllerType == ControllerType.CONTROLLER_FILTERED) {
             final Set<Integer> ids = new HashSet<>();
-            for (Biome biome : Biome.REGISTRY) {
+            for (Biome biome : biomes) {
                 if (biome != null) {
                     ids.add(Biome.getIdForBiome(biome));
                 } else {
