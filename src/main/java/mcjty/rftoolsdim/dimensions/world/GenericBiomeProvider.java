@@ -12,7 +12,7 @@ public abstract class GenericBiomeProvider extends BiomeProvider {
 
     public abstract DimensionInformation getDimensionInformation(); // Hack to get the dimension information here before 'super'.
 
-    public GenericBiomeProvider(long seed, WorldInfo worldInfo) {
+    public GenericBiomeProvider(WorldInfo worldInfo) {
         super(worldInfo);
     }
 
@@ -20,10 +20,7 @@ public abstract class GenericBiomeProvider extends BiomeProvider {
     public GenLayer[] getModdedBiomeGenerators(WorldType worldType, long seed, GenLayer[] original) {
         GenLayer[] layer = super.getModdedBiomeGenerators(worldType, seed, original);
         GenLayer rflayer = null;
-        ControllerType type;
-        DimensionInformation di = getDimensionInformation();
-
-        type = di.getControllerType();
+        ControllerType type = getDimensionInformation().getControllerType();
 
         switch (type) {
             case CONTROLLER_DEFAULT:

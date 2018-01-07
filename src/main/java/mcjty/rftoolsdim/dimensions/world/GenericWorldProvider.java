@@ -240,7 +240,7 @@ public class GenericWorldProvider extends WorldProvider implements  /*@todo impl
                 };
                 this.biomeProvider = new BiomeProvider(worldInfo);
             } else {
-                this.biomeProvider = new GenericBiomeProvider(seed, world.getWorldInfo()) {
+                this.biomeProvider = new GenericBiomeProvider(world.getWorldInfo()) {
                     @Override
                     public DimensionInformation getDimensionInformation() {
                         return dimensionInformation; // Hack to get the dimension information in the superclass.
