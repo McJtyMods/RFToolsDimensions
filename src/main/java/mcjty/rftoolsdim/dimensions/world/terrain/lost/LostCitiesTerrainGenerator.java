@@ -573,7 +573,7 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
             return false;
         }
 
-        public void scan(BuildingInfo info, ChunkPrimer primer, char a, BlockPos pos) {
+        public void scan(BuildingInfo info, ChunkPrimer primer, IBlockState a, BlockPos pos) {
             Queue<BlockPos> todo = new ArrayDeque<>();
             todo.add(pos);
 
@@ -586,7 +586,7 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
                 if (isOutside(info, pos.getX(), pos.getY(), pos.getZ())) {
                     continue;
                 }
-                if (primer.data[index] == a) {
+                if (BaseTerrainGenerator.getBlockState(primer, index).equals(a)) {
                     continue;
                 }
                 connectedBlocks.add(index);
@@ -625,8 +625,7 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
     private void fixAfterExplosion(ChunkPrimer primer, BuildingInfo info, Random rand) {
         int start = groundLevel - info.floorsBelowGround * 6;
         int end = 63 + (info.floors+2) * 6;
-        char air = (char) Block.BLOCK_STATE_IDS.get(LostCitiesTerrainGenerator.air);
-        char liquid = (char) Block.BLOCK_STATE_IDS.get(provider.dimensionInformation.getFluidForTerrain().getDefaultState());
+        IBlockState liquid = provider.dimensionInformation.getFluidForTerrain().getDefaultState();
 
         List<Blob> blobs = new ArrayList<>();
 
@@ -634,8 +633,8 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
             for (int z = 0; z < 16; ++z) {
                 int index = (x << 12) | (z << 8) + start;
                 for (int y = start ; y < end ; y++) {
-                    char p = primer.data[index];
-                    if (p != air) {
+                    IBlockState p = BaseTerrainGenerator.getBlockState(primer, index);
+                    if (!p.equals(air)) {
                         Blob blob = findBlob(blobs, index);
                         if (blob == null) {
                             blob = new Blob(start, end + 6);
@@ -656,7 +655,7 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
         for (Blob blob : blobs) {
             if (rand.nextFloat() < LostCityConfiguration.DESTROY_OR_MOVE_CHANCE && blob.connectedBlocks.size() < LostCityConfiguration.DESTROY_SMALL_SECTIONS_SIZE) {
                 for (Integer index : blob.connectedBlocks) {
-                    primer.data[index] = ((index&0xff) < waterLevel) ? liquid : air;
+                    BaseTerrainGenerator.setBlockState(primer, index, ((index&0xff) < waterLevel) ? liquid : air);
                 }
             } else {
                 for (Integer index : blob.connectedBlocks) {
@@ -665,12 +664,14 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
             }
         }
         for (Integer index : blocksToMove.connectedBlocks) {
-            char c = primer.data[index];
-            primer.data[index] = ((index&0xff) < waterLevel) ? liquid : air;
-            while (blocksToMove.contains(index - 1) || primer.data[index - 1] == air || primer.data[index - 1] == liquid) {
+            IBlockState c = BaseTerrainGenerator.getBlockState(primer, index);
+            BaseTerrainGenerator.setBlockState(primer, index, ((index&0xff) < waterLevel) ? liquid : air);
+            IBlockState iblockstate = BaseTerrainGenerator.getBlockState(primer, index - 1);
+            while (blocksToMove.contains(index - 1) || iblockstate.equals(air) || iblockstate.equals(liquid)) {
                 --index;
+                iblockstate = BaseTerrainGenerator.getBlockState(primer, index - 1);
             }
-            primer.data[index] = c;
+            BaseTerrainGenerator.setBlockState(primer, index, c);
         }
     }
 
@@ -850,8 +851,7 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
 
     private void generateDebrisFromChunk(ChunkPrimer primer, Random rand, BuildingInfo adjacentInfo, BiFunction<Integer, Integer, Float> locationFactor) {
         if (adjacentInfo.hasBuilding) {
-            char air = (char) Block.BLOCK_STATE_IDS.get(LostCitiesTerrainGenerator.air);
-            char liquid = (char) Block.BLOCK_STATE_IDS.get(provider.dimensionInformation.getFluidForTerrain().getDefaultState());
+            IBlockState liquid = provider.dimensionInformation.getFluidForTerrain().getDefaultState();
             float damageFactor = adjacentInfo.getDamageArea().getDamageFactor();
             if (damageFactor > .5f) {
                 // An estimate of the amount of blocks
@@ -864,11 +864,12 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
                     int x = rand.nextInt(16);
                     int z = rand.nextInt(16);
                     if (rand.nextFloat() < locationFactor.apply(x, z)) {
-                        int index = (x << 12) | (z << 8) + 255;
-                        while (primer.data[index] == air || primer.data[index] == liquid) {
-                            index--;
+                        int index = (x << 12) | (z << 8) + 256;
+                        IBlockState iblockstate = BaseTerrainGenerator.getBlockState(primer, index - 1);
+                        while (iblockstate.equals(air) || iblockstate.equals(liquid)) {
+                            --index;
+                            iblockstate = BaseTerrainGenerator.getBlockState(primer, index - 1);
                         }
-                        index++;
                         IBlockState b;
                         switch (rand.nextInt(5)) {
                             case 0:
