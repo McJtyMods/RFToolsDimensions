@@ -126,7 +126,7 @@ public class LiquidAbsorberTileEntity extends GenericTileEntity implements ITick
 
                     if (blockMatches(c)) {
                         // @todo check getBreakSound() client-side!
-                        SoundTools.playSound(getWorld(), block.getSoundType().breakSound, getPos().getX(), getPos().getY(), getPos().getZ(), 1.0f, 1.0f);
+                        SoundTools.playSound(getWorld(), block.getSoundType().getBreakSound(), getPos().getX(), getPos().getY(), getPos().getZ(), 1.0f, 1.0f);
                         getWorld().setBlockToAir(c);
                         absorbing--;
                         IBlockState state = getWorld().getBlockState(c);
