@@ -126,7 +126,7 @@ public class LiquidAbsorberTileEntity extends GenericTileEntity implements ITick
 
                     if (blockMatches(c)) {
                         IBlockState oldState = getWorld().getBlockState(c);
-                        SoundTools.playSound(getWorld(), block.getSoundType().getBreakSound(), getPos().getX(), getPos().getY(), getPos().getZ(), 1.0f, 1.0f);
+                        SoundTools.playSound(getWorld(), block.getSoundType(oldState, getWorld(), c, null).getBreakSound(), getPos().getX(), getPos().getY(), getPos().getZ(), 1.0f, 1.0f);
                         getWorld().setBlockToAir(c);
                         absorbing--;
                         IBlockState newState = getWorld().getBlockState(c);
