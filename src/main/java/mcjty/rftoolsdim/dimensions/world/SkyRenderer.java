@@ -762,9 +762,8 @@ public class SkyRenderer {
         Tessellator tessellator = Tessellator.getInstance();
         float f2 = 12.0F;
         float f3 = 4.0F;
-        RenderGlobal renderGlobal = mc.renderGlobal;
 
-        double d0 = (CloudRenderAccessHelper.getCloudTickCounter(renderGlobal) + partialTicks);
+        double d0 = (mc.renderGlobal.cloudTickCounter + partialTicks);
 
         double entityX = mc.getRenderViewEntity().prevPosX + (mc.getRenderViewEntity().posX - mc.getRenderViewEntity().prevPosX) * partialTicks;
         double entityZ = mc.getRenderViewEntity().prevPosZ + (mc.getRenderViewEntity().posZ - mc.getRenderViewEntity().prevPosZ) * partialTicks;
