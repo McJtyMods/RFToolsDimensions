@@ -117,11 +117,12 @@ public class MaterialAbsorberTileEntity extends GenericTileEntity implements ITi
                     checkBlock(c, EnumFacing.NORTH);
 
                     if (blockMatches(c)) {
+                        IBlockState oldState = getWorld().getBlockState(c);
                         SoundTools.playSound(getWorld(), blockState.getBlock().getSoundType().getBreakSound(), getPos().getX(), getPos().getY(), getPos().getZ(), 1.0f, 1.0f);
                         getWorld().setBlockToAir(c);
                         absorbing--;
-                        IBlockState state = getWorld().getBlockState(c);
-                        getWorld().notifyBlockUpdate(c, state, state, 3);
+                        IBlockState newState = getWorld().getBlockState(c);
+                        getWorld().notifyBlockUpdate(c, oldState, newState, 3);
                     }
                 }
             }
