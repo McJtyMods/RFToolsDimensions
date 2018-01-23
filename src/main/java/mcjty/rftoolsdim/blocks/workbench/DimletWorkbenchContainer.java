@@ -4,6 +4,9 @@ import mcjty.lib.container.ContainerFactory;
 import mcjty.lib.container.GenericContainer;
 import mcjty.lib.container.SlotDefinition;
 import mcjty.lib.container.SlotType;
+import mcjty.rftoolsdim.config.Settings;
+import mcjty.rftoolsdim.dimensions.dimlets.DimletKey;
+import mcjty.rftoolsdim.dimensions.dimlets.KnownDimletConfiguration;
 import mcjty.rftoolsdim.items.ModItems;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ClickType;
@@ -28,7 +31,17 @@ public class DimletWorkbenchContainer extends GenericContainer {
     public static final ContainerFactory factory = new ContainerFactory() {
         @Override
         protected void setup() {
-            addSlotBox(new SlotDefinition(SlotType.SLOT_SPECIFICITEM, new ItemStack(ModItems.knownDimletItem)), CONTAINER_INVENTORY, SLOT_INPUT, 11, 7, 1, 18, 1, 18);
+            addSlotBox(new SlotDefinition(SlotType.SLOT_SPECIFICITEM, new ItemStack(ModItems.knownDimletItem)) {
+                @Override
+                public boolean itemStackMatches(ItemStack stack) {
+                    if(super.itemStackMatches(stack)) {
+                        DimletKey key = KnownDimletConfiguration.getDimletKey(stack);
+                        Settings settings = KnownDimletConfiguration.getSettings(key);
+                        return settings != null && settings.isDimlet() && !KnownDimletConfiguration.isCraftable(key);
+                    }
+                    return false;
+                }
+            }, CONTAINER_INVENTORY, SLOT_INPUT, 11, 7, 1, 18, 1, 18);
             addSlotBox(new SlotDefinition(SlotType.SLOT_CRAFTRESULT), CONTAINER_INVENTORY, SLOT_OUTPUT,                                                             11+8+18, 162+6+36+10, 1, 18, 1, 18);
             addSlotBox(new SlotDefinition(SlotType.SLOT_SPECIFICITEM, new ItemStack(ModItems.dimletBaseItem)), CONTAINER_INVENTORY, SLOT_BASE,                      11+8,    162+8, 1, 18, 1, 18);
             addSlotBox(new SlotDefinition(SlotType.SLOT_SPECIFICITEM, new ItemStack(ModItems.dimletControlCircuitItem)), CONTAINER_INVENTORY, SLOT_CONTROLLER,      11+8+18, 162+8, 1, 18, 1, 18);
