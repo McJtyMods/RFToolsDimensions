@@ -27,6 +27,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetHandlerPlayServer;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
@@ -65,6 +66,10 @@ public class ForgeEventHandlers {
         McJtyRegister.registerItems(RFToolsDim.instance, event.getRegistry());
     }
 
+    @SubscribeEvent
+    public void registerSounds(RegistryEvent.Register<SoundEvent> sounds) {
+        ModSounds.init(sounds.getRegistry());
+    }
 
     @SubscribeEvent
     public void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {

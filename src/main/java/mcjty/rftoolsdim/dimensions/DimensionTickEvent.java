@@ -1,5 +1,6 @@
 package mcjty.rftoolsdim.dimensions;
 
+import mcjty.rftoolsdim.ModSounds;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.config.GeneralConfiguration;
 import mcjty.rftoolsdim.config.PowerConfiguration;
@@ -15,6 +16,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
@@ -146,10 +148,9 @@ public class DimensionTickEvent {
     }
 
     private void playHowl(WorldServer world) {
-        //@todo
-//        for (EntityPlayer player : world.playerEntities) {
-//            world.playSound(player.posX, player.posY, player.posZ, RFToolsDim.MODID+":wolfhowl", 1.0f, 1.0f);
-//        }
+        for (EntityPlayer player : world.playerEntities) {
+            world.playSound(null, player.posX, player.posY, player.posZ, ModSounds.wolfhowl, SoundCategory.AMBIENT, 1.0f, 1.0f);
+        }
     }
 
     private void handleFireworks(WorldServer world) {
