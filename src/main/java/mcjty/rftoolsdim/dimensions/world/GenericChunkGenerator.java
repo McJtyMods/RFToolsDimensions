@@ -397,35 +397,36 @@ public class GenericChunkGenerator implements IChunkGenerator {
     }
 
     private static void reverse(ChunkPrimer primer) {
+        ChunkPrimerHelper helper = new ChunkPrimerHelper(primer);
         for (int x = 0; x < 16; x++) {
             for (int z = 0; z < 16; z++) {
                 int idx = (x << 12 | z << 8);
                 for (int y = 0; y < 64; y++) {
-                    char c = primer.data[idx + y];
+                    int c = helper.getData(idx + y);
                     c = findSuitableReplacement(c);
-                    char c2 = primer.data[idx + 127 - y];
+                    int c2 = helper.getData(idx + 127 - y);
                     c2 = findSuitableReplacement(c2);
-                    primer.data[idx + y] = c2;
-                    primer.data[idx + 127 - y] = c;
+                    helper.setData(idx + y, c2);
+                    helper.setData(idx + 127 - y, c);
                 }
                 for (int y = 128; y < 255; y++) {
-                    primer.data[idx + y] = 0;
+                    helper.setData(idx + y, 0);
                 }
             }
         }
     }
 
-    private static char findSuitableReplacement(char c) {
+    private static int findSuitableReplacement(int c) {
         IBlockState iblockstate = Block.BLOCK_STATE_IDS.getByValue(c);
         Block block = iblockstate.getBlock();
         if (block instanceof BlockLiquid) {
-            c = (char) Block.BLOCK_STATE_IDS.get(ModBlocks.fakeWaterBlock.getDefaultState());
+            c = Block.BLOCK_STATE_IDS.get(ModBlocks.fakeWaterBlock.getDefaultState());
         } else if (block instanceof BlockGravel) {
-            c = (char) Block.BLOCK_STATE_IDS.get(ModBlocks.fakeGravelBlock.getDefaultState());
+            c = Block.BLOCK_STATE_IDS.get(ModBlocks.fakeGravelBlock.getDefaultState());
         } else if (block instanceof BlockSand) {
-            c = (char) Block.BLOCK_STATE_IDS.get(ModBlocks.fakeSandBlock.getDefaultState());
+            c = Block.BLOCK_STATE_IDS.get(ModBlocks.fakeSandBlock.getDefaultState());
         } else if (block == Blocks.BEDROCK) {
-            c = (char) Block.BLOCK_STATE_IDS.get(Blocks.STONE.getDefaultState());
+            c = Block.BLOCK_STATE_IDS.get(Blocks.STONE.getDefaultState());
         } else if (block instanceof BlockFalling) {
             c = 0;
         }

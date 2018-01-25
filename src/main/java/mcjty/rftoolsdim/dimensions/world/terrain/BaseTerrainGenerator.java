@@ -1,14 +1,10 @@
 package mcjty.rftoolsdim.dimensions.world.terrain;
 
 import mcjty.rftoolsdim.dimensions.world.GenericChunkGenerator;
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.ChunkPrimer;
-
-import java.util.Arrays;
 
 /**
  * The base terrain generator.
@@ -20,19 +16,11 @@ public interface BaseTerrainGenerator {
 
     void replaceBlocksForBiome(int chunkX, int chunkZ, ChunkPrimer chunkPrimer, Biome[] Biomes);
 
-    IBlockState defaultState = Blocks.AIR.getDefaultState();
-
     static void setBlockState(ChunkPrimer primer, int index, IBlockState state) {
-        primer.data[index] = (char) Block.BLOCK_STATE_IDS.get(state);
-    }
-
-    // From 's' (inclusive) to 'e' (exclusive)
-    static void setBlockStateRange(ChunkPrimer primer, int s, int e, IBlockState state) {
-        Arrays.fill(primer.data, s, e, (char) Block.BLOCK_STATE_IDS.get(state));
+        primer.setBlockState((index >> 12) & 15, index & 255, (index >> 8) & 15, state);
     }
 
     static IBlockState getBlockState(ChunkPrimer primer, int index) {
-        IBlockState iblockstate = Block.BLOCK_STATE_IDS.getByValue(primer.data[index]);
-        return iblockstate == null ? defaultState : iblockstate;
+        return primer.getBlockState((index >> 12) & 15, index & 255, (index >> 8) & 15);
     }
 }

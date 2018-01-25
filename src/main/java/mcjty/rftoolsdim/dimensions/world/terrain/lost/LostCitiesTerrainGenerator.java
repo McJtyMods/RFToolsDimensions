@@ -3,6 +3,7 @@ package mcjty.rftoolsdim.dimensions.world.terrain.lost;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.config.LostCityConfiguration;
 import mcjty.rftoolsdim.config.WorldgenConfiguration;
+import mcjty.rftoolsdim.dimensions.world.ChunkPrimerHelper;
 import mcjty.rftoolsdim.dimensions.world.GenericChunkGenerator;
 import mcjty.rftoolsdim.dimensions.world.terrain.BaseTerrainGenerator;
 import mcjty.rftoolsdim.dimensions.world.terrain.NormalTerrainGenerator;
@@ -207,13 +208,14 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
         BuildingInfo info = new BuildingInfo(chunkX, chunkZ, provider.seed);
         air = Blocks.AIR.getDefaultState();
         bedrock = Blocks.BEDROCK.getDefaultState();
+        ChunkPrimerHelper helper = new ChunkPrimerHelper(primer);
 
         if (info.isCity) {
-            doCityChunk(chunkX, chunkZ, primer, info);
+            doCityChunk(chunkX, chunkZ, helper, info);
         } else {
             doNormalChunk(chunkX, chunkZ, primer, info);
         }
-        generateDebris(primer, provider.rand, info);
+        generateDebris(helper, provider.rand, info);
     }
 
     private void doNormalChunk(int chunkX, int chunkZ, ChunkPrimer primer, BuildingInfo info) {
@@ -483,7 +485,8 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
         }
     }
 
-    private void doCityChunk(int chunkX, int chunkZ, ChunkPrimer primer, BuildingInfo info) {
+    private void doCityChunk(int chunkX, int chunkZ, ChunkPrimerHelper helper, BuildingInfo info) {
+        ChunkPrimer primer = helper.getPrimer();
         boolean building = info.hasBuilding;
 
         Random rand = new Random(provider.seed * 377 + chunkZ * 341873128712L + chunkX * 132897987541L);
@@ -506,16 +509,16 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
                 }
 
                 if (building) {
-                    index = generateBuilding(primer, info, rand, chunkX, chunkZ, index, x, z, height);
+                    index = generateBuilding(helper, info, rand, chunkX, chunkZ, index, x, z, height);
                 } else {
-                    index = generateStreet(primer, info, rand, chunkX, chunkZ, index, x, z, height);
+                    index = generateStreet(helper, info, rand, chunkX, chunkZ, index, x, z, height);
                 }
             }
         }
 
         if (building) {
             if (info.getDamageArea().hasExplosions()) {
-                fixAfterExplosion(primer, info, rand);
+                fixAfterExplosion(helper, info, rand);
             }
         }
     }
@@ -573,7 +576,7 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
             return false;
         }
 
-        public void scan(BuildingInfo info, ChunkPrimer primer, char a, BlockPos pos) {
+        public void scan(BuildingInfo info, ChunkPrimerHelper helper, int a, BlockPos pos) {
             Queue<BlockPos> todo = new ArrayDeque<>();
             todo.add(pos);
 
@@ -586,7 +589,7 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
                 if (isOutside(info, pos.getX(), pos.getY(), pos.getZ())) {
                     continue;
                 }
-                if (primer.data[index] == a) {
+                if (helper.getData(index) == a) {
                     continue;
                 }
                 connectedBlocks.add(index);
@@ -622,11 +625,11 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
     }
 
     /// Fix floating blocks after an explosion
-    private void fixAfterExplosion(ChunkPrimer primer, BuildingInfo info, Random rand) {
+    private void fixAfterExplosion(ChunkPrimerHelper helper, BuildingInfo info, Random rand) {
         int start = groundLevel - info.floorsBelowGround * 6;
         int end = 63 + (info.floors+2) * 6;
-        char air = (char) Block.BLOCK_STATE_IDS.get(LostCitiesTerrainGenerator.air);
-        char liquid = (char) Block.BLOCK_STATE_IDS.get(provider.dimensionInformation.getFluidForTerrain().getDefaultState());
+        int air = Block.BLOCK_STATE_IDS.get(LostCitiesTerrainGenerator.air);
+        int liquid = Block.BLOCK_STATE_IDS.get(provider.dimensionInformation.getFluidForTerrain().getDefaultState());
 
         List<Blob> blobs = new ArrayList<>();
 
@@ -634,12 +637,12 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
             for (int z = 0; z < 16; ++z) {
                 int index = (x << 12) | (z << 8) + start;
                 for (int y = start ; y < end ; y++) {
-                    char p = primer.data[index];
+                    int p = helper.getData(index);
                     if (p != air) {
                         Blob blob = findBlob(blobs, index);
                         if (blob == null) {
                             blob = new Blob(start, end + 6);
-                            blob.scan(info, primer, air, new BlockPos(x, y, z));
+                            blob.scan(info, helper, air, new BlockPos(x, y, z));
                             blobs.add(blob);
                         }
                     }
@@ -656,7 +659,7 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
         for (Blob blob : blobs) {
             if (rand.nextFloat() < LostCityConfiguration.DESTROY_OR_MOVE_CHANCE && blob.connectedBlocks.size() < LostCityConfiguration.DESTROY_SMALL_SECTIONS_SIZE) {
                 for (Integer index : blob.connectedBlocks) {
-                    primer.data[index] = ((index&0xff) < waterLevel) ? liquid : air;
+                    helper.setData(index, ((index&0xff) < waterLevel) ? liquid : air);
                 }
             } else {
                 for (Integer index : blob.connectedBlocks) {
@@ -665,16 +668,17 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
             }
         }
         for (Integer index : blocksToMove.connectedBlocks) {
-            char c = primer.data[index];
-            primer.data[index] = ((index&0xff) < waterLevel) ? liquid : air;
-            while (blocksToMove.contains(index - 1) || primer.data[index - 1] == air || primer.data[index - 1] == liquid) {
+            int c = helper.getData(index);
+            helper.setData(index, ((index&0xff) < waterLevel) ? liquid : air);
+            while (blocksToMove.contains(index - 1) || helper.getData(index - 1) == air || helper.getData(index - 1) == liquid) {
                 --index;
             }
-            primer.data[index] = c;
+            helper.setData(index, c);
         }
     }
 
-    private int generateStreet(ChunkPrimer primer, BuildingInfo info, Random rand, int chunkX, int chunkZ, int index, int x, int z, int height) {
+    private int generateStreet(ChunkPrimerHelper helper, BuildingInfo info, Random rand, int chunkX, int chunkZ, int index, int x, int z, int height) {
+        ChunkPrimer primer = helper.getPrimer();
         DamageArea damageArea = info.getDamageArea();
         Style style = info.getStyle();
         int cx = chunkX * 16;
@@ -832,26 +836,26 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
         }
 
         int blocks = 256 - height;
-        BaseTerrainGenerator.setBlockStateRange(primer, index, index + blocks, air);
+        helper.setDataRange(index, index + blocks, Block.BLOCK_STATE_IDS.get(air));
         index += blocks;
         return index;
     }
 
-    private void generateDebris(ChunkPrimer primer, Random rand, BuildingInfo info) {
-        generateDebrisFromChunk(primer, rand, info.getXmin(), (xx, zz) -> (15.0f-xx) / 16.0f);
-        generateDebrisFromChunk(primer, rand, info.getXmax(), (xx, zz) -> xx / 16.0f);
-        generateDebrisFromChunk(primer, rand, info.getZmin(), (xx, zz) -> (15.0f-zz) / 16.0f);
-        generateDebrisFromChunk(primer, rand, info.getZmax(), (xx, zz) -> zz / 16.0f);
-        generateDebrisFromChunk(primer, rand, info.getXmin().getZmin(), (xx, zz) -> ((15.0f-xx) * (15.0f-zz)) / 256.0f);
-        generateDebrisFromChunk(primer, rand, info.getXmax().getZmax(), (xx, zz) -> (xx * zz) / 256.0f);
-        generateDebrisFromChunk(primer, rand, info.getXmin().getZmax(), (xx, zz) -> ((15.0f-xx) * zz) / 256.0f);
-        generateDebrisFromChunk(primer, rand, info.getXmax().getZmin(), (xx, zz) -> (xx * (15.0f-zz)) / 256.0f);
+    private void generateDebris(ChunkPrimerHelper helper, Random rand, BuildingInfo info) {
+        generateDebrisFromChunk(helper, rand, info.getXmin(), (xx, zz) -> (15.0f-xx) / 16.0f);
+        generateDebrisFromChunk(helper, rand, info.getXmax(), (xx, zz) -> xx / 16.0f);
+        generateDebrisFromChunk(helper, rand, info.getZmin(), (xx, zz) -> (15.0f-zz) / 16.0f);
+        generateDebrisFromChunk(helper, rand, info.getZmax(), (xx, zz) -> zz / 16.0f);
+        generateDebrisFromChunk(helper, rand, info.getXmin().getZmin(), (xx, zz) -> ((15.0f-xx) * (15.0f-zz)) / 256.0f);
+        generateDebrisFromChunk(helper, rand, info.getXmax().getZmax(), (xx, zz) -> (xx * zz) / 256.0f);
+        generateDebrisFromChunk(helper, rand, info.getXmin().getZmax(), (xx, zz) -> ((15.0f-xx) * zz) / 256.0f);
+        generateDebrisFromChunk(helper, rand, info.getXmax().getZmin(), (xx, zz) -> (xx * (15.0f-zz)) / 256.0f);
     }
 
-    private void generateDebrisFromChunk(ChunkPrimer primer, Random rand, BuildingInfo adjacentInfo, BiFunction<Integer, Integer, Float> locationFactor) {
+    private void generateDebrisFromChunk(ChunkPrimerHelper helper, Random rand, BuildingInfo adjacentInfo, BiFunction<Integer, Integer, Float> locationFactor) {
         if (adjacentInfo.hasBuilding) {
-            char air = (char) Block.BLOCK_STATE_IDS.get(LostCitiesTerrainGenerator.air);
-            char liquid = (char) Block.BLOCK_STATE_IDS.get(provider.dimensionInformation.getFluidForTerrain().getDefaultState());
+            int air = Block.BLOCK_STATE_IDS.get(LostCitiesTerrainGenerator.air);
+            int liquid = Block.BLOCK_STATE_IDS.get(provider.dimensionInformation.getFluidForTerrain().getDefaultState());
             float damageFactor = adjacentInfo.getDamageArea().getDamageFactor();
             if (damageFactor > .5f) {
                 // An estimate of the amount of blocks
@@ -860,12 +864,13 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
                 int destroyedBlocks = (int) (blocks * damage);
                 // How many go this direction (approx, based on cardinal directions from building as well as number that simply fall down)
                 destroyedBlocks /= LostCityConfiguration.DEBRIS_TO_NEARBYCHUNK_FACTOR;
+                ChunkPrimer primer = helper.getPrimer();
                 for (int i = 0; i < destroyedBlocks; i++) {
                     int x = rand.nextInt(16);
                     int z = rand.nextInt(16);
                     if (rand.nextFloat() < locationFactor.apply(x, z)) {
                         int index = (x << 12) | (z << 8) + 255;
-                        while (primer.data[index] == air || primer.data[index] == liquid) {
+                        while (helper.getData(index) == air || helper.getData(index) == liquid) {
                             index--;
                         }
                         index++;
@@ -914,7 +919,8 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
         return false;
     }
 
-    private int generateBuilding(ChunkPrimer primer, BuildingInfo info, Random rand, int chunkX, int chunkZ, int index, int x, int z, int height) {
+    private int generateBuilding(ChunkPrimerHelper helper, BuildingInfo info, Random rand, int chunkX, int chunkZ, int index, int x, int z, int height) {
+        ChunkPrimer primer = helper.getPrimer();
         DamageArea damageArea = info.getDamageArea();
         Style style = info.getStyle();
         int cx = chunkX * 16;
@@ -961,7 +967,7 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
             height++;
         }
         int blocks = 256 - height;
-        BaseTerrainGenerator.setBlockStateRange(primer, index, index + blocks, air);
+        helper.setDataRange(index, index + blocks, Block.BLOCK_STATE_IDS.get(air));
         index += blocks;
         return index;
     }
