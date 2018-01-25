@@ -1,4 +1,4 @@
 {
-    "deep_rumble" : {"category": "block", "sounds": ["deep_rumble"]},
-    "wolfhowl" : {"category": "ambient", "sounds": ["wolfhowl"]}
+    "deep_rumble" : {"category": "block", "sounds": ["rftoolsdim:deep_rumble"]},
+    "wolfhowl" : {"category": "ambient", "sounds": ["rftoolsdim:wolfhowl"]}
 }
