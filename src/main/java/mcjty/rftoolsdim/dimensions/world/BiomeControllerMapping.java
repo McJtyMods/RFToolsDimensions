@@ -42,9 +42,13 @@ public class BiomeControllerMapping {
         boolean ok = false;
         for (Biome biome : Biome.REGISTRY) {
             if (biome != null) {
-                if (filter.match(biome)) {
-                    ok = true;
-                    break;
+                try {
+                    if (filter.match(biome)) {
+                        ok = true;
+                        break;
+                    }
+                } catch(RuntimeException e) {
+                    throw new RuntimeException("Checking suitability of biome " + biome.biomeName + " (" + Biome.REGISTRY.getNameForObject(biome) + ")", e);
                 }
             }
         }
@@ -59,10 +63,14 @@ public class BiomeControllerMapping {
         } else {
             for (Biome biome : Biome.REGISTRY) {
                 if (biome != null) {
-                    if (filter.match(biome)) {
-                        map.put(Biome.getIdForBiome(biome), Biome.getIdForBiome(biome));
-                    } else {
-                        map.put(Biome.getIdForBiome(biome), findSuitableBiomes(biome, filter));
+                    try {
+                        if (filter.match(biome)) {
+                            map.put(Biome.getIdForBiome(biome), Biome.getIdForBiome(biome));
+                        } else {
+                            map.put(Biome.getIdForBiome(biome), findSuitableBiomes(biome, filter));
+                        }
+                    } catch(RuntimeException e) {
+                        throw new RuntimeException("Checking suitability of biome " + biome.biomeName + " (" + Biome.REGISTRY.getNameForObject(biome) + ")", e);
                     }
                 }
             }
@@ -74,18 +82,22 @@ public class BiomeControllerMapping {
         int bestidx = 0;        // Make sure we always have some matching biome.
 
         for (Biome base : Biome.REGISTRY) {
-            if (base != null && filter.match(base)) {
-                // This 'base' could be a replacement. Check if it is close enough.
-                if (biome.getBiomeClass() == base.getBiomeClass()) {
-                    // Same class, that's good enough for me.
-                    return Biome.getIdForBiome(base);
-                }
+            try {
+                if (base != null && filter.match(base)) {
+                    // This 'base' could be a replacement. Check if it is close enough.
+                    if (biome.getBiomeClass() == base.getBiomeClass()) {
+                        // Same class, that's good enough for me.
+                        return Biome.getIdForBiome(base);
+                    }
 
-                double dist = filter.calculateBiomeDistance(biome, base);
-                if (dist < bestdist) {
-                    bestdist = dist;
-                    bestidx = Biome.getIdForBiome(base);
+                    double dist = filter.calculateBiomeDistance(biome, base);
+                    if (dist < bestdist) {
+                        bestdist = dist;
+                        bestidx = Biome.getIdForBiome(base);
+                    }
                 }
+            } catch(RuntimeException e) {
+                throw new RuntimeException("Checking suitability of biome " + base.biomeName + " (" + Biome.REGISTRY.getNameForObject(base) + ")", e);
             }
         }
         return bestidx;
