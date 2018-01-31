@@ -1,5 +1,8 @@
 package mcjty.rftoolsdim.dimensions.dimlets;
 
+import java.util.Arrays;
+
+import mcjty.lib.varia.Logging;
 import mcjty.rftoolsdim.dimensions.dimlets.types.DimletType;
 
 /**
@@ -12,6 +15,12 @@ public class DimletKey implements Comparable<DimletKey> {
     public DimletKey(DimletType type, String id) {
         this.type = type;
         this.id = id;
+        if(id == null) {
+            // StatList.reinit makes objects without proper NBT; ignore these...
+            if(!Arrays.stream(Thread.currentThread().getStackTrace()).anyMatch(elem -> "net.minecraft.stats.StatList".equals(elem.getClassName()) && "reinit".equals(elem.getMethodName()))) {
+                Logging.getLogger().catching(new NullPointerException("id"));
+            }
+        }
     }
 
     public DimletType getType() {
@@ -36,6 +45,14 @@ public class DimletKey implements Comparable<DimletKey> {
         if (type != dimletKey.type) {
             return false;
         }
+        if (id == null) {
+            Logging.getLogger().catching(new NullPointerException("id"));
+            if(dimletKey.id == null) {
+                Logging.getLogger().catching(new NullPointerException("dimletKey.id"));
+                return true;
+            }
+            return false;
+        }
         if (!id.equals(dimletKey.id)) {
             return false;
         }
@@ -48,6 +65,8 @@ public class DimletKey implements Comparable<DimletKey> {
         int result = type.hashCode();
         if (id != null) {
             result = 31 * result + id.hashCode();
+        } else {
+            Logging.getLogger().catching(new NullPointerException("id"));
         }
         return result;
     }
@@ -67,6 +86,17 @@ public class DimletKey implements Comparable<DimletKey> {
     public int compareTo(DimletKey o) {
         int result = type.compareTo(o.type);
         if(result != 0) return result;
+        if(id == null) {
+            Logging.getLogger().catching(new NullPointerException("id"));
+            if(o.id == null) {
+                Logging.getLogger().catching(new NullPointerException("o.id"));
+                return 0;
+            }
+            return -1;
+        } else if(o.id == null) {
+            Logging.getLogger().catching(new NullPointerException("o.id"));
+            return 1;
+        }
         return id.compareTo(o.id);
     }
 }
