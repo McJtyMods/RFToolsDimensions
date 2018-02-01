@@ -45,7 +45,7 @@ public class MobConfiguration {
         initMobItem(cfg, "Rabbit", 10, 3, 4, 20);
         initMobItem(cfg, "Chicken", 10, 3, 4, 40);
         initMobItem(cfg, "Cow", 10, 3, 4, 40);
-        initMobItem(cfg, "EntityHorse", 10, 3, 4, 40);
+        initMobItem(cfg, "Horse", 10, 3, 4, 40);
         initMobItem(cfg, "MushroomCow", 10, 3, 4, 40);
         initMobItem(cfg, "Ozelot", 5, 2, 3, 20);
         initMobItem(cfg, "Pig", 10, 3, 4, 40);
