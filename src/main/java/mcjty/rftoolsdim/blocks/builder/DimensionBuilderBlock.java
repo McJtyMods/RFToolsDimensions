@@ -7,6 +7,8 @@ import mcjty.rftoolsdim.theoneprobe.TheOneProbeSupport;
 import mcjty.theoneprobe.api.IProbeHitData;
 import mcjty.theoneprobe.api.IProbeInfo;
 import mcjty.theoneprobe.api.ProbeMode;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
@@ -104,6 +106,24 @@ public class DimensionBuilderBlock extends GenericRFToolsBlock<DimensionBuilderT
         }
     }
 
+    @SideOnly(Side.CLIENT)
+    @Override
+    @Optional.Method(modid = "waila")
+    public List<String> getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
+        super.getWailaBody(itemStack, currenttip, accessor, config);
+        TileEntity te = accessor.getTileEntity();
+        if (te instanceof DimensionBuilderTileEntity) {
+            DimensionBuilderTileEntity tileEntity = (DimensionBuilderTileEntity) te;
+            NBTTagCompound tagCompound = tileEntity.hasTab();
+            if (tagCompound != null) {
+                int ticksLeft = tagCompound.getInteger("ticksLeft");
+                int tickCost = tagCompound.getInteger("tickCost");
+                int pct = (tickCost - ticksLeft) * 100 / tickCost;
+                currenttip.add(pct + "%");
+            }
+        }
+        return currenttip;
+    }
 
     @Override
     public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
