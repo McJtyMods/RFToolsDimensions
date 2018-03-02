@@ -1,6 +1,6 @@
 package mcjty.rftoolsdim.dimensions.dimlets.types;
 
-import mcjty.rftoolsdim.config.DimletConstructionConfiguration;
+import mcjty.rftools.GeneralConfiguration;
 import mcjty.rftoolsdim.config.WorldgenConfiguration;
 import mcjty.rftoolsdim.dimensions.DimensionInformation;
 import mcjty.rftoolsdim.dimensions.description.MobDescriptor;
@@ -120,7 +120,7 @@ public class MobDimletType implements IDimletType {
         }
         int level = essenceCompound.getInteger("level");
         String mobId = essenceCompound.getString("mobId");
-        if (level < DimletConstructionConfiguration.maxMobInjections || mobId.isEmpty()) {
+        if (level < GeneralConfiguration.maxMobInjections || mobId.isEmpty()) {
             return false;
         }
         return true;

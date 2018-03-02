@@ -14,7 +14,6 @@ public class DimletConstructionConfiguration {
     public static int maxBlockAbsorbtion = 128;     // Amount of blocks to absorbe
     public static int maxTimeAbsorbtion = 10;       // Amount of time ticks to absorbe
     public static int maxLiquidAbsorbtion = 128;    // Amount of liquid blocks to absorbe
-    public static int maxMobInjections = 10;        // Maximum amount of injections we need to do a full mob extraction.
 
     public static void init(Configuration cfg) {
         WORKBENCH_MAXENERGY = cfg.get(CATEGORY_DIMLET_CONSTRUCTION, "dimletWorkbenchMaxRF", WORKBENCH_MAXENERGY,
@@ -36,8 +35,5 @@ public class DimletConstructionConfiguration {
                 "Amount of liquid blocks needed to fully absorb liquid essence").getInt();
         maxTimeAbsorbtion = cfg.get(CATEGORY_DIMLET_CONSTRUCTION, "maxTimeAbsorbtion", maxTimeAbsorbtion,
                 "Amount of ticks needed to absorb the correct time").getInt();
-
-        maxMobInjections = cfg.get(CATEGORY_DIMLET_CONSTRUCTION, "maxMobInjections", maxMobInjections,
-                "Amount of injections needed to get a fully absorbed mob essence").getInt();
     }
 }
