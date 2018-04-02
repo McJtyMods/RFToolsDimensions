@@ -16,6 +16,7 @@ import mcjty.rftoolsdim.dimensions.types.TerrainType;
 import mcjty.rftoolsdim.network.PacketGetDimensionEnergy;
 import mcjty.rftoolsdim.network.RFToolsDimMessages;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -316,6 +317,21 @@ public class GenericWorldProvider extends WorldProvider implements  /*@todo impl
     @Override
     public boolean canRespawnHere() {
         return false;
+    }
+
+    @Override
+    public WorldSleepResult canSleepAt(EntityPlayer player, BlockPos pos) {
+        switch (GeneralConfiguration.bedBehaviour) {
+        case 0:
+            Logging.message(player, "You cannot sleep in this dimension!");
+            return WorldSleepResult.DENY;
+        // In case 1, just do the usual thing (this typically mean explosion).
+        case 2:
+            player.setSpawnChunk(pos, true, getDimension());
+            Logging.message(player, "Spawn point set!");
+            return WorldSleepResult.DENY;
+        }
+        return super.canSleepAt(player, pos);
     }
 
     @Override

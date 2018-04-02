@@ -13,7 +13,6 @@ import mcjty.rftoolsdim.dimensions.types.FeatureType;
 import mcjty.rftoolsdim.dimensions.world.GenericWorldProvider;
 import mcjty.rftoolsdim.items.ModItems;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockBed;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
@@ -28,7 +27,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.storage.loot.LootEntryItem;
@@ -41,7 +39,6 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.terraingen.ChunkGeneratorEvent;
 import net.minecraftforge.event.terraingen.OreGenEvent;
 import net.minecraftforge.fml.common.eventhandler.Event;
@@ -203,27 +200,6 @@ public class ForgeEventHandlers {
             if (main != null) {
                 main.addEntry(new LootEntryItem(ModItems.dimletParcelItem, WorldgenConfiguration.dimletParcelRarity, 0, new LootFunction[0], new LootCondition[0], RFToolsDim.MODID + ":parcel"));
             }
-        }
-    }
-
-    @SubscribeEvent
-    public void onPlayerRightClickEvent(PlayerInteractEvent.RightClickBlock event) {
-        World world = event.getWorld();
-        if (world.isRemote) return;
-        BlockPos pos = event.getPos();
-        WorldProvider provider = world.provider;
-        if (!(world.getBlockState(pos).getBlock() instanceof BlockBed && provider instanceof GenericWorldProvider)) return;
-        // We are in an RFTools dimension.
-        switch (GeneralConfiguration.bedBehaviour) {
-            case 0:
-                event.setCanceled(true);
-                Logging.message(event.getEntityPlayer(), "You cannot sleep in this dimension!");
-                break;
-            // In case 1, just do the usual thing (this typically mean explosion).
-            case 2:
-                event.setCanceled(true);
-                event.getEntityPlayer().setSpawnChunk(pos, true, provider.getDimension());
-                Logging.message(event.getEntityPlayer(), "Spawn point set!");
         }
     }
 
