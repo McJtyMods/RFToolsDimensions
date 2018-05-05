@@ -50,11 +50,11 @@ public class GuiDimensionBuilder extends GenericGuiContainer<DimensionBuilderTil
         stages = new ImageLabel(mc, this).setImage(iconStages, 0, 0);
         stages.setLayoutHint(new PositionalLayout.PositionalHint(61, 9, 48, 48));
 
-        percentage = new Label(mc, this).setText("0%").setHorizontalAlignment(HorizontalAlignment.ALIGH_LEFT);
+        percentage = new Label(mc, this).setText("0%").setHorizontalAlignment(HorizontalAlignment.ALIGN_LEFT);
         percentage.setLayoutHint(new PositionalLayout.PositionalHint(115, 25, 50, 16));
-        error1 = new Label(mc, this).setText("").setHorizontalAlignment(HorizontalAlignment.ALIGH_LEFT).setColor(0xff0000);
+        error1 = new Label(mc, this).setText("").setHorizontalAlignment(HorizontalAlignment.ALIGN_LEFT).setColor(0xff0000);
         error1.setLayoutHint(new PositionalLayout.PositionalHint(115, 15, 60, 16));
-        error2 = new Label(mc, this).setText("").setHorizontalAlignment(HorizontalAlignment.ALIGH_LEFT).setColor(0xff0000);
+        error2 = new Label(mc, this).setText("").setHorizontalAlignment(HorizontalAlignment.ALIGN_LEFT).setColor(0xff0000);
         error2.setLayoutHint(new PositionalLayout.PositionalHint(115, 28, 60, 16));
 
         initRedstoneMode();
