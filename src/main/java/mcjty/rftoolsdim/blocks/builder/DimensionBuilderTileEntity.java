@@ -2,11 +2,13 @@ package mcjty.rftoolsdim.blocks.builder;
 
 import mcjty.lib.container.DefaultSidedInventory;
 import mcjty.lib.container.InventoryHelper;
+import mcjty.lib.entity.DefaultValue;
 import mcjty.lib.entity.GenericEnergyReceiverTileEntity;
+import mcjty.lib.entity.IValue;
 import mcjty.lib.network.Argument;
 import mcjty.lib.network.PacketRequestIntegerFromServer;
 import mcjty.lib.varia.Logging;
-import mcjty.lib.varia.RedstoneMode;
+import mcjty.rftools.blocks.builder.BuilderTileEntity;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.config.GeneralConfiguration;
 import mcjty.rftoolsdim.config.MachineConfiguration;
@@ -16,7 +18,6 @@ import mcjty.rftoolsdim.dimensions.RfToolsDimensionManager;
 import mcjty.rftoolsdim.dimensions.description.DimensionDescriptor;
 import mcjty.rftoolsdim.network.RFToolsDimMessages;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -31,7 +32,6 @@ public class DimensionBuilderTileEntity extends GenericEnergyReceiverTileEntity 
 
     public static final String CMD_GETBUILDING = "getBuilding";
     public static final String CLIENTCMD_GETBUILDING = "getBuilding";
-    public static final String CMD_RSMODE = "rsMode";
 
     public static final String COMPONENT_NAME = "dimension_builder";
 
@@ -51,6 +51,15 @@ public class DimensionBuilderTileEntity extends GenericEnergyReceiverTileEntity 
     public DimensionBuilderTileEntity() {
         super(MachineConfiguration.BUILDER_MAXENERGY, MachineConfiguration.BUILDER_RECEIVEPERTICK);
     }
+
+    @Override
+    public IValue[] getValues() {
+        return new IValue[]{
+                new DefaultValue<>(VALUE_RSMODE, BuilderTileEntity::getRSModeInt, BuilderTileEntity::setRSModeInt),
+        };
+    }
+
+
 
     @Override
     public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet) {
@@ -316,20 +325,6 @@ public class DimensionBuilderTileEntity extends GenericEnergyReceiverTileEntity 
         }
         if (CLIENTCMD_GETBUILDING.equals(command)) {
             buildPercentage = result;
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public boolean execute(EntityPlayerMP playerMP, String command, Map<String, Argument> args) {
-        boolean rc = super.execute(playerMP, command, args);
-        if (rc) {
-            return true;
-        }
-        if (CMD_RSMODE.equals(command)) {
-            String m = args.get("rs").getString();
-            setRSMode(RedstoneMode.getMode(m));
             return true;
         }
         return false;

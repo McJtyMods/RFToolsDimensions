@@ -7,7 +7,7 @@ import mcjty.lib.gui.widgets.Button;
 import mcjty.lib.gui.widgets.Label;
 import mcjty.lib.gui.widgets.Panel;
 import mcjty.lib.gui.widgets.TextField;
-import mcjty.lib.network.Argument;
+import mcjty.lib.typed.TypedMap;
 import mcjty.lib.varia.Counter;
 import mcjty.lib.varia.Logging;
 import mcjty.rftoolsdim.RFToolsDim;
@@ -32,6 +32,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static mcjty.rftoolsdim.blocks.enscriber.DimensionEnscriberTileEntity.PARAM_NAME;
+
 public class GuiDimensionEnscriber extends GenericGuiContainer<DimensionEnscriberTileEntity> {
     public static final int ENSCRIBER_WIDTH = 256;
     public static final int ENSCRIBER_HEIGHT = 224;
@@ -54,7 +56,9 @@ public class GuiDimensionEnscriber extends GenericGuiContainer<DimensionEnscribe
     public void initGui() {
         super.initGui();
 
-        extractButton = new Button(mc, this).setText("Extract").setLayoutHint(new PositionalLayout.PositionalHint(13, 164, 60, 16)).addButtonEvent(
+        extractButton = new Button(mc, this).setText("Extract")
+                .setName("extract")
+                .setLayoutHint(new PositionalLayout.PositionalHint(13, 164, 60, 16)).addButtonEvent(
             parent -> {
                 extractDimlets();
             }
@@ -64,11 +68,9 @@ public class GuiDimensionEnscriber extends GenericGuiContainer<DimensionEnscribe
                 storeDimlets();
             }
         ).setTooltips("Store dimlets in a", "empty dimension tab");
-        nameField = new TextField(mc, this).addTextEvent(
-            (parent, newText) -> {
-                storeName(newText);
-            }
-        ).setLayoutHint(new PositionalLayout.PositionalHint(13, 200, 60, 16));
+        nameField = new TextField(mc, this)
+                .setName("name")
+                .setLayoutHint(new PositionalLayout.PositionalHint(13, 200, 60, 16));
         validateField = new Label(mc, this).setText("Val");
         validateField.setTooltips("Hover here for errors...");
         validateField.setLayoutHint(new PositionalLayout.PositionalHint(35, 142, 38, 16));
@@ -80,10 +82,7 @@ public class GuiDimensionEnscriber extends GenericGuiContainer<DimensionEnscribe
         toplevel.setBounds(new Rectangle(guiLeft, guiTop, xSize, ySize));
 
         window = new Window(this, toplevel);
-    }
-
-    private void storeName(String name) {
-        sendServerCommand(RFToolsDimMessages.INSTANCE, DimensionEnscriberTileEntity.CMD_SETNAME, new Argument("name", name));
+        window.bind(RFToolsDimMessages.INSTANCE, "name", tileEntity, DimensionEnscriberTileEntity.VALUE_NAME.getName());
     }
 
     private void extractDimlets() {
@@ -95,11 +94,14 @@ public class GuiDimensionEnscriber extends GenericGuiContainer<DimensionEnscribe
                 return;
             }
         }
-        sendServerCommand(RFToolsDimMessages.INSTANCE, DimensionEnscriberTileEntity.CMD_EXTRACT);
+        sendServerCommand(RFToolsDimMessages.INSTANCE, DimensionEnscriberTileEntity.CMD_EXTRACT, TypedMap.EMPTY);
     }
 
     private void storeDimlets() {
-        sendServerCommand(RFToolsDimMessages.INSTANCE, DimensionEnscriberTileEntity.CMD_STORE, new Argument("name", nameField.getText()));
+        sendServerCommand(RFToolsDimMessages.INSTANCE, DimensionEnscriberTileEntity.CMD_STORE,
+                TypedMap.builder()
+                        .put(PARAM_NAME, nameField.getText())
+                        .build());
     }
 
     private void enableButtons() {

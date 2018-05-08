@@ -2,13 +2,13 @@ package mcjty.rftoolsdim.blocks.builder;
 
 import mcjty.lib.container.GenericGuiContainer;
 import mcjty.lib.entity.GenericEnergyStorageTileEntity;
+import mcjty.lib.entity.GenericTileEntity;
 import mcjty.lib.gui.Window;
 import mcjty.lib.gui.layout.HorizontalAlignment;
 import mcjty.lib.gui.layout.PositionalLayout;
 import mcjty.lib.gui.widgets.*;
 import mcjty.lib.gui.widgets.Label;
 import mcjty.lib.gui.widgets.Panel;
-import mcjty.lib.network.Argument;
 import mcjty.lib.varia.RedstoneMode;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.network.RFToolsDimMessages;
@@ -25,7 +25,6 @@ public class GuiDimensionBuilder extends GenericGuiContainer<DimensionBuilderTil
     private Label percentage;
     private Label error1;
     private Label error2;
-    private ImageChoiceLabel redstoneMode;
 
     private static final ResourceLocation iconLocation = new ResourceLocation(RFToolsDim.MODID, "textures/gui/dimensionbuilder.png");
     private static final ResourceLocation iconStages = new ResourceLocation(RFToolsDim.MODID, "textures/gui/dimensionbuilderstages.png");
@@ -57,7 +56,7 @@ public class GuiDimensionBuilder extends GenericGuiContainer<DimensionBuilderTil
         error2 = new Label(mc, this).setText("").setHorizontalAlignment(HorizontalAlignment.ALIGN_LEFT).setColor(0xff0000);
         error2.setLayoutHint(new PositionalLayout.PositionalHint(115, 28, 60, 16));
 
-        initRedstoneMode();
+        ImageChoiceLabel redstoneMode = initRedstoneMode();
 
         Panel toplevel = new Panel(mc, this).setBackground(iconLocation).setLayout(new PositionalLayout()).addChild(energyBar).
                 addChild(stages).addChild(percentage).addChild(error1).addChild(error2).addChild(redstoneMode);
@@ -66,23 +65,19 @@ public class GuiDimensionBuilder extends GenericGuiContainer<DimensionBuilderTil
         window = new Window(this, toplevel);
         tileEntity.requestRfFromServer(RFToolsDim.MODID);
         tileEntity.requestBuildingPercentage();
+
+        window.bind(RFToolsDimMessages.INSTANCE, "redstone", tileEntity, GenericTileEntity.VALUE_RSMODE.getName());
     }
 
-    private void initRedstoneMode() {
-        redstoneMode = new ImageChoiceLabel(mc, this).
-                addChoiceEvent((parent, newChoice) -> changeRedstoneMode()).
+    private ImageChoiceLabel initRedstoneMode() {
+        ImageChoiceLabel redstoneMode = new ImageChoiceLabel(mc, this).
+                setName("redstone").
                 addChoice(RedstoneMode.REDSTONE_IGNORED.getDescription(), "Redstone mode:\nIgnored", iconGuiElements, 0, 0).
                 addChoice(RedstoneMode.REDSTONE_OFFREQUIRED.getDescription(), "Redstone mode:\nOff to activate", iconGuiElements, 16, 0).
                 addChoice(RedstoneMode.REDSTONE_ONREQUIRED.getDescription(), "Redstone mode:\nOn to activate", iconGuiElements, 32, 0);
         redstoneMode.setLayoutHint(new PositionalLayout.PositionalHint(150, 46, 16, 16));
-        redstoneMode.setCurrentChoice(tileEntity.getRSMode().ordinal());
+        return redstoneMode;
     }
-
-    private void changeRedstoneMode() {
-        tileEntity.setRSMode(RedstoneMode.values()[redstoneMode.getCurrentChoiceIndex()]);
-        sendServerCommand(RFToolsDimMessages.INSTANCE, DimensionBuilderTileEntity.CMD_RSMODE, new Argument("rs", RedstoneMode.values()[redstoneMode.getCurrentChoiceIndex()].getDescription()));
-    }
-
 
     @Override
     protected void drawGuiContainerBackgroundLayer(float v, int i, int i2) {
