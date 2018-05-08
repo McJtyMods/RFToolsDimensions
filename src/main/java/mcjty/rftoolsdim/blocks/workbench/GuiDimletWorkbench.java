@@ -11,7 +11,7 @@ import mcjty.lib.gui.widgets.*;
 import mcjty.lib.gui.widgets.Label;
 import mcjty.lib.gui.widgets.Panel;
 import mcjty.lib.gui.widgets.TextField;
-import mcjty.lib.network.Argument;
+import mcjty.lib.typed.TypedMap;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.config.Settings;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletKey;
@@ -30,6 +30,9 @@ import org.lwjgl.input.Mouse;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import static mcjty.rftoolsdim.blocks.workbench.DimletWorkbenchTileEntity.PARAM_ID;
+import static mcjty.rftoolsdim.blocks.workbench.DimletWorkbenchTileEntity.PARAM_TYPE;
 
 public class GuiDimletWorkbench extends GenericGuiContainer<DimletWorkbenchTileEntity> {
     public static final int WORKBENCH_WIDTH = 256;
@@ -81,12 +84,12 @@ public class GuiDimletWorkbench extends GenericGuiContainer<DimletWorkbenchTileE
             .setHorizontal();
         energyBar.setValue(GenericEnergyStorageTileEntity.getCurrentRF());
 
-        extractButton = new ToggleButton(mc, this).setText("Extract")
+        extractButton = new ToggleButton(mc, this)
+                .setName("extract")
+                .setText("Extract")
                 .setLayoutHint(new PositionalLayout.PositionalHint(30, 7, 56, 14))
                 .setCheckMarker(true)
-                .addButtonEvent(parent -> setExtractMode()
-        ).setTooltips("If on dimlets will be reconstructed into parts");
-        extractButton.setPressed(tileEntity.isExtractMode());
+                .setTooltips("If on dimlets will be reconstructed into parts");
 
         Panel toplevel = new Panel(mc, this).setBackground(iconLocation).setLayout(new PositionalLayout())
                 .addChild(extractButton).addChild(energyBar).addChild(itemList).addChild(slider).addChild(searchBar);
@@ -95,6 +98,8 @@ public class GuiDimletWorkbench extends GenericGuiContainer<DimletWorkbenchTileE
         listDirty = true;
 
         window = new Window(this, toplevel);
+
+        window.bind(RFToolsDimMessages.INSTANCE, "extract", tileEntity, DimletWorkbenchTileEntity.VALUE_EXTRACT.getName());
     }
 
     private void cheatDimlet() {
@@ -107,8 +112,10 @@ public class GuiDimletWorkbench extends GenericGuiContainer<DimletWorkbenchTileE
         if (userObject instanceof DimletKey) {
             DimletKey key = (DimletKey) userObject;
             sendServerCommand(RFToolsDimMessages.INSTANCE, DimletWorkbenchTileEntity.CMD_CHEATDIMLET,
-                    new Argument("type", key.getType().dimletType.getName()),
-                    new Argument("id", key.getId()));
+                    TypedMap.builder()
+                            .put(PARAM_TYPE, key.getType().dimletType.getName())
+                            .put(PARAM_ID, key.getId())
+                            .build());
         }
     }
 
@@ -122,8 +129,10 @@ public class GuiDimletWorkbench extends GenericGuiContainer<DimletWorkbenchTileE
         if (userObject instanceof DimletKey) {
             DimletKey key = (DimletKey) userObject;
             sendServerCommand(RFToolsDimMessages.INSTANCE, DimletWorkbenchTileEntity.CMD_SUGGESTPARTS,
-                              new Argument("type", key.getType().dimletType.getName()),
-                              new Argument("id", key.getId()));
+                    TypedMap.builder()
+                            .put(PARAM_TYPE, key.getType().dimletType.getName())
+                            .put(PARAM_ID, key.getId())
+                            .build());
         }
     }
 
@@ -163,12 +172,6 @@ public class GuiDimletWorkbench extends GenericGuiContainer<DimletWorkbenchTileE
                 .setLayoutHint(new PositionalLayout.PositionalHint(20, 0, 95, 16))
                 .setUserObject(key);
         panel.addChild(label);
-    }
-
-    private void setExtractMode() {
-        tileEntity.setExtractMode(extractButton.isPressed());
-        sendServerCommand(RFToolsDimMessages.INSTANCE, DimletWorkbenchTileEntity.CMD_EXTRACTMODE,
-                new Argument("mode", extractButton.isPressed()));
     }
 
     @Override

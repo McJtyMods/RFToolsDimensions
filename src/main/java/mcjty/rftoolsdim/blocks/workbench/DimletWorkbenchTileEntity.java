@@ -2,9 +2,14 @@ package mcjty.rftoolsdim.blocks.workbench;
 
 import mcjty.lib.container.DefaultSidedInventory;
 import mcjty.lib.container.InventoryHelper;
+import mcjty.lib.entity.DefaultValue;
 import mcjty.lib.entity.GenericEnergyReceiverTileEntity;
+import mcjty.lib.entity.IValue;
 import mcjty.lib.network.Argument;
 import mcjty.lib.network.PacketRequestIntegerFromServer;
+import mcjty.lib.typed.Key;
+import mcjty.lib.typed.Type;
+import mcjty.lib.typed.TypedMap;
 import mcjty.lib.varia.BlockTools;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.config.MachineConfiguration;
@@ -26,9 +31,13 @@ import net.minecraft.util.ITickable;
 import java.util.Map;
 
 public class DimletWorkbenchTileEntity extends GenericEnergyReceiverTileEntity implements ITickable, DefaultSidedInventory {
-    public static final String CMD_EXTRACTMODE = "setExtractMode";
-    public static final String CMD_SUGGESTPARTS = "suggestParts";
-    public static final String CMD_CHEATDIMLET = "cheatDimlet";
+
+    public static final String CMD_SUGGESTPARTS = "workbench.suggestParts";
+    public static final String CMD_CHEATDIMLET = "workbench.cheatDimlet";
+    public static final Key<String> PARAM_TYPE = new Key<>("type", Type.STRING);
+    public static final Key<String> PARAM_ID = new Key<>("id", Type.STRING);
+
+
     public static final String CMD_GETEXTRACTING = "getExtracting";
     public static final String CLIENTCMD_GETEXTRACTING = "getExtracting";
 
@@ -38,6 +47,15 @@ public class DimletWorkbenchTileEntity extends GenericEnergyReceiverTileEntity i
     private DimletKey idToExtract = null;
     private int inhibitCrafting = 0;
     private boolean extractMode = false;
+
+    public static final Key<Boolean> VALUE_EXTRACT = new Key<>("extract", Type.BOOLEAN);
+
+    @Override
+    public IValue[] getValues() {
+        return new IValue[] {
+                new DefaultValue<>(VALUE_EXTRACT, DimletWorkbenchTileEntity::isExtractMode, DimletWorkbenchTileEntity::setExtractMode)
+        };
+    }
 
     public int getExtracting() {
         return extracting;
@@ -417,22 +435,19 @@ public class DimletWorkbenchTileEntity extends GenericEnergyReceiverTileEntity i
     }
 
     @Override
-    public boolean execute(EntityPlayerMP playerMP, String command, Map<String, Argument> args) {
-        boolean rc = super.execute(playerMP, command, args);
+    public boolean execute(EntityPlayerMP playerMP, String command, TypedMap params) {
+        boolean rc = super.execute(playerMP, command, params);
         if (rc) {
             return true;
         }
-        if (CMD_EXTRACTMODE.equals(command)) {
-            setExtractMode(args.get("mode").getBoolean());
-            return true;
-        } else if (CMD_SUGGESTPARTS.equals(command)) {
-            String type = args.get("type").getString();
-            String id = args.get("id").getString();
+        if (CMD_SUGGESTPARTS.equals(command)) {
+            String type = params.get(PARAM_TYPE);
+            String id = params.get(PARAM_ID);
             suggestParts(playerMP, new DimletKey(DimletType.getTypeByName(type), id));
             return true;
         } else if (CMD_CHEATDIMLET.equals(command)) {
-            String type = args.get("type").getString();
-            String id = args.get("id").getString();
+            String type = params.get(PARAM_TYPE);
+            String id = params.get(PARAM_ID);
             cheatDimlet(playerMP, new DimletKey(DimletType.getTypeByName(type), id));
             return true;
         }

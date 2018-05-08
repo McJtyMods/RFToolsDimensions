@@ -3,7 +3,6 @@ package mcjty.rftoolsdim.blocks.painter;
 import mcjty.lib.container.DefaultSidedInventory;
 import mcjty.lib.container.InventoryHelper;
 import mcjty.lib.entity.GenericTileEntity;
-import mcjty.lib.network.Argument;
 import mcjty.lib.varia.Logging;
 import mcjty.rftoolsdim.config.GeneralConfiguration;
 import mcjty.rftoolsdim.config.Settings;
@@ -25,7 +24,6 @@ import net.minecraft.world.World;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class EssencePainterTileEntity extends GenericTileEntity implements DefaultSidedInventory {
 
@@ -236,23 +234,23 @@ public class EssencePainterTileEntity extends GenericTileEntity implements Defau
         return rc;
     }
 
-    @Override
-    public boolean execute(EntityPlayerMP playerMP, String command, Map<String, Argument> args) {
-        boolean rc = super.execute(playerMP, command, args);
-        if (rc) {
-            return true;
-        }
-        if (CMD_STORE.equals(command)) {
-            storeDimlets(playerMP);
-            setName(args.get("name").getString());
-            return true;
-        } else if (CMD_EXTRACT.equals(command)) {
-            extractDimlets();
-            return true;
-        } else if (CMD_SETNAME.equals(command)) {
-            setName(args.get("name").getString());
-            return true;
-        }
-        return false;
-    }
+//    @Override
+//    public boolean execute(EntityPlayerMP playerMP, String command, Map<String, Argument> args) {
+//        boolean rc = super.execute(playerMP, command, args);
+//        if (rc) {
+//            return true;
+//        }
+//        if (CMD_STORE.equals(command)) {
+//            storeDimlets(playerMP);
+//            setName(args.get("name").getString());
+//            return true;
+//        } else if (CMD_EXTRACT.equals(command)) {
+//            extractDimlets();
+//            return true;
+//        } else if (CMD_SETNAME.equals(command)) {
+//            setName(args.get("name").getString());
+//            return true;
+//        }
+//        return false;
+//    }
 }
