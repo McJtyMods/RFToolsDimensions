@@ -3,8 +3,8 @@ package mcjty.rftoolsdim.blocks.editor;
 import mcjty.lib.container.DefaultSidedInventory;
 import mcjty.lib.container.InventoryHelper;
 import mcjty.lib.entity.GenericEnergyReceiverTileEntity;
-import mcjty.lib.network.Argument;
 import mcjty.lib.network.PacketRequestIntegerFromServer;
+import mcjty.lib.typed.TypedMap;
 import mcjty.lib.varia.BlockTools;
 import mcjty.lib.varia.Broadcaster;
 import mcjty.rftoolsdim.RFToolsDim;
@@ -47,7 +47,6 @@ import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Map;
 
 public class DimensionEditorTileEntity extends GenericEnergyReceiverTileEntity implements ITickable, DefaultSidedInventory {
 
@@ -387,11 +386,11 @@ public class DimensionEditorTileEntity extends GenericEnergyReceiverTileEntity i
     public void requestBuildingPercentage() {
         RFToolsDimMessages.INSTANCE.sendToServer(new PacketRequestIntegerFromServer(RFToolsDim.MODID, getPos(),
                 CMD_GETEDITING,
-                CLIENTCMD_GETEDITING));
+                CLIENTCMD_GETEDITING, TypedMap.EMPTY));
     }
 
     @Override
-    public Integer executeWithResultInteger(String command, Map<String, Argument> args) {
+    public Integer executeWithResultInteger(String command, TypedMap args) {
         Integer rc = super.executeWithResultInteger(command, args);
         if (rc != null) {
             return rc;

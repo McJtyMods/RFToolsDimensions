@@ -5,8 +5,8 @@ import mcjty.lib.container.InventoryHelper;
 import mcjty.lib.entity.DefaultValue;
 import mcjty.lib.entity.GenericEnergyReceiverTileEntity;
 import mcjty.lib.entity.IValue;
-import mcjty.lib.network.Argument;
 import mcjty.lib.network.PacketRequestIntegerFromServer;
+import mcjty.lib.typed.TypedMap;
 import mcjty.lib.varia.Logging;
 import mcjty.rftools.blocks.builder.BuilderTileEntity;
 import mcjty.rftoolsdim.RFToolsDim;
@@ -25,7 +25,6 @@ import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 
-import java.util.Map;
 import java.util.Random;
 
 public class DimensionBuilderTileEntity extends GenericEnergyReceiverTileEntity implements ITickable, DefaultSidedInventory {
@@ -287,11 +286,11 @@ public class DimensionBuilderTileEntity extends GenericEnergyReceiverTileEntity 
     public void requestBuildingPercentage() {
         RFToolsDimMessages.INSTANCE.sendToServer(new PacketRequestIntegerFromServer(RFToolsDim.MODID, getPos(),
                 CMD_GETBUILDING,
-                CLIENTCMD_GETBUILDING));
+                CLIENTCMD_GETBUILDING, TypedMap.EMPTY));
     }
 
     @Override
-    public Integer executeWithResultInteger(String command, Map<String, Argument> args) {
+    public Integer executeWithResultInteger(String command, TypedMap args) {
         Integer rc = super.executeWithResultInteger(command, args);
         if (rc != null) {
             return rc;

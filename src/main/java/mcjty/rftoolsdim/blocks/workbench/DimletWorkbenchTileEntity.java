@@ -5,7 +5,6 @@ import mcjty.lib.container.InventoryHelper;
 import mcjty.lib.entity.DefaultValue;
 import mcjty.lib.entity.GenericEnergyReceiverTileEntity;
 import mcjty.lib.entity.IValue;
-import mcjty.lib.network.Argument;
 import mcjty.lib.network.PacketRequestIntegerFromServer;
 import mcjty.lib.typed.Key;
 import mcjty.lib.typed.Type;
@@ -27,8 +26,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
-
-import java.util.Map;
 
 public class DimletWorkbenchTileEntity extends GenericEnergyReceiverTileEntity implements ITickable, DefaultSidedInventory {
 
@@ -458,11 +455,11 @@ public class DimletWorkbenchTileEntity extends GenericEnergyReceiverTileEntity i
     public void requestExtractingFromServer() {
         RFToolsDimMessages.INSTANCE.sendToServer(new PacketRequestIntegerFromServer(RFToolsDim.MODID, getPos(),
                 CMD_GETEXTRACTING,
-                CLIENTCMD_GETEXTRACTING));
+                CLIENTCMD_GETEXTRACTING, TypedMap.EMPTY));
     }
 
     @Override
-    public Integer executeWithResultInteger(String command, Map<String, Argument> args) {
+    public Integer executeWithResultInteger(String command, TypedMap args) {
         Integer rc = super.executeWithResultInteger(command, args);
         if (rc != null) {
             return rc;
