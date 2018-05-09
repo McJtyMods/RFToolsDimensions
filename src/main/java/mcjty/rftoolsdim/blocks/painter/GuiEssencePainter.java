@@ -9,7 +9,6 @@ import mcjty.lib.gui.widgets.Panel;
 import mcjty.lib.gui.widgets.TextField;
 import mcjty.lib.network.Argument;
 import mcjty.lib.varia.Counter;
-import mcjty.lib.varia.Logging;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.config.GeneralConfiguration;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletKey;
@@ -27,7 +26,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 
-import java.awt.*;
+import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -83,23 +82,23 @@ public class GuiEssencePainter extends GenericGuiContainer<EssencePainterTileEnt
     }
 
     private void storeName(String name) {
-        sendServerCommand(RFToolsDimMessages.INSTANCE, EssencePainterTileEntity.CMD_SETNAME, new Argument("name", name));
+//        sendServerCommand(RFToolsDimMessages.INSTANCE, EssencePainterTileEntity.CMD_SETNAME, new Argument("name", name));
     }
 
     private void extractDimlets() {
-        for (int i = 0; i < EssencePainterContainer.SIZE_DIMLETS ; i++) {
-            ItemStack stack = inventorySlots.getSlot(i + EssencePainterContainer.SLOT_DIMLETS).getStack();
-            if (!stack.isEmpty()) {
-                // Cannot extract. There are still items in the way.
-                Logging.warn(mc.player, "You cannot extract. Remove all dimlets first!");
-                return;
-            }
-        }
-        sendServerCommand(RFToolsDimMessages.INSTANCE, EssencePainterTileEntity.CMD_EXTRACT);
+//        for (int i = 0; i < EssencePainterContainer.SIZE_DIMLETS ; i++) {
+//            ItemStack stack = inventorySlots.getSlot(i + EssencePainterContainer.SLOT_DIMLETS).getStack();
+//            if (!stack.isEmpty()) {
+//                // Cannot extract. There are still items in the way.
+//                Logging.warn(mc.player, "You cannot extract. Remove all dimlets first!");
+//                return;
+//            }
+//        }
+//        sendServerCommand(RFToolsDimMessages.INSTANCE, EssencePainterTileEntity.CMD_EXTRACT);
     }
 
     private void storeDimlets() {
-        sendServerCommand(RFToolsDimMessages.INSTANCE, EssencePainterTileEntity.CMD_STORE, new Argument("name", nameField.getText()));
+//        sendServerCommand(RFToolsDimMessages.INSTANCE, EssencePainterTileEntity.CMD_STORE, new Argument("name", nameField.getText()));
     }
 
     private void enableButtons() {
