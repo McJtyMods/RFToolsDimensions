@@ -61,8 +61,10 @@ public class GuiDimletWorkbench extends GenericGuiContainer<DimletWorkbenchTileE
         super.initGui();
 
         searchBar = new TextField(mc, this).setLayoutHint(new PositionalLayout.PositionalHint(120, 7, 128, 16)).addTextEvent((widget,string) -> { itemList.setSelected(-1); listDirty = true; });
-        itemList = new WidgetList(mc, this).setLayoutHint(new PositionalLayout.PositionalHint(120, 25, 118, 133)).
-                setLeftMargin(0).setRowheight(-1).addSelectionEvent(new SelectionEvent() {
+        itemList = new WidgetList(mc, this)
+                .setName("items")
+                .setLayoutHint(new PositionalLayout.PositionalHint(120, 25, 118, 133))
+                .setLeftMargin(0).setRowheight(-1).addSelectionEvent(new SelectionEvent() {
             @Override
             public void select(Widget widget, int i) {
             }
@@ -77,7 +79,8 @@ public class GuiDimletWorkbench extends GenericGuiContainer<DimletWorkbenchTileE
                 }
             }
         });
-        slider = new Slider(mc, this).setLayoutHint(new PositionalLayout.PositionalHint(239, 25, 9, 133)).setDesiredWidth(11).setVertical().setScrollable(itemList);
+        slider = new Slider(mc, this).setLayoutHint(new PositionalLayout.PositionalHint(239, 25, 9, 133)).setDesiredWidth(11).setVertical()
+                .setScrollableName("items");
 
         int maxEnergyStored = tileEntity.getMaxEnergyStored();
         energyBar = new EnergyBar(mc, this).setVertical().setMaxValue(maxEnergyStored).setLayoutHint(new PositionalLayout.PositionalHint(88, 9, 30, 10)).setShowText(false)
