@@ -2,7 +2,7 @@ package mcjty.rftoolsdim.blocks.energyextractor;
 
 import mcjty.lib.McJtyLib;
 import mcjty.lib.compat.RedstoneFluxCompatibility;
-import mcjty.lib.entity.GenericEnergyProviderTileEntity;
+import mcjty.lib.tileentity.GenericEnergyProviderTileEntity;
 import mcjty.lib.varia.EnergyTools;
 import mcjty.rftoolsdim.config.MachineConfiguration;
 import mcjty.rftoolsdim.dimensions.DimensionStorage;

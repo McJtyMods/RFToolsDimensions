@@ -1,6 +1,6 @@
 package mcjty.rftoolsdim.blocks.absorbers;
 
-import mcjty.lib.entity.GenericTileEntity;
+import mcjty.lib.tileentity.GenericTileEntity;
 import mcjty.rftoolsdim.config.DimletConstructionConfiguration;
 import mcjty.rftoolsdim.dimensions.DimensionInformation;
 import mcjty.rftoolsdim.dimensions.RfToolsDimensionManager;

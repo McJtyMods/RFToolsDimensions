@@ -135,7 +135,7 @@ public class ForgeEventHandlers {
             /* BlockPos coordinate = new BlockPos((int) event.getEntity().posX, (int) event.getEntity().posY, (int) event.getEntity().posZ);
             if (PeacefulAreaManager.isPeaceful(new GlobalCoordinate(coordinate, id))) {
                 event.setResult(Event.Result.DENY);
-                Logging.logDebug("Peaceful manager: Prevented a spawn of " + event.entity.getClass().getName());
+                Logging.logDebug("Peaceful manager: Prevented a spawn of " + event.bindings.getClass().getName());
             } else */ if (dimensionInformation.isPeaceful()) {
                 // RFTools dimension.
                 event.setResult(Event.Result.DENY);

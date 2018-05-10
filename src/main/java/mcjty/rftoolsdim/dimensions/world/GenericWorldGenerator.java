@@ -1,6 +1,6 @@
 package mcjty.rftoolsdim.dimensions.world;
 
-import mcjty.lib.container.BaseBlock;
+import mcjty.lib.blocks.BaseBlock;
 import mcjty.lib.varia.Logging;
 import mcjty.rftools.blocks.storage.ModularStorageContainer;
 import mcjty.rftools.blocks.storage.ModularStorageTileEntity;

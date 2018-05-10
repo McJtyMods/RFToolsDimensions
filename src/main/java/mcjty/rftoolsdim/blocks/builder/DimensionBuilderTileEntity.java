@@ -2,9 +2,9 @@ package mcjty.rftoolsdim.blocks.builder;
 
 import mcjty.lib.container.DefaultSidedInventory;
 import mcjty.lib.container.InventoryHelper;
-import mcjty.lib.entity.DefaultValue;
-import mcjty.lib.entity.GenericEnergyReceiverTileEntity;
-import mcjty.lib.entity.IValue;
+import mcjty.lib.bindings.DefaultValue;
+import mcjty.lib.tileentity.GenericEnergyReceiverTileEntity;
+import mcjty.lib.bindings.IValue;
 import mcjty.lib.network.PacketRequestIntegerFromServer;
 import mcjty.lib.typed.TypedMap;
 import mcjty.lib.varia.Logging;

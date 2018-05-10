@@ -1,6 +1,6 @@
 package mcjty.rftoolsdim.gui;
 
-import mcjty.lib.container.GenericBlock;
+import mcjty.lib.blocks.GenericBlock;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.items.manual.GuiRFToolsManual;
 import net.minecraft.block.Block;
