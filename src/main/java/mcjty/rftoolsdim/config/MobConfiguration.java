@@ -63,7 +63,7 @@ public class MobConfiguration {
         return entry == null ? null : GenericTools.castClass(entry.getEntityClass(), EntityLiving.class);
     }
 
-    // Accepts an old-style (1.10) bindings ID or a new-style string representation of a resourcelocation
+    // Accepts an old-style (1.10) entity ID or a new-style string representation of a resourcelocation
     private static void initMobItem(Configuration cfg, String name,
                                     int chance, int mingroup, int maxgroup, int maxentity) {
         String id = EntityTools.fixEntityId(name);
