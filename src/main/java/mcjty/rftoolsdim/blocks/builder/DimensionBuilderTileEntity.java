@@ -288,9 +288,9 @@ public class DimensionBuilderTileEntity extends GenericEnergyReceiverTileEntity 
 
     // Request the building percentage from the server. This has to be called on the client side.
     public void requestBuildingPercentage() {
-        RFToolsDimMessages.INSTANCE.sendToServer(new PacketRequestDataFromServer(RFToolsDim.MODID, getPos(),
+        requestDataFromServer(RFToolsDim.MODID,
                 CMD_GETBUILDING,
-                CLIENTCMD_GETBUILDING, TypedMap.EMPTY));
+                CLIENTCMD_GETBUILDING, TypedMap.EMPTY);
     }
 
     @Override

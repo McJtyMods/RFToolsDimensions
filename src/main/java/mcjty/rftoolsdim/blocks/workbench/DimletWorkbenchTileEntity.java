@@ -456,9 +456,9 @@ public class DimletWorkbenchTileEntity extends GenericEnergyReceiverTileEntity i
 
     // Request the extracting amount from the server. This has to be called on the client side.
     public void requestExtractingFromServer() {
-        RFToolsDimMessages.INSTANCE.sendToServer(new PacketRequestDataFromServer(RFToolsDim.MODID, getPos(),
+        requestDataFromServer(RFToolsDim.MODID,
                 CMD_GETEXTRACTING,
-                CLIENTCMD_GETEXTRACTING, TypedMap.EMPTY));
+                CLIENTCMD_GETEXTRACTING, TypedMap.EMPTY);
     }
 
     @Override
