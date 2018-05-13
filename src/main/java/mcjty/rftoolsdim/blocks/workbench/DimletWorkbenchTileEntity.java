@@ -1,11 +1,11 @@
 package mcjty.rftoolsdim.blocks.workbench;
 
+import mcjty.lib.bindings.DefaultValue;
+import mcjty.lib.bindings.IValue;
 import mcjty.lib.container.DefaultSidedInventory;
 import mcjty.lib.container.InventoryHelper;
-import mcjty.lib.bindings.DefaultValue;
+import mcjty.lib.network.PacketRequestDataFromServer;
 import mcjty.lib.tileentity.GenericEnergyReceiverTileEntity;
-import mcjty.lib.bindings.IValue;
-import mcjty.lib.network.PacketRequestIntegerFromServer;
 import mcjty.lib.typed.Key;
 import mcjty.lib.typed.Type;
 import mcjty.lib.typed.TypedMap;
@@ -27,6 +27,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 
+import javax.annotation.Nonnull;
+
 public class DimletWorkbenchTileEntity extends GenericEnergyReceiverTileEntity implements ITickable, DefaultSidedInventory {
 
     public static final String CMD_SUGGESTPARTS = "workbench.suggestParts";
@@ -37,6 +39,7 @@ public class DimletWorkbenchTileEntity extends GenericEnergyReceiverTileEntity i
 
     public static final String CMD_GETEXTRACTING = "getExtracting";
     public static final String CLIENTCMD_GETEXTRACTING = "getExtracting";
+    public static final Key<Integer> PARAM_PROGRESS = new Key<>("progress", Type.INTEGER);
 
     private InventoryHelper inventoryHelper = new InventoryHelper(this, DimletWorkbenchContainer.factory, DimletWorkbenchContainer.SIZE_BUFFER + 9);
 
@@ -453,31 +456,31 @@ public class DimletWorkbenchTileEntity extends GenericEnergyReceiverTileEntity i
 
     // Request the extracting amount from the server. This has to be called on the client side.
     public void requestExtractingFromServer() {
-        RFToolsDimMessages.INSTANCE.sendToServer(new PacketRequestIntegerFromServer(RFToolsDim.MODID, getPos(),
+        RFToolsDimMessages.INSTANCE.sendToServer(new PacketRequestDataFromServer(RFToolsDim.MODID, getPos(),
                 CMD_GETEXTRACTING,
                 CLIENTCMD_GETEXTRACTING, TypedMap.EMPTY));
     }
 
     @Override
-    public Integer executeWithResultInteger(String command, TypedMap args) {
-        Integer rc = super.executeWithResultInteger(command, args);
+    public TypedMap executeWithResult(String command, TypedMap args) {
+        TypedMap rc = super.executeWithResult(command, args);
         if (rc != null) {
             return rc;
         }
         if (CMD_GETEXTRACTING.equals(command)) {
-            return extracting;
+            return TypedMap.builder().put(PARAM_PROGRESS, extracting).build();
         }
         return null;
     }
 
     @Override
-    public boolean execute(String command, Integer result) {
-        boolean rc = super.execute(command, result);
+    public boolean receiveDataFromServer(String command, @Nonnull TypedMap result) {
+        boolean rc = super.receiveDataFromServer(command, result);
         if (rc) {
             return true;
         }
         if (CLIENTCMD_GETEXTRACTING.equals(command)) {
-            extracting = result;
+            extracting = result.get(PARAM_PROGRESS);
             return true;
         }
         return false;

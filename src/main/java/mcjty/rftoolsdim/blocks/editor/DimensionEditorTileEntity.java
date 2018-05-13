@@ -2,8 +2,10 @@ package mcjty.rftoolsdim.blocks.editor;
 
 import mcjty.lib.container.DefaultSidedInventory;
 import mcjty.lib.container.InventoryHelper;
+import mcjty.lib.network.PacketRequestDataFromServer;
 import mcjty.lib.tileentity.GenericEnergyReceiverTileEntity;
-import mcjty.lib.network.PacketRequestIntegerFromServer;
+import mcjty.lib.typed.Key;
+import mcjty.lib.typed.Type;
 import mcjty.lib.typed.TypedMap;
 import mcjty.lib.varia.BlockTools;
 import mcjty.lib.varia.Broadcaster;
@@ -45,6 +47,7 @@ import net.minecraftforge.common.util.FakePlayerFactory;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import org.apache.commons.io.FileUtils;
 
+import javax.annotation.Nonnull;
 import java.io.File;
 import java.io.IOException;
 
@@ -52,6 +55,7 @@ public class DimensionEditorTileEntity extends GenericEnergyReceiverTileEntity i
 
     public static final String CMD_GETEDITING = "getEditing";
     public static final String CLIENTCMD_GETEDITING = "getEditing";
+    public static final Key<Integer> PARAM_PROGRESS = new Key<>("progress", Type.INTEGER);
 
     private static int editPercentage = 0;
     private int ticksLeft = -1;
@@ -384,35 +388,35 @@ public class DimensionEditorTileEntity extends GenericEnergyReceiverTileEntity i
 
     // Request the building percentage from the server. This has to be called on the client side.
     public void requestBuildingPercentage() {
-        RFToolsDimMessages.INSTANCE.sendToServer(new PacketRequestIntegerFromServer(RFToolsDim.MODID, getPos(),
+        RFToolsDimMessages.INSTANCE.sendToServer(new PacketRequestDataFromServer(RFToolsDim.MODID, getPos(),
                 CMD_GETEDITING,
                 CLIENTCMD_GETEDITING, TypedMap.EMPTY));
     }
 
     @Override
-    public Integer executeWithResultInteger(String command, TypedMap args) {
-        Integer rc = super.executeWithResultInteger(command, args);
+    public TypedMap executeWithResult(String command, TypedMap args) {
+        TypedMap rc = super.executeWithResult(command, args);
         if (rc != null) {
             return rc;
         }
         if (CMD_GETEDITING.equals(command)) {
             if (ticksLeft == -1) {
-                return 0;
+                return TypedMap.builder().put(PARAM_PROGRESS, 0).build();
             } else {
-                return (ticksCost - ticksLeft) * 100 / ticksCost;
+                return TypedMap.builder().put(PARAM_PROGRESS, (ticksCost - ticksLeft) * 100 / ticksCost).build();
             }
         }
         return null;
     }
 
     @Override
-    public boolean execute(String command, Integer result) {
-        boolean rc = super.execute(command, result);
+    public boolean receiveDataFromServer(String command, @Nonnull TypedMap result) {
+        boolean rc = super.receiveDataFromServer(command, result);
         if (rc) {
             return true;
         }
         if (CLIENTCMD_GETEDITING.equals(command)) {
-            editPercentage = result;
+            editPercentage = result.get(PARAM_PROGRESS);
             return true;
         }
         return false;

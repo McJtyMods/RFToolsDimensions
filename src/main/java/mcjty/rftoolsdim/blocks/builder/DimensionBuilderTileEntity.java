@@ -1,11 +1,13 @@
 package mcjty.rftoolsdim.blocks.builder;
 
+import mcjty.lib.bindings.DefaultValue;
+import mcjty.lib.bindings.IValue;
 import mcjty.lib.container.DefaultSidedInventory;
 import mcjty.lib.container.InventoryHelper;
-import mcjty.lib.bindings.DefaultValue;
+import mcjty.lib.network.PacketRequestDataFromServer;
 import mcjty.lib.tileentity.GenericEnergyReceiverTileEntity;
-import mcjty.lib.bindings.IValue;
-import mcjty.lib.network.PacketRequestIntegerFromServer;
+import mcjty.lib.typed.Key;
+import mcjty.lib.typed.Type;
 import mcjty.lib.typed.TypedMap;
 import mcjty.lib.varia.Logging;
 import mcjty.rftools.blocks.builder.BuilderTileEntity;
@@ -25,12 +27,14 @@ import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 
+import javax.annotation.Nonnull;
 import java.util.Random;
 
 public class DimensionBuilderTileEntity extends GenericEnergyReceiverTileEntity implements ITickable, DefaultSidedInventory {
 
     public static final String CMD_GETBUILDING = "getBuilding";
     public static final String CLIENTCMD_GETBUILDING = "getBuilding";
+    public static final Key<Integer> PARAM_BUILDING_PROGRESS = new Key<>("buildingprogress", Type.INTEGER);
 
     public static final String COMPONENT_NAME = "dimension_builder";
 
@@ -284,32 +288,32 @@ public class DimensionBuilderTileEntity extends GenericEnergyReceiverTileEntity 
 
     // Request the building percentage from the server. This has to be called on the client side.
     public void requestBuildingPercentage() {
-        RFToolsDimMessages.INSTANCE.sendToServer(new PacketRequestIntegerFromServer(RFToolsDim.MODID, getPos(),
+        RFToolsDimMessages.INSTANCE.sendToServer(new PacketRequestDataFromServer(RFToolsDim.MODID, getPos(),
                 CMD_GETBUILDING,
                 CLIENTCMD_GETBUILDING, TypedMap.EMPTY));
     }
 
     @Override
-    public Integer executeWithResultInteger(String command, TypedMap args) {
-        Integer rc = super.executeWithResultInteger(command, args);
+    public TypedMap executeWithResult(String command, TypedMap args) {
+        TypedMap rc = super.executeWithResult(command, args);
         if (rc != null) {
             return rc;
         }
         if (CMD_GETBUILDING.equals(command)) {
             ItemStack itemStack = inventoryHelper.getStackInSlot(0);
             if (itemStack.isEmpty()) {
-                return 0;
+                return TypedMap.builder().put(PARAM_BUILDING_PROGRESS, 0).build();
             } else {
                 NBTTagCompound tagCompound = itemStack.getTagCompound();
                 if (tagCompound == null) {
-                    return 0;
+                    return TypedMap.builder().put(PARAM_BUILDING_PROGRESS, 0).build();
                 }
                 if (errorMode != OK) {
-                    return errorMode;
+                    return TypedMap.builder().put(PARAM_BUILDING_PROGRESS, errorMode).build();
                 } else {
                     int ticksLeft = tagCompound.getInteger("ticksLeft");
                     int tickCost = tagCompound.getInteger("tickCost");
-                    return (tickCost - ticksLeft) * 100 / tickCost;
+                    return TypedMap.builder().put(PARAM_BUILDING_PROGRESS, (tickCost - ticksLeft) * 100 / tickCost).build();
                 }
             }
         }
@@ -317,13 +321,13 @@ public class DimensionBuilderTileEntity extends GenericEnergyReceiverTileEntity 
     }
 
     @Override
-    public boolean execute(String command, Integer result) {
-        boolean rc = super.execute(command, result);
+    public boolean receiveDataFromServer(String command, @Nonnull TypedMap result) {
+        boolean rc = super.receiveDataFromServer(command, result);
         if (rc) {
             return true;
         }
         if (CLIENTCMD_GETBUILDING.equals(command)) {
-            buildPercentage = result;
+            buildPercentage = result.get(PARAM_BUILDING_PROGRESS);
             return true;
         }
         return false;
