@@ -2,6 +2,7 @@ package mcjty.rftoolsdim.proxy;
 
 import mcjty.lib.base.GeneralConfig;
 import mcjty.lib.network.PacketHandler;
+import mcjty.lib.proxy.AbstractCommonProxy;
 import mcjty.lib.varia.Logging;
 import mcjty.lib.varia.WrenchChecker;
 import mcjty.rftoolsdim.ForgeEventHandlers;
@@ -24,16 +25,13 @@ import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 
 import java.io.File;
 
-public abstract class CommonProxy {
+public abstract class CommonProxy extends AbstractCommonProxy {
 
-    public static File modConfigDir;
-    private Configuration mainConfig;
-
+    @Override
     public void preInit(FMLPreInitializationEvent e) {
+        super.preInit(e);
         MinecraftForge.EVENT_BUS.register(new ForgeEventHandlers());
-        GeneralConfig.preInit(e);
 
-        modConfigDir = e.getModConfigurationDirectory();
         mainConfig = new Configuration(new File(modConfigDir.getPath() + File.separator + "rftools", "dimensions.cfg"));
         readMainConfig();
 
@@ -79,18 +77,21 @@ public abstract class CommonProxy {
         }
     }
 
+    @Override
     public void init(FMLInitializationEvent e) {
+        super.init(e);
         NetworkRegistry.INSTANCE.registerGuiHandler(RFToolsDim.instance, new GuiProxy());
         MinecraftForge.EVENT_BUS.register(new DimensionTickEvent());
         ModCrafting.init();
     }
 
+    @Override
     public void postInit(FMLPostInitializationEvent e) {
+        super.postInit(e);
 //        MobConfiguration.readModdedMobConfig(mainConfig);
         if (mainConfig.hasChanged()) {
             mainConfig.save();
         }
-
 
         mainConfig = null;
         WrenchChecker.init();
