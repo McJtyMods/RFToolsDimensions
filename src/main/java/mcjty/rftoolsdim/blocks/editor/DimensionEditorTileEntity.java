@@ -54,7 +54,6 @@ import java.io.IOException;
 public class DimensionEditorTileEntity extends GenericEnergyReceiverTileEntity implements ITickable, DefaultSidedInventory {
 
     public static final String CMD_GETEDITING = "getEditing";
-    public static final String CLIENTCMD_GETEDITING = "getEditing";
     public static final Key<Integer> PARAM_PROGRESS = new Key<>("progress", Type.INTEGER);
 
     private static int editPercentage = 0;
@@ -388,9 +387,7 @@ public class DimensionEditorTileEntity extends GenericEnergyReceiverTileEntity i
 
     // Request the building percentage from the server. This has to be called on the client side.
     public void requestBuildingPercentage() {
-        requestDataFromServer(RFToolsDim.MODID,
-                CMD_GETEDITING,
-                CLIENTCMD_GETEDITING, TypedMap.EMPTY);
+        requestDataFromServer(RFToolsDim.MODID, CMD_GETEDITING, TypedMap.EMPTY);
     }
 
     @Override
@@ -415,7 +412,7 @@ public class DimensionEditorTileEntity extends GenericEnergyReceiverTileEntity i
         if (rc) {
             return true;
         }
-        if (CLIENTCMD_GETEDITING.equals(command)) {
+        if (CMD_GETEDITING.equals(command)) {
             editPercentage = result.get(PARAM_PROGRESS);
             return true;
         }

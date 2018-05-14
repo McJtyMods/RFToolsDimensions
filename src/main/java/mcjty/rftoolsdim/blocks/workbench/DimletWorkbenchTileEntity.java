@@ -38,7 +38,6 @@ public class DimletWorkbenchTileEntity extends GenericEnergyReceiverTileEntity i
 
 
     public static final String CMD_GETEXTRACTING = "getExtracting";
-    public static final String CLIENTCMD_GETEXTRACTING = "getExtracting";
     public static final Key<Integer> PARAM_PROGRESS = new Key<>("progress", Type.INTEGER);
 
     private InventoryHelper inventoryHelper = new InventoryHelper(this, DimletWorkbenchContainer.factory, DimletWorkbenchContainer.SIZE_BUFFER + 9);
@@ -456,9 +455,7 @@ public class DimletWorkbenchTileEntity extends GenericEnergyReceiverTileEntity i
 
     // Request the extracting amount from the server. This has to be called on the client side.
     public void requestExtractingFromServer() {
-        requestDataFromServer(RFToolsDim.MODID,
-                CMD_GETEXTRACTING,
-                CLIENTCMD_GETEXTRACTING, TypedMap.EMPTY);
+        requestDataFromServer(RFToolsDim.MODID, CMD_GETEXTRACTING, TypedMap.EMPTY);
     }
 
     @Override
@@ -479,7 +476,7 @@ public class DimletWorkbenchTileEntity extends GenericEnergyReceiverTileEntity i
         if (rc) {
             return true;
         }
-        if (CLIENTCMD_GETEXTRACTING.equals(command)) {
+        if (CMD_GETEXTRACTING.equals(command)) {
             extracting = result.get(PARAM_PROGRESS);
             return true;
         }

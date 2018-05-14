@@ -33,7 +33,6 @@ import java.util.Random;
 public class DimensionBuilderTileEntity extends GenericEnergyReceiverTileEntity implements ITickable, DefaultSidedInventory {
 
     public static final String CMD_GETBUILDING = "getBuilding";
-    public static final String CLIENTCMD_GETBUILDING = "getBuilding";
     public static final Key<Integer> PARAM_BUILDING_PROGRESS = new Key<>("buildingprogress", Type.INTEGER);
 
     public static final String COMPONENT_NAME = "dimension_builder";
@@ -288,9 +287,7 @@ public class DimensionBuilderTileEntity extends GenericEnergyReceiverTileEntity 
 
     // Request the building percentage from the server. This has to be called on the client side.
     public void requestBuildingPercentage() {
-        requestDataFromServer(RFToolsDim.MODID,
-                CMD_GETBUILDING,
-                CLIENTCMD_GETBUILDING, TypedMap.EMPTY);
+        requestDataFromServer(RFToolsDim.MODID, CMD_GETBUILDING, TypedMap.EMPTY);
     }
 
     @Override
@@ -326,7 +323,7 @@ public class DimensionBuilderTileEntity extends GenericEnergyReceiverTileEntity 
         if (rc) {
             return true;
         }
-        if (CLIENTCMD_GETBUILDING.equals(command)) {
+        if (CMD_GETBUILDING.equals(command)) {
             buildPercentage = result.get(PARAM_BUILDING_PROGRESS);
             return true;
         }
