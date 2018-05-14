@@ -141,10 +141,9 @@ public class RFToolsDim implements ModBase {
 
     @Mod.EventHandler
     public void serverStopped(FMLServerStoppedEvent event) {
-        Logging.log("RFTools: server is stopping. Shutting down gracefully");
+        Logging.log("RFTools Dimensions: server is stopping. Shutting down gracefully");
         RfToolsDimensionManager.cleanupDimensionInformation();
         RfToolsDimensionManager.clearInstance();
-        DimensionStorage.clearInstance();
         KnownDimletConfiguration.init();
         DimletRandomizer.init();
     }

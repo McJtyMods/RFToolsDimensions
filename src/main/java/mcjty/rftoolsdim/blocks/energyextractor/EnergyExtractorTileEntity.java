@@ -43,7 +43,7 @@ public class EnergyExtractorTileEntity extends GenericEnergyProviderTileEntity i
                 modifyEnergyStored(needed);
 
                 storage.setEnergyLevel(getWorld().provider.getDimension(), dimensionEnergy);
-                storage.save(getWorld());
+                storage.save();
             }
         }
 

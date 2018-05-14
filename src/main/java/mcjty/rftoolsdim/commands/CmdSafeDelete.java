@@ -136,7 +136,7 @@ public class CmdSafeDelete extends AbstractRfToolsCommand {
 
         DimensionStorage dimensionStorage = DimensionStorage.getDimensionStorage(world);
         dimensionStorage.removeDimension(dim);
-        dimensionStorage.save(world);
+        dimensionStorage.save();
 
         if (GeneralConfiguration.dimensionFolderIsDeletedWithSafeDel) {
             File rootDirectory = DimensionManager.getCurrentSaveRootDirectory();

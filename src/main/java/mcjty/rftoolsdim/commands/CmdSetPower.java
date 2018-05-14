@@ -62,6 +62,6 @@ public class CmdSetPower extends AbstractRfToolsCommand {
 
         DimensionStorage storage = DimensionStorage.getDimensionStorage(world);
         storage.setEnergyLevel(dim, rf);
-        storage.save(world);
+        storage.save();
     }
 }

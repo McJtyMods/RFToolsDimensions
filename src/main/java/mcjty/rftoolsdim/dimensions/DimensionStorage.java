@@ -1,47 +1,33 @@
 package mcjty.rftoolsdim.dimensions;
 
+import mcjty.lib.worlddata.AbstractWorldData;
 import mcjty.rftoolsdim.config.PowerConfiguration;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
-import net.minecraft.world.storage.WorldSavedData;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.util.Constants;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class DimensionStorage extends WorldSavedData {
-    public static final String DIMSTORAGE_NAME = "RFToolsDimensionStorage";
-    private static DimensionStorage instance = null;
+public class DimensionStorage extends AbstractWorldData<DimensionStorage> {
+
+    private static final String DIMSTORAGE_NAME = "RFToolsDimensionStorage";
 
     private final Map<Integer,Integer> energy = new HashMap<>();
 
-    public static void clearInstance() {
-        if (instance != null) {
-            instance.energy.clear();
-            instance = null;
-        }
+    public DimensionStorage(String name) {
+        super(name);
     }
 
-    public DimensionStorage(String identifier) {
-        super(identifier);
-    }
-
-    public void save(World world) {
-        world.getMapStorage().setData(DIMSTORAGE_NAME, this);
-        markDirty();
+    @Override
+    public void clear() {
+        energy.clear();
     }
 
     public static DimensionStorage getDimensionStorage(World world) {
-        if (instance != null) {
-            return instance;
-        }
-        instance = (DimensionStorage) world.getMapStorage().getOrLoadData(DimensionStorage.class, DIMSTORAGE_NAME);
-        if (instance == null) {
-            instance = new DimensionStorage(DIMSTORAGE_NAME);
-        }
-        return instance;
+        return getData(world, DimensionStorage.class, DIMSTORAGE_NAME);
     }
 
     public int getEnergyLevel(int id) {

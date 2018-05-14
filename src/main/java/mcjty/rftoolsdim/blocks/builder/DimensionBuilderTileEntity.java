@@ -168,7 +168,7 @@ public class DimensionBuilderTileEntity extends GenericEnergyReceiverTileEntity 
                 consumeEnergy(rf);
             }
             dimensionStorage.setEnergyLevel(id, energy + rf);
-            dimensionStorage.save(getWorld());
+            dimensionStorage.save();
         }
     }
 

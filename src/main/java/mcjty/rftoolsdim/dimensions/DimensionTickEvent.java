@@ -87,7 +87,7 @@ public class DimensionTickEvent {
                 }
             }
 
-            dimensionStorage.save(entityWorld);
+            dimensionStorage.save();
         }
     }
 

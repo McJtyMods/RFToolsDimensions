@@ -215,7 +215,7 @@ public class DimensionEditorTileEntity extends GenericEnergyReceiverTileEntity i
 
         DimensionStorage dimensionStorage = DimensionStorage.getDimensionStorage(getWorld());
         dimensionStorage.removeDimension(id);
-        dimensionStorage.save(getWorld());
+        dimensionStorage.save();
 
         if (GeneralConfiguration.dimensionFolderIsDeletedWithSafeDel) {
             File rootDirectory = DimensionManager.getCurrentSaveRootDirectory();
