@@ -17,7 +17,7 @@ import java.util.List;
 public class DimletWorkbenchBlock extends GenericRFToolsBlock<DimletWorkbenchTileEntity, DimletWorkbenchContainer> implements Infusable {
 
     public DimletWorkbenchBlock() {
-        super(Material.IRON, DimletWorkbenchTileEntity.class, DimletWorkbenchContainer.class, "dimlet_workbench", true);
+        super(Material.IRON, DimletWorkbenchTileEntity.class, DimletWorkbenchContainer::new, "dimlet_workbench", true);
         setDefaultState(this.blockState.getBaseState());
     }
 

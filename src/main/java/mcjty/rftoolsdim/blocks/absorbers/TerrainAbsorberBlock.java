@@ -31,7 +31,7 @@ import java.util.List;
 public class TerrainAbsorberBlock extends GenericRFToolsBlock<TerrainAbsorberTileEntity, EmptyContainer> {
 
     public TerrainAbsorberBlock() {
-        super(Material.IRON, TerrainAbsorberTileEntity.class, EmptyContainer.class, "terrain_absorber", false);
+        super(Material.IRON, TerrainAbsorberTileEntity.class, EmptyContainer::new, "terrain_absorber", false);
     }
 
     @Override

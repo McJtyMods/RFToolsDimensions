@@ -58,7 +58,7 @@ public class DimensionBuilderBlock extends GenericRFToolsBlock<DimensionBuilderT
     }
 
     public DimensionBuilderBlock(boolean creative) {
-        super(Material.IRON, DimensionBuilderTileEntity.class, DimensionBuilderContainer.class, "dimension_builder", true);
+        super(Material.IRON, DimensionBuilderTileEntity.class, DimensionBuilderContainer::new, "dimension_builder", true);
         setCreative(creative);
     }
 

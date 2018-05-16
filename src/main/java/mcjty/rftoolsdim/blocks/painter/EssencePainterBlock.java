@@ -16,7 +16,7 @@ import java.util.List;
 public class EssencePainterBlock extends GenericRFToolsBlock<EssencePainterTileEntity, EssencePainterContainer> {
 
     public EssencePainterBlock() {
-        super(Material.IRON, EssencePainterTileEntity.class, EssencePainterContainer.class, "essence_painter", true);
+        super(Material.IRON, EssencePainterTileEntity.class, EssencePainterContainer::new, "essence_painter", true);
     }
 
     @Override

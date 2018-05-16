@@ -34,7 +34,7 @@ import java.util.List;
 public class LiquidAbsorberBlock extends GenericRFToolsBlock<LiquidAbsorberTileEntity, EmptyContainer> {
 
     public LiquidAbsorberBlock() {
-        super(Material.IRON, LiquidAbsorberTileEntity.class, EmptyContainer.class, "liquid_absorber", false);
+        super(Material.IRON, LiquidAbsorberTileEntity.class, EmptyContainer::new, "liquid_absorber", false);
     }
 
     @Override

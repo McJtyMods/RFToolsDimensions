@@ -44,7 +44,7 @@ public class DimensionEditorBlock extends GenericRFToolsBlock<DimensionEditorTil
 
 
     public DimensionEditorBlock() {
-        super(Material.IRON, DimensionEditorTileEntity.class, DimensionEditorContainer.class, "dimension_editor", true);
+        super(Material.IRON, DimensionEditorTileEntity.class, DimensionEditorContainer::new, "dimension_editor", true);
     }
 
     @Override

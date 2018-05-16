@@ -31,7 +31,7 @@ import java.util.List;
 public class BiomeAbsorberBlock extends GenericRFToolsBlock<BiomeAbsorberTileEntity, EmptyContainer> {
 
     public BiomeAbsorberBlock() {
-        super(Material.IRON, BiomeAbsorberTileEntity.class, EmptyContainer.class, "biome_absorber", false);
+        super(Material.IRON, BiomeAbsorberTileEntity.class, EmptyContainer::new, "biome_absorber", false);
     }
 
     @Override

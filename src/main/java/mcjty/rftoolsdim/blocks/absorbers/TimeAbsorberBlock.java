@@ -31,7 +31,7 @@ import java.util.List;
 public class TimeAbsorberBlock extends GenericRFToolsBlock<TimeAbsorberTileEntity, EmptyContainer> {
 
     public TimeAbsorberBlock() {
-        super(Material.IRON, TimeAbsorberTileEntity.class, EmptyContainer.class, "time_absorber", false);
+        super(Material.IRON, TimeAbsorberTileEntity.class, EmptyContainer::new, "time_absorber", false);
     }
 
     @Override

@@ -32,7 +32,7 @@ import java.util.List;
 public class MaterialAbsorberBlock extends GenericRFToolsBlock<MaterialAbsorberTileEntity, EmptyContainer> {
 
     public MaterialAbsorberBlock() {
-        super(Material.IRON, MaterialAbsorberTileEntity.class, EmptyContainer.class, "material_absorber", false);
+        super(Material.IRON, MaterialAbsorberTileEntity.class, EmptyContainer::new, "material_absorber", false);
     }
 
     @Override

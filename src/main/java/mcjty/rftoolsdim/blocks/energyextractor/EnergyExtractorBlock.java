@@ -17,7 +17,7 @@ import java.util.List;
 public class EnergyExtractorBlock extends GenericRFToolsBlock<EnergyExtractorTileEntity, EmptyContainer> {
 
     public EnergyExtractorBlock() {
-        super(Material.IRON, EnergyExtractorTileEntity.class, EmptyContainer.class, "energy_extractor", false);
+        super(Material.IRON, EnergyExtractorTileEntity.class, EmptyContainer::new, "energy_extractor", false);
     }
 
     @Override
