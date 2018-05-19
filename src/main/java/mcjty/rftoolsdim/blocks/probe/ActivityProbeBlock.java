@@ -29,7 +29,7 @@ public class ActivityProbeBlock extends Block {
         setHardness(2.0f);
         setSoundType(SoundType.METAL);
         setHarvestLevel("pickaxe", 0);
-        McJtyRegister.registerLater(this, RFToolsDim.instance, ItemBlock.class);
+        McJtyRegister.registerLater(this, RFToolsDim.instance, ItemBlock::new);
     }
 
     @SideOnly(Side.CLIENT)

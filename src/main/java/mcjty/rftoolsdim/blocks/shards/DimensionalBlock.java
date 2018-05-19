@@ -21,7 +21,7 @@ public class DimensionalBlock extends Block {
         setRegistryName("dimensional_block");
         setLightLevel(0.6f);
         setCreativeTab(RFToolsDim.tabRfToolsDim);
-        McJtyRegister.registerLater(this, RFToolsDim.instance, ItemBlock.class);
+        McJtyRegister.registerLater(this, RFToolsDim.instance, ItemBlock::new);
     }
 
     @SideOnly(Side.CLIENT)

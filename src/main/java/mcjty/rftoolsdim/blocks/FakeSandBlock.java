@@ -26,7 +26,7 @@ public class FakeSandBlock extends Block {
         setRegistryName("fake_sand");
 //        setLightLevel(0.6f);
 //        setCreativeTab(RFToolsDim.tabRfToolsDim);
-        McJtyRegister.registerLater(this, RFToolsDim.instance, ItemBlock.class);
+        McJtyRegister.registerLater(this, RFToolsDim.instance, ItemBlock::new);
     }
 
     @Override

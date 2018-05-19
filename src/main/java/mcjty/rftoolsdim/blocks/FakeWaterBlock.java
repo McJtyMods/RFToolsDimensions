@@ -35,7 +35,7 @@ public class FakeWaterBlock extends Block {
         setRegistryName("fake_water");
 //        setLightLevel(0.6f);
 //        setCreativeTab(RFToolsDim.tabRfToolsDim);
-        McJtyRegister.registerLater(this, RFToolsDim.instance, ItemBlock.class);
+        McJtyRegister.registerLater(this, RFToolsDim.instance, ItemBlock::new);
     }
 
     @Override
