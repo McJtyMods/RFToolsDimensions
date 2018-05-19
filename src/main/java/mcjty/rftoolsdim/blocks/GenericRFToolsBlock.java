@@ -3,6 +3,7 @@ package mcjty.rftoolsdim.blocks;
 import mcjty.lib.blocks.GenericBlock;
 import mcjty.lib.tileentity.GenericTileEntity;
 import mcjty.rftoolsdim.RFToolsDim;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
@@ -12,6 +13,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
 import java.util.function.BiFunction;
+import java.util.function.Function;
 
 public abstract class GenericRFToolsBlock<T extends GenericTileEntity, C extends Container> extends GenericBlock<T, C> {
 
@@ -20,8 +22,9 @@ public abstract class GenericRFToolsBlock<T extends GenericTileEntity, C extends
         setCreativeTab(RFToolsDim.tabRfToolsDim);
     }
 
-    public GenericRFToolsBlock(Material material, Class<? extends T> tileEntityClass, BiFunction<EntityPlayer, IInventory, C> containerFactory, Class<? extends ItemBlock> itemBlockClass, String name, boolean isContainer) {
-        super(RFToolsDim.instance, material, tileEntityClass, containerFactory, itemBlockClass, name, isContainer);
+    public GenericRFToolsBlock(Material material, Class<? extends T> tileEntityClass, BiFunction<EntityPlayer, IInventory, C> containerFactory,
+                               Function<Block, ItemBlock> itemBlockFunction, String name, boolean isContainer) {
+        super(RFToolsDim.instance, material, tileEntityClass, containerFactory, itemBlockFunction, name, isContainer);
         setCreativeTab(RFToolsDim.tabRfToolsDim);
     }
 
