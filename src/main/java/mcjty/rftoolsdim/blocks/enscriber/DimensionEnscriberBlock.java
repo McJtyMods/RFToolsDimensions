@@ -1,5 +1,6 @@
 package mcjty.rftoolsdim.blocks.enscriber;
 
+import mcjty.lib.gui.GenericGuiContainer;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.blocks.GenericRFToolsBlock;
 import net.minecraft.block.material.Material;
@@ -12,6 +13,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.input.Keyboard;
 
 import java.util.List;
+import java.util.function.BiFunction;
 
 public class DimensionEnscriberBlock extends GenericRFToolsBlock<DimensionEnscriberTileEntity, DimensionEnscriberContainer> {
 
@@ -26,8 +28,8 @@ public class DimensionEnscriberBlock extends GenericRFToolsBlock<DimensionEnscri
 
     @SideOnly(Side.CLIENT)
     @Override
-    public Class<GuiDimensionEnscriber> getGuiClass() {
-        return GuiDimensionEnscriber.class;
+    public BiFunction<DimensionEnscriberTileEntity, DimensionEnscriberContainer, GenericGuiContainer<? super DimensionEnscriberTileEntity>> getGuiFactory() {
+        return GuiDimensionEnscriber::new;
     }
 
     @SideOnly(Side.CLIENT)

@@ -1,6 +1,7 @@
 package mcjty.rftoolsdim.blocks.workbench;
 
 import mcjty.lib.api.Infusable;
+import mcjty.lib.gui.GenericGuiContainer;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.blocks.GenericRFToolsBlock;
 import net.minecraft.block.material.Material;
@@ -13,6 +14,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.input.Keyboard;
 
 import java.util.List;
+import java.util.function.BiFunction;
 
 public class DimletWorkbenchBlock extends GenericRFToolsBlock<DimletWorkbenchTileEntity, DimletWorkbenchContainer> implements Infusable {
 
@@ -28,8 +30,8 @@ public class DimletWorkbenchBlock extends GenericRFToolsBlock<DimletWorkbenchTil
 
     @SideOnly(Side.CLIENT)
     @Override
-    public Class<GuiDimletWorkbench> getGuiClass() {
-        return GuiDimletWorkbench.class;
+    public BiFunction<DimletWorkbenchTileEntity, DimletWorkbenchContainer, GenericGuiContainer<? super DimletWorkbenchTileEntity>> getGuiFactory() {
+        return GuiDimletWorkbench::new;
     }
 
     @SideOnly(Side.CLIENT)

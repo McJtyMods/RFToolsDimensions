@@ -1,6 +1,7 @@
 package mcjty.rftoolsdim.blocks.editor;
 
 import mcjty.lib.api.Infusable;
+import mcjty.lib.gui.GenericGuiContainer;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.blocks.GenericRFToolsBlock;
 import net.minecraft.block.material.Material;
@@ -19,6 +20,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.input.Keyboard;
 
 import java.util.List;
+import java.util.function.BiFunction;
 
 public class DimensionEditorBlock extends GenericRFToolsBlock<DimensionEditorTileEntity, DimensionEditorContainer> implements Infusable {
 
@@ -53,8 +55,8 @@ public class DimensionEditorBlock extends GenericRFToolsBlock<DimensionEditorTil
     }
 
     @Override
-    public Class<GuiDimensionEditor> getGuiClass() {
-        return GuiDimensionEditor.class;
+    public BiFunction<DimensionEditorTileEntity, DimensionEditorContainer, GenericGuiContainer<? super DimensionEditorTileEntity>> getGuiFactory() {
+        return GuiDimensionEditor::new;
     }
 
     @SideOnly(Side.CLIENT)

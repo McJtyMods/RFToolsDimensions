@@ -1,5 +1,6 @@
 package mcjty.rftoolsdim.blocks.painter;
 
+import mcjty.lib.gui.GenericGuiContainer;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.blocks.GenericRFToolsBlock;
 import net.minecraft.block.material.Material;
@@ -12,6 +13,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.input.Keyboard;
 
 import java.util.List;
+import java.util.function.BiFunction;
 
 public class EssencePainterBlock extends GenericRFToolsBlock<EssencePainterTileEntity, EssencePainterContainer> {
 
@@ -26,8 +28,8 @@ public class EssencePainterBlock extends GenericRFToolsBlock<EssencePainterTileE
 
     @SideOnly(Side.CLIENT)
     @Override
-    public Class<GuiEssencePainter> getGuiClass() {
-        return GuiEssencePainter.class;
+    public BiFunction<EssencePainterTileEntity, EssencePainterContainer, GenericGuiContainer<? super EssencePainterTileEntity>> getGuiFactory() {
+        return GuiEssencePainter::new;
     }
 
     @SideOnly(Side.CLIENT)

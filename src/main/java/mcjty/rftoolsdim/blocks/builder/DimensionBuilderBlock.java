@@ -1,6 +1,7 @@
 package mcjty.rftoolsdim.blocks.builder;
 
 import mcjty.lib.api.Infusable;
+import mcjty.lib.gui.GenericGuiContainer;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.blocks.GenericRFToolsBlock;
 import mcjty.rftoolsdim.theoneprobe.TheOneProbeSupport;
@@ -29,6 +30,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.input.Keyboard;
 
 import java.util.List;
+import java.util.function.BiFunction;
 
 public class DimensionBuilderBlock extends GenericRFToolsBlock<DimensionBuilderTileEntity, DimensionBuilderContainer> implements Infusable {
 
@@ -69,8 +71,8 @@ public class DimensionBuilderBlock extends GenericRFToolsBlock<DimensionBuilderT
 
     @SideOnly(Side.CLIENT)
     @Override
-    public Class<GuiDimensionBuilder> getGuiClass() {
-        return GuiDimensionBuilder.class;
+    public BiFunction<DimensionBuilderTileEntity, DimensionBuilderContainer, GenericGuiContainer<? super DimensionBuilderTileEntity>> getGuiFactory() {
+        return GuiDimensionBuilder::new;
     }
 
     @SideOnly(Side.CLIENT)
