@@ -63,13 +63,13 @@ public class EnergyExtractorTileEntity extends GenericEnergyProviderTileEntity i
 
                 if (McJtyLib.redstoneflux && RedstoneFluxCompatibility.isEnergyConnection(te)) {
                     if (RedstoneFluxCompatibility.canConnectEnergy(te, opposite)) {
-                        received = EnergyTools.receiveEnergy(te, opposite, rfToGive);
+                        received = (int) EnergyTools.receiveEnergy(te, opposite, rfToGive);
                     } else {
                         received = 0;
                     }
                 } else {
                     // Forge unit
-                    received = EnergyTools.receiveEnergy(te, opposite, rfToGive);
+                    received = (int) EnergyTools.receiveEnergy(te, opposite, rfToGive);
                 }
                 energyStored -= storage.extractEnergy(received, false);
                 if (energyStored <= 0) {
