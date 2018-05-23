@@ -2,7 +2,7 @@ package mcjty.rftoolsdim.blocks.energyextractor;
 
 import mcjty.lib.McJtyLib;
 import mcjty.lib.compat.RedstoneFluxCompatibility;
-import mcjty.lib.tileentity.GenericEnergyProviderTileEntity;
+import mcjty.lib.tileentity.GenericEnergyStorageTileEntity;
 import mcjty.lib.varia.EnergyTools;
 import mcjty.rftoolsdim.config.MachineConfiguration;
 import mcjty.rftoolsdim.dimensions.DimensionStorage;
@@ -12,7 +12,7 @@ import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.energy.CapabilityEnergy;
 
-public class EnergyExtractorTileEntity extends GenericEnergyProviderTileEntity implements ITickable {
+public class EnergyExtractorTileEntity extends GenericEnergyStorageTileEntity implements ITickable {
 
     public EnergyExtractorTileEntity() {
         super(MachineConfiguration.EXTRACTOR_MAXENERGY, MachineConfiguration.EXTRACTOR_SENDPERTICK);
@@ -57,7 +57,7 @@ public class EnergyExtractorTileEntity extends GenericEnergyProviderTileEntity i
             BlockPos pos = getPos().offset(facing);
             TileEntity te = getWorld().getTileEntity(pos);
             EnumFacing opposite = facing.getOpposite();
-            if (EnergyTools.isEnergyTE(te) || (te != null && te.hasCapability(CapabilityEnergy.ENERGY, opposite))) {
+            if (EnergyTools.isEnergyTE(te, opposite) || (te != null && te.hasCapability(CapabilityEnergy.ENERGY, opposite))) {
                 int rfToGive = rf <= energyStored ? rf : energyStored;
                 int received;
 
