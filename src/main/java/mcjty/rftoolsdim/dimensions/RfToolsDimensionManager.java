@@ -239,7 +239,7 @@ public class RfToolsDimensionManager extends WorldSavedData {
                 if (GeneralConfiguration.enableDynamicPhaseCost) {
                     toConsume = (int) (DimensionTickEvent.MAXTICKS * tickCost * GeneralConfiguration.dynamicPhaseCostAmount);
                 } else {
-                    toConsume = DimensionTickEvent.MAXTICKS * PowerConfiguration.PHASEDFIELD_CONSUMEPERTICK;
+                    toConsume = (int) (DimensionTickEvent.MAXTICKS * PowerConfiguration.PHASEDFIELD_CONSUMEPERTICK);
                 }
                 if (energyStored >= toConsume) {
                     if (consume) {
