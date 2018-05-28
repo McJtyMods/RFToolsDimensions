@@ -43,6 +43,21 @@ public abstract class AbstractRfToolsCommand implements RfToolsCommand {
         }
     }
 
+    protected long fetchLong(ICommandSender sender, String[] args, int index, long defaultValue) {
+        if(index < 0 || index >= args.length) return defaultValue;
+        try {
+            return Long.parseLong(args[index]);
+        } catch (NumberFormatException e) {
+            ITextComponent component = new TextComponentString(TextFormatting.RED + "Parameter is not a valid long integer!");
+            if (sender instanceof EntityPlayer) {
+                ((EntityPlayer) sender).sendStatusMessage(component, false);
+            } else {
+                sender.sendMessage(component);
+            }
+            return 0;
+        }
+    }
+
     protected float fetchFloat(ICommandSender sender, String[] args, int index, float defaultValue) {
         if(index < 0 || index >= args.length) return defaultValue;
         try {
