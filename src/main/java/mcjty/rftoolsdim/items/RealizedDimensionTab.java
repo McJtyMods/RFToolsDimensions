@@ -101,7 +101,7 @@ public class RealizedDimensionTab extends GenericRFToolsItem {
                         }
 
                         DimensionStorage storage = DimensionStorage.getDimensionStorage(world);
-                        int power = storage.getEnergyLevel(id);
+                        long power = storage.getEnergyLevel(id);
                         list.add(TextFormatting.YELLOW + "    Current power: " + power + " RF");
                     }
                 }

@@ -339,7 +339,7 @@ public class GenericWorldProvider extends WorldProvider implements  /*@todo impl
         getDimensionInformation();
         if (GeneralConfiguration.respawnSameDim || (dimensionInformation != null && dimensionInformation.isRespawnHere())) {
             DimensionStorage dimensionStorage = getStorage();
-            int power = dimensionStorage.getEnergyLevel(getDimension());
+            long power = dimensionStorage.getEnergyLevel(getDimension());
             if (power < 1000) {
                 return GeneralConfiguration.spawnDimension;
             } else {
@@ -445,7 +445,7 @@ public class GenericWorldProvider extends WorldProvider implements  /*@todo impl
 
     private float calculatePowerBlackout(int dim) {
         float factor = 1.0f;
-        int power = getStorage().getEnergyLevel(dim);
+        long power = getStorage().getEnergyLevel(dim);
         if (power < PowerConfiguration.DIMPOWER_WARN3) {
             factor = ((float) power) / PowerConfiguration.DIMPOWER_WARN3 * 0.2f;
         } else  if (power < PowerConfiguration.DIMPOWER_WARN2) {
@@ -536,7 +536,7 @@ public class GenericWorldProvider extends WorldProvider implements  /*@todo impl
 
 
     @Override
-    public int getCurrentRF() {
+    public long getCurrentRF() {
 //        DimensionStorage dimensionStorage = DimensionStorage.getDimensionStorage(worldObj);
         return getStorage().getEnergyLevel(getDimension());
     }

@@ -146,14 +146,14 @@ public class DimensionBuilderTileEntity extends GenericEnergyReceiverTileEntity 
 
         if (id != 0) {
             DimensionStorage dimensionStorage = DimensionStorage.getDimensionStorage(getWorld());
-            int rf;
+            long rf;
             if (isCheaterDimension(tagCompound)) {
                 rf = MachineConfiguration.BUILDER_MAXENERGY;
             } else {
                 rf = getEnergyStored();
             }
-            int energy = dimensionStorage.getEnergyLevel(id);
-            int maxEnergy = PowerConfiguration.MAX_DIMENSION_POWER - energy;      // Max energy the dimension can still get.
+            long energy = dimensionStorage.getEnergyLevel(id);
+            long maxEnergy = PowerConfiguration.MAX_DIMENSION_POWER - energy;      // Max energy the dimension can still get.
             if (rf > maxEnergy) {
                 rf = maxEnergy;
             }

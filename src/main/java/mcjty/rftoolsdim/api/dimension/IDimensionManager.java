@@ -25,7 +25,7 @@ public interface IDimensionManager {
      * @param id
      * @return
      */
-    int getCurrentRF(World world, int id);
+    long getCurrentRF(World world, int id);
 
     /**
      * Get the dimension information. If the id doesn't represent an RFTools

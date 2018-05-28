@@ -69,7 +69,7 @@ public class DimensionTickEvent {
                 DimensionInformation information = dimensionManager.getDimensionInformation(id);
 
                 // Power handling.
-                int power;
+                long power;
 
                 // If there is an activity probe we only drain power if the dimension is loaded (a player is there or a chunkloader)
                 if (!information.isCheater() && ((world != null && world.getChunkProvider().getLoadedChunkCount() > 0) || information.getProbeCounter() == 0)) {
@@ -91,7 +91,7 @@ public class DimensionTickEvent {
         }
     }
 
-    private int handlePower(boolean doEffects, DimensionStorage dimensionStorage, Map.Entry<Integer, DimensionDescriptor> entry, Integer id, DimensionInformation information) {
+    private long handlePower(boolean doEffects, DimensionStorage dimensionStorage, Map.Entry<Integer, DimensionDescriptor> entry, Integer id, DimensionInformation information) {
         int cost = 0;
         if (PowerConfiguration.dimensionDifficulty != -1) {
             cost = information.getActualRfCost();
@@ -100,7 +100,7 @@ public class DimensionTickEvent {
             }
         }
 
-        int power = dimensionStorage.getEnergyLevel(id);
+        long power = dimensionStorage.getEnergyLevel(id);
         power -= cost * MAXTICKS;
         if (power < 0) {
             power = 0;
@@ -378,7 +378,7 @@ public class DimensionTickEvent {
     }
 
 
-    private void handleEffectsForDimension(int power, int id, DimensionInformation information) {
+    private void handleEffectsForDimension(long power, int id, DimensionInformation information) {
         getPotions();
         WorldServer world = DimensionManager.getWorld(id);
         if (world != null) {
@@ -417,7 +417,7 @@ public class DimensionTickEvent {
         }
     }
 
-    private void handleLowPower(Integer id, int power, boolean doEffects, int phasedCost) {
+    private void handleLowPower(Integer id, long power, boolean doEffects, int phasedCost) {
         getPotions();
         if (power <= 0) {
             // We ran out of power!

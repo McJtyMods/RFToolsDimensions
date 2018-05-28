@@ -44,7 +44,7 @@ public class CmdSetPower extends AbstractRfToolsCommand {
             return;
         }
 
-        int rf = fetchInt(sender, args, 1, PowerConfiguration.MAX_DIMENSION_POWER);
+        long rf = fetchLong(sender, args, 1, PowerConfiguration.MAX_DIMENSION_POWER);
 
         World world = sender.getEntityWorld();
         int dim = world.provider.getDimension();

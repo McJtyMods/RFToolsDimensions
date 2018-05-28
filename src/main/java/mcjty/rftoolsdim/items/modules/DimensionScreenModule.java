@@ -18,7 +18,7 @@ public class DimensionScreenModule implements IScreenModule<IModuleDataContents>
 
     @Override
     public IModuleDataContents getData(IScreenDataHelper h, World worldObj, long millis) {
-        int energy = DimensionStorage.getDimensionStorage(DimensionManager.getWorld(0)).getEnergyLevel(dim);
+        long energy = DimensionStorage.getDimensionStorage(DimensionManager.getWorld(0)).getEnergyLevel(dim);
         return helper.getContentsValue(h, millis, energy, PowerConfiguration.MAX_DIMENSION_POWER);
     }
 

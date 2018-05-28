@@ -9,7 +9,7 @@ import net.minecraft.world.World;
 public class DimensionManager implements IDimensionManager {
 
     @Override
-    public int getCurrentRF(World world, int id) {
+    public long getCurrentRF(World world, int id) {
         if (!isRFToolsDimension(world, id)) {
             return -1;
         }

@@ -8,32 +8,32 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class PacketReturnEnergy implements IMessage {
     private int id;
-    private int energy;
+    private long energy;
 
     @Override
     public void fromBytes(ByteBuf buf) {
         id = buf.readInt();
-        energy = buf.readInt();
+        energy = buf.readLong();
     }
 
     @Override
     public void toBytes(ByteBuf buf) {
         buf.writeInt(id);
-        buf.writeInt(energy);
+        buf.writeLong(energy);
     }
 
     public int getId() {
         return id;
     }
 
-    public int getEnergy() {
+    public long getEnergy() {
         return energy;
     }
 
     public PacketReturnEnergy() {
     }
 
-    public PacketReturnEnergy(int id, int energy) {
+    public PacketReturnEnergy(int id, long energy) {
         this.id = id;
         this.energy = energy;
     }

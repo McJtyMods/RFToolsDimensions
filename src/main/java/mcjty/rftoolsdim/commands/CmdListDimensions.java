@@ -54,7 +54,7 @@ public class CmdListDimensions extends AbstractRfToolsCommand {
             int id = me.getKey();
             DimensionInformation dimensionInformation = dimensionManager.getDimensionInformation(id);
             String dimName = dimensionInformation.getName();
-            int energy = dimensionStorage.getEnergyLevel(id);
+            long energy = dimensionStorage.getEnergyLevel(id);
             String ownerName = dimensionInformation.getOwnerName();
             if (ownerName != null && !ownerName.isEmpty()) {
                 ITextComponent component = new TextComponentString("    RfTools: id:" + id + ", " + dimName + " (power " + energy + ") (owner " + ownerName + ")");

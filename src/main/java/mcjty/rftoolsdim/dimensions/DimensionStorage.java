@@ -15,7 +15,7 @@ public class DimensionStorage extends AbstractWorldData<DimensionStorage> {
 
     private static final String DIMSTORAGE_NAME = "RFToolsDimensionStorage";
 
-    private final Map<Integer,Integer> energy = new HashMap<>();
+    private final Map<Integer,Long> energy = new HashMap<>();
 
     public DimensionStorage(String name) {
         super(name);
@@ -30,7 +30,7 @@ public class DimensionStorage extends AbstractWorldData<DimensionStorage> {
         return getData(world, DimensionStorage.class, DIMSTORAGE_NAME);
     }
 
-    public int getEnergyLevel(int id) {
+    public long getEnergyLevel(int id) {
         if (energy.containsKey(id)) {
             return energy.get(id);
         } else {
@@ -38,8 +38,8 @@ public class DimensionStorage extends AbstractWorldData<DimensionStorage> {
         }
     }
 
-    public void setEnergyLevel(int id, int energyLevel) {
-        int old = getEnergyLevel(id);
+    public void setEnergyLevel(int id, long energyLevel) {
+        long old = getEnergyLevel(id);
         energy.put(id, energyLevel);
         if (PowerConfiguration.freezeUnpowered) {
             World world = DimensionManager.getWorld(id);
@@ -64,7 +64,7 @@ public class DimensionStorage extends AbstractWorldData<DimensionStorage> {
         for (int i = 0 ; i < lst.tagCount() ; i++) {
             NBTTagCompound tc = lst.getCompoundTagAt(i);
             int id = tc.getInteger("id");
-            int rf = tc.getInteger("energy");
+            long rf = tc.getLong("energy");
             energy.put(id, rf);
         }
     }
@@ -72,10 +72,10 @@ public class DimensionStorage extends AbstractWorldData<DimensionStorage> {
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound tagCompound) {
         NBTTagList lst = new NBTTagList();
-        for (Map.Entry<Integer,Integer> me : energy.entrySet()) {
+        for (Map.Entry<Integer,Long> me : energy.entrySet()) {
             NBTTagCompound tc = new NBTTagCompound();
             tc.setInteger("id", me.getKey());
-            tc.setInteger("energy", me.getValue());
+            tc.setLong("energy", me.getValue());
             lst.appendTag(tc);
         }
         tagCompound.setTag("dimensions", lst);

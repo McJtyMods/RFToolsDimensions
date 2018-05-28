@@ -48,8 +48,8 @@ public class DimensionMonitorItem extends GenericRFToolsItem {
             WorldClient world = Minecraft.getMinecraft().world;
             int id = world.provider.getDimension();
             DimensionStorage storage = DimensionStorage.getDimensionStorage(world);
-            int energyLevel = storage.getEnergyLevel(id);
-            int level = (9*energyLevel) / PowerConfiguration.MAX_DIMENSION_POWER;
+            long energyLevel = storage.getEnergyLevel(id);
+            long level = (9*energyLevel) / PowerConfiguration.MAX_DIMENSION_POWER;
             if (level < 0) {
                 level = 0;
             } else if (level > 8) {
@@ -78,7 +78,7 @@ public class DimensionMonitorItem extends GenericRFToolsItem {
             } else {
                 String name = dimensionInformation.getName();
                 DimensionStorage storage = DimensionStorage.getDimensionStorage(player.getEntityWorld());
-                int power = storage != null ? storage.getEnergyLevel(id) : 0;
+                long power = storage != null ? storage.getEnergyLevel(id) : 0;
 
                 Logging.message(player, TextFormatting.BLUE + "Name: " + name + " (Id " + id + ")" + TextFormatting.YELLOW + "    Power: " + power + " RF");
                 if (player.isSneaking()) {
@@ -126,7 +126,7 @@ public class DimensionMonitorItem extends GenericRFToolsItem {
             }
             String name = dimensionInformation.getName();
             DimensionStorage storage = DimensionStorage.getDimensionStorage(world);
-            int power = storage != null ? storage.getEnergyLevel(id) : 0;
+            long power = storage != null ? storage.getEnergyLevel(id) : 0;
 
             list.add(TextFormatting.BLUE + "Name: " + name + " (Id " + id + ")");
             list.add(TextFormatting.YELLOW + "Power: " + power + " RF");

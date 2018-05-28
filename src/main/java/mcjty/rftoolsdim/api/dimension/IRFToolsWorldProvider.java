@@ -9,5 +9,5 @@ public interface IRFToolsWorldProvider {
     /**
      * Get the amount of RF left in this dimension (only works server-side).
      */
-    int getCurrentRF();
+    long getCurrentRF();
 }

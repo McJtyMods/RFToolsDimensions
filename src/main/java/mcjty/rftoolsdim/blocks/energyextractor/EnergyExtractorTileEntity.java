@@ -28,8 +28,8 @@ public class EnergyExtractorTileEntity extends GenericEnergyStorageTileEntity im
         if (energyStored < MachineConfiguration.EXTRACTOR_MAXENERGY) {
             // Get energy out of the dimension.
             DimensionStorage storage = DimensionStorage.getDimensionStorage(getWorld());
-            int dimensionEnergy = storage.getEnergyLevel(getWorld().provider.getDimension());
-            int needed = Math.min(MachineConfiguration.EXTRACTOR_MAXENERGY - energyStored, dimensionEnergy);
+            long dimensionEnergy = storage.getEnergyLevel(getWorld().provider.getDimension());
+            int needed = (int)Math.min(MachineConfiguration.EXTRACTOR_MAXENERGY - energyStored, dimensionEnergy);
 
             if (needed > 0) {
                 energyStored += needed;

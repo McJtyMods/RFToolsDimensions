@@ -5,7 +5,7 @@ import net.minecraftforge.common.config.Configuration;
 public class PowerConfiguration {
     public static final String CATEGORY_POWER = "power";
 
-    public static int MAX_DIMENSION_POWER = 40000000;
+    public static long MAX_DIMENSION_POWER = 40000000;
     public static int DIMPOWER_WARN0 = 6000000;     // This is only used for darkness calculations.
     public static int DIMPOWER_WARN1 = 4000000;
     public static int DIMPOWER_WARN2 = 1000000;
@@ -37,7 +37,7 @@ public class PowerConfiguration {
                                                                "If true you will get some debufs when the PFG is in use. If false there will be no debufs").getBoolean();
 
         MAX_DIMENSION_POWER = cfg.get(CATEGORY_POWER, "dimensionPower", PowerConfiguration.MAX_DIMENSION_POWER,
-                                                         "The internal RF buffer for every dimension").getInt();
+                                                         "The internal RF buffer for every dimension").getLong();
         DIMPOWER_WARN0 = cfg.get(CATEGORY_POWER, "dimensionPowerWarn0", PowerConfiguration.DIMPOWER_WARN0,
                                                     "The zero level at which power warning signs are starting to happen. This is only used for lighting level. No other debuffs occur at this level.").getInt();
         DIMPOWER_WARN1 = cfg.get(CATEGORY_POWER, "dimensionPowerWarn1", PowerConfiguration.DIMPOWER_WARN1,
