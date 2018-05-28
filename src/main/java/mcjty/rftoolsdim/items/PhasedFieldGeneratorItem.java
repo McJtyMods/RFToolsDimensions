@@ -1,6 +1,5 @@
 package mcjty.rftoolsdim.items;
 
-import cofh.redstoneflux.api.IEnergyContainerItem;
 import mcjty.lib.varia.IEnergyItem;
 import mcjty.lib.varia.ItemCapabilityProvider;
 import mcjty.rftoolsdim.config.PowerConfiguration;
@@ -15,18 +14,16 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
-@Optional.Interface(modid = "redstoneflux", iface = "cofh.redstoneflux.api.IEnergyContainerItem")
-public class PhasedFieldGeneratorItem extends GenericRFToolsItem implements IEnergyItem, IEnergyContainerItem {
+public class PhasedFieldGeneratorItem extends GenericRFToolsItem implements IEnergyItem {
 
-    private int capacity;
-    private int maxReceive;
-    private int maxExtract;
+    private long capacity;
+    private long maxReceive;
+    private long maxExtract;
 
     public PhasedFieldGeneratorItem() {
         super("phased_field_generator");
@@ -49,11 +46,11 @@ public class PhasedFieldGeneratorItem extends GenericRFToolsItem implements IEne
 
         ModelLoader.setCustomMeshDefinition(this, stack -> {
             NBTTagCompound tagCompound = stack.getTagCompound();
-            int energy = 0;
+            long energy = 0;
             if (tagCompound != null) {
-                energy = tagCompound.getInteger("Energy");
+                energy = tagCompound.getLong("Energy");
             }
-            int level = (9*energy) / PowerConfiguration.PHASEDFIELD_MAXENERGY;
+            long level = (9*energy) / PowerConfiguration.PHASEDFIELD_MAXENERGY;
             if (level < 0) {
                 level = 0;
             } else if (level > 8) {
@@ -91,7 +88,7 @@ public class PhasedFieldGeneratorItem extends GenericRFToolsItem implements IEne
         super.addInformation(itemStack, player, list, whatIsThis);
         NBTTagCompound tagCompound = itemStack.getTagCompound();
         if (tagCompound != null) {
-            list.add(TextFormatting.BLUE + "Energy: " + tagCompound.getInteger("Energy") + " RF");
+            list.add(TextFormatting.BLUE + "Energy: " + tagCompound.getLong("Energy") + " RF");
         }
         list.add("This RF/charged module gives a temporary");
         list.add("protection while visiting an unpowered dimension.");
@@ -100,64 +97,44 @@ public class PhasedFieldGeneratorItem extends GenericRFToolsItem implements IEne
 
     @Override
     public long receiveEnergyL(ItemStack container, long maxReceive, boolean simulate) {
-        return receiveEnergy(container, (int) maxReceive, simulate);
-    }
-
-    @Override
-    public long extractEnergyL(ItemStack container, long maxExtract, boolean simulate) {
-        return extractEnergy(container, (int) maxExtract, simulate);
-    }
-
-    @Override
-    public long getEnergyStoredL(ItemStack container) {
-        return getEnergyStored(container);
-    }
-
-    @Override
-    public long getMaxEnergyStoredL(ItemStack container) {
-        return getMaxEnergyStored(container);
-    }
-
-    @Override
-    public int receiveEnergy(ItemStack container, int maxReceive, boolean simulate) {
         if (container.getTagCompound() == null) {
             container.setTagCompound(new NBTTagCompound());
         }
-        int energy = container.getTagCompound().getInteger("Energy");
-        int energyReceived = Math.min(capacity - energy, Math.min(this.maxReceive, maxReceive));
+        long energy = container.getTagCompound().getLong("Energy");
+        long energyReceived = Math.min(capacity - energy, Math.min(this.maxReceive, maxReceive));
 
         if (!simulate) {
             energy += energyReceived;
-            container.getTagCompound().setInteger("Energy", energy);
+            container.getTagCompound().setLong("Energy", energy);
         }
         return energyReceived;
     }
 
     @Override
-    public int extractEnergy(ItemStack container, int maxExtract, boolean simulate) {
+    public long extractEnergyL(ItemStack container, long maxExtract, boolean simulate) {
         if (container.getTagCompound() == null || !container.getTagCompound().hasKey("Energy")) {
             return 0;
         }
-        int energy = container.getTagCompound().getInteger("Energy");
-        int energyExtracted = Math.min(energy, Math.min(this.maxExtract, maxExtract));
+        long energy = container.getTagCompound().getLong("Energy");
+        long energyExtracted = Math.min(energy, Math.min(this.maxExtract, maxExtract));
 
         if (!simulate) {
             energy -= energyExtracted;
-            container.getTagCompound().setInteger("Energy", energy);
+            container.getTagCompound().setLong("Energy", energy);
         }
         return energyExtracted;
     }
 
     @Override
-    public int getEnergyStored(ItemStack container) {
+    public long getEnergyStoredL(ItemStack container) {
         if (container.getTagCompound() == null || !container.getTagCompound().hasKey("Energy")) {
             return 0;
         }
-        return container.getTagCompound().getInteger("Energy");
+        return container.getTagCompound().getLong("Energy");
     }
 
     @Override
-    public int getMaxEnergyStored(ItemStack container) {
+    public long getMaxEnergyStoredL(ItemStack container) {
         return capacity;
     }
 }

@@ -17,20 +17,20 @@ public class PowerConfiguration {
     public static float afterCreationCostFactor = 0.1f;
     public static float maintenanceCostPercentage = 0.0f;   // Bonus percentage in the dimlet cost.
     public static int minimumCostPercentage = 10;   // Bonus dimlets (efficiency and related) can at most reduce cost to 10% by default
-    public static int PHASEDFIELD_MAXENERGY = 1000000;
-    public static int PHASEDFIELD_RECEIVEPERTICK = 1000;
-    public static int PHASEDFIELD_CONSUMEPERTICK = 100;
+    public static long PHASEDFIELD_MAXENERGY = 1000000;
+    public static long PHASEDFIELD_RECEIVEPERTICK = 1000;
+    public static long PHASEDFIELD_CONSUMEPERTICK = 100;
     public static int phasedFieldGeneratorRange = 5;
     public static boolean phasedFieldGeneratorDebuf = true;
 
 
     public static void init(Configuration cfg) {
         PHASEDFIELD_MAXENERGY = cfg.get(CATEGORY_POWER, "phasedFieldMaxRF", PowerConfiguration.PHASEDFIELD_MAXENERGY,
-                                                           "Maximum RF storage that the phased field generator item can hold").getInt();
+                                                           "Maximum RF storage that the phased field generator item can hold").getLong();
         PHASEDFIELD_RECEIVEPERTICK = cfg.get(CATEGORY_POWER, "phasedFieldRFPerTick", PowerConfiguration.PHASEDFIELD_RECEIVEPERTICK,
-                                                                "RF per tick that the phased field generator item can receive").getInt();
+                                                                "RF per tick that the phased field generator item can receive").getLong();
         PHASEDFIELD_CONSUMEPERTICK = cfg.get(CATEGORY_POWER, "phasedFieldConsumePerTick", PowerConfiguration.PHASEDFIELD_CONSUMEPERTICK,
-                                                                "RF per tick that the phased field generator item will consume").getInt();
+                                                                "RF per tick that the phased field generator item will consume").getLong();
         phasedFieldGeneratorRange = cfg.get(CATEGORY_POWER, "phasedFieldGeneratorRange", PowerConfiguration.phasedFieldGeneratorRange,
                                                                "In this range the PFG will keep entities active (set to 0 to disable this feature)").getInt();
         phasedFieldGeneratorDebuf = cfg.get(CATEGORY_POWER, "phasedFieldGeneratorDebuf", PowerConfiguration.phasedFieldGeneratorDebuf,
