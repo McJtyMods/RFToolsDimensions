@@ -23,16 +23,16 @@ public class EnergyExtractorTileEntity extends GenericEnergyStorageTileEntity im
     }
 
     private void checkStateServer() {
-        int energyStored = getEnergyStored();
+        long storedPower = getStoredPower();
 
-        if (energyStored < MachineConfiguration.EXTRACTOR_MAXENERGY) {
+        if (storedPower < MachineConfiguration.EXTRACTOR_MAXENERGY) {
             // Get energy out of the dimension.
             DimensionStorage storage = DimensionStorage.getDimensionStorage(getWorld());
             long dimensionEnergy = storage.getEnergyLevel(getWorld().provider.getDimension());
-            int needed = (int)Math.min(MachineConfiguration.EXTRACTOR_MAXENERGY - energyStored, dimensionEnergy);
+            long needed = Math.min(MachineConfiguration.EXTRACTOR_MAXENERGY - storedPower, dimensionEnergy);
 
             if (needed > 0) {
-                energyStored += needed;
+                storedPower += needed;
                 dimensionEnergy -= needed;
                 modifyEnergyStored(needed);
 
@@ -41,7 +41,7 @@ public class EnergyExtractorTileEntity extends GenericEnergyStorageTileEntity im
             }
         }
 
-        if (energyStored <= 0) {
+        if (storedPower <= 0) {
             return;
         }
 
@@ -50,10 +50,10 @@ public class EnergyExtractorTileEntity extends GenericEnergyStorageTileEntity im
             TileEntity te = getWorld().getTileEntity(pos);
             EnumFacing opposite = facing.getOpposite();
             if (EnergyTools.isEnergyTE(te, opposite)) {
-                int rfToGive = Math.min(MachineConfiguration.EXTRACTOR_SENDPERTICK, energyStored);
-                int received = (int) EnergyTools.receiveEnergy(te, opposite, rfToGive);
-                energyStored -= storage.extractEnergy(received, false);
-                if (energyStored <= 0) {
+                long rfToGive = Math.min(MachineConfiguration.EXTRACTOR_SENDPERTICK, storedPower);
+                long received = EnergyTools.receiveEnergy(te, opposite, rfToGive);
+                storedPower -= storage.extractEnergy(received, false);
+                if (storedPower <= 0) {
                     break;
                 }
             }
