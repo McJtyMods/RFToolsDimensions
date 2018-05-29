@@ -50,6 +50,10 @@ repositories {
         name = "CoFH Maven"
         url = "http://maven.covers1624.net"
     }
+    maven {
+        name = "TESLA"
+        url = "https://maven.mcmoddev.com"
+    }
 }
 
 def ENV = System.getenv()
@@ -85,6 +89,7 @@ dependencies {
     deobfCompile "mcp.mobius.waila:Hwyla:${waila_version}"
     deobfCompile "mcjty.theoneprobe:TheOneProbe-${top_version}"
     deobfCompile "cofh:RedstoneFlux:${redstoneflux_version}"
+    deobfCompile "net.darkhax.tesla:Tesla-${tesla_version}"
 
     deobfCompile "com.github.mcjty:intwheel:${intwheel_version}"
     if (!project.hasProperty("singleproject")) {
