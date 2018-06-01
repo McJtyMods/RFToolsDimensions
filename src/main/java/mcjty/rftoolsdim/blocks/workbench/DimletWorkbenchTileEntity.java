@@ -4,7 +4,6 @@ import mcjty.lib.bindings.DefaultValue;
 import mcjty.lib.bindings.IValue;
 import mcjty.lib.container.DefaultSidedInventory;
 import mcjty.lib.container.InventoryHelper;
-import mcjty.lib.network.PacketRequestDataFromServer;
 import mcjty.lib.tileentity.GenericEnergyReceiverTileEntity;
 import mcjty.lib.typed.Key;
 import mcjty.lib.typed.Type;
@@ -19,7 +18,6 @@ import mcjty.rftoolsdim.dimensions.dimlets.types.DimletCraftingTools;
 import mcjty.rftoolsdim.dimensions.dimlets.types.DimletType;
 import mcjty.rftoolsdim.dimensions.dimlets.types.IDimletType;
 import mcjty.rftoolsdim.items.ModItems;
-import mcjty.rftoolsdim.network.RFToolsDimMessages;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -50,9 +48,9 @@ public class DimletWorkbenchTileEntity extends GenericEnergyReceiverTileEntity i
     public static final Key<Boolean> VALUE_EXTRACT = new Key<>("extract", Type.BOOLEAN);
 
     @Override
-    public IValue[] getValues() {
+    public IValue<?>[] getValues() {
         return new IValue[] {
-                new DefaultValue<>(VALUE_EXTRACT, DimletWorkbenchTileEntity::isExtractMode, DimletWorkbenchTileEntity::setExtractMode)
+                new DefaultValue<>(VALUE_EXTRACT, this::isExtractMode, this::setExtractMode)
         };
     }
 

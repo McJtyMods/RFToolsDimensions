@@ -1,10 +1,10 @@
 package mcjty.rftoolsdim.blocks.enscriber;
 
+import mcjty.lib.bindings.DefaultValue;
+import mcjty.lib.bindings.IValue;
 import mcjty.lib.container.DefaultSidedInventory;
 import mcjty.lib.container.InventoryHelper;
-import mcjty.lib.bindings.DefaultValue;
 import mcjty.lib.tileentity.GenericTileEntity;
-import mcjty.lib.bindings.IValue;
 import mcjty.lib.typed.Key;
 import mcjty.lib.typed.Type;
 import mcjty.lib.typed.TypedMap;
@@ -44,9 +44,9 @@ public class DimensionEnscriberTileEntity extends GenericTileEntity implements D
     public static final Key<String> VALUE_NAME = new Key<>("name", Type.STRING);
 
     @Override
-    public IValue[] getValues() {
+    public IValue<?>[] getValues() {
         return new IValue[] {
-                new DefaultValue<>(VALUE_NAME, DimensionEnscriberTileEntity::getName, DimensionEnscriberTileEntity::setName),
+                new DefaultValue<>(VALUE_NAME, this::getName, this::setName),
         };
     }
 
