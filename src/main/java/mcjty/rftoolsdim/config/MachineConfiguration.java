@@ -5,8 +5,8 @@ import net.minecraftforge.common.config.Configuration;
 public class MachineConfiguration {
     public static final String CATEGORY_MACHINES = "machines";
 
-    public static long EXTRACTOR_MAXENERGY = 50000;
-    public static long EXTRACTOR_SENDPERTICK = 1000;
+    public static int EXTRACTOR_MAXENERGY = 50000; // TODO change these to longs once Configuration supports them
+    public static int EXTRACTOR_SENDPERTICK = 1000;
     public static int BUILDER_MAXENERGY = 10000000;
     public static int BUILDER_RECEIVEPERTICK = 50000;
     public static int EDITOR_MAXENERGY = 5000000;
@@ -18,9 +18,9 @@ public class MachineConfiguration {
 
     public static void init(Configuration cfg) {
         EXTRACTOR_MAXENERGY = cfg.get(CATEGORY_MACHINES, "energyExtractorMaxRF", MachineConfiguration.EXTRACTOR_MAXENERGY,
-                                                           "Maximum RF storage that the energy extractor can hold").getLong();
+                                                           "Maximum RF storage that the energy extractor can hold").getInt();
         EXTRACTOR_SENDPERTICK = cfg.get(CATEGORY_MACHINES, "energyExtractorRFPerTick", MachineConfiguration.EXTRACTOR_SENDPERTICK,
-                                                             "RF per tick that the energy extractor can send").getLong();
+                                                             "RF per tick that the energy extractor can send").getInt();
 
         BUILDER_MAXENERGY = cfg.get(CATEGORY_MACHINES, "dimensionBuilderMaxRF", MachineConfiguration.BUILDER_MAXENERGY,
                                                          "Maximum RF storage that the dimension builder can hold").getInt();

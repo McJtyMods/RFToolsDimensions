@@ -5,7 +5,7 @@ import net.minecraftforge.common.config.Configuration;
 public class PowerConfiguration {
     public static final String CATEGORY_POWER = "power";
 
-    public static long MAX_DIMENSION_POWER = 40000000;
+    public static int MAX_DIMENSION_POWER = 40000000; // TODO change these to longs once Configuration supports them
     public static int DIMPOWER_WARN0 = 6000000;     // This is only used for darkness calculations.
     public static int DIMPOWER_WARN1 = 4000000;
     public static int DIMPOWER_WARN2 = 1000000;
@@ -17,27 +17,27 @@ public class PowerConfiguration {
     public static float afterCreationCostFactor = 0.1f;
     public static float maintenanceCostPercentage = 0.0f;   // Bonus percentage in the dimlet cost.
     public static int minimumCostPercentage = 10;   // Bonus dimlets (efficiency and related) can at most reduce cost to 10% by default
-    public static long PHASEDFIELD_MAXENERGY = 1000000;
-    public static long PHASEDFIELD_RECEIVEPERTICK = 1000;
-    public static long PHASEDFIELD_CONSUMEPERTICK = 100;
+    public static int PHASEDFIELD_MAXENERGY = 1000000;
+    public static int PHASEDFIELD_RECEIVEPERTICK = 1000;
+    public static int PHASEDFIELD_CONSUMEPERTICK = 100;
     public static int phasedFieldGeneratorRange = 5;
     public static boolean phasedFieldGeneratorDebuf = true;
 
 
     public static void init(Configuration cfg) {
         PHASEDFIELD_MAXENERGY = cfg.get(CATEGORY_POWER, "phasedFieldMaxRF", PowerConfiguration.PHASEDFIELD_MAXENERGY,
-                                                           "Maximum RF storage that the phased field generator item can hold").getLong();
+                                                           "Maximum RF storage that the phased field generator item can hold").getInt();
         PHASEDFIELD_RECEIVEPERTICK = cfg.get(CATEGORY_POWER, "phasedFieldRFPerTick", PowerConfiguration.PHASEDFIELD_RECEIVEPERTICK,
-                                                                "RF per tick that the phased field generator item can receive").getLong();
+                                                                "RF per tick that the phased field generator item can receive").getInt();
         PHASEDFIELD_CONSUMEPERTICK = cfg.get(CATEGORY_POWER, "phasedFieldConsumePerTick", PowerConfiguration.PHASEDFIELD_CONSUMEPERTICK,
-                                                                "RF per tick that the phased field generator item will consume").getLong();
+                                                                "RF per tick that the phased field generator item will consume").getInt();
         phasedFieldGeneratorRange = cfg.get(CATEGORY_POWER, "phasedFieldGeneratorRange", PowerConfiguration.phasedFieldGeneratorRange,
                                                                "In this range the PFG will keep entities active (set to 0 to disable this feature)").getInt();
         phasedFieldGeneratorDebuf = cfg.get(CATEGORY_POWER, "phasedFieldGeneratorDebuf", PowerConfiguration.phasedFieldGeneratorDebuf,
                                                                "If true you will get some debufs when the PFG is in use. If false there will be no debufs").getBoolean();
 
         MAX_DIMENSION_POWER = cfg.get(CATEGORY_POWER, "dimensionPower", PowerConfiguration.MAX_DIMENSION_POWER,
-                                                         "The internal RF buffer for every dimension").getLong();
+                                                         "The internal RF buffer for every dimension").getInt();
         DIMPOWER_WARN0 = cfg.get(CATEGORY_POWER, "dimensionPowerWarn0", PowerConfiguration.DIMPOWER_WARN0,
                                                     "The zero level at which power warning signs are starting to happen. This is only used for lighting level. No other debuffs occur at this level.").getInt();
         DIMPOWER_WARN1 = cfg.get(CATEGORY_POWER, "dimensionPowerWarn1", PowerConfiguration.DIMPOWER_WARN1,
