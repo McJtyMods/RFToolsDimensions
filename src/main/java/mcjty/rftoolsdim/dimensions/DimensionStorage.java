@@ -17,6 +17,8 @@ public class DimensionStorage extends AbstractWorldData<DimensionStorage> {
 
     private final Map<Integer,Long> energy = new HashMap<>();
 
+    private static DimensionStorage clientInstance = null;
+
     public DimensionStorage(String name) {
         super(name);
     }
@@ -27,6 +29,12 @@ public class DimensionStorage extends AbstractWorldData<DimensionStorage> {
     }
 
     public static DimensionStorage getDimensionStorage(World world) {
+        if (world.isRemote) {
+            if (clientInstance == null) {
+                clientInstance = new DimensionStorage(DIMSTORAGE_NAME);
+            }
+            return clientInstance;
+        }
         return getData(world, DimensionStorage.class, DIMSTORAGE_NAME);
     }
 
