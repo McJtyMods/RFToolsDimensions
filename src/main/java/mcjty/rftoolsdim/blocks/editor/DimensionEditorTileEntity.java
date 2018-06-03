@@ -128,7 +128,7 @@ public class DimensionEditorTileEntity extends GenericEnergyReceiverTileEntity i
             }
             ticksLeft = ticksCost;
         } else {
-            int rf = getEnergyStored();
+            long rf = getStoredPower();
             int rfpt = rfPerTick;
             rfpt = (int) (rfpt * (2.0f - getInfusedFactor()) / 2.0f);
 

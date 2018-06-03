@@ -32,7 +32,7 @@ public class GuiDimensionBuilder extends GenericGuiContainer<DimensionBuilderTil
 
     public GuiDimensionBuilder(DimensionBuilderTileEntity dimensionBuilderTileEntity, DimensionBuilderContainer container) {
         super(RFToolsDim.instance, RFToolsDimMessages.INSTANCE, dimensionBuilderTileEntity, container, RFToolsDim.GUI_MANUAL_DIMENSION, "builder");
-        GenericEnergyStorageTileEntity.setCurrentRF(dimensionBuilderTileEntity.getEnergyStored());
+        GenericEnergyStorageTileEntity.setCurrentRF(dimensionBuilderTileEntity.getStoredPower());
 
         xSize = BUILDER_WIDTH;
         ySize = BUILDER_HEIGHT;
@@ -42,7 +42,7 @@ public class GuiDimensionBuilder extends GenericGuiContainer<DimensionBuilderTil
     public void initGui() {
         super.initGui();
 
-        int maxEnergyStored = tileEntity.getMaxEnergyStored();
+        long maxEnergyStored = tileEntity.getCapacity();
         energyBar = new EnergyBar(mc, this).setVertical().setMaxValue(maxEnergyStored).setLayoutHint(new PositionalLayout.PositionalHint(10, 7, 8, 54)).setShowText(false);
         energyBar.setValue(GenericEnergyStorageTileEntity.getCurrentRF());
 
