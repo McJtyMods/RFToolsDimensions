@@ -28,6 +28,7 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Biomes;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.*;
 import net.minecraft.util.ResourceLocation;
@@ -615,7 +616,8 @@ public class DimensionInformation implements IDimensionInformation {
             }
         }
 
-        ItemStack itemStack = new ItemStack(block, 1, block.getMetaFromState(state));
+        Item item = Item.getItemFromBlock(block);
+        ItemStack itemStack = new ItemStack(item, 1, item.getHasSubtypes() ? block.getMetaFromState(state) : 0);
         if (itemStack.isEmpty()) {
             return block.getLocalizedName() + suffix;
         }
