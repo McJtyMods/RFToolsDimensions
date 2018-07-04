@@ -305,7 +305,7 @@ public class NormalTerrainGenerator implements BaseTerrainGenerator {
     }
 
     @Override
-    public void replaceBlocksForBiome(int chunkX, int chunkZ, ChunkPrimer primer, Biome[] Biomes) {
+    public void replaceBlocksForBiome(int chunkX, int chunkZ, ChunkPrimer primer, Biome[] biomes) {
         ChunkGeneratorEvent.ReplaceBiomeBlocks event = new ChunkGeneratorEvent.ReplaceBiomeBlocks(provider, chunkX, chunkZ, primer, world);
         MinecraftForge.EVENT_BUS.post(event);
         if (event.getResult() == Event.Result.DENY) {
@@ -317,8 +317,8 @@ public class NormalTerrainGenerator implements BaseTerrainGenerator {
 
         for (int k = 0; k < 16; ++k) {
             for (int l = 0; l < 16; ++l) {
-                Biome Biome = Biomes[l + k * 16];
-                Biome.genTerrainBlocks(world, provider.rand, primer, chunkX * 16 + k, chunkZ * 16 + l, this.depthBuffer[l + k * 16]);
+                Biome biome = biomes[l + k * 16];
+                biome.genTerrainBlocks(world, provider.rand, primer, chunkX * 16 + k, chunkZ * 16 + l, this.depthBuffer[l + k * 16]);
             }
         }
     }
