@@ -24,6 +24,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
@@ -251,11 +252,12 @@ public class KnownDimletConfiguration {
 
         ResourceLocation nameForObject = Block.REGISTRY.getNameForObject(block);
         String mod = nameForObject.getResourceDomain();
+        Item item = Item.getItemFromBlock(block);
 
-        for (IBlockState state : block.getBlockState().getValidStates()) {
-            int meta = block.getMetaFromState(state);
-            ItemStack stack = new ItemStack(block, 1, block.getMetaFromState(state));
-            if (stack.getItem() != null) {      // Protection
+        if (item != null) {      // Protection
+            for (IBlockState state : block.getBlockState().getValidStates()) {
+                int meta = block.getMetaFromState(state);
+                ItemStack stack = new ItemStack(item, 1, block.getMetaFromState(state));
                 List<IProperty<?>> propertyNames = new ArrayList<>(state.getPropertyKeys());
                 propertyNames.sort(Comparator.comparing(IProperty::getName));
 
