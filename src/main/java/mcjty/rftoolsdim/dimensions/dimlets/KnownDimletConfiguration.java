@@ -255,7 +255,6 @@ public class KnownDimletConfiguration {
 
         if (Item.getItemFromBlock(block) != null) {      // Protection
             for (IBlockState state : block.getBlockState().getValidStates()) {
-                int meta = block.getMetaFromState(state);
                 List<IProperty<?>> propertyNames = new ArrayList<>(state.getPropertyKeys());
                 propertyNames.sort(Comparator.comparing(IProperty::getName));
 
@@ -264,7 +263,7 @@ public class KnownDimletConfiguration {
                 for (Map.Entry<IProperty<?>, Comparable<?>> entry : properties.entrySet()) {
                     props.put(entry.getKey().getName(), entry.getValue().toString());
                 }
-                DimletKey key = new DimletKey(DimletType.DIMLET_MATERIAL, block.getRegistryName() + "@" + meta);
+                DimletKey key = new DimletKey(DimletType.DIMLET_MATERIAL, block.getRegistryName() + "@" + block.getMetaFromState(state));
                 Settings settings = DimletRules.getSettings(key, mod, features, props);
                 if (!settings.isBlacklisted()) {
                     knownDimlets.put(key, settings);
