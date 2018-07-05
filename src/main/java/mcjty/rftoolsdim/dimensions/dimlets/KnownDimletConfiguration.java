@@ -252,12 +252,10 @@ public class KnownDimletConfiguration {
 
         ResourceLocation nameForObject = Block.REGISTRY.getNameForObject(block);
         String mod = nameForObject.getResourceDomain();
-        Item item = Item.getItemFromBlock(block);
 
-        if (item != null) {      // Protection
+        if (Item.getItemFromBlock(block) != null) {      // Protection
             for (IBlockState state : block.getBlockState().getValidStates()) {
                 int meta = block.getMetaFromState(state);
-                ItemStack stack = new ItemStack(item, 1, block.getMetaFromState(state));
                 List<IProperty<?>> propertyNames = new ArrayList<>(state.getPropertyKeys());
                 propertyNames.sort(Comparator.comparing(IProperty::getName));
 
