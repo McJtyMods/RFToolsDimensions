@@ -253,8 +253,8 @@ public class KnownDimletConfiguration {
         String mod = nameForObject.getResourceDomain();
 
         for (IBlockState state : block.getBlockState().getValidStates()) {
-            int meta = state.getBlock().getMetaFromState(state);
-            ItemStack stack = new ItemStack(state.getBlock(), 1, state.getBlock().getMetaFromState(state));
+            int meta = block.getMetaFromState(state);
+            ItemStack stack = new ItemStack(block, 1, block.getMetaFromState(state));
             if (stack.getItem() != null) {      // Protection
                 List<IProperty<?>> propertyNames = new ArrayList<>(state.getPropertyKeys());
                 propertyNames.sort(Comparator.comparing(IProperty::getName));
