@@ -1,0 +1,116 @@
+# Achievements
+achievement.theFirstStep=큰 세계를 향한 작은 걸음
+achievement.theFirstStep.desc=최초의 불명의 딤렛 발견
+achievement.researching=딤렛 의사!
+achievement.researching.desc=불명의 딤렛 조사
+achievement.scrambled=스크램블 발생!
+achievement.scrambled.desc=딤렛 3개 서로 밀치기
+achievement.dimletMaster=딤렛 마스터!
+achievement.dimletMaster.desc=새 딤렛 건설
+achievement.smallBits=부품으로 해체!
+achievement.smallBits.desc=딤렛 해체
+achievement.firstDimension=새로운 세계가 깨어나다
+achievement.firstDimension.desc=새 차원 생성
+achievement.specialOres=이국적인 광부!
+achievement.specialOres.desc=차원 조각 채굴
+
+# Death Messages
+death.dimension.powerfailure=%s이 붕괴하는 세계에서 사망했습니다!
+
+# Items
+item.rftoolsdim_manual.name=RF툴즈(차원) 설명서
+item.known_dimlet_biome.name=바이옴 딤렛
+item.known_dimlet_liquid.name=액체 딤렛
+item.known_dimlet_material.name=물질 딤렛
+item.known_dimlet_mob.name=몹 딤렛
+item.known_dimlet_sky.name=하늘 딤렛
+item.known_dimlet_structure.name=구조물 딤렛
+item.known_dimlet_terrain.name=지형 딤렛
+item.known_dimlet_feature.name=특징 딤렛
+item.known_dimlet_time.name=시간 딤렛
+item.known_dimlet_digit.name=자릿수 딤렛
+item.known_dimlet_effect.name=효과 딤렛
+item.known_dimlet_special.name=특별 딤렛
+item.known_dimlet_controller.name=조절 딤렛
+item.known_dimlet_weather.name=날씨 딤렛
+item.known_dimlet_patreon.name=파트레온 딤렛
+item.empty_dimension_tab.name=빈 차원 탭
+item.realized_dimension_tab.name=실현된 차원 탭
+item.dimension_monitor.name=차원 모니터
+item.phased_field_generator.name=위상 필드 생성기
+item.InfusedDiamond.name=주입된 다이아몬드
+item.dimlet_template.name=딤렛 템플릿
+item.DimensionModule.name=차원 모듈
+item.DimletModule.name=딤렛 저장 모듈
+item.dimlet_parcel.name=딤렛 소포
+
+item.dimlet_base.name=딤렛 베이스 부품
+item.dimlet_control_circuit0.name=딤렛 조절 회로 상승기 0
+item.dimlet_control_circuit1.name=딤렛 조절 회로 상승기 1
+item.dimlet_control_circuit2.name=Dimlet Control Circuit Rarity 2
+item.dimlet_control_circuit3.name=Dimlet Control Circuit Rarity 3
+item.dimlet_control_circuit4.name=Dimlet Control Circuit Rarity 4
+item.dimlet_control_circuit5.name=Dimlet Control Circuit Rarity 5
+item.dimlet_control_circuit6.name=Dimlet Control Circuit Rarity 6
+item.dimlet_energy_module0.name=Dimlet Basic Energy Module
+item.dimlet_energy_module1.name=Dimlet Regular Energy Module
+item.dimlet_energy_module2.name=Dimlet Advanced Energy Module
+item.dimlet_memory_unit0.name=Dimlet Basic Memory Unit
+item.dimlet_memory_unit1.name=Dimlet Regular Memory Unit
+item.dimlet_memory_unit2.name=Dimlet Advanced Memory Unit
+item.dimlet_type_controller_biome.name=Dimlet Biome Type Controller
+item.dimlet_type_controller_sky.name=Dimlet Sky Type Controller
+item.dimlet_type_controller_feature.name=Dimlet Feature Type Controller
+item.dimlet_type_controller_controller.name=Dimlet Controller Type Controller
+item.dimlet_type_controller_effect.name=Dimlet Effect Type Controller
+item.dimlet_type_controller_liquid.name=Dimlet Liquid Type Controller
+item.dimlet_type_controller_material.name=Dimlet Material Type Controller
+item.dimlet_type_controller_mob.name=Dimlet Mob Type Controller
+item.dimlet_type_controller_structure.name=Dimlet Structure Type Controller
+item.dimlet_type_controller_special.name=Dimlet Special Type Controller
+item.dimlet_type_controller_terrain.name=Dimlet Terrain Type Controller
+item.dimlet_type_controller_time.name=Dimlet Time Type Controller
+item.dimlet_type_controller_weather.name=Dimlet Weather Type Controller
+item.dimlet_type_controller_patreon.name=Dimlet Patreon Type Controller
+item.peace_essence.name=Peace Essence
+item.structure_essence_none.name=Structure None Essence
+item.structure_essence_village.name=Structure Village Essence
+item.structure_essence_stronghold.name=Structure Stronghold Essence
+item.structure_essence_dungeon.name=Structure Dungeon Essence
+item.structure_essence_fortress.name=Structure Fortress Essence
+item.structure_essence_mineshaft.name=Structure Mineshaft Essence
+item.structure_essence_scattered.name=Structure Scattered Essence
+item.efficiency_essence.name=Efficiency Essence
+item.mediocre_efficiency_essence.name=Mediocre Efficiency Essence
+item.dimension_module.name=Dimension Module
+
+# Blocks
+tile.dimletFilterBlock.name=Dimlet Filter
+tile.dimlet_workbench.name=Dimlet Workbench
+tile.dimension_enscriber.name=Dimension Enscriber
+tile.dimension_builder.name=Dimension Builder
+tile.creativeDimensionBuilderBlock.name=Creative Dimension Builder
+tile.dimensionEditorBlock.name=Dimension Editor
+tile.dimensionMonitorBlock.name=Dimension Monitor
+tile.machineInfuserBlock.name=Machine Infuser
+tile.activity_probe.name=Activity Probe
+tile.energyExtractorBlock.name=Energy Extractor
+tile.biome_absorber.name=Biome Absorber
+tile.terrain_absorber.name=Terrain Absorber
+tile.feature_absorber.name=Feature Absorber
+tile.material_absorber.name=Material Absorber
+tile.liquid_absorber.name=Liquid Absorber
+tile.timeAbsorberBlock.name=Time Absorber
+tile.volcanicCoreBlock.name=Volcanic Core
+tile.volcanicBlock.name=Volcanic Block
+
+tile.dimensional_blank_block.name=Dimensional Blank Block
+tile.dimensional_block.name=Dimensional Block
+tile.dimensional_small_blocks.name=Dimensional Small Blocks
+tile.dimensional_cross_block.name=Dimensional Cross Block
+tile.dimensional_cross2_block.name=Dimensional Cross 2 Block
+tile.dimensional_pattern1_block.name=Dimensional Pattern 1 Block
+tile.dimensional_pattern2_block.name=Dimensional Pattern 2 Block
+
+# Creative Tabs
+itemGroup.RfToolsDim=RFTools Dimensions
