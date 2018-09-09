@@ -10,7 +10,6 @@ import mcjty.rftoolsdim.apiimpl.DimensionManager;
 import mcjty.rftoolsdim.apiimpl.DimletConfigurationManager;
 import mcjty.rftoolsdim.commands.CommandRftDb;
 import mcjty.rftoolsdim.commands.CommandRftDim;
-import mcjty.rftoolsdim.dimensions.DimensionStorage;
 import mcjty.rftoolsdim.dimensions.ModDimensions;
 import mcjty.rftoolsdim.dimensions.RfToolsDimensionManager;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletRandomizer;

@@ -1,6 +1,5 @@
 package mcjty.rftoolsdim.proxy;
 
-import mcjty.lib.base.GeneralConfig;
 import mcjty.lib.network.PacketHandler;
 import mcjty.lib.proxy.AbstractCommonProxy;
 import mcjty.lib.varia.Logging;
