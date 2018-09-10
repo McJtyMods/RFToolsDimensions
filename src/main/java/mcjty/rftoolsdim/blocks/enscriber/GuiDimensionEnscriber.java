@@ -259,15 +259,9 @@ public class GuiDimensionEnscriber extends GenericGuiContainer<DimensionEnscribe
     }
 
     private void setNameFromDimensionTab() {
-        Slot slot = inventorySlots.getSlot(DimensionEnscriberContainer.SLOT_TAB);
-        if (!slot.getStack().isEmpty() && slot.getStack().getItem() == ModItems.realizedDimensionTabItem) {
-            NBTTagCompound tagCompound = slot.getStack().getTagCompound();
-            if (tagCompound != null) {
-                String name = tagCompound.getString("name");
-                if (name != null) {
-                    nameField.setText(name);
-                }
-            }
+        String dimensionName = tileEntity.getDimensionName();
+        if (dimensionName != null) {
+            nameField.setText(dimensionName);
         }
     }
 }

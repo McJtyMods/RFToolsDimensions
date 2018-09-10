@@ -1,3 +1,6 @@
+5.61:
+- Fixed a problem with the dimension enscriber trying to call all dimensions 'inventory'
+
 5.60:
 - Made compatible with the latest McJtyLib (3.0.0)
 

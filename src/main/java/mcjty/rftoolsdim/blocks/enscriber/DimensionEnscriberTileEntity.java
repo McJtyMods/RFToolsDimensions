@@ -46,7 +46,7 @@ public class DimensionEnscriberTileEntity extends GenericTileEntity implements D
     @Override
     public IValue<?>[] getValues() {
         return new IValue[] {
-                new DefaultValue<>(VALUE_NAME, this::getName, this::setName),
+                new DefaultValue<>(VALUE_NAME, this::getDimensionName, this::setDimensionName),
         };
     }
 
@@ -230,7 +230,21 @@ public class DimensionEnscriberTileEntity extends GenericTileEntity implements D
         markDirty();
     }
 
-    private void setName(String name) {
+    public String getDimensionName() {
+        ItemStack stack = getStackInSlot(DimensionEnscriberContainer.SLOT_TAB);
+        if (!stack.isEmpty() && stack.getItem() == ModItems.realizedDimensionTabItem) {
+            NBTTagCompound tagCompound = stack.getTagCompound();
+            if (tagCompound != null) {
+                String name = tagCompound.getString("name");
+                if (name != null) {
+                    return name;
+                }
+            }
+        }
+        return null;
+    }
+
+    private void setDimensionName(String name) {
         ItemStack realizedTab = inventoryHelper.getStackInSlot(DimensionEnscriberContainer.SLOT_TAB);
         if (!realizedTab.isEmpty()) {
             NBTTagCompound tagCompound = realizedTab.getTagCompound();
@@ -273,7 +287,7 @@ public class DimensionEnscriberTileEntity extends GenericTileEntity implements D
         }
         if (CMD_STORE.equals(command)) {
             storeDimlets(playerMP);
-            setName(params.get(PARAM_NAME));
+            setDimensionName(params.get(PARAM_NAME));
             return true;
         } else if (CMD_EXTRACT.equals(command)) {
             extractDimlets();
