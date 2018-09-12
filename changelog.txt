@@ -1,4 +1,4 @@
-5.61:
+5.61 (upcoming):
 - Fixed a problem with the dimension enscriber trying to call all dimensions 'inventory'
 
 5.60:
