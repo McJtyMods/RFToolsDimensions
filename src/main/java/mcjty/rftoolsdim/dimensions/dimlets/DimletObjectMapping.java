@@ -14,6 +14,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.Biome;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.Level;
 
 import java.util.*;
 
@@ -141,7 +142,7 @@ public class DimletObjectMapping {
                 Logging.logError("Cannot find mob with id '" + id + "'!");
                 return null;
             }
-            Logging.warn(null, "No mob descriptor found for '" + id + "'; creating a default one");
+            Logging.getLogger().log(Level.WARN, "No mob descriptor found for '" + id + "'; creating a default one");
             return new MobDescriptor(entityClass, MobConfiguration.chance, MobConfiguration.mingroup, MobConfiguration.maxgroup, MobConfiguration.maxentity);
         }
         return null;
