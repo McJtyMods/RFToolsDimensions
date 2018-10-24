@@ -869,8 +869,9 @@ public class LostCitiesTerrainGenerator extends NormalTerrainGenerator {
                     int x = rand.nextInt(16);
                     int z = rand.nextInt(16);
                     if (rand.nextFloat() < locationFactor.apply(x, z)) {
-                        int index = (x << 12) | (z << 8) + 255;
-                        while (helper.getData(index) == air || helper.getData(index) == liquid) {
+                        int minIndex = (x << 12) | (z << 8);
+                        int index = minIndex + 255;
+                        while (index >= minIndex && (helper.getData(index) == air || helper.getData(index) == liquid)) {
                             index--;
                         }
                         index++;

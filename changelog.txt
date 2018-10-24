@@ -1,3 +1,6 @@
+5.62:
+- Fixed a crash when generating debris in Lost dimensions
+
 5.61:
 - Fixed a problem with the dimension enscriber trying to call all dimensions 'inventory'
 
