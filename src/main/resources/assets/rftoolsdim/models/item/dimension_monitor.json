@@ -1,8 +1,7 @@
 {
-  // Not yet working!
   "parent": "item/generated",
   "textures": {
-    "layer0": "#txt"
+    "layer0": "rftoolsdim:items/monitor/dimensionmonitoriteml0"
   },
   "display": {
     "thirdperson": {
@@ -15,5 +14,16 @@
       "translation": [ 0, 4, 2 ],
       "scale": [ 1.7, 1.7, 1.7 ]
     }
-  }
+  },
+  "overrides": [
+    { "predicate": { "rftoolsdim:level": 0 }, "model": "rftoolsdim:item/dimension_monitor" },
+    { "predicate": { "rftoolsdim:level": 1 }, "model": "rftoolsdim:item/dimension_monitor1" },
+    { "predicate": { "rftoolsdim:level": 2 }, "model": "rftoolsdim:item/dimension_monitor2" },
+    { "predicate": { "rftoolsdim:level": 3 }, "model": "rftoolsdim:item/dimension_monitor3" },
+    { "predicate": { "rftoolsdim:level": 4 }, "model": "rftoolsdim:item/dimension_monitor4" },
+    { "predicate": { "rftoolsdim:level": 5 }, "model": "rftoolsdim:item/dimension_monitor5" },
+    { "predicate": { "rftoolsdim:level": 6 }, "model": "rftoolsdim:item/dimension_monitor6" },
+    { "predicate": { "rftoolsdim:level": 7 }, "model": "rftoolsdim:item/dimension_monitor7" },
+    { "predicate": { "rftoolsdim:level": 8 }, "model": "rftoolsdim:item/dimension_monitor8" }
+  ]
 }

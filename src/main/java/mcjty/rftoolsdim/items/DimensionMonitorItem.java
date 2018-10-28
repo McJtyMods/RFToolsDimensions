@@ -1,16 +1,13 @@
 package mcjty.rftoolsdim.items;
 
 import mcjty.lib.varia.Logging;
+import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.config.PowerConfiguration;
 import mcjty.rftoolsdim.dimensions.DimensionInformation;
 import mcjty.rftoolsdim.dimensions.DimensionStorage;
 import mcjty.rftoolsdim.dimensions.RfToolsDimensionManager;
 import mcjty.rftoolsdim.network.PacketGetDimensionEnergy;
 import mcjty.rftoolsdim.network.RFToolsDimMessages;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.WorldClient;
-import net.minecraft.client.renderer.block.model.ModelBakery;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -20,7 +17,6 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
-import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -32,20 +28,13 @@ public class DimensionMonitorItem extends GenericRFToolsItem {
     public DimensionMonitorItem() {
         super("dimension_monitor");
         setMaxStackSize(1);
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void initModel() {
-        for (int i = 0 ; i <= 8 ; i++) {
-            ResourceLocation registryName = getRegistryName();
-            registryName = new ResourceLocation(registryName.getResourceDomain(), registryName.getResourcePath() + i);
-            ModelBakery.registerItemVariants(this, new ModelResourceLocation(registryName, "inventory"));
-//            ModelBakery.addVariantName(this, getRegistryName() + i);
-        }
-
-        ModelLoader.setCustomMeshDefinition(this, stack -> {
-            WorldClient world = Minecraft.getMinecraft().world;
+        this.addPropertyOverride(new ResourceLocation(RFToolsDim.MODID, "level"), (stack, world, entity) -> {
+            if(world == null) {
+                if(entity == null) {
+                    return 8;
+                }
+                world = entity.world;
+            }
             int id = world.provider.getDimension();
             DimensionStorage storage = DimensionStorage.getDimensionStorage(world);
             long energyLevel = storage.getEnergyLevel(id);
@@ -55,9 +44,7 @@ public class DimensionMonitorItem extends GenericRFToolsItem {
             } else if (level > 8) {
                 level = 8;
             }
-            ResourceLocation registryName = getRegistryName();
-            registryName = new ResourceLocation(registryName.getResourceDomain(), registryName.getResourcePath() + (8 - level));
-            return new ModelResourceLocation(registryName, "inventory");
+            return 8 - level;
         });
     }
 
