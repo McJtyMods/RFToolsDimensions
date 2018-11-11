@@ -1,5 +1,6 @@
 package mcjty.rftoolsdim.items.modules;
 
+import mcjty.rftools.api.screens.IModuleGuiBuilder;
 import mcjty.rftools.api.screens.IModuleProvider;
 import mcjty.rftoolsdim.config.GeneralConfiguration;
 import mcjty.rftoolsdim.items.GenericRFToolsItem;
@@ -38,6 +39,17 @@ public class DimensionModuleItem extends GenericRFToolsItem implements IModulePr
     @Override
     public String getName() {
         return "Dim";
+    }
+
+    @Override
+    public void createGui(IModuleGuiBuilder guiBuilder) {
+        guiBuilder
+                .label("Label:").text("text", "Label text").color("color", "Color for the label").nl()
+                .label("RF+:").color("rfcolor", "Color for the RF text").label("RF-:").color("rfcolor_neg", "Color for the negative", "RF/tick ratio").nl()
+                .toggleNegative("hidebar", "Bar", "Toggle visibility of the", "energy bar").mode("RF").format("format").nl()
+                .label("Dimension:").integer("dim", "The id of the dimension", "to monitor").nl()
+                .choices("align", "Label alignment", "Left", "Center", "Right").nl();
+
     }
 
     @SideOnly(Side.CLIENT)

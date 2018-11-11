@@ -94,7 +94,7 @@ dependencies {
     deobfCompile "com.github.mcjty:intwheel:${intwheel_version}"
     if (!project.hasProperty("singleproject")) {
         deobfCompile "com.github.mcjty:mcjtylib:${mcjtylib_version}"
-        deobfCompile "com.github.mcjty:rftools:1.12-7.50"
+        deobfCompile "com.github.mcjty:rftools:1.12-7.58"
     } else {
 	compile project(':McJtyLib')
 	compile project(':RFTools')
