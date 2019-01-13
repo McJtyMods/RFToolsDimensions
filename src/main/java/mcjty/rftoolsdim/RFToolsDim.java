@@ -44,9 +44,9 @@ import java.util.function.Function;
 public class RFToolsDim implements ModBase {
     public static final String MODID = "rftoolsdim";
     public static final String MIN_RFTOOLS_VER = "7.58";
-    public static final String VERSION = "5.63";
+    public static final String VERSION = "5.64";
     public static final String MIN_FORGE11_VER = "14.23.2.2645";
-    public static final String MIN_MCJTYLIB_VER = "3.0.0";
+    public static final String MIN_MCJTYLIB_VER = "3.1.0";
 
     @SidedProxy(clientSide="mcjty.rftoolsdim.proxy.ClientProxy", serverSide="mcjty.rftoolsdim.proxy.ServerProxy")
     public static CommonProxy proxy;
