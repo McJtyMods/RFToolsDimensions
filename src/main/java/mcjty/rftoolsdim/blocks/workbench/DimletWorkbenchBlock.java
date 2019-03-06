@@ -2,8 +2,8 @@ package mcjty.rftoolsdim.blocks.workbench;
 
 import mcjty.lib.api.Infusable;
 import mcjty.lib.gui.GenericGuiContainer;
-import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.blocks.GenericRFToolsBlock;
+import mcjty.rftoolsdim.gui.GuiProxy;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
@@ -46,12 +46,12 @@ public class DimletWorkbenchBlock extends GenericRFToolsBlock<DimletWorkbenchTil
             list.add(TextFormatting.YELLOW + "Infusing bonus: increased chance of getting");
             list.add(TextFormatting.YELLOW + "all parts out of the deconstructed dimlet.");
         } else {
-            list.add(TextFormatting.WHITE + RFToolsDim.SHIFT_MESSAGE);
+            list.add(TextFormatting.WHITE + GuiProxy.SHIFT_MESSAGE);
         }
     }
 
     @Override
     public int getGuiID() {
-        return RFToolsDim.GUI_DIMLET_WORKBENCH;
+        return GuiProxy.GUI_DIMLET_WORKBENCH;
     }
 }

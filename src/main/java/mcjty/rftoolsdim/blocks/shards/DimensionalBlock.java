@@ -20,7 +20,7 @@ public class DimensionalBlock extends Block {
         setUnlocalizedName(RFToolsDim.MODID + "." + "dimensional_block");
         setRegistryName("dimensional_block");
         setLightLevel(0.6f);
-        setCreativeTab(RFToolsDim.tabRfToolsDim);
+        setCreativeTab(RFToolsDim.setup.getTab());
         McJtyRegister.registerLater(this, RFToolsDim.instance, ItemBlock::new);
     }
 

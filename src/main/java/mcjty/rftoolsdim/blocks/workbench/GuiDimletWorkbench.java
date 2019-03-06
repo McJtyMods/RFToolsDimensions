@@ -17,6 +17,7 @@ import mcjty.rftoolsdim.config.Settings;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletKey;
 import mcjty.rftoolsdim.dimensions.dimlets.KnownDimletConfiguration;
 import mcjty.rftoolsdim.dimensions.dimlets.types.DimletCraftingTools;
+import mcjty.rftoolsdim.gui.GuiProxy;
 import mcjty.rftoolsdim.items.ModItems;
 import mcjty.rftoolsdim.network.RFToolsDimMessages;
 import net.minecraft.client.Minecraft;
@@ -50,7 +51,7 @@ public class GuiDimletWorkbench extends GenericGuiContainer<DimletWorkbenchTileE
     private static final ResourceLocation iconLocation = new ResourceLocation(RFToolsDim.MODID, "textures/gui/dimletworkbench.png");
 
     public GuiDimletWorkbench(DimletWorkbenchTileEntity dimletWorkbenchTileEntity, DimletWorkbenchContainer container) {
-        super(RFToolsDim.instance, RFToolsDimMessages.INSTANCE, dimletWorkbenchTileEntity, container, RFToolsDim.GUI_MANUAL_DIMENSION, "create");
+        super(RFToolsDim.instance, RFToolsDimMessages.INSTANCE, dimletWorkbenchTileEntity, container, GuiProxy.GUI_MANUAL_DIMENSION, "create");
 
         xSize = WORKBENCH_WIDTH;
         ySize = WORKBENCH_HEIGHT;

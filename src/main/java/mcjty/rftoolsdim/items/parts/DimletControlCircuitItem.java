@@ -1,6 +1,6 @@
 package mcjty.rftoolsdim.items.parts;
 
-import mcjty.rftoolsdim.RFToolsDim;
+import mcjty.rftoolsdim.gui.GuiProxy;
 import mcjty.rftoolsdim.items.GenericRFToolsItem;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -53,7 +53,7 @@ public class DimletControlCircuitItem extends GenericRFToolsItem {
             list.add(TextFormatting.WHITE + "control circuit of the right rarity in order to make");
             list.add(TextFormatting.WHITE + "a dimlet of that rarity.");
         } else {
-            list.add(TextFormatting.WHITE + RFToolsDim.SHIFT_MESSAGE);
+            list.add(TextFormatting.WHITE + GuiProxy.SHIFT_MESSAGE);
         }
     }
 

@@ -1,7 +1,8 @@
 package mcjty.rftoolsdim.proxy;
 
+import mcjty.lib.compat.MainCompatHandler;
 import mcjty.lib.network.PacketHandler;
-import mcjty.lib.proxy.AbstractCommonProxy;
+import mcjty.lib.setup.DefaultCommonSetup;
 import mcjty.lib.varia.Logging;
 import mcjty.lib.varia.WrenchChecker;
 import mcjty.rftoolsdim.ForgeEventHandlers;
@@ -13,18 +14,28 @@ import mcjty.rftoolsdim.dimensions.DimensionTickEvent;
 import mcjty.rftoolsdim.dimensions.ModDimensions;
 import mcjty.rftoolsdim.gui.GuiProxy;
 import mcjty.rftoolsdim.items.ModItems;
+import mcjty.rftoolsdim.network.DimensionSyncChannelHandler;
 import mcjty.rftoolsdim.network.RFToolsDimMessages;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLInterModComms;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.network.FMLEmbeddedChannel;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
+import net.minecraftforge.fml.relauncher.Side;
 
 import java.io.File;
+import java.util.EnumMap;
 
-public abstract class CommonProxy extends AbstractCommonProxy {
+public class CommonSetup extends DefaultCommonSetup {
+
+    public static boolean chisel = false;
+    public static EnumMap<Side, FMLEmbeddedChannel> channels;
 
     @Override
     public void preInit(FMLPreInitializationEvent e) {
@@ -42,6 +53,17 @@ public abstract class CommonProxy extends AbstractCommonProxy {
         ModDimensions.init();
 
         DimletRules.readRules(modConfigDir);
+
+        MainCompatHandler.registerWaila();
+        MainCompatHandler.registerTOP();
+
+        FMLInterModComms.sendFunctionMessage("rftools", "getTeleportationManager", "mcjty.rftoolsdim.RFToolsDim$GetTeleportationManager");
+        FMLInterModComms.sendFunctionMessage("theoneprobe", "getTheOneProbe", "mcjty.rftoolsdim.theoneprobe.TheOneProbeSupport");
+    }
+
+    @Override
+    public void createTabs() {
+        createTab("RfToolsDim", new ItemStack(ModItems.realizedDimensionTabItem));
     }
 
     private void readMainConfig() {
@@ -82,6 +104,13 @@ public abstract class CommonProxy extends AbstractCommonProxy {
         NetworkRegistry.INSTANCE.registerGuiHandler(RFToolsDim.instance, new GuiProxy());
         MinecraftForge.EVENT_BUS.register(new DimensionTickEvent());
         ModCrafting.init();
+
+
+        chisel = Loader.isModLoaded("chisel");
+        channels = NetworkRegistry.INSTANCE.newChannel("RFToolsChannel", DimensionSyncChannelHandler.instance);
+
+//        Achievements.init();
+        // @todo
     }
 
     @Override

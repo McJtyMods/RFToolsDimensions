@@ -20,11 +20,11 @@ import mcjty.rftoolsdim.dimensions.types.ControllerType;
 import mcjty.rftoolsdim.dimensions.types.FeatureType;
 import mcjty.rftoolsdim.dimensions.types.SpecialType;
 import mcjty.rftoolsdim.dimensions.types.TerrainType;
+import mcjty.rftoolsdim.gui.GuiProxy;
 import mcjty.rftoolsdim.items.ModItems;
 import mcjty.rftoolsdim.network.RFToolsDimMessages;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 
 import java.awt.*;
@@ -46,7 +46,7 @@ public class GuiDimensionEnscriber extends GenericGuiContainer<DimensionEnscribe
     private static final ResourceLocation iconLocation = new ResourceLocation(RFToolsDim.MODID, "textures/gui/dimensionenscriber.png");
 
     public GuiDimensionEnscriber(DimensionEnscriberTileEntity dimensionEnscriberTileEntity, DimensionEnscriberContainer container) {
-        super(RFToolsDim.instance, RFToolsDimMessages.INSTANCE, dimensionEnscriberTileEntity, container, RFToolsDim.GUI_MANUAL_DIMENSION, "enscriber");
+        super(RFToolsDim.instance, RFToolsDimMessages.INSTANCE, dimensionEnscriberTileEntity, container, GuiProxy.GUI_MANUAL_DIMENSION, "enscriber");
 
         xSize = ENSCRIBER_WIDTH;
         ySize = ENSCRIBER_HEIGHT;

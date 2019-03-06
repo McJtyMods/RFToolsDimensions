@@ -25,7 +25,7 @@ public class FakeSandBlock extends Block {
         setUnlocalizedName(RFToolsDim.MODID + "." + "fake_sand");
         setRegistryName("fake_sand");
 //        setLightLevel(0.6f);
-//        setCreativeTab(RFToolsDim.tabRfToolsDim);
+//        setCreativeTab(RFToolsDim.setup.getTab());
         McJtyRegister.registerLater(this, RFToolsDim.instance, ItemBlock::new);
     }
 

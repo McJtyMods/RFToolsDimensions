@@ -9,6 +9,7 @@ import mcjty.lib.gui.widgets.Label;
 import mcjty.lib.gui.widgets.Panel;
 import mcjty.lib.varia.BlockTools;
 import mcjty.rftoolsdim.RFToolsDim;
+import mcjty.rftoolsdim.gui.GuiProxy;
 import mcjty.rftoolsdim.network.RFToolsDimMessages;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -30,7 +31,7 @@ public class GuiDimensionEditor extends GenericGuiContainer<DimensionEditorTileE
     private static final ResourceLocation iconGuiElements = new ResourceLocation(RFToolsDim.MODID, "textures/gui/guielements.png");
 
     public GuiDimensionEditor(DimensionEditorTileEntity dimensionEditorTileEntity, DimensionEditorContainer container) {
-        super(RFToolsDim.instance, RFToolsDimMessages.INSTANCE, dimensionEditorTileEntity, container, RFToolsDim.GUI_MANUAL_DIMENSION, "editor");
+        super(RFToolsDim.instance, RFToolsDimMessages.INSTANCE, dimensionEditorTileEntity, container, GuiProxy.GUI_MANUAL_DIMENSION, "editor");
         GenericEnergyStorageTileEntity.setCurrentRF(dimensionEditorTileEntity.getStoredPower());
 
         xSize = EDITOR_WIDTH;

@@ -12,6 +12,7 @@ import mcjty.rftoolsdim.dimensions.types.EffectType;
 import mcjty.rftoolsdim.dimensions.types.FeatureType;
 import mcjty.rftoolsdim.dimensions.world.GenericWorldProvider;
 import mcjty.rftoolsdim.items.ModItems;
+import mcjty.rftoolsdim.proxy.CommonSetup;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -83,9 +84,9 @@ public class ForgeEventHandlers {
         EntityPlayer player = ((NetHandlerPlayServer) event.getHandler()).player;
         RfToolsDimensionManager manager = RfToolsDimensionManager.getDimensionManager(player.getEntityWorld());
 
-        RFToolsDim.channels.get(Side.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.DISPATCHER);
-        RFToolsDim.channels.get(Side.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGETARGS).set(event.getManager().channel().attr(NetworkDispatcher.FML_DISPATCHER).get());
-        RFToolsDim.channels.get(Side.SERVER).writeOutbound(manager.makeDimensionSyncPacket());
+        CommonSetup.channels.get(Side.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.DISPATCHER);
+        CommonSetup.channels.get(Side.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGETARGS).set(event.getManager().channel().attr(NetworkDispatcher.FML_DISPATCHER).get());
+        CommonSetup.channels.get(Side.SERVER).writeOutbound(manager.makeDimensionSyncPacket());
     }
 
     @SubscribeEvent

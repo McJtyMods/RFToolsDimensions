@@ -1,8 +1,8 @@
 package mcjty.rftoolsdim.blocks.enscriber;
 
 import mcjty.lib.gui.GenericGuiContainer;
-import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.blocks.GenericRFToolsBlock;
+import mcjty.rftoolsdim.gui.GuiProxy;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
@@ -23,7 +23,7 @@ public class DimensionEnscriberBlock extends GenericRFToolsBlock<DimensionEnscri
 
     @Override
     public int getGuiID() {
-        return RFToolsDim.GUI_DIMENSION_ENSCRIBER;
+        return GuiProxy.GUI_DIMENSION_ENSCRIBER;
     }
 
     @SideOnly(Side.CLIENT)
@@ -43,7 +43,7 @@ public class DimensionEnscriberBlock extends GenericRFToolsBlock<DimensionEnscri
             list.add(TextFormatting.WHITE + "tab. You can also deconstruct dimension tabs to get the");
             list.add(TextFormatting.WHITE + "original dimlets back.");
         } else {
-            list.add(TextFormatting.WHITE + RFToolsDim.SHIFT_MESSAGE);
+            list.add(TextFormatting.WHITE + GuiProxy.SHIFT_MESSAGE);
         }
     }
 }

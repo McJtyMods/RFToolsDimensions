@@ -1,9 +1,9 @@
 package mcjty.rftoolsdim.blocks.absorbers;
 
 import mcjty.lib.container.EmptyContainer;
-import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.blocks.GenericRFToolsBlock;
 import mcjty.rftoolsdim.config.DimletConstructionConfiguration;
+import mcjty.rftoolsdim.gui.GuiProxy;
 import mcjty.theoneprobe.api.IProbeHitData;
 import mcjty.theoneprobe.api.IProbeInfo;
 import mcjty.theoneprobe.api.ProbeMode;
@@ -91,7 +91,7 @@ public class BiomeAbsorberBlock extends GenericRFToolsBlock<BiomeAbsorberTileEnt
             list.add(TextFormatting.WHITE + "gradually absorb the essence of the biome it is in.");
             list.add(TextFormatting.WHITE + "You can use the end result in the Dimlet Workbench.");
         } else {
-            list.add(TextFormatting.WHITE + RFToolsDim.SHIFT_MESSAGE);
+            list.add(TextFormatting.WHITE + GuiProxy.SHIFT_MESSAGE);
         }
     }
 

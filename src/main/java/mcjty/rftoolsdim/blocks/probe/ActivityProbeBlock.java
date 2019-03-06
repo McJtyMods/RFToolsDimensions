@@ -25,7 +25,7 @@ public class ActivityProbeBlock extends Block {
         super(Material.IRON);
         setUnlocalizedName(RFToolsDim.MODID + "." + "activity_probe");
         setRegistryName("activity_probe");
-        setCreativeTab(RFToolsDim.tabRfToolsDim);
+        setCreativeTab(RFToolsDim.setup.getTab());
         setHardness(2.0f);
         setSoundType(SoundType.METAL);
         setHarvestLevel("pickaxe", 0);

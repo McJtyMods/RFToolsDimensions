@@ -1,6 +1,6 @@
 package mcjty.rftoolsdim.items.parts;
 
-import mcjty.rftoolsdim.RFToolsDim;
+import mcjty.rftoolsdim.gui.GuiProxy;
 import mcjty.rftoolsdim.items.GenericRFToolsItem;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -53,7 +53,7 @@ public class DimletEnergyModuleItem extends GenericRFToolsItem {
             list.add(TextFormatting.WHITE + "is used for dimlets of rarity 0 and 1, the regular for");
             list.add(TextFormatting.WHITE + "rarity 2 and 3 and the advanced for the higher rarities.");
         } else {
-            list.add(TextFormatting.WHITE + RFToolsDim.SHIFT_MESSAGE);
+            list.add(TextFormatting.WHITE + GuiProxy.SHIFT_MESSAGE);
         }
     }
 

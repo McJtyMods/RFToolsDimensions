@@ -1,7 +1,6 @@
 package mcjty.rftoolsdim.gui;
 
 import mcjty.lib.blocks.GenericBlock;
-import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.items.manual.GuiRFToolsManual;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -11,9 +10,20 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 
 public class GuiProxy implements IGuiHandler {
+    public static final String SHIFT_MESSAGE = "<Press Shift>";
+
+    /** This is used to keep track of GUIs that we make*/
+    private static int modGuiIndex = 0;
+    public static final int GUI_ESSENCE_PAINTER = modGuiIndex++;
+    public static final int GUI_DIMLET_WORKBENCH = modGuiIndex++;
+    public static final int GUI_MANUAL_DIMENSION = modGuiIndex++;
+    public static final int GUI_DIMENSION_EDITOR = modGuiIndex++;
+    public static final int GUI_DIMENSION_BUILDER = modGuiIndex++;
+    public static final int GUI_DIMENSION_ENSCRIBER = modGuiIndex++;
+
     @Override
     public Object getServerGuiElement(int guiid, EntityPlayer entityPlayer, World world, int x, int y, int z) {
-        if (guiid == RFToolsDim.GUI_MANUAL_DIMENSION) {
+        if (guiid == GUI_MANUAL_DIMENSION) {
             return null;
         }
 
@@ -39,7 +49,7 @@ public class GuiProxy implements IGuiHandler {
 
     @Override
     public Object getClientGuiElement(int guiid, EntityPlayer entityPlayer, World world, int x, int y, int z) {
-        if (guiid == RFToolsDim.GUI_MANUAL_DIMENSION) {
+        if (guiid == GUI_MANUAL_DIMENSION) {
             return new GuiRFToolsManual(GuiRFToolsManual.MANUAL_DIMENSION);
         }
 //        if (guiid == RFTools.GUI_MANUAL_MAIN) {

@@ -1,6 +1,6 @@
 package mcjty.rftoolsdim.items.parts;
 
-import mcjty.rftoolsdim.RFToolsDim;
+import mcjty.rftoolsdim.gui.GuiProxy;
 import mcjty.rftoolsdim.items.GenericRFToolsItem;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
@@ -27,7 +27,7 @@ public class PeaceEssenceItem extends GenericRFToolsItem {
             list.add(TextFormatting.WHITE + "the peaceful dimlet in the Dimlet Workbench.");
             list.add(TextFormatting.WHITE + "Getting this essence is somewhat harder though.");
         } else {
-            list.add(TextFormatting.WHITE + RFToolsDim.SHIFT_MESSAGE);
+            list.add(TextFormatting.WHITE + GuiProxy.SHIFT_MESSAGE);
         }
     }
 }

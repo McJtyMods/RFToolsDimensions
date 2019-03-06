@@ -25,7 +25,7 @@ public class FakeGravelBlock extends Block {
         setUnlocalizedName(RFToolsDim.MODID + "." + "fake_gravel");
         setRegistryName("fake_gravel");
 //        setLightLevel(0.6f);
-//        setCreativeTab(RFToolsDim.tabRfToolsDim);
+//        setCreativeTab(RFToolsDim.setup.getTab());
         McJtyRegister.registerLater(this, RFToolsDim.instance, ItemBlock::new);
     }
 

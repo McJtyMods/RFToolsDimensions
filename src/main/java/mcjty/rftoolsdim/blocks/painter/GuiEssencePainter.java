@@ -18,6 +18,7 @@ import mcjty.rftoolsdim.dimensions.types.ControllerType;
 import mcjty.rftoolsdim.dimensions.types.FeatureType;
 import mcjty.rftoolsdim.dimensions.types.SpecialType;
 import mcjty.rftoolsdim.dimensions.types.TerrainType;
+import mcjty.rftoolsdim.gui.GuiProxy;
 import mcjty.rftoolsdim.items.ModItems;
 import mcjty.rftoolsdim.network.RFToolsDimMessages;
 import net.minecraft.inventory.Slot;
@@ -42,7 +43,7 @@ public class GuiEssencePainter extends GenericGuiContainer<EssencePainterTileEnt
     private static final ResourceLocation iconLocation = new ResourceLocation(RFToolsDim.MODID, "textures/gui/essencepainter.png");
 
     public GuiEssencePainter(EssencePainterTileEntity tileEntity, EssencePainterContainer container) {
-        super(RFToolsDim.instance, RFToolsDimMessages.INSTANCE, tileEntity, container, RFToolsDim.GUI_MANUAL_DIMENSION, "enscriber");
+        super(RFToolsDim.instance, RFToolsDimMessages.INSTANCE, tileEntity, container, GuiProxy.GUI_MANUAL_DIMENSION, "enscriber");
 
         xSize = PAINTER_WIDTH;
         ySize = PAINTER_HEIGHT;

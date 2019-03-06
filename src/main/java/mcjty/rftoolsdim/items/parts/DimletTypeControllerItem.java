@@ -1,7 +1,7 @@
 package mcjty.rftoolsdim.items.parts;
 
-import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.dimensions.dimlets.types.DimletType;
+import mcjty.rftoolsdim.gui.GuiProxy;
 import mcjty.rftoolsdim.items.GenericRFToolsItem;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -56,7 +56,7 @@ public class DimletTypeControllerItem extends GenericRFToolsItem {
             list.add(TextFormatting.WHITE + "Workbench. In that same workbench you can also use");
             list.add(TextFormatting.WHITE + "this item to make new dimlets.");
         } else {
-            list.add(TextFormatting.WHITE + RFToolsDim.SHIFT_MESSAGE);
+            list.add(TextFormatting.WHITE + GuiProxy.SHIFT_MESSAGE);
         }
     }
 

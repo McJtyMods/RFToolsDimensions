@@ -2,8 +2,8 @@ package mcjty.rftoolsdim.blocks.builder;
 
 import mcjty.lib.api.Infusable;
 import mcjty.lib.gui.GenericGuiContainer;
-import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.blocks.GenericRFToolsBlock;
+import mcjty.rftoolsdim.gui.GuiProxy;
 import mcjty.rftoolsdim.theoneprobe.TheOneProbeSupport;
 import mcjty.theoneprobe.api.IProbeHitData;
 import mcjty.theoneprobe.api.IProbeInfo;
@@ -66,7 +66,7 @@ public class DimensionBuilderBlock extends GenericRFToolsBlock<DimensionBuilderT
 
     @Override
     public int getGuiID() {
-        return RFToolsDim.GUI_DIMENSION_BUILDER;
+        return GuiProxy.GUI_DIMENSION_BUILDER;
     }
 
     @SideOnly(Side.CLIENT)
@@ -86,7 +86,7 @@ public class DimensionBuilderBlock extends GenericRFToolsBlock<DimensionBuilderT
             list.add(TextFormatting.YELLOW + "Infusing bonus: reduced power consumption and");
             list.add(TextFormatting.YELLOW + "faster dimension creation speed.");
         } else {
-            list.add(TextFormatting.WHITE + RFToolsDim.SHIFT_MESSAGE);
+            list.add(TextFormatting.WHITE + GuiProxy.SHIFT_MESSAGE);
         }
     }
 

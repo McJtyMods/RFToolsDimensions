@@ -11,6 +11,7 @@ import mcjty.lib.gui.widgets.Label;
 import mcjty.lib.gui.widgets.Panel;
 import mcjty.lib.varia.RedstoneMode;
 import mcjty.rftoolsdim.RFToolsDim;
+import mcjty.rftoolsdim.gui.GuiProxy;
 import mcjty.rftoolsdim.network.RFToolsDimMessages;
 import net.minecraft.util.ResourceLocation;
 
@@ -31,7 +32,7 @@ public class GuiDimensionBuilder extends GenericGuiContainer<DimensionBuilderTil
     private static final ResourceLocation iconGuiElements = new ResourceLocation(RFToolsDim.MODID, "textures/gui/guielements.png");
 
     public GuiDimensionBuilder(DimensionBuilderTileEntity dimensionBuilderTileEntity, DimensionBuilderContainer container) {
-        super(RFToolsDim.instance, RFToolsDimMessages.INSTANCE, dimensionBuilderTileEntity, container, RFToolsDim.GUI_MANUAL_DIMENSION, "builder");
+        super(RFToolsDim.instance, RFToolsDimMessages.INSTANCE, dimensionBuilderTileEntity, container, GuiProxy.GUI_MANUAL_DIMENSION, "builder");
         GenericEnergyStorageTileEntity.setCurrentRF(dimensionBuilderTileEntity.getStoredPower());
 
         xSize = BUILDER_WIDTH;

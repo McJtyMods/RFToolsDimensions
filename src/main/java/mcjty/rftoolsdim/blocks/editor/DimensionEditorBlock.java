@@ -2,8 +2,8 @@ package mcjty.rftoolsdim.blocks.editor;
 
 import mcjty.lib.api.Infusable;
 import mcjty.lib.gui.GenericGuiContainer;
-import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.blocks.GenericRFToolsBlock;
+import mcjty.rftoolsdim.gui.GuiProxy;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
@@ -51,7 +51,7 @@ public class DimensionEditorBlock extends GenericRFToolsBlock<DimensionEditorTil
 
     @Override
     public int getGuiID() {
-        return RFToolsDim.GUI_DIMENSION_EDITOR;
+        return GuiProxy.GUI_DIMENSION_EDITOR;
     }
 
     @Override
@@ -70,7 +70,7 @@ public class DimensionEditorBlock extends GenericRFToolsBlock<DimensionEditorTil
             list.add(TextFormatting.WHITE + "be undone and the dimlet is lost so be careful!");
             list.add(TextFormatting.YELLOW + "Infusing bonus: reduced power consumption.");
         } else {
-            list.add(TextFormatting.WHITE + RFToolsDim.SHIFT_MESSAGE);
+            list.add(TextFormatting.WHITE + GuiProxy.SHIFT_MESSAGE);
         }
     }
 

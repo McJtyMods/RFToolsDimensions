@@ -1,6 +1,6 @@
 package mcjty.rftoolsdim.items.parts;
 
-import mcjty.rftoolsdim.RFToolsDim;
+import mcjty.rftoolsdim.gui.GuiProxy;
 import mcjty.rftoolsdim.items.GenericRFToolsItem;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
@@ -26,7 +26,7 @@ public class MediocreEfficiencyEssenceItem extends GenericRFToolsItem {
             list.add(TextFormatting.WHITE + "This essence item is the main ingredient for");
             list.add(TextFormatting.WHITE + "the mediocre efficiency dimlet in the Dimlet Workbench.");
         } else {
-            list.add(TextFormatting.WHITE + RFToolsDim.SHIFT_MESSAGE);
+            list.add(TextFormatting.WHITE + GuiProxy.SHIFT_MESSAGE);
         }
     }
 }

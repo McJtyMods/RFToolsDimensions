@@ -34,7 +34,7 @@ public class FakeWaterBlock extends Block {
         setUnlocalizedName(RFToolsDim.MODID + "." + "fake_water");
         setRegistryName("fake_water");
 //        setLightLevel(0.6f);
-//        setCreativeTab(RFToolsDim.tabRfToolsDim);
+//        setCreativeTab(RFToolsDim.setup.getTab());
         McJtyRegister.registerLater(this, RFToolsDim.instance, ItemBlock::new);
     }
 

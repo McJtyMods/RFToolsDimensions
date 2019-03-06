@@ -1,8 +1,8 @@
 package mcjty.rftoolsdim.blocks.painter;
 
 import mcjty.lib.gui.GenericGuiContainer;
-import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.blocks.GenericRFToolsBlock;
+import mcjty.rftoolsdim.gui.GuiProxy;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
@@ -23,7 +23,7 @@ public class EssencePainterBlock extends GenericRFToolsBlock<EssencePainterTileE
 
     @Override
     public int getGuiID() {
-        return RFToolsDim.GUI_ESSENCE_PAINTER;
+        return GuiProxy.GUI_ESSENCE_PAINTER;
     }
 
     @SideOnly(Side.CLIENT)
@@ -42,7 +42,7 @@ public class EssencePainterBlock extends GenericRFToolsBlock<EssencePainterTileE
             list.add(TextFormatting.WHITE + "needed to create dimlets can be colored with");
             list.add(TextFormatting.WHITE + "this painter");
         } else {
-            list.add(TextFormatting.WHITE + RFToolsDim.SHIFT_MESSAGE);
+            list.add(TextFormatting.WHITE + GuiProxy.SHIFT_MESSAGE);
         }
     }
 }

@@ -1,8 +1,8 @@
 package mcjty.rftoolsdim.blocks.energyextractor;
 
 import mcjty.lib.container.EmptyContainer;
-import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.blocks.GenericRFToolsBlock;
+import mcjty.rftoolsdim.gui.GuiProxy;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
@@ -36,7 +36,7 @@ public class EnergyExtractorBlock extends GenericRFToolsBlock<EnergyExtractorTil
             list.add(TextFormatting.WHITE + "the dimension needs that energy too!");
             list.add(TextFormatting.WHITE + "This device only works in RFTools dimensions.");
         } else {
-            list.add(TextFormatting.WHITE + RFToolsDim.SHIFT_MESSAGE);
+            list.add(TextFormatting.WHITE + GuiProxy.SHIFT_MESSAGE);
         }
     }
 }

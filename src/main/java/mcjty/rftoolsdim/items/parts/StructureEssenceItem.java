@@ -1,7 +1,7 @@
 package mcjty.rftoolsdim.items.parts;
 
-import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.dimensions.types.StructureType;
+import mcjty.rftoolsdim.gui.GuiProxy;
 import mcjty.rftoolsdim.items.GenericRFToolsItem;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.util.ITooltipFlag;
@@ -46,7 +46,7 @@ public class StructureEssenceItem extends GenericRFToolsItem {
             list.add(TextFormatting.WHITE + "This essence item is the main ingredient for");
             list.add(TextFormatting.WHITE + "structure dimlets.");
         } else {
-            list.add(TextFormatting.WHITE + RFToolsDim.SHIFT_MESSAGE);
+            list.add(TextFormatting.WHITE + GuiProxy.SHIFT_MESSAGE);
         }
     }
 

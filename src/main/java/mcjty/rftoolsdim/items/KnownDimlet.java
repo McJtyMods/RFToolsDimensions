@@ -1,11 +1,11 @@
 package mcjty.rftoolsdim.items;
 
 import mcjty.lib.varia.Logging;
-import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.config.Settings;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletKey;
 import mcjty.rftoolsdim.dimensions.dimlets.KnownDimletConfiguration;
 import mcjty.rftoolsdim.dimensions.dimlets.types.DimletType;
+import mcjty.rftoolsdim.gui.GuiProxy;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.util.ITooltipFlag;
@@ -140,7 +140,7 @@ public class KnownDimlet extends GenericRFToolsItem {
 //                }
 //            }
         } else {
-            list.add(TextFormatting.WHITE + RFToolsDim.SHIFT_MESSAGE);
+            list.add(TextFormatting.WHITE + GuiProxy.SHIFT_MESSAGE);
         }
     }
 

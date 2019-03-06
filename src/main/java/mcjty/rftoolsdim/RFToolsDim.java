@@ -1,7 +1,7 @@
 package mcjty.rftoolsdim;
 
 import mcjty.lib.base.ModBase;
-import mcjty.lib.compat.MainCompatHandler;
+import mcjty.lib.proxy.IProxy;
 import mcjty.lib.varia.Logging;
 import mcjty.rftools.api.teleportation.ITeleportationManager;
 import mcjty.rftoolsdim.api.dimension.IDimensionManager;
@@ -14,23 +14,14 @@ import mcjty.rftoolsdim.dimensions.ModDimensions;
 import mcjty.rftoolsdim.dimensions.RfToolsDimensionManager;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletRandomizer;
 import mcjty.rftoolsdim.dimensions.dimlets.KnownDimletConfiguration;
-import mcjty.rftoolsdim.items.ModItems;
 import mcjty.rftoolsdim.items.manual.GuiRFToolsManual;
-import mcjty.rftoolsdim.network.DimensionSyncChannelHandler;
-import mcjty.rftoolsdim.proxy.CommonProxy;
-import net.minecraft.creativetab.CreativeTabs;
+import mcjty.rftoolsdim.proxy.CommonSetup;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.*;
-import net.minecraftforge.fml.common.network.FMLEmbeddedChannel;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
-import net.minecraftforge.fml.relauncher.Side;
 
 import javax.annotation.Nullable;
-import java.util.EnumMap;
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -49,37 +40,13 @@ public class RFToolsDim implements ModBase {
     public static final String MIN_MCJTYLIB_VER = "3.1.0";
 
     @SidedProxy(clientSide="mcjty.rftoolsdim.proxy.ClientProxy", serverSide="mcjty.rftoolsdim.proxy.ServerProxy")
-    public static CommonProxy proxy;
+    public static IProxy proxy;
+    public static CommonSetup setup = new CommonSetup();
 
     @Mod.Instance("rftoolsdim")
     public static RFToolsDim instance;
 
-    public static boolean chisel = false;
-
     public static ITeleportationManager teleportationManager;
-
-    // Are some mods loaded?.
-
-    public static EnumMap<Side, FMLEmbeddedChannel> channels;
-
-    /** This is used to keep track of GUIs that we make*/
-    private static int modGuiIndex = 0;
-    public static final int GUI_DIMENSION_ENSCRIBER = modGuiIndex++;
-    public static final int GUI_DIMENSION_BUILDER = modGuiIndex++;
-    public static final int GUI_DIMENSION_EDITOR = modGuiIndex++;
-    public static final int GUI_MANUAL_DIMENSION = modGuiIndex++;
-    public static final int GUI_DIMLET_WORKBENCH = modGuiIndex++;
-    public static final int GUI_ESSENCE_PAINTER = modGuiIndex++;
-
-    public static CreativeTabs tabRfToolsDim = new CreativeTabs("RfToolsDim") {
-
-        @Override
-        public ItemStack getTabIconItem() {
-            return new ItemStack(ModItems.realizedDimensionTabItem);
-        }
-    };
-
-    public static final String SHIFT_MESSAGE = "<Press Shift>";
 
     /**
      * Run before anything else. Read your config, create blocks, items, etc, and
@@ -87,29 +54,8 @@ public class RFToolsDim implements ModBase {
      */
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent e) {
+        setup.preInit(e);
         proxy.preInit(e);
-        MainCompatHandler.registerWaila();
-        MainCompatHandler.registerTOP();
-
-        FMLInterModComms.sendFunctionMessage("rftools", "getTeleportationManager", "mcjty.rftoolsdim.RFToolsDim$GetTeleportationManager");
-        FMLInterModComms.sendFunctionMessage("theoneprobe", "getTheOneProbe", "mcjty.rftoolsdim.theoneprobe.TheOneProbeSupport");
-    }
-
-    @Mod.EventHandler
-    public void imcCallback(FMLInterModComms.IMCEvent event) {
-        for (FMLInterModComms.IMCMessage message : event.getMessages()) {
-            if ("getDimletConfigurationManager".equalsIgnoreCase(message.key)) {
-                Optional<Function<IDimletConfigurationManager, Void>> value = message.getFunctionValue(IDimletConfigurationManager.class, Void.class);
-                String mod = message.getSender();
-                Logging.log("Received RFTools Dimensions dimlet reconfiguration request from mod '" + mod + "'");
-                value.get().apply(new DimletConfigurationManager(mod));
-            } else if ("getDimensionManager".equalsIgnoreCase(message.key)) {
-                Optional<Function<IDimensionManager, Void>> value = message.getFunctionValue(IDimensionManager.class, Void.class);
-                String mod = message.getSender();
-                Logging.log("Received RFTools dimension manager request from mod '" + mod + "'");
-                value.get().apply(new DimensionManager());
-            }
-        }
     }
 
     /**
@@ -117,13 +63,17 @@ public class RFToolsDim implements ModBase {
      */
     @Mod.EventHandler
     public void init(FMLInitializationEvent e) {
+        setup.init(e);
         proxy.init(e);
+    }
 
-        chisel = Loader.isModLoaded("chisel");
-        channels = NetworkRegistry.INSTANCE.newChannel("RFToolsChannel", DimensionSyncChannelHandler.instance);
-
-//        Achievements.init();
-        // @todo
+    /**
+     * Handle interaction with other mods, complete your setup based on this.
+     */
+    @Mod.EventHandler
+    public void postInit(FMLPostInitializationEvent e) {
+        setup.postInit(e);
+        proxy.postInit(e);
     }
 
     @Mod.EventHandler
@@ -147,12 +97,21 @@ public class RFToolsDim implements ModBase {
         DimletRandomizer.init();
     }
 
-    /**
-     * Handle interaction with other mods, complete your setup based on this.
-     */
     @Mod.EventHandler
-    public void postInit(FMLPostInitializationEvent e) {
-        proxy.postInit(e);
+    public void imcCallback(FMLInterModComms.IMCEvent event) {
+        for (FMLInterModComms.IMCMessage message : event.getMessages()) {
+            if ("getDimletConfigurationManager".equalsIgnoreCase(message.key)) {
+                Optional<Function<IDimletConfigurationManager, Void>> value = message.getFunctionValue(IDimletConfigurationManager.class, Void.class);
+                String mod = message.getSender();
+                Logging.log("Received RFTools Dimensions dimlet reconfiguration request from mod '" + mod + "'");
+                value.get().apply(new DimletConfigurationManager(mod));
+            } else if ("getDimensionManager".equalsIgnoreCase(message.key)) {
+                Optional<Function<IDimensionManager, Void>> value = message.getFunctionValue(IDimensionManager.class, Void.class);
+                String mod = message.getSender();
+                Logging.log("Received RFTools dimension manager request from mod '" + mod + "'");
+                value.get().apply(new DimensionManager());
+            }
+        }
     }
 
     @Override
