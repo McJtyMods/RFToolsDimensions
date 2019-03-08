@@ -2,18 +2,17 @@ package mcjty.rftoolsdim.network;
 
 import io.netty.buffer.ByteBuf;
 import mcjty.lib.network.NetworkTools;
+import mcjty.lib.thirteen.Context;
 import mcjty.rftoolsdim.dimensions.DimensionInformation;
 import mcjty.rftoolsdim.dimensions.description.DimensionDescriptor;
-import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Supplier;
 
 /**
  * Sync RfToolsDimensionManager data from server to client.
@@ -73,17 +72,20 @@ public class PacketSyncDimensionInfo implements IMessage {
     public PacketSyncDimensionInfo() {
     }
 
+    public PacketSyncDimensionInfo(ByteBuf buf) {
+        fromBytes(buf);
+    }
+
     public PacketSyncDimensionInfo(Map<Integer, DimensionDescriptor> dimensions, Map<Integer, DimensionInformation> dimensionInformation) {
         this.dimensions = new HashMap<>(dimensions);
         this.dimensionInformation = new HashMap<>(dimensionInformation);
     }
 
-    public static class Handler implements IMessageHandler<PacketSyncDimensionInfo, IMessage> {
-        @Override
-        public IMessage onMessage(PacketSyncDimensionInfo message, MessageContext ctx) {
-            Minecraft.getMinecraft().addScheduledTask(() -> SyncDimensionInfoHelper.syncDimensionManagerFromServer(message.dimensions, message.dimensionInformation));
-            return null;
-        }
-
+    public void handle(Supplier<Context> supplier) {
+        Context ctx = supplier.get();
+        ctx.enqueueWork(() -> {
+            SyncDimensionInfoHelper.syncDimensionManagerFromServer(dimensions, dimensionInformation);
+        });
+        ctx.setPacketHandled(true);
     }
 }

@@ -1,10 +1,10 @@
 package mcjty.rftoolsdim.network;
 
 import io.netty.buffer.ByteBuf;
-import net.minecraft.client.Minecraft;
+import mcjty.lib.thirteen.Context;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+
+import java.util.function.Supplier;
 
 public class PacketReturnEnergy implements IMessage {
     private int id;
@@ -33,17 +33,20 @@ public class PacketReturnEnergy implements IMessage {
     public PacketReturnEnergy() {
     }
 
+    public PacketReturnEnergy(ByteBuf buf) {
+        fromBytes(buf);
+    }
+
     public PacketReturnEnergy(int id, long energy) {
         this.id = id;
         this.energy = energy;
     }
 
-    public static class Handler implements IMessageHandler<PacketReturnEnergy, IMessage> {
-        @Override
-        public IMessage onMessage(PacketReturnEnergy message, MessageContext ctx) {
-            Minecraft.getMinecraft().addScheduledTask(() -> ReturnEnergyHelper.setEnergyLevel(message));
-            return null;
-        }
-
+    public void handle(Supplier<Context> supplier) {
+        Context ctx = supplier.get();
+        ctx.enqueueWork(() -> {
+            ReturnEnergyHelper.setEnergyLevel(this);
+        });
+        ctx.setPacketHandled(true);
     }
 }

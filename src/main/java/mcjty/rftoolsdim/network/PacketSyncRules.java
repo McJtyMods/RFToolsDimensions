@@ -1,17 +1,16 @@
 package mcjty.rftoolsdim.network;
 
 import io.netty.buffer.ByteBuf;
+import mcjty.lib.thirteen.Context;
 import mcjty.lib.varia.Logging;
 import mcjty.rftoolsdim.config.Filter;
 import mcjty.rftoolsdim.config.Settings;
-import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 
 /**
  * Sync dimlet rules from server to client.
@@ -51,16 +50,19 @@ public class PacketSyncRules implements IMessage {
     public PacketSyncRules() {
     }
 
+    public PacketSyncRules(ByteBuf buf) {
+        fromBytes(buf);
+    }
+
     public PacketSyncRules(List<Pair<Filter, Settings>> rules) {
         this.rules = rules;
     }
 
-    public static class Handler implements IMessageHandler<PacketSyncRules, IMessage> {
-        @Override
-        public IMessage onMessage(PacketSyncRules message, MessageContext ctx) {
-            Minecraft.getMinecraft().addScheduledTask(() -> SyncRulesHelper.syncRulesFromServer(message));
-            return null;
-        }
-
+    public void handle(Supplier<Context> supplier) {
+        Context ctx = supplier.get();
+        ctx.enqueueWork(() -> {
+            SyncRulesHelper.syncRulesFromServer(this);
+        });
+        ctx.setPacketHandled(true);
     }
 }
