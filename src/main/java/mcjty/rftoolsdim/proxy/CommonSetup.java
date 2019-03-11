@@ -2,7 +2,6 @@ package mcjty.rftoolsdim.proxy;
 
 import mcjty.lib.compat.MainCompatHandler;
 import mcjty.lib.setup.DefaultCommonSetup;
-import mcjty.lib.varia.WrenchChecker;
 import mcjty.rftoolsdim.ForgeEventHandlers;
 import mcjty.rftoolsdim.ModCrafting;
 import mcjty.rftoolsdim.RFToolsDim;
@@ -41,19 +40,18 @@ public class CommonSetup extends DefaultCommonSetup {
         NetworkRegistry.INSTANCE.registerGuiHandler(RFToolsDim.instance, new GuiProxy());
         MinecraftForge.EVENT_BUS.register(new DimensionTickEvent());
 
-        setupModCompat();
-
         RFToolsDimMessages.registerMessages("rftoolsdim");
 
         ConfigSetup.init();
-        DimletRules.readRules(modConfigDir);
+        DimletRules.readRules(getModConfigDir());
 
         ModItems.init();
         ModBlocks.init();
         ModDimensions.init();
     }
 
-    private void setupModCompat() {
+    @Override
+    protected void setupModCompat() {
         chisel = Loader.isModLoaded("chisel");
 
         MainCompatHandler.registerWaila();
@@ -80,7 +78,6 @@ public class CommonSetup extends DefaultCommonSetup {
     public void postInit(FMLPostInitializationEvent e) {
         super.postInit(e);
         ConfigSetup.postInit();
-        WrenchChecker.init();
     }
 
 }
