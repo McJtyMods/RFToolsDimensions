@@ -37,8 +37,8 @@ public class CommonSetup extends DefaultCommonSetup {
         super.preInit(e);
 
         MinecraftForge.EVENT_BUS.register(new ForgeEventHandlers());
-        NetworkRegistry.INSTANCE.registerGuiHandler(RFToolsDim.instance, new GuiProxy());
         MinecraftForge.EVENT_BUS.register(new DimensionTickEvent());
+        NetworkRegistry.INSTANCE.registerGuiHandler(RFToolsDim.instance, new GuiProxy());
 
         RFToolsDimMessages.registerMessages("rftoolsdim");
 
