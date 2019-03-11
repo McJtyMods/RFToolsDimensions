@@ -15,7 +15,7 @@ import mcjty.rftoolsdim.dimensions.RfToolsDimensionManager;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletRandomizer;
 import mcjty.rftoolsdim.dimensions.dimlets.KnownDimletConfiguration;
 import mcjty.rftoolsdim.items.manual.GuiRFToolsManual;
-import mcjty.rftoolsdim.setup.CommonSetup;
+import mcjty.rftoolsdim.setup.ModSetup;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -41,7 +41,7 @@ public class RFToolsDim implements ModBase {
 
     @SidedProxy(clientSide="mcjty.rftoolsdim.setup.ClientProxy", serverSide="mcjty.rftoolsdim.setup.ServerProxy")
     public static IProxy proxy;
-    public static CommonSetup setup = new CommonSetup();
+    public static ModSetup setup = new ModSetup();
 
     @Mod.Instance("rftoolsdim")
     public static RFToolsDim instance;

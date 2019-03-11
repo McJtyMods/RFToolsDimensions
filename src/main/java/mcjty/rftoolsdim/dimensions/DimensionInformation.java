@@ -19,7 +19,7 @@ import mcjty.rftoolsdim.dimensions.dimlets.types.DimletType;
 import mcjty.rftoolsdim.dimensions.dimlets.types.IDimletType;
 import mcjty.rftoolsdim.dimensions.types.*;
 import mcjty.rftoolsdim.dimensions.world.BiomeControllerMapping;
-import mcjty.rftoolsdim.setup.CommonSetup;
+import mcjty.rftoolsdim.setup.ModSetup;
 import mcjty.rftoolsdim.varia.GenericTools;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
@@ -600,7 +600,7 @@ public class DimensionInformation implements IDimensionInformation {
         Block block = state.getBlock();
 
         String suffix = "";
-        if ("chisel".equals(block.getRegistryName().getResourceDomain()) && CommonSetup.chisel) {
+        if ("chisel".equals(block.getRegistryName().getResourceDomain()) && ModSetup.chisel) {
             // Special case for chisel as it has the same name as the base block for all its variants
             String readableName = ChiselCompat.getReadableName(state);
             if (readableName != null) {

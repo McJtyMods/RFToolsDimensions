@@ -1,7 +1,7 @@
 package mcjty.rftoolsdim.setup;
 
 import mcjty.lib.compat.MainCompatHandler;
-import mcjty.lib.setup.DefaultCommonSetup;
+import mcjty.lib.setup.DefaultModSetup;
 import mcjty.rftoolsdim.ForgeEventHandlers;
 import mcjty.rftoolsdim.ModCrafting;
 import mcjty.rftoolsdim.RFToolsDim;
@@ -27,7 +27,7 @@ import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.EnumMap;
 
-public class CommonSetup extends DefaultCommonSetup {
+public class ModSetup extends DefaultModSetup {
 
     public static boolean chisel = false;
     public static EnumMap<Side, FMLEmbeddedChannel> channels;
