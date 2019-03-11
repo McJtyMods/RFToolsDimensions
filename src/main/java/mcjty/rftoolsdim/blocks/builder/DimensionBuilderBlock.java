@@ -4,7 +4,7 @@ import mcjty.lib.api.Infusable;
 import mcjty.lib.gui.GenericGuiContainer;
 import mcjty.rftoolsdim.blocks.GenericRFToolsBlock;
 import mcjty.rftoolsdim.gui.GuiProxy;
-import mcjty.rftoolsdim.theoneprobe.TheOneProbeSupport;
+import mcjty.rftoolsdim.compat.theoneprobe.TheOneProbeSupport;
 import mcjty.theoneprobe.api.IProbeHitData;
 import mcjty.theoneprobe.api.IProbeInfo;
 import mcjty.theoneprobe.api.ProbeMode;

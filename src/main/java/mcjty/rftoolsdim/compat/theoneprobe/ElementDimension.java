@@ -1,4 +1,4 @@
-package mcjty.rftoolsdim.theoneprobe;
+package mcjty.rftoolsdim.compat.theoneprobe;
 
 import io.netty.buffer.ByteBuf;
 import mcjty.lib.client.RenderHelper;

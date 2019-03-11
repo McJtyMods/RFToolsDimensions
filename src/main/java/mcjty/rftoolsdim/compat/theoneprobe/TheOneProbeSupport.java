@@ -1,4 +1,4 @@
-package mcjty.rftoolsdim.theoneprobe;
+package mcjty.rftoolsdim.compat.theoneprobe;
 
 import mcjty.lib.varia.Logging;
 import mcjty.theoneprobe.api.IProbeInfo;

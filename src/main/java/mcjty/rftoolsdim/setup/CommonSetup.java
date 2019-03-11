@@ -58,7 +58,7 @@ public class CommonSetup extends DefaultCommonSetup {
         MainCompatHandler.registerTOP();
 
         FMLInterModComms.sendFunctionMessage("rftools", "getTeleportationManager", "mcjty.rftoolsdim.RFToolsDim$GetTeleportationManager");
-        FMLInterModComms.sendFunctionMessage("theoneprobe", "getTheOneProbe", "mcjty.rftoolsdim.theoneprobe.TheOneProbeSupport");
+        FMLInterModComms.sendFunctionMessage("theoneprobe", "getTheOneProbe", "mcjty.rftoolsdim.compat.theoneprobe.TheOneProbeSupport");
     }
 
     @Override

@@ -1,6 +1,6 @@
 package mcjty.rftoolsdim.dimensions.dimlets.types;
 
-import mcjty.rftools.GeneralConfiguration;
+import mcjty.rftools.config.GeneralConfiguration;
 import mcjty.rftoolsdim.config.WorldgenConfiguration;
 import mcjty.rftoolsdim.dimensions.DimensionInformation;
 import mcjty.rftoolsdim.dimensions.description.MobDescriptor;
