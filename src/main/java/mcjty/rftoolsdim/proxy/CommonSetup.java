@@ -40,7 +40,6 @@ public class CommonSetup extends DefaultCommonSetup {
         super.preInit(e);
         MinecraftForge.EVENT_BUS.register(new ForgeEventHandlers());
 
-        mainConfig = new Configuration(new File(modConfigDir.getPath() + File.separator + "rftools", "dimensions.cfg"));
         readMainConfig();
 
         RFToolsDimMessages.registerMessages("rftoolsdim");
@@ -63,7 +62,10 @@ public class CommonSetup extends DefaultCommonSetup {
         createTab("RfToolsDim", new ItemStack(ModItems.realizedDimensionTabItem));
     }
 
+    private Configuration mainConfig;
+
     private void readMainConfig() {
+        mainConfig = new Configuration(new File(modConfigDir.getPath() + File.separator + "rftools", "dimensions.cfg"));
         Configuration cfg = mainConfig;
         try {
             cfg.load();
