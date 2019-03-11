@@ -1,4 +1,4 @@
-package mcjty.rftoolsdim.proxy;
+package mcjty.rftoolsdim.setup;
 
 import mcjty.lib.compat.MainCompatHandler;
 import mcjty.lib.setup.DefaultCommonSetup;

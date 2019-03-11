@@ -15,7 +15,7 @@ import mcjty.rftoolsdim.dimensions.RfToolsDimensionManager;
 import mcjty.rftoolsdim.dimensions.dimlets.DimletRandomizer;
 import mcjty.rftoolsdim.dimensions.dimlets.KnownDimletConfiguration;
 import mcjty.rftoolsdim.items.manual.GuiRFToolsManual;
-import mcjty.rftoolsdim.proxy.CommonSetup;
+import mcjty.rftoolsdim.setup.CommonSetup;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;

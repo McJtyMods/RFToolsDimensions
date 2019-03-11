@@ -12,7 +12,7 @@ import mcjty.rftoolsdim.dimensions.types.EffectType;
 import mcjty.rftoolsdim.dimensions.types.FeatureType;
 import mcjty.rftoolsdim.dimensions.world.GenericWorldProvider;
 import mcjty.rftoolsdim.items.ModItems;
-import mcjty.rftoolsdim.proxy.CommonSetup;
+import mcjty.rftoolsdim.setup.CommonSetup;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;

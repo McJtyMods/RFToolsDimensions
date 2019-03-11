@@ -19,7 +19,7 @@ import mcjty.rftoolsdim.dimensions.dimlets.types.DimletType;
 import mcjty.rftoolsdim.dimensions.dimlets.types.IDimletType;
 import mcjty.rftoolsdim.dimensions.types.*;
 import mcjty.rftoolsdim.dimensions.world.BiomeControllerMapping;
-import mcjty.rftoolsdim.proxy.CommonSetup;
+import mcjty.rftoolsdim.setup.CommonSetup;
 import mcjty.rftoolsdim.varia.GenericTools;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
