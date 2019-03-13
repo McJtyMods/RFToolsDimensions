@@ -40,8 +40,6 @@ public class ModSetup extends DefaultModSetup {
         MinecraftForge.EVENT_BUS.register(new DimensionTickEvent());
         NetworkRegistry.INSTANCE.registerGuiHandler(RFToolsDim.instance, new GuiProxy());
 
-        ConfigSetup.init();
-
         RFToolsDimMessages.registerMessages("rftoolsdim");
 
         DimletRules.readRules(getModConfigDir());
@@ -60,6 +58,11 @@ public class ModSetup extends DefaultModSetup {
 
         FMLInterModComms.sendFunctionMessage("rftools", "getTeleportationManager", "mcjty.rftoolsdim.RFToolsDim$GetTeleportationManager");
         FMLInterModComms.sendFunctionMessage("theoneprobe", "getTheOneProbe", "mcjty.rftoolsdim.compat.theoneprobe.TheOneProbeSupport");
+    }
+
+    @Override
+    protected void setupConfig() {
+        ConfigSetup.init();
     }
 
     @Override
