@@ -40,9 +40,10 @@ public class ModSetup extends DefaultModSetup {
         MinecraftForge.EVENT_BUS.register(new DimensionTickEvent());
         NetworkRegistry.INSTANCE.registerGuiHandler(RFToolsDim.instance, new GuiProxy());
 
+        ConfigSetup.init();
+
         RFToolsDimMessages.registerMessages("rftoolsdim");
 
-        ConfigSetup.init();
         DimletRules.readRules(getModConfigDir());
 
         ModItems.init();
