@@ -120,7 +120,7 @@ public class MobDimletType implements IDimletType {
         }
         int level = essenceCompound.getInteger("level");
         String mobId = essenceCompound.getString("mobId");
-        if (level < GeneralConfiguration.maxMobInjections || mobId.isEmpty()) {
+        if (level < GeneralConfiguration.maxMobInjections.get() || mobId.isEmpty()) {
             return false;
         }
         return true;
