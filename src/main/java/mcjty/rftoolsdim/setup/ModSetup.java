@@ -67,7 +67,7 @@ public class ModSetup extends DefaultModSetup {
 
     @Override
     public void createTabs() {
-        createTab("RfToolsDim", new ItemStack(ModItems.realizedDimensionTabItem));
+        createTab("RfToolsDim", () -> new ItemStack(ModItems.realizedDimensionTabItem));
     }
 
     @Override
