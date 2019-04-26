@@ -1,3 +1,6 @@
+5.70:
+- Depends on McJtyLib 3.5.0!
+
 5.64:
 - Needs McJtyLib 3.1.0
 - Support for COFH RF API is removed. Only Forge Energy is supported now
