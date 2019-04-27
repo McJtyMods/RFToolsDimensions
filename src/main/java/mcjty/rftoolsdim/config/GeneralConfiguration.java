@@ -35,7 +35,9 @@ public class GeneralConfiguration {
     public static int minParcelContents = 3;
     public static int maxParcelContents = 6;
 
-	public static void init(Configuration cfg) {
+    public static int maxMobInjections = 10;        // Maximum amount of injections we need to do a full mob extraction (@todo get from rftools!)
+
+    public static void init(Configuration cfg) {
         enableDimensionBuilderRecipe = cfg.get(CATEGORY_GENERAL, "enableDimensionBuilderRecipe", enableDimensionBuilderRecipe,
                                                "Enable the dimension builder recipe.").getBoolean();
         enableDynamicPhaseCost = cfg.get(CATEGORY_GENERAL, "enableDynamicPhaseCost", enableDynamicPhaseCost,
@@ -79,6 +81,8 @@ public class GeneralConfiguration {
         maxDimensionsPerPlayer = cfg.get(CATEGORY_GENERAL, "maxDimensionsPerPlayer", maxDimensionsPerPlayer,
                 "The maximum amount of dimensions per player. This requires that dimensions are build with an owned builder (dimensionBuilderNeedsOwner must be set). -1 means no maximum").getInt();
 
+        maxMobInjections = cfg.get(CATEGORY_GENERAL, "maxMobInjections", maxMobInjections,
+                "Amount of injections needed to get a fully absorbed mob essence").getInt();
 
         brutalMobsFactor = cfg.get(CATEGORY_GENERAL, "brutalMobsFactor", brutalMobsFactor,
                 "How much stronger mobs should be if spawned in a dimension with the brutal mobs dimlet").getDouble();
