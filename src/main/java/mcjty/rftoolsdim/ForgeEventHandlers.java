@@ -7,6 +7,8 @@ import mcjty.rftoolsdim.config.WorldgenConfiguration;
 import mcjty.rftoolsdim.dimensions.DimensionInformation;
 import mcjty.rftoolsdim.dimensions.DimensionStorage;
 import mcjty.rftoolsdim.dimensions.RfToolsDimensionManager;
+import mcjty.rftoolsdim.dimensions.dimlets.DimletRandomizer;
+import mcjty.rftoolsdim.dimensions.dimlets.KnownDimletConfiguration;
 import mcjty.rftoolsdim.dimensions.types.EffectType;
 import mcjty.rftoolsdim.dimensions.types.FeatureType;
 import mcjty.rftoolsdim.dimensions.world.GenericWorldProvider;
@@ -67,6 +69,15 @@ public class ForgeEventHandlers {
         ModSetup.channels.get(Side.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.DISPATCHER);
         ModSetup.channels.get(Side.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGETARGS).set(event.getManager().channel().attr(NetworkDispatcher.FML_DISPATCHER).get());
         ModSetup.channels.get(Side.SERVER).writeOutbound(manager.makeDimensionSyncPacket());
+    }
+
+    @SubscribeEvent
+    public void clientDisconnected(FMLNetworkEvent.ClientDisconnectionFromServerEvent event) {
+        Logging.log("Client disconnected from server");
+        RfToolsDimensionManager.cleanupDimensionInformation();
+        RfToolsDimensionManager.clearInstance();
+        KnownDimletConfiguration.init();
+        DimletRandomizer.init();
     }
 
     @SubscribeEvent
