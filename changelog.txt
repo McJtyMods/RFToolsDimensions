@@ -1,4 +1,4 @@
-Upcoming:
+5.71:
 - When disconnecting from a server it was possible that left-over dimension information from that server was still kept in the client which would cause crashes when trying to play single player after that
 
 5.70:
