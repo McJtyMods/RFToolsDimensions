@@ -1,0 +1,10 @@
+{
+  "item.rftoolsdim.xxx": "Xxx",
+  "block.rftoolsdim.xxx": "Xxx",
+  "_comment": "Creative Tabs",
+  "itemGroup.rftoolsdim": "RFTools Dimensions",
+  "_comment": "Messages",
+  "message.rftoolsdim.shiftmessage": "<Press Shift>",
+  "message.rftoolsbase.xxx.header": "Header...",
+  "message.rftoolsbase.xxx.info": "Item: "
+}

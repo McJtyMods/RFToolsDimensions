@@ -1,20 +1,17 @@
 package mcjty.rftoolsdim.setup;
 
 
-import mcjty.rftoolsdim.blocks.ModBlocks;
-import mcjty.rftoolsdim.items.ModItems;
-import net.minecraftforge.client.event.ModelRegistryEvent;
+import mcjty.rftoolsdim.RFToolsDim;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
-@Mod.EventBusSubscriber(Side.CLIENT)
+@Mod.EventBusSubscriber(modid = RFToolsDim.MODID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ClientRegistration {
 
     @SubscribeEvent
-    public static void registerModels(ModelRegistryEvent event) {
-        ModItems.initClient();
-        ModBlocks.initClient();
+    public static void init(FMLClientSetupEvent event) {
+//        GenericGuiContainer.register(ProgrammerSetup.PROGRAMMER_CONTAINER.get(), GuiProgrammer::new);
     }
-
 }
