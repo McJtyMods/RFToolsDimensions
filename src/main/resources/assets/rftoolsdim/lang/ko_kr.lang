@@ -113,7 +113,7 @@ tile.rftoolsdim.volcanicCoreBlock.name=화산 코어
 tile.rftoolsdim.volcanicBlock.name=화산 블록
 tile.rftoolsdim.essence_painter.name=에센스 도장기
 tile.rftoolsdim.fake_water.name=가짜 물
-tile.rftoolsdim.fake_sand.name=가짜 용암
+tile.rftoolsdim.fake_sand.name=가짜 모래
 tile.rftoolsdim.fake_gravel.name=가짜 자갈
 
 tile.rftoolsdim.dimensional_blank_block.name=차원 빈 블록
