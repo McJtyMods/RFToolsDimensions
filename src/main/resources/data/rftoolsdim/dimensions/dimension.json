@@ -1,0 +1,10 @@
+{
+  "features": [
+    "minecraft:igloo",
+    "minecraft:stronghold"
+  ],
+  "baseblocks": [
+    "minecraft:stone",
+    "minecraft:diamond_block"
+  ]
+}

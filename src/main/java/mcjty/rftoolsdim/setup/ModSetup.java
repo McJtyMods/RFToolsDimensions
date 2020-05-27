@@ -41,7 +41,7 @@ public class ModSetup extends DefaultModSetup {
     @SubscribeEvent
     public static void onDimensionRegistry(RegisterDimensionsEvent event) {
         // This should happen on dimension create only
-        ModDimensions.DIMENSION_TYPE = DimensionManager.registerOrGetDimension(ModDimensions.DIMENSION_ID, Registration.DIMENSION.get(), null, true);
+//        ModDimensions.DIMENSION_TYPE = DimensionManager.registerOrGetDimension(ModDimensions.DIMENSION_ID, Registration.DIMENSION.get(), null, true);
     }
 
     @Override

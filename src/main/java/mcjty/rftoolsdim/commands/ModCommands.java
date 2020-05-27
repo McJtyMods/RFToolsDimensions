@@ -12,6 +12,8 @@ public class ModCommands {
         LiteralCommandNode<CommandSource> commands = dispatcher.register(
                 Commands.literal(RFToolsDim.MODID)
                         .then(CommandCreateDim.register(dispatcher))
+                        .then(CommandListDim.register(dispatcher))
+                        .then(CommandTpDim.register(dispatcher))
         );
 
         dispatcher.register(Commands.literal("dim").redirect(commands));
