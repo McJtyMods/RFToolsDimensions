@@ -29,35 +29,57 @@ public class DimensionDescriptor {
         JsonElement root = parser.parse(json);
         JsonObject object = root.getAsJsonObject();
 
-        features.clear();
-        if (object.has("features")) {
-            readFeatures(object.get("features").getAsJsonArray());
-        }
+        readFeatures(object);
+        readBaseBlocks(object);
+    }
 
+    private void readBaseBlocks(JsonObject object) {
         baseBlocks.clear();
         if (object.has("baseblocks")) {
-            readBaseBlocks(object.get("baseblocks").getAsJsonArray());
-        }
-    }
-
-    private void readBaseBlocks(JsonArray array) {
-        for (JsonElement element : array) {
-            if (element.isJsonPrimitive() && element.getAsJsonPrimitive().isString()) {
-                features.add(new ResourceLocation(element.getAsString()));
-            } else {
-                throw new RuntimeException("Illegal base block!");
+            for (JsonElement element : object.get("baseblocks").getAsJsonArray()) {
+                if (element.isJsonPrimitive() && element.getAsJsonPrimitive().isString()) {
+                    features.add(new ResourceLocation(element.getAsString()));
+                } else {
+                    throw new RuntimeException("Illegal base block!");
+                }
             }
         }
     }
 
-    private void readFeatures(JsonArray array) {
-        for (JsonElement element : array) {
-            if (element.isJsonPrimitive() && element.getAsJsonPrimitive().isString()) {
-                features.add(new ResourceLocation(element.getAsString()));
-            } else {
-                throw new RuntimeException("Illegal feature descriptor!");
+    private void readFeatures(JsonObject object) {
+        features.clear();
+        if (object.has("features")) {
+            for (JsonElement element : object.get("features").getAsJsonArray()) {
+                if (element.isJsonPrimitive() && element.getAsJsonPrimitive().isString()) {
+                    features.add(new ResourceLocation(element.getAsString()));
+                } else {
+                    throw new RuntimeException("Illegal feature descriptor!");
+                }
             }
         }
+    }
+
+    public String write() {
+        JsonObject root = new JsonObject();
+        writeFeatures(root);
+        writeBaseBlocks(root);
+        return GSON.toJson(root);
+    }
+
+    private void writeBaseBlocks(JsonObject root) {
+        JsonArray array = new JsonArray();
+        for (ResourceLocation block : baseBlocks) {
+            array.add(block.toString());
+        }
+        root.add("baseblocks", array);
+    }
+
+    private void writeFeatures(JsonObject root) {
+        JsonArray array = new JsonArray();
+        for (ResourceLocation feature : features) {
+            array.add(feature.toString());
+        }
+        root.add("features", array);
     }
 
     public List<ResourceLocation> getFeatures() {
