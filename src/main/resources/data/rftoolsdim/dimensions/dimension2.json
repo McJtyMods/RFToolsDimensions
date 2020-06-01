@@ -1,11 +1,16 @@
 {
   "features": [
-    "minecraft:end_city",
-    "minecraft:chorus_plant"
+    "minecraft:bonus_chest"
+
   ],
   "baseblocks": [
+    "minecraft:stone",
     "minecraft:iron_ore",
+    "minecraft:snow_block",
+    "minecraft:lapis_ore",
     "minecraft:coal_ore",
     "minecraft:gold_ore"
   ]
 }
+
+
