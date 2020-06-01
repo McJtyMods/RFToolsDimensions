@@ -3,12 +3,15 @@ package mcjty.rftoolsdim.setup;
 
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.dimension.RFTModDimension;
+import mcjty.rftoolsdim.features.SpheresFeature;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityType;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.NoFeatureConfig;
 import net.minecraftforge.common.ModDimension;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -25,7 +28,8 @@ public class Registration {
     public static final DeferredRegister<ContainerType<?>> CONTAINERS = new DeferredRegister<>(ForgeRegistries.CONTAINERS, MODID);
     public static final DeferredRegister<SoundEvent> SOUNDS = new DeferredRegister<>(ForgeRegistries.SOUND_EVENTS, MODID);
     public static final DeferredRegister<EntityType<?>> ENTITIES = new DeferredRegister<>(ForgeRegistries.ENTITIES, MODID);
-    private static final DeferredRegister<ModDimension> DIMENSIONS = new DeferredRegister<>(ForgeRegistries.MOD_DIMENSIONS, MODID);
+    public static final DeferredRegister<ModDimension> DIMENSIONS = new DeferredRegister<>(ForgeRegistries.MOD_DIMENSIONS, MODID);
+    public static final DeferredRegister<Feature<?>> FEATURES = new DeferredRegister<>(ForgeRegistries.FEATURES, MODID);
 
     public static void register() {
         BLOCKS.register(FMLJavaModLoadingContext.get().getModEventBus());
@@ -35,11 +39,14 @@ public class Registration {
         SOUNDS.register(FMLJavaModLoadingContext.get().getModEventBus());
         ENTITIES.register(FMLJavaModLoadingContext.get().getModEventBus());
         DIMENSIONS.register(FMLJavaModLoadingContext.get().getModEventBus());
+        FEATURES.register(FMLJavaModLoadingContext.get().getModEventBus());
 
 //        ProcessorSetup.register();
     }
 
     public static final RegistryObject<RFTModDimension> DIMENSION = DIMENSIONS.register("dimension", RFTModDimension::new);
+
+    public static final RegistryObject<SpheresFeature> SPHERES_FEATURE = FEATURES.register("spheres", () -> new SpheresFeature(NoFeatureConfig::deserialize));
 
     public static Item.Properties createStandardProperties() {
         return new Item.Properties().group(RFToolsDim.setup.getTab());

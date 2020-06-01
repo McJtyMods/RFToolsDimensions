@@ -1,7 +1,7 @@
 {
   "features": [
-    "minecraft:bonus_chest"
-
+    "minecraft:bonus_chest",
+    "rftoolsdim:spheres"
   ],
   "baseblocks": [
     "minecraft:stone",

@@ -81,7 +81,6 @@ public class RFTChunkGenerator extends ChunkGenerator<RFTChunkGenerator.Config> 
             try {
                 for (ConfiguredFeature<?, ?> configuredFeature : info.getFeatures()) {
                     sharedseedrandom.setFeatureSeed(i1, i, stage.ordinal());
-                    System.out.println("configuredFeature = " + configuredFeature.feature.getRegistryName());
                     configuredFeature.place(region, this, sharedseedrandom, blockpos);
                 }
             } catch (Exception exception) {
