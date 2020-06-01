@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * This class describes a dimension. It can be used to generate DimensionInformation objects
+ *
  * A biome has:
  *  - Carvers: "cave", "hell_cave", "canyon", "underwater_canyon", "underwater_cave"
  *  - Features (structure, lake, ore, vegetation, ...)
@@ -29,6 +31,10 @@ public class DimensionDescriptor {
         JsonElement root = parser.parse(json);
         JsonObject object = root.getAsJsonObject();
 
+        read(object);
+    }
+
+    public void read(JsonObject object) {
         readFeatures(object);
         readBaseBlocks(object);
     }
@@ -38,7 +44,7 @@ public class DimensionDescriptor {
         if (object.has("baseblocks")) {
             for (JsonElement element : object.get("baseblocks").getAsJsonArray()) {
                 if (element.isJsonPrimitive() && element.getAsJsonPrimitive().isString()) {
-                    features.add(new ResourceLocation(element.getAsString()));
+                    baseBlocks.add(new ResourceLocation(element.getAsString()));
                 } else {
                     throw new RuntimeException("Illegal base block!");
                 }

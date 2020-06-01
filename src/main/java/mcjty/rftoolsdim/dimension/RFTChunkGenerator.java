@@ -12,6 +12,8 @@ import net.minecraft.world.gen.GenerationSettings;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.WorldGenRegion;
 
+import java.util.List;
+
 public class RFTChunkGenerator extends ChunkGenerator<RFTChunkGenerator.Config> {
 
     public RFTChunkGenerator(IWorld world, BiomeProvider biomeProvider) {
@@ -22,6 +24,10 @@ public class RFTChunkGenerator extends ChunkGenerator<RFTChunkGenerator.Config> 
     public void func_225551_a_(WorldGenRegion region, IChunk chunk) {
         BlockState bedrock = Blocks.BEDROCK.getDefaultState();
         BlockState stone = Blocks.STONE.getDefaultState();
+
+        DimensionInformation info = DimensionManager.get(region.getWorld()).getDimensionInformation(region.getWorld());
+        List<BlockState> baseBlocks = info.getBaseBlocks();
+
         ChunkPos chunkpos = chunk.getPos();
 
         BlockPos.Mutable pos = new BlockPos.Mutable();
@@ -41,7 +47,7 @@ public class RFTChunkGenerator extends ChunkGenerator<RFTChunkGenerator.Config> 
                 int realz = chunkpos.z * 16 + z;
                 int height = (int) (65 + Math.sin(realx / 20.0f)*10 + Math.cos(realz / 20.0f)*10);
                 for (int y = 1 ; y < height ; y++) {
-                    chunk.setBlockState(pos.setPos(x, y, z), stone, false);
+                    chunk.setBlockState(pos.setPos(x, y, z), baseBlocks.get(region.getRandom().nextInt(baseBlocks.size())), false);
                 }
             }
         }
