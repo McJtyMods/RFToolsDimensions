@@ -16,10 +16,16 @@ import java.util.List;
  */
 public class DimensionInformation {
 
+    private final TerrainType terrainType;
     private final List<BlockState> baseBlocks = new ArrayList<>();
     private final List<ConfiguredFeature<?, ?>> features = new ArrayList<>();
 
-    private DimensionInformation() {
+    private DimensionInformation(TerrainType terrainType) {
+        this.terrainType = terrainType;
+    }
+
+    public TerrainType getTerrainType() {
+        return terrainType;
     }
 
     public List<BlockState> getBaseBlocks() {
@@ -31,7 +37,7 @@ public class DimensionInformation {
     }
 
     public static DimensionInformation createFrom(DimensionDescriptor descriptor) {
-        DimensionInformation info = new DimensionInformation();
+        DimensionInformation info = new DimensionInformation(descriptor.getTerrainType());
 
         for (ResourceLocation id : descriptor.getBaseBlocks()) {
             Block block = ForgeRegistries.BLOCKS.getValue(id);

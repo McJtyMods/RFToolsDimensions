@@ -18,7 +18,8 @@ public class RFTDimension extends Dimension {
 
     @Override
     public ChunkGenerator<?> createChunkGenerator() {
-        return new RFTChunkGenerator(world, new RFTBiomeProvider());
+        DimensionInformation information = DimensionManager.get(world).getDimensionInformation(world);
+        return information.getTerrainType().getGenerator().apply(world, new RFTBiomeProvider());
     }
 
     @Nullable

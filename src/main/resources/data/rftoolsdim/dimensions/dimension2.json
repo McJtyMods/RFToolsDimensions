@@ -1,4 +1,5 @@
 {
+  "terrain": "normal",
   "features": [
     "minecraft:bonus_chest",
     "rftoolsdim:spheres"

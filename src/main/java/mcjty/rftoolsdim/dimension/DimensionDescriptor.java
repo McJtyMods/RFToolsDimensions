@@ -21,6 +21,7 @@ import java.util.List;
  */
 public class DimensionDescriptor {
 
+    private TerrainType terrainType;
     private List<ResourceLocation> features = new ArrayList<>();
     private List<ResourceLocation> baseBlocks = new ArrayList<>();
 
@@ -35,8 +36,21 @@ public class DimensionDescriptor {
     }
 
     public void read(JsonObject object) {
+        readTerrainType(object);
         readFeatures(object);
         readBaseBlocks(object);
+    }
+
+    private void readTerrainType(JsonObject object) {
+        if (object.has("terrain")) {
+            String name = object.get("terrain").getAsString();
+            terrainType = TerrainType.byName(name);
+            if (terrainType == null) {
+                throw new RuntimeException("Bad terrain type: " + name + "!");
+            }
+        } else {
+            terrainType = TerrainType.NORMAL;
+        }
     }
 
     private void readBaseBlocks(JsonObject object) {
@@ -67,9 +81,14 @@ public class DimensionDescriptor {
 
     public String write() {
         JsonObject root = new JsonObject();
+        writeTerrainType(root);
         writeFeatures(root);
         writeBaseBlocks(root);
         return GSON.toJson(root);
+    }
+
+    private void writeTerrainType(JsonObject root) {
+        root.addProperty("terrain", terrainType.getName());
     }
 
     private void writeBaseBlocks(JsonObject root) {
@@ -94,5 +113,9 @@ public class DimensionDescriptor {
 
     public List<ResourceLocation> getBaseBlocks() {
         return baseBlocks;
+    }
+
+    public TerrainType getTerrainType() {
+        return terrainType;
     }
 }
