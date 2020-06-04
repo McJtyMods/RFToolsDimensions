@@ -1,5 +1,7 @@
-package mcjty.rftoolsdim.dimension;
+package mcjty.rftoolsdim.dimension.types;
 
+import mcjty.rftoolsdim.dimension.biomes.RFTBiomeProvider;
+import mcjty.rftoolsdim.dimension.terraintypes.FlatChunkGenerator;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.Vec3d;
@@ -10,16 +12,15 @@ import net.minecraft.world.gen.ChunkGenerator;
 
 import javax.annotation.Nullable;
 
-public class RFTDimension extends Dimension {
+public class FlatDimension extends Dimension {
 
-    public RFTDimension(World world, DimensionType type) {
+    public FlatDimension(World world, DimensionType type) {
         super(world, type, 0.0f);
     }
 
     @Override
     public ChunkGenerator<?> createChunkGenerator() {
-        DimensionInformation information = DimensionManager.get(world).getDimensionInformation(world);
-        return information.getTerrainType().getGenerator().apply(world, new RFTBiomeProvider());
+        return new FlatChunkGenerator(world, new RFTBiomeProvider());
     }
 
     @Nullable

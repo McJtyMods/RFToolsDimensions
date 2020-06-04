@@ -1,5 +1,6 @@
 package mcjty.rftoolsdim.dimension;
 
+import mcjty.rftoolsdim.dimension.types.FlatDimension;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.Dimension;
 import net.minecraft.world.dimension.DimensionType;
@@ -9,8 +10,14 @@ import java.util.function.BiFunction;
 
 public class RFTModDimension extends ModDimension {
 
+    private final TerrainType terrainType;
+
+    public RFTModDimension(TerrainType terrainType) {
+        this.terrainType = terrainType;
+    }
+
     @Override
     public BiFunction<World, DimensionType, ? extends Dimension> getFactory() {
-        return RFTDimension::new;
+        return (world, type) -> terrainType.getDimensionSupplier().apply(world, type);
     }
 }

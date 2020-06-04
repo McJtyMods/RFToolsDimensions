@@ -3,6 +3,7 @@ package mcjty.rftoolsdim.setup;
 
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.dimension.RFTModDimension;
+import mcjty.rftoolsdim.dimension.TerrainType;
 import mcjty.rftoolsdim.features.SpheresFeature;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityType;
@@ -17,6 +18,11 @@ import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.apache.commons.lang3.tuple.Pair;
+
+import java.util.Arrays;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import static mcjty.rftoolsdim.RFToolsDim.MODID;
 
@@ -44,7 +50,9 @@ public class Registration {
 //        ProcessorSetup.register();
     }
 
-    public static final RegistryObject<RFTModDimension> DIMENSION = DIMENSIONS.register("dimension", RFTModDimension::new);
+    public static final Map<TerrainType, RegistryObject<RFTModDimension>> MOD_DIMENSIONS = Arrays.stream(TerrainType.values())
+            .map(type -> Pair.of(type, DIMENSIONS.register("dimension_" + type.getName(), () -> new RFTModDimension(type))))
+            .collect(Collectors.toMap(Pair::getKey, Pair::getValue));
 
     public static final RegistryObject<SpheresFeature> SPHERES_FEATURE = FEATURES.register("spheres", () -> new SpheresFeature(NoFeatureConfig::deserialize));
 

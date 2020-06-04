@@ -4,6 +4,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import mcjty.lib.worlddata.AbstractWorldData;
 import mcjty.rftoolsdim.RFToolsDim;
+import mcjty.rftoolsdim.dimension.types.FlatDimension;
 import mcjty.rftoolsdim.setup.Registration;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
@@ -56,7 +57,7 @@ public class DimensionManager extends AbstractWorldData<DimensionManager> {
             return "Dimension already exists!";
         }
         DimensionDescriptor descriptor = new DimensionDescriptor();
-        try(InputStream inputstream = RFTDimension.class.getResourceAsStream("/data/rftoolsdim/dimensions/" + filename)) {
+        try(InputStream inputstream = FlatDimension.class.getResourceAsStream("/data/rftoolsdim/dimensions/" + filename)) {
             try(BufferedReader br = new BufferedReader(new InputStreamReader(inputstream, StandardCharsets.UTF_8))) {
                 JsonParser parser = new JsonParser();
                 JsonElement element = parser.parse(br);
@@ -68,7 +69,9 @@ public class DimensionManager extends AbstractWorldData<DimensionManager> {
 
         dimensions.put(name, descriptor);
         markDirty();
-        net.minecraftforge.common.DimensionManager.registerOrGetDimension(new ResourceLocation(RFToolsDim.MODID, name), Registration.DIMENSION.get(), null, true);
+        TerrainType terrainType = descriptor.getTerrainType();
+        RFTModDimension dimension = Registration.MOD_DIMENSIONS.get(terrainType).get();
+        net.minecraftforge.common.DimensionManager.registerOrGetDimension(new ResourceLocation(RFToolsDim.MODID, name), dimension, null, true);
         return null;
     }
 

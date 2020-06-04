@@ -95,6 +95,16 @@ public class FlatChunkGenerator extends ChunkGenerator<FlatChunkGenerator.Config
 
     @Override
     public int func_222529_a(int p_222529_1_, int p_222529_2_, Heightmap.Type heightmapType) {
+        // @todo
+//        DimensionInformation info = DimensionManager.get(world.getWorld()).getDimensionInformation(world);
+//        List<BlockState> baseBlocks = info.getBaseBlocks();
+//
+//        for(int i = ablockstate.length - 1; i >= 0; --i) {
+//            BlockState blockstate = ablockstate[i];
+//            if (blockstate != null && heightmapType.getHeightLimitPredicate().test(blockstate)) {
+//                return i + 1;
+//            }
+//        }
         return 0;
     }
 

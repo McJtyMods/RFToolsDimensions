@@ -1,4 +1,4 @@
-package mcjty.rftoolsdim.dimension;
+package mcjty.rftoolsdim.dimension.biomes;
 
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biomes;
