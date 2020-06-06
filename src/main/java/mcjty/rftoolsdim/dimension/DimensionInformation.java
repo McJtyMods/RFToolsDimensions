@@ -21,6 +21,7 @@ public class DimensionInformation {
     private final List<BlockState> baseBlocks = new ArrayList<>();
     private final List<ConfiguredFeature<?, ?>> features = new ArrayList<>();
     private Biome.TempCategory tempCategory = null;
+    private Biome.Category biomeCategory = null;
 
     private DimensionInformation(TerrainType terrainType) {
         this.terrainType = terrainType;
@@ -40,6 +41,10 @@ public class DimensionInformation {
 
     public Biome.TempCategory getTempCategory() {
         return tempCategory;
+    }
+
+    public Biome.Category getBiomeCategory() {
+        return biomeCategory;
     }
 
     public static DimensionInformation createFrom(DimensionDescriptor descriptor) {
@@ -65,7 +70,9 @@ public class DimensionInformation {
         if (biomeDescriptor.getTemperature() != null) {
             info.tempCategory = Biome.TempCategory.valueOf(biomeDescriptor.getTemperature().toUpperCase());
         }
-
+        if (biomeDescriptor.getCategory() != null) {
+            info.biomeCategory = Biome.Category.valueOf(biomeDescriptor.getCategory().toUpperCase());
+        }
 
         return info;
     }

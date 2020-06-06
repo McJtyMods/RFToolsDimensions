@@ -2,7 +2,7 @@
   "terrain": "normal",
   "biomes": {
     "provider": "default",
-    "temperature": "cold"
+    "category": "ocean"
   },
   "features": [
     "rftoolsdim:spheres"

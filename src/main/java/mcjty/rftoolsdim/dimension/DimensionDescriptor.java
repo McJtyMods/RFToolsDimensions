@@ -47,10 +47,15 @@ public class DimensionDescriptor {
         if (object.has("biomes")) {
             JsonObject biomes = object.get("biomes").getAsJsonObject();
             // @todo read "provider"
+            String temperature = null;
             if (biomes.has("temperature")) {
-                String temperature = biomes.get("temperature").getAsJsonPrimitive().getAsString();
-                biomeDescriptor = new BiomeDescriptor("default", temperature);
+                temperature = biomes.get("temperature").getAsJsonPrimitive().getAsString();
             }
+            String category = null;
+            if (biomes.has("category")) {
+                category = biomes.get("category").getAsJsonPrimitive().getAsString();
+            }
+            biomeDescriptor = new BiomeDescriptor("default", temperature, category);
         }
     }
 
