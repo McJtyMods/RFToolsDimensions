@@ -3,22 +3,21 @@ package mcjty.rftoolsdim.dimension.terraintypes;
 import it.unimi.dsi.fastutil.objects.ObjectList;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.biome.provider.BiomeProvider;
 import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.chunk.IChunk;
 import net.minecraft.world.gen.GenerationSettings;
 import net.minecraft.world.gen.Heightmap;
-import net.minecraft.world.gen.WorldGenRegion;
 import net.minecraft.world.gen.feature.jigsaw.JigsawJunction;
 import net.minecraft.world.gen.feature.structure.AbstractVillagePiece;
 
 import java.util.List;
+import java.util.Random;
 
-public class FlatChunkGenerator extends BaseChunkGenerator<FlatChunkGenerator.Config> {
+public class VoidChunkGenerator extends BaseChunkGenerator<VoidChunkGenerator.Config> {
 
-    public FlatChunkGenerator(IWorld world, BiomeProvider biomeProvider) {
+    public VoidChunkGenerator(IWorld world, BiomeProvider biomeProvider) {
         super(world, biomeProvider, 4, 8, 256, new Config(), true);  // @todo configurable settings?
         this.randomSeed.skip(2620);
     }
@@ -34,19 +33,10 @@ public class FlatChunkGenerator extends BaseChunkGenerator<FlatChunkGenerator.Co
                                     int chunkX, int chunkZ, int x, int z,
                                     List<BlockState> baseBlocks, ChunkPrimer primer,
                                     Heightmap heightmapOceanFloor, Heightmap heightmapWorldSurface) {
-        BlockPos.Mutable pos = new BlockPos.Mutable();
+    }
 
-        for (x = 0; x < 16; x++) {
-            for (z = 0; z < 16; z++) {
-//                int realx = chunkpos.x * 16 + x;
-//                int realz = chunkpos.z * 16 + z;
-                int height = seaLevel+1;
-                for (int y = 1 ; y < height ; y++) {
-                    primer.setBlockState(pos.setPos(x, y, z), baseBlocks.get(world.getRandom().nextInt(baseBlocks.size())), false);
-                }
-            }
-        }
-
+    @Override
+    protected void makeBedrock(IChunk chunkIn, Random rand) {
     }
 
     @Override

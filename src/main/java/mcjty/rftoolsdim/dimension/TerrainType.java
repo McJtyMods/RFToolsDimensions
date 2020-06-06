@@ -2,6 +2,7 @@ package mcjty.rftoolsdim.dimension;
 
 import mcjty.rftoolsdim.dimension.types.FlatDimension;
 import mcjty.rftoolsdim.dimension.types.NormalDimension;
+import mcjty.rftoolsdim.dimension.types.VoidDimension;
 import mcjty.rftoolsdim.dimension.types.WavesDimension;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.Dimension;
@@ -14,6 +15,7 @@ import java.util.function.BiFunction;
 public enum TerrainType {
     FLAT("flat", FlatDimension::new),
     WAVING("waving", WavesDimension::new),
+    VOID("void", VoidDimension::new),
     NORMAL("normal", NormalDimension::new);
 
     private final String name;

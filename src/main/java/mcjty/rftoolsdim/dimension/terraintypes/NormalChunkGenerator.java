@@ -1,38 +1,24 @@
 package mcjty.rftoolsdim.dimension.terraintypes;
 
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import it.unimi.dsi.fastutil.objects.ObjectList;
-import it.unimi.dsi.fastutil.objects.ObjectListIterator;
-import mcjty.rftoolsdim.dimension.DimensionInformation;
-import mcjty.rftoolsdim.dimension.DimensionManager;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.EntityClassification;
 import net.minecraft.util.SharedSeedRandom;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.village.VillageSiege;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.WorldType;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.provider.BiomeProvider;
 import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.chunk.ChunkSection;
-import net.minecraft.world.chunk.IChunk;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.OctavesNoiseGenerator;
 import net.minecraft.world.gen.OverworldGenSettings;
 import net.minecraft.world.gen.WorldGenRegion;
-import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.jigsaw.JigsawJunction;
 import net.minecraft.world.gen.feature.structure.AbstractVillagePiece;
-import net.minecraft.world.server.ServerWorld;
-import net.minecraft.world.spawner.CatSpawner;
-import net.minecraft.world.spawner.PatrolSpawner;
-import net.minecraft.world.spawner.PhantomSpawner;
 import net.minecraft.world.spawner.WorldEntitySpawner;
 
 import java.util.List;
@@ -50,10 +36,6 @@ public class NormalChunkGenerator extends BaseChunkGenerator<OverworldGenSetting
 
     private final OctavesNoiseGenerator depthNoise;
     private final boolean isAmplified;
-    private final PhantomSpawner phantomSpawner = new PhantomSpawner();
-    private final PatrolSpawner patrolSpawner = new PatrolSpawner();
-    private final CatSpawner catSpawner = new CatSpawner();
-    private final VillageSiege villageSiege = new VillageSiege();
 
     public NormalChunkGenerator(IWorld worldIn, BiomeProvider provider) {
         super(worldIn, provider, 4, 8, 256, new OverworldGenSettings(), true);  // @todo configurable settings?
@@ -84,32 +66,13 @@ public class NormalChunkGenerator extends BaseChunkGenerator<OverworldGenSetting
     }
 
     @Override
-    protected double func_222545_a(double x, double y, int z) {
-        double d0 = 8.5D;
-        double d1 = (z - (8.5D + x * 8.5D / 8.0D * 4.0D)) * 12.0D * 128.0D / 256.0D / y;
-        if (d1 < 0.0D) {
-            d1 *= 4.0D;
-        }
-        return d1;
-    }
+    protected void makeBaseInternal(IWorld worldIn, int seaLevel,
+                                    ObjectList<AbstractVillagePiece> villagePieces, ObjectList<JigsawJunction> jigsawJunctions,
+                                    int chunkX, int chunkZ, int x, int z,
+                                    List<BlockState> baseBlocks, ChunkPrimer primer,
+                                    Heightmap heightmapOceanFloor, Heightmap heightmapWorldSurface) {
 
-    private static final BlockState AIR = Blocks.AIR.getDefaultState();
-
-    @Override
-    public void makeBase(IWorld worldIn, IChunk chunkIn) {
-        int i = this.getSeaLevel();
-        ObjectList<AbstractVillagePiece> villagePieces = new ObjectArrayList<>(10);
-        ObjectList<JigsawJunction> jigsawJunctions = new ObjectArrayList<>(32);
-        ChunkPos chunkpos = chunkIn.getPos();
-        int chunkX = chunkpos.x;
-        int chunkZ = chunkpos.z;
-        int x = chunkX << 4;
-        int z = chunkZ << 4;
-
-        DimensionInformation info = DimensionManager.get(worldIn.getWorld()).getDimensionInformation(worldIn.getWorld());
-        List<BlockState> baseBlocks = info.getBaseBlocks();
-
-        handleIllagerStructures(worldIn, chunkIn, villagePieces, jigsawJunctions, chunkpos, x, z);
+        BlockPos.Mutable mutablePos = new BlockPos.Mutable();
 
         double[][][] adouble = new double[2][this.noiseSizeZ + 1][this.noiseSizeY + 1];
         for (int nz = 0; nz < this.noiseSizeZ + 1; ++nz) {
@@ -118,13 +81,6 @@ public class NormalChunkGenerator extends BaseChunkGenerator<OverworldGenSetting
             adouble[1][nz] = new double[this.noiseSizeY + 1];
         }
 
-        ChunkPrimer primer = (ChunkPrimer) chunkIn;
-        Heightmap heightmapOceanFloor = primer.getHeightmap(Heightmap.Type.OCEAN_FLOOR_WG);
-        Heightmap heightmapWorldSurface = primer.getHeightmap(Heightmap.Type.WORLD_SURFACE_WG);
-        BlockPos.Mutable mutablePos = new BlockPos.Mutable();
-
-        ObjectListIterator<AbstractVillagePiece> villagePieceIterator = villagePieces.iterator();
-        ObjectListIterator<JigsawJunction> jigsawJunctionIterator = jigsawJunctions.iterator();
 
         for (int nx = 0; nx < this.noiseSizeX; ++nx) {
             for (int nz = 0; nz < this.noiseSizeZ + 1; ++nz) {
@@ -175,29 +131,12 @@ public class NormalChunkGenerator extends BaseChunkGenerator<OverworldGenSetting
                                 double noise = MathHelper.clamp(MathHelper.lerp(d13, d11, d12) / 200.0D, -1.0D, 1.0D);
 
                                 noise = noise / 2.0D - noise * noise * noise / 24.0D;
-                                while (villagePieceIterator.hasNext()) {
-                                    AbstractVillagePiece piece = villagePieceIterator.next();
-                                    MutableBoundingBox box = piece.getBoundingBox();
-                                    int xx = Math.max(0, Math.max(box.minX - adjustedX, adjustedX - box.maxX));
-                                    int yy = adjustedY - (box.minY + piece.getGroundLevelDelta());
-                                    int zz = Math.max(0, Math.max(box.minZ - adjustedZ, adjustedZ - box.maxZ));
-                                    noise += mysteriousFunction(xx, yy, zz) * 0.8D;
-                                }
-                                villagePieceIterator.back(villagePieces.size());
-
-                                while (jigsawJunctionIterator.hasNext()) {
-                                    JigsawJunction junction = jigsawJunctionIterator.next();
-                                    int xx = adjustedX - junction.getSourceX();
-                                    int yy = adjustedY - junction.getSourceGroundY();
-                                    int zz = adjustedZ - junction.getSourceZ();
-                                    noise += mysteriousFunction(xx, yy, zz) * 0.4D;
-                                }
-                                jigsawJunctionIterator.back(jigsawJunctions.size());
+                                noise = adjustNoise(villagePieces, jigsawJunctions, adjustedX, adjustedY, adjustedZ, noise);
 
                                 BlockState blockstate;
                                 if (noise > 0.0D) {
                                     blockstate = baseBlocks.get(worldIn.getRandom().nextInt(baseBlocks.size()));
-                                } else if (adjustedY < i) {
+                                } else if (adjustedY < seaLevel) {
                                     blockstate = this.defaultFluid;
                                 } else {
                                     blockstate = AIR;
@@ -226,6 +165,8 @@ public class NormalChunkGenerator extends BaseChunkGenerator<OverworldGenSetting
             adouble[1] = adouble1;
         }
     }
+
+
 
     @Override
     protected double[] getBiomeNoiseColumn(int noiseX, int noiseZ) {
@@ -285,37 +226,6 @@ public class NormalChunkGenerator extends BaseChunkGenerator<OverworldGenSetting
         }
 
         return dn;
-    }
-
-    @Override
-    public List<Biome.SpawnListEntry> getPossibleCreatures(EntityClassification creatureType, BlockPos pos) {
-        if (Feature.SWAMP_HUT.func_202383_b(this.world, pos)) {
-            if (creatureType == EntityClassification.MONSTER) {
-                return Feature.SWAMP_HUT.getSpawnList();
-            }
-
-            if (creatureType == EntityClassification.CREATURE) {
-                return Feature.SWAMP_HUT.getCreatureSpawnList();
-            }
-        } else if (creatureType == EntityClassification.MONSTER) {
-            if (Feature.PILLAGER_OUTPOST.isPositionInStructure(this.world, pos)) {
-                return Feature.PILLAGER_OUTPOST.getSpawnList();
-            }
-
-            if (Feature.OCEAN_MONUMENT.isPositionInStructure(this.world, pos)) {
-                return Feature.OCEAN_MONUMENT.getSpawnList();
-            }
-        }
-
-        return super.getPossibleCreatures(creatureType, pos);
-    }
-
-    @Override
-    public void spawnMobs(ServerWorld worldIn, boolean spawnHostileMobs, boolean spawnPeacefulMobs) {
-        this.phantomSpawner.tick(worldIn, spawnHostileMobs, spawnPeacefulMobs);
-        this.patrolSpawner.tick(worldIn, spawnHostileMobs, spawnPeacefulMobs);
-        this.catSpawner.tick(worldIn, spawnHostileMobs, spawnPeacefulMobs);
-        this.villageSiege.func_225477_a(worldIn, spawnHostileMobs, spawnPeacefulMobs);
     }
 
     @Override

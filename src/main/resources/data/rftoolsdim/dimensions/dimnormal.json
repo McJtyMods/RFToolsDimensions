@@ -1,0 +1,17 @@
+{
+  "terrain": "normal",
+  "features": [
+    "minecraft:bonus_chest",
+    "rftoolsdim:spheres"
+  ],
+  "baseblocks": [
+    "minecraft:stone",
+    "minecraft:iron_ore",
+    "minecraft:snow_block",
+    "minecraft:lapis_ore",
+    "minecraft:coal_ore",
+    "minecraft:gold_ore"
+  ]
+}
+
+

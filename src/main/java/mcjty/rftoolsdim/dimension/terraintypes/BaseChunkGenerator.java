@@ -1,18 +1,30 @@
 package mcjty.rftoolsdim.dimension.terraintypes;
 
 import it.unimi.dsi.fastutil.longs.LongIterator;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import it.unimi.dsi.fastutil.objects.ObjectList;
+import mcjty.rftoolsdim.dimension.DimensionInformation;
+import mcjty.rftoolsdim.dimension.DimensionManager;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.crash.CrashReport;
+import net.minecraft.crash.ReportedException;
+import net.minecraft.entity.EntityClassification;
 import net.minecraft.util.SharedSeedRandom;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.village.VillageSiege;
 import net.minecraft.world.IWorld;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.provider.BiomeProvider;
+import net.minecraft.world.chunk.ChunkPrimer;
+import net.minecraft.world.chunk.ChunkSection;
 import net.minecraft.world.chunk.IChunk;
 import net.minecraft.world.gen.*;
+import net.minecraft.world.gen.feature.ConfiguredFeature;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.jigsaw.JigsawJunction;
 import net.minecraft.world.gen.feature.jigsaw.JigsawPattern;
@@ -20,7 +32,12 @@ import net.minecraft.world.gen.feature.structure.AbstractVillagePiece;
 import net.minecraft.world.gen.feature.structure.Structure;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraft.world.gen.feature.structure.StructureStart;
+import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.spawner.CatSpawner;
+import net.minecraft.world.spawner.PatrolSpawner;
+import net.minecraft.world.spawner.PhantomSpawner;
 
+import java.util.List;
 import java.util.Random;
 
 public abstract class BaseChunkGenerator<T extends GenerationSettings> extends ChunkGenerator<T> {
@@ -35,6 +52,11 @@ public abstract class BaseChunkGenerator<T extends GenerationSettings> extends C
         }
 
     });
+
+    private final PhantomSpawner phantomSpawner = new PhantomSpawner();
+    private final PatrolSpawner patrolSpawner = new PatrolSpawner();
+    private final CatSpawner catSpawner = new CatSpawner();
+    private final VillageSiege villageSiege = new VillageSiege();
 
     protected final int verticalNoiseGranularity;
     protected final int horizontalNoiseGranularity;
@@ -65,31 +87,31 @@ public abstract class BaseChunkGenerator<T extends GenerationSettings> extends C
         this.surfaceDepthNoise = usePerlin ? new PerlinNoiseGenerator(this.randomSeed, 3, 0) : new OctavesNoiseGenerator(this.randomSeed, 3, 0);
     }
 
-    private double func_222552_a(int p_222552_1_, int p_222552_2_, int p_222552_3_, double p_222552_4_, double p_222552_6_, double p_222552_8_, double p_222552_10_) {
+    private double generateNoiseHelper(int noiseX, int noiseY, int noiseZ, double p_222552_4_, double p_222552_6_, double p_222552_8_, double p_222552_10_) {
         double d0 = 0.0D;
         double d1 = 0.0D;
         double d2 = 0.0D;
         double d3 = 1.0D;
 
         for (int i = 0; i < 16; ++i) {
-            double d4 = OctavesNoiseGenerator.maintainPrecision((double) p_222552_1_ * p_222552_4_ * d3);
-            double d5 = OctavesNoiseGenerator.maintainPrecision((double) p_222552_2_ * p_222552_6_ * d3);
-            double d6 = OctavesNoiseGenerator.maintainPrecision((double) p_222552_3_ * p_222552_4_ * d3);
+            double d4 = OctavesNoiseGenerator.maintainPrecision(noiseX * p_222552_4_ * d3);
+            double d5 = OctavesNoiseGenerator.maintainPrecision(noiseY * p_222552_6_ * d3);
+            double d6 = OctavesNoiseGenerator.maintainPrecision(noiseZ * p_222552_4_ * d3);
             double d7 = p_222552_6_ * d3;
             ImprovedNoiseGenerator improvednoisegenerator = this.field_222568_o.getOctave(i);
             if (improvednoisegenerator != null) {
-                d0 += improvednoisegenerator.func_215456_a(d4, d5, d6, d7, (double) p_222552_2_ * d7) / d3;
+                d0 += improvednoisegenerator.func_215456_a(d4, d5, d6, d7, noiseY * d7) / d3;
             }
 
             ImprovedNoiseGenerator improvednoisegenerator1 = this.field_222569_p.getOctave(i);
             if (improvednoisegenerator1 != null) {
-                d1 += improvednoisegenerator1.func_215456_a(d4, d5, d6, d7, (double) p_222552_2_ * d7) / d3;
+                d1 += improvednoisegenerator1.func_215456_a(d4, d5, d6, d7, noiseY * d7) / d3;
             }
 
             if (i < 8) {
                 ImprovedNoiseGenerator improvednoisegenerator2 = this.field_222570_q.getOctave(i);
                 if (improvednoisegenerator2 != null) {
-                    d2 += improvednoisegenerator2.func_215456_a(OctavesNoiseGenerator.maintainPrecision((double) p_222552_1_ * p_222552_8_ * d3), OctavesNoiseGenerator.maintainPrecision((double) p_222552_2_ * p_222552_10_ * d3), OctavesNoiseGenerator.maintainPrecision((double) p_222552_3_ * p_222552_8_ * d3), p_222552_10_ * d3, (double) p_222552_2_ * p_222552_10_ * d3) / d3;
+                    d2 += improvednoisegenerator2.func_215456_a(OctavesNoiseGenerator.maintainPrecision(noiseX * p_222552_8_ * d3), OctavesNoiseGenerator.maintainPrecision(noiseY * p_222552_10_ * d3), OctavesNoiseGenerator.maintainPrecision(noiseZ * p_222552_8_ * d3), p_222552_10_ * d3, noiseY * p_222552_10_ * d3) / d3;
                 }
             }
 
@@ -113,12 +135,12 @@ public abstract class BaseChunkGenerator<T extends GenerationSettings> extends C
         double d3 = this.func_222553_h();
 
         for (int i = 0; i < this.noiseSizeY(); ++i) {
-            double d4 = this.func_222552_a(noiseX, i, noiseZ, p_222546_4_, p_222546_6_, p_222546_8_, p_222546_10_);
+            double d4 = this.generateNoiseHelper(noiseX, i, noiseZ, p_222546_4_, p_222546_6_, p_222546_8_, p_222546_10_);
             d4 = d4 - this.func_222545_a(d0, d1, i);
-            if ((double) i > d2) {
-                d4 = MathHelper.clampedLerp(d4, (double) p_222546_13_, ((double) i - d2) / (double) p_222546_12_);
-            } else if ((double) i < d3) {
-                d4 = MathHelper.clampedLerp(d4, -30.0D, (d3 - (double) i) / (d3 - 1.0D));
+            if (i > d2) {
+                d4 = MathHelper.clampedLerp(d4, p_222546_13_, (i - d2) / p_222546_12_);
+            } else if (i < d3) {
+                d4 = MathHelper.clampedLerp(d4, -30.0D, (d3 - i) / (d3 - 1.0D));
             }
 
             noiseColumn[i] = d4;
@@ -160,12 +182,68 @@ public abstract class BaseChunkGenerator<T extends GenerationSettings> extends C
         }
     }
 
+    protected static final BlockState AIR = Blocks.AIR.getDefaultState();
+
+    @Override
+    public void makeBase(IWorld worldIn, IChunk chunkIn) {
+        int seaLevel = this.getSeaLevel();
+        ObjectList<AbstractVillagePiece> villagePieces = new ObjectArrayList<>(10);
+        ObjectList<JigsawJunction> jigsawJunctions = new ObjectArrayList<>(32);
+        ChunkPos chunkpos = chunkIn.getPos();
+        int chunkX = chunkpos.x;
+        int chunkZ = chunkpos.z;
+        int x = chunkX << 4;
+        int z = chunkZ << 4;
+
+        DimensionInformation info = DimensionManager.get(worldIn.getWorld()).getDimensionInformation(worldIn.getWorld());
+        List<BlockState> baseBlocks = info.getBaseBlocks();
+
+        handleIllagerStructures(worldIn, chunkIn, villagePieces, jigsawJunctions, chunkpos, x, z);
+
+        ChunkPrimer primer = (ChunkPrimer) chunkIn;
+        Heightmap heightmapOceanFloor = primer.getHeightmap(Heightmap.Type.OCEAN_FLOOR_WG);
+        Heightmap heightmapWorldSurface = primer.getHeightmap(Heightmap.Type.WORLD_SURFACE_WG);
+
+        makeBaseInternal(worldIn, seaLevel, villagePieces, jigsawJunctions, chunkX, chunkZ, x, z, baseBlocks, primer, heightmapOceanFloor, heightmapWorldSurface);
+    }
+
+    protected abstract void makeBaseInternal(IWorld worldIn, int seaLevel,
+                                    ObjectList<AbstractVillagePiece> villagePieces, ObjectList<JigsawJunction> jigsawJunctions,
+                                    int chunkX, int chunkZ, int x, int z,
+                                    List<BlockState> baseBlocks, ChunkPrimer primer,
+                                    Heightmap heightmapOceanFloor, Heightmap heightmapWorldSurface);
+
+    protected double adjustNoise(ObjectList<AbstractVillagePiece> villagePieces, ObjectList<JigsawJunction> jigsawJunctions, int adjustedX, int adjustedY, int adjustedZ, double noise) {
+        for (AbstractVillagePiece piece : villagePieces) {
+            MutableBoundingBox box = piece.getBoundingBox();
+            int xx = Math.max(0, Math.max(box.minX - adjustedX, adjustedX - box.maxX));
+            int yy = adjustedY - (box.minY + piece.getGroundLevelDelta());
+            int zz = Math.max(0, Math.max(box.minZ - adjustedZ, adjustedZ - box.maxZ));
+            noise += mysteriousFunction(xx, yy, zz) * 0.8D;
+        }
+
+        for (JigsawJunction junction : jigsawJunctions) {
+            int xx = adjustedX - junction.getSourceX();
+            int yy = adjustedY - junction.getSourceGroundY();
+            int zz = adjustedZ - junction.getSourceZ();
+            noise += mysteriousFunction(xx, yy, zz) * 0.4D;
+        }
+        return noise;
+    }
+
     protected abstract double[] getBiomeNoiseColumn(int noiseX, int noiseZ);
 
-    protected abstract double func_222545_a(double p_222545_1_, double p_222545_3_, int p_222545_5_);
+    protected double func_222545_a(double x, double y, int z) {
+        double d0 = 8.5D;
+        double d1 = (z - (8.5D + x * 8.5D / 8.0D * 4.0D)) * 12.0D * 128.0D / 256.0D / y;
+        if (d1 < 0.0D) {
+            d1 *= 4.0D;
+        }
+        return d1;
+    }
 
     protected double func_222551_g() {
-        return (double) (this.noiseSizeY() - 4);
+        return (this.noiseSizeY() - 4);
     }
 
     protected double func_222553_h() {
@@ -178,8 +256,8 @@ public abstract class BaseChunkGenerator<T extends GenerationSettings> extends C
         int j = Math.floorDiv(p_222529_2_, this.horizontalNoiseGranularity);
         int k = Math.floorMod(p_222529_1_, this.horizontalNoiseGranularity);
         int l = Math.floorMod(p_222529_2_, this.horizontalNoiseGranularity);
-        double d0 = (double) k / (double) this.horizontalNoiseGranularity;
-        double d1 = (double) l / (double) this.horizontalNoiseGranularity;
+        double d0 = (double) k / this.horizontalNoiseGranularity;
+        double d1 = (double) l / this.horizontalNoiseGranularity;
         double[][] adouble = new double[][]{this.func_222547_b(i, j), this.func_222547_b(i, j + 1), this.func_222547_b(i + 1, j), this.func_222547_b(i + 1, j + 1)};
         int i1 = this.getSeaLevel();
 
@@ -194,7 +272,7 @@ public abstract class BaseChunkGenerator<T extends GenerationSettings> extends C
             double d9 = adouble[3][j1 + 1];
 
             for (int k1 = this.verticalNoiseGranularity - 1; k1 >= 0; --k1) {
-                double d10 = (double) k1 / (double) this.verticalNoiseGranularity;
+                double d10 = (double) k1 / this.verticalNoiseGranularity;
                 double d11 = MathHelper.lerp3(d10, d0, d1, d2, d6, d4, d8, d3, d7, d5, d9);
                 int l1 = j1 * this.verticalNoiseGranularity + k1;
                 if (d11 > 0.0D || l1 < i1) {
@@ -221,44 +299,45 @@ public abstract class BaseChunkGenerator<T extends GenerationSettings> extends C
         return this.noiseSizeY + 1;
     }
 
-    public void func_225551_a_(WorldGenRegion p_225551_1_, IChunk p_225551_2_) {
-        ChunkPos chunkpos = p_225551_2_.getPos();
-        int i = chunkpos.x;
-        int j = chunkpos.z;
+    @Override
+    public void func_225551_a_(WorldGenRegion region, IChunk chunk) {
+        ChunkPos chunkpos = chunk.getPos();
+        int chunkX = chunkpos.x;
+        int chunkZ = chunkpos.z;
         SharedSeedRandom sharedseedrandom = new SharedSeedRandom();
-        sharedseedrandom.setBaseChunkSeed(i, j);
-        ChunkPos chunkpos1 = p_225551_2_.getPos();
-        int k = chunkpos1.getXStart();
-        int l = chunkpos1.getZStart();
+        sharedseedrandom.setBaseChunkSeed(chunkX, chunkZ);
+        ChunkPos chunkpos1 = chunk.getPos();
+        int x = chunkpos1.getXStart();
+        int z = chunkpos1.getZStart();
         double d0 = 0.0625D;
-        BlockPos.Mutable blockpos$mutable = new BlockPos.Mutable();
+        BlockPos.Mutable mutablePos = new BlockPos.Mutable();
 
-        for (int i1 = 0; i1 < 16; ++i1) {
-            for (int j1 = 0; j1 < 16; ++j1) {
-                int k1 = k + i1;
-                int l1 = l + j1;
-                int i2 = p_225551_2_.getTopBlockY(Heightmap.Type.WORLD_SURFACE_WG, i1, j1) + 1;
-                double d1 = this.surfaceDepthNoise.noiseAt((double) k1 * 0.0625D, (double) l1 * 0.0625D, 0.0625D, (double) i1 * 0.0625D) * 15.0D;
-                p_225551_1_.getBiome(blockpos$mutable.setPos(k + i1, i2, l + j1)).buildSurface(sharedseedrandom, p_225551_2_, k1, l1, i2, d1, this.getSettings().getDefaultBlock(), this.getSettings().getDefaultFluid(), this.getSeaLevel(), this.world.getSeed());
+        for (int cx = 0; cx < 16; ++cx) {
+            for (int cz = 0; cz < 16; ++cz) {
+                int xx = x + cx;
+                int zz = z + cz;
+                int yy = chunk.getTopBlockY(Heightmap.Type.WORLD_SURFACE_WG, cx, cz) + 1;
+                double d1 = this.surfaceDepthNoise.noiseAt(xx * 0.0625D, zz * 0.0625D, 0.0625D, cx * 0.0625D) * 15.0D;
+                region.getBiome(mutablePos.setPos(x + cx, yy, z + cz)).buildSurface(sharedseedrandom, chunk, xx, zz, yy, d1, this.getSettings().getDefaultBlock(), this.getSettings().getDefaultFluid(), this.getSeaLevel(), this.world.getSeed());
             }
         }
 
-        this.makeBedrock(p_225551_2_, sharedseedrandom);
+        this.makeBedrock(chunk, sharedseedrandom);
     }
 
     protected void makeBedrock(IChunk chunkIn, Random rand) {
-        BlockPos.Mutable blockpos$mutable = new BlockPos.Mutable();
-        int i = chunkIn.getPos().getXStart();
-        int j = chunkIn.getPos().getZStart();
+        BlockPos.Mutable mutablePos = new BlockPos.Mutable();
+        int x = chunkIn.getPos().getXStart();
+        int z = chunkIn.getPos().getZStart();
         T t = this.getSettings();
         int k = t.getBedrockFloorHeight();
         int l = t.getBedrockRoofHeight();
 
-        for (BlockPos blockpos : BlockPos.getAllInBoxMutable(i, 0, j, i + 15, 0, j + 15)) {
+        for (BlockPos blockpos : BlockPos.getAllInBoxMutable(x, 0, z, x + 15, 0, z + 15)) {
             if (l > 0) {
                 for (int i1 = l; i1 >= l - 4; --i1) {
                     if (i1 >= l - rand.nextInt(5)) {
-                        chunkIn.setBlockState(blockpos$mutable.setPos(blockpos.getX(), i1, blockpos.getZ()), Blocks.BEDROCK.getDefaultState(), false);
+                        chunkIn.setBlockState(mutablePos.setPos(blockpos.getX(), i1, blockpos.getZ()), Blocks.BEDROCK.getDefaultState(), false);
                     }
                 }
             }
@@ -266,12 +345,71 @@ public abstract class BaseChunkGenerator<T extends GenerationSettings> extends C
             if (k < 256) {
                 for (int j1 = k + 4; j1 >= k; --j1) {
                     if (j1 <= k + rand.nextInt(5)) {
-                        chunkIn.setBlockState(blockpos$mutable.setPos(blockpos.getX(), j1, blockpos.getZ()), Blocks.BEDROCK.getDefaultState(), false);
+                        chunkIn.setBlockState(mutablePos.setPos(blockpos.getX(), j1, blockpos.getZ()), Blocks.BEDROCK.getDefaultState(), false);
                     }
                 }
             }
         }
 
+    }
+
+    @Override
+    public void decorate(WorldGenRegion region) {
+        super.decorate(region);
+
+        int chunkX = region.getMainChunkX() * 16;
+        int chunkZ = region.getMainChunkZ() * 16;
+        BlockPos blockpos = new BlockPos(chunkX, 0, chunkZ);
+        SharedSeedRandom sharedseedrandom = new SharedSeedRandom();
+        long i1 = sharedseedrandom.setDecorationSeed(region.getSeed(), chunkX, chunkZ);
+
+        DimensionInformation info = DimensionManager.get(region.getWorld()).getDimensionInformation(region.getWorld());
+        int i = 0;
+        for(GenerationStage.Decoration stage : GenerationStage.Decoration.values()) {
+            try {
+                for (ConfiguredFeature<?, ?> configuredFeature : info.getFeatures()) {
+                    sharedseedrandom.setFeatureSeed(i1, i, stage.ordinal());
+                    configuredFeature.place(region, this, sharedseedrandom, blockpos);
+                }
+            } catch (Exception exception) {
+                CrashReport crashreport = CrashReport.makeCrashReport(exception, "Biome decoration");
+                crashreport.makeCategory("Generation").addDetail("CenterX", chunkX).addDetail("CenterZ", chunkZ).addDetail("Step", stage).addDetail("Seed", i1);
+                throw new ReportedException(crashreport);
+            }
+            ++i;
+        }
+    }
+
+
+    @Override
+    public void spawnMobs(ServerWorld worldIn, boolean spawnHostileMobs, boolean spawnPeacefulMobs) {
+        this.phantomSpawner.tick(worldIn, spawnHostileMobs, spawnPeacefulMobs);
+        this.patrolSpawner.tick(worldIn, spawnHostileMobs, spawnPeacefulMobs);
+        this.catSpawner.tick(worldIn, spawnHostileMobs, spawnPeacefulMobs);
+        this.villageSiege.func_225477_a(worldIn, spawnHostileMobs, spawnPeacefulMobs);
+    }
+
+    @Override
+    public List<Biome.SpawnListEntry> getPossibleCreatures(EntityClassification creatureType, BlockPos pos) {
+        if (Feature.SWAMP_HUT.func_202383_b(this.world, pos)) {
+            if (creatureType == EntityClassification.MONSTER) {
+                return Feature.SWAMP_HUT.getSpawnList();
+            }
+
+            if (creatureType == EntityClassification.CREATURE) {
+                return Feature.SWAMP_HUT.getCreatureSpawnList();
+            }
+        } else if (creatureType == EntityClassification.MONSTER) {
+            if (Feature.PILLAGER_OUTPOST.isPositionInStructure(this.world, pos)) {
+                return Feature.PILLAGER_OUTPOST.getSpawnList();
+            }
+
+            if (Feature.OCEAN_MONUMENT.isPositionInStructure(this.world, pos)) {
+                return Feature.OCEAN_MONUMENT.getSpawnList();
+            }
+        }
+
+        return super.getPossibleCreatures(creatureType, pos);
     }
 
     public static double mysteriousFunction(int x, int y, int z) {
@@ -289,9 +427,9 @@ public abstract class BaseChunkGenerator<T extends GenerationSettings> extends C
         }
     }
 
-    private static double func_222554_b(int p_222554_0_, int p_222554_1_, int p_222554_2_) {
-        double d0 = (double) (p_222554_0_ * p_222554_0_ + p_222554_2_ * p_222554_2_);
-        double d1 = (double) p_222554_1_ + 0.5D;
+    private static double func_222554_b(int x, int y, int z) {
+        double d0 = (x * x + z * z);
+        double d1 = y + 0.5D;
         double d2 = d1 * d1;
         double d3 = Math.pow(Math.E, -(d2 / 16.0D + d0 / 16.0D));
         double d4 = -d1 * MathHelper.fastInvSqrt(d2 / 2.0D + d0 / 2.0D) / 2.0D;
