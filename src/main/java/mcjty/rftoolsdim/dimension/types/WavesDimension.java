@@ -20,7 +20,7 @@ public class WavesDimension extends Dimension {
 
     @Override
     public ChunkGenerator<?> createChunkGenerator() {
-        return new WavesChunkGenerator(world, new RFTBiomeProvider());
+        return new WavesChunkGenerator(world, new RFTBiomeProvider(world));
     }
 
     @Nullable

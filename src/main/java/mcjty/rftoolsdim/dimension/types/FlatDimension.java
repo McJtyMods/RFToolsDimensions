@@ -20,7 +20,7 @@ public class FlatDimension extends Dimension {
 
     @Override
     public ChunkGenerator<?> createChunkGenerator() {
-        return new FlatChunkGenerator(world, new RFTBiomeProvider());
+        return new FlatChunkGenerator(world, new RFTBiomeProvider(world));
     }
 
     @Nullable

@@ -21,7 +21,7 @@ public class VoidDimension extends Dimension {
 
     @Override
     public ChunkGenerator<?> createChunkGenerator() {
-        return new VoidChunkGenerator(world, new RFTBiomeProvider());
+        return new VoidChunkGenerator(world, new RFTBiomeProvider(world));
     }
 
     @Nullable

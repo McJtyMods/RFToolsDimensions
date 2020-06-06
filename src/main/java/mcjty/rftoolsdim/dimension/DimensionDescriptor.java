@@ -24,6 +24,7 @@ public class DimensionDescriptor {
     private TerrainType terrainType;
     private List<ResourceLocation> features = new ArrayList<>();
     private List<ResourceLocation> baseBlocks = new ArrayList<>();
+    private BiomeDescriptor biomeDescriptor = BiomeDescriptor.DEFAULT;
 
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
 
@@ -39,6 +40,18 @@ public class DimensionDescriptor {
         readTerrainType(object);
         readFeatures(object);
         readBaseBlocks(object);
+        readBiomes(object);
+    }
+
+    private void readBiomes(JsonObject object) {
+        if (object.has("biomes")) {
+            JsonObject biomes = object.get("biomes").getAsJsonObject();
+            // @todo read "provider"
+            if (biomes.has("temperature")) {
+                String temperature = biomes.get("temperature").getAsJsonPrimitive().getAsString();
+                biomeDescriptor = new BiomeDescriptor("default", temperature);
+            }
+        }
     }
 
     private void readTerrainType(JsonObject object) {
@@ -84,7 +97,18 @@ public class DimensionDescriptor {
         writeTerrainType(root);
         writeFeatures(root);
         writeBaseBlocks(root);
+        writeBiomes(root);
         return GSON.toJson(root);
+    }
+
+    private void writeBiomes(JsonObject root) {
+        JsonObject biomes = new JsonObject();
+        // @todo "provider"
+        if (biomeDescriptor.getTemperature() != null) {
+            biomes.addProperty("temperature", biomeDescriptor.getTemperature());
+        }
+
+        root.add("biomes", biomes);
     }
 
     private void writeTerrainType(JsonObject root) {
@@ -117,5 +141,9 @@ public class DimensionDescriptor {
 
     public TerrainType getTerrainType() {
         return terrainType;
+    }
+
+    public BiomeDescriptor getBiomeDescriptor() {
+        return biomeDescriptor;
     }
 }

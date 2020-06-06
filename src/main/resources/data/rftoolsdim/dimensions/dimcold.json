@@ -2,12 +2,7 @@
   "terrain": "normal",
   "biomes": {
     "provider": "default",
-    "biomes": [
-      "minecraft:plains",
-      "minecraft:ocean",
-      "minecraft:desert",
-      "minecraft:mountains"
-    ]
+    "temperature": "cold"
   },
   "features": [
     "minecraft:bonus_chest",

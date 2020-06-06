@@ -20,7 +20,7 @@ public class NormalDimension extends Dimension {
 
     @Override
     public ChunkGenerator<?> createChunkGenerator() {
-        return new NormalChunkGenerator(world, new RFTBiomeProvider());
+        return new NormalChunkGenerator(world, new RFTBiomeProvider(world));
     }
 
     @Nullable

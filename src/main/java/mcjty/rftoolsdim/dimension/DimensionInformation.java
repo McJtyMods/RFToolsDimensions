@@ -3,6 +3,7 @@ package mcjty.rftoolsdim.dimension;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
@@ -19,6 +20,7 @@ public class DimensionInformation {
     private final TerrainType terrainType;
     private final List<BlockState> baseBlocks = new ArrayList<>();
     private final List<ConfiguredFeature<?, ?>> features = new ArrayList<>();
+    private Biome.TempCategory tempCategory = null;
 
     private DimensionInformation(TerrainType terrainType) {
         this.terrainType = terrainType;
@@ -34,6 +36,10 @@ public class DimensionInformation {
 
     public List<ConfiguredFeature<?, ?>> getFeatures() {
         return features;
+    }
+
+    public Biome.TempCategory getTempCategory() {
+        return tempCategory;
     }
 
     public static DimensionInformation createFrom(DimensionDescriptor descriptor) {
@@ -53,6 +59,11 @@ public class DimensionInformation {
             Feature<NoFeatureConfig> feature = (Feature<NoFeatureConfig>) ForgeRegistries.FEATURES.getValue(id);
             ConfiguredFeature<NoFeatureConfig, ?> configuredFeature = feature.withConfiguration(NoFeatureConfig.NO_FEATURE_CONFIG);
             info.features.add(configuredFeature);
+        }
+
+        BiomeDescriptor biomeDescriptor = descriptor.getBiomeDescriptor();
+        if (biomeDescriptor.getTemperature() != null) {
+            info.tempCategory = Biome.TempCategory.valueOf(biomeDescriptor.getTemperature().toUpperCase());
         }
 
 

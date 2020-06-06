@@ -36,8 +36,15 @@ public class CommandTpDim implements Command<CommandSource> {
         ResourceLocation id = new ResourceLocation(name);
         DimensionType type = DimensionType.byName(id);
         if (type == null) {
-            context.getSource().sendFeedback(new StringTextComponent(TextFormatting.RED + "Can't find dimension!"), true);
-            return 0;
+            if (!name.contains(":")) {
+                // Try adding 'rftoolsdim' in front
+                id = new ResourceLocation("rftoolsdim:" + name);
+                type = DimensionType.byName(id);
+            }
+            if (type == null) {
+                context.getSource().sendFeedback(new StringTextComponent(TextFormatting.RED + "Can't find dimension!"), true);
+                return 0;
+            }
         }
         TeleportationTools.teleport(player, type, x, 200, z, Direction.NORTH);
         return 0;
