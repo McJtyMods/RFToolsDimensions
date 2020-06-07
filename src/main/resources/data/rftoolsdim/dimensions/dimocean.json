@@ -5,7 +5,9 @@
     "category": ["ocean"]
   },
   "features": [
-    "rftoolsdim:spheres"
+    {
+      "id": "rftoolsdim:spheres"
+    }
   ],
   "baseblocks": [
     "minecraft:stone"

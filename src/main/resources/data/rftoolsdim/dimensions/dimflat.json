@@ -1,8 +1,12 @@
 {
   "terrain": "flat",
   "features": [
-    "minecraft:bonus_chest",
-    "rftoolsdim:spheres"
+    {
+      "id": "minecraft:bonus_chest"
+    },
+    {
+      "id": "rftoolsdim:spheres"
+    }
   ],
   "baseblocks": [
     "minecraft:stone",

@@ -2,6 +2,7 @@ package mcjty.rftoolsdim.dimension;
 
 import com.google.gson.*;
 import mcjty.rftoolsdim.dimension.biomes.BiomeDescriptor;
+import mcjty.rftoolsdim.dimension.features.FeatureDescriptor;
 import net.minecraft.util.ResourceLocation;
 
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ import java.util.List;
 public class DimensionDescriptor {
 
     private TerrainType terrainType;
-    private List<ResourceLocation> features = new ArrayList<>();
+    private List<FeatureDescriptor> features = new ArrayList<>();
     private List<ResourceLocation> baseBlocks = new ArrayList<>();
     private BiomeDescriptor biomeDescriptor = BiomeDescriptor.DEFAULT;
 
@@ -80,8 +81,10 @@ public class DimensionDescriptor {
         features.clear();
         if (object.has("features")) {
             for (JsonElement element : object.get("features").getAsJsonArray()) {
-                if (element.isJsonPrimitive() && element.getAsJsonPrimitive().isString()) {
-                    features.add(new ResourceLocation(element.getAsString()));
+                if (element.isJsonObject()) {
+                    JsonObject featureEl = element.getAsJsonObject();
+                    String id = featureEl.get("id").getAsString();
+                    features.add(new FeatureDescriptor(id, featureEl.get("config")));
                 } else {
                     throw new RuntimeException("Illegal feature descriptor!");
                 }
@@ -116,13 +119,18 @@ public class DimensionDescriptor {
 
     private void writeFeatures(JsonObject root) {
         JsonArray array = new JsonArray();
-        for (ResourceLocation feature : features) {
-            array.add(feature.toString());
+        for (FeatureDescriptor feature : features) {
+            JsonObject featureEl = new JsonObject();
+            featureEl.addProperty("id", feature.getId());
+            if (feature.getConfigElement() != null) {
+                featureEl.add("config", feature.getConfigElement());
+            }
+            array.add(featureEl);
         }
         root.add("features", array);
     }
 
-    public List<ResourceLocation> getFeatures() {
+    public List<FeatureDescriptor> getFeatures() {
         return features;
     }
 

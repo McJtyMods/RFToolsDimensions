@@ -1,8 +1,16 @@
 {
   "terrain": "void",
   "features": [
-    "minecraft:bonus_chest",
-    "rftoolsdim:spheres"
+    {
+      "id": "minecraft:mineshaft",
+      "config": {
+        "probability": 3.0,
+        "type": "normal"
+      }
+    },
+    {
+      "id": "rftoolsdim:spheres"
+    }
   ],
   "baseblocks": [
     "minecraft:stone",

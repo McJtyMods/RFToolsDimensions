@@ -5,7 +5,9 @@
     "temperature": ["cold"]
   },
   "features": [
-    "rftoolsdim:spheres"
+    {
+      "id": "rftoolsdim:spheres"
+    }
   ],
   "baseblocks": [
     "minecraft:stone"

@@ -1,7 +1,11 @@
 {
   "features": [
-    "minecraft:igloo",
-    "minecraft:stronghold"
+    {
+      "id": "minecraft:bonus_chest"
+    },
+    {
+      "id": "rftoolsdim:spheres"
+    }
   ],
   "baseblocks": [
     "minecraft:stone",

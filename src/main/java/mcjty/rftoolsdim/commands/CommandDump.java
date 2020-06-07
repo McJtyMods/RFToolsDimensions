@@ -12,7 +12,6 @@ import com.mojang.datafixers.Dynamic;
 import com.mojang.datafixers.types.JsonOps;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
-import net.minecraft.world.gen.feature.BlockBlobConfig;
 import net.minecraft.world.gen.feature.structure.MineshaftConfig;
 import net.minecraft.world.gen.feature.structure.MineshaftStructure;
 
@@ -34,14 +33,6 @@ public class CommandDump implements Command<CommandSource> {
         Dynamic<JsonElement> serialized = config.serialize(JsonOps.INSTANCE);
         JsonElement value = serialized.getValue();
         System.out.println("json = " + GSON.toJson(value));
-
-
-        //        Dynamic<JsonElement> dynamic = new Dynamic<>(JsonOps.INSTANCE, value);
-//        BlockBlobConfig config2 = BlockBlobConfig.deserialize(dynamic);
-
-
-
-
         return 0;
     }
 }
