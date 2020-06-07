@@ -1,8 +1,8 @@
 {
   "terrain": "normal",
   "biomes": {
-    "provider": "default",
-    "category": "ocean"
+    "type": "default",
+    "category": ["ocean"]
   },
   "features": [
     "rftoolsdim:spheres"

@@ -1,6 +1,7 @@
 package mcjty.rftoolsdim.dimension;
 
 import com.google.gson.*;
+import mcjty.rftoolsdim.dimension.biomes.BiomeDescriptor;
 import net.minecraft.util.ResourceLocation;
 
 import java.util.ArrayList;
@@ -46,16 +47,7 @@ public class DimensionDescriptor {
     private void readBiomes(JsonObject object) {
         if (object.has("biomes")) {
             JsonObject biomes = object.get("biomes").getAsJsonObject();
-            // @todo read "provider"
-            String temperature = null;
-            if (biomes.has("temperature")) {
-                temperature = biomes.get("temperature").getAsJsonPrimitive().getAsString();
-            }
-            String category = null;
-            if (biomes.has("category")) {
-                category = biomes.get("category").getAsJsonPrimitive().getAsString();
-            }
-            biomeDescriptor = new BiomeDescriptor("default", temperature, category);
+            biomeDescriptor = BiomeDescriptor.readFromJson(biomes);
         }
     }
 
@@ -107,13 +99,7 @@ public class DimensionDescriptor {
     }
 
     private void writeBiomes(JsonObject root) {
-        JsonObject biomes = new JsonObject();
-        // @todo "provider"
-        if (biomeDescriptor.getTemperature() != null) {
-            biomes.addProperty("temperature", biomeDescriptor.getTemperature());
-        }
-
-        root.add("biomes", biomes);
+        root.add("biomes", biomeDescriptor.writeToJson());
     }
 
     private void writeTerrainType(JsonObject root) {

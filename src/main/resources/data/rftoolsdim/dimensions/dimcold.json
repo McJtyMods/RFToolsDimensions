@@ -1,8 +1,8 @@
 {
   "terrain": "normal",
   "biomes": {
-    "provider": "default",
-    "temperature": "cold"
+    "type": "default",
+    "temperature": ["cold"]
   },
   "features": [
     "rftoolsdim:spheres"

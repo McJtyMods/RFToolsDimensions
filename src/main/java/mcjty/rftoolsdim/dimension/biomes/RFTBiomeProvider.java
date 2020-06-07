@@ -25,6 +25,7 @@ public class RFTBiomeProvider extends BiomeProvider {
     private final World world;
     private final Map<ResourceLocation, Biome> replacementBiomes = new HashMap<>();
     private Set<Biome> filteredBiomes = null;
+    private BiomeInfo biomeInfo = null;
 
     public RFTBiomeProvider(World world) {
         super(new HashSet<>(BIOMES));
@@ -32,15 +33,23 @@ public class RFTBiomeProvider extends BiomeProvider {
         this.genBiomes = LayerUtil.func_227474_a_(world.getSeed(), world.getWorldType(), new OverworldGenSettings());
     }
 
-    private boolean isOk(Biome biome) {
-        DimensionInformation info = DimensionManager.get(world).getDimensionInformation(world);
-        Biome.TempCategory tempCategory = info.getTempCategory();
-        Biome.Category biomeCategory = info.getBiomeCategory();
+    private BiomeInfo getBiomeInfo() {
+        if (biomeInfo == null) {
+            DimensionInformation info = DimensionManager.get(world).getDimensionInformation(world);
+            biomeInfo = info.getBiomeInfo();
+        }
+        return biomeInfo;
+    }
 
-        if (tempCategory != null && biome.getTempCategory() != tempCategory) {
+    private boolean isOk(Biome biome) {
+        BiomeInfo info = getBiomeInfo();
+        Set<Biome.TempCategory> tempCategory = info.getTempCategory();
+        Set<Biome.Category> biomeCategory = info.getBiomeCategory();
+
+        if (!tempCategory.isEmpty() && !tempCategory.contains(biome.getTempCategory())) {
             return false;
         }
-        if (biomeCategory != null && biome.getCategory() != biomeCategory) {
+        if (!biomeCategory.isEmpty() && !biomeCategory.contains(biome.getCategory())) {
             return false;
         }
         return true;

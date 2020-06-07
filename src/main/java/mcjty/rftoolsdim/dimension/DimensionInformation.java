@@ -1,9 +1,10 @@
 package mcjty.rftoolsdim.dimension;
 
+import mcjty.rftoolsdim.dimension.biomes.BiomeDescriptor;
+import mcjty.rftoolsdim.dimension.biomes.BiomeInfo;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
@@ -20,8 +21,7 @@ public class DimensionInformation {
     private final TerrainType terrainType;
     private final List<BlockState> baseBlocks = new ArrayList<>();
     private final List<ConfiguredFeature<?, ?>> features = new ArrayList<>();
-    private Biome.TempCategory tempCategory = null;
-    private Biome.Category biomeCategory = null;
+    private BiomeInfo biomeInfo;
 
     private DimensionInformation(TerrainType terrainType) {
         this.terrainType = terrainType;
@@ -31,20 +31,17 @@ public class DimensionInformation {
         return terrainType;
     }
 
+    public BiomeInfo getBiomeInfo() {
+        return biomeInfo;
+    }
+
+
     public List<BlockState> getBaseBlocks() {
         return baseBlocks;
     }
 
     public List<ConfiguredFeature<?, ?>> getFeatures() {
         return features;
-    }
-
-    public Biome.TempCategory getTempCategory() {
-        return tempCategory;
-    }
-
-    public Biome.Category getBiomeCategory() {
-        return biomeCategory;
     }
 
     public static DimensionInformation createFrom(DimensionDescriptor descriptor) {
@@ -67,12 +64,7 @@ public class DimensionInformation {
         }
 
         BiomeDescriptor biomeDescriptor = descriptor.getBiomeDescriptor();
-        if (biomeDescriptor.getTemperature() != null) {
-            info.tempCategory = Biome.TempCategory.valueOf(biomeDescriptor.getTemperature().toUpperCase());
-        }
-        if (biomeDescriptor.getCategory() != null) {
-            info.biomeCategory = Biome.Category.valueOf(biomeDescriptor.getCategory().toUpperCase());
-        }
+        info.biomeInfo = BiomeInfo.createFrom(biomeDescriptor);
 
         return info;
     }
