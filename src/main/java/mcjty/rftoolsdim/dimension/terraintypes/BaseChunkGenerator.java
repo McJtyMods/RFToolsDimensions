@@ -196,6 +196,9 @@ public abstract class BaseChunkGenerator<T extends GenerationSettings> extends C
         int z = chunkZ << 4;
 
         DimensionInformation info = DimensionManager.get(worldIn.getWorld()).getDimensionInformation(worldIn.getWorld());
+        if (info == null) {
+            return;
+        }
         List<BlockState> baseBlocks = info.getBaseBlocks();
 
         handleIllagerStructures(worldIn, chunkIn, villagePieces, jigsawJunctions, chunkpos, x, z);
@@ -364,6 +367,9 @@ public abstract class BaseChunkGenerator<T extends GenerationSettings> extends C
         long i1 = sharedseedrandom.setDecorationSeed(region.getSeed(), chunkX, chunkZ);
 
         DimensionInformation info = DimensionManager.get(region.getWorld()).getDimensionInformation(region.getWorld());
+        if (info == null) {
+            return;
+        }
         int i = 0;
         for(GenerationStage.Decoration stage : GenerationStage.Decoration.values()) {
             try {

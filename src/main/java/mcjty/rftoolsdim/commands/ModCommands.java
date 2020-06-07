@@ -14,6 +14,7 @@ public class ModCommands {
                         .then(CommandCreateDim.register(dispatcher))
                         .then(CommandListDim.register(dispatcher))
                         .then(CommandTpDim.register(dispatcher))
+                        .then(CommandDump.register(dispatcher))
         );
 
         dispatcher.register(Commands.literal("dim").redirect(commands));

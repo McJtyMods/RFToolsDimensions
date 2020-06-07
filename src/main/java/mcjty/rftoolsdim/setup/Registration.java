@@ -4,7 +4,7 @@ package mcjty.rftoolsdim.setup;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.dimension.RFTModDimension;
 import mcjty.rftoolsdim.dimension.TerrainType;
-import mcjty.rftoolsdim.features.SpheresFeature;
+import mcjty.rftoolsdim.dimension.features.SpheresFeature;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityType;
 import net.minecraft.inventory.container.ContainerType;

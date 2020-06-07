@@ -36,13 +36,18 @@ public class RFTBiomeProvider extends BiomeProvider {
     private BiomeInfo getBiomeInfo() {
         if (biomeInfo == null) {
             DimensionInformation info = DimensionManager.get(world).getDimensionInformation(world);
-            biomeInfo = info.getBiomeInfo();
+            if (info != null) {
+                biomeInfo = info.getBiomeInfo();
+            }
         }
         return biomeInfo;
     }
 
     private boolean isOk(Biome biome) {
         BiomeInfo info = getBiomeInfo();
+        if (info == null) {
+            return true;
+        }
         Set<Biome.TempCategory> tempCategory = info.getTempCategory();
         Set<Biome.Category> biomeCategory = info.getBiomeCategory();
 
@@ -66,9 +71,9 @@ public class RFTBiomeProvider extends BiomeProvider {
         if (biome1 == biome2) {
             return 0;
         }
+        float category = biome1.getCategory() == biome2.getCategory() ? 0 : 12;
         float temperature = biome1.getTempCategory() == biome2.getTempCategory() ? 0 : 10;
-        float category = biome1.getCategory() == biome2.getCategory() ? 0 : 10;
-        float precipitation = biome1.getPrecipitation() == biome2.getPrecipitation() ? 0 : 10;
+        float precipitation = biome1.getPrecipitation() == biome2.getPrecipitation() ? 0 : 8;
         float downfallDifference = Math.abs(biome1.getDownfall() - biome2.getDownfall());
         float temperatureDifference = Math.abs(biome1.getDefaultTemperature() - biome2.getDefaultTemperature());
         float depthDifference = Math.abs(biome1.getDepth() - biome2.getDepth());

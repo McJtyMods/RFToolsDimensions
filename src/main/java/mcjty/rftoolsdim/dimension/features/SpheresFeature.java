@@ -1,4 +1,4 @@
-package mcjty.rftoolsdim.features;
+package mcjty.rftoolsdim.dimension.features;
 
 import com.mojang.datafixers.Dynamic;
 import net.minecraft.block.BlockState;
@@ -40,7 +40,6 @@ public class SpheresFeature extends Feature<NoFeatureConfig> {
     }
 
     private void generate(IWorld world, int chunkX, int chunkZ, int dx, int dz) {
-
         Random random = new Random(world.getSeed() + (chunkZ+dz) * 256203221L + (chunkX+dx) * 899809363L);
         random.nextFloat();
         int radius = random.nextInt(12) + 9;
