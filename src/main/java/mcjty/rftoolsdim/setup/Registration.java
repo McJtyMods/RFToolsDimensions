@@ -5,6 +5,7 @@ import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.dimension.RFTModDimension;
 import mcjty.rftoolsdim.dimension.TerrainType;
 import mcjty.rftoolsdim.dimension.features.SpheresFeature;
+import mcjty.rftoolsdim.modules.dimlets.DimletSetup;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityType;
 import net.minecraft.inventory.container.ContainerType;
@@ -47,7 +48,7 @@ public class Registration {
         DIMENSIONS.register(FMLJavaModLoadingContext.get().getModEventBus());
         FEATURES.register(FMLJavaModLoadingContext.get().getModEventBus());
 
-//        ProcessorSetup.register();
+        DimletSetup.register();
     }
 
     public static final Map<TerrainType, RegistryObject<RFTModDimension>> MOD_DIMENSIONS = Arrays.stream(TerrainType.values())

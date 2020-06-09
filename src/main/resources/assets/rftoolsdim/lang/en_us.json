@@ -1,10 +1,16 @@
 {
-  "item.rftoolsdim.xxx": "Xxx",
+  "item.rftoolsdim.empty_dimlet": "Empty Dimlet",
+  "item.rftoolsdim.terrain_dimlet": "Terrain Dimlet",
+  "item.rftoolsdim.biome_modifier_dimlet": "Biome Modifier Dimlet",
+  "item.rftoolsdim.feature_dimlet": "Feature Dimlet",
   "block.rftoolsdim.xxx": "Xxx",
   "_comment": "Creative Tabs",
   "itemGroup.rftoolsdim": "RFTools Dimensions",
+
   "_comment": "Messages",
   "message.rftoolsdim.shiftmessage": "<Press Shift>",
-  "message.rftoolsbase.xxx.header": "Header...",
-  "message.rftoolsbase.xxx.info": "Item: "
+  "message.rftoolsdim.empty_dimlet.header": "This is the base ingredient for creating dimlets",
+  "message.rftoolsdim.terrain_dimlet.header": "Terrain dimlets control the main shape of the terrain in a dimension",
+  "message.rftoolsdim.biome_modifier_dimlet.header": "Biome modifier dimlets allow you to control what biomes there are in a dimension and how they are lay out",
+  "message.rftoolsdim.feature_dimlet.header": "With feature dimlets you can add various features to a dimension"
 }

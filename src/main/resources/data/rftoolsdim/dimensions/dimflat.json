@@ -2,19 +2,18 @@
   "terrain": "flat",
   "features": [
     {
-      "id": "minecraft:bonus_chest"
-    },
-    {
-      "id": "rftoolsdim:spheres"
+      "id": "minecraft:ore",
+      "config": {
+        "size": 30,
+        "target": "natural_stone",
+        "state": {
+          "Name": "minecraft:glowstone"
+        }
+      }
     }
   ],
   "baseblocks": [
-    "minecraft:stone",
-    "minecraft:iron_ore",
-    "minecraft:snow_block",
-    "minecraft:lapis_ore",
-    "minecraft:coal_ore",
-    "minecraft:gold_ore"
+    "minecraft:stone"
   ]
 }
 

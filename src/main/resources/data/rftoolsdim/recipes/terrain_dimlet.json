@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "CDC",
+    "DED",
+    "CDC"
+  ],
+  "key": {
+    "C": {
+      "tag": "forge:cobblestone"
+    },
+    "D": {
+      "item": "minecraft:dirt"
+    },
+    "E": {
+      "item": "rftoolsdim:empty_dimlet"
+    }
+  },
+  "result": {
+    "item": "rftoolsdim:terrain_dimlet"
+  }
+}

@@ -360,11 +360,11 @@ public abstract class BaseChunkGenerator<T extends GenerationSettings> extends C
     public void decorate(WorldGenRegion region) {
         super.decorate(region);
 
-        int chunkX = region.getMainChunkX() * 16;
-        int chunkZ = region.getMainChunkZ() * 16;
-        BlockPos blockpos = new BlockPos(chunkX, 0, chunkZ);
+        int x = region.getMainChunkX() * 16;
+        int z = region.getMainChunkZ() * 16;
+        BlockPos blockpos = new BlockPos(x, 0, z);
         SharedSeedRandom sharedseedrandom = new SharedSeedRandom();
-        long i1 = sharedseedrandom.setDecorationSeed(region.getSeed(), chunkX, chunkZ);
+        long i1 = sharedseedrandom.setDecorationSeed(region.getSeed(), x, z);
 
         DimensionInformation info = DimensionManager.get(region.getWorld()).getDimensionInformation(region.getWorld());
         if (info == null) {
@@ -379,7 +379,7 @@ public abstract class BaseChunkGenerator<T extends GenerationSettings> extends C
                 }
             } catch (Exception exception) {
                 CrashReport crashreport = CrashReport.makeCrashReport(exception, "Biome decoration");
-                crashreport.makeCategory("Generation").addDetail("CenterX", chunkX).addDetail("CenterZ", chunkZ).addDetail("Step", stage).addDetail("Seed", i1);
+                crashreport.makeCategory("Generation").addDetail("CenterX", x).addDetail("CenterZ", z).addDetail("Step", stage).addDetail("Seed", i1);
                 throw new ReportedException(crashreport);
             }
             ++i;

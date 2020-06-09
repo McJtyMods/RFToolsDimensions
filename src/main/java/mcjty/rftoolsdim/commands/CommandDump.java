@@ -10,8 +10,10 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.datafixers.Dynamic;
 import com.mojang.datafixers.types.JsonOps;
+import net.minecraft.block.Blocks;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
+import net.minecraft.world.gen.feature.OreFeatureConfig;
 import net.minecraft.world.gen.feature.structure.MineshaftConfig;
 import net.minecraft.world.gen.feature.structure.MineshaftStructure;
 
@@ -29,7 +31,7 @@ public class CommandDump implements Command<CommandSource> {
 
     @Override
     public int run(CommandContext<CommandSource> context) throws CommandSyntaxException {
-        MineshaftConfig config = new MineshaftConfig(3.0, MineshaftStructure.Type.NORMAL);
+        OreFeatureConfig config = new OreFeatureConfig(OreFeatureConfig.FillerBlockType.NATURAL_STONE, Blocks.GLOWSTONE.getDefaultState(), 30);
         Dynamic<JsonElement> serialized = config.serialize(JsonOps.INSTANCE);
         JsonElement value = serialized.getValue();
         System.out.println("json = " + GSON.toJson(value));

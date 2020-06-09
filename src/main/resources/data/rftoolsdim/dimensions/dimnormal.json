@@ -1,13 +1,7 @@
 {
   "terrain": "normal",
   "biomes": {
-    "type": "default",
-    "biomes": [
-      "minecraft:plains",
-      "minecraft:ocean",
-      "minecraft:desert",
-      "minecraft:mountains"
-    ]
+    "type": "default"
   },
   "features": [
     {
@@ -21,6 +15,16 @@
       }
     },
     {
+      "id": "minecraft:ore",
+      "config": {
+        "size": 30,
+        "target": "natural_stone",
+        "state": {
+          "Name": "minecraft:glowstone"
+        }
+      }
+    },
+    {
       "id": "minecraft:bonus_chest"
     },
     {
@@ -28,12 +32,7 @@
     }
   ],
   "baseblocks": [
-    "minecraft:stone",
-    "minecraft:iron_ore",
-    "minecraft:snow_block",
-    "minecraft:lapis_ore",
-    "minecraft:coal_ore",
-    "minecraft:gold_ore"
+    "minecraft:stone"
   ]
 }
 
