@@ -13,24 +13,14 @@ import java.util.List;
 
 import static mcjty.lib.builder.TooltipBuilder.*;
 
-public class DimletItem extends Item implements ITooltipSettings {
+public class PartItem extends Item implements ITooltipSettings {
 
     private final TooltipBuilder tooltipBuilder = new TooltipBuilder()
             .info(key("message.rftoolsdim.shiftmessage"))
-            .infoShift(header(), gold(), TooltipBuilder.parameter("key", DimletItem::isReady, DimletItem::getDescription));
+            .infoShift(header(), gold());
 
-    public DimletItem() {
+    public PartItem() {
         super(Registration.createStandardProperties());
-    }
-
-    public static boolean isReady(ItemStack stack) {
-        // @todo return true if this dimlet is ready
-        return false;
-    }
-
-    public static String getDescription(ItemStack stack) {
-        // @todo
-        return "";
     }
 
     @Override

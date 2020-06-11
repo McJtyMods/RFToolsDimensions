@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "uRu",
+    "RMR",
+    "usu"
+  ],
+  "key": {
+    "u": {
+      "item": "rftoolsdim:common_essence"
+    },
+    "M": {
+      "item": "rftoolsdim:part_energy_0"
+    },
+    "R": {
+      "item": "minecraft:redstone_block"
+    },
+    "s": {
+      "item": "rftoolsbase:dimensionalshard"
+    }
+  },
+  "result": {
+    "item": "rftoolsdim:part_energy_1"
+  }
+}

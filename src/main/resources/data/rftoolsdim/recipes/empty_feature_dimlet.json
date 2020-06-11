@@ -1,22 +1,22 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "CDC",
-    "DED",
-    "CDC"
+    "rcr",
+    "cEc",
+    "rcr"
   ],
   "key": {
-    "C": {
-      "tag": "forge:cobblestone"
+    "r": {
+      "item": "minecraft:redstone"
     },
-    "D": {
-      "item": "minecraft:dirt"
+    "c": {
+      "tag": "minecraft:coals"
     },
     "E": {
       "item": "rftoolsdim:empty_dimlet"
     }
   },
   "result": {
-    "item": "rftoolsdim:terrain_dimlet"
+    "item": "rftoolsdim:empty_feature_dimlet"
   }
 }

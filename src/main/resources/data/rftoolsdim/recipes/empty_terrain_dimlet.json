@@ -1,22 +1,22 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "DDD",
+    "CDC",
     "DED",
-    "DOD"
+    "CDC"
   ],
   "key": {
+    "C": {
+      "tag": "forge:cobblestone"
+    },
     "D": {
       "item": "minecraft:dirt"
     },
     "E": {
       "item": "rftoolsdim:empty_dimlet"
-    },
-    "O": {
-      "item": "minecraft:obsidian"
     }
   },
   "result": {
-    "item": "rftoolsdim:biome_modifier_dimlet"
+    "item": "rftoolsdim:empty_terrain_dimlet"
   }
 }

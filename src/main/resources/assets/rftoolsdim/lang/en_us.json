@@ -3,6 +3,19 @@
   "item.rftoolsdim.terrain_dimlet": "Terrain Dimlet",
   "item.rftoolsdim.biome_modifier_dimlet": "Biome Modifier Dimlet",
   "item.rftoolsdim.feature_dimlet": "Feature Dimlet",
+  "item.rftoolsdim.empty_terrain_dimlet": "Empty Terrain Dimlet",
+  "item.rftoolsdim.empty_biome_modifier_dimlet": "Empty Biome Modifier Dimlet",
+  "item.rftoolsdim.empty_feature_dimlet": "Empty Feature Dimlet",
+
+  "item.rftoolsdim.part_energy_0": "Common Energy Module",
+  "item.rftoolsdim.part_energy_1": "Uncommon Energy Module",
+  "item.rftoolsdim.part_energy_2": "Rare Energy Module",
+  "item.rftoolsdim.part_memory_0": "Common Memory Module",
+  "item.rftoolsdim.part_memory_1": "Uncommon Memory Module",
+  "item.rftoolsdim.part_memory_2": "Rare Memory Module",
+  "item.rftoolsdim.common_essence": "Common Dimensional Essence",
+  "item.rftoolsdim.rare_essence": "Rare Dimensional Essence",
+
   "block.rftoolsdim.xxx": "Xxx",
   "_comment": "Creative Tabs",
   "itemGroup.rftoolsdim": "RFTools Dimensions",
@@ -10,7 +23,40 @@
   "_comment": "Messages",
   "message.rftoolsdim.shiftmessage": "<Press Shift>",
   "message.rftoolsdim.empty_dimlet.header": "This is the base ingredient for creating dimlets",
+
   "message.rftoolsdim.terrain_dimlet.header": "Terrain dimlets control the main shape of the terrain in a dimension",
+  "message.rftoolsdim.terrain_dimlet.gold": "Use this dimlet in a Dimension Enscriber to create a Dimension Tab",
+  "message.rftoolsdim.terrain_dimlet.key": "Key: ",
   "message.rftoolsdim.biome_modifier_dimlet.header": "Biome modifier dimlets allow you to control what biomes there are in a dimension and how they are lay out",
-  "message.rftoolsdim.feature_dimlet.header": "With feature dimlets you can add various features to a dimension"
+  "message.rftoolsdim.biome_modifier_dimlet.gold": "Use this dimlet in a Dimension Enscriber to create a Dimension Tab",
+  "message.rftoolsdim.biome_modifier_dimlet.key": "Key: ",
+  "message.rftoolsdim.feature_dimlet.header": "With feature dimlets you can add various features to a dimension",
+  "message.rftoolsdim.feature_dimlet.gold": "Use this dimlet in a Dimension Enscriber to create a Dimension Tab",
+  "message.rftoolsdim.feature_dimlet.key": "Key: ",
+
+  "message.rftoolsdim.empty_terrain_dimlet.header": "Terrain dimlets control the main shape of the terrain in a dimension",
+  "message.rftoolsdim.empty_terrain_dimlet.gold": "Use the Dimlet Workbench to convert this to a full dimlet",
+  "message.rftoolsdim.empty_biome_modifier_dimlet.header": "Biome modifier dimlets allow you to control what biomes there are in a dimension and how they are lay out",
+  "message.rftoolsdim.empty_biome_modifier_dimlet.gold": "Use the Dimlet Workbench to convert this to a full dimlet",
+  "message.rftoolsdim.empty_feature_dimlet.header": "With feature dimlets you can add various features to a dimension",
+  "message.rftoolsdim.empty_feature_dimlet.gold": "Use the Dimlet Workbench to convert this to a full dimlet",
+
+  "message.rftoolsdim.part_energy_0.header": "This is an ingredient for a dimlet",
+  "message.rftoolsdim.part_energy_0.gold": "Use this in the Dimlet Workbench to create a dimlet",
+  "message.rftoolsdim.part_energy_1.header": "This is an ingredient for a dimlet",
+  "message.rftoolsdim.part_energy_1.gold": "Use this in the Dimlet Workbench to create a dimlet",
+  "message.rftoolsdim.part_energy_2.header": "This is an ingredient for a dimlet",
+  "message.rftoolsdim.part_energy_2.gold": "Use this in the Dimlet Workbench to create a dimlet",
+  "message.rftoolsdim.part_memory_0.header": "This is an ingredient for a dimlet",
+  "message.rftoolsdim.part_memory_0.gold": "Use this in the Dimlet Workbench to create a dimlet",
+  "message.rftoolsdim.part_memory_1.header": "This is an ingredient for a dimlet",
+  "message.rftoolsdim.part_memory_1.gold": "Use this in the Dimlet Workbench to create a dimlet",
+  "message.rftoolsdim.part_memory_2.header": "This is an ingredient for a dimlet",
+  "message.rftoolsdim.part_memory_2.gold": "Use this in the Dimlet Workbench to create a dimlet",
+
+  "message.rftoolsdim.common_essence.header": "This is an ingredient for a dimlet",
+  "message.rftoolsdim.common_essence.gold": "Use this in the Dimlet Workbench to create a dimlet",
+
+  "message.rftoolsdim.rare_essence.header": "This is an ingredient for a dimlet",
+  "message.rftoolsdim.rare_essence.gold": "Use this in the Dimlet Workbench to create a dimlet"
 }
