@@ -16,6 +16,8 @@
   "item.rftoolsdim.common_essence": "Common Dimensional Essence",
   "item.rftoolsdim.rare_essence": "Rare Dimensional Essence",
 
+  "entity.rftoolsdim.dimensional_blob": "Drone",
+
   "block.rftoolsdim.xxx": "Xxx",
   "_comment": "Creative Tabs",
   "itemGroup.rftoolsdim": "RFTools Dimensions",
