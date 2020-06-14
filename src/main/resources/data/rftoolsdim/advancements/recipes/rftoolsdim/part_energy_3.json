@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "rftoolsdim:part_energy_3"
+    ]
+  },
+  "criteria": {
+    "energy2": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "rftoolsdim:part_energy_2"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "rftoolsdim:part_energy_3"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "energy2",
+      "has_the_recipe"
+    ]
+  ]
+}

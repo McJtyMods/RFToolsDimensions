@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "rftoolsdim:part_memory_3"
+    ]
+  },
+  "criteria": {
+    "memory2": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "rftoolsdim:part_memory_2"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "rftoolsdim:part_memory_3"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "memory2",
+      "has_the_recipe"
+    ]
+  ]
+}

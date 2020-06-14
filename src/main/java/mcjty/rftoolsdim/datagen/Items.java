@@ -27,12 +27,15 @@ public class Items extends BaseItemModelProvider {
         itemGenerated(DimletSetup.PART_ENERGY_0.get(), "item/parts/part_energy_0");
         itemGenerated(DimletSetup.PART_ENERGY_1.get(), "item/parts/part_energy_1");
         itemGenerated(DimletSetup.PART_ENERGY_2.get(), "item/parts/part_energy_2");
+        itemGenerated(DimletSetup.PART_ENERGY_3.get(), "item/parts/part_energy_3");
         itemGenerated(DimletSetup.PART_MEMORY_0.get(), "item/parts/part_memory_0");
         itemGenerated(DimletSetup.PART_MEMORY_1.get(), "item/parts/part_memory_1");
         itemGenerated(DimletSetup.PART_MEMORY_2.get(), "item/parts/part_memory_2");
+        itemGenerated(DimletSetup.PART_MEMORY_3.get(), "item/parts/part_memory_3");
 
         itemGenerated(DimletSetup.COMMON_ESSENCE.get(), "item/parts/common_essence");
         itemGenerated(DimletSetup.RARE_ESSENCE.get(), "item/parts/rare_essence");
+        itemGenerated(DimletSetup.LEGENDARY_ESSENCE.get(), "item/parts/legendary_essence");
 
     }
 

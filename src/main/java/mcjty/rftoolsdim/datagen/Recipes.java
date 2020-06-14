@@ -70,5 +70,19 @@ public class Recipes extends BaseRecipeProvider {
                         .key('M', DimletSetup.PART_MEMORY_1.get())
                         .addCriterion("memory1", hasItem(DimletSetup.PART_MEMORY_1.get())),
                 "ulu", "lMl", "uUu");
+
+        build(consumer, ShapedRecipeBuilder.shapedRecipe(DimletSetup.PART_ENERGY_3.get())
+                        .key('u', DimletSetup.LEGENDARY_ESSENCE.get())
+                        .key('U', VariousSetup.INFUSED_DIAMOND.get())
+                        .key('M', DimletSetup.PART_ENERGY_2.get())
+                        .addCriterion("energy2", hasItem(DimletSetup.PART_ENERGY_2.get())),
+                "uRu", "RMR", "uUu");
+        build(consumer, ShapedRecipeBuilder.shapedRecipe(DimletSetup.PART_MEMORY_3.get())
+                        .key('u', DimletSetup.LEGENDARY_ESSENCE.get())
+                        .key('U', VariousSetup.INFUSED_DIAMOND.get())
+                        .key('l', Tags.Items.STORAGE_BLOCKS_LAPIS)
+                        .key('M', DimletSetup.PART_MEMORY_2.get())
+                        .addCriterion("memory2", hasItem(DimletSetup.PART_MEMORY_2.get())),
+                "ulu", "lMl", "uUu");
     }
 }

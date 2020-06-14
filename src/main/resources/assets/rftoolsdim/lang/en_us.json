@@ -10,11 +10,14 @@
   "item.rftoolsdim.part_energy_0": "Common Energy Module",
   "item.rftoolsdim.part_energy_1": "Uncommon Energy Module",
   "item.rftoolsdim.part_energy_2": "Rare Energy Module",
+  "item.rftoolsdim.part_energy_3": "Legendary Energy Module",
   "item.rftoolsdim.part_memory_0": "Common Memory Module",
   "item.rftoolsdim.part_memory_1": "Uncommon Memory Module",
   "item.rftoolsdim.part_memory_2": "Rare Memory Module",
+  "item.rftoolsdim.part_memory_3": "Legendary Memory Module",
   "item.rftoolsdim.common_essence": "Common Dimensional Essence",
   "item.rftoolsdim.rare_essence": "Rare Dimensional Essence",
+  "item.rftoolsdim.legendary_essence": "Legendary Dimensional Essence",
 
   "entity.rftoolsdim.dimensional_blob": "Blob",
 
