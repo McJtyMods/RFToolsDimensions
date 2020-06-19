@@ -6,6 +6,7 @@ import com.mojang.datafixers.types.JsonOps;
 import mcjty.rftoolsdim.dimension.biomes.BiomeDescriptor;
 import mcjty.rftoolsdim.dimension.biomes.BiomeInfo;
 import mcjty.rftoolsdim.dimension.features.FeatureDescriptor;
+import mcjty.rftoolsdim.dimension.terraintypes.TerrainType;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.ResourceLocation;

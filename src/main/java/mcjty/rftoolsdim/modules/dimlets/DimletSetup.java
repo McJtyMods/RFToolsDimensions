@@ -13,13 +13,15 @@ public class DimletSetup {
 
     public static final RegistryObject<DimletItem> EMPTY_DIMLET = Registration.ITEMS.register("empty_dimlet", DimletItem::new);
 
-    public static final RegistryObject<TerrainDimletItem> EMPTY_TERRAIN_DIMLET = Registration.ITEMS.register("empty_terrain_dimlet", TerrainDimletItem::new);
-    public static final RegistryObject<FeatureDimletItem> EMPTY_FEATURE_DIMLET = Registration.ITEMS.register("empty_feature_dimlet", FeatureDimletItem::new);
-    public static final RegistryObject<BiomeModifierDimletItem> EMPTY_BIOME_MODIFIER_DIMLET = Registration.ITEMS.register("empty_biome_modifier_dimlet", BiomeModifierDimletItem::new);
+    public static final RegistryObject<DimletItem> EMPTY_TERRAIN_DIMLET = Registration.ITEMS.register("empty_terrain_dimlet", DimletItem::new);
+    public static final RegistryObject<DimletItem> EMPTY_FEATURE_DIMLET = Registration.ITEMS.register("empty_feature_dimlet", DimletItem::new);
+    public static final RegistryObject<DimletItem> EMPTY_BIOME_MODIFIER_DIMLET = Registration.ITEMS.register("empty_biome_modifier_dimlet", DimletItem::new);
+    public static final RegistryObject<DimletItem> EMPTY_MATERIAL_DIMLET = Registration.ITEMS.register("empty_material_dimlet", DimletItem::new);
 
-    public static final RegistryObject<TerrainDimletItem> TERRAIN_DIMLET = Registration.ITEMS.register("terrain_dimlet", TerrainDimletItem::new);
-    public static final RegistryObject<FeatureDimletItem> FEATURE_DIMLET = Registration.ITEMS.register("feature_dimlet", FeatureDimletItem::new);
-    public static final RegistryObject<BiomeModifierDimletItem> BIOME_MODIFIER_DIMLET = Registration.ITEMS.register("biome_modifier_dimlet", BiomeModifierDimletItem::new);
+    public static final RegistryObject<DimletItem> TERRAIN_DIMLET = Registration.ITEMS.register("terrain_dimlet", DimletItem::new);
+    public static final RegistryObject<DimletItem> FEATURE_DIMLET = Registration.ITEMS.register("feature_dimlet", DimletItem::new);
+    public static final RegistryObject<DimletItem> BIOME_MODIFIER_DIMLET = Registration.ITEMS.register("biome_modifier_dimlet", DimletItem::new);
+    public static final RegistryObject<DimletItem> MATERIAL_DIMLET = Registration.ITEMS.register("material_dimlet", DimletItem::new);
 
     public static final RegistryObject<PartItem> PART_ENERGY_0 = Registration.ITEMS.register("part_energy_0", PartItem::new);
     public static final RegistryObject<PartItem> PART_ENERGY_1 = Registration.ITEMS.register("part_energy_1", PartItem::new);

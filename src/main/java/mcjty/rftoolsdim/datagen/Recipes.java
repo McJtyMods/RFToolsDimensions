@@ -6,6 +6,7 @@ import mcjty.rftoolsdim.modules.dimlets.DimletSetup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.IFinishedRecipe;
 import net.minecraft.data.ShapedRecipeBuilder;
+import net.minecraft.item.Items;
 import net.minecraftforge.common.Tags;
 
 import java.util.function.Consumer;
@@ -34,6 +35,10 @@ public class Recipes extends BaseRecipeProvider {
         build(consumer, ShapedRecipeBuilder.shapedRecipe(DimletSetup.EMPTY_BIOME_MODIFIER_DIMLET.get())
                         .addCriterion("empty_dimlet", hasItem(DimletSetup.EMPTY_DIMLET.get())),
                 "DDD", "DED", "DOD");
+        build(consumer, ShapedRecipeBuilder.shapedRecipe(DimletSetup.EMPTY_MATERIAL_DIMLET.get())
+                        .key('C', Items.CLAY_BALL)
+                        .addCriterion("empty_dimlet", hasItem(DimletSetup.EMPTY_DIMLET.get())),
+                "CCC", "CEC", "CCC");
 
         build(consumer, ShapedRecipeBuilder.shapedRecipe(DimletSetup.PART_ENERGY_0.get())
                         .key('g', Tags.Items.DUSTS_GLOWSTONE)

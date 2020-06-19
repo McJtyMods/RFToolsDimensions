@@ -3,6 +3,7 @@ package mcjty.rftoolsdim.dimension;
 import com.google.gson.*;
 import mcjty.rftoolsdim.dimension.biomes.BiomeDescriptor;
 import mcjty.rftoolsdim.dimension.features.FeatureDescriptor;
+import mcjty.rftoolsdim.dimension.terraintypes.TerrainType;
 import net.minecraft.util.ResourceLocation;
 
 import java.util.ArrayList;

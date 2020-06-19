@@ -1,6 +1,6 @@
 package mcjty.rftoolsdim.dimension;
 
-import mcjty.rftoolsdim.dimension.types.FlatDimension;
+import mcjty.rftoolsdim.dimension.terraintypes.TerrainType;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.Dimension;
 import net.minecraft.world.dimension.DimensionType;

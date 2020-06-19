@@ -4,6 +4,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import mcjty.lib.worlddata.AbstractWorldData;
 import mcjty.rftoolsdim.RFToolsDim;
+import mcjty.rftoolsdim.dimension.terraintypes.TerrainType;
 import mcjty.rftoolsdim.dimension.types.FlatDimension;
 import mcjty.rftoolsdim.setup.Registration;
 import net.minecraft.nbt.CompoundNBT;

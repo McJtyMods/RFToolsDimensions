@@ -52,6 +52,19 @@ public class DimletSettings {
         return builder.build();
     }
 
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static DimletSettings.Builder create(DimletRarity rarity, int createCost, int maintainCost, int tickCost) {
+        return builder()
+                .rarity(rarity)
+                .createCost(createCost)
+                .maintainCost(maintainCost)
+                .tickCost(tickCost)
+                .worldgen(true)
+                .dimlet(true);
+    }
 
     public static class Builder {
         private DimletRarity rarity;
@@ -60,6 +73,10 @@ public class DimletSettings {
         private Integer tickCost;
         private Boolean worldgen;
         private Boolean dimlet;
+
+        private Builder() {
+
+        }
 
         public Builder complete() {
             if (rarity == null) {

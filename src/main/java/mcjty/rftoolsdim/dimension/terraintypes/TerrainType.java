@@ -1,4 +1,4 @@
-package mcjty.rftoolsdim.dimension;
+package mcjty.rftoolsdim.dimension.terraintypes;
 
 import mcjty.rftoolsdim.dimension.types.FlatDimension;
 import mcjty.rftoolsdim.dimension.types.NormalDimension;
