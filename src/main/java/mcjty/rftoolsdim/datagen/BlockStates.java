@@ -2,6 +2,9 @@ package mcjty.rftoolsdim.datagen;
 
 import mcjty.lib.datagen.BaseBlockStateProvider;
 import mcjty.rftoolsdim.RFToolsDim;
+import mcjty.rftoolsdim.modules.dimensionbuilder.DimensionBuilderSetup;
+import mcjty.rftoolsdim.modules.enscriber.EnscriberSetup;
+import mcjty.rftoolsdim.modules.workbench.WorkbenchSetup;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.client.model.generators.ExistingFileHelper;
 
@@ -13,6 +16,8 @@ public class BlockStates extends BaseBlockStateProvider {
 
     @Override
     protected void registerStatesAndModels() {
-//        orientedBlock(ProcessorSetup.PROCESSOR.get(), frontBasedModel("processor", modLoc("block/machineprocessoron")));
+        orientedBlock(DimensionBuilderSetup.DIMENSION_BUILDER.get(), frontBasedModel("dimension_builder", modLoc("block/dimensionbuilder")));
+        orientedBlock(WorkbenchSetup.WORKBENCH.get(), frontBasedModel("dimlet_workbench", modLoc("block/dimletworkbenchtop"))); // @todo 1.15 fix
+        orientedBlock(EnscriberSetup.ENSCRIBER.get(), frontBasedModel("enscriber", modLoc("block/dimensionenscriber")));
     }
 }

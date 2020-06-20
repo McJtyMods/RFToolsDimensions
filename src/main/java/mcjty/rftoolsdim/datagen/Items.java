@@ -2,7 +2,10 @@ package mcjty.rftoolsdim.datagen;
 
 import mcjty.lib.datagen.BaseItemModelProvider;
 import mcjty.rftoolsdim.RFToolsDim;
+import mcjty.rftoolsdim.modules.dimensionbuilder.DimensionBuilderSetup;
 import mcjty.rftoolsdim.modules.dimlets.DimletSetup;
+import mcjty.rftoolsdim.modules.enscriber.EnscriberSetup;
+import mcjty.rftoolsdim.modules.workbench.WorkbenchSetup;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.client.model.generators.ExistingFileHelper;
 
@@ -14,7 +17,9 @@ public class Items extends BaseItemModelProvider {
 
     @Override
     protected void registerModels() {
-//        parentedBlock(ProcessorSetup.PROCESSOR.get(), "block/processor");
+        parentedBlock(DimensionBuilderSetup.DIMENSION_BUILDER.get(), "block/dimension_builder");
+        parentedBlock(WorkbenchSetup.WORKBENCH.get(), "block/dimlet_workbench");
+        parentedBlock(EnscriberSetup.ENSCRIBER.get(), "block/enscriber");
 
         itemGenerated(DimletSetup.EMPTY_DIMLET.get(), "item/dimlets/empty_dimlet");
         itemGenerated(DimletSetup.EMPTY_TERRAIN_DIMLET.get(), "item/dimlets/empty_terrain_dimlet");

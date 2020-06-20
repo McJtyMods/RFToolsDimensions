@@ -2,11 +2,16 @@ package mcjty.rftoolsdim.datagen;
 
 import mcjty.lib.datagen.BaseRecipeProvider;
 import mcjty.rftoolsbase.modules.various.VariousSetup;
+import mcjty.rftoolsdim.modules.dimensionbuilder.DimensionBuilderSetup;
 import mcjty.rftoolsdim.modules.dimlets.DimletSetup;
+import mcjty.rftoolsdim.modules.enscriber.EnscriberSetup;
+import mcjty.rftoolsdim.modules.workbench.WorkbenchSetup;
+import net.minecraft.block.Blocks;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.IFinishedRecipe;
 import net.minecraft.data.ShapedRecipeBuilder;
 import net.minecraft.item.Items;
+import net.minecraft.tags.ItemTags;
 import net.minecraftforge.common.Tags;
 
 import java.util.function.Consumer;
@@ -89,5 +94,20 @@ public class Recipes extends BaseRecipeProvider {
                         .key('M', DimletSetup.PART_MEMORY_2.get())
                         .addCriterion("memory2", hasItem(DimletSetup.PART_MEMORY_2.get())),
                 "ulu", "lMl", "uUu");
+
+        build(consumer, ShapedRecipeBuilder.shapedRecipe(DimensionBuilderSetup.DIMENSION_BUILDER.get())
+                        .key('g', Items.GOLD_INGOT)
+                        .addCriterion("frame", hasItem(VariousSetup.MACHINE_FRAME.get())),
+                "oeo", "dFd", "ggg");
+        build(consumer, ShapedRecipeBuilder.shapedRecipe(WorkbenchSetup.WORKBENCH.get())
+                        .key('C', Blocks.CRAFTING_TABLE)
+                        .key('u', DimletSetup.EMPTY_DIMLET.get())
+                        .addCriterion("frame", hasItem(VariousSetup.MACHINE_FRAME.get())),
+                "rur", "CFC", "rur");
+        build(consumer, ShapedRecipeBuilder.shapedRecipe(EnscriberSetup.ENSCRIBER.get())
+                        .key('C', Blocks.CRAFTING_TABLE)
+                        .key('u', DimletSetup.EMPTY_DIMLET.get())
+                        .addCriterion("frame", hasItem(VariousSetup.MACHINE_FRAME.get())),
+                "pup", "CFC", "pup");
     }
 }
