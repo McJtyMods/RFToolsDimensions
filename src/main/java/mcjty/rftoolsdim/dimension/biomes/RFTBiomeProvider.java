@@ -62,7 +62,7 @@ public class RFTBiomeProvider extends BiomeProvider {
 
     private Set<Biome> getFilteredBiomes() {
         if (filteredBiomes == null) {
-            filteredBiomes = field_226837_c_.stream().filter(this::isOk).collect(Collectors.toSet());
+            filteredBiomes = biomes.stream().filter(this::isOk).collect(Collectors.toSet());
         }
         return filteredBiomes;
     }

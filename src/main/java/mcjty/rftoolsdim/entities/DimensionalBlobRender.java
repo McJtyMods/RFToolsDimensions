@@ -25,6 +25,12 @@ public class DimensionalBlobRender extends LivingRenderer<DimensionalBlobEntity,
         return mobTexture;
     }
 
+
+    @Override
+    protected boolean canRenderName(DimensionalBlobEntity entity) {
+        return entity.hasCustomName() && super.canRenderName(entity);
+    }
+
     public static final DimensionalBlobRender.Factory FACTORY = new DimensionalBlobRender.Factory();
 
     @Override

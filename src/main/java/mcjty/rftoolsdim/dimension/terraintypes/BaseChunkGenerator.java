@@ -21,7 +21,6 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.provider.BiomeProvider;
 import net.minecraft.world.chunk.ChunkPrimer;
-import net.minecraft.world.chunk.ChunkSection;
 import net.minecraft.world.chunk.IChunk;
 import net.minecraft.world.gen.*;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
@@ -303,7 +302,7 @@ public abstract class BaseChunkGenerator<T extends GenerationSettings> extends C
     }
 
     @Override
-    public void func_225551_a_(WorldGenRegion region, IChunk chunk) {
+    public void generateSurface(WorldGenRegion region, IChunk chunk) {
         ChunkPos chunkpos = chunk.getPos();
         int chunkX = chunkpos.x;
         int chunkZ = chunkpos.z;
@@ -392,7 +391,7 @@ public abstract class BaseChunkGenerator<T extends GenerationSettings> extends C
         this.phantomSpawner.tick(worldIn, spawnHostileMobs, spawnPeacefulMobs);
         this.patrolSpawner.tick(worldIn, spawnHostileMobs, spawnPeacefulMobs);
         this.catSpawner.tick(worldIn, spawnHostileMobs, spawnPeacefulMobs);
-        this.villageSiege.func_225477_a(worldIn, spawnHostileMobs, spawnPeacefulMobs);
+        this.villageSiege.tick(worldIn, spawnHostileMobs, spawnPeacefulMobs);
     }
 
     @Override
