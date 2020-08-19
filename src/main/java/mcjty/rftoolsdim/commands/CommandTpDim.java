@@ -6,6 +6,7 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import mcjty.lib.varia.DimensionId;
 import mcjty.lib.varia.TeleportationTools;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
@@ -14,7 +15,6 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.world.dimension.DimensionType;
 
 public class CommandTpDim implements Command<CommandSource> {
 
@@ -34,12 +34,12 @@ public class CommandTpDim implements Command<CommandSource> {
         int x = player.getPosition().getX();
         int z = player.getPosition().getZ();
         ResourceLocation id = new ResourceLocation(name);
-        DimensionType type = DimensionType.byName(id);
+        DimensionId type = DimensionId.fromResourceLocation(id);
         if (type == null) {
             if (!name.contains(":")) {
                 // Try adding 'rftoolsdim' in front
                 id = new ResourceLocation("rftoolsdim:" + name);
-                type = DimensionType.byName(id);
+                type = DimensionId.fromResourceLocation(id);
             }
             if (type == null) {
                 context.getSource().sendFeedback(new StringTextComponent(TextFormatting.RED + "Can't find dimension!"), true);
