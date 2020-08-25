@@ -1,13 +1,12 @@
 package mcjty.rftoolsdim;
 
+import mcjty.rftoolsdim.setup.ClientSetup;
 import mcjty.rftoolsdim.setup.Config;
 import mcjty.rftoolsdim.setup.ModSetup;
 import mcjty.rftoolsdim.setup.Registration;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 @Mod(RFToolsDim.MODID)
@@ -25,7 +24,7 @@ public class RFToolsDim {
 
         Registration.register();
 
-        FMLJavaModLoadingContext.get().getModEventBus().addListener((FMLCommonSetupEvent event) -> setup.init(event));
-        FMLJavaModLoadingContext.get().getModEventBus().addListener((FMLClientSetupEvent event) -> setup.initClient(event));
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(setup::init);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientSetup::init);
     }
 }

@@ -9,7 +9,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 
@@ -32,9 +31,6 @@ public class ModSetup extends DefaultModSetup {
 
     public DimletDictionary getDimletDictionary() {
         return dimletDictionary;
-    }
-
-    public void initClient(FMLClientSetupEvent e) {
     }
 
     @SubscribeEvent
