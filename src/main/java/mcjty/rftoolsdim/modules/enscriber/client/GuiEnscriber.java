@@ -31,7 +31,7 @@ public class GuiEnscriber extends GenericGuiContainer<EnscriberTileEntity, Gener
     private static final ResourceLocation iconGuiElements = new ResourceLocation(RFToolsBase.MODID, "textures/gui/guielements.png");
 
     public GuiEnscriber(EnscriberTileEntity tileEntity, GenericContainer container, PlayerInventory inventory) {
-        super(RFToolsDim.instance, tileEntity, container, inventory, ManualHelper.create("rftoolsdim:dimensionbuilder")); // @todo manual
+        super(tileEntity, container, inventory, ManualHelper.create("rftoolsdim:dimensionbuilder")); // @todo manual
 
         xSize = BUILDER_WIDTH;
         ySize = BUILDER_HEIGHT;
