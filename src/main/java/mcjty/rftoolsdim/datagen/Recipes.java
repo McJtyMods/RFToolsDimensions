@@ -1,7 +1,7 @@
 package mcjty.rftoolsdim.datagen;
 
 import mcjty.lib.datagen.BaseRecipeProvider;
-import mcjty.rftoolsbase.modules.various.VariousSetup;
+import mcjty.rftoolsbase.modules.various.VariousModule;
 import mcjty.rftoolsdim.modules.dimensionbuilder.DimensionBuilderSetup;
 import mcjty.rftoolsdim.modules.dimlets.DimletSetup;
 import mcjty.rftoolsdim.modules.enscriber.EnscriberSetup;
@@ -11,7 +11,6 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.data.IFinishedRecipe;
 import net.minecraft.data.ShapedRecipeBuilder;
 import net.minecraft.item.Items;
-import net.minecraft.tags.ItemTags;
 import net.minecraftforge.common.Tags;
 
 import java.util.function.Consumer;
@@ -20,15 +19,15 @@ public class Recipes extends BaseRecipeProvider {
 
     public Recipes(DataGenerator generatorIn) {
         super(generatorIn);
-        add('F', VariousSetup.MACHINE_FRAME.get());
-        add('s', VariousSetup.DIMENSIONALSHARD.get());
+        add('F', VariousModule.MACHINE_FRAME.get());
+        add('s', VariousModule.DIMENSIONALSHARD.get());
         add('E', DimletSetup.EMPTY_DIMLET.get());
     }
 
     @Override
     protected void registerRecipes(Consumer<IFinishedRecipe> consumer) {
         build(consumer, ShapedRecipeBuilder.shapedRecipe(DimletSetup.EMPTY_DIMLET.get())
-                        .addCriterion("shard", hasItem(VariousSetup.DIMENSIONALSHARD.get())),
+                        .addCriterion("shard", hasItem(VariousModule.DIMENSIONALSHARD.get())),
                 " p ", "psp", " p ");
         build(consumer, ShapedRecipeBuilder.shapedRecipe(DimletSetup.EMPTY_TERRAIN_DIMLET.get())
                         .key('C', Tags.Items.COBBLESTONE)
@@ -47,12 +46,12 @@ public class Recipes extends BaseRecipeProvider {
 
         build(consumer, ShapedRecipeBuilder.shapedRecipe(DimletSetup.PART_ENERGY_0.get())
                         .key('g', Tags.Items.DUSTS_GLOWSTONE)
-                        .addCriterion("shard", hasItem(VariousSetup.DIMENSIONALSHARD.get())),
+                        .addCriterion("shard", hasItem(VariousModule.DIMENSIONALSHARD.get())),
                 "rRr", "RsR", "rgr");
         build(consumer, ShapedRecipeBuilder.shapedRecipe(DimletSetup.PART_MEMORY_0.get())
                         .key('g', Tags.Items.DUSTS_GLOWSTONE)
                         .key('l', Tags.Items.STORAGE_BLOCKS_LAPIS)
-                        .addCriterion("shard", hasItem(VariousSetup.DIMENSIONALSHARD.get())),
+                        .addCriterion("shard", hasItem(VariousModule.DIMENSIONALSHARD.get())),
                 "rlr", "lsl", "rgr");
 
         build(consumer, ShapedRecipeBuilder.shapedRecipe(DimletSetup.PART_ENERGY_1.get())
@@ -69,13 +68,13 @@ public class Recipes extends BaseRecipeProvider {
 
         build(consumer, ShapedRecipeBuilder.shapedRecipe(DimletSetup.PART_ENERGY_2.get())
                         .key('u', DimletSetup.RARE_ESSENCE.get())
-                        .key('U', VariousSetup.INFUSED_ENDERPEARL.get())
+                        .key('U', VariousModule.INFUSED_ENDERPEARL.get())
                         .key('M', DimletSetup.PART_ENERGY_1.get())
                         .addCriterion("energy1", hasItem(DimletSetup.PART_ENERGY_1.get())),
                 "uRu", "RMR", "uUu");
         build(consumer, ShapedRecipeBuilder.shapedRecipe(DimletSetup.PART_MEMORY_2.get())
                         .key('u', DimletSetup.RARE_ESSENCE.get())
-                        .key('U', VariousSetup.INFUSED_ENDERPEARL.get())
+                        .key('U', VariousModule.INFUSED_ENDERPEARL.get())
                         .key('l', Tags.Items.STORAGE_BLOCKS_LAPIS)
                         .key('M', DimletSetup.PART_MEMORY_1.get())
                         .addCriterion("memory1", hasItem(DimletSetup.PART_MEMORY_1.get())),
@@ -83,13 +82,13 @@ public class Recipes extends BaseRecipeProvider {
 
         build(consumer, ShapedRecipeBuilder.shapedRecipe(DimletSetup.PART_ENERGY_3.get())
                         .key('u', DimletSetup.LEGENDARY_ESSENCE.get())
-                        .key('U', VariousSetup.INFUSED_DIAMOND.get())
+                        .key('U', VariousModule.INFUSED_DIAMOND.get())
                         .key('M', DimletSetup.PART_ENERGY_2.get())
                         .addCriterion("energy2", hasItem(DimletSetup.PART_ENERGY_2.get())),
                 "uRu", "RMR", "uUu");
         build(consumer, ShapedRecipeBuilder.shapedRecipe(DimletSetup.PART_MEMORY_3.get())
                         .key('u', DimletSetup.LEGENDARY_ESSENCE.get())
-                        .key('U', VariousSetup.INFUSED_DIAMOND.get())
+                        .key('U', VariousModule.INFUSED_DIAMOND.get())
                         .key('l', Tags.Items.STORAGE_BLOCKS_LAPIS)
                         .key('M', DimletSetup.PART_MEMORY_2.get())
                         .addCriterion("memory2", hasItem(DimletSetup.PART_MEMORY_2.get())),
@@ -97,17 +96,17 @@ public class Recipes extends BaseRecipeProvider {
 
         build(consumer, ShapedRecipeBuilder.shapedRecipe(DimensionBuilderSetup.DIMENSION_BUILDER.get())
                         .key('g', Items.GOLD_INGOT)
-                        .addCriterion("frame", hasItem(VariousSetup.MACHINE_FRAME.get())),
+                        .addCriterion("frame", hasItem(VariousModule.MACHINE_FRAME.get())),
                 "oeo", "dFd", "ggg");
         build(consumer, ShapedRecipeBuilder.shapedRecipe(WorkbenchSetup.WORKBENCH.get())
                         .key('C', Blocks.CRAFTING_TABLE)
                         .key('u', DimletSetup.EMPTY_DIMLET.get())
-                        .addCriterion("frame", hasItem(VariousSetup.MACHINE_FRAME.get())),
+                        .addCriterion("frame", hasItem(VariousModule.MACHINE_FRAME.get())),
                 "rur", "CFC", "rur");
         build(consumer, ShapedRecipeBuilder.shapedRecipe(EnscriberSetup.ENSCRIBER.get())
                         .key('C', Blocks.CRAFTING_TABLE)
                         .key('u', DimletSetup.EMPTY_DIMLET.get())
-                        .addCriterion("frame", hasItem(VariousSetup.MACHINE_FRAME.get())),
+                        .addCriterion("frame", hasItem(VariousModule.MACHINE_FRAME.get())),
                 "pup", "CFC", "pup");
     }
 }
