@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "rftoolsdim:dimlet_workbench"
+    ]
+  },
+  "criteria": {
+    "frame": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "rftoolsbase:machine_frame"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "rftoolsdim:dimlet_workbench"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "frame",
+      "has_the_recipe"
+    ]
+  ]
+}

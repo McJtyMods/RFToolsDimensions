@@ -100,7 +100,9 @@ jar {
     }
 }
 
-
+sourceSets.main.resources {
+    srcDir 'src/generated/resources'
+}
 
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"

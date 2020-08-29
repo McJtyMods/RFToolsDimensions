@@ -1,0 +1,27 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "rftoolsdim:block/dimension_builder",
+      "x": 90
+    },
+    "facing=up": {
+      "model": "rftoolsdim:block/dimension_builder",
+      "x": -90
+    },
+    "facing=north": {
+      "model": "rftoolsdim:block/dimension_builder"
+    },
+    "facing=south": {
+      "model": "rftoolsdim:block/dimension_builder",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "rftoolsdim:block/dimension_builder",
+      "y": 270
+    },
+    "facing=east": {
+      "model": "rftoolsdim:block/dimension_builder",
+      "y": 90
+    }
+  }
+}
