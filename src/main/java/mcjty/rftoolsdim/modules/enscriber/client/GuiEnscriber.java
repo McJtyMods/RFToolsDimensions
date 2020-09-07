@@ -7,8 +7,8 @@ import mcjty.lib.gui.layout.HorizontalAlignment;
 import mcjty.lib.gui.widgets.*;
 import mcjty.lib.varia.RedstoneMode;
 import mcjty.rftoolsbase.RFToolsBase;
-import mcjty.rftoolsbase.tools.ManualHelper;
 import mcjty.rftoolsdim.RFToolsDim;
+import mcjty.rftoolsdim.modules.enscriber.EnscriberSetup;
 import mcjty.rftoolsdim.modules.enscriber.blocks.EnscriberTileEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
@@ -31,7 +31,7 @@ public class GuiEnscriber extends GenericGuiContainer<EnscriberTileEntity, Gener
     private static final ResourceLocation iconGuiElements = new ResourceLocation(RFToolsBase.MODID, "textures/gui/guielements.png");
 
     public GuiEnscriber(EnscriberTileEntity tileEntity, GenericContainer container, PlayerInventory inventory) {
-        super(tileEntity, container, inventory, ManualHelper.create("rftoolsdim:dimensionbuilder")); // @todo manual
+        super(tileEntity, container, inventory, EnscriberSetup.ENSCRIBER.get().getManualEntry());
 
         xSize = BUILDER_WIDTH;
         ySize = BUILDER_HEIGHT;

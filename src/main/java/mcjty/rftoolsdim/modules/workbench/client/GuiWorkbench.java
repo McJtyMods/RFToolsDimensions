@@ -7,8 +7,8 @@ import mcjty.lib.gui.layout.HorizontalAlignment;
 import mcjty.lib.gui.widgets.*;
 import mcjty.lib.varia.RedstoneMode;
 import mcjty.rftoolsbase.RFToolsBase;
-import mcjty.rftoolsbase.tools.ManualHelper;
 import mcjty.rftoolsdim.RFToolsDim;
+import mcjty.rftoolsdim.modules.workbench.WorkbenchSetup;
 import mcjty.rftoolsdim.modules.workbench.blocks.WorkbenchTileEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
@@ -31,7 +31,7 @@ public class GuiWorkbench extends GenericGuiContainer<WorkbenchTileEntity, Gener
     private static final ResourceLocation iconGuiElements = new ResourceLocation(RFToolsBase.MODID, "textures/gui/guielements.png");
 
     public GuiWorkbench(WorkbenchTileEntity tileEntity, GenericContainer container, PlayerInventory inventory) {
-        super(tileEntity, container, inventory, ManualHelper.create("rftoolsdim:dimensionbuilder")); // @todo manual
+        super(tileEntity, container, inventory, WorkbenchSetup.WORKBENCH.get().getManualEntry());
 
         xSize = BUILDER_WIDTH;
         ySize = BUILDER_HEIGHT;

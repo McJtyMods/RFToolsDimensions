@@ -14,6 +14,7 @@ import mcjty.lib.container.GenericContainer;
 import mcjty.lib.container.NoDirectionItemHander;
 import mcjty.lib.tileentity.GenericEnergyStorage;
 import mcjty.lib.tileentity.GenericTileEntity;
+import mcjty.rftoolsbase.tools.ManualHelper;
 import mcjty.rftoolsdim.modules.dimensionbuilder.DimensionBuilderConfig;
 import mcjty.rftoolsdim.modules.dimensionbuilder.DimensionBuilderSetup;
 import net.minecraft.inventory.container.INamedContainerProvider;
@@ -60,6 +61,7 @@ public class DimensionBuilderTileEntity extends GenericTileEntity {
         return new BaseBlock(new BlockBuilder()
                 .tileEntitySupplier(DimensionBuilderTileEntity::new)
                 .infusable()
+                .manualEntry(ManualHelper.create("rftoolsdim:dimensionbuilder"))
                 .info(key("message.rftoolsdim.shiftmessage"))
                 .infoShift(header(), gold())) {
             @Override

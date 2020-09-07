@@ -7,8 +7,8 @@ import mcjty.lib.gui.layout.HorizontalAlignment;
 import mcjty.lib.gui.widgets.*;
 import mcjty.lib.varia.RedstoneMode;
 import mcjty.rftoolsbase.RFToolsBase;
-import mcjty.rftoolsbase.tools.ManualHelper;
 import mcjty.rftoolsdim.RFToolsDim;
+import mcjty.rftoolsdim.modules.dimensionbuilder.DimensionBuilderSetup;
 import mcjty.rftoolsdim.modules.dimensionbuilder.blocks.DimensionBuilderTileEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
@@ -30,7 +30,7 @@ public class GuiDimensionBuilder extends GenericGuiContainer<DimensionBuilderTil
     private static final ResourceLocation iconGuiElements = new ResourceLocation(RFToolsBase.MODID, "textures/gui/guielements.png");
 
     public GuiDimensionBuilder(DimensionBuilderTileEntity tileEntity, GenericContainer container, PlayerInventory inventory) {
-        super(tileEntity, container, inventory, ManualHelper.create("rftoolsdim:dimensionbuilder")); // @todo manual
+        super(tileEntity, container, inventory, DimensionBuilderSetup.DIMENSION_BUILDER.get().getManualEntry());
 
         xSize = BUILDER_WIDTH;
         ySize = BUILDER_HEIGHT;

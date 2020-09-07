@@ -10,6 +10,7 @@ import mcjty.lib.container.ContainerFactory;
 import mcjty.lib.container.GenericContainer;
 import mcjty.lib.container.NoDirectionItemHander;
 import mcjty.lib.tileentity.GenericTileEntity;
+import mcjty.rftoolsbase.tools.ManualHelper;
 import mcjty.rftoolsdim.modules.enscriber.EnscriberSetup;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
@@ -45,6 +46,7 @@ public class EnscriberTileEntity extends GenericTileEntity {
         return new BaseBlock(new BlockBuilder()
                 .tileEntitySupplier(EnscriberTileEntity::new)
                 .infusable()
+                .manualEntry(ManualHelper.create("rftoolsdim:dimensionbuilder"))
                 .info(key("message.rftoolsdim.shiftmessage"))
                 .infoShift(header(), gold())) {
             @Override
