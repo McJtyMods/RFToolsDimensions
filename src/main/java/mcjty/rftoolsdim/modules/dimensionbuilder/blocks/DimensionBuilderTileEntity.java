@@ -38,19 +38,19 @@ public class DimensionBuilderTileEntity extends GenericTileEntity {
     public static final int SLOT_DIMENSION_TAB = 0;
 
     public static final Lazy<ContainerFactory> CONTAINER_FACTORY = Lazy.of(() -> new ContainerFactory(1)
-            .slot(specific(DimensionBuilderTileEntity::isRealizedTab),
+            .slot(specific(DimensionBuilderTileEntity::isRealizedTab).in().out(),
                     CONTAINER_CONTAINER, SLOT_DIMENSION_TAB, 82, 24)
             .playerSlots(10, 70));
 
     private final NoDirectionItemHander items = createItemHandler();
-    private final LazyOptional<NoDirectionItemHander> itemHandler = LazyOptional.of(() -> items);
-    private final LazyOptional<AutomationFilterItemHander> automationItemHandler = LazyOptional.of(() -> new AutomationFilterItemHander(items));
+    private final LazyOptional<AutomationFilterItemHander> itemHandler = LazyOptional.of(() -> new AutomationFilterItemHander(items));
 
-    private final LazyOptional<GenericEnergyStorage> energyHandler = LazyOptional.of(() -> new GenericEnergyStorage(this, true, DimensionBuilderConfig.MAXENERGY.get(), DimensionBuilderConfig.RECEIVEPERTICK.get()));
+    private final GenericEnergyStorage energyStorage = new GenericEnergyStorage(this, true, DimensionBuilderConfig.MAXENERGY.get(), DimensionBuilderConfig.RECEIVEPERTICK.get());
+    private final LazyOptional<GenericEnergyStorage> energyHandler = LazyOptional.of(() -> energyStorage);
     private final LazyOptional<INamedContainerProvider> screenHandler = LazyOptional.of(() -> new DefaultContainerProvider<GenericContainer>("Dimension Builder")
             .containerSupplier((windowId,player) -> new GenericContainer(DimensionBuilderSetup.CONTAINER_DIMENSION_BUILDER.get(), windowId, CONTAINER_FACTORY.get(), getPos(), DimensionBuilderTileEntity.this))
-            .itemHandler(itemHandler)
-            .energyHandler(energyHandler));
+            .itemHandler(() -> items)
+            .energyHandler(() -> energyStorage));
     private final LazyOptional<IInfusable> infusableHandler = LazyOptional.of(() -> new DefaultInfusable(DimensionBuilderTileEntity.this));
 
     public DimensionBuilderTileEntity() {
@@ -94,7 +94,7 @@ public class DimensionBuilderTileEntity extends GenericTileEntity {
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction facing) {
         if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-            return automationItemHandler.cast();
+            return itemHandler.cast();
         }
         if (cap == CapabilityEnergy.ENERGY) {
             return energyHandler.cast();
