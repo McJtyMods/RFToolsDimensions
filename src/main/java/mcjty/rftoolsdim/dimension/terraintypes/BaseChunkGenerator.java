@@ -31,6 +31,7 @@ import net.minecraft.world.gen.feature.structure.AbstractVillagePiece;
 import net.minecraft.world.gen.feature.structure.Structure;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraft.world.gen.feature.structure.StructureStart;
+import net.minecraft.world.gen.settings.DimensionStructuresSettings;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.spawner.CatSpawner;
 import net.minecraft.world.spawner.PatrolSpawner;
@@ -39,7 +40,7 @@ import net.minecraft.world.spawner.PhantomSpawner;
 import java.util.List;
 import java.util.Random;
 
-public abstract class BaseChunkGenerator<T extends GenerationSettings> extends ChunkGenerator<T> {
+public abstract class BaseChunkGenerator extends ChunkGenerator {
 
     private static final float[] MYSTERY_FIELD = Util.make(new float[13824], (p_222557_0_) -> {
         for (int i = 0; i < 24; ++i) {
@@ -70,8 +71,9 @@ public abstract class BaseChunkGenerator<T extends GenerationSettings> extends C
     protected final BlockState defaultBlock;
     protected final BlockState defaultFluid;
 
-    public BaseChunkGenerator(IWorld worldIn, BiomeProvider biomeProviderIn, int horizontalNoiseGranularityIn, int verticalNoiseGranularityIn, int p_i49931_5_, T settingsIn, boolean usePerlin) {
-        super(worldIn, biomeProviderIn, settingsIn);
+    public BaseChunkGenerator(IWorld worldIn, BiomeProvider biomeProviderIn, int horizontalNoiseGranularityIn, int verticalNoiseGranularityIn, int p_i49931_5_, DimensionStructuresSettings settingsIn, boolean usePerlin) {
+        super(biomeProviderIn, settingsIn);
+//        super(worldIn, biomeProviderIn, settingsIn);
         this.verticalNoiseGranularity = verticalNoiseGranularityIn;
         this.horizontalNoiseGranularity = horizontalNoiseGranularityIn;
         this.defaultBlock = settingsIn.getDefaultBlock();

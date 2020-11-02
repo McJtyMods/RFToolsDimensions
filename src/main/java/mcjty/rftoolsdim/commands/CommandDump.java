@@ -8,14 +8,12 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.mojang.datafixers.Dynamic;
-import com.mojang.datafixers.types.JsonOps;
+import com.mojang.serialization.Dynamic;
+import com.mojang.serialization.JsonOps;
 import net.minecraft.block.Blocks;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
 import net.minecraft.world.gen.feature.OreFeatureConfig;
-import net.minecraft.world.gen.feature.structure.MineshaftConfig;
-import net.minecraft.world.gen.feature.structure.MineshaftStructure;
 
 public class CommandDump implements Command<CommandSource> {
 
@@ -31,10 +29,11 @@ public class CommandDump implements Command<CommandSource> {
 
     @Override
     public int run(CommandContext<CommandSource> context) throws CommandSyntaxException {
-        OreFeatureConfig config = new OreFeatureConfig(OreFeatureConfig.FillerBlockType.NATURAL_STONE, Blocks.GLOWSTONE.getDefaultState(), 30);
-        Dynamic<JsonElement> serialized = config.serialize(JsonOps.INSTANCE);
-        JsonElement value = serialized.getValue();
-        System.out.println("json = " + GSON.toJson(value));
+        OreFeatureConfig config = new OreFeatureConfig(OreFeatureConfig.FillerBlockType.field_241882_a, Blocks.GLOWSTONE.getDefaultState(), 30);
+        // @todo 1.16.3
+//        Dynamic<JsonElement> serialized = config.serialize(JsonOps.INSTANCE);
+//        JsonElement value = serialized.getValue();
+//        System.out.println("json = " + GSON.toJson(value));
         return 0;
     }
 }
