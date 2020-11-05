@@ -4,9 +4,9 @@ import mcjty.rftoolsdim.dimension.types.FlatDimension;
 import mcjty.rftoolsdim.dimension.types.NormalDimension;
 import mcjty.rftoolsdim.dimension.types.VoidDimension;
 import mcjty.rftoolsdim.dimension.types.WavesDimension;
+import net.minecraft.world.Dimension;
+import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
-import net.minecraft.world.dimension.Dimension;
-import net.minecraft.world.dimension.DimensionType;
 
 import java.util.HashMap;
 import java.util.Map;

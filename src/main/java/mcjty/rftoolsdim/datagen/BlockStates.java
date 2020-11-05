@@ -6,7 +6,7 @@ import mcjty.rftoolsdim.modules.dimensionbuilder.DimensionBuilderSetup;
 import mcjty.rftoolsdim.modules.enscriber.EnscriberSetup;
 import mcjty.rftoolsdim.modules.workbench.WorkbenchSetup;
 import net.minecraft.data.DataGenerator;
-import net.minecraftforge.client.model.generators.ExistingFileHelper;
+import net.minecraftforge.common.data.ExistingFileHelper;
 
 public class BlockStates extends BaseBlockStateProvider {
 

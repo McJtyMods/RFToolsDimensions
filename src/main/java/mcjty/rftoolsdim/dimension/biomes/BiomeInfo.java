@@ -9,7 +9,7 @@ import java.util.Set;
 public class BiomeInfo {
 
     private final BiomeLayoutType biomeLayoutType;
-    private final Set<Biome.TempCategory> tempCategory = new HashSet<>();
+    private final Set<Biome.Climate> tempCategory = new HashSet<>();
     private final Set<Biome.Category> biomeCategory = new HashSet<>();
 
     private BiomeInfo(BiomeLayoutType biomeLayoutType) {
@@ -17,7 +17,7 @@ public class BiomeInfo {
     }
 
     @Nonnull
-    public Set<Biome.TempCategory> getTempCategory() {
+    public Set<Biome.Climate> getTempCategory() {
         return tempCategory;
     }
 
@@ -38,10 +38,11 @@ public class BiomeInfo {
         }
         BiomeInfo info = new BiomeInfo(biomeLayoutType);
 
-        for (String temperature : descriptor.getTemperatures()) {
-            Biome.TempCategory tempCategory = Biome.TempCategory.valueOf(temperature.toUpperCase());
-            info.tempCategory.add(tempCategory);
-        }
+        // @todo 1.16
+//        for (String temperature : descriptor.getTemperatures()) {
+//            Biome.Climate tempCategory = Biome.Climate.valueOf(temperature.toUpperCase());
+//            info.tempCategory.add(tempCategory);
+//        }
 
         for (String category : descriptor.getCategories()) {
             Biome.Category cat = Biome.Category.valueOf(category.toUpperCase());
