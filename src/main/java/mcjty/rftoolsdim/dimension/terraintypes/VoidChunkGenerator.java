@@ -1,15 +1,19 @@
 package mcjty.rftoolsdim.dimension.terraintypes;
 
+import com.mojang.serialization.Codec;
 import it.unimi.dsi.fastutil.objects.ObjectList;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.biome.provider.BiomeProvider;
 import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.chunk.IChunk;
+import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.jigsaw.JigsawJunction;
 import net.minecraft.world.gen.feature.structure.AbstractVillagePiece;
+import net.minecraft.world.gen.feature.structure.StructureManager;
 
 import java.util.List;
 import java.util.Random;
@@ -46,6 +50,31 @@ public class VoidChunkGenerator extends BaseChunkGenerator<VoidChunkGenerator.Co
     @Override
     protected void fillNoiseColumn(double[] noiseColumn, int noiseX, int noiseZ) {
 
+    }
+
+    @Override
+    protected Codec<? extends ChunkGenerator> func_230347_a_() {
+        return null;
+    }
+
+    @Override
+    public ChunkGenerator func_230349_a_(long l) {
+        return null;
+    }
+
+    @Override
+    public void func_230352_b_(IWorld iWorld, StructureManager structureManager, IChunk iChunk) {
+
+    }
+
+    @Override
+    public int getHeight(int i, int i1, Heightmap.Type type) {
+        return 0;
+    }
+
+    @Override
+    public IBlockReader func_230348_a_(int i, int i1) {
+        return null;
     }
 
     @Override
