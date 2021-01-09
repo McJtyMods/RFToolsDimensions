@@ -2,8 +2,6 @@ package mcjty.rftoolsdim.setup;
 
 
 import mcjty.rftoolsdim.RFToolsDim;
-import mcjty.rftoolsdim.dimension.RFTModDimension;
-import mcjty.rftoolsdim.dimension.terraintypes.TerrainType;
 import mcjty.rftoolsdim.dimension.features.SpheresFeature;
 import mcjty.rftoolsdim.entities.EntitySetup;
 import mcjty.rftoolsdim.modules.dimensionbuilder.DimensionBuilderSetup;
@@ -18,16 +16,10 @@ import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
-import net.minecraftforge.common.ModDimension;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
-import org.apache.commons.lang3.tuple.Pair;
-
-import java.util.Arrays;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 import static mcjty.rftoolsdim.RFToolsDim.MODID;
 
@@ -39,7 +31,6 @@ public class Registration {
     public static final DeferredRegister<ContainerType<?>> CONTAINERS = DeferredRegister.create(ForgeRegistries.CONTAINERS, MODID);
     public static final DeferredRegister<SoundEvent> SOUNDS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, MODID);
     public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITIES, MODID);
-    public static final DeferredRegister<ModDimension> DIMENSIONS = DeferredRegister.create(ForgeRegistries.MOD_DIMENSIONS, MODID);
     public static final DeferredRegister<Feature<?>> FEATURES = DeferredRegister.create(ForgeRegistries.FEATURES, MODID);
 
     public static void register() {
@@ -49,7 +40,6 @@ public class Registration {
         CONTAINERS.register(FMLJavaModLoadingContext.get().getModEventBus());
         SOUNDS.register(FMLJavaModLoadingContext.get().getModEventBus());
         ENTITIES.register(FMLJavaModLoadingContext.get().getModEventBus());
-        DIMENSIONS.register(FMLJavaModLoadingContext.get().getModEventBus());
         FEATURES.register(FMLJavaModLoadingContext.get().getModEventBus());
 
         DimletSetup.register();
@@ -58,10 +48,6 @@ public class Registration {
         WorkbenchSetup.register();
         EnscriberSetup.register();
     }
-
-    public static final Map<TerrainType, RegistryObject<RFTModDimension>> MOD_DIMENSIONS = Arrays.stream(TerrainType.values())
-            .map(type -> Pair.of(type, DIMENSIONS.register("dimension_" + type.getName(), () -> new RFTModDimension(type))))
-            .collect(Collectors.toMap(Pair::getKey, Pair::getValue));
 
     public static final RegistryObject<SpheresFeature> SPHERES_FEATURE = FEATURES.register("spheres", () -> new SpheresFeature(NoFeatureConfig::deserialize));
 

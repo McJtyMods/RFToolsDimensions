@@ -15,7 +15,7 @@ import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.WorldGenRegion;
 import net.minecraft.world.gen.feature.structure.StructureManager;
 
-public class VoidChunkGenerator extends BaseChunkGenerator {
+public class RFTChunkGenerator extends BaseChunkGenerator {
 
     private static final Codec<Settings> SETTINGS_CODEC = RecordCodecBuilder.create(instance ->
             instance.group(
@@ -24,13 +24,13 @@ public class VoidChunkGenerator extends BaseChunkGenerator {
                     Codec.FLOAT.fieldOf("horizontalvariance").forGetter(Settings::getHorizontalVariance)
             ).apply(instance, Settings::new));
 
-    public static final Codec<VoidChunkGenerator> CODEC = RecordCodecBuilder.create(instance ->
+    public static final Codec<RFTChunkGenerator> CODEC = RecordCodecBuilder.create(instance ->
             instance.group(
-                    RegistryLookupCodec.getLookUpCodec(Registry.BIOME_KEY).forGetter(VoidChunkGenerator::getBiomeRegistry),
-                    SETTINGS_CODEC.fieldOf("settings").forGetter(VoidChunkGenerator::getSettings)
-            ).apply(instance, VoidChunkGenerator::new));
+                    RegistryLookupCodec.getLookUpCodec(Registry.BIOME_KEY).forGetter(RFTChunkGenerator::getBiomeRegistry),
+                    SETTINGS_CODEC.fieldOf("settings").forGetter(RFTChunkGenerator::getSettings)
+            ).apply(instance, RFTChunkGenerator::new));
 
-    public VoidChunkGenerator(Registry<Biome> registry, Settings settings) {
+    public RFTChunkGenerator(Registry<Biome> registry, Settings settings) {
         super(registry, settings);
     }
 
@@ -41,7 +41,7 @@ public class VoidChunkGenerator extends BaseChunkGenerator {
 
     @Override
     public ChunkGenerator func_230349_a_(long l) {
-        return new VoidChunkGenerator(getBiomeRegistry(), getSettings());
+        return new RFTChunkGenerator(getBiomeRegistry(), getSettings());
     }
 
     @Override
@@ -56,11 +56,12 @@ public class VoidChunkGenerator extends BaseChunkGenerator {
 
     @Override
     public int getHeight(int i, int i1, Heightmap.Type type) {
-        return 0;   // @todo 1.16
+        return 0;       // @todo 1.16
     }
 
     @Override
     public IBlockReader func_230348_a_(int i, int i1) {
         return new Blockreader(new BlockState[0]);   // @todo 1.16
     }
+
 }

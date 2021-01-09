@@ -1,9 +1,5 @@
 package mcjty.rftoolsdim.dimension.terraintypes;
 
-import mcjty.rftoolsdim.dimension.types.FlatDimension;
-import mcjty.rftoolsdim.dimension.types.NormalDimension;
-import mcjty.rftoolsdim.dimension.types.VoidDimension;
-import mcjty.rftoolsdim.dimension.types.WavesDimension;
 import net.minecraft.world.Dimension;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
@@ -13,13 +9,12 @@ import java.util.Map;
 import java.util.function.BiFunction;
 
 public enum TerrainType {
-    FLAT("flat", FlatDimension::new),
-    WAVING("waving", WavesDimension::new),
-    VOID("void", VoidDimension::new),
-    NORMAL("normal", NormalDimension::new);
+    FLAT("flat"),
+    WAVING("waving"),
+    VOID("void"),
+    NORMAL("normal");
 
     private final String name;
-    private final BiFunction<World, DimensionType, Dimension> dimensionSupplier;
 
     private static final Map<String, TerrainType> TERRAIN_BY_NAME = new HashMap<>();
 
@@ -29,17 +24,12 @@ public enum TerrainType {
         }
     }
 
-    TerrainType(String name, BiFunction<World, DimensionType, Dimension> dimensionSupplier) {
+    TerrainType(String name) {
         this.name = name;
-        this.dimensionSupplier = dimensionSupplier;
     }
 
     public String getName() {
         return name;
-    }
-
-    public BiFunction<World, DimensionType, Dimension> getDimensionSupplier() {
-        return dimensionSupplier;
     }
 
     public static TerrainType byName(String name) {

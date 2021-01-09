@@ -8,6 +8,7 @@ import mcjty.rftoolsdim.dimension.terraintypes.TerrainType;
 import mcjty.rftoolsdim.dimension.types.FlatDimension;
 import mcjty.rftoolsdim.setup.Registration;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.RegistryKey;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
@@ -23,7 +24,7 @@ public class DimensionManager extends AbstractWorldData<DimensionManager> {
 
     private long id = 0;
     private Map<String, DimensionDescriptor> dimensions = new HashMap<>();
-    private Map<DimensionType, DimensionInformation> dimensionInformations = new HashMap<>();
+    private Map<RegistryKey<World>, DimensionInformation> dimensionInformations = new HashMap<>();
 
     public DimensionManager() {
         super(NAME);
@@ -37,7 +38,7 @@ public class DimensionManager extends AbstractWorldData<DimensionManager> {
      * Get the dimension information for a given world
      */
     public DimensionInformation getDimensionInformation(World world) {
-        DimensionType type = world.getDimension().getType();
+        RegistryKey<World> type = world.getDimensionKey();
         if (!dimensionInformations.containsKey(type)) {
             String name = type.getRegistryName().getPath();
             DimensionDescriptor descriptor = dimensions.get(name);
@@ -58,7 +59,7 @@ public class DimensionManager extends AbstractWorldData<DimensionManager> {
             return "Dimension already exists!";
         }
         DimensionDescriptor descriptor = new DimensionDescriptor();
-        try(InputStream inputstream = FlatDimension.class.getResourceAsStream("/data/rftoolsdim/dimensions/" + filename)) {
+        try(InputStream inputstream = RFToolsDim.class.getResourceAsStream("/data/rftoolsdim/dimensions/" + filename)) {
             try(BufferedReader br = new BufferedReader(new InputStreamReader(inputstream, StandardCharsets.UTF_8))) {
                 JsonParser parser = new JsonParser();
                 JsonElement element = parser.parse(br);
@@ -71,8 +72,9 @@ public class DimensionManager extends AbstractWorldData<DimensionManager> {
         dimensions.put(name, descriptor);
         markDirty();
         TerrainType terrainType = descriptor.getTerrainType();
-        RFTModDimension dimension = Registration.MOD_DIMENSIONS.get(terrainType).get();
-        net.minecraftforge.common.DimensionManager.registerOrGetDimension(new ResourceLocation(RFToolsDim.MODID, name), dimension, null, true);
+
+//        RFTModDimension dimension = Registration.MOD_DIMENSIONS.get(terrainType).get();
+//        net.minecraftforge.common.DimensionManager.registerOrGetDimension(new ResourceLocation(RFToolsDim.MODID, name), dimension, null, true);
         return null;
     }
 
