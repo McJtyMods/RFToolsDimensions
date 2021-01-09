@@ -1,27 +1,26 @@
 package mcjty.rftoolsdim.dimension.features;
 
-import com.mojang.datafixers.Dynamic;
+import com.mojang.serialization.Codec;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.GenerationSettings;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
 
 import java.util.Random;
-import java.util.function.Function;
 
 public class SpheresFeature extends Feature<NoFeatureConfig> {
 
-    public SpheresFeature(Function<Dynamic<?>, ? extends NoFeatureConfig> configFactoryIn) {
-        super(configFactoryIn);
+    public SpheresFeature(Codec<NoFeatureConfig> codec) {
+        super(codec);
     }
 
     @Override
-    public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, NoFeatureConfig config) {
+    public boolean generate(ISeedReader reader, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
         ChunkPos cp = new ChunkPos(pos);
         int chunkX = cp.x;
         int chunkZ = cp.z;
@@ -31,8 +30,8 @@ public class SpheresFeature extends Feature<NoFeatureConfig> {
             int cx = chunkX + dx;
             for (int dz = -size; dz <= size; dz++) {
                 int cz = chunkZ + dz;
-                if (isFeatureCenter(world, cx, cz)) {
-                    generate(world, chunkX, chunkZ, dx, dz);
+                if (isFeatureCenter(reader, cx, cz)) {
+                    generate(reader, chunkX, chunkZ, dx, dz);
                 }
             }
         }

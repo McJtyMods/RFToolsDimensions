@@ -36,7 +36,8 @@ public class DimensionUpdatePacket implements Consumer<NetworkEvent.Context> {
 
     @Override
     public void accept(NetworkEvent.Context context) {
-        context.enqueueWork(() -> ClientPacketHandlers.handleDimensionUpdatePacket(this));
+        // @todo 1.16
+//        context.enqueueWork(() -> ClientPacketHandlers.handleDimensionUpdatePacket(this));
     }
 
 }

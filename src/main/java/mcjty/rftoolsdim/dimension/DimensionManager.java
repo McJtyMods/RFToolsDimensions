@@ -2,16 +2,19 @@ package mcjty.rftoolsdim.dimension;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+import mcjty.lib.varia.DimensionId;
 import mcjty.lib.worlddata.AbstractWorldData;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.dimension.terraintypes.TerrainType;
-import mcjty.rftoolsdim.dimension.types.FlatDimension;
-import mcjty.rftoolsdim.setup.Registration;
+import mcjty.rftoolsdim.dimension.terraintypes.VoidChunkGenerator;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.RegistryKey;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.world.Dimension;
+import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
-import net.minecraft.world.dimension.DimensionType;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -21,6 +24,8 @@ import java.util.Map;
 public class DimensionManager extends AbstractWorldData<DimensionManager> {
 
     private static final String NAME = "RFToolsDimensionManager";
+
+    public static final RegistryKey<DimensionType> VOID_TYPE = RegistryKey.getOrCreateKey(Registry.DIMENSION_TYPE_KEY, new ResourceLocation(RFToolsDim.MODID, "void"));
 
     private long id = 0;
     private Map<String, DimensionDescriptor> dimensions = new HashMap<>();
@@ -54,7 +59,7 @@ public class DimensionManager extends AbstractWorldData<DimensionManager> {
     }
 
     // Returns null on success, otherwise an error string
-    public String createDimension(String name, String filename) {
+    public String createDimension(World world, String name, String filename) {
         if (dimensions.containsKey(name)) {
             return "Dimension already exists!";
         }
@@ -72,6 +77,12 @@ public class DimensionManager extends AbstractWorldData<DimensionManager> {
         dimensions.put(name, descriptor);
         markDirty();
         TerrainType terrainType = descriptor.getTerrainType();
+
+        RegistryKey<World> key = RegistryKey.getOrCreateKey(Registry.WORLD_KEY, new ResourceLocation(RFToolsDim.MODID, name));
+        DimensionType type = world.getServer().func_244267_aX().getRegistry(Registry.DIMENSION_TYPE_KEY).getOrDefault(VOID_TYPE.getLocation());
+        DimensionHelper.getOrCreateWorld(world.getServer(), key, (server, registryKey) -> {
+            return new Dimension(() -> type, new VoidChunkGenerator(server));
+        });
 
 //        RFTModDimension dimension = Registration.MOD_DIMENSIONS.get(terrainType).get();
 //        net.minecraftforge.common.DimensionManager.registerOrGetDimension(new ResourceLocation(RFToolsDim.MODID, name), dimension, null, true);

@@ -3,6 +3,7 @@ package mcjty.rftoolsdim.dimension.terraintypes;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.block.BlockState;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryLookupCodec;
 import net.minecraft.world.Blockreader;
@@ -29,6 +30,10 @@ public class VoidChunkGenerator extends BaseChunkGenerator {
                     RegistryLookupCodec.getLookUpCodec(Registry.BIOME_KEY).forGetter(VoidChunkGenerator::getBiomeRegistry),
                     SETTINGS_CODEC.fieldOf("settings").forGetter(VoidChunkGenerator::getSettings)
             ).apply(instance, VoidChunkGenerator::new));
+
+    public VoidChunkGenerator(MinecraftServer server) {
+        this(server.func_244267_aX().getRegistry(Registry.BIOME_KEY), new Settings(65, 1.0f, 1.0f)); // @todo settings?
+    }
 
     public VoidChunkGenerator(Registry<Biome> registry, Settings settings) {
         super(registry, settings);
