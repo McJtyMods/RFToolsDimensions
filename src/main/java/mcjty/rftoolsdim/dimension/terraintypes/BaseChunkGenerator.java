@@ -1,10 +1,13 @@
 package mcjty.rftoolsdim.dimension.terraintypes;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.longs.LongIterator;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import it.unimi.dsi.fastutil.objects.ObjectList;
 import mcjty.rftoolsdim.dimension.DimensionInformation;
 import mcjty.rftoolsdim.dimension.DimensionManager;
+import mcjty.rftoolsdim.dimension.biomes.RFTBiomeProvider;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.crash.CrashReport;
@@ -16,9 +19,14 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.RegistryLookupCodec;
 import net.minecraft.village.VillageSiege;
+import net.minecraft.world.Blockreader;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.BiomeRegistry;
 import net.minecraft.world.biome.provider.BiomeProvider;
 import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.chunk.IChunk;
@@ -27,20 +35,35 @@ import net.minecraft.world.gen.feature.ConfiguredFeature;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.jigsaw.JigsawJunction;
 import net.minecraft.world.gen.feature.jigsaw.JigsawPattern;
-import net.minecraft.world.gen.feature.structure.AbstractVillagePiece;
-import net.minecraft.world.gen.feature.structure.Structure;
-import net.minecraft.world.gen.feature.structure.StructurePiece;
-import net.minecraft.world.gen.feature.structure.StructureStart;
+import net.minecraft.world.gen.feature.structure.*;
 import net.minecraft.world.gen.settings.DimensionStructuresSettings;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.spawner.CatSpawner;
 import net.minecraft.world.spawner.PatrolSpawner;
 import net.minecraft.world.spawner.PhantomSpawner;
+import net.minecraftforge.fml.RegistryObject;
 
 import java.util.List;
 import java.util.Random;
 
-public abstract class BaseChunkGenerator extends ChunkGenerator {
+public class BaseChunkGenerator extends ChunkGenerator {
+
+    private static final Codec<Settings> SETTINGS_CODEC = RecordCodecBuilder.create(instance ->
+            instance.group(
+                    Codec.INT.fieldOf("base").forGetter(Settings::getBaseHeight),
+                    Codec.FLOAT.fieldOf("verticalvariance").forGetter(Settings::getVerticalVariance),
+                    Codec.FLOAT.fieldOf("horizontalvariance").forGetter(Settings::getHorizontalVariance)
+            ).apply(instance, Settings::new));
+
+    public static final Codec<BaseChunkGenerator> CODEC = RecordCodecBuilder.create(instance ->
+            instance.group(
+                    RegistryLookupCodec.getLookUpCodec(Registry.BIOME_KEY).forGetter(BaseChunkGenerator::getBiomeRegistry),
+                    SETTINGS_CODEC.fieldOf("settings").forGetter(BaseChunkGenerator::getSettings)
+            ).apply(instance, BaseChunkGenerator::new));
+
+
+    private final Settings settings;
+
 
     private static final float[] MYSTERY_FIELD = Util.make(new float[13824], (p_222557_0_) -> {
         for (int i = 0; i < 24; ++i) {
@@ -71,21 +94,59 @@ public abstract class BaseChunkGenerator extends ChunkGenerator {
     protected final BlockState defaultBlock;
     protected final BlockState defaultFluid;
 
-    public BaseChunkGenerator(IWorld worldIn, BiomeProvider biomeProviderIn, int horizontalNoiseGranularityIn, int verticalNoiseGranularityIn, int p_i49931_5_, DimensionStructuresSettings settingsIn, boolean usePerlin) {
-        super(biomeProviderIn, settingsIn);
-//        super(worldIn, biomeProviderIn, settingsIn);
-        this.verticalNoiseGranularity = verticalNoiseGranularityIn;
-        this.horizontalNoiseGranularity = horizontalNoiseGranularityIn;
-        this.defaultBlock = settingsIn.getDefaultBlock();
-        this.defaultFluid = settingsIn.getDefaultFluid();
-        this.noiseSizeX = 16 / this.horizontalNoiseGranularity;
-        this.noiseSizeY = p_i49931_5_ / this.verticalNoiseGranularity;
-        this.noiseSizeZ = 16 / this.horizontalNoiseGranularity;
-        this.randomSeed = new SharedSeedRandom(this.seed);
-        this.field_222568_o = new OctavesNoiseGenerator(this.randomSeed, 15, 0);
-        this.field_222569_p = new OctavesNoiseGenerator(this.randomSeed, 15, 0);
-        this.field_222570_q = new OctavesNoiseGenerator(this.randomSeed, 7, 0);
-        this.surfaceDepthNoise = usePerlin ? new PerlinNoiseGenerator(this.randomSeed, 3, 0) : new OctavesNoiseGenerator(this.randomSeed, 3, 0);
+    public BaseChunkGenerator(Registry<Biome> registry, Settings settings) {
+        super(new RFTBiomeProvider(null /* @todo 1.16 world */), new DimensionStructuresSettings(false));
+        this.settings = settings;
+    }
+
+    public Registry<Biome> getBiomeRegistry() {
+        return null;    // @todo 1.16
+    }
+
+//    public BaseChunkGenerator(IWorld worldIn, BiomeProvider biomeProviderIn, int horizontalNoiseGranularityIn, int verticalNoiseGranularityIn, int p_i49931_5_, DimensionStructuresSettings settingsIn, boolean usePerlin) {
+//        super(biomeProviderIn, settingsIn);
+////        super(worldIn, biomeProviderIn, settingsIn);
+//        this.verticalNoiseGranularity = verticalNoiseGranularityIn;
+//        this.horizontalNoiseGranularity = horizontalNoiseGranularityIn;
+//        this.defaultBlock = settingsIn.getDefaultBlock();
+//        this.defaultFluid = settingsIn.getDefaultFluid();
+//        this.noiseSizeX = 16 / this.horizontalNoiseGranularity;
+//        this.noiseSizeY = p_i49931_5_ / this.verticalNoiseGranularity;
+//        this.noiseSizeZ = 16 / this.horizontalNoiseGranularity;
+//        this.randomSeed = new SharedSeedRandom(this.seed);
+//        this.field_222568_o = new OctavesNoiseGenerator(this.randomSeed, 15, 0);
+//        this.field_222569_p = new OctavesNoiseGenerator(this.randomSeed, 15, 0);
+//        this.field_222570_q = new OctavesNoiseGenerator(this.randomSeed, 7, 0);
+//        this.surfaceDepthNoise = usePerlin ? new PerlinNoiseGenerator(this.randomSeed, 3, 0) : new OctavesNoiseGenerator(this.randomSeed, 3, 0);
+//    }
+
+    public Settings getSettings() {
+        return settings;
+    }
+
+    @Override
+    protected Codec<? extends ChunkGenerator> func_230347_a_() {
+        return CODEC;
+    }
+
+    @Override
+    public ChunkGenerator func_230349_a_(long l) {
+        return new BaseChunkGenerator(getBiomeRegistry(), settings);
+    }
+
+    @Override
+    public void func_230352_b_(IWorld iWorld, StructureManager structureManager, IChunk iChunk) {
+
+    }
+
+    @Override
+    public int getHeight(int i, int i1, Heightmap.Type type) {
+        return 0;
+    }
+
+    @Override
+    public IBlockReader func_230348_a_(int i, int i1) {
+        return new Blockreader(new BlockState[0]);  // @todo 1.16
     }
 
     private double generateNoiseHelper(int noiseX, int noiseY, int noiseZ, double p_222552_4_, double p_222552_6_, double p_222552_8_, double p_222552_10_) {
@@ -441,5 +502,29 @@ public abstract class BaseChunkGenerator extends ChunkGenerator {
         double d3 = Math.pow(Math.E, -(d2 / 16.0D + d0 / 16.0D));
         double d4 = -d1 * MathHelper.fastInvSqrt(d2 / 2.0D + d0 / 2.0D) / 2.0D;
         return d4 * d3;
+    }
+
+    private static class Settings {
+        private final int baseHeight;
+        private final float verticalVariance;
+        private final float horizontalVariance;
+
+        public Settings(int baseHeight, float verticalVariance, float horizontalVariance) {
+            this.baseHeight = baseHeight;
+            this.verticalVariance = verticalVariance;
+            this.horizontalVariance = horizontalVariance;
+        }
+
+        public float getVerticalVariance() {
+            return verticalVariance;
+        }
+
+        public int getBaseHeight() {
+            return baseHeight;
+        }
+
+        public float getHorizontalVariance() {
+            return horizontalVariance;
+        }
     }
 }
