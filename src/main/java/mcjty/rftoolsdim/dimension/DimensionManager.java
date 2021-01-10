@@ -1,12 +1,9 @@
 package mcjty.rftoolsdim.dimension;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
-import mcjty.lib.varia.DimensionId;
 import mcjty.lib.worlddata.AbstractWorldData;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.dimension.terraintypes.TerrainType;
-import mcjty.rftoolsdim.dimension.terraintypes.VoidChunkGenerator;
+import mcjty.rftoolsdim.dimension.terraintypes.WavesChunkGenerator;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.RegistryKey;
 import net.minecraft.util.ResourceLocation;
@@ -14,18 +11,13 @@ import net.minecraft.util.registry.Registry;
 import net.minecraft.world.Dimension;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
-import net.minecraftforge.registries.ForgeRegistries;
 
-import java.io.*;
-import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
 public class DimensionManager extends AbstractWorldData<DimensionManager> {
 
     private static final String NAME = "RFToolsDimensionManager";
-
-    public static final RegistryKey<DimensionType> VOID_TYPE = RegistryKey.getOrCreateKey(Registry.DIMENSION_TYPE_KEY, new ResourceLocation(RFToolsDim.MODID, "void"));
 
     private long id = 0;
     private Map<String, DimensionDescriptor> dimensions = new HashMap<>();
@@ -79,13 +71,11 @@ public class DimensionManager extends AbstractWorldData<DimensionManager> {
         TerrainType terrainType = descriptor.getTerrainType();
 
         RegistryKey<World> key = RegistryKey.getOrCreateKey(Registry.WORLD_KEY, new ResourceLocation(RFToolsDim.MODID, name));
-        DimensionType type = world.getServer().func_244267_aX().getRegistry(Registry.DIMENSION_TYPE_KEY).getOrDefault(VOID_TYPE.getLocation());
-        DimensionHelper.getOrCreateWorld(world.getServer(), key, (server, registryKey) -> {
-            return new Dimension(() -> type, new VoidChunkGenerator(server));
-        });
+        DimensionType voidType = world.getServer().func_244267_aX().getRegistry(Registry.DIMENSION_TYPE_KEY).getOrDefault(DimensionRegistry.VOID_ID);
+        DimensionType wavesType = world.getServer().func_244267_aX().getRegistry(Registry.DIMENSION_TYPE_KEY).getOrDefault(DimensionRegistry.WAVES_ID);
+//        DimensionHelper.getOrCreateWorld(world.getServer(), key, (server, registryKey) -> new Dimension(() -> voidType, new VoidChunkGenerator(server)));
+        DimensionHelper.getOrCreateWorld(world.getServer(), key, (server, registryKey) -> new Dimension(() -> wavesType, new WavesChunkGenerator(server)));
 
-//        RFTModDimension dimension = Registration.MOD_DIMENSIONS.get(terrainType).get();
-//        net.minecraftforge.common.DimensionManager.registerOrGetDimension(new ResourceLocation(RFToolsDim.MODID, name), dimension, null, true);
         return null;
     }
 
