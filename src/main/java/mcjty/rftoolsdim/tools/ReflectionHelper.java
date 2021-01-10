@@ -5,27 +5,8 @@ import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import java.lang.reflect.Field;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 public class ReflectionHelper {
-
-    @SuppressWarnings("unchecked")
-    private static <FIELDTYPE> Supplier<FIELDTYPE> getStaticField(Class<?> fieldHolderClass, String fieldName) {
-        Field field = ObfuscationReflectionHelper.findField(fieldHolderClass, fieldName);
-
-        return () -> {
-            try {
-                return (FIELDTYPE) field.get(null);
-            } catch (IllegalArgumentException | IllegalAccessException e) {
-                throw new RuntimeException(e);
-            }
-        };
-    }
-
-    public static <FIELDTYPE> FIELDTYPE getStaticFieldOnce(Class<?> fieldHolderClass, String fieldName) {
-        Supplier<FIELDTYPE> getter = getStaticField(fieldHolderClass, fieldName);
-        return getter.get();
-    }
 
     /**
      * Gets a getter-like object for a reflective field. Only to be used for obfuscatable vanilla minecraft fields

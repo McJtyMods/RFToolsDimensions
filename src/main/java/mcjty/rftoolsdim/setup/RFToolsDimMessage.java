@@ -2,6 +2,7 @@ package mcjty.rftoolsdim.setup;
 
 import mcjty.lib.network.PacketHandler;
 import mcjty.rftoolsdim.RFToolsDim;
+import mcjty.rftoolsdim.dimension.DimensionUpdatePacket;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
@@ -24,11 +25,7 @@ public class RFToolsDimMessage {
 
         INSTANCE = net;
 
-        // Server side
-//        net.registerMessage(id(), PacketGetLog.class, PacketGetLog::toBytes, PacketGetLog::new, PacketGetLog::handle);
-
-        // Client side
-//        net.registerMessage(id(), PacketLogReady.class, PacketLogReady::toBytes, PacketLogReady::new, PacketLogReady::handle);
+        net.registerMessage(id(), DimensionUpdatePacket.class, DimensionUpdatePacket::toBytes, DimensionUpdatePacket::new, DimensionUpdatePacket::handle);
 
         PacketHandler.registerStandardMessages(id(), net);
     }

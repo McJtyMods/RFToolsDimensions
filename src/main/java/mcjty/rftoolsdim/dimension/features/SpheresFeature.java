@@ -38,7 +38,7 @@ public class SpheresFeature extends Feature<NoFeatureConfig> {
         return true;
     }
 
-    private void generate(IWorld world, int chunkX, int chunkZ, int dx, int dz) {
+    private void generate(ISeedReader world, int chunkX, int chunkZ, int dx, int dz) {
         Random random = new Random(world.getSeed() + (chunkZ+dz) * 256203221L + (chunkX+dx) * 899809363L);
         random.nextFloat();
         int radius = random.nextInt(12) + 9;

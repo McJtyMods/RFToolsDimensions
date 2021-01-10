@@ -29,7 +29,7 @@ public class CommandDump implements Command<CommandSource> {
 
     @Override
     public int run(CommandContext<CommandSource> context) throws CommandSyntaxException {
-        OreFeatureConfig config = new OreFeatureConfig(OreFeatureConfig.FillerBlockType.field_241882_a, Blocks.GLOWSTONE.getDefaultState(), 30);
+        OreFeatureConfig config = new OreFeatureConfig(OreFeatureConfig.FillerBlockType.BASE_STONE_OVERWORLD, Blocks.GLOWSTONE.getDefaultState(), 30);
         // @todo 1.16.3
 //        Dynamic<JsonElement> serialized = config.serialize(JsonOps.INSTANCE);
 //        JsonElement value = serialized.getValue();

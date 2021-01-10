@@ -7,10 +7,10 @@ import mcjty.rftoolsdim.commands.ModCommands;
 import mcjty.rftoolsdim.dimlets.DimletDictionary;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 
 @Mod.EventBusSubscriber(modid = RFToolsDim.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ModSetup extends DefaultModSetup {
@@ -34,8 +34,8 @@ public class ModSetup extends DefaultModSetup {
     }
 
     @SubscribeEvent
-    public static void serverLoad(FMLServerStartingEvent event) {
-        ModCommands.register(event.getCommandDispatcher());
+    public static void serverLoad(RegisterCommandsEvent event) {
+        ModCommands.register(event.getDispatcher());
     }
 
     @Override

@@ -49,7 +49,7 @@ public class Registration {
         EnscriberSetup.register();
     }
 
-    public static final RegistryObject<SpheresFeature> SPHERES_FEATURE = FEATURES.register("spheres", () -> new SpheresFeature(NoFeatureConfig::deserialize));
+    public static final RegistryObject<SpheresFeature> SPHERES_FEATURE = FEATURES.register("spheres", () -> new SpheresFeature(NoFeatureConfig.field_236558_a_));
 
     public static Item.Properties createStandardProperties() {
         return new Item.Properties().group(RFToolsDim.setup.getTab());

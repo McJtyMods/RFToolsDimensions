@@ -64,15 +64,15 @@ public class DimensionManager extends AbstractWorldData<DimensionManager> {
             return "Dimension already exists!";
         }
         DimensionDescriptor descriptor = new DimensionDescriptor();
-        try(InputStream inputstream = RFToolsDim.class.getResourceAsStream("/data/rftoolsdim/dimensions/" + filename)) {
-            try(BufferedReader br = new BufferedReader(new InputStreamReader(inputstream, StandardCharsets.UTF_8))) {
-                JsonParser parser = new JsonParser();
-                JsonElement element = parser.parse(br);
-                descriptor.read(element.getAsJsonObject());
-            }
-        } catch (IOException ex) {
-            throw new UncheckedIOException(ex);
-        }
+//        try(InputStream inputstream = RFToolsDim.class.getResourceAsStream("/data/rftoolsdim/dimensions/" + filename)) {
+//            try(BufferedReader br = new BufferedReader(new InputStreamReader(inputstream, StandardCharsets.UTF_8))) {
+//                JsonParser parser = new JsonParser();
+//                JsonElement element = parser.parse(br);
+//                descriptor.read(element.getAsJsonObject());
+//            }
+//        } catch (IOException ex) {
+//            throw new UncheckedIOException(ex);
+//        }
 
         dimensions.put(name, descriptor);
         markDirty();

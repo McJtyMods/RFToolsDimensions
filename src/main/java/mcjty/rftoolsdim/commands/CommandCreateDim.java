@@ -9,6 +9,7 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import mcjty.rftoolsdim.dimension.DimensionManager;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
+import net.minecraft.util.SharedConstants;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 
@@ -26,9 +27,10 @@ public class CommandCreateDim implements Command<CommandSource> {
 
     @Override
     public int run(CommandContext<CommandSource> context) throws CommandSyntaxException {
+        SharedConstants.developmentMode = true;
         String name = context.getArgument("name", String.class);
         String descriptor = context.getArgument("descriptor", String.class);
-        String error = DimensionManager.get(context.getSource().getWorld()).createDimension(name, descriptor);
+        String error = DimensionManager.get(context.getSource().getWorld()).createDimension(context.getSource().getWorld(), name, descriptor);
         if (error != null) {
             context.getSource().sendFeedback(new StringTextComponent(TextFormatting.RED + error), true);
         }

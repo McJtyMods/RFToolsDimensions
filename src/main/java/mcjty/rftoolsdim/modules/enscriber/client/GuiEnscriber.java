@@ -1,5 +1,6 @@
 package mcjty.rftoolsdim.modules.enscriber.client;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import mcjty.lib.container.GenericContainer;
 import mcjty.lib.gui.GenericGuiContainer;
 import mcjty.lib.gui.Window;
@@ -69,7 +70,7 @@ public class GuiEnscriber extends GenericGuiContainer<EnscriberTileEntity, Gener
     }
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(float v, int i, int i2) {
+    protected void drawGuiContainerBackgroundLayer(MatrixStack matrixStack, float partialTicks, int x, int y) {
 //        int pct = DimensionBuilderTileEntity.getBuildPercentage();
 //
 //        if (pct == DimensionBuilderTileEntity.ERROR_NOOWNER) {
@@ -89,7 +90,7 @@ public class GuiEnscriber extends GenericGuiContainer<EnscriberTileEntity, Gener
 //            error2.setText("");
 //        }
 
-        drawWindow();
+        drawWindow(matrixStack);
 
 //        energyBar.setValue(GenericEnergyStorageTileEntity.getCurrentRF());
 //
