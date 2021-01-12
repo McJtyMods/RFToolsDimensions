@@ -15,4 +15,8 @@ public class DimensionRegistry {
 
     public static final ResourceLocation WAVES_ID = new ResourceLocation(RFToolsDim.MODID, "waves");
     public static final RegistryKey<DimensionType> WAVES_TYPE = RegistryKey.getOrCreateKey(Registry.DIMENSION_TYPE_KEY, WAVES_ID);
+
+    public static final ResourceLocation FLAT_ID = new ResourceLocation(RFToolsDim.MODID, "flat");
+
+    public static final ResourceLocation NORMAL_ID = new ResourceLocation(RFToolsDim.MODID, "normal");
 }

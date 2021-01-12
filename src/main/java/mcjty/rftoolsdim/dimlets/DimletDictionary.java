@@ -16,7 +16,7 @@ public class DimletDictionary {
         register(new DimletKey(DimletType.TERRAIN, TerrainType.FLAT.name()), DimletSettings.create(DimletRarity.COMMON, 10, 1, 1).build());
         register(new DimletKey(DimletType.TERRAIN, TerrainType.NORMAL.name()), DimletSettings.create(DimletRarity.COMMON, 10, 1, 1).build());
         register(new DimletKey(DimletType.TERRAIN, TerrainType.VOID.name()), DimletSettings.create(DimletRarity.COMMON, 10, 1, 1).build());
-        register(new DimletKey(DimletType.TERRAIN, TerrainType.WAVING.name()), DimletSettings.create(DimletRarity.COMMON, 10, 1, 1).build());
+        register(new DimletKey(DimletType.TERRAIN, TerrainType.WAVES.name()), DimletSettings.create(DimletRarity.COMMON, 10, 1, 1).build());
 
         register(new DimletKey(DimletType.BIOME, BiomeLayoutType.DEFAULT.name()), DimletSettings.create(DimletRarity.COMMON, 10, 1, 1).build());
         register(new DimletKey(DimletType.BIOME, BiomeLayoutType.CHECKER.name()), DimletSettings.create(DimletRarity.COMMON, 10, 1, 1).build());

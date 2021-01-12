@@ -1,4 +1,4 @@
-package mcjty.rftoolsdim.dimension.biomes;
+package mcjty.rftoolsdim.dimension.descriptor;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;

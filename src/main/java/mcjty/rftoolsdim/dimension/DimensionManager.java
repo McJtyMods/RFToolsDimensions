@@ -1,9 +1,12 @@
 package mcjty.rftoolsdim.dimension;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 import mcjty.lib.worlddata.AbstractWorldData;
 import mcjty.rftoolsdim.RFToolsDim;
+import mcjty.rftoolsdim.dimension.descriptor.CompiledDescriptor;
+import mcjty.rftoolsdim.dimension.descriptor.DimensionDescriptor;
 import mcjty.rftoolsdim.dimension.terraintypes.TerrainType;
-import mcjty.rftoolsdim.dimension.terraintypes.WavesChunkGenerator;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.RegistryKey;
 import net.minecraft.util.ResourceLocation;
@@ -12,6 +15,8 @@ import net.minecraft.world.Dimension;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
 
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -44,7 +49,8 @@ public class DimensionManager extends AbstractWorldData<DimensionManager> {
                 System.out.println("This is not a dimension managed by us!");
                 return null;
             }
-            DimensionInformation info = DimensionInformation.createFrom(descriptor);
+            CompiledDescriptor compiledDescriptor = new CompiledDescriptor(descriptor);
+            DimensionInformation info = DimensionInformation.createFrom(compiledDescriptor);
             dimensionInformations.put(type, info);
         }
         return dimensionInformations.get(type);
@@ -56,25 +62,26 @@ public class DimensionManager extends AbstractWorldData<DimensionManager> {
             return "Dimension already exists!";
         }
         DimensionDescriptor descriptor = new DimensionDescriptor();
-//        try(InputStream inputstream = RFToolsDim.class.getResourceAsStream("/data/rftoolsdim/dimensions/" + filename)) {
-//            try(BufferedReader br = new BufferedReader(new InputStreamReader(inputstream, StandardCharsets.UTF_8))) {
-//                JsonParser parser = new JsonParser();
-//                JsonElement element = parser.parse(br);
-//                descriptor.read(element.getAsJsonObject());
-//            }
-//        } catch (IOException ex) {
-//            throw new UncheckedIOException(ex);
-//        }
+        try(InputStream inputstream = RFToolsDim.class.getResourceAsStream("/data/rftoolsdim/rftdim/" + filename)) {
+            try(BufferedReader br = new BufferedReader(new InputStreamReader(inputstream, StandardCharsets.UTF_8))) {
+                JsonParser parser = new JsonParser();
+                JsonElement element = parser.parse(br);
+                descriptor.read(element.getAsJsonArray());
+            }
+        } catch (IOException ex) {
+            throw new UncheckedIOException(ex);
+        }
 
         dimensions.put(name, descriptor);
         markDirty();
-        TerrainType terrainType = descriptor.getTerrainType();
+
+        CompiledDescriptor compiledDescriptor = new CompiledDescriptor(descriptor);
+        TerrainType terrainType = compiledDescriptor.getTerrainType();
 
         RegistryKey<World> key = RegistryKey.getOrCreateKey(Registry.WORLD_KEY, new ResourceLocation(RFToolsDim.MODID, name));
-        DimensionType voidType = world.getServer().func_244267_aX().getRegistry(Registry.DIMENSION_TYPE_KEY).getOrDefault(DimensionRegistry.VOID_ID);
-        DimensionType wavesType = world.getServer().func_244267_aX().getRegistry(Registry.DIMENSION_TYPE_KEY).getOrDefault(DimensionRegistry.WAVES_ID);
-//        DimensionHelper.getOrCreateWorld(world.getServer(), key, (server, registryKey) -> new Dimension(() -> voidType, new VoidChunkGenerator(server)));
-        DimensionHelper.getOrCreateWorld(world.getServer(), key, (server, registryKey) -> new Dimension(() -> wavesType, new WavesChunkGenerator(server)));
+        DimensionType type = world.getServer().func_244267_aX().getRegistry(Registry.DIMENSION_TYPE_KEY).getOrDefault(terrainType.getTypeId());
+        DimensionHelper.getOrCreateWorld(world.getServer(), key,
+                (server, registryKey) -> new Dimension(() -> type, terrainType.getGeneratorSupplier().apply(server)));
 
         return null;
     }

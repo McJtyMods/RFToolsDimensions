@@ -1,5 +1,6 @@
 package mcjty.rftoolsdim.dimension.biomes;
 
+import mcjty.rftoolsdim.dimension.descriptor.BiomeDescriptor;
 import net.minecraft.world.biome.Biome;
 
 import javax.annotation.Nonnull;

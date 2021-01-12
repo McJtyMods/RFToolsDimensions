@@ -1,4 +1,4 @@
-package mcjty.rftoolsdim.dimension.features;
+package mcjty.rftoolsdim.dimension.descriptor;
 
 import com.google.gson.JsonElement;
 

@@ -1,8 +1,9 @@
 package mcjty.rftoolsdim.dimension;
 
-import mcjty.rftoolsdim.dimension.biomes.BiomeDescriptor;
+import mcjty.rftoolsdim.dimension.descriptor.BiomeDescriptor;
 import mcjty.rftoolsdim.dimension.biomes.BiomeInfo;
-import mcjty.rftoolsdim.dimension.features.FeatureDescriptor;
+import mcjty.rftoolsdim.dimension.descriptor.CompiledDescriptor;
+import mcjty.rftoolsdim.dimension.descriptor.FeatureDescriptor;
 import mcjty.rftoolsdim.dimension.terraintypes.TerrainType;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -46,7 +47,7 @@ public class DimensionInformation {
         return features;
     }
 
-    public static DimensionInformation createFrom(DimensionDescriptor descriptor) {
+    public static DimensionInformation createFrom(CompiledDescriptor descriptor) {
         DimensionInformation info = new DimensionInformation(descriptor.getTerrainType());
 
         for (ResourceLocation id : descriptor.getBaseBlocks()) {

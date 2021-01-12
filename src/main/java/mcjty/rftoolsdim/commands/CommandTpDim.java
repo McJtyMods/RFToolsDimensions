@@ -8,22 +8,14 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import mcjty.lib.varia.DimensionId;
 import mcjty.lib.varia.TeleportationTools;
-import mcjty.rftoolsdim.dimension.DimensionHelper;
-import mcjty.rftoolsdim.dimension.DimensionRegistry;
-import mcjty.rftoolsdim.dimension.terraintypes.VoidChunkGenerator;
-import mcjty.rftoolsdim.dimension.terraintypes.WavesChunkGenerator;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SharedConstants;
-import net.minecraft.util.registry.Registry;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.world.Dimension;
-import net.minecraft.world.DimensionType;
-import net.minecraft.world.server.ServerWorld;
 
 public class CommandTpDim implements Command<CommandSource> {
 
@@ -55,18 +47,6 @@ public class CommandTpDim implements Command<CommandSource> {
                 context.getSource().sendFeedback(new StringTextComponent(TextFormatting.RED + "Can't find dimension!"), true);
                 return 0;
             }
-        }
-
-        ServerWorld world = type.loadWorld(player.getEntityWorld());
-        if (world == null) {
-//            DimensionType t = context.getSource().getServer().func_244267_aX().getRegistry(Registry.DIMENSION_TYPE_KEY).getOrDefault(DimensionRegistry.VOID_TYPE.getLocation());
-//            world = DimensionHelper.getOrCreateWorld(context.getSource().getServer(), type.getId(), (server, registryKey) -> {
-//                return new Dimension(() -> t, new VoidChunkGenerator(server));
-//            });
-            DimensionType t = context.getSource().getServer().func_244267_aX().getRegistry(Registry.DIMENSION_TYPE_KEY).getOrDefault(DimensionRegistry.WAVES_TYPE.getLocation());
-            world = DimensionHelper.getOrCreateWorld(context.getSource().getServer(), type.getId(), (server, registryKey) -> {
-                return new Dimension(() -> t, new WavesChunkGenerator(server));
-            });
         }
 
         TeleportationTools.teleport(player, type, x, 200, z, Direction.NORTH);
