@@ -7,17 +7,17 @@ import net.minecraft.world.gen.ChunkGenerator;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Function;
+import java.util.function.BiFunction;
 
 public enum TerrainType {
-    FLAT("flat", DimensionRegistry.FLAT_ID, server -> null),
+    FLAT("flat", DimensionRegistry.FLAT_ID, FlatChunkGenerator::new),
     WAVES("waves", DimensionRegistry.WAVES_ID, WavesChunkGenerator::new),
     VOID("void", DimensionRegistry.VOID_ID, VoidChunkGenerator::new),
-    NORMAL("normal", DimensionRegistry.NORMAL_ID, server -> null);
+    NORMAL("normal", DimensionRegistry.NORMAL_ID, (server,s) -> null);
 
     private final String name;
     private final ResourceLocation typeId;
-    private final Function<MinecraftServer, ChunkGenerator> generatorSupplier;
+    private final BiFunction<MinecraftServer, BaseChunkGenerator.Settings, ChunkGenerator> generatorSupplier;
 
     private static final Map<String, TerrainType> TERRAIN_BY_NAME = new HashMap<>();
 
@@ -27,7 +27,7 @@ public enum TerrainType {
         }
     }
 
-    TerrainType(String name, ResourceLocation typeId, Function<MinecraftServer, ChunkGenerator> generatorSupplier) {
+    TerrainType(String name, ResourceLocation typeId, BiFunction<MinecraftServer, BaseChunkGenerator.Settings, ChunkGenerator> generatorSupplier) {
         this.name = name;
         this.typeId = typeId;
         this.generatorSupplier = generatorSupplier;
@@ -41,7 +41,7 @@ public enum TerrainType {
         return typeId;
     }
 
-    public Function<MinecraftServer, ChunkGenerator> getGeneratorSupplier() {
+    public BiFunction<MinecraftServer, BaseChunkGenerator.Settings, ChunkGenerator> getGeneratorSupplier() {
         return generatorSupplier;
     }
 

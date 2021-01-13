@@ -6,7 +6,6 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryLookupCodec;
 import net.minecraft.world.Blockreader;
@@ -19,19 +18,19 @@ import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.WorldGenRegion;
 import net.minecraft.world.gen.feature.structure.StructureManager;
 
-public class WavesChunkGenerator extends BaseChunkGenerator {
+public class FlatChunkGenerator extends BaseChunkGenerator {
 
-    public static final Codec<WavesChunkGenerator> CODEC = RecordCodecBuilder.create(instance ->
+    public static final Codec<FlatChunkGenerator> CODEC = RecordCodecBuilder.create(instance ->
             instance.group(
-                    RegistryLookupCodec.getLookUpCodec(Registry.BIOME_KEY).forGetter(WavesChunkGenerator::getBiomeRegistry),
-                    SETTINGS_CODEC.fieldOf("settings").forGetter(WavesChunkGenerator::getSettings)
-            ).apply(instance, WavesChunkGenerator::new));
+                    RegistryLookupCodec.getLookUpCodec(Registry.BIOME_KEY).forGetter(FlatChunkGenerator::getBiomeRegistry),
+                    SETTINGS_CODEC.fieldOf("settings").forGetter(FlatChunkGenerator::getSettings)
+            ).apply(instance, FlatChunkGenerator::new));
 
-    public WavesChunkGenerator(MinecraftServer server, Settings settings) {
+    public FlatChunkGenerator(MinecraftServer server, Settings settings) {
         this(server.func_244267_aX().getRegistry(Registry.BIOME_KEY), settings);
     }
 
-    public WavesChunkGenerator(Registry<Biome> registry, Settings settings) {
+    public FlatChunkGenerator(Registry<Biome> registry, Settings settings) {
         super(registry, settings);
     }
 
@@ -42,7 +41,7 @@ public class WavesChunkGenerator extends BaseChunkGenerator {
 
     @Override
     public ChunkGenerator func_230349_a_(long l) {
-        return new WavesChunkGenerator(getBiomeRegistry(), getSettings());
+        return new FlatChunkGenerator(getBiomeRegistry(), getSettings());
     }
 
     @Override
@@ -52,17 +51,17 @@ public class WavesChunkGenerator extends BaseChunkGenerator {
 
     @Override
     public void func_230352_b_(IWorld iWorld, StructureManager structureManager, IChunk chunk) {
-        ChunkPos chunkpos = chunk.getPos();
+        BlockState state = Blocks.STONE.getDefaultState();
+        BlockPos.Mutable mpos = new BlockPos.Mutable();
+        Heightmap hmOcean = chunk.getHeightmap(Heightmap.Type.OCEAN_FLOOR_WG);
+        Heightmap hmWorld = chunk.getHeightmap(Heightmap.Type.WORLD_SURFACE_WG);
 
-        BlockPos.Mutable pos = new BlockPos.Mutable();
-
-        for (int x = 0; x < 16; x++) {
-            for (int z = 0; z < 16; z++) {
-                int realx = chunkpos.x * 16 + x;
-                int realz = chunkpos.z * 16 + z;
-                int height = (int) (65 + Math.sin(realx / 20.0f)*10 + Math.cos(realz / 20.0f)*10);
-                for (int y = 1 ; y < height ; y++) {
-                    chunk.setBlockState(pos.setPos(x, y, z), Blocks.STONE.getDefaultState(), false);
+        for (int y = 0 ; y < 64 ; y++) {
+            for (int x = 0; x < 16; ++x) {
+                for (int z = 0; z < 16; ++z) {
+                    chunk.setBlockState(mpos.setPos(x, y, z), state, false);
+                    hmOcean.update(x, y, z, state);
+                    hmWorld.update(x, y, z, state);
                 }
             }
         }

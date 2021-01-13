@@ -1,0 +1,10 @@
+[
+  {
+    "type": "terrain",
+    "name": "flat"
+  },
+  {
+    "type": "feature",
+    "name": "rftoolsdim:spheres"
+  }
+]

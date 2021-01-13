@@ -6,6 +6,7 @@ import mcjty.lib.worlddata.AbstractWorldData;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.dimension.descriptor.CompiledDescriptor;
 import mcjty.rftoolsdim.dimension.descriptor.DimensionDescriptor;
+import mcjty.rftoolsdim.dimension.terraintypes.BaseChunkGenerator;
 import mcjty.rftoolsdim.dimension.terraintypes.TerrainType;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.RegistryKey;
@@ -56,6 +57,19 @@ public class DimensionManager extends AbstractWorldData<DimensionManager> {
         return dimensionInformations.get(type);
     }
 
+    public void loadWorld(World world, String name) {
+        DimensionDescriptor descriptor = dimensions.get(name);
+        CompiledDescriptor compiledDescriptor = new CompiledDescriptor(descriptor);
+        TerrainType terrainType = compiledDescriptor.getTerrainType();
+
+        BaseChunkGenerator.Settings settings = new BaseChunkGenerator.Settings(descriptor.compact());
+
+        RegistryKey<World> key = RegistryKey.getOrCreateKey(Registry.WORLD_KEY, new ResourceLocation(RFToolsDim.MODID, name));
+        DimensionType type = world.getServer().func_244267_aX().getRegistry(Registry.DIMENSION_TYPE_KEY).getOrDefault(terrainType.getTypeId());
+        DimensionHelper.getOrCreateWorld(world.getServer(), key,
+                (server, registryKey) -> new Dimension(() -> type, terrainType.getGeneratorSupplier().apply(server, settings)));
+    }
+
     // Returns null on success, otherwise an error string
     public String createDimension(World world, String name, String filename) {
         if (dimensions.containsKey(name)) {
@@ -75,14 +89,7 @@ public class DimensionManager extends AbstractWorldData<DimensionManager> {
         dimensions.put(name, descriptor);
         markDirty();
 
-        CompiledDescriptor compiledDescriptor = new CompiledDescriptor(descriptor);
-        TerrainType terrainType = compiledDescriptor.getTerrainType();
-
-        RegistryKey<World> key = RegistryKey.getOrCreateKey(Registry.WORLD_KEY, new ResourceLocation(RFToolsDim.MODID, name));
-        DimensionType type = world.getServer().func_244267_aX().getRegistry(Registry.DIMENSION_TYPE_KEY).getOrDefault(terrainType.getTypeId());
-        DimensionHelper.getOrCreateWorld(world.getServer(), key,
-                (server, registryKey) -> new Dimension(() -> type, terrainType.getGeneratorSupplier().apply(server)));
-
+        loadWorld(world, name);
         return null;
     }
 

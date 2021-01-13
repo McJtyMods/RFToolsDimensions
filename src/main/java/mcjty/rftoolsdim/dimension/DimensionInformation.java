@@ -1,9 +1,8 @@
 package mcjty.rftoolsdim.dimension;
 
-import mcjty.rftoolsdim.dimension.descriptor.BiomeDescriptor;
 import mcjty.rftoolsdim.dimension.biomes.BiomeInfo;
+import mcjty.rftoolsdim.dimension.descriptor.BiomeDescriptor;
 import mcjty.rftoolsdim.dimension.descriptor.CompiledDescriptor;
-import mcjty.rftoolsdim.dimension.descriptor.FeatureDescriptor;
 import mcjty.rftoolsdim.dimension.terraintypes.TerrainType;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -60,8 +59,8 @@ public class DimensionInformation {
             }
         }
 
-        for (FeatureDescriptor featureDescriptor : descriptor.getFeatures()) {
-            Feature<IFeatureConfig> feature = (Feature<IFeatureConfig>) ForgeRegistries.FEATURES.getValue(new ResourceLocation(featureDescriptor.getId()));
+        for (ResourceLocation featureDescriptor : descriptor.getFeatures()) {
+            Feature<IFeatureConfig> feature = (Feature<IFeatureConfig>) ForgeRegistries.FEATURES.getValue(featureDescriptor);
             // @todo error checking
 
 //            Function<Dynamic<?>, ? extends IFeatureConfig> configFactory = ObfuscationReflectionHelper.getPrivateValue(Feature.class, feature, "field_214535_a"); // 'configFactory'

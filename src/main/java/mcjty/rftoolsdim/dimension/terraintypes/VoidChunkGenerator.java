@@ -18,21 +18,14 @@ import net.minecraft.world.gen.feature.structure.StructureManager;
 
 public class VoidChunkGenerator extends BaseChunkGenerator {
 
-    private static final Codec<Settings> SETTINGS_CODEC = RecordCodecBuilder.create(instance ->
-            instance.group(
-                    Codec.INT.fieldOf("base").forGetter(Settings::getBaseHeight),
-                    Codec.FLOAT.fieldOf("verticalvariance").forGetter(Settings::getVerticalVariance),
-                    Codec.FLOAT.fieldOf("horizontalvariance").forGetter(Settings::getHorizontalVariance)
-            ).apply(instance, Settings::new));
-
     public static final Codec<VoidChunkGenerator> CODEC = RecordCodecBuilder.create(instance ->
             instance.group(
                     RegistryLookupCodec.getLookUpCodec(Registry.BIOME_KEY).forGetter(VoidChunkGenerator::getBiomeRegistry),
                     SETTINGS_CODEC.fieldOf("settings").forGetter(VoidChunkGenerator::getSettings)
             ).apply(instance, VoidChunkGenerator::new));
 
-    public VoidChunkGenerator(MinecraftServer server) {
-        this(server.func_244267_aX().getRegistry(Registry.BIOME_KEY), new Settings(65, 1.0f, 1.0f)); // @todo settings?
+    public VoidChunkGenerator(MinecraftServer server, Settings settings) {
+        this(server.func_244267_aX().getRegistry(Registry.BIOME_KEY), settings);
     }
 
     public VoidChunkGenerator(Registry<Biome> registry, Settings settings) {

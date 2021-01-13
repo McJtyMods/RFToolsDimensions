@@ -3,11 +3,11 @@ package mcjty.rftoolsdim.dimension.descriptor;
 import com.google.common.collect.Lists;
 import mcjty.rftoolsdim.dimension.terraintypes.TerrainType;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.biome.BiomeRegistry;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Read a DimletDescriptor and store it in a more conveniant manner
@@ -15,8 +15,8 @@ import java.util.List;
 public class CompiledDescriptor {
 
     private TerrainType terrainType = TerrainType.NORMAL;
-    private List<FeatureDescriptor> features = new ArrayList<>();
-    private List<ResourceLocation> baseBlocks = new ArrayList<>();
+    private Set<ResourceLocation> features = new HashSet<>();
+    private List<ResourceLocation> baseBlocks = Lists.newArrayList(new ResourceLocation("minecraft:stone"));
     private BiomeDescriptor biomeDescriptor = BiomeDescriptor.DEFAULT;
 
     public TerrainType getTerrainType() {
@@ -36,8 +36,11 @@ public class CompiledDescriptor {
                 }
                 case BIOME:
                     break;
-                case FEATURE:
+                case FEATURE: {
+                    String name = dimletDescriptor.getName();
+                    features.add(new ResourceLocation(name));
                     break;
+                }
                 case MATERIAL:
                     break;
             }
@@ -45,17 +48,14 @@ public class CompiledDescriptor {
     }
 
     public List<ResourceLocation> getBaseBlocks() {
-        // @todo 1.16
-        return Lists.newArrayList(new ResourceLocation("minecraft:stone"));
+        return baseBlocks;
     }
 
-    public List<FeatureDescriptor> getFeatures() {
-        // @todo 1.16
-        return Collections.emptyList();
+    public Set<ResourceLocation> getFeatures() {
+        return features;
     }
 
     public BiomeDescriptor getBiomeDescriptor() {
-        // @todo 1.16
-        return BiomeDescriptor.DEFAULT;
+        return biomeDescriptor;
     }
 }

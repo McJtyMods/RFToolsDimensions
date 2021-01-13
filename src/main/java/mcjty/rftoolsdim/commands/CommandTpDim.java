@@ -14,8 +14,7 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SharedConstants;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
+import net.minecraft.world.server.ServerWorld;
 
 public class CommandTpDim implements Command<CommandSource> {
 
@@ -37,16 +36,10 @@ public class CommandTpDim implements Command<CommandSource> {
         int z = player.getPosition().getZ();
         ResourceLocation id = new ResourceLocation(name);
         DimensionId type = DimensionId.fromResourceLocation(id);
-        if (type == null) {
-            if (!name.contains(":")) {
-                // Try adding 'rftoolsdim' in front
-                id = new ResourceLocation("rftoolsdim:" + name);
-                type = DimensionId.fromResourceLocation(id);
-            }
-            if (type == null) {
-                context.getSource().sendFeedback(new StringTextComponent(TextFormatting.RED + "Can't find dimension!"), true);
-                return 0;
-            }
+
+        ServerWorld world = type.getWorld();
+        if (world == null) {
+//            DimensionManager.get(context.getSource().getWorld()).loadWorld(context.getSource().getWorld(), name);
         }
 
         TeleportationTools.teleport(player, type, x, 200, z, Direction.NORTH);
