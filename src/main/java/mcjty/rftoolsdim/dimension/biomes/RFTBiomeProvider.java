@@ -1,7 +1,8 @@
 package mcjty.rftoolsdim.dimension.biomes;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.util.RegistryKey;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import mcjty.rftoolsdim.dimension.DimensionSettings;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryLookupCodec;
 import net.minecraft.world.biome.Biome;
@@ -9,27 +10,45 @@ import net.minecraft.world.biome.Biomes;
 import net.minecraft.world.biome.provider.BiomeProvider;
 import net.minecraft.world.gen.feature.structure.Structure;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static mcjty.rftoolsdim.dimension.DimensionSettings.SETTINGS_CODEC;
+
 public class RFTBiomeProvider extends BiomeProvider {
 
-    public static final Codec<RFTBiomeProvider> CODEC = RegistryLookupCodec.getLookUpCodec(Registry.BIOME_KEY)
-            .xmap(RFTBiomeProvider::new, RFTBiomeProvider::getBiomeRegistry).codec();
+//    public static final Codec<RFTBiomeProvider> CODEC = RegistryLookupCodec.getLookUpCodec(Registry.BIOME_KEY)
+//            .xmap(RFTBiomeProvider::new, RFTBiomeProvider::getBiomeRegistry).codec();
 
-    private final Biome biome;
+    public static final Codec<RFTBiomeProvider> CODEC = RecordCodecBuilder.create(instance ->
+            instance.group(
+                    RegistryLookupCodec.getLookUpCodec(Registry.BIOME_KEY).forGetter(RFTBiomeProvider::getBiomeRegistry),
+                    SETTINGS_CODEC.fieldOf("settings").forGetter(RFTBiomeProvider::getSettings)
+            ).apply(instance, RFTBiomeProvider::new));
+
+    private final List<Biome> biomes;
     private final Registry<Biome> biomeRegistry;
-    private static final List<RegistryKey<Biome>> SPAWN = Collections.singletonList(Biomes.PLAINS);
+    private final DimensionSettings settings;
 
-    public RFTBiomeProvider(Registry<Biome> biomeRegistry) {
-        super(getStartBiomes(biomeRegistry));
+    public RFTBiomeProvider(Registry<Biome> biomeRegistry, DimensionSettings settings) {
+        super(getBiomes(biomeRegistry, settings));
+        this.settings = settings;
         this.biomeRegistry = biomeRegistry;
-        biome = biomeRegistry.getOrDefault(Biomes.PLAINS.getLocation());
+        biomes = getBiomes(biomeRegistry, settings);
     }
 
-    private static List<Biome> getStartBiomes(Registry<Biome> registry) {
-        return SPAWN.stream().map(s -> registry.getOrDefault(s.getLocation())).collect(Collectors.toList());
+    public DimensionSettings getSettings() {
+        return settings;
+    }
+
+    private static List<Biome> getBiomes(Registry<Biome> biomeRegistry, DimensionSettings settings) {
+        List<Biome> biomes;
+        biomes = settings.getCompiledDescriptor().getBiomes()
+                .stream().map(biomeRegistry::getOrDefault).collect(Collectors.toList());
+        if (biomes.isEmpty()) {
+            biomes.add(biomeRegistry.getOrDefault(Biomes.PLAINS.getLocation()));
+        }
+        return biomes;
     }
 
     public Registry<Biome> getBiomeRegistry() {
@@ -48,11 +67,23 @@ public class RFTBiomeProvider extends BiomeProvider {
 
     @Override
     public BiomeProvider getBiomeProvider(long seed) {
-        return this;
+        return new RFTBiomeProvider(getBiomeRegistry(), settings);
     }
 
     @Override
     public Biome getNoiseBiome(int x, int y, int z) {
-        return biome;
+        switch (settings.getCompiledDescriptor().getBiomeControllerType()) {
+            case DEFAULT:
+                return biomes.get(0);   // @todo 1.16 implement correctly!
+            case CHECKER:
+                if ((x+y)%2 == 0 || biomes.size() <= 1) {
+                    return biomes.get(0);
+                } else {
+                    return biomes.get(1);
+                }
+            case SINGLE:
+                return biomes.get(0);
+        }
+        return null;
     }
 }

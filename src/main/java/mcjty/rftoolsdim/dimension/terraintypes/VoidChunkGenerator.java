@@ -2,6 +2,7 @@ package mcjty.rftoolsdim.dimension.terraintypes;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import mcjty.rftoolsdim.dimension.DimensionSettings;
 import net.minecraft.block.BlockState;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.registry.Registry;
@@ -21,14 +22,14 @@ public class VoidChunkGenerator extends BaseChunkGenerator {
     public static final Codec<VoidChunkGenerator> CODEC = RecordCodecBuilder.create(instance ->
             instance.group(
                     RegistryLookupCodec.getLookUpCodec(Registry.BIOME_KEY).forGetter(VoidChunkGenerator::getBiomeRegistry),
-                    SETTINGS_CODEC.fieldOf("settings").forGetter(VoidChunkGenerator::getSettings)
+                    DimensionSettings.SETTINGS_CODEC.fieldOf("settings").forGetter(VoidChunkGenerator::getSettings)
             ).apply(instance, VoidChunkGenerator::new));
 
-    public VoidChunkGenerator(MinecraftServer server, Settings settings) {
+    public VoidChunkGenerator(MinecraftServer server, DimensionSettings settings) {
         this(server.func_244267_aX().getRegistry(Registry.BIOME_KEY), settings);
     }
 
-    public VoidChunkGenerator(Registry<Biome> registry, Settings settings) {
+    public VoidChunkGenerator(Registry<Biome> registry, DimensionSettings settings) {
         super(registry, settings);
     }
 
@@ -44,7 +45,12 @@ public class VoidChunkGenerator extends BaseChunkGenerator {
 
     @Override
     public void generateSurface(WorldGenRegion worldGenRegion, IChunk iChunk) {
+        // No surface
+    }
 
+    @Override
+    protected void makeBedrock(IChunk chunk) {
+        // No bedrock
     }
 
     @Override
@@ -53,12 +59,12 @@ public class VoidChunkGenerator extends BaseChunkGenerator {
     }
 
     @Override
-    public int getHeight(int i, int i1, Heightmap.Type type) {
-        return 0;   // @todo 1.16
+    public int getHeight(int x, int z, Heightmap.Type type) {
+        return 0;
     }
 
     @Override
-    public IBlockReader func_230348_a_(int i, int i1) {
-        return new Blockreader(new BlockState[0]);   // @todo 1.16
+    public IBlockReader func_230348_a_(int x, int z) {
+        return new Blockreader(new BlockState[0]);
     }
 }

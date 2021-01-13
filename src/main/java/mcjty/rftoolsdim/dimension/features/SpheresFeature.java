@@ -49,7 +49,7 @@ public class SpheresFeature extends Feature<NoFeatureConfig> {
     @Override
     public boolean generate(ISeedReader reader, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
         if (generator instanceof BaseChunkGenerator) {
-            CompiledDescriptor compiledDescriptor = ((BaseChunkGenerator) generator).getCompiledDescriptor();
+            CompiledDescriptor compiledDescriptor = ((BaseChunkGenerator) generator).getSettings().getCompiledDescriptor();
             if (compiledDescriptor.getFeatures().contains(SPHERES_ID)) {
                 ChunkPos cp = new ChunkPos(pos);
                 int chunkX = cp.x;

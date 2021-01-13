@@ -1,10 +1,42 @@
 [
   {
+    "type": "block",
+    "name": "minecraft:stone"
+  },
+  {
+    "type": "block",
+    "name": "minecraft:iron_block"
+  },
+  {
+    "type": "block",
+    "name": "minecraft:gold_block"
+  },
+  {
+    "type": "block",
+    "name": "minecraft:bricks"
+  },
+  {
+    "type": "block",
+    "name": "minecraft:obsidian"
+  },
+  {
     "type": "terrain",
     "name": "flat"
   },
   {
     "type": "feature",
     "name": "rftoolsdim:spheres"
+  },
+  {
+    "type": "biome",
+    "name": "minecraft:forest"
+  },
+  {
+    "type": "biome",
+    "name": "minecraft:desert"
+  },
+  {
+    "type": "biome_controller",
+    "name": "checker"
   }
 ]

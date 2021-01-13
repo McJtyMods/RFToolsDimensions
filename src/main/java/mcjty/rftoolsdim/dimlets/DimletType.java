@@ -5,9 +5,10 @@ import java.util.Map;
 
 public enum DimletType {
     TERRAIN("t"),
-    BIOME("b"),
+    BIOME_CONTROLLER("bc"),
+    BIOME("bi"),
     FEATURE("f"),
-    MATERIAL("m");
+    BLOCK("b");
 
     private final String shortName;
 

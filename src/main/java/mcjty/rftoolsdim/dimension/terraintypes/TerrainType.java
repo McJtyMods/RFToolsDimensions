@@ -1,6 +1,7 @@
 package mcjty.rftoolsdim.dimension.terraintypes;
 
 import mcjty.rftoolsdim.dimension.DimensionRegistry;
+import mcjty.rftoolsdim.dimension.DimensionSettings;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.gen.ChunkGenerator;
@@ -17,7 +18,7 @@ public enum TerrainType {
 
     private final String name;
     private final ResourceLocation typeId;
-    private final BiFunction<MinecraftServer, BaseChunkGenerator.Settings, ChunkGenerator> generatorSupplier;
+    private final BiFunction<MinecraftServer, DimensionSettings, ChunkGenerator> generatorSupplier;
 
     private static final Map<String, TerrainType> TERRAIN_BY_NAME = new HashMap<>();
 
@@ -27,7 +28,7 @@ public enum TerrainType {
         }
     }
 
-    TerrainType(String name, ResourceLocation typeId, BiFunction<MinecraftServer, BaseChunkGenerator.Settings, ChunkGenerator> generatorSupplier) {
+    TerrainType(String name, ResourceLocation typeId, BiFunction<MinecraftServer, DimensionSettings, ChunkGenerator> generatorSupplier) {
         this.name = name;
         this.typeId = typeId;
         this.generatorSupplier = generatorSupplier;
@@ -41,11 +42,11 @@ public enum TerrainType {
         return typeId;
     }
 
-    public BiFunction<MinecraftServer, BaseChunkGenerator.Settings, ChunkGenerator> getGeneratorSupplier() {
+    public BiFunction<MinecraftServer, DimensionSettings, ChunkGenerator> getGeneratorSupplier() {
         return generatorSupplier;
     }
 
     public static TerrainType byName(String name) {
-        return TERRAIN_BY_NAME.get(name);
+        return TERRAIN_BY_NAME.get(name.toLowerCase());
     }
 }

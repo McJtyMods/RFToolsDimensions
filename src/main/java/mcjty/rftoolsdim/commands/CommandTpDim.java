@@ -8,13 +8,14 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import mcjty.lib.varia.DimensionId;
 import mcjty.lib.varia.TeleportationTools;
+import mcjty.rftoolsdim.RFToolsDim;
+import mcjty.rftoolsdim.dimension.DimensionManager;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SharedConstants;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.World;
 
 public class CommandTpDim implements Command<CommandSource> {
 
@@ -34,15 +35,14 @@ public class CommandTpDim implements Command<CommandSource> {
         ServerPlayerEntity player = context.getSource().asPlayer();
         int x = player.getPosition().getX();
         int z = player.getPosition().getZ();
-        ResourceLocation id = new ResourceLocation(name);
-        DimensionId type = DimensionId.fromResourceLocation(id);
-
-        ServerWorld world = type.getWorld();
+        World world = DimensionManager.get().getDimWorld(name);
         if (world == null) {
-//            DimensionManager.get(context.getSource().getWorld()).loadWorld(context.getSource().getWorld(), name);
+            RFToolsDim.setup.getLogger().error("Can't find dimension '" + name + "'!");
+            return 0;
         }
 
-        TeleportationTools.teleport(player, type, x, 200, z, Direction.NORTH);
+        DimensionId id = DimensionId.fromWorld(world);
+        TeleportationTools.teleport(player, id, x, 200, z, Direction.NORTH);
         return 0;
     }
 }

@@ -30,7 +30,7 @@ public class CommandCreateDim implements Command<CommandSource> {
         SharedConstants.developmentMode = true;
         String name = context.getArgument("name", String.class);
         String descriptor = context.getArgument("descriptor", String.class);
-        String error = DimensionManager.get(context.getSource().getWorld()).createDimension(context.getSource().getWorld(), name, descriptor);
+        String error = DimensionManager.get().createDimension(context.getSource().getWorld(), name, descriptor);
         if (error != null) {
             context.getSource().sendFeedback(new StringTextComponent(TextFormatting.RED + error), true);
         }
