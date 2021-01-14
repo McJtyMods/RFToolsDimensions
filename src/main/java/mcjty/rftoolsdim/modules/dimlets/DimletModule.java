@@ -1,15 +1,15 @@
 package mcjty.rftoolsdim.modules.dimlets;
 
+import mcjty.lib.modules.IModule;
+import mcjty.rftoolsdim.dimlets.DimletDictionary;
 import mcjty.rftoolsdim.modules.dimlets.items.*;
 import mcjty.rftoolsdim.setup.Registration;
 import net.minecraft.item.Item;
 import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 
-public class DimletSetup {
-
-    public static void register() {
-        // Needed to force class loading
-    }
+public class DimletModule implements IModule {
 
     public static final RegistryObject<DimletItem> EMPTY_DIMLET = Registration.ITEMS.register("empty_dimlet", DimletItem::new);
 
@@ -35,4 +35,25 @@ public class DimletSetup {
     public static final RegistryObject<Item> COMMON_ESSENCE = Registration.ITEMS.register("common_essence", () -> new Item(Registration.createStandardProperties()));
     public static final RegistryObject<Item> RARE_ESSENCE = Registration.ITEMS.register("rare_essence", () -> new Item(Registration.createStandardProperties()));
     public static final RegistryObject<Item> LEGENDARY_ESSENCE = Registration.ITEMS.register("legendary_essence", () -> new Item(Registration.createStandardProperties()));
+
+    private DimletDictionary dimletDictionary;
+
+    public DimletDictionary getDimletDictionary() {
+        return dimletDictionary;
+    }
+
+    @Override
+    public void init(FMLCommonSetupEvent event) {
+        dimletDictionary = new DimletDictionary();
+    }
+
+    @Override
+    public void initClient(FMLClientSetupEvent event) {
+
+    }
+
+    @Override
+    public void initConfig() {
+
+    }
 }

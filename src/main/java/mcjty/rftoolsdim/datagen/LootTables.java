@@ -1,9 +1,9 @@
 package mcjty.rftoolsdim.datagen;
 
 import mcjty.lib.datagen.BaseLootTableProvider;
-import mcjty.rftoolsdim.modules.dimensionbuilder.DimensionBuilderSetup;
-import mcjty.rftoolsdim.modules.enscriber.EnscriberSetup;
-import mcjty.rftoolsdim.modules.workbench.WorkbenchSetup;
+import mcjty.rftoolsdim.modules.dimensionbuilder.DimensionBuilderModule;
+import mcjty.rftoolsdim.modules.enscriber.EnscriberModule;
+import mcjty.rftoolsdim.modules.workbench.WorkbenchModule;
 import net.minecraft.data.DataGenerator;
 
 public class LootTables extends BaseLootTableProvider {
@@ -14,9 +14,9 @@ public class LootTables extends BaseLootTableProvider {
 
     @Override
     protected void addTables() {
-        addStandardTable(DimensionBuilderSetup.DIMENSION_BUILDER.get());
-        addStandardTable(WorkbenchSetup.WORKBENCH.get());
-        addStandardTable(EnscriberSetup.ENSCRIBER.get());
+        addStandardTable(DimensionBuilderModule.DIMENSION_BUILDER.get());
+        addStandardTable(WorkbenchModule.WORKBENCH.get());
+        addStandardTable(EnscriberModule.ENSCRIBER.get());
     }
 
     @Override

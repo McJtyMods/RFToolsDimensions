@@ -7,7 +7,7 @@ public class WorkbenchConfig {
     public static final String SUB_CATEGORY_WORKBENCH = "dimletworkbench";
 
 
-    public static void setup(ForgeConfigSpec.Builder SERVER_BUILDER) {
+    public static void init(ForgeConfigSpec.Builder SERVER_BUILDER, ForgeConfigSpec.Builder CLIENT_BUILDER) {
         SERVER_BUILDER.comment("Dimlet Workbench settings").push(SUB_CATEGORY_WORKBENCH);
 
 

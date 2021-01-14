@@ -1,6 +1,7 @@
-package mcjty.rftoolsdim.entities;
+package mcjty.rftoolsdim.modules.blob.client;
 
 import com.google.common.collect.ImmutableList;
+import mcjty.rftoolsdim.modules.blob.entities.DimensionalBlobEntity;
 import net.minecraft.client.renderer.entity.model.SegmentedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 

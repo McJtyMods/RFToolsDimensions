@@ -3,11 +3,6 @@ package mcjty.rftoolsdim.setup;
 
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.dimension.features.SpheresFeature;
-import mcjty.rftoolsdim.entities.EntitySetup;
-import mcjty.rftoolsdim.modules.dimensionbuilder.DimensionBuilderSetup;
-import mcjty.rftoolsdim.modules.dimlets.DimletSetup;
-import mcjty.rftoolsdim.modules.enscriber.EnscriberSetup;
-import mcjty.rftoolsdim.modules.workbench.WorkbenchSetup;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityType;
 import net.minecraft.inventory.container.ContainerType;
@@ -41,12 +36,6 @@ public class Registration {
         SOUNDS.register(FMLJavaModLoadingContext.get().getModEventBus());
         ENTITIES.register(FMLJavaModLoadingContext.get().getModEventBus());
         FEATURES.register(FMLJavaModLoadingContext.get().getModEventBus());
-
-        DimletSetup.register();
-        EntitySetup.register();
-        DimensionBuilderSetup.register();
-        WorkbenchSetup.register();
-        EnscriberSetup.register();
     }
 
     public static final RegistryObject<SpheresFeature> SPHERES_FEATURE = FEATURES.register("spheres", () -> new SpheresFeature(NoFeatureConfig.field_236558_a_));

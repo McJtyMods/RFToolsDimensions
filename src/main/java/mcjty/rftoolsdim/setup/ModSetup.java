@@ -10,7 +10,6 @@ import mcjty.rftoolsdim.dimension.features.SpheresFeature;
 import mcjty.rftoolsdim.dimension.terraintypes.FlatChunkGenerator;
 import mcjty.rftoolsdim.dimension.terraintypes.VoidChunkGenerator;
 import mcjty.rftoolsdim.dimension.terraintypes.WavesChunkGenerator;
-import mcjty.rftoolsdim.dimlets.DimletDictionary;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.registry.Registry;
@@ -25,7 +24,6 @@ import static mcjty.rftoolsdim.dimension.DimensionRegistry.*;
 @Mod.EventBusSubscriber(modid = RFToolsDim.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ModSetup extends DefaultModSetup {
 
-    private DimletDictionary dimletDictionary;
 
     public ModSetup() {
         createTab("rftoolsdim", () -> new ItemStack(Items.DIAMOND));
@@ -36,7 +34,6 @@ public class ModSetup extends DefaultModSetup {
         super.init(e);
 
         RFToolsDimMessage.registerMessages("rftoolsdim");
-        dimletDictionary = new DimletDictionary();
 
         SpheresFeature.registerConfiguredFeatures();
         MinecraftForge.EVENT_BUS.register(new ForgeEventHandlers());
@@ -47,10 +44,6 @@ public class ModSetup extends DefaultModSetup {
             Registry.register(Registry.CHUNK_GENERATOR_CODEC, FLAT_ID, FlatChunkGenerator.CODEC);
             Registry.register(Registry.BIOME_PROVIDER_CODEC, DimensionRegistry.BIOMES_ID, RFTBiomeProvider.CODEC);
         });
-    }
-
-    public DimletDictionary getDimletDictionary() {
-        return dimletDictionary;
     }
 
     @SubscribeEvent

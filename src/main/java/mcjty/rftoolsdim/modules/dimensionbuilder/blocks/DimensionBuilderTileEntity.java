@@ -16,7 +16,7 @@ import mcjty.lib.tileentity.GenericEnergyStorage;
 import mcjty.lib.tileentity.GenericTileEntity;
 import mcjty.rftoolsbase.tools.ManualHelper;
 import mcjty.rftoolsdim.modules.dimensionbuilder.DimensionBuilderConfig;
-import mcjty.rftoolsdim.modules.dimensionbuilder.DimensionBuilderSetup;
+import mcjty.rftoolsdim.modules.dimensionbuilder.DimensionBuilderModule;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
@@ -48,13 +48,13 @@ public class DimensionBuilderTileEntity extends GenericTileEntity {
     private final GenericEnergyStorage energyStorage = new GenericEnergyStorage(this, true, DimensionBuilderConfig.MAXENERGY.get(), DimensionBuilderConfig.RECEIVEPERTICK.get());
     private final LazyOptional<GenericEnergyStorage> energyHandler = LazyOptional.of(() -> energyStorage);
     private final LazyOptional<INamedContainerProvider> screenHandler = LazyOptional.of(() -> new DefaultContainerProvider<GenericContainer>("Dimension Builder")
-            .containerSupplier((windowId,player) -> new GenericContainer(DimensionBuilderSetup.CONTAINER_DIMENSION_BUILDER.get(), windowId, CONTAINER_FACTORY.get(), getPos(), DimensionBuilderTileEntity.this))
+            .containerSupplier((windowId,player) -> new GenericContainer(DimensionBuilderModule.CONTAINER_DIMENSION_BUILDER.get(), windowId, CONTAINER_FACTORY.get(), getPos(), DimensionBuilderTileEntity.this))
             .itemHandler(() -> items)
             .energyHandler(() -> energyStorage));
     private final LazyOptional<IInfusable> infusableHandler = LazyOptional.of(() -> new DefaultInfusable(DimensionBuilderTileEntity.this));
 
     public DimensionBuilderTileEntity() {
-        super(DimensionBuilderSetup.TYPE_DIMENSION_BUILDER.get());
+        super(DimensionBuilderModule.TYPE_DIMENSION_BUILDER.get());
     }
 
     public static BaseBlock createBlock() {

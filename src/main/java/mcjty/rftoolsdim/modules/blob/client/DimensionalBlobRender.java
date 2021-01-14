@@ -1,7 +1,8 @@
-package mcjty.rftoolsdim.entities;
+package mcjty.rftoolsdim.modules.blob.client;
 
 
 import com.mojang.blaze3d.matrix.MatrixStack;
+import mcjty.rftoolsdim.modules.blob.entities.DimensionalBlobEntity;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.LivingRenderer;

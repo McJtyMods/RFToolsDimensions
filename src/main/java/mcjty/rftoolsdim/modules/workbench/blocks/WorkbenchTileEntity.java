@@ -11,7 +11,7 @@ import mcjty.lib.container.GenericContainer;
 import mcjty.lib.container.NoDirectionItemHander;
 import mcjty.lib.tileentity.GenericTileEntity;
 import mcjty.rftoolsbase.tools.ManualHelper;
-import mcjty.rftoolsdim.modules.workbench.WorkbenchSetup;
+import mcjty.rftoolsdim.modules.workbench.WorkbenchModule;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
@@ -34,11 +34,11 @@ public class WorkbenchTileEntity extends GenericTileEntity {
     private final LazyOptional<AutomationFilterItemHander> itemHandler = LazyOptional.of(() -> new AutomationFilterItemHander(items));
 
     private final LazyOptional<INamedContainerProvider> screenHandler = LazyOptional.of(() -> new DefaultContainerProvider<GenericContainer>("Dimlet Workbench")
-            .containerSupplier((windowId,player) -> new GenericContainer(WorkbenchSetup.CONTAINER_WORKBENCH.get(), windowId, CONTAINER_FACTORY.get(), getPos(), WorkbenchTileEntity.this))
+            .containerSupplier((windowId,player) -> new GenericContainer(WorkbenchModule.CONTAINER_WORKBENCH.get(), windowId, CONTAINER_FACTORY.get(), getPos(), WorkbenchTileEntity.this))
             .itemHandler(() -> items));
 
     public WorkbenchTileEntity() {
-        super(WorkbenchSetup.TYPE_WORKBENCH.get());
+        super(WorkbenchModule.TYPE_WORKBENCH.get());
     }
 
     public static BaseBlock createBlock() {

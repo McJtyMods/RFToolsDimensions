@@ -11,7 +11,7 @@ import mcjty.lib.container.GenericContainer;
 import mcjty.lib.container.NoDirectionItemHander;
 import mcjty.lib.tileentity.GenericTileEntity;
 import mcjty.rftoolsbase.tools.ManualHelper;
-import mcjty.rftoolsdim.modules.enscriber.EnscriberSetup;
+import mcjty.rftoolsdim.modules.enscriber.EnscriberModule;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
@@ -34,11 +34,11 @@ public class EnscriberTileEntity extends GenericTileEntity {
     private final LazyOptional<AutomationFilterItemHander> itemHandler = LazyOptional.of(() -> new AutomationFilterItemHander(items));
 
     private final LazyOptional<INamedContainerProvider> screenHandler = LazyOptional.of(() -> new DefaultContainerProvider<GenericContainer>("Dimlet Workbench")
-            .containerSupplier((windowId,player) -> new GenericContainer(EnscriberSetup.CONTAINER_ENSCRIBER.get(), windowId, CONTAINER_FACTORY.get(), getPos(), EnscriberTileEntity.this))
+            .containerSupplier((windowId,player) -> new GenericContainer(EnscriberModule.CONTAINER_ENSCRIBER.get(), windowId, CONTAINER_FACTORY.get(), getPos(), EnscriberTileEntity.this))
             .itemHandler(() -> items));
 
     public EnscriberTileEntity() {
-        super(EnscriberSetup.TYPE_ENSCRIBER.get());
+        super(EnscriberModule.TYPE_ENSCRIBER.get());
     }
 
     public static BaseBlock createBlock() {

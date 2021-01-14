@@ -1,4 +1,4 @@
-package mcjty.rftoolsdim.entities;
+package mcjty.rftoolsdim.modules.blob.entities;
 
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MobEntity;

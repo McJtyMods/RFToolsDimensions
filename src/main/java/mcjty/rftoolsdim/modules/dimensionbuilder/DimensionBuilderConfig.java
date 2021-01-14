@@ -9,7 +9,7 @@ public class DimensionBuilderConfig {
     public static ForgeConfigSpec.IntValue MAXENERGY;
     public static ForgeConfigSpec.IntValue RECEIVEPERTICK;
 
-    public static void setup(ForgeConfigSpec.Builder SERVER_BUILDER) {
+    public static void init(ForgeConfigSpec.Builder SERVER_BUILDER, ForgeConfigSpec.Builder CLIENT_BUILDER) {
         SERVER_BUILDER.comment("Dimension Builder settings").push(SUB_CATEGORY_DIMENSION_BUILDER);
 
         MAXENERGY = SERVER_BUILDER

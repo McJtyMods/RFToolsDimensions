@@ -6,7 +6,7 @@ public class EnscriberConfig {
 
     public static final String SUB_CATEGORY_ENSCRIBER = "enscriber";
 
-    public static void setup(ForgeConfigSpec.Builder SERVER_BUILDER) {
+    public static void init(ForgeConfigSpec.Builder SERVER_BUILDER, ForgeConfigSpec.Builder CLIENT_BUILDER) {
         SERVER_BUILDER.comment("Enscriber settings").push(SUB_CATEGORY_ENSCRIBER);
 
         SERVER_BUILDER.pop();
