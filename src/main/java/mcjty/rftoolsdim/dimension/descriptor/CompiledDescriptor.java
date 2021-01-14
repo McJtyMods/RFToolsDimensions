@@ -1,10 +1,8 @@
 package mcjty.rftoolsdim.dimension.descriptor;
 
-import com.google.common.collect.Lists;
 import mcjty.rftoolsdim.dimension.biomes.BiomeControllerType;
 import mcjty.rftoolsdim.dimension.terraintypes.TerrainType;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.biome.Biome;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -19,7 +17,7 @@ public class CompiledDescriptor {
     private TerrainType terrainType = TerrainType.NORMAL;
     private Set<ResourceLocation> features = new HashSet<>();
     private List<ResourceLocation> baseBlocks = new ArrayList<>();
-    private BiomeControllerType biomeControllerType;
+    private BiomeControllerType biomeControllerType = BiomeControllerType.SINGLE;
     private List<ResourceLocation> biomes = new ArrayList<>();
 
     public TerrainType getTerrainType() {
