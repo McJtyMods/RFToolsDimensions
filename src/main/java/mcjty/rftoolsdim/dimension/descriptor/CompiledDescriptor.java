@@ -1,8 +1,13 @@
 package mcjty.rftoolsdim.dimension.descriptor;
 
 import mcjty.rftoolsdim.dimension.biomes.BiomeControllerType;
+import mcjty.rftoolsdim.dimension.features.FeatureType;
 import mcjty.rftoolsdim.dimension.terraintypes.TerrainType;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -14,50 +19,95 @@ import java.util.Set;
  */
 public class CompiledDescriptor {
 
-    private TerrainType terrainType = TerrainType.NORMAL;
-    private Set<ResourceLocation> features = new HashSet<>();
-    private List<ResourceLocation> baseBlocks = new ArrayList<>();
-    private BiomeControllerType biomeControllerType = BiomeControllerType.SINGLE;
-    private List<ResourceLocation> biomes = new ArrayList<>();
+    private TerrainType terrainType = null;
+    private final List<BlockState> baseBlocks = new ArrayList<>();
+    private final Set<CompiledFeature> features = new HashSet<>();
+    private BiomeControllerType biomeControllerType = null;
+    private final List<ResourceLocation> biomes = new ArrayList<>();
 
     public TerrainType getTerrainType() {
         return terrainType;
     }
 
-    public CompiledDescriptor(DimensionDescriptor descriptor) {
+    /**
+     * Compile this descriptor. Return null if all is ok. Otherwise return an error string
+     */
+    public String compile(DimensionDescriptor descriptor) {
+        List<BlockState> collectedBlocks = new ArrayList<>();
+
         for (DimletDescriptor dimletDescriptor : descriptor.getDimletDescriptors()) {
             String name = dimletDescriptor.getName();
             switch (dimletDescriptor.getType()) {
                 case TERRAIN:
+                    if (terrainType != null) {
+                        return "You can only have one terrain type!";
+                    }
                     terrainType = TerrainType.byName(name);
                     if (terrainType == null) {
-                        throw new RuntimeException("Bad terrain type: " + name + "!");
+                        return "Bad terrain type: " + name + "!";
+                    }
+                    baseBlocks.addAll(collectedBlocks);
+                    collectedBlocks.clear();
+                    if (baseBlocks.isEmpty()) {
+                        baseBlocks.add(Blocks.STONE.getDefaultState());
                     }
                     break;
                 case BIOME_CONTROLLER:
+                    if (biomeControllerType != null) {
+                        return "You can only have one biome controller!";
+                    }
                     biomeControllerType = BiomeControllerType.byName(name);
                     if (biomeControllerType == null) {
-                        throw new RuntimeException("Bad biome controller type: " + name + "!");
+                        return "Bad biome controller type: " + name + "!";
                     }
                     break;
                 case BIOME:
                     biomes.add(new ResourceLocation(name));
                     break;
-                case FEATURE:
-                    features.add(new ResourceLocation(name));
+                case FEATURE: {
+                    FeatureType feature = FeatureType.byName(name);
+                    if (feature == null) {
+                        return "Bad feature: " + name + "!";
+                    }
+                    CompiledFeature compiledFeature = new CompiledFeature(feature);
+                    compiledFeature.getBlocks().addAll(collectedBlocks);
+                    collectedBlocks.clear();
+                    if (compiledFeature.getBlocks().isEmpty()) {
+                        compiledFeature.getBlocks().add(Blocks.STONE.getDefaultState());
+                    }
+                    features.add(compiledFeature);
                     break;
-                case BLOCK:
-                    baseBlocks.add(new ResourceLocation(name));
+                }
+                case BLOCK: {
+                    Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(name));
+                    if (block == null) {
+                        return "Bad block: " + name + "!";
+                    }
+                    collectedBlocks.add(block.getDefaultState());
                     break;
+                }
             }
         }
+
+        if (!collectedBlocks.isEmpty()) {
+            return "Dangling blocks! Blocks should come before either a terrain or a feature";
+        }
+
+        if (terrainType == null) {
+            terrainType = TerrainType.NORMAL;
+        }
+        if (biomeControllerType == null) {
+            biomeControllerType = BiomeControllerType.SINGLE;
+        }
+
+        return null;
     }
 
-    public List<ResourceLocation> getBaseBlocks() {
+    public List<BlockState> getBaseBlocks() {
         return baseBlocks;
     }
 
-    public Set<ResourceLocation> getFeatures() {
+    public Set<CompiledFeature> getFeatures() {
         return features;
     }
 

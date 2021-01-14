@@ -2,6 +2,7 @@ package mcjty.rftoolsdim.dimension;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.dimension.descriptor.CompiledDescriptor;
 import mcjty.rftoolsdim.dimension.descriptor.DimensionDescriptor;
 
@@ -30,7 +31,12 @@ public class DimensionSettings {
         if (compiledDescriptor == null) {
             DimensionDescriptor descriptor = new DimensionDescriptor();
             descriptor.read(getDimlets());
-            compiledDescriptor = new CompiledDescriptor(descriptor);
+            compiledDescriptor = new CompiledDescriptor();
+            String error = compiledDescriptor.compile(descriptor);
+            if (error != null) {
+                RFToolsDim.setup.getLogger().error("Error compiling dimension descriptor: " + error);
+                throw new RuntimeException("Error compiling dimension descriptor: " + error);
+            }
         }
         return compiledDescriptor;
     }

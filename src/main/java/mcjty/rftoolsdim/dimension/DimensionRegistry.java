@@ -20,4 +20,5 @@ public class DimensionRegistry {
     public static final RegistryKey<DimensionType> FLAT_TYPE = RegistryKey.getOrCreateKey(Registry.DIMENSION_TYPE_KEY, FLAT_ID);
 
     public static final ResourceLocation NORMAL_ID = new ResourceLocation(RFToolsDim.MODID, "normal");
+    public static final RegistryKey<DimensionType> NORMAL_TYPE = RegistryKey.getOrCreateKey(Registry.DIMENSION_TYPE_KEY, NORMAL_ID);
 }

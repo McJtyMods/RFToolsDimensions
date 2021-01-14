@@ -1,0 +1,81 @@
+[
+
+  {
+    "type": "block",
+    "name": "minecraft:obsidian"
+  },
+  {
+    "type": "block",
+    "name": "minecraft:crying_obsidian"
+  },
+  {
+    "type": "block",
+    "name": "minecraft:blackstone"
+  },
+  {
+    "type": "block",
+    "name": "minecraft:polished_blackstone"
+  },
+  {
+    "type": "terrain",
+    "name": "waves"
+  },
+
+  {
+    "type": "block",
+    "name": "minecraft:blue_stained_glass"
+  },
+  {
+    "type": "block",
+    "name": "minecraft:cyan_stained_glass"
+  },
+  {
+    "type": "block",
+    "name": "minecraft:light_gray_stained_glass"
+  },
+  {
+    "type": "block",
+    "name": "minecraft:light_blue_stained_glass"
+  },
+  {
+    "type": "block",
+    "name": "minecraft:gray_stained_glass"
+  },  {
+    "type": "feature",
+    "name": "spheres"
+  },
+
+  {
+    "type": "block",
+    "name": "minecraft:stone_bricks"
+  },
+  {
+    "type": "block",
+    "name": "minecraft:cracked_stone_bricks"
+  },
+  {
+    "type": "block",
+    "name": "minecraft:chiseled_stone_bricks"
+  },
+  {
+    "type": "block",
+    "name": "minecraft:mossy_stone_bricks"
+  },
+  {
+    "type": "feature",
+    "name": "cubes"
+  },
+
+  {
+    "type": "biome",
+    "name": "minecraft:forest"
+  },
+  {
+    "type": "biome",
+    "name": "minecraft:desert"
+  },
+  {
+    "type": "biome_controller",
+    "name": "checker"
+  }
+]

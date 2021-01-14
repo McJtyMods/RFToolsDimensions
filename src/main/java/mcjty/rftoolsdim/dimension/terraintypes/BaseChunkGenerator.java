@@ -2,10 +2,8 @@ package mcjty.rftoolsdim.dimension.terraintypes;
 
 import mcjty.rftoolsdim.dimension.DimensionSettings;
 import mcjty.rftoolsdim.dimension.biomes.RFTBiomeProvider;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SharedSeedRandom;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
@@ -14,17 +12,15 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.IChunk;
 import net.minecraft.world.gen.*;
 import net.minecraft.world.gen.settings.DimensionStructuresSettings;
-import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.stream.IntStream;
 
 public abstract class BaseChunkGenerator extends ChunkGenerator {
 
     protected final DimensionSettings settings;
-    private final INoiseGenerator surfaceDepthNoise;
+    protected INoiseGenerator surfaceDepthNoise;
     protected final SharedSeedRandom randomSeed;
 
     protected List<BlockState> defaultBlocks = new ArrayList<>();
@@ -36,16 +32,7 @@ public abstract class BaseChunkGenerator extends ChunkGenerator {
         this.randomSeed = new SharedSeedRandom(0);  // @todo 1.16 SEED
 //        this.surfaceDepthNoise = (INoiseGenerator)(noisesettings.func_236178_i_() ? new PerlinNoiseGenerator(this.randomSeed, IntStream.rangeClosed(-3, 0)) : new OctavesNoiseGenerator(this.randomSeed, IntStream.rangeClosed(-3, 0)));
         this.surfaceDepthNoise = new PerlinNoiseGenerator(this.randomSeed, IntStream.rangeClosed(-3, 0));  //) : new OctavesNoiseGenerator(this.randomSeed, IntStream.rangeClosed(-3, 0)));
-        for (ResourceLocation id : settings.getCompiledDescriptor().getBaseBlocks()) {
-            Block block = ForgeRegistries.BLOCKS.getValue(id);
-            if (block == null) {
-                throw new RuntimeException("Could not find block with id '" + id + "'!");
-            }
-            defaultBlocks.add(block.getDefaultState());
-        }
-        if (defaultBlocks.isEmpty()) {
-            defaultBlocks.add(Blocks.STONE.getDefaultState());
-        }
+        defaultBlocks.addAll(settings.getCompiledDescriptor().getBaseBlocks());
     }
 
     // Get a (possibly random) default block

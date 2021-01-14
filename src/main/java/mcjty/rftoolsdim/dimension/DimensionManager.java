@@ -68,7 +68,12 @@ public class DimensionManager {
     }
 
     private void createWorld(World world, String name, DimensionDescriptor descriptor) {
-        CompiledDescriptor compiledDescriptor = new CompiledDescriptor(descriptor);
+        CompiledDescriptor compiledDescriptor = new CompiledDescriptor();
+        String error = compiledDescriptor.compile(descriptor);
+        if (error != null) {
+            RFToolsDim.setup.getLogger().error("Error compiling dimension descriptor: " + error);
+            throw new RuntimeException("Error compiling dimension descriptor: " + error);
+        }
         TerrainType terrainType = compiledDescriptor.getTerrainType();
 
         DimensionSettings settings = new DimensionSettings(descriptor.compact());

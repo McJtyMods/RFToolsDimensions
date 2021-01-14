@@ -2,7 +2,7 @@ package mcjty.rftoolsdim.setup;
 
 
 import mcjty.rftoolsdim.RFToolsDim;
-import mcjty.rftoolsdim.dimension.features.SpheresFeature;
+import mcjty.rftoolsdim.dimension.features.RFTFeature;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityType;
 import net.minecraft.inventory.container.ContainerType;
@@ -38,7 +38,9 @@ public class Registration {
         FEATURES.register(FMLJavaModLoadingContext.get().getModEventBus());
     }
 
-    public static final RegistryObject<SpheresFeature> SPHERES_FEATURE = FEATURES.register("spheres", () -> new SpheresFeature(NoFeatureConfig.field_236558_a_));
+    public static final RegistryObject<RFTFeature> RFTFEATURE = FEATURES.register(
+            RFTFeature.RFTFEATURE_ID.getPath(),
+            () -> new RFTFeature(NoFeatureConfig.field_236558_a_));
 
     public static Item.Properties createStandardProperties() {
         return new Item.Properties().group(RFToolsDim.setup.getTab());

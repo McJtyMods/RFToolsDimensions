@@ -1,0 +1,14 @@
+[
+  {
+    "type": "terrain",
+    "name": "normal"
+  },
+  {
+    "type": "biome",
+    "name": "minecraft:desert"
+  },
+  {
+    "type": "biome_controller",
+    "name": "single"
+  }
+]

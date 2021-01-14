@@ -14,7 +14,7 @@ public enum TerrainType {
     FLAT("flat", DimensionRegistry.FLAT_ID, FlatChunkGenerator::new),
     WAVES("waves", DimensionRegistry.WAVES_ID, WavesChunkGenerator::new),
     VOID("void", DimensionRegistry.VOID_ID, VoidChunkGenerator::new),
-    NORMAL("normal", DimensionRegistry.NORMAL_ID, (server,s) -> null);
+    NORMAL("normal", DimensionRegistry.NORMAL_ID, NormalChunkGenerator::new);
 
     private final String name;
     private final ResourceLocation typeId;
