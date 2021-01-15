@@ -2,7 +2,7 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "rftoolsdim:empty_biome_modifier_dimlet"
+      "rftoolsdim:empty_biome_controller_dimlet"
     ]
   },
   "criteria": {
@@ -19,7 +19,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "rftoolsdim:empty_biome_modifier_dimlet"
+        "recipe": "rftoolsdim:empty_biome_controller_dimlet"
       }
     }
   },

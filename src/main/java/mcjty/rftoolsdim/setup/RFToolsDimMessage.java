@@ -2,7 +2,7 @@ package mcjty.rftoolsdim.setup;
 
 import mcjty.lib.network.PacketHandler;
 import mcjty.rftoolsdim.RFToolsDim;
-import mcjty.rftoolsdim.dimension.DimensionUpdatePacket;
+import mcjty.rftoolsdim.dimension.network.DimensionUpdatePacket;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.fml.network.simple.SimpleChannel;

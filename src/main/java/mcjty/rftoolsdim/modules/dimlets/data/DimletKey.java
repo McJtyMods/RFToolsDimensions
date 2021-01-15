@@ -1,4 +1,4 @@
-package mcjty.rftoolsdim.dimlets;
+package mcjty.rftoolsdim.modules.dimlets.data;
 
 import java.util.Objects;
 

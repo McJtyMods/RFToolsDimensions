@@ -1,7 +1,7 @@
 package mcjty.rftoolsdim.modules.dimlets;
 
 import mcjty.lib.modules.IModule;
-import mcjty.rftoolsdim.dimlets.DimletDictionary;
+import mcjty.rftoolsdim.modules.dimlets.data.DimletDictionary;
 import mcjty.rftoolsdim.modules.dimlets.items.*;
 import mcjty.rftoolsdim.setup.Registration;
 import net.minecraft.item.Item;
@@ -15,12 +15,12 @@ public class DimletModule implements IModule {
 
     public static final RegistryObject<DimletItem> EMPTY_TERRAIN_DIMLET = Registration.ITEMS.register("empty_terrain_dimlet", DimletItem::new);
     public static final RegistryObject<DimletItem> EMPTY_FEATURE_DIMLET = Registration.ITEMS.register("empty_feature_dimlet", DimletItem::new);
-    public static final RegistryObject<DimletItem> EMPTY_BIOME_MODIFIER_DIMLET = Registration.ITEMS.register("empty_biome_modifier_dimlet", DimletItem::new);
+    public static final RegistryObject<DimletItem> EMPTY_BIOME_CONTROLLER_DIMLET = Registration.ITEMS.register("empty_biome_controller_dimlet", DimletItem::new);
     public static final RegistryObject<DimletItem> EMPTY_BLOCK_DIMLET = Registration.ITEMS.register("empty_block_dimlet", DimletItem::new);
 
     public static final RegistryObject<DimletItem> TERRAIN_DIMLET = Registration.ITEMS.register("terrain_dimlet", DimletItem::new);
     public static final RegistryObject<DimletItem> FEATURE_DIMLET = Registration.ITEMS.register("feature_dimlet", DimletItem::new);
-    public static final RegistryObject<DimletItem> BIOME_MODIFIER_DIMLET = Registration.ITEMS.register("biome_modifier_dimlet", DimletItem::new);
+    public static final RegistryObject<DimletItem> BIOME_CONTROLLER_DIMLET = Registration.ITEMS.register("biome_controller_dimlet", DimletItem::new);
     public static final RegistryObject<DimletItem> BLOCK_DIMLET = Registration.ITEMS.register("block_dimlet", DimletItem::new);
 
     public static final RegistryObject<PartItem> PART_ENERGY_0 = Registration.ITEMS.register("part_energy_0", PartItem::new);

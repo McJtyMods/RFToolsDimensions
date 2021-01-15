@@ -1,14 +1,12 @@
-package mcjty.rftoolsdim.dimension;
+package mcjty.rftoolsdim.dimension.tools;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Lifecycle;
+import mcjty.rftoolsdim.dimension.network.DimensionUpdatePacket;
 import mcjty.rftoolsdim.setup.RFToolsDimMessage;
 import mcjty.rftoolsdim.tools.ReflectionHelper;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.RegistryKey;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.Dimension;
 import net.minecraft.world.World;
@@ -29,6 +27,7 @@ import java.util.concurrent.Executor;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
+// Kindly copied and adapted from Hyperbox (Commoble). Thanks a lot for this!
 public class DimensionHelper {
 
     public static final Function<MinecraftServer, IChunkStatusListenerFactory> CHUNK_STATUS_LISTENER_FACTORY_FIELD =
@@ -37,15 +36,6 @@ public class DimensionHelper {
             ReflectionHelper.getInstanceFieldGetter(MinecraftServer.class, "field_213217_au");
     public static final Function<MinecraftServer, SaveFormat.LevelSave> ANVIL_CONVERTER_FOR_ANVIL_FILE_FIELD =
             ReflectionHelper.getInstanceFieldGetter(MinecraftServer.class, "field_71310_m");
-
-    // Helper for sending a given player to another dimension
-    // Static dimensions (from datapacks, etc) use MinecraftServer::getWorld
-    // For dynamic dimensions use DimensionHelper.getOrCreateWorld to get the target world
-    public static void sendPlayerToDimension(ServerPlayerEntity serverPlayer, ServerWorld targetWorld, Vector3d targetVec) {
-        // ensure destination chunk is loaded before we put the player in it
-        targetWorld.getChunk(new BlockPos(targetVec));
-        serverPlayer.teleport(targetWorld, targetVec.getX(), targetVec.getY(), targetVec.getZ(), serverPlayer.rotationYaw, serverPlayer.rotationPitch);
-    }
 
     /**
      * Gets a world, dynamically creating and registering one if it doesn't exist.

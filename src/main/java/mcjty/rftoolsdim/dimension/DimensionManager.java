@@ -8,6 +8,7 @@ import mcjty.rftoolsdim.dimension.descriptor.CompiledDescriptor;
 import mcjty.rftoolsdim.dimension.descriptor.DimensionDescriptor;
 import mcjty.rftoolsdim.dimension.terraintypes.BaseChunkGenerator;
 import mcjty.rftoolsdim.dimension.terraintypes.TerrainType;
+import mcjty.rftoolsdim.dimension.tools.DimensionHelper;
 import net.minecraft.util.RegistryKey;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;

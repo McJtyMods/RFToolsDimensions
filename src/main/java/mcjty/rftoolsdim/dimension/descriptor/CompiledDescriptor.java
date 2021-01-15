@@ -3,6 +3,7 @@ package mcjty.rftoolsdim.dimension.descriptor;
 import mcjty.rftoolsdim.dimension.biomes.BiomeControllerType;
 import mcjty.rftoolsdim.dimension.features.FeatureType;
 import mcjty.rftoolsdim.dimension.terraintypes.TerrainType;
+import mcjty.rftoolsdim.modules.dimlets.data.DimletKey;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -35,8 +36,8 @@ public class CompiledDescriptor {
     public String compile(DimensionDescriptor descriptor) {
         List<BlockState> collectedBlocks = new ArrayList<>();
 
-        for (DimletDescriptor dimletDescriptor : descriptor.getDimletDescriptors()) {
-            String name = dimletDescriptor.getName();
+        for (DimletKey dimletDescriptor : descriptor.getDimletDescriptors()) {
+            String name = dimletDescriptor.getKey();
             switch (dimletDescriptor.getType()) {
                 case TERRAIN:
                     if (terrainType != null) {

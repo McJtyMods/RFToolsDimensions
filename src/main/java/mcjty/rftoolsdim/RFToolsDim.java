@@ -5,6 +5,7 @@ import mcjty.rftoolsdim.modules.blob.BlobModule;
 import mcjty.rftoolsdim.modules.dimensionbuilder.DimensionBuilderModule;
 import mcjty.rftoolsdim.modules.dimlets.DimletModule;
 import mcjty.rftoolsdim.modules.enscriber.EnscriberModule;
+import mcjty.rftoolsdim.modules.knowledge.KnowledgeModule;
 import mcjty.rftoolsdim.modules.workbench.WorkbenchModule;
 import mcjty.rftoolsdim.setup.Config;
 import mcjty.rftoolsdim.setup.ModSetup;
@@ -43,5 +44,6 @@ public class RFToolsDim {
         modules.register(new EnscriberModule());
         modules.register(new WorkbenchModule());
         modules.register(new BlobModule());
+        modules.register(new KnowledgeModule());
     }
 }

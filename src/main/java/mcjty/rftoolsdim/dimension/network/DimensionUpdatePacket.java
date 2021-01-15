@@ -1,4 +1,4 @@
-package mcjty.rftoolsdim.dimension;
+package mcjty.rftoolsdim.dimension.network;
 
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.RegistryKey;

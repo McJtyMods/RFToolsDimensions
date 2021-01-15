@@ -1,8 +1,12 @@
-package mcjty.rftoolsdim.dimlets;
+package mcjty.rftoolsdim.modules.dimlets.data;
 
 import mcjty.rftoolsdim.dimension.features.FeatureType;
 import mcjty.rftoolsdim.dimension.terraintypes.TerrainType;
 import mcjty.rftoolsdim.dimension.biomes.BiomeControllerType;
+import mcjty.rftoolsdim.dimlets.DimletRarity;
+import mcjty.rftoolsdim.dimlets.DimletSettings;
+import mcjty.rftoolsdim.modules.dimlets.data.DimletKey;
+import mcjty.rftoolsdim.modules.dimlets.data.DimletType;
 import net.minecraft.block.Blocks;
 
 import java.util.HashMap;
@@ -20,9 +24,11 @@ public class DimletDictionary {
 
         register(new DimletKey(DimletType.BIOME_CONTROLLER, BiomeControllerType.DEFAULT.name()), DimletSettings.create(DimletRarity.COMMON, 10, 1, 1).build());
         register(new DimletKey(DimletType.BIOME_CONTROLLER, BiomeControllerType.CHECKER.name()), DimletSettings.create(DimletRarity.COMMON, 10, 1, 1).build());
+        register(new DimletKey(DimletType.BIOME_CONTROLLER, BiomeControllerType.SINGLE.name()), DimletSettings.create(DimletRarity.COMMON, 10, 1, 1).build());
 
         register(new DimletKey(DimletType.FEATURE, FeatureType.NONE.name()), DimletSettings.create(DimletRarity.COMMON, 10, 1, 1).build());
         register(new DimletKey(DimletType.FEATURE, FeatureType.SPHERES.name()), DimletSettings.create(DimletRarity.COMMON, 10, 1, 1).build());
+        register(new DimletKey(DimletType.FEATURE, FeatureType.CUBES.name()), DimletSettings.create(DimletRarity.COMMON, 10, 1, 1).build());
 
         register(new DimletKey(DimletType.BLOCK, Blocks.STONE.getRegistryName().toString()), DimletSettings.create(DimletRarity.COMMON, 10, 1, 1).build());
         register(new DimletKey(DimletType.BLOCK, Blocks.DIAMOND_BLOCK.getRegistryName().toString()), DimletSettings.create(DimletRarity.RARE, 1000, 1000, 1000).build());

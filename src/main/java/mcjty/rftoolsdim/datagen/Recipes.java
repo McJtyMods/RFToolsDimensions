@@ -36,7 +36,7 @@ public class Recipes extends BaseRecipeProvider {
         build(consumer, ShapedRecipeBuilder.shapedRecipe(DimletModule.EMPTY_FEATURE_DIMLET.get())
                         .addCriterion("empty_dimlet", hasItem(DimletModule.EMPTY_DIMLET.get())),
                 "rcr", "cEc", "rcr");
-        build(consumer, ShapedRecipeBuilder.shapedRecipe(DimletModule.EMPTY_BIOME_MODIFIER_DIMLET.get())
+        build(consumer, ShapedRecipeBuilder.shapedRecipe(DimletModule.EMPTY_BIOME_CONTROLLER_DIMLET.get())
                         .addCriterion("empty_dimlet", hasItem(DimletModule.EMPTY_DIMLET.get())),
                 "DDD", "DED", "DOD");
         build(consumer, ShapedRecipeBuilder.shapedRecipe(DimletModule.EMPTY_BLOCK_DIMLET.get())

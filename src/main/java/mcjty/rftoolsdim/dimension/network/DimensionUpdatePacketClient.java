@@ -1,4 +1,4 @@
-package mcjty.rftoolsdim.dimension;
+package mcjty.rftoolsdim.dimension.network;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
@@ -10,7 +10,6 @@ import java.util.Set;
 public class DimensionUpdatePacketClient {
 
     public static void handleUpdateDimensionsPacket(DimensionUpdatePacket packet) {
-        @SuppressWarnings("resource")
         ClientPlayerEntity player = Minecraft.getInstance().player;
         RegistryKey<World> key = packet.getId();
         if (player == null || key == null)

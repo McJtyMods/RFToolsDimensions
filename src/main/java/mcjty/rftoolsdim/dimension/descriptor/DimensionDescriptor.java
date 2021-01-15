@@ -1,7 +1,8 @@
 package mcjty.rftoolsdim.dimension.descriptor;
 
 import com.google.gson.*;
-import mcjty.rftoolsdim.dimlets.DimletType;
+import mcjty.rftoolsdim.modules.dimlets.data.DimletKey;
+import mcjty.rftoolsdim.modules.dimlets.data.DimletType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,12 +22,12 @@ import java.util.List;
  */
 public class DimensionDescriptor {
 
-    private List<DimletDescriptor> dimletDescriptors = new ArrayList<>();
+    private List<DimletKey> dimletDescriptors = new ArrayList<>();
 
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
     private static final Gson GSON_COMPACT = new GsonBuilder().disableHtmlEscaping().create();
 
-    public List<DimletDescriptor> getDimletDescriptors() {
+    public List<DimletKey> getDimletDescriptors() {
         return dimletDescriptors;
     }
 
@@ -55,17 +56,17 @@ public class DimensionDescriptor {
             } else {
                 name = dimletJson.get("n").getAsString();
             }
-            DimletDescriptor dimletDescriptor = new DimletDescriptor(dimletType, name);
+            DimletKey dimletDescriptor = new DimletKey(dimletType, name);
             dimletDescriptors.add(dimletDescriptor);
         }
     }
 
     public String write() {
         JsonArray root = new JsonArray();
-        for (DimletDescriptor dimletDescriptor : dimletDescriptors) {
+        for (DimletKey dimletDescriptor : dimletDescriptors) {
             JsonObject dimletJson = new JsonObject();
             dimletJson.addProperty("type", dimletDescriptor.getType().name());
-            dimletJson.addProperty("name", dimletDescriptor.getName());
+            dimletJson.addProperty("name", dimletDescriptor.getKey());
             root.add(dimletJson);
         }
         return GSON.toJson(root);
@@ -74,10 +75,10 @@ public class DimensionDescriptor {
     // Write a more compact form of the dimension. This is stored with the dimension itself
     public String compact() {
         JsonArray root = new JsonArray();
-        for (DimletDescriptor dimletDescriptor : dimletDescriptors) {
+        for (DimletKey dimletDescriptor : dimletDescriptors) {
             JsonObject dimletJson = new JsonObject();
             dimletJson.addProperty("t", dimletDescriptor.getType().getShortName());
-            dimletJson.addProperty("n", dimletDescriptor.getName());
+            dimletJson.addProperty("n", dimletDescriptor.getKey());
             root.add(dimletJson);
         }
         return GSON_COMPACT.toJson(root);
