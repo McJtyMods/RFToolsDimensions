@@ -1,0 +1,18 @@
+Crafting tree:
+
+Empty Dimlet (1 shard + 4 paper) ->
+    Empty Terrain Dimlet (4 cobble, 4 dirt)
+    Empty Feature Dimlet (4 coal, 4 redstone)
+    Empty Biome Controller Dimlet (7 dirt, 1 obsidian)
+    Empty Block Dimlet (8 dirt)
+
+Empty <Type> Dimlet + <Rarity> Energy Module + <Rarity> Memory Module + <Pattern> + <Essence> ->
+    <Rarity> <Type> Dimlet
+
+One <Pattern> per <Type>/<Rarity> combination
+
+Ways to get knowledge (patterns):
+     Enderman farm: rare drop (never rare or legendary)
+     Combining nine knowledge patterns of a certain type will result in a higher tier knowledge pattern
+     Loot in dimensions (can be rare or legendary depending on power of dimension)
+     Research of dimlet (will result in same type of pattern needed to make that dimlet)

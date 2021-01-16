@@ -45,7 +45,10 @@ public class Items extends BaseItemModelProvider {
         itemGenerated(DimletModule.RARE_ESSENCE.get(), "item/parts/rare_essence");
         itemGenerated(DimletModule.LEGENDARY_ESSENCE.get(), "item/parts/legendary_essence");
 
-        itemGenerated(KnowledgeModule.LOST_KNOWLEDGE.get(), "item/lost_knowledge");
+        itemGenerated(KnowledgeModule.COMMON_LOST_KNOWLEDGE.get(), "item/common_lost_knowledge");
+        itemGenerated(KnowledgeModule.UNCOMMON_LOST_KNOWLEDGE.get(), "item/uncommon_lost_knowledge");
+        itemGenerated(KnowledgeModule.RARE_LOST_KNOWLEDGE.get(), "item/rare_lost_knowledge");
+        itemGenerated(KnowledgeModule.LEGENDARY_LOST_KNOWLEDGE.get(), "item/legendary_lost_knowledge");
         itemGenerated(KnowledgeModule.PATTERN_RECIPE_TABLET.get(), "item/pattern_recipe_tablet");
 
     }

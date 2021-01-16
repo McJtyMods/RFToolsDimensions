@@ -1,5 +1,7 @@
 package mcjty.rftoolsdim.modules.knowledge.data;
 
+import java.util.Arrays;
+
 public class DimletPattern {
 
     public static final int PATTERN_DIM = 7;
@@ -13,5 +15,18 @@ public class DimletPattern {
 
     public String[] getPattern() {
         return pattern;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DimletPattern that = (DimletPattern) o;
+        return Arrays.equals(pattern, that.pattern);
+    }
+
+    @Override
+    public int hashCode() {
+        return Arrays.hashCode(pattern);
     }
 }

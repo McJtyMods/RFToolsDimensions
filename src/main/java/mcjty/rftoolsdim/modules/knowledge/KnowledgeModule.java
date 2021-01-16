@@ -11,7 +11,10 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 
 public class KnowledgeModule implements IModule {
 
-    public static final RegistryObject<Item> LOST_KNOWLEDGE = Registration.ITEMS.register("lost_knowledge", LostKnowledgeItem::new);
+    public static final RegistryObject<Item> COMMON_LOST_KNOWLEDGE = Registration.ITEMS.register("common_lost_knowledge", LostKnowledgeItem::new);
+    public static final RegistryObject<Item> UNCOMMON_LOST_KNOWLEDGE = Registration.ITEMS.register("uncommon_lost_knowledge", LostKnowledgeItem::new);
+    public static final RegistryObject<Item> RARE_LOST_KNOWLEDGE = Registration.ITEMS.register("rare_lost_knowledge", LostKnowledgeItem::new);
+    public static final RegistryObject<Item> LEGENDARY_LOST_KNOWLEDGE = Registration.ITEMS.register("legendary_lost_knowledge", LostKnowledgeItem::new);
     public static final RegistryObject<Item> PATTERN_RECIPE_TABLET = Registration.ITEMS.register("pattern_recipe_tablet", PatternRecipeTablet::new);
 
     @Override

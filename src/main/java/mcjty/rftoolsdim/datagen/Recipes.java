@@ -5,6 +5,8 @@ import mcjty.rftoolsbase.modules.various.VariousModule;
 import mcjty.rftoolsdim.modules.dimensionbuilder.DimensionBuilderModule;
 import mcjty.rftoolsdim.modules.dimlets.DimletModule;
 import mcjty.rftoolsdim.modules.enscriber.EnscriberModule;
+import mcjty.rftoolsdim.modules.knowledge.KnowledgeModule;
+import mcjty.rftoolsdim.modules.knowledge.data.KnowledgeManager;
 import mcjty.rftoolsdim.modules.workbench.WorkbenchModule;
 import net.minecraft.block.Blocks;
 import net.minecraft.data.DataGenerator;
@@ -93,6 +95,19 @@ public class Recipes extends BaseRecipeProvider {
                         .key('M', DimletModule.PART_MEMORY_2.get())
                         .addCriterion("memory2", hasItem(DimletModule.PART_MEMORY_2.get())),
                 "ulu", "lMl", "uUu");
+
+        build(consumer, ShapedRecipeBuilder.shapedRecipe(KnowledgeModule.UNCOMMON_LOST_KNOWLEDGE.get())
+                        .key('u', KnowledgeModule.COMMON_LOST_KNOWLEDGE.get())
+                        .addCriterion("knowlege", hasItem(KnowledgeModule.COMMON_LOST_KNOWLEDGE.get())),
+                "uuu", "uuu", "uuu");
+        build(consumer, ShapedRecipeBuilder.shapedRecipe(KnowledgeModule.RARE_LOST_KNOWLEDGE.get())
+                        .key('u', KnowledgeModule.UNCOMMON_LOST_KNOWLEDGE.get())
+                        .addCriterion("knowlege", hasItem(KnowledgeModule.COMMON_LOST_KNOWLEDGE.get())),
+                "uuu", "uuu", "uuu");
+        build(consumer, ShapedRecipeBuilder.shapedRecipe(KnowledgeModule.LEGENDARY_LOST_KNOWLEDGE.get())
+                        .key('u', KnowledgeModule.RARE_LOST_KNOWLEDGE.get())
+                        .addCriterion("knowlege", hasItem(KnowledgeModule.COMMON_LOST_KNOWLEDGE.get())),
+                "uuu", "uuu", "uuu");
 
         build(consumer, ShapedRecipeBuilder.shapedRecipe(DimensionBuilderModule.DIMENSION_BUILDER.get())
                         .key('g', Items.GOLD_INGOT)

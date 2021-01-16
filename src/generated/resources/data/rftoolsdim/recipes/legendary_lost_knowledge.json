@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "uuu",
+    "uuu",
+    "uuu"
+  ],
+  "key": {
+    "u": {
+      "item": "rftoolsdim:rare_lost_knowledge"
+    }
+  },
+  "result": {
+    "item": "rftoolsdim:legendary_lost_knowledge"
+  }
+}

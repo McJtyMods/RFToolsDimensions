@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "rftoolsdim:uncommon_lost_knowledge"
+    ]
+  },
+  "criteria": {
+    "knowlege": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "rftoolsdim:common_lost_knowledge"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "rftoolsdim:uncommon_lost_knowledge"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "knowlege",
+      "has_the_recipe"
+    ]
+  ]
+}

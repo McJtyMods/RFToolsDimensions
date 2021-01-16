@@ -2,8 +2,8 @@
   "item.rftoolsdim.empty_dimlet": "Empty Dimlet",
   "item.rftoolsdim.terrain_dimlet": "Terrain Dimlet",
   "item.rftoolsdim.empty_terrain_dimlet": "Empty Terrain Dimlet",
-  "item.rftoolsdim.biome_controller_dimlet": "Biome Modifier Dimlet",
-  "item.rftoolsdim.empty_biome_controller_dimlet": "Empty Biome Modifier Dimlet",
+  "item.rftoolsdim.biome_controller_dimlet": "Biome Controller Dimlet",
+  "item.rftoolsdim.empty_biome_controller_dimlet": "Empty Biome Controller Dimlet",
   "item.rftoolsdim.biome_dimlet": "Biome Dimlet",
   "item.rftoolsdim.empty_biome_dimlet": "Empty Biome Dimlet",
   "item.rftoolsdim.feature_dimlet": "Feature Dimlet",
@@ -11,7 +11,11 @@
   "item.rftoolsdim.block_dimlet": "Block Dimlet",
   "item.rftoolsdim.empty_block_dimlet": "Empty Block Dimlet",
 
-  "item.rftoolsdim.lost_knowledge": "Lost Knowledge",
+  "item.rftoolsdim.common_lost_knowledge": "Common Lost Knowledge",
+  "item.rftoolsdim.uncommon_lost_knowledge": "Uncommon Lost Knowledge",
+  "item.rftoolsdim.rare_lost_knowledge": "Rare Lost Knowledge",
+  "item.rftoolsdim.legendary_lost_knowledge": "Legendary Lost Knowledge",
+  "item.rftoolsdim.pattern_recipe_tablet": "Pattern Recipe Tablet",
 
   "item.rftoolsdim.part_energy_0": "Common Energy Module",
   "item.rftoolsdim.part_energy_1": "Uncommon Energy Module",
