@@ -3,7 +3,6 @@ package mcjty.rftoolsdim.modules.dimlets.data;
 import mcjty.rftoolsdim.dimension.features.FeatureType;
 import mcjty.rftoolsdim.dimension.terraintypes.TerrainType;
 import mcjty.rftoolsdim.dimension.biomes.BiomeControllerType;
-import mcjty.rftoolsdim.dimlets.DimletSettings;
 import net.minecraft.block.Blocks;
 
 import java.util.HashMap;

@@ -1,10 +1,9 @@
-package mcjty.rftoolsdim.dimlets;
+package mcjty.rftoolsdim.modules.dimlets.data;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import mcjty.lib.varia.JSonTools;
-import mcjty.rftoolsdim.modules.dimlets.data.DimletRarity;
 
 public class DimletSettings {
 
