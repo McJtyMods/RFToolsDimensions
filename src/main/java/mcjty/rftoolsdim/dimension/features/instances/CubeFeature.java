@@ -21,17 +21,18 @@ public class CubeFeature implements IFeature {
         int chunkZ = cp.z;
         int size = 1;
 
+        boolean generated = false;
         for (int dx = -size; dx <= size; dx++) {
             int cx = chunkX + dx;
             for (int dz = -size; dz <= size; dz++) {
                 int cz = chunkZ + dz;
                 if (isFeatureCenter(reader, cx, cz)) {
                     generate(reader, chunkX, chunkZ, dx, dz, states);
-                    return true;
+                    generated = true;
                 }
             }
         }
-        return false;
+        return generated;
     }
 
     private void generate(ISeedReader world, int chunkX, int chunkZ, int dx, int dz,
