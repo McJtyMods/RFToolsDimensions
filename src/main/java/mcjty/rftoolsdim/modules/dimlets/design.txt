@@ -16,3 +16,9 @@ Ways to get knowledge (patterns):
      Combining nine knowledge patterns of a certain type will result in a higher tier knowledge pattern
      Loot in dimensions (can be rare or legendary depending on power of dimension)
      Research of dimlet (will result in same type of pattern needed to make that dimlet)
+
+
+
+
+Todo:
+Command to generate configs for all blocks/fluids/biomes which a modpack maker can edit and tweak

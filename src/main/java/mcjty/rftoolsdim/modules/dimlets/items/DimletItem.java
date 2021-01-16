@@ -2,6 +2,7 @@ package mcjty.rftoolsdim.modules.dimlets.items;
 
 import mcjty.lib.builder.TooltipBuilder;
 import mcjty.lib.tooltips.ITooltipSettings;
+import mcjty.rftoolsdim.modules.dimlets.DimletModule;
 import mcjty.rftoolsdim.setup.Registration;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.Item;
@@ -17,14 +18,30 @@ public class DimletItem extends Item implements ITooltipSettings {
 
     private final TooltipBuilder tooltipBuilder = new TooltipBuilder()
             .info(key("message.rftoolsdim.shiftmessage"))
-            .infoShift(header(), gold(), TooltipBuilder.parameter("key", DimletItem::isReady, DimletItem::getDescription));
+            .infoShift(header(), gold(), TooltipBuilder.parameter("key", DimletItem::isReadyDimlet, DimletItem::getDescription));
 
-    public DimletItem() {
+    private final boolean isReady;
+
+    public DimletItem(boolean isReady) {
         super(Registration.createStandardProperties());
+        this.isReady = isReady;
     }
 
-    public static boolean isReady(ItemStack stack) {
-        // @todo return true if this dimlet is ready
+    public static boolean isReadyDimlet(ItemStack stack) {
+        if (stack.getItem() instanceof DimletItem) {
+            return ((DimletItem)stack.getItem()).isReady;
+        }
+        return false;
+    }
+
+    /// The empty dimlet crafting ingredient in itself doesn't count as an empty dimlet
+    public static boolean isEmptyDimlet(ItemStack stack) {
+        if (stack.getItem() instanceof DimletItem) {
+            if (stack.getItem() == DimletModule.EMPTY_DIMLET.get()) {
+                return false;   // This does not count as empty dimlet
+            }
+            return !((DimletItem)stack.getItem()).isReady;
+        }
         return false;
     }
 
