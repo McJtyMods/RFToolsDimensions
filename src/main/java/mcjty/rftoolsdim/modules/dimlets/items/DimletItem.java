@@ -58,8 +58,8 @@ public class DimletItem extends Item implements ITooltipSettings {
                 return DimletModule.TERRAIN_DIMLET.get();
             case BIOME_CONTROLLER:
                 return DimletModule.BIOME_CONTROLLER_DIMLET.get();
-//            case BIOME:
-//                return DimletModule.BIOME_DIMLET.get();
+            case BIOME:
+                return DimletModule.BIOME_DIMLET.get();
             case FEATURE:
                 return DimletModule.FEATURE_DIMLET.get();
             case BLOCK:

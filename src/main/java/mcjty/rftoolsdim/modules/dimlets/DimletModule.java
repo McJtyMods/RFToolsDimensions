@@ -15,11 +15,13 @@ public class DimletModule implements IModule {
 
     public static final RegistryObject<DimletItem> EMPTY_TERRAIN_DIMLET = Registration.ITEMS.register("empty_terrain_dimlet", () -> new DimletItem(false));
     public static final RegistryObject<DimletItem> EMPTY_FEATURE_DIMLET = Registration.ITEMS.register("empty_feature_dimlet", () -> new DimletItem(false));
+    public static final RegistryObject<DimletItem> EMPTY_BIOME_DIMLET = Registration.ITEMS.register("empty_biome_dimlet", () -> new DimletItem(false));
     public static final RegistryObject<DimletItem> EMPTY_BIOME_CONTROLLER_DIMLET = Registration.ITEMS.register("empty_biome_controller_dimlet", () -> new DimletItem(false));
     public static final RegistryObject<DimletItem> EMPTY_BLOCK_DIMLET = Registration.ITEMS.register("empty_block_dimlet", () -> new DimletItem(false));
 
     public static final RegistryObject<DimletItem> TERRAIN_DIMLET = Registration.ITEMS.register("terrain_dimlet", () -> new DimletItem(true));
     public static final RegistryObject<DimletItem> FEATURE_DIMLET = Registration.ITEMS.register("feature_dimlet", () -> new DimletItem(true));
+    public static final RegistryObject<DimletItem> BIOME_DIMLET = Registration.ITEMS.register("biome_dimlet", () -> new DimletItem(true));
     public static final RegistryObject<DimletItem> BIOME_CONTROLLER_DIMLET = Registration.ITEMS.register("biome_controller_dimlet", () -> new DimletItem(true));
     public static final RegistryObject<DimletItem> BLOCK_DIMLET = Registration.ITEMS.register("block_dimlet", () -> new DimletItem(true));
 

@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "rftoolsdim:item/dimlets/empty_biome_dimlet"
+  }
+}

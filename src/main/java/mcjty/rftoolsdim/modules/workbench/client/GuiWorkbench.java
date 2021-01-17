@@ -89,7 +89,7 @@ public class GuiWorkbench extends GenericGuiContainer<WorkbenchTileEntity, Gener
     }
 
     private void addItemToList(DimletKey key) {
-        Panel panel = positional().desiredWidth(102).desiredHeight(16).userObject(key);
+        Panel panel = positional().desiredWidth(95).desiredHeight(16).userObject(key);
         itemList.children(panel);
         BlockRender blockRender = new BlockRender().renderItem(DimletItem.getDimletStack(key)).hint(1, 0, 16, 16)
                 .userObject(key);
@@ -99,9 +99,6 @@ public class GuiWorkbench extends GenericGuiContainer<WorkbenchTileEntity, Gener
                 .hint(20, 0, 95, 16).userObject(key);
         panel.children(label);
     }
-
-
-
 
     @Override
     protected void drawGuiContainerBackgroundLayer(MatrixStack matrixStack, float partialTicks, int x, int y) {

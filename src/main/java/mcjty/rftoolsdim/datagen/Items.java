@@ -25,10 +25,12 @@ public class Items extends BaseItemModelProvider {
         itemGenerated(DimletModule.EMPTY_DIMLET.get(), "item/dimlets/empty_dimlet");
         itemGenerated(DimletModule.EMPTY_TERRAIN_DIMLET.get(), "item/dimlets/empty_terrain_dimlet");
         itemGenerated(DimletModule.EMPTY_FEATURE_DIMLET.get(), "item/dimlets/empty_feature_dimlet");
+        itemGenerated(DimletModule.EMPTY_BIOME_DIMLET.get(), "item/dimlets/empty_biome_dimlet");
         itemGenerated(DimletModule.EMPTY_BIOME_CONTROLLER_DIMLET.get(), "item/dimlets/empty_biome_controller_dimlet");
         itemGenerated(DimletModule.EMPTY_BLOCK_DIMLET.get(), "item/dimlets/empty_block_dimlet");
         itemGenerated(DimletModule.TERRAIN_DIMLET.get(), "item/dimlets/terrain_dimlet");
         itemGenerated(DimletModule.FEATURE_DIMLET.get(), "item/dimlets/feature_dimlet");
+        itemGenerated(DimletModule.BIOME_DIMLET.get(), "item/dimlets/biome_dimlet");
         itemGenerated(DimletModule.BIOME_CONTROLLER_DIMLET.get(), "item/dimlets/biome_controller_dimlet");
         itemGenerated(DimletModule.BLOCK_DIMLET.get(), "item/dimlets/block_dimlet");
 
