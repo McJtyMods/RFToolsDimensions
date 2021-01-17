@@ -1,16 +1,23 @@
 package mcjty.rftoolsdim.modules.dimlets.data;
 
+import mcjty.rftoolsdim.dimension.biomes.BiomeControllerType;
 import mcjty.rftoolsdim.dimension.features.FeatureType;
 import mcjty.rftoolsdim.dimension.terraintypes.TerrainType;
-import mcjty.rftoolsdim.dimension.biomes.BiomeControllerType;
 import net.minecraft.block.Blocks;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class DimletDictionary {
 
+    private static DimletDictionary INSTANCE = new DimletDictionary();
+
     private Map<DimletKey, DimletSettings> dimlets = new HashMap<>();
+
+    public static DimletDictionary get() {
+        return INSTANCE;
+    }
 
     public DimletDictionary() {
         register(new DimletKey(DimletType.TERRAIN, TerrainType.FLAT.name()), DimletSettings.create(DimletRarity.COMMON, 10, 1, 1).build());
@@ -32,5 +39,9 @@ public class DimletDictionary {
 
     private void register(DimletKey key, DimletSettings settings) {
         dimlets.put(key, settings);
+    }
+
+    public Set<DimletKey> getDimlets() {
+        return dimlets.keySet();
     }
 }

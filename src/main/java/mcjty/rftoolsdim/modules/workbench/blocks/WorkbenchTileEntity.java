@@ -47,9 +47,9 @@ public class WorkbenchTileEntity extends GenericTileEntity {
             .slot(specific(s -> s.getItem() instanceof PartItem), CONTAINER_CONTAINER, SLOT_MEMORY_PART, 33, 7)
             .slot(specific(s -> s.getItem() instanceof PartItem), CONTAINER_CONTAINER, SLOT_ENERGY_PART, 55, 7)
             .slot(generic(), CONTAINER_CONTAINER, SLOT_ESSENCE, 77, 7)
-            .slot(generic(), CONTAINER_CONTAINER, SLOT_OUTPUT, 157, 7)
+            .slot(generic(), CONTAINER_CONTAINER, SLOT_OUTPUT, 119, 7)
             .box(specific(WorkbenchTileEntity::isValidPatternItem), CONTAINER_CONTAINER, SLOT_PATTERN, 11, 28, 7, 7)
-            .playerSlots(11, 162));
+            .playerSlots(11, 158));
 
     private final NoDirectionItemHander items = createItemHandler();
     private final LazyOptional<AutomationFilterItemHander> itemHandler = LazyOptional.of(() -> new AutomationFilterItemHander(items));

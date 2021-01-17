@@ -2,7 +2,7 @@ package mcjty.rftoolsdim.modules.dimlets.data;
 
 import java.util.Objects;
 
-public class DimletKey {
+public class DimletKey implements Comparable<DimletKey> {
 
     private final DimletType type;
     private final String key;
@@ -32,5 +32,14 @@ public class DimletKey {
     @Override
     public int hashCode() {
         return Objects.hash(type, key);
+    }
+
+    @Override
+    public int compareTo(DimletKey dimletKey) {
+        if (dimletKey.getType().equals(type)) {
+            return key.compareTo(dimletKey.key);
+        } else {
+            return type.name().compareTo(dimletKey.type.name());
+        }
     }
 }
