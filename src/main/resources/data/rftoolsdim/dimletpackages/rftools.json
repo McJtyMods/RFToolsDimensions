@@ -1,0 +1,32 @@
+[
+  {
+    "type": "block",
+    "key": "rftoolsbase:dimensionalshard_end",
+    "rarity": "rare",
+    "create": 300,
+    "maintain": 300,
+    "ticks": 100,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "block",
+    "key": "rftoolsbase:dimensionalshard_nether",
+    "rarity": "rare",
+    "create": 300,
+    "maintain": 300,
+    "ticks": 100,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "block",
+    "key": "rftoolsbase:dimensionalshard_overworld",
+    "rarity": "rare",
+    "create": 300,
+    "maintain": 300,
+    "ticks": 100,
+    "worldgen": true,
+    "dimlet": true
+  }
+]

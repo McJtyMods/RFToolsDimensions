@@ -1,6 +1,7 @@
 package mcjty.rftoolsdim.modules.dimlets;
 
 import mcjty.lib.modules.IModule;
+import mcjty.rftoolsdim.modules.dimlets.data.DimletDictionary;
 import mcjty.rftoolsdim.modules.dimlets.items.DimletItem;
 import mcjty.rftoolsdim.modules.dimlets.items.PartItem;
 import mcjty.rftoolsdim.setup.Registration;
@@ -40,6 +41,10 @@ public class DimletModule implements IModule {
 
     @Override
     public void init(FMLCommonSetupEvent event) {
+        DimletDictionary.get().readPackage("base.json");
+        DimletDictionary.get().readPackage("vanilla_blocks.json");
+        DimletDictionary.get().readPackage("vanilla_biomes.json");
+        DimletDictionary.get().readPackage("rftools.json");
     }
 
     @Override

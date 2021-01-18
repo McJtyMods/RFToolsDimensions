@@ -1,6 +1,5 @@
 package mcjty.rftoolsdim.modules.dimlets.data;
 
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import mcjty.lib.varia.JSonTools;
@@ -23,26 +22,21 @@ public class DimletSettings {
         this.dimlet = builder.dimlet;
     }
 
-    public JsonElement buildElement() {
-        JsonObject jsonObject = new JsonObject();
+    public void buildElement(JsonObject jsonObject) {
         if (rarity != null) {
-            jsonObject.add("rarity", new JsonPrimitive(rarity.name()));
+            jsonObject.add("rarity", new JsonPrimitive(rarity.name().toLowerCase()));
         }
         jsonObject.add("create", new JsonPrimitive(createCost));
         jsonObject.add("maintain", new JsonPrimitive(maintainCost));
         jsonObject.add("ticks", new JsonPrimitive(tickCost));
         jsonObject.add("worldgen", new JsonPrimitive(worldgen));
         jsonObject.add("dimlet", new JsonPrimitive(dimlet));
-
-        return jsonObject;
     }
 
-    public static DimletSettings parse(JsonElement element) {
+    public static DimletSettings parse(JsonObject jsonObject) {
         Builder builder = new Builder();
 
-        JsonObject jsonObject = element.getAsJsonObject();
-
-        JSonTools.getElement(jsonObject, "rarity").ifPresent(e -> builder.rarity(DimletRarity.valueOf(e.getAsString().toUpperCase())));
+        JSonTools.getElement(jsonObject, "rarity").ifPresent(e -> builder.rarity(DimletRarity.byName(e.getAsString())));
         JSonTools.getElement(jsonObject, "create").ifPresent(e -> builder.createCost(e.getAsInt()));
         JSonTools.getElement(jsonObject, "maintain").ifPresent(e -> builder.maintainCost(e.getAsInt()));
         JSonTools.getElement(jsonObject, "ticks").ifPresent(e -> builder.tickCost(e.getAsInt()));

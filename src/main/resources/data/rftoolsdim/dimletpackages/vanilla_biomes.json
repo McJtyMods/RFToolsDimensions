@@ -1,0 +1,792 @@
+[
+  {
+    "type": "biome",
+    "key": "minecraft:badlands",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "biome",
+    "key": "minecraft:badlands_plateau",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "biome",
+    "key": "minecraft:bamboo_jungle",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "biome",
+    "key": "minecraft:bamboo_jungle_hills",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "biome",
+    "key": "minecraft:basalt_deltas",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "biome",
+    "key": "minecraft:beach",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "biome",
+    "key": "minecraft:birch_forest",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "biome",
+    "key": "minecraft:birch_forest_hills",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "biome",
+    "key": "minecraft:cold_ocean",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "biome",
+    "key": "minecraft:crimson_forest",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "biome",
+    "key": "minecraft:dark_forest",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "biome",
+    "key": "minecraft:dark_forest_hills",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "biome",
+    "key": "minecraft:deep_cold_ocean",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "biome",
+    "key": "minecraft:deep_frozen_ocean",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "biome",
+    "key": "minecraft:deep_lukewarm_ocean",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "biome",
+    "key": "minecraft:deep_ocean",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "biome",
+    "key": "minecraft:deep_warm_ocean",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "biome",
+    "key": "minecraft:desert",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "biome",
+    "key": "minecraft:desert_hills",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "biome",
+    "key": "minecraft:desert_lakes",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "biome",
+    "key": "minecraft:end_barrens",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "biome",
+    "key": "minecraft:end_highlands",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "biome",
+    "key": "minecraft:end_midlands",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "biome",
+    "key": "minecraft:eroded_badlands",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "biome",
+    "key": "minecraft:flower_forest",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "biome",
+    "key": "minecraft:forest",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "biome",
+    "key": "minecraft:frozen_ocean",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "biome",
+    "key": "minecraft:frozen_river",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "biome",
+    "key": "minecraft:giant_spruce_taiga",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "biome",
+    "key": "minecraft:giant_spruce_taiga_hills",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "biome",
+    "key": "minecraft:giant_tree_taiga",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "biome",
+    "key": "minecraft:giant_tree_taiga_hills",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "biome",
+    "key": "minecraft:gravelly_mountains",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "biome",
+    "key": "minecraft:ice_spikes",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "biome",
+    "key": "minecraft:jungle",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "biome",
+    "key": "minecraft:jungle_edge",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "biome",
+    "key": "minecraft:jungle_hills",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "biome",
+    "key": "minecraft:lukewarm_ocean",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "biome",
+    "key": "minecraft:modified_badlands_plateau",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "biome",
+    "key": "minecraft:modified_gravelly_mountains",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "biome",
+    "key": "minecraft:modified_jungle",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "biome",
+    "key": "minecraft:modified_jungle_edge",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "biome",
+    "key": "minecraft:modified_wooded_badlands_plateau",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "biome",
+    "key": "minecraft:mountain_edge",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "biome",
+    "key": "minecraft:mountains",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "biome",
+    "key": "minecraft:mushroom_field_shore",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "biome",
+    "key": "minecraft:mushroom_fields",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "biome",
+    "key": "minecraft:nether_wastes",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "biome",
+    "key": "minecraft:ocean",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "biome",
+    "key": "minecraft:plains",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "biome",
+    "key": "minecraft:river",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "biome",
+    "key": "minecraft:savanna",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "biome",
+    "key": "minecraft:savanna_plateau",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "biome",
+    "key": "minecraft:shattered_savanna",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "biome",
+    "key": "minecraft:shattered_savanna_plateau",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "biome",
+    "key": "minecraft:small_end_islands",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "biome",
+    "key": "minecraft:snowy_beach",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "biome",
+    "key": "minecraft:snowy_mountains",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "biome",
+    "key": "minecraft:snowy_taiga",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "biome",
+    "key": "minecraft:snowy_taiga_hills",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "biome",
+    "key": "minecraft:snowy_taiga_mountains",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "biome",
+    "key": "minecraft:snowy_tundra",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "biome",
+    "key": "minecraft:soul_sand_valley",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "biome",
+    "key": "minecraft:stone_shore",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "biome",
+    "key": "minecraft:sunflower_plains",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "biome",
+    "key": "minecraft:swamp",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "biome",
+    "key": "minecraft:swamp_hills",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "biome",
+    "key": "minecraft:taiga",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "biome",
+    "key": "minecraft:taiga_hills",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "biome",
+    "key": "minecraft:taiga_mountains",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "biome",
+    "key": "minecraft:tall_birch_forest",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "biome",
+    "key": "minecraft:tall_birch_hills",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "biome",
+    "key": "minecraft:the_end",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "biome",
+    "key": "minecraft:the_void",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "biome",
+    "key": "minecraft:warm_ocean",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "biome",
+    "key": "minecraft:warped_forest",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "biome",
+    "key": "minecraft:wooded_badlands_plateau",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "biome",
+    "key": "minecraft:wooded_hills",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "biome",
+    "key": "minecraft:wooded_mountains",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  }
+]

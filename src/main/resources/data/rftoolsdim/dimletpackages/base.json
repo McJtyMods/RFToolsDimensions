@@ -1,0 +1,102 @@
+[
+  {
+    "type": "terrain",
+    "key": "void",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "terrain",
+    "key": "flat",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "terrain",
+    "key": "waves",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "terrain",
+    "key": "normal",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "biome_controller",
+    "key": "default",
+    "rarity": "normal",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "biome_controller",
+    "key": "checker",
+    "rarity": "normal",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "biome_controller",
+    "key": "single",
+    "rarity": "normal",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "feature",
+    "key": "none",
+    "rarity": "normal",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "feature",
+    "key": "spheres",
+    "rarity": "normal",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "feature",
+    "key": "cubes",
+    "rarity": "normal",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  }
+]
