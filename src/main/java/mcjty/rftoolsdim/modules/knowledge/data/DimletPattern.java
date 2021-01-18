@@ -17,6 +17,19 @@ public class DimletPattern {
         return pattern;
     }
 
+    public int count(char s) {
+        int cnt = 0;
+        for (String p : pattern) {
+            for (int i = 0 ; i < p.length() ; i++) {
+                char c = p.charAt(i);
+                if (c == s) {
+                    cnt++;
+                }
+            }
+        }
+        return cnt;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

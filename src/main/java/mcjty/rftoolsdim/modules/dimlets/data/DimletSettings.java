@@ -46,6 +46,30 @@ public class DimletSettings {
         return builder.build();
     }
 
+    public DimletRarity getRarity() {
+        return rarity;
+    }
+
+    public int getCreateCost() {
+        return createCost;
+    }
+
+    public int getMaintainCost() {
+        return maintainCost;
+    }
+
+    public int getTickCost() {
+        return tickCost;
+    }
+
+    public boolean isWorldgen() {
+        return worldgen;
+    }
+
+    public boolean isDimlet() {
+        return dimlet;
+    }
+
     public static Builder builder() {
         return new Builder();
     }

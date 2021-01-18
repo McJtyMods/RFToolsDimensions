@@ -35,6 +35,9 @@ public class DimletDictionary {
         return dimlets.keySet();
     }
 
+    public DimletSettings getSettings(DimletKey key) {
+        return dimlets.get(key);
+    }
 
 
     public void readPackage(String filename) {
