@@ -20,6 +20,7 @@ public class Items extends BaseItemModelProvider {
     protected void registerModels() {
         parentedBlock(DimensionBuilderModule.DIMENSION_BUILDER.get(), "block/dimension_builder");
         parentedBlock(WorkbenchModule.WORKBENCH.get(), "block/dimlet_workbench");
+        parentedBlock(WorkbenchModule.HOLDER.get(), "block/knowledge_holder");
         parentedBlock(EnscriberModule.ENSCRIBER.get(), "block/enscriber");
 
         itemGenerated(DimletModule.EMPTY_DIMLET.get(), "item/dimlets/empty_dimlet");
@@ -51,7 +52,6 @@ public class Items extends BaseItemModelProvider {
         itemGenerated(KnowledgeModule.UNCOMMON_LOST_KNOWLEDGE.get(), "item/uncommon_lost_knowledge");
         itemGenerated(KnowledgeModule.RARE_LOST_KNOWLEDGE.get(), "item/rare_lost_knowledge");
         itemGenerated(KnowledgeModule.LEGENDARY_LOST_KNOWLEDGE.get(), "item/legendary_lost_knowledge");
-        itemGenerated(KnowledgeModule.PATTERN_RECIPE_TABLET.get(), "item/pattern_recipe_tablet");
 
     }
 

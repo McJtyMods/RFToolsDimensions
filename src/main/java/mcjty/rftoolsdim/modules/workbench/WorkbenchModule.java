@@ -4,7 +4,9 @@ import mcjty.lib.blocks.BaseBlock;
 import mcjty.lib.container.GenericContainer;
 import mcjty.lib.gui.GenericGuiContainer;
 import mcjty.lib.modules.IModule;
+import mcjty.rftoolsdim.modules.workbench.blocks.KnowledgeHolderTileEntity;
 import mcjty.rftoolsdim.modules.workbench.blocks.WorkbenchTileEntity;
+import mcjty.rftoolsdim.modules.workbench.client.GuiHolder;
 import mcjty.rftoolsdim.modules.workbench.client.GuiWorkbench;
 import mcjty.rftoolsdim.setup.Config;
 import mcjty.rftoolsdim.setup.Registration;
@@ -25,6 +27,11 @@ public class WorkbenchModule implements IModule {
     public static final RegistryObject<TileEntityType<WorkbenchTileEntity>> TYPE_WORKBENCH = TILES.register("dimlet_workbench", () -> TileEntityType.Builder.create(WorkbenchTileEntity::new, WORKBENCH.get()).build(null));
     public static final RegistryObject<ContainerType<GenericContainer>> CONTAINER_WORKBENCH = CONTAINERS.register("dimlet_workbench", GenericContainer::createContainerType);
 
+    public static final RegistryObject<BaseBlock> HOLDER = BLOCKS.register("knowledge_holder", KnowledgeHolderTileEntity::createBlock);
+    public static final RegistryObject<Item> HOLDER_ITEM = ITEMS.register("knowledge_holder", () -> new BlockItem(HOLDER.get(), Registration.createStandardProperties()));
+    public static final RegistryObject<TileEntityType<KnowledgeHolderTileEntity>> TYPE_HOLDER = TILES.register("knowledge_holder", () -> TileEntityType.Builder.create(KnowledgeHolderTileEntity::new, HOLDER.get()).build(null));
+    public static final RegistryObject<ContainerType<GenericContainer>> CONTAINER_HOLDER = CONTAINERS.register("knowledge_holder", GenericContainer::createContainerType);
+
     @Override
     public void init(FMLCommonSetupEvent event) {
 
@@ -34,6 +41,7 @@ public class WorkbenchModule implements IModule {
     public void initClient(FMLClientSetupEvent event) {
         event.enqueueWork(() -> {
             GenericGuiContainer.register(CONTAINER_WORKBENCH.get(), GuiWorkbench::new);
+            GenericGuiContainer.register(CONTAINER_HOLDER.get(), GuiHolder::new);
         });
     }
 

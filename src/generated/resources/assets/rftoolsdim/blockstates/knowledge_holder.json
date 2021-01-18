@@ -1,0 +1,27 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "rftoolsdim:block/knowledge_holder",
+      "x": 90
+    },
+    "facing=up": {
+      "model": "rftoolsdim:block/knowledge_holder",
+      "x": -90
+    },
+    "facing=north": {
+      "model": "rftoolsdim:block/knowledge_holder"
+    },
+    "facing=south": {
+      "model": "rftoolsdim:block/knowledge_holder",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "rftoolsdim:block/knowledge_holder",
+      "y": 270
+    },
+    "facing=east": {
+      "model": "rftoolsdim:block/knowledge_holder",
+      "y": 90
+    }
+  }
+}

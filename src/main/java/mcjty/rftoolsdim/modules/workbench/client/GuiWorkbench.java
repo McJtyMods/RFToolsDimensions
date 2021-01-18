@@ -6,12 +6,11 @@ import mcjty.lib.container.GenericContainer;
 import mcjty.lib.gui.GenericGuiContainer;
 import mcjty.lib.gui.Window;
 import mcjty.lib.gui.layout.HorizontalAlignment;
-import mcjty.lib.gui.layout.PositionalLayout;
 import mcjty.lib.gui.widgets.*;
 import mcjty.rftoolsdim.RFToolsDim;
+import mcjty.rftoolsdim.modules.dimlets.client.DimletClientHelper;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletKey;
 import mcjty.rftoolsdim.modules.dimlets.items.DimletItem;
-import mcjty.rftoolsdim.modules.dimlets.client.DimletClientHelper;
 import mcjty.rftoolsdim.modules.dimlets.network.PacketRequestDimlets;
 import mcjty.rftoolsdim.modules.workbench.WorkbenchModule;
 import mcjty.rftoolsdim.modules.workbench.blocks.WorkbenchTileEntity;
@@ -32,8 +31,6 @@ public class GuiWorkbench extends GenericGuiContainer<WorkbenchTileEntity, Gener
     private WidgetList itemList;
     private Slider slider;
     private long dimletListAge = -1;
-
-    private String filter = "";
 
     public GuiWorkbench(WorkbenchTileEntity tileEntity, GenericContainer container, PlayerInventory inventory) {
         super(tileEntity, container, inventory, WorkbenchModule.WORKBENCH.get().getManualEntry());
@@ -59,7 +56,6 @@ public class GuiWorkbench extends GenericGuiContainer<WorkbenchTileEntity, Gener
     }
 
     private void search(String filter) {
-        this.filter = filter;
         dimletListAge = -1;
     }
 

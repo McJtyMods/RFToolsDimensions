@@ -17,7 +17,8 @@ public class BlockStates extends BaseBlockStateProvider {
     @Override
     protected void registerStatesAndModels() {
         orientedBlock(DimensionBuilderModule.DIMENSION_BUILDER.get(), frontBasedModel("dimension_builder", modLoc("block/dimensionbuilder")));
-        orientedBlock(WorkbenchModule.WORKBENCH.get(), frontBasedModel("dimlet_workbench", modLoc("block/dimletworkbenchtop"))); // @todo 1.15 fix
+        orientedBlock(WorkbenchModule.WORKBENCH.get(), topBasedModel("dimlet_workbench", modLoc("block/dimletworkbenchtop")));
+        orientedBlock(WorkbenchModule.HOLDER.get(), frontBasedModel("knowledge_holder", modLoc("block/knowledge_holder")));
         orientedBlock(EnscriberModule.ENSCRIBER.get(), frontBasedModel("enscriber", modLoc("block/dimensionenscriber")));
     }
 }

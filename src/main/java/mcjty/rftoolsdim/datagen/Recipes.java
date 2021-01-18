@@ -122,6 +122,11 @@ public class Recipes extends BaseRecipeProvider {
                         .key('u', DimletModule.EMPTY_DIMLET.get())
                         .addCriterion("frame", hasItem(VariousModule.MACHINE_FRAME.get())),
                 "rur", "CFC", "rur");
+        build(consumer, ShapedRecipeBuilder.shapedRecipe(WorkbenchModule.HOLDER.get())
+                        .key('C', Blocks.CHEST)
+                        .key('u', DimletModule.EMPTY_DIMLET.get())
+                        .addCriterion("frame", hasItem(VariousModule.MACHINE_FRAME.get())),
+                "sus", "CFC", "sus");
         build(consumer, ShapedRecipeBuilder.shapedRecipe(EnscriberModule.ENSCRIBER.get())
                         .key('C', Blocks.CRAFTING_TABLE)
                         .key('u', DimletModule.EMPTY_DIMLET.get())

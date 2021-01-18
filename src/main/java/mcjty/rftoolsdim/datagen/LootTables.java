@@ -16,6 +16,7 @@ public class LootTables extends BaseLootTableProvider {
     protected void addTables() {
         addStandardTable(DimensionBuilderModule.DIMENSION_BUILDER.get());
         addStandardTable(WorkbenchModule.WORKBENCH.get());
+        addStandardTable(WorkbenchModule.HOLDER.get());
         addStandardTable(EnscriberModule.ENSCRIBER.get());
     }
 
