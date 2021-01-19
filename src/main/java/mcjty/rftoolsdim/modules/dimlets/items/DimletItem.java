@@ -137,23 +137,23 @@ public class DimletItem extends Item implements ITooltipSettings, ITooltipExtras
                     break;
             }
 
-//            DimletPattern pattern = KnowledgeManager.get().getPattern(DimensionId.overworld().getWorld(), key.getType(), rarity);
-//            int cnt = pattern.count(PatternBuilder.SHARD);
-//            if (cnt > 0) {
-//                items.add(Pair.of(new ItemStack(Registration.DIMENSIONAL_SHARD, cnt), cnt));
-//            }
-//            cnt = pattern.count(PatternBuilder.LEV0);
-//            if (cnt > 0) {
-//                items.add(Pair.of(new ItemStack(DimletModule.COMMON_ESSENCE.get(), cnt), cnt));
-//            }
-//            cnt = pattern.count(PatternBuilder.LEV1);
-//            if (cnt > 0) {
-//                items.add(Pair.of(new ItemStack(DimletModule.RARE_ESSENCE.get(), cnt), cnt));
-//            }
-//            cnt = pattern.count(PatternBuilder.LEV2);
-//            if (cnt > 0) {
-//                items.add(Pair.of(new ItemStack(DimletModule.LEGENDARY_ESSENCE.get(), cnt), cnt));
-//            }
+            DimletPattern pattern = KnowledgeManager.get().getPattern(DimensionId.overworld().getWorld(), key.getType(), rarity);
+            int cnt = pattern.count(PatternBuilder.SHARD);
+            if (cnt > 0) {
+                items.add(Pair.of(new ItemStack(Registration.DIMENSIONAL_SHARD, cnt), cnt));
+            }
+            cnt = pattern.count(PatternBuilder.LEV0);
+            if (cnt > 0) {
+                items.add(Pair.of(new ItemStack(DimletModule.COMMON_ESSENCE.get(), cnt), cnt));
+            }
+            cnt = pattern.count(PatternBuilder.LEV1);
+            if (cnt > 0) {
+                items.add(Pair.of(new ItemStack(DimletModule.RARE_ESSENCE.get(), cnt), cnt));
+            }
+            cnt = pattern.count(PatternBuilder.LEV2);
+            if (cnt > 0) {
+                items.add(Pair.of(new ItemStack(DimletModule.LEGENDARY_ESSENCE.get(), cnt), cnt));
+            }
             // @todo 1.16 add essence item
 
             return items;
