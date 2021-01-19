@@ -4,17 +4,24 @@ import mcjty.lib.blocks.BaseBlock;
 import mcjty.lib.blocks.RotationType;
 import mcjty.lib.builder.BlockBuilder;
 import mcjty.lib.tileentity.GenericTileEntity;
+import mcjty.lib.varia.NBTTools;
 import mcjty.lib.varia.SoundTools;
 import mcjty.rftoolsbase.tools.ManualHelper;
+import mcjty.rftoolsdim.compat.RFToolsDimensionsTOPDriver;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletDictionary;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletKey;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletSettings;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletType;
+import mcjty.rftoolsdim.modules.essences.EssencesConfig;
 import mcjty.rftoolsdim.modules.essences.EssencesModule;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.material.Material;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.tileentity.ITickableTileEntity;
@@ -28,15 +35,15 @@ import java.util.Iterator;
 import java.util.Random;
 import java.util.Set;
 
-import static mcjty.lib.builder.TooltipBuilder.header;
-import static mcjty.lib.builder.TooltipBuilder.key;
+import static mcjty.lib.builder.TooltipBuilder.*;
+import static mcjty.lib.builder.TooltipBuilder.parameter;
 
 public class BlockAbsorberTileEntity extends GenericTileEntity implements ITickableTileEntity {
 
     private static final int ABSORB_SPEED = 2;
 
     private int absorbing = 0;
-    private BlockState blockState = null;
+    private BlockState absorbingBlock = null;
     private int timer = ABSORB_SPEED;
     private Set<BlockPos> toscan = new HashSet<>();
 
@@ -46,18 +53,49 @@ public class BlockAbsorberTileEntity extends GenericTileEntity implements ITicka
 
     public static BaseBlock createBlock() {
         return new BaseBlock(new BlockBuilder()
+                .properties(Block.Properties.create(Material.IRON)
+                        .hardnessAndResistance(2.0f)
+                        .sound(SoundType.METAL)
+                        .notSolid())
                 .tileEntitySupplier(BlockAbsorberTileEntity::new)
                 .manualEntry(ManualHelper.create("rftoolsdim:dimensionbuilder"))
+                .topDriver(RFToolsDimensionsTOPDriver.DRIVER)
                 .info(key("message.rftoolsdim.shiftmessage"))
-                // @todo 1.16 TOP absorbtion info
-                // @todo 1.16 tooltip absorbtion info
-                .infoShift(header())) {
+                .infoShift(header(),
+                        parameter("block", BlockAbsorberTileEntity::getBlockName),
+                        parameter("progress", BlockAbsorberTileEntity::getProgressName)
+                        )) {
             @Override
             public RotationType getRotationType() {
                 return RotationType.NONE;
             }
         };
     }
+
+    private static String getBlockName(ItemStack stack) {
+        String block = NBTTools.getInfoNBT(stack, CompoundNBT::getString, "block", null);
+        if (block == null) {
+            return "<Not Set>";
+        } else {
+            Block b = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(block));
+            if (b != null) {
+                return I18n.format(b.getTranslationKey());
+            } else {
+                return "<Invalid>";
+            }
+        }
+    }
+
+    private static String getProgressName(ItemStack stack) {
+        int absorbing = NBTTools.getInfoNBT(stack, CompoundNBT::getInt, "absorbing", -1);
+        if (absorbing == -1) {
+            return "n.a.";
+        } else {
+            int pct = ((EssencesConfig.maxBlockAbsorption.get() - absorbing) * 100) / EssencesConfig.maxBlockAbsorption.get();
+            return pct + "%";
+        }
+    }
+
 
     @Override
     public void tick() {
@@ -69,20 +107,17 @@ public class BlockAbsorberTileEntity extends GenericTileEntity implements ITicka
     }
 
     private void tickServer() {
-        if (absorbing > 0 || blockState == null) {
+        if (absorbing > 0 || absorbingBlock == null) {
             timer--;
             if (timer <= 0) {
                 timer = ABSORB_SPEED;
                 BlockState b = isValidSourceBlock(getPos().down());
                 if (b != null) {
-                    if (blockState == null) {
-                        absorbing = 256;// @todo 1.16 config! DimletConstructionConfiguration.maxBlockAbsorbtion;
-                        if (b.getBlock() == Blocks.REDSTONE_ORE) {
-                            b = Blocks.REDSTONE_ORE.getDefaultState();
-                        }
+                    if (absorbingBlock == null) {
+                        absorbing = EssencesConfig.maxBlockAbsorption.get();
                         if (Item.getItemFromBlock(b.getBlock()) != null) {
                             // Safety
-                            blockState = b;
+                            absorbingBlock = b;
                             toscan.clear();
                         }
                     }
@@ -106,7 +141,7 @@ public class BlockAbsorberTileEntity extends GenericTileEntity implements ITicka
 
                     if (blockMatches(c)) {
                         BlockState oldState = world.getBlockState(c);
-                        SoundTools.playSound(world, blockState.getBlock().getSoundType(oldState, world, c, null).getBreakSound(), getPos().getX(), getPos().getY(), getPos().getZ(), 1.0f, 1.0f);
+                        SoundTools.playSound(world, absorbingBlock.getBlock().getSoundType(oldState, world, c, null).getBreakSound(), getPos().getX(), getPos().getY(), getPos().getZ(), 1.0f, 1.0f);
                         world.setBlockState(c, Blocks.AIR.getDefaultState());
                         absorbing--;
                         BlockState newState = world.getBlockState(c);
@@ -141,15 +176,15 @@ public class BlockAbsorberTileEntity extends GenericTileEntity implements ITicka
     }
 
     private boolean blockMatches(BlockPos c) {
-        return world.getBlockState(c).equals(blockState);
+        return world.getBlockState(c).equals(absorbingBlock);
     }
 
     public int getAbsorbing() {
         return absorbing;
     }
 
-    public BlockState getBlockState() {
-        return blockState;
+    public BlockState getAbsorbingBlock() {
+        return absorbingBlock;
     }
 
     private BlockState isValidSourceBlock(BlockPos coordinate) {
@@ -185,7 +220,7 @@ public class BlockAbsorberTileEntity extends GenericTileEntity implements ITicka
             if (info.contains("block")) {
                 Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(info.getString("block")));
                 if (block != null) {
-                    blockState = block.getDefaultState();
+                    absorbingBlock = block.getDefaultState();
                 }
             }
         }
@@ -215,8 +250,8 @@ public class BlockAbsorberTileEntity extends GenericTileEntity implements ITicka
         super.writeInfo(tagCompound);
         CompoundNBT info = getOrCreateInfo(tagCompound);
         info.putInt("absorbing", absorbing);
-        if (blockState != null) {
-            info.putString("block", blockState.getBlock().getRegistryName().toString());
+        if (absorbingBlock != null) {
+            info.putString("block", absorbingBlock.getBlock().getRegistryName().toString());
         }
     }
 }

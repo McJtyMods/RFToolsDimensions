@@ -5,6 +5,7 @@ import mcjty.lib.tooltips.ITooltipExtras;
 import mcjty.lib.tooltips.ITooltipSettings;
 import mcjty.lib.varia.DimensionId;
 import mcjty.rftoolsdim.modules.dimlets.DimletModule;
+import mcjty.rftoolsdim.modules.dimlets.client.DimletClientHelper;
 import mcjty.rftoolsdim.modules.dimlets.data.*;
 import mcjty.rftoolsdim.modules.knowledge.data.DimletPattern;
 import mcjty.rftoolsdim.modules.knowledge.data.KnowledgeManager;
@@ -59,8 +60,12 @@ public class DimletItem extends Item implements ITooltipSettings, ITooltipExtras
     }
 
     public static String getDescription(ItemStack stack) {
-        // @todo
-        return "";
+        DimletKey key = DimletItem.getKey(stack);
+        if (key == null) {
+            return "<Unknown>";
+        } else {
+            return DimletClientHelper.getReadableName(key);
+        }
     }
 
     public DimletType getType() {
