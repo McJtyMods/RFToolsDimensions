@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "usu",
+    "sCs",
+    "usu"
+  ],
+  "key": {
+    "C": {
+      "item": "minecraft:sponge"
+    },
+    "u": {
+      "tag": "minecraft:leaves"
+    },
+    "s": {
+      "item": "rftoolsbase:dimensionalshard"
+    }
+  },
+  "result": {
+    "item": "rftoolsdim:biome_absorber"
+  }
+}

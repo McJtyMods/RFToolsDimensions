@@ -3,6 +3,8 @@
   "block.rftoolsdim.knowledge_holder": "Knowlege Holder",
   "block.rftoolsdim.dimension_builder": "Dimension Builder",
   "block.rftoolsdim.enscriber": "Enscriber",
+  "block.rftoolsdim.block_absorber": "Block Absorber",
+  "block.rftoolsdim.biome_absorber": "Biome Absorber",
 
   "item.rftoolsdim.empty_dimlet": "Empty Dimlet",
   "item.rftoolsdim.terrain_dimlet": "Terrain Dimlet",
@@ -95,5 +97,8 @@
   "message.rftoolsdim.dimlet_workbench.gold": "To use this you need to place a Knowledge Holder adjacent to it",
 
   "message.rftoolsdim.knowledge_holder.header": "The Knowledge Holder can store knowledge items. It is needed by the Dimlet Workbench",
-  "message.rftoolsdim.knowledge_holder.gold": "Place this block adjacent to a Dimlet Workbench"
+  "message.rftoolsdim.knowledge_holder.gold": "Place this block adjacent to a Dimlet Workbench",
+
+  "message.rftoolsdim.block_absorber.header": "This block will absorb other blocks of a certain type (up to 256). It can be used to create dimlets of that block"
+  "message.rftoolsdim.biome_absorber.header": "This block will absorb the current biome it is in. It can be used to create dimlets of that biome"
 }

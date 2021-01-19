@@ -5,6 +5,7 @@ import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.modules.dimensionbuilder.DimensionBuilderModule;
 import mcjty.rftoolsdim.modules.dimlets.DimletModule;
 import mcjty.rftoolsdim.modules.enscriber.EnscriberModule;
+import mcjty.rftoolsdim.modules.essences.EssencesModule;
 import mcjty.rftoolsdim.modules.knowledge.KnowledgeModule;
 import mcjty.rftoolsdim.modules.workbench.WorkbenchModule;
 import net.minecraft.data.DataGenerator;
@@ -22,6 +23,8 @@ public class Items extends BaseItemModelProvider {
         parentedBlock(WorkbenchModule.WORKBENCH.get(), "block/dimlet_workbench");
         parentedBlock(WorkbenchModule.HOLDER.get(), "block/knowledge_holder");
         parentedBlock(EnscriberModule.ENSCRIBER.get(), "block/enscriber");
+        parentedBlock(EssencesModule.BLOCK_ABSORBER.get(), "block/block_absorber");
+        parentedBlock(EssencesModule.BIOME_ABSORBER.get(), "block/biome_absorber");
 
         itemGenerated(DimletModule.EMPTY_DIMLET.get(), "item/dimlets/empty_dimlet");
         itemGenerated(DimletModule.EMPTY_TERRAIN_DIMLET.get(), "item/dimlets/empty_terrain_dimlet");

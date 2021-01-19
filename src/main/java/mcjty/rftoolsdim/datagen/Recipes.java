@@ -5,14 +5,15 @@ import mcjty.rftoolsbase.modules.various.VariousModule;
 import mcjty.rftoolsdim.modules.dimensionbuilder.DimensionBuilderModule;
 import mcjty.rftoolsdim.modules.dimlets.DimletModule;
 import mcjty.rftoolsdim.modules.enscriber.EnscriberModule;
+import mcjty.rftoolsdim.modules.essences.EssencesModule;
 import mcjty.rftoolsdim.modules.knowledge.KnowledgeModule;
-import mcjty.rftoolsdim.modules.knowledge.data.KnowledgeManager;
 import mcjty.rftoolsdim.modules.workbench.WorkbenchModule;
 import net.minecraft.block.Blocks;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.IFinishedRecipe;
 import net.minecraft.data.ShapedRecipeBuilder;
 import net.minecraft.item.Items;
+import net.minecraft.tags.ItemTags;
 import net.minecraftforge.common.Tags;
 
 import java.util.function.Consumer;
@@ -132,5 +133,16 @@ public class Recipes extends BaseRecipeProvider {
                         .key('u', DimletModule.EMPTY_DIMLET.get())
                         .addCriterion("frame", hasItem(VariousModule.MACHINE_FRAME.get())),
                 "pup", "CFC", "pup");
+
+        build(consumer, ShapedRecipeBuilder.shapedRecipe(EssencesModule.BLOCK_ABSORBER.get())
+                        .key('C', Blocks.SPONGE)
+                        .key('u', Blocks.SLIME_BLOCK)
+                        .addCriterion("sponge", hasItem(Blocks.SPONGE)),
+                "usu", "sCs", "usu");
+        build(consumer, ShapedRecipeBuilder.shapedRecipe(EssencesModule.BIOME_ABSORBER.get())
+                        .key('C', Blocks.SPONGE)
+                        .key('u', ItemTags.LEAVES)
+                        .addCriterion("sponge", hasItem(Blocks.SPONGE)),
+                "usu", "sCs", "usu");
     }
 }

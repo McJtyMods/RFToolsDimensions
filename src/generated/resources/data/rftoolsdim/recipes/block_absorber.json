@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "usu",
+    "sCs",
+    "usu"
+  ],
+  "key": {
+    "C": {
+      "item": "minecraft:sponge"
+    },
+    "u": {
+      "item": "minecraft:slime_block"
+    },
+    "s": {
+      "item": "rftoolsbase:dimensionalshard"
+    }
+  },
+  "result": {
+    "item": "rftoolsdim:block_absorber"
+  }
+}
