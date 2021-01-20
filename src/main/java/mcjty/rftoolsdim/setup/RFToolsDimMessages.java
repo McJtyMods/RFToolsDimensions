@@ -9,7 +9,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
 
-public class RFToolsDimMessage {
+public class RFToolsDimMessages {
     public static SimpleChannel INSTANCE;
 
     private static int packetId = 0;

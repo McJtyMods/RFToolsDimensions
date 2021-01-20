@@ -2,6 +2,7 @@ package mcjty.rftoolsdim.modules.dimlets.data;
 
 import mcjty.rftoolsdim.modules.dimlets.DimletModule;
 import mcjty.rftoolsdim.modules.dimlets.items.DimletItem;
+import mcjty.rftoolsdim.modules.essences.EssencesModule;
 import net.minecraft.block.Block;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
@@ -11,6 +12,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -43,6 +45,22 @@ public class DimletTools {
         return null;
     }
 
+    private static DimletItem getEmptyDimletItem(DimletType type) {
+        switch (type) {
+            case TERRAIN:
+                return DimletModule.EMPTY_TERRAIN_DIMLET.get();
+            case BIOME_CONTROLLER:
+                return DimletModule.EMPTY_BIOME_CONTROLLER_DIMLET.get();
+            case BIOME:
+                return DimletModule.EMPTY_BIOME_DIMLET.get();
+            case FEATURE:
+                return DimletModule.EMPTY_FEATURE_DIMLET.get();
+            case BLOCK:
+                return DimletModule.EMPTY_BLOCK_DIMLET.get();
+        }
+        return null;
+    }
+
     @Nullable
     public static DimletKey getDimletKey(ItemStack stack) {
         if (stack.getItem() instanceof DimletItem) {
@@ -66,6 +84,44 @@ public class DimletTools {
         return stack;
     }
 
+    @Nonnull
+    public static ItemStack getEmptyDimletStack(DimletType type) {
+        DimletItem item = getEmptyDimletItem(type);
+        return new ItemStack(item);
+    }
+
+    public static ItemStack getNeededMemoryPart(DimletKey key) {
+        DimletSettings settings = DimletDictionary.get().getSettings(key);
+        DimletRarity rarity = settings.getRarity();
+        switch (rarity) {
+            case COMMON:
+                return new ItemStack(DimletModule.PART_MEMORY_0.get());
+            case UNCOMMON:
+                return new ItemStack(DimletModule.PART_MEMORY_1.get());
+            case RARE:
+                return new ItemStack(DimletModule.PART_MEMORY_2.get());
+            case LEGENDARY:
+                return new ItemStack(DimletModule.PART_MEMORY_3.get());
+        }
+        return ItemStack.EMPTY;
+    }
+
+    public static ItemStack getNeededEnergyPart(DimletKey key) {
+        DimletSettings settings = DimletDictionary.get().getSettings(key);
+        DimletRarity rarity = settings.getRarity();
+        switch (rarity) {
+            case COMMON:
+                return new ItemStack(DimletModule.PART_ENERGY_0.get());
+            case UNCOMMON:
+                return new ItemStack(DimletModule.PART_ENERGY_1.get());
+            case RARE:
+                return new ItemStack(DimletModule.PART_ENERGY_2.get());
+            case LEGENDARY:
+                return new ItemStack(DimletModule.PART_ENERGY_3.get());
+        }
+        return ItemStack.EMPTY;
+    }
+
     public static ItemStack getNeededEssence(DimletKey key) {
         switch (key.getType()) {
             case TERRAIN:
@@ -73,13 +129,11 @@ public class DimletTools {
             case BIOME_CONTROLLER:
                 return ItemStack.EMPTY;
             case BIOME:
-                // @todo
-                break;
+                return new ItemStack(EssencesModule.BIOME_ABSORBER_ITEM.get());
             case FEATURE:
                 return ItemStack.EMPTY;
             case BLOCK:
-                // @todo
-                break;
+                return new ItemStack(EssencesModule.BLOCK_ABSORBER_ITEM.get());
         }
         return ItemStack.EMPTY;
     }

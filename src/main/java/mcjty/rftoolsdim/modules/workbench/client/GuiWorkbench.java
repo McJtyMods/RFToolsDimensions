@@ -5,8 +5,10 @@ import mcjty.lib.base.StyleConfig;
 import mcjty.lib.container.GenericContainer;
 import mcjty.lib.gui.GenericGuiContainer;
 import mcjty.lib.gui.Window;
+import mcjty.lib.gui.events.SelectionEvent;
 import mcjty.lib.gui.layout.HorizontalAlignment;
 import mcjty.lib.gui.widgets.*;
+import mcjty.lib.typed.TypedMap;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.modules.dimlets.client.DimletClientHelper;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletKey;
@@ -14,11 +16,14 @@ import mcjty.rftoolsdim.modules.dimlets.data.DimletTools;
 import mcjty.rftoolsdim.modules.dimlets.network.PacketRequestDimlets;
 import mcjty.rftoolsdim.modules.workbench.WorkbenchModule;
 import mcjty.rftoolsdim.modules.workbench.blocks.WorkbenchTileEntity;
-import mcjty.rftoolsdim.setup.RFToolsDimMessage;
+import mcjty.rftoolsdim.setup.RFToolsDimMessages;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 
 import static mcjty.lib.gui.widgets.Widgets.*;
+import static mcjty.rftoolsdim.modules.workbench.blocks.WorkbenchTileEntity.PARAM_ID;
+import static mcjty.rftoolsdim.modules.workbench.blocks.WorkbenchTileEntity.PARAM_TYPE;
 
 public class GuiWorkbench extends GenericGuiContainer<WorkbenchTileEntity, GenericContainer> {
 
@@ -43,8 +48,21 @@ public class GuiWorkbench extends GenericGuiContainer<WorkbenchTileEntity, Gener
     public void init() {
         super.init();
 
-        searchBar = textfield(140, 6, 105, 14).event(this::search);
-        itemList = list(140, 22, 102, 132).name("widgets");
+        searchBar = textfield(122, 6, 123, 14).event(this::search);
+        itemList = list(122, 22, 120, 132).name("widgets").event(new SelectionEvent() {
+            @Override
+            public void select(int index) {
+            }
+
+            @Override
+            public void doubleClick(int index) {
+                if (Minecraft.getInstance().player.abilities.isCreativeMode && hasShiftDown()) {
+                    cheatDimlet();
+                } else {
+                    suggestParts();
+                }
+            }
+        });
         slider = slider(243, 22, 8, 132).scrollableName("widgets");
 
         Panel toplevel = positional().background(iconLocation).children(searchBar, itemList, slider);
@@ -52,8 +70,43 @@ public class GuiWorkbench extends GenericGuiContainer<WorkbenchTileEntity, Gener
 
         window = new Window(this, toplevel);
         dimletListAge = -1;
-        RFToolsDimMessage.INSTANCE.sendToServer(new PacketRequestDimlets());
+        RFToolsDimMessages.INSTANCE.sendToServer(new PacketRequestDimlets());
     }
+
+    private void cheatDimlet() {
+        int selected = itemList.getSelected();
+        if (selected == -1) {
+            return;
+        }
+        Panel widget = itemList.getChild(selected);
+        Object userObject = widget.getUserObject();
+        if (userObject instanceof DimletKey) {
+            DimletKey key = (DimletKey) userObject;
+            sendServerCommandTyped(RFToolsDimMessages.INSTANCE, WorkbenchTileEntity.CMD_CHEATDIMLET,
+                    TypedMap.builder()
+                            .put(PARAM_TYPE, key.getType().name())
+                            .put(PARAM_ID, key.getKey())
+                            .build());
+        }
+    }
+
+    private void suggestParts() {
+        int selected = itemList.getSelected();
+        if (selected == -1) {
+            return;
+        }
+        Panel widget = itemList.getChild(selected);
+        Object userObject = widget.getUserObject();
+        if (userObject instanceof DimletKey) {
+            DimletKey key = (DimletKey) userObject;
+            sendServerCommandTyped(RFToolsDimMessages.INSTANCE, WorkbenchTileEntity.CMD_SUGGESTPARTS,
+                    TypedMap.builder()
+                            .put(PARAM_TYPE, key.getType().name())
+                            .put(PARAM_ID, key.getKey())
+                            .build());
+        }
+    }
+
 
     private void search(String filter) {
         dimletListAge = -1;
@@ -85,14 +138,14 @@ public class GuiWorkbench extends GenericGuiContainer<WorkbenchTileEntity, Gener
     }
 
     private void addItemToList(DimletKey key) {
-        Panel panel = positional().desiredWidth(95).desiredHeight(16).userObject(key);
+        Panel panel = positional().desiredWidth(113).desiredHeight(16).userObject(key);
         itemList.children(panel);
         BlockRender blockRender = new BlockRender().renderItem(DimletTools.getDimletStack(key)).hint(1, 0, 16, 16)
                 .userObject(key);
         panel.children(blockRender);
         String displayName = DimletTools.getReadableName(key);
         AbstractWidget label = label(displayName).color(StyleConfig.colorTextInListNormal).horizontalAlignment(HorizontalAlignment.ALIGN_LEFT)
-                .hint(20, 0, 95, 16).userObject(key);
+                .hint(20, 0, 100, 16).userObject(key);
         panel.children(label);
     }
 

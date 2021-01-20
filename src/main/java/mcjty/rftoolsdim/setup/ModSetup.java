@@ -34,7 +34,7 @@ public class ModSetup extends DefaultModSetup {
     public void init(FMLCommonSetupEvent e) {
         super.init(e);
 
-        RFToolsDimMessage.registerMessages("rftoolsdim");
+        RFToolsDimMessages.registerMessages("rftoolsdim");
 
         RFTFeature.registerConfiguredFeatures();
         MinecraftForge.EVENT_BUS.register(new ForgeEventHandlers());

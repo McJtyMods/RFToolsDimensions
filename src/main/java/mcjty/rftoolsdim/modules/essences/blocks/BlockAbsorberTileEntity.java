@@ -36,7 +36,6 @@ import java.util.Random;
 import java.util.Set;
 
 import static mcjty.lib.builder.TooltipBuilder.*;
-import static mcjty.lib.builder.TooltipBuilder.parameter;
 
 public class BlockAbsorberTileEntity extends GenericTileEntity implements ITickableTileEntity {
 
@@ -86,6 +85,10 @@ public class BlockAbsorberTileEntity extends GenericTileEntity implements ITicka
         }
     }
 
+    public static String getBlock(ItemStack stack) {
+        return NBTTools.getInfoNBT(stack, CompoundNBT::getString, "block", null);
+    }
+
     private static String getProgressName(ItemStack stack) {
         int absorbing = NBTTools.getInfoNBT(stack, CompoundNBT::getInt, "absorbing", -1);
         if (absorbing == -1) {
@@ -93,6 +96,15 @@ public class BlockAbsorberTileEntity extends GenericTileEntity implements ITicka
         } else {
             int pct = ((EssencesConfig.maxBlockAbsorption.get() - absorbing) * 100) / EssencesConfig.maxBlockAbsorption.get();
             return pct + "%";
+        }
+    }
+
+    public static int getProgress(ItemStack stack) {
+        int absorbing = NBTTools.getInfoNBT(stack, CompoundNBT::getInt, "absorbing", -1);
+        if (absorbing == -1) {
+            return -1;
+        } else {
+            return ((EssencesConfig.maxBlockAbsorption.get() - absorbing) * 100) / EssencesConfig.maxBlockAbsorption.get();
         }
     }
 

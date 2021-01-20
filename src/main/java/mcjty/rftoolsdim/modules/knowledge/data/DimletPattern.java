@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 public class DimletPattern {
 
-    public static final int PATTERN_DIM = 7;
+    public static final int PATTERN_DIM = 6;
 
     private final String[] pattern;
 

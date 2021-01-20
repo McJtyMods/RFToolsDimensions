@@ -65,6 +65,10 @@ public class BiomeAbsorberTileEntity extends GenericTileEntity implements ITicka
         }
     }
 
+    public static String getBiome(ItemStack stack) {
+        return NBTTools.getInfoNBT(stack, CompoundNBT::getString, "biome", null);
+    }
+
     private static String getProgressName(ItemStack stack) {
         int absorbing = NBTTools.getInfoNBT(stack, CompoundNBT::getInt, "absorbing", -1);
         if (absorbing == -1) {
@@ -72,6 +76,15 @@ public class BiomeAbsorberTileEntity extends GenericTileEntity implements ITicka
         } else {
             int pct = ((EssencesConfig.maxBiomeAbsorption.get() - absorbing) * 100) / EssencesConfig.maxBiomeAbsorption.get();
             return pct + "%";
+        }
+    }
+
+    public static int getProgress(ItemStack stack) {
+        int absorbing = NBTTools.getInfoNBT(stack, CompoundNBT::getInt, "absorbing", -1);
+        if (absorbing == -1) {
+            return -1;
+        } else {
+            return ((EssencesConfig.maxBiomeAbsorption.get() - absorbing) * 100) / EssencesConfig.maxBiomeAbsorption.get();
         }
     }
 

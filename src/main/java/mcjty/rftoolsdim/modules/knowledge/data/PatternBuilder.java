@@ -11,13 +11,12 @@ public class PatternBuilder {
     public static final char LEV2 = '2';
 
     private char[][] pattern = new char[][] {
-            { EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY },
-            { EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY },
-            { EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY },
-            { EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY },
-            { EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY },
-            { EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY },
-            { EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY }
+            { EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY },
+            { EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY },
+            { EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY },
+            { EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY },
+            { EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY },
+            { EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY }
     };
 
     public void set(int x, int y, char s) {

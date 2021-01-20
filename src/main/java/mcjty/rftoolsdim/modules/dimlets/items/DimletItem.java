@@ -5,7 +5,9 @@ import mcjty.lib.tooltips.ITooltipExtras;
 import mcjty.lib.tooltips.ITooltipSettings;
 import mcjty.lib.varia.DimensionId;
 import mcjty.rftoolsdim.modules.dimlets.DimletModule;
-import mcjty.rftoolsdim.modules.dimlets.data.*;
+import mcjty.rftoolsdim.modules.dimlets.data.DimletKey;
+import mcjty.rftoolsdim.modules.dimlets.data.DimletTools;
+import mcjty.rftoolsdim.modules.dimlets.data.DimletType;
 import mcjty.rftoolsdim.modules.knowledge.data.DimletPattern;
 import mcjty.rftoolsdim.modules.knowledge.data.KnowledgeManager;
 import mcjty.rftoolsdim.modules.knowledge.data.PatternBuilder;
@@ -70,29 +72,11 @@ public class DimletItem extends Item implements ITooltipSettings, ITooltipExtras
     public List<Pair<ItemStack, Integer>> getItems(ItemStack stack) {
         DimletKey key = DimletTools.getDimletKey(stack);
         if (key != null) {
-            DimletSettings settings = DimletDictionary.get().getSettings(key);
-            DimletRarity rarity = settings.getRarity();
             List<Pair<ItemStack, Integer>> items = new ArrayList<>();
-            switch (rarity) {
-                case COMMON:
-                    items.add(Pair.of(new ItemStack(DimletModule.PART_ENERGY_0.get()), NOAMOUNT));
-                    items.add(Pair.of(new ItemStack(DimletModule.PART_MEMORY_0.get()), NOAMOUNT));
-                    break;
-                case UNCOMMON:
-                    items.add(Pair.of(new ItemStack(DimletModule.PART_ENERGY_1.get()), NOAMOUNT));
-                    items.add(Pair.of(new ItemStack(DimletModule.PART_MEMORY_1.get()), NOAMOUNT));
-                    break;
-                case RARE:
-                    items.add(Pair.of(new ItemStack(DimletModule.PART_ENERGY_2.get()), NOAMOUNT));
-                    items.add(Pair.of(new ItemStack(DimletModule.PART_MEMORY_2.get()), NOAMOUNT));
-                    break;
-                case LEGENDARY:
-                    items.add(Pair.of(new ItemStack(DimletModule.PART_ENERGY_3.get()), NOAMOUNT));
-                    items.add(Pair.of(new ItemStack(DimletModule.PART_MEMORY_3.get()), NOAMOUNT));
-                    break;
-            }
+            items.add(Pair.of(DimletTools.getNeededEnergyPart(key), NOAMOUNT));
+            items.add(Pair.of(DimletTools.getNeededMemoryPart(key), NOAMOUNT));
 
-            DimletPattern pattern = KnowledgeManager.get().getPattern(DimensionId.overworld().getWorld(), key.getType(), rarity);
+            DimletPattern pattern = KnowledgeManager.get().getPattern(DimensionId.overworld().getWorld(), key);
             int cnt = pattern.count(PatternBuilder.SHARD);
             if (cnt > 0) {
                 items.add(Pair.of(new ItemStack(Registration.DIMENSIONAL_SHARD, cnt), NOERROR));
@@ -109,7 +93,11 @@ public class DimletItem extends Item implements ITooltipSettings, ITooltipExtras
             if (cnt > 0) {
                 items.add(Pair.of(new ItemStack(DimletModule.LEGENDARY_ESSENCE.get(), cnt), NOERROR));
             }
-            // @todo 1.16 add essence item
+
+            ItemStack essence = DimletTools.getNeededEssence(key);
+            if (!essence.isEmpty()) {
+                items.add(Pair.of(essence, NOERROR));
+            }
 
             return items;
         }
