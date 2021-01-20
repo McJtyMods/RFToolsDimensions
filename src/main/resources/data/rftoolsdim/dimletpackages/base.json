@@ -31,7 +31,7 @@
   },
   {
     "type": "terrain",
-    "key": "normal",
+    "key": "common",
     "rarity": "common",
     "create": 10,
     "maintain": 10,
@@ -42,7 +42,7 @@
   {
     "type": "biome_controller",
     "key": "default",
-    "rarity": "normal",
+    "rarity": "common",
     "create": 10,
     "maintain": 10,
     "ticks": 1,
@@ -52,7 +52,7 @@
   {
     "type": "biome_controller",
     "key": "checker",
-    "rarity": "normal",
+    "rarity": "common",
     "create": 10,
     "maintain": 10,
     "ticks": 1,
@@ -62,7 +62,7 @@
   {
     "type": "biome_controller",
     "key": "single",
-    "rarity": "normal",
+    "rarity": "common",
     "create": 10,
     "maintain": 10,
     "ticks": 1,
@@ -72,7 +72,7 @@
   {
     "type": "feature",
     "key": "none",
-    "rarity": "normal",
+    "rarity": "common",
     "create": 10,
     "maintain": 10,
     "ticks": 1,
@@ -82,7 +82,7 @@
   {
     "type": "feature",
     "key": "spheres",
-    "rarity": "normal",
+    "rarity": "common",
     "create": 10,
     "maintain": 10,
     "ticks": 1,
@@ -92,7 +92,7 @@
   {
     "type": "feature",
     "key": "cubes",
-    "rarity": "normal",
+    "rarity": "common",
     "create": 10,
     "maintain": 10,
     "ticks": 1,

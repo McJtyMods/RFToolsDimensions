@@ -20,6 +20,9 @@ public class DimletSettings {
         this.tickCost = builder.tickCost;
         this.worldgen = builder.worldgen;
         this.dimlet = builder.dimlet;
+        if (rarity == null) {
+            throw new IllegalStateException("Dimlet without rarity!");
+        }
     }
 
     public void buildElement(JsonObject jsonObject) {
@@ -36,7 +39,8 @@ public class DimletSettings {
     public static DimletSettings parse(JsonObject jsonObject) {
         Builder builder = new Builder();
 
-        JSonTools.getElement(jsonObject, "rarity").ifPresent(e -> builder.rarity(DimletRarity.byName(e.getAsString())));
+        builder.rarity(DimletRarity.byName(JSonTools.getElement(jsonObject, "rarity").orElseThrow(() -> new IllegalStateException("Missing rarity")).getAsString()));
+//        JSonTools.getElement(jsonObject, "rarity").ifPresent(e -> builder.rarity(DimletRarity.byName(e.getAsString())));
         JSonTools.getElement(jsonObject, "create").ifPresent(e -> builder.createCost(e.getAsInt()));
         JSonTools.getElement(jsonObject, "maintain").ifPresent(e -> builder.maintainCost(e.getAsInt()));
         JSonTools.getElement(jsonObject, "ticks").ifPresent(e -> builder.tickCost(e.getAsInt()));
