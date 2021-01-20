@@ -22,42 +22,4 @@ public class DimletClientHelper {
         dimletListAge++;
     }
 
-    public static ITextComponent getReadable(DimletKey dimletKey) {
-        switch (dimletKey.getType()) {
-            case TERRAIN:
-                return new StringTextComponent(dimletKey.getKey().toLowerCase());
-            case BIOME_CONTROLLER:
-                return new StringTextComponent(dimletKey.getKey().toLowerCase());
-            case BIOME:
-                ResourceLocation id = new ResourceLocation(dimletKey.getKey());
-                String trans = "biome." + id.getNamespace() + "." + id.getPath();
-                return new TranslationTextComponent(trans);
-            case FEATURE:
-                return new StringTextComponent(dimletKey.getKey().toLowerCase());
-            case BLOCK:
-                Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(dimletKey.getKey()));
-                return new TranslationTextComponent(block.getTranslationKey());
-        }
-        return new StringTextComponent("<unknown>");
-    }
-
-    public static String getReadableName(DimletKey dimletKey) {
-        switch (dimletKey.getType()) {
-            case TERRAIN:
-                return dimletKey.getKey().toLowerCase();
-            case BIOME_CONTROLLER:
-                return dimletKey.getKey().toLowerCase();
-            case BIOME:
-                ResourceLocation id = new ResourceLocation(dimletKey.getKey());
-                String trans = "biome." + id.getNamespace() + "." + id.getPath();
-                return I18n.format(trans);
-            case FEATURE:
-                return dimletKey.getKey().toLowerCase();
-            case BLOCK:
-                Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(dimletKey.getKey()));
-                return I18n.format(block.getTranslationKey());
-        }
-        return "<unknown>";
-    }
-
 }

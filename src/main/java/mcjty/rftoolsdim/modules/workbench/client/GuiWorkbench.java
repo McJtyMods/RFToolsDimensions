@@ -10,7 +10,7 @@ import mcjty.lib.gui.widgets.*;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.modules.dimlets.client.DimletClientHelper;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletKey;
-import mcjty.rftoolsdim.modules.dimlets.items.DimletItem;
+import mcjty.rftoolsdim.modules.dimlets.data.DimletTools;
 import mcjty.rftoolsdim.modules.dimlets.network.PacketRequestDimlets;
 import mcjty.rftoolsdim.modules.workbench.WorkbenchModule;
 import mcjty.rftoolsdim.modules.workbench.blocks.WorkbenchTileEntity;
@@ -79,7 +79,7 @@ public class GuiWorkbench extends GenericGuiContainer<WorkbenchTileEntity, Gener
     }
 
     private boolean dimletMatches(String filter, DimletKey key) {
-        String readableName = DimletClientHelper.getReadableName(key);
+        String readableName = DimletTools.getReadableName(key);
         return readableName.toLowerCase().contains(filter)
                 || key.getType().name().toLowerCase().contains(filter);
     }
@@ -87,10 +87,10 @@ public class GuiWorkbench extends GenericGuiContainer<WorkbenchTileEntity, Gener
     private void addItemToList(DimletKey key) {
         Panel panel = positional().desiredWidth(95).desiredHeight(16).userObject(key);
         itemList.children(panel);
-        BlockRender blockRender = new BlockRender().renderItem(DimletItem.getDimletStack(key)).hint(1, 0, 16, 16)
+        BlockRender blockRender = new BlockRender().renderItem(DimletTools.getDimletStack(key)).hint(1, 0, 16, 16)
                 .userObject(key);
         panel.children(blockRender);
-        String displayName = DimletClientHelper.getReadableName(key);
+        String displayName = DimletTools.getReadableName(key);
         AbstractWidget label = label(displayName).color(StyleConfig.colorTextInListNormal).horizontalAlignment(HorizontalAlignment.ALIGN_LEFT)
                 .hint(20, 0, 95, 16).userObject(key);
         panel.children(label);
