@@ -21,6 +21,7 @@ import net.minecraft.world.storage.IServerConfiguration;
 import net.minecraft.world.storage.SaveFormat;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.WorldEvent;
+import net.minecraftforge.fml.network.PacketDistributor;
 
 import java.util.Map;
 import java.util.concurrent.Executor;
@@ -131,7 +132,7 @@ public class DimensionHelper {
         // fire world load event
         MinecraftForge.EVENT_BUS.post(new WorldEvent.Load(newWorld)); // event isn't cancellable
 
-        RFToolsDimMessages.INSTANCE.sendToServer(new DimensionUpdatePacket(worldKey, true));
+        RFToolsDimMessages.INSTANCE.send(PacketDistributor.ALL.noArg(), new DimensionUpdatePacket(worldKey, true));
 
         return newWorld;
     }
