@@ -2,7 +2,6 @@ package mcjty.rftoolsdim.modules.knowledge.data;
 
 import mcjty.rftoolsdim.modules.dimlets.data.DimletRarity;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletType;
-import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.*;
 import java.util.function.Supplier;
@@ -227,6 +226,105 @@ public class RandomPatternCreator {
                     "      "
             },
 
+            {
+                    "###   ",
+                    "###   ",
+                    "###   ",
+                    "      ",
+                    "      ",
+                    "      "
+            },
+
+            {
+                    "   ###",
+                    "   ###",
+                    "   ###",
+                    "      ",
+                    "      ",
+                    "      "
+            },
+
+            {
+                    "      ",
+                    "      ",
+                    "      ",
+                    "###   ",
+                    "###   ",
+                    "###   "
+            },
+
+            {
+                    "      ",
+                    "      ",
+                    "      ",
+                    "   ###",
+                    "   ###",
+                    "   ###"
+            },
+
+            {
+                    "      ",
+                    "   ## ",
+                    "  #   ",
+                    "   ## ",
+                    "      ",
+                    "      "
+            },
+
+            {
+                    "      ",
+                    "  ##  ",
+                    "    # ",
+                    "  ##  ",
+                    "      ",
+                    "      "
+            },
+
+            {
+                    "  #   ",
+                    " #    ",
+                    "#     ",
+                    " #    ",
+                    "  #   ",
+                    "      "
+            },
+
+            {
+                    "   #  ",
+                    "    # ",
+                    "     #",
+                    "    # ",
+                    "   #  ",
+                    "      "
+            },
+
+            {
+                    "  #   ",
+                    " # #  ",
+                    "#   # ",
+                    "      ",
+                    "      ",
+                    "      "
+            },
+
+            {
+                    "      ",
+                    "      ",
+                    "      ",
+                    "#   # ",
+                    " # #  ",
+                    "  #   "
+            },
+
+            {
+                    "  #   ",
+                    " # #  ",
+                    "#   # ",
+                    " # #  ",
+                    "  #   ",
+                    "      "
+            },
+
     };
 
 
@@ -321,26 +419,28 @@ public class RandomPatternCreator {
     /**
      * Create a set of random patterns based on seed (so it's constant for any given world)
      */
-    public static Map<Pair<DimletType, DimletRarity>, DimletPattern> createRandomPatterns(long seed) {
+    public static Map<KnowledgeKey, DimletPattern> createRandomPatterns(long seed) {
         Set<SelectedPattern> selectedPatterns = new HashSet<>();
-        Map<Pair<DimletType, DimletRarity>, SelectedPattern> patternMap = new HashMap<>();
+        Map<KnowledgeKey, SelectedPattern> patternMap = new HashMap<>();
 
         Random random = new Random(seed);
         random.nextInt();
         random.nextInt();
-        for (DimletType type : DimletType.values()) {
-            SelectedPattern pattern0 = findUnusedPattern(selectedPatterns, () -> new SelectedPattern(r(random), -1, -1, -1));
-            patternMap.put(Pair.of(type, DimletRarity.COMMON), pattern0);
-            SelectedPattern pattern1 = findUnusedPattern(selectedPatterns, () -> new SelectedPattern(r(random), r(random), -1, -1));
-            patternMap.put(Pair.of(type, DimletRarity.UNCOMMON), pattern1);
-            SelectedPattern pattern2 = findUnusedPattern(selectedPatterns, () -> new SelectedPattern(r(random), r(random), r(random), -1));
-            patternMap.put(Pair.of(type, DimletRarity.RARE), pattern2);
-            SelectedPattern pattern3 = findUnusedPattern(selectedPatterns, () -> new SelectedPattern(r(random), r(random), r(random), r(random)));
-            patternMap.put(Pair.of(type, DimletRarity.LEGENDARY), pattern3);
+        for (KnowledgeSet set : KnowledgeSet.values()) {
+            for (DimletType type : DimletType.values()) {
+                SelectedPattern pattern0 = findUnusedPattern(selectedPatterns, () -> new SelectedPattern(r(random), -1, -1, -1));
+                patternMap.put(new KnowledgeKey(type, DimletRarity.COMMON, set), pattern0);
+                SelectedPattern pattern1 = findUnusedPattern(selectedPatterns, () -> new SelectedPattern(r(random), r(random), -1, -1));
+                patternMap.put(new KnowledgeKey(type, DimletRarity.UNCOMMON, set), pattern1);
+                SelectedPattern pattern2 = findUnusedPattern(selectedPatterns, () -> new SelectedPattern(r(random), r(random), r(random), -1));
+                patternMap.put(new KnowledgeKey(type, DimletRarity.RARE, set), pattern2);
+                SelectedPattern pattern3 = findUnusedPattern(selectedPatterns, () -> new SelectedPattern(r(random), r(random), r(random), r(random)));
+                patternMap.put(new KnowledgeKey(type, DimletRarity.LEGENDARY, set), pattern3);
+            }
         }
 
-        Map<Pair<DimletType, DimletRarity>, DimletPattern> patterns = new HashMap<>();
-        for (Map.Entry<Pair<DimletType, DimletRarity>, SelectedPattern> entry : patternMap.entrySet()) {
+        Map<KnowledgeKey, DimletPattern> patterns = new HashMap<>();
+        for (Map.Entry<KnowledgeKey, SelectedPattern> entry : patternMap.entrySet()) {
             SelectedPattern selectedPattern = entry.getValue();
             patterns.put(entry.getKey(), buildPattern(selectedPattern));
         }

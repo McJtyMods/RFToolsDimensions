@@ -1,14 +1,16 @@
 package mcjty.rftoolsdim.modules.knowledge.data;
 
 import mcjty.rftoolsdim.modules.dimlets.DimletModule;
-import mcjty.rftoolsdim.modules.dimlets.data.*;
+import mcjty.rftoolsdim.modules.dimlets.data.DimletDictionary;
+import mcjty.rftoolsdim.modules.dimlets.data.DimletKey;
+import mcjty.rftoolsdim.modules.dimlets.data.DimletSettings;
 import mcjty.rftoolsdim.setup.Registration;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
-import org.apache.commons.lang3.tuple.Pair;
 
+import javax.annotation.Nonnull;
 import java.util.Map;
 
 import static mcjty.rftoolsdim.modules.knowledge.data.PatternBuilder.*;
@@ -16,7 +18,7 @@ import static mcjty.rftoolsdim.modules.knowledge.data.PatternBuilder.*;
 public class KnowledgeManager {
 
     private long worldSeed = -1;    // To validate that the patterns are still ok
-    private Map<Pair<DimletType, DimletRarity>, DimletPattern> patterns = null;
+    private Map<KnowledgeKey, DimletPattern> patterns = null;
 
     private static final KnowledgeManager INSTANCE = new KnowledgeManager();
 
@@ -63,15 +65,13 @@ public class KnowledgeManager {
         return EMPTY;
     }
 
+    @Nonnull
     public DimletPattern getPattern(World world, DimletKey key) {
         resolve(world);
         DimletSettings settings = DimletDictionary.get().getSettings(key);
-        return patterns.get(Pair.of(key.getType(), settings.getRarity()));
-    }
-
-    public DimletPattern getPattern(World world, DimletType type, DimletRarity rarity) {
-        resolve(world);
-        return patterns.get(Pair.of(type, rarity));
+        KnowledgeSet set = KnowledgeSet.SET1;   // @todo
+        KnowledgeKey pair = new KnowledgeKey(key.getType(), settings.getRarity(), set);
+        return patterns.get(pair);
     }
 
 }
