@@ -1,24 +1,30 @@
 package mcjty.rftoolsdim.modules.knowledge.data;
 
 import mcjty.rftoolsdim.modules.dimlets.DimletModule;
-import mcjty.rftoolsdim.modules.dimlets.data.DimletDictionary;
-import mcjty.rftoolsdim.modules.dimlets.data.DimletKey;
-import mcjty.rftoolsdim.modules.dimlets.data.DimletSettings;
+import mcjty.rftoolsdim.modules.dimlets.data.*;
 import mcjty.rftoolsdim.setup.Registration;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
 import javax.annotation.Nonnull;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import static mcjty.rftoolsdim.modules.knowledge.data.PatternBuilder.*;
 
 public class KnowledgeManager {
 
     private long worldSeed = -1;    // To validate that the patterns are still ok
+
+    // All patterns by knowledge key
     private Map<KnowledgeKey, DimletPattern> patterns = null;
+    // All patterns that are actually used by dimlets
+    private final Map<DimletRarity, Set<DimletPattern>> knownPatterns = new HashMap<>();
 
     private static final KnowledgeManager INSTANCE = new KnowledgeManager();
 
@@ -65,13 +71,35 @@ public class KnowledgeManager {
         return EMPTY;
     }
 
+    private KnowledgeSet getKnowledgeSet(World world, DimletKey key) {
+        ResourceLocation id = DimletTools.getResourceLocation(key);
+        if (id == null) {
+            return KnowledgeSet.SET1;
+        } else {
+            // Calculate a hash based on the modid
+            int i = id.getNamespace().hashCode();
+            return KnowledgeSet.values()[i%(KnowledgeSet.values().length)];
+        }
+    }
+
     @Nonnull
     public DimletPattern getPattern(World world, DimletKey key) {
         resolve(world);
         DimletSettings settings = DimletDictionary.get().getSettings(key);
-        KnowledgeSet set = KnowledgeSet.SET1;   // @todo
+        KnowledgeSet set = getKnowledgeSet(world, key);
         KnowledgeKey pair = new KnowledgeKey(key.getType(), settings.getRarity(), set);
         return patterns.get(pair);
     }
 
+    public Set<DimletPattern> getKnownPatterns(World world, DimletRarity rarity) {
+        if (!knownPatterns.containsKey(rarity)) {
+            Set<DimletPattern> set = new HashSet<>();
+            for (DimletKey key : DimletDictionary.get().getDimlets()) {
+                DimletPattern pattern = getPattern(world, key);
+                set.add(pattern);
+            }
+            knownPatterns.put(rarity, set);
+        }
+        return knownPatterns.get(rarity);
+    }
 }

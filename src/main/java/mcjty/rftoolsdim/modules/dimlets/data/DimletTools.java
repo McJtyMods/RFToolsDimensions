@@ -14,7 +14,6 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.registries.ForgeRegistries;
-import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -141,6 +140,23 @@ public class DimletTools {
         return ItemStack.EMPTY;
     }
 
+
+    @Nullable
+    public static ResourceLocation getResourceLocation(DimletKey dimletKey) {
+        switch (dimletKey.getType()) {
+            case TERRAIN:
+                return null;
+            case BIOME_CONTROLLER:
+                return null;
+            case BIOME:
+                return new ResourceLocation(dimletKey.getKey());
+            case FEATURE:
+                return null;
+            case BLOCK:
+                return new ResourceLocation(dimletKey.getKey());
+        }
+        return null;
+    }
 
     public static ITextComponent getReadable(DimletKey dimletKey) {
         switch (dimletKey.getType()) {

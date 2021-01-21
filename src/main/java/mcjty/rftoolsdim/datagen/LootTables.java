@@ -1,7 +1,9 @@
 package mcjty.rftoolsdim.datagen;
 
 import mcjty.lib.datagen.BaseLootTableProvider;
+import mcjty.rftoolsdim.modules.blob.BlobModule;
 import mcjty.rftoolsdim.modules.dimensionbuilder.DimensionBuilderModule;
+import mcjty.rftoolsdim.modules.dimlets.DimletModule;
 import mcjty.rftoolsdim.modules.enscriber.EnscriberModule;
 import mcjty.rftoolsdim.modules.essences.EssencesModule;
 import mcjty.rftoolsdim.modules.workbench.WorkbenchModule;
@@ -21,6 +23,8 @@ public class LootTables extends BaseLootTableProvider {
         addStandardTable(EnscriberModule.ENSCRIBER.get());
         addStandardTable(EssencesModule.BLOCK_ABSORBER.get());
         addStandardTable(EssencesModule.BIOME_ABSORBER.get());
+
+        addItemDropTable(BlobModule.DIMENSIONAL_BLOB.get(), DimletModule.COMMON_ESSENCE.get());
     }
 
     @Override
