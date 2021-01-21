@@ -1,7 +1,10 @@
 package mcjty.rftoolsdim.modules.workbench.client;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import mcjty.lib.base.StyleConfig;
+import mcjty.lib.client.RenderHelper;
 import mcjty.lib.container.GenericContainer;
 import mcjty.lib.gui.GenericGuiContainer;
 import mcjty.lib.gui.Window;
@@ -9,16 +12,24 @@ import mcjty.lib.gui.events.SelectionEvent;
 import mcjty.lib.gui.layout.HorizontalAlignment;
 import mcjty.lib.gui.widgets.*;
 import mcjty.lib.typed.TypedMap;
+import mcjty.lib.varia.ItemStackList;
+import mcjty.rftoolsbase.RFToolsBase;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.modules.dimlets.client.DimletClientHelper;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletKey;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletTools;
 import mcjty.rftoolsdim.modules.dimlets.network.PacketRequestDimlets;
+import mcjty.rftoolsdim.modules.knowledge.KnowledgeModule;
+import mcjty.rftoolsdim.modules.knowledge.data.DimletPattern;
+import mcjty.rftoolsdim.modules.knowledge.data.KnowledgeManager;
+import mcjty.rftoolsdim.modules.knowledge.data.PatternBuilder;
 import mcjty.rftoolsdim.modules.workbench.WorkbenchModule;
 import mcjty.rftoolsdim.modules.workbench.blocks.WorkbenchTileEntity;
 import mcjty.rftoolsdim.setup.RFToolsDimMessages;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.container.Slot;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
 import static mcjty.lib.gui.widgets.Widgets.*;
@@ -31,17 +42,21 @@ public class GuiWorkbench extends GenericGuiContainer<WorkbenchTileEntity, Gener
     public static final int HEIGHT = 240;
 
     private static final ResourceLocation iconLocation = new ResourceLocation(RFToolsDim.MODID, "textures/gui/dimletworkbench.png");
+    private static final ResourceLocation iconGuiElements = new ResourceLocation(RFToolsBase.MODID, "textures/gui/guielements.png");
 
     private TextField searchBar;
     private WidgetList itemList;
     private Slider slider;
     private long dimletListAge = -1;
 
+    private static String[] pattern = null;
+
     public GuiWorkbench(WorkbenchTileEntity tileEntity, GenericContainer container, PlayerInventory inventory) {
         super(tileEntity, container, inventory, WorkbenchModule.WORKBENCH.get().getManualEntry());
 
         xSize = WIDTH;
         ySize = HEIGHT;
+        pattern = null;
     }
 
     @Override
@@ -52,6 +67,7 @@ public class GuiWorkbench extends GenericGuiContainer<WorkbenchTileEntity, Gener
         itemList = list(122, 22, 120, 132).name("widgets").event(new SelectionEvent() {
             @Override
             public void select(int index) {
+                hilightPattern();
             }
 
             @Override
@@ -65,12 +81,83 @@ public class GuiWorkbench extends GenericGuiContainer<WorkbenchTileEntity, Gener
         });
         slider = slider(243, 22, 8, 132).scrollableName("widgets");
 
-        Panel toplevel = positional().background(iconLocation).children(searchBar, itemList, slider);
+        Button createButton = button(210, 158, 40, 18, "Create").event(this::createDimlet);
+
+        Panel toplevel = positional().background(iconLocation).children(searchBar, itemList, slider, createButton);
         toplevel.bounds(guiLeft, guiTop, xSize, ySize);
 
         window = new Window(this, toplevel);
         dimletListAge = -1;
         RFToolsDimMessages.INSTANCE.sendToServer(new PacketRequestDimlets());
+    }
+
+    private void createDimlet() {
+        sendServerCommandTyped(RFToolsDimMessages.INSTANCE, WorkbenchTileEntity.CMD_CREATE_DIMLET,
+                TypedMap.builder().build());
+    }
+
+    private void hilightPattern() {
+        int selected = itemList.getSelected();
+        if (selected == -1) {
+            return;
+        }
+        Panel widget = itemList.getChild(selected);
+        Object userObject = widget.getUserObject();
+        if (userObject instanceof DimletKey) {
+            DimletKey key = (DimletKey) userObject;
+            sendServerCommandTyped(RFToolsDimMessages.INSTANCE, WorkbenchTileEntity.CMD_HILIGHT_PATTERN,
+                    TypedMap.builder()
+                            .put(PARAM_TYPE, key.getType().name())
+                            .put(PARAM_ID, key.getKey())
+                            .build());
+        }
+    }
+
+    public static void setPattern(String[] pattern) {
+        GuiWorkbench.pattern = pattern;
+    }
+
+    private void renderHilightedPattern(MatrixStack matrixStack) {
+        if (pattern != null) {
+            net.minecraft.client.renderer.RenderHelper.setupGui3DDiffuseLighting();
+            matrixStack.push();
+            matrixStack.translate(guiLeft, guiTop, 0.0F);
+            RenderSystem.color4f(1.0F, 0.0F, 0.0F, 1.0F);
+            RenderSystem.enableRescaleNormal();
+            // @todo 1.15
+
+            itemRenderer.zLevel = 100.0F;
+            GlStateManager.enableDepthTest();
+            GlStateManager.disableBlend();
+            RenderSystem.enableLighting();
+
+            for (int y = 0 ; y < pattern.length ; y++) {
+                String p = pattern[y];
+                for (int x = 0 ; x < p.length() ; x++) {
+                    ItemStack stack = KnowledgeManager.getPatternItem(p.charAt(x));
+                    if (!stack.isEmpty()) {
+                        int slotIdx = WorkbenchTileEntity.SLOT_PATTERN + y * pattern.length + x;
+                        Slot slot = container.getSlot(slotIdx);
+                        if (!slot.getHasStack()) {
+                            itemRenderer.renderItemAndEffectIntoGUI(stack, guiLeft + slot.xPos, guiTop + slot.yPos);
+
+                            RenderSystem.disableLighting();
+                            GlStateManager.enableBlend();
+                            GlStateManager.disableDepthTest();
+                            this.minecraft.getTextureManager().bindTexture(iconGuiElements);
+                            RenderHelper.drawTexturedModalRect(matrixStack.getLast().getMatrix(), slot.xPos, slot.yPos, 14 * 16, 3 * 16, 16, 16);
+                            GlStateManager.enableDepthTest();
+                            GlStateManager.disableBlend();
+                            RenderSystem.enableLighting();
+                        }
+                    }
+                }
+            }
+            itemRenderer.zLevel = 0.0F;
+
+            matrixStack.pop();
+            net.minecraft.client.renderer.RenderHelper.disableStandardItemLighting();
+        }
     }
 
     private void cheatDimlet() {
@@ -145,37 +232,14 @@ public class GuiWorkbench extends GenericGuiContainer<WorkbenchTileEntity, Gener
         panel.children(blockRender);
         String displayName = DimletTools.getReadableName(key);
         AbstractWidget label = label(displayName).color(StyleConfig.colorTextInListNormal).horizontalAlignment(HorizontalAlignment.ALIGN_LEFT)
-                .hint(20, 0, 100, 16).userObject(key);
+                .hint(20, 0, 95, 16).userObject(key);
         panel.children(label);
     }
 
     @Override
     protected void drawGuiContainerBackgroundLayer(MatrixStack matrixStack, float partialTicks, int x, int y) {
-//        int pct = DimensionBuilderTileEntity.getBuildPercentage();
-//
-//        if (pct == DimensionBuilderTileEntity.ERROR_NOOWNER) {
-//            error1.setText("Builder has");
-//            error2.setText("no owner!");
-//            percentage.setText("");
-//        } else if (pct == DimensionBuilderTileEntity.ERROR_TOOMANYDIMENSIONS) {
-//            error1.setText("Too many");
-//            error2.setText("dimensions!");
-//            percentage.setText("");
-//        } else {
-//            int x = ((pct - 1) / 4) % 5;
-//            int y = ((pct - 1) / 4) / 5;
-//            stages.setImage(iconStages, x * 48, y * 48);
-//            percentage.setText(pct + "%");
-//            error1.setText("");
-//            error2.setText("");
-//        }
-
         updateList();
         drawWindow(matrixStack);
-
-//        energyBar.setValue(GenericEnergyStorageTileEntity.getCurrentRF());
-//
-//        tileEntity.requestRfFromServer(RFToolsDim.MODID);
-//        tileEntity.requestBuildingPercentage();
+        renderHilightedPattern(matrixStack);
     }
 }

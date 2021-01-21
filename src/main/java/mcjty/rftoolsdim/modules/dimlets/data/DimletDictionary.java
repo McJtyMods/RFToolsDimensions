@@ -2,9 +2,13 @@ package mcjty.rftoolsdim.modules.dimlets.data;
 
 import com.google.gson.*;
 import mcjty.rftoolsdim.RFToolsDim;
+import mcjty.rftoolsdim.modules.knowledge.data.DimletPattern;
+import mcjty.rftoolsdim.modules.knowledge.data.KnowledgeManager;
 import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.RegistryKey;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.fml.loading.FMLPaths;
@@ -37,6 +41,28 @@ public class DimletDictionary {
 
     public DimletSettings getSettings(DimletKey key) {
         return dimlets.get(key);
+    }
+
+    public DimletKey tryCraft(World world, DimletType type, ItemStack memoryPart, ItemStack energyPart, ItemStack essence,
+                              DimletPattern pattern) {
+        for (Map.Entry<DimletKey, DimletSettings> entry : dimlets.entrySet()) {
+            DimletKey key = entry.getKey();
+            if (type.equals(key.getType())) {
+                if (memoryPart.isItemEqual(DimletTools.getNeededMemoryPart(key))) {
+                    if (energyPart.isItemEqual(DimletTools.getNeededEnergyPart(key))) {
+                        ItemStack neededEssence = DimletTools.getNeededEssence(key);
+                        if (DimletTools.isFullEssence(essence, neededEssence, key.getKey())) {
+                            DimletPattern neededPattern = KnowledgeManager.get().getPattern(world, key);
+                            if (neededPattern.equals(pattern)) {
+                                return key;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return null;
     }
 
 

@@ -3,6 +3,8 @@ package mcjty.rftoolsdim.modules.dimlets.data;
 import mcjty.rftoolsdim.modules.dimlets.DimletModule;
 import mcjty.rftoolsdim.modules.dimlets.items.DimletItem;
 import mcjty.rftoolsdim.modules.essences.EssencesModule;
+import mcjty.rftoolsdim.modules.essences.blocks.BiomeAbsorberTileEntity;
+import mcjty.rftoolsdim.modules.essences.blocks.BlockAbsorberTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
@@ -16,6 +18,7 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Objects;
 
 public class DimletTools {
 
@@ -176,5 +179,22 @@ public class DimletTools {
                 return I18n.format(block.getTranslationKey());
         }
         return "<unknown>";
+    }
+
+    public static boolean isFullEssence(ItemStack stack, ItemStack desired, String desiredKey) {
+        if (stack.isItemEqual(desired)) {
+            if (stack.getItem() == EssencesModule.BIOME_ABSORBER_ITEM.get()) {
+                String biome = BiomeAbsorberTileEntity.getBiome(stack);
+                if (Objects.equals(desiredKey, biome)) {
+                    return BiomeAbsorberTileEntity.getProgress(stack) >= 100;
+                }
+            } else if (stack.getItem() == EssencesModule.BLOCK_ABSORBER_ITEM.get()) {
+                String block = BlockAbsorberTileEntity.getBlock(stack);
+                if (Objects.equals(desiredKey, block)) {
+                    return BlockAbsorberTileEntity.getProgress(stack) >= 100;
+                }
+            }
+        }
+        return false;
     }
 }

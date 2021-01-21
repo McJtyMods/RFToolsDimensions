@@ -43,5 +43,6 @@ public class PacketSendDimletsToClient {
         ctx.enqueueWork(() -> {
             DimletClientHelper.setDimletsOnGui(dimlets);
         });
+        ctx.setPacketHandled(true);
     }
 }

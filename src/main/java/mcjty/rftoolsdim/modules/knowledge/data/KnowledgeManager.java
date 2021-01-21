@@ -3,6 +3,7 @@ package mcjty.rftoolsdim.modules.knowledge.data;
 import mcjty.rftoolsdim.modules.dimlets.DimletModule;
 import mcjty.rftoolsdim.modules.dimlets.data.*;
 import mcjty.rftoolsdim.setup.Registration;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
@@ -40,6 +41,26 @@ public class KnowledgeManager {
             case LEV2: return new ItemStack(DimletModule.LEGENDARY_ESSENCE.get());
         }
         return ItemStack.EMPTY;
+    }
+
+    public static char getPatternChar(ItemStack stack) {
+        if (stack.isEmpty()) {
+            return EMPTY;
+        }
+        Item item = stack.getItem();
+        if (item == Registration.DIMENSIONAL_SHARD) {
+            return SHARD;
+        }
+        if (item == DimletModule.COMMON_ESSENCE.get()) {
+            return LEV0;
+        }
+        if (item == DimletModule.RARE_ESSENCE.get()) {
+            return LEV1;
+        }
+        if (item == DimletModule.LEGENDARY_ESSENCE.get()) {
+            return LEV2;
+        }
+        return EMPTY;
     }
 
     public DimletPattern getPattern(World world, DimletKey key) {

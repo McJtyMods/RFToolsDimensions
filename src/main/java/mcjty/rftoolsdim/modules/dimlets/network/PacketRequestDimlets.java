@@ -29,5 +29,6 @@ public class PacketRequestDimlets {
             Set<DimletKey> dimlets = DimletDictionary.get().getDimlets();
             RFToolsDimMessages.INSTANCE.sendTo(new PacketSendDimletsToClient(dimlets), ctx.getSender().connection.netManager, NetworkDirection.PLAY_TO_CLIENT);
         });
+        ctx.setPacketHandled(true);
     }
 }

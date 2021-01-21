@@ -62,6 +62,13 @@ public class DimletItem extends Item implements ITooltipSettings, ITooltipExtras
         return type;
     }
 
+    public static DimletType getType(ItemStack stack) {
+        if (stack.getItem() instanceof DimletItem) {
+            return ((DimletItem) stack.getItem()).getType();
+        }
+        return null;
+    }
+
     @Override
     public void addInformation(ItemStack itemStack, World world, List<ITextComponent> list, ITooltipFlag flags) {
         super.addInformation(itemStack, world, list, flags);
