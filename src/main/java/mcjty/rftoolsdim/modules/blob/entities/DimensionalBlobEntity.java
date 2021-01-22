@@ -24,6 +24,7 @@ public class DimensionalBlobEntity extends MonsterEntity {
 
     @Override
     public void tick() {
+        super.tick();
         this.squishFactor += (this.squishAmount - this.squishFactor) * 0.5F;
         this.prevSquishFactor = this.squishFactor;
 

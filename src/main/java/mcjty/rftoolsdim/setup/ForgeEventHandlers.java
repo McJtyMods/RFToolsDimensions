@@ -1,7 +1,10 @@
 package mcjty.rftoolsdim.setup;
 
+import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.dimension.features.RFTFeature;
+import net.minecraft.world.World;
 import net.minecraft.world.gen.GenerationStage;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -11,6 +14,15 @@ public class ForgeEventHandlers {
     @SubscribeEvent(priority = EventPriority.HIGH)
     public void onBiomeLoad(BiomeLoadingEvent event) {
         event.getGeneration().getFeatures(GenerationStage.Decoration.RAW_GENERATION).add(() -> RFTFeature.RFTFEATURE_CONFIGURED);
+    }
+
+    @SubscribeEvent
+    public void onWorldTick(TickEvent.WorldTickEvent event) {
+        // This should be in PotentialSpawns but that doesn't appear to be working correctly
+        if (event.phase == TickEvent.Phase.START && !event.world.isRemote) {
+            if (RFToolsDim.MODID.equals(event.world.getDimensionKey().getLocation().getNamespace())) {
+            }
+        }
     }
 
 //    private MobSpawnInfo.Spawners blobEntry = null;
