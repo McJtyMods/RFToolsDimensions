@@ -2,12 +2,19 @@ package mcjty.rftoolsdim.setup;
 
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.dimension.features.RFTFeature;
-import net.minecraft.world.World;
+import mcjty.rftoolsdim.modules.blob.BlobModule;
+import mcjty.rftoolsdim.modules.blob.tools.Spawner;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.world.gen.GenerationStage;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+
+import java.util.List;
+import java.util.Random;
 
 public class ForgeEventHandlers {
 
@@ -16,16 +23,29 @@ public class ForgeEventHandlers {
         event.getGeneration().getFeatures(GenerationStage.Decoration.RAW_GENERATION).add(() -> RFTFeature.RFTFEATURE_CONFIGURED);
     }
 
+    private Random random = new Random();
+
     @SubscribeEvent
     public void onWorldTick(TickEvent.WorldTickEvent event) {
         // This should be in PotentialSpawns but that doesn't appear to be working correctly
         if (event.phase == TickEvent.Phase.START && !event.world.isRemote) {
             if (RFToolsDim.MODID.equals(event.world.getDimensionKey().getLocation().getNamespace())) {
+                if (random.nextInt(20) == 10) {
+                    ServerWorld serverWorld = (ServerWorld) event.world;
+                    List<Entity> entities = serverWorld.getEntities(BlobModule.DIMENSIONAL_BLOB.get(), entity -> true);
+                    if (entities.size() < 50) {
+                        for (ServerPlayerEntity player : serverWorld.getPlayers()) {
+                            for (int i = 0 ; i < 20 ; i++) {
+                                Spawner.spawnOne(serverWorld, player, random);
+                            }
+                        }
+                    }
+                }
             }
         }
     }
 
-//    private MobSpawnInfo.Spawners blobEntry = null;
+    //    private MobSpawnInfo.Spawners blobEntry = null;
 //
 //    @SubscribeEvent
 //    public void onPotentialSpawn(WorldEvent.PotentialSpawns event) {

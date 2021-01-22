@@ -2,6 +2,7 @@ package mcjty.rftoolsdim.modules.blob.client;
 
 
 import com.mojang.blaze3d.matrix.MatrixStack;
+import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.modules.blob.entities.DimensionalBlobEntity;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
@@ -12,7 +13,7 @@ import net.minecraftforge.fml.client.registry.IRenderFactory;
 
 
 public class DimensionalBlobRender extends LivingRenderer<DimensionalBlobEntity, DimensionalBlobModel<DimensionalBlobEntity>> {
-    private ResourceLocation mobTexture = new ResourceLocation("rftoolsdim:textures/entity/dimensional_blob.png");
+    private ResourceLocation mobTexture = new ResourceLocation(RFToolsDim.MODID, "textures/entity/dimensional_blob.png");
 
     public DimensionalBlobRender(EntityRendererManager renderManagerIn) {
         super(renderManagerIn, new DimensionalBlobModel(), 0.8F);

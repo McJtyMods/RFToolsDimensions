@@ -25,16 +25,18 @@ public class DimensionalBlobEntity extends MonsterEntity {
     @Override
     public void tick() {
         super.tick();
-        this.squishFactor += (this.squishAmount - this.squishFactor) * 0.5F;
-        this.prevSquishFactor = this.squishFactor;
+        if (world.isRemote) {
+            this.squishFactor += (this.squishAmount - this.squishFactor) * 0.5F;
+            this.prevSquishFactor = this.squishFactor;
 
-        if (rand.nextFloat() < 0.03f) {
-            this.squishAmount = -0.5F;
-        } else if (rand.nextFloat() < 0.03f) {
-            this.squishAmount = 1.0f;
+            if (rand.nextFloat() < 0.03f) {
+                this.squishAmount = -0.5F;
+            } else if (rand.nextFloat() < 0.03f) {
+                this.squishAmount = 1.0f;
+            }
+
+            this.squishAmount *= 0.6F;
         }
-
-        this.squishAmount *= 0.6F;
     }
 
     @Override
