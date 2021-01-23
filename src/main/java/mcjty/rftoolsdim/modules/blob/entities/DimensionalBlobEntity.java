@@ -1,13 +1,20 @@
 package mcjty.rftoolsdim.modules.blob.entities;
 
 import mcjty.rftoolsdim.modules.dimlets.data.DimletRarity;
+import net.minecraft.entity.EntityPredicate;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.monster.MonsterEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.IPacket;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
+
+import java.util.List;
 
 public class DimensionalBlobEntity extends MonsterEntity {
 
@@ -16,14 +23,62 @@ public class DimensionalBlobEntity extends MonsterEntity {
     public float prevSquishFactor;
 
     private final DimletRarity rarity;
+    private AxisAlignedBB targetBox = null;
+
+    private final static EntityPredicate PREDICATE = new EntityPredicate()
+            .setLineOfSiteRequired();
 
     public DimensionalBlobEntity(EntityType<? extends MonsterEntity> type, World worldIn, DimletRarity rarity) {
         super(type, worldIn);
         this.rarity = rarity;
+        calculateTargetBox(getBoundingBox());
     }
 
     public static AttributeModifierMap.MutableAttribute registerAttributes() {
         return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.25D);
+    }
+
+    @Override
+    public void setBoundingBox(AxisAlignedBB bb) {
+        super.setBoundingBox(bb);
+        calculateTargetBox(bb);
+    }
+
+    private void calculateTargetBox(AxisAlignedBB bb) {
+        if (rarity != null) {
+            double radius = 1.0;
+            switch (rarity) {
+                case COMMON:
+                case UNCOMMON:
+                    radius = 5.0;
+                    break;
+                case RARE:
+                    radius = 9.0;
+                    break;
+                case LEGENDARY:
+                    radius = 15.0;
+                    break;
+            }
+            targetBox = bb.grow(radius);
+        }
+    }
+
+
+    private void infectPlayer(PlayerEntity player) {
+        player.addPotionEffect(new EffectInstance(Effects.HUNGER, 100));
+        player.addPotionEffect(new EffectInstance(Effects.WEAKNESS, 100));
+        switch (rarity) {
+            case COMMON:
+            case UNCOMMON:
+                break;
+            case RARE:
+                player.addPotionEffect(new EffectInstance(Effects.POISON, 100));
+                break;
+            case LEGENDARY:
+                player.addPotionEffect(new EffectInstance(Effects.POISON, 100));
+                player.addPotionEffect(new EffectInstance(Effects.WITHER, 100));
+                break;
+        }
     }
 
     @Override
@@ -40,6 +95,14 @@ public class DimensionalBlobEntity extends MonsterEntity {
             }
 
             this.squishAmount *= 0.6F;
+        } else {
+            if (rand.nextFloat() < .05) {
+                List<PlayerEntity> players = world.getTargettablePlayersWithinAABB(PREDICATE, this, targetBox);
+                for (PlayerEntity player : players) {
+                    infectPlayer(player);
+                }
+
+            }
         }
     }
 
