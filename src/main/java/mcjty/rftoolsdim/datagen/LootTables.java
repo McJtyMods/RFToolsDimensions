@@ -24,7 +24,9 @@ public class LootTables extends BaseLootTableProvider {
         addStandardTable(EssencesModule.BLOCK_ABSORBER.get());
         addStandardTable(EssencesModule.BIOME_ABSORBER.get());
 
-        addItemDropTable(BlobModule.DIMENSIONAL_BLOB.get(), DimletModule.COMMON_ESSENCE.get());
+        addItemDropTable(BlobModule.DIMENSIONAL_BLOB_COMMON.get(), DimletModule.COMMON_ESSENCE.get());
+        addItemDropTable(BlobModule.DIMENSIONAL_BLOB_RARE.get(), DimletModule.RARE_ESSENCE.get());
+        addItemDropTable(BlobModule.DIMENSIONAL_BLOB_LEGENDARY.get(), DimletModule.LEGENDARY_ESSENCE.get());
     }
 
     @Override

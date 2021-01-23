@@ -2,6 +2,7 @@ package mcjty.rftoolsdim.dimension.features.instances;
 
 import mcjty.rftoolsdim.dimension.features.IFeature;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.ISeedReader;
@@ -47,12 +48,18 @@ public class CubeFeature implements IFeature {
 
         BlockPos.Mutable pos = new BlockPos.Mutable();
         for (int x = 0 ; x < 16 ; x++) {
-            if (Math.abs(x-centerx) <= radius) {
+            int xdist = Math.abs(x - centerx);
+            if (xdist <= radius) {
                 for (int z = 0; z < 16; z++) {
-                    if (Math.abs(z - centerz) <= radius) {
+                    int zdist = Math.abs(z - centerz);
+                    if (zdist <= radius) {
                         for (int y = centery - radius; y <= centery + radius; y++) {
-                            world.setBlockState(pos.setPos(chunkX * 16 + x, y, chunkZ * 16 + z),
-                                    IFeature.select(states, random), 0);
+                            pos.setPos(chunkX * 16 + x, y, chunkZ * 16 + z);
+                            if (y == centery - radius || y == centery + radius || xdist == radius || zdist == radius) {
+                                world.setBlockState(pos, IFeature.select(states, random), 0);
+                            } else {
+                                world.setBlockState(pos, Blocks.AIR.getDefaultState(), 0);
+                            }
                         }
                     }
                 }

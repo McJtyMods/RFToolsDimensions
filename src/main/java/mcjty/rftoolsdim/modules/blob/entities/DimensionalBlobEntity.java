@@ -1,5 +1,6 @@
 package mcjty.rftoolsdim.modules.blob.entities;
 
+import mcjty.rftoolsdim.modules.dimlets.data.DimletRarity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
@@ -14,8 +15,11 @@ public class DimensionalBlobEntity extends MonsterEntity {
     public float squishFactor;
     public float prevSquishFactor;
 
-    public DimensionalBlobEntity(EntityType<? extends MonsterEntity> type, World worldIn) {
+    private final DimletRarity rarity;
+
+    public DimensionalBlobEntity(EntityType<? extends MonsterEntity> type, World worldIn, DimletRarity rarity) {
         super(type, worldIn);
+        this.rarity = rarity;
     }
 
     public static AttributeModifierMap.MutableAttribute registerAttributes() {
@@ -37,6 +41,10 @@ public class DimensionalBlobEntity extends MonsterEntity {
 
             this.squishAmount *= 0.6F;
         }
+    }
+
+    public DimletRarity getRarity() {
+        return rarity;
     }
 
     @Override

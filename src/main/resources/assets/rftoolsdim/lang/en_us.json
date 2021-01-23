@@ -35,7 +35,9 @@
   "item.rftoolsdim.rare_essence": "Rare Dimensional Essence",
   "item.rftoolsdim.legendary_essence": "Legendary Dimensional Essence",
 
-  "entity.rftoolsdim.dimensional_blob": "Blob",
+  "entity.rftoolsdim.dimensional_blob_common": "Common Blob",
+  "entity.rftoolsdim.dimensional_blob_rare": "Rare Blob",
+  "entity.rftoolsdim.dimensional_blob_legendary": "Legendary Blob",
 
   "block.rftoolsdim.xxx": "Xxx",
   "_comment": "Creative Tabs",

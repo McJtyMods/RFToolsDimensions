@@ -3,6 +3,7 @@ package mcjty.rftoolsdim.setup;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.dimension.features.RFTFeature;
 import mcjty.rftoolsdim.modules.blob.BlobModule;
+import mcjty.rftoolsdim.modules.blob.entities.DimensionalBlobEntity;
 import mcjty.rftoolsdim.modules.blob.tools.Spawner;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -32,8 +33,8 @@ public class ForgeEventHandlers {
             if (RFToolsDim.MODID.equals(event.world.getDimensionKey().getLocation().getNamespace())) {
                 if (random.nextInt(20) == 10) {
                     ServerWorld serverWorld = (ServerWorld) event.world;
-                    List<Entity> entities = serverWorld.getEntities(BlobModule.DIMENSIONAL_BLOB.get(), entity -> true);
-                    if (entities.size() < 50) {
+                    long count = serverWorld.getEntities().filter(s -> s instanceof DimensionalBlobEntity).count();
+                    if (count < 50) {
                         for (ServerPlayerEntity player : serverWorld.getPlayers()) {
                             for (int i = 0 ; i < 20 ; i++) {
                                 Spawner.spawnOne(serverWorld, player, random);

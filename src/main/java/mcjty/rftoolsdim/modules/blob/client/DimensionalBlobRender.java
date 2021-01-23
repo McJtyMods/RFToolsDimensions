@@ -13,7 +13,10 @@ import net.minecraftforge.fml.client.registry.IRenderFactory;
 
 
 public class DimensionalBlobRender extends LivingRenderer<DimensionalBlobEntity, DimensionalBlobModel<DimensionalBlobEntity>> {
-    private ResourceLocation mobTexture = new ResourceLocation(RFToolsDim.MODID, "textures/entity/dimensional_blob.png");
+
+    private static final ResourceLocation TEXTURE_COMMON = new ResourceLocation(RFToolsDim.MODID, "textures/entity/dimensional_blob_common.png");
+    private static final ResourceLocation TEXTURE_RARE = new ResourceLocation(RFToolsDim.MODID, "textures/entity/dimensional_blob_rare.png");
+    private static final ResourceLocation TEXTURE_LEGENDARY = new ResourceLocation(RFToolsDim.MODID, "textures/entity/dimensional_blob_legendary.png");
 
     public DimensionalBlobRender(EntityRendererManager renderManagerIn) {
         super(renderManagerIn, new DimensionalBlobModel(), 0.8F);
@@ -24,7 +27,17 @@ public class DimensionalBlobRender extends LivingRenderer<DimensionalBlobEntity,
      */
     @Override
     public ResourceLocation getEntityTexture(DimensionalBlobEntity entity) {
-        return mobTexture;
+        switch (entity.getRarity()) {
+            case COMMON:
+                return TEXTURE_COMMON;
+            case UNCOMMON:
+                return TEXTURE_COMMON;  // Cannot happen
+            case RARE:
+                return TEXTURE_RARE;
+            case LEGENDARY:
+                return TEXTURE_LEGENDARY;
+        }
+        return TEXTURE_COMMON;
     }
 
 

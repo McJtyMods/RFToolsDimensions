@@ -2,13 +2,10 @@ package mcjty.rftoolsdim.modules.blob.tools;
 
 import mcjty.rftoolsdim.modules.blob.BlobModule;
 import mcjty.rftoolsdim.modules.blob.entities.DimensionalBlobEntity;
-import mcjty.rftoolsdim.setup.Registration;
-import net.minecraft.entity.EntitySpawnPlacementRegistry;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.pathfinding.PathType;
-import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.gen.Heightmap;
@@ -19,22 +16,18 @@ import java.util.Random;
 public class Spawner {
 
     public static void spawnOne(ServerWorld world, PlayerEntity player, Random random) {
-        double distanceX = random.nextDouble() * 60 - 30;
-        double distanceZ = random.nextDouble() * 60 - 30;
-        if (distanceX < 0) {
-            distanceX -= 16;
-        } else {
-            distanceX += 16;
-        }
-        if (distanceZ < 0) {
-            distanceZ -= 16;
-        } else {
-            distanceZ += 16;
+        double distanceX;
+        double distanceZ;
+        distanceX = random.nextDouble() * 80 - 40;
+        distanceZ = random.nextDouble() * 80 - 40;
+        while (distanceX < 16 && distanceZ < 16) {
+            distanceX = random.nextDouble() * 80 - 40;
+            distanceZ = random.nextDouble() * 80 - 40;
         }
         int x = (int) (player.getPosX() + distanceX);
         int z = (int) (player.getPosZ() + distanceZ);
-        EntityType<DimensionalBlobEntity> type = BlobModule.DIMENSIONAL_BLOB.get();
-        BlockPos pos = getTopSolidOrLiquidBlock(random, world, type, x, z);
+        EntityType<DimensionalBlobEntity> type = randomBlob(random);
+        BlockPos pos = getValidSpawnablePosition(random, world, x, z);
         boolean nocollisions = world.hasNoCollisions(type.getBoundingBoxWithSizeApplied(x, pos.getY(), z));
         boolean canSpawn = true;//EntitySpawnPlacementRegistry.canSpawnEntity(type, world, SpawnReason.NATURAL, new BlockPos(x, pos.getY(), z), random);
         if (!nocollisions || !canSpawn) {
@@ -52,14 +45,31 @@ public class Spawner {
         }
     }
 
-    private static BlockPos getTopSolidOrLiquidBlock(Random random, IWorldReader worldIn, EntityType<?> entityType, int x, int z) {
+    private static EntityType<DimensionalBlobEntity> randomBlob(Random random) {
+        // @todo base this on power of the dimension
+        if (random.nextFloat() < .1) {
+            if (random.nextFloat() < .1) {
+                return BlobModule.DIMENSIONAL_BLOB_LEGENDARY.get();
+            }
+            return BlobModule.DIMENSIONAL_BLOB_RARE.get();
+        }
+        return BlobModule.DIMENSIONAL_BLOB_COMMON.get();
+    }
+
+    private static BlockPos getValidSpawnablePosition(Random random, IWorldReader worldIn, int x, int z) {
         int height = worldIn.getHeight(Heightmap.Type.WORLD_SURFACE, x, z) + 1;
         height = random.nextInt(height + 1);
         BlockPos blockPos = new BlockPos(x, height-1, z);
-        while (blockPos.getY() > 1 && !worldIn.getBlockState(blockPos).allowsMovement(worldIn, blockPos, PathType.LAND) &&
-                !worldIn.getBlockState(blockPos.down()).isSolid()) {
+        while (blockPos.getY() > 1 && !isValidSpawnPos(worldIn, blockPos)) {
             blockPos = blockPos.down();
         }
         return blockPos;
+    }
+
+    private static boolean isValidSpawnPos(IWorldReader world, BlockPos pos) {
+        if (!world.getBlockState(pos).allowsMovement(world, pos, PathType.LAND)) {
+            return false;
+        }
+        return world.getBlockState(pos.down()).isSolid();
     }
 }

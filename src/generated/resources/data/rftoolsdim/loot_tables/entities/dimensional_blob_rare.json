@@ -2,12 +2,12 @@
   "type": "minecraft:entity",
   "pools": [
     {
-      "name": "dimensional_blob",
+      "name": "dimensional_blob_rare",
       "rolls": 1,
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "rftoolsdim:common_essence"
+          "name": "rftoolsdim:rare_essence"
         }
       ]
     }
