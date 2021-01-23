@@ -8,8 +8,10 @@ import java.util.Map;
 
 public enum FeatureType {
     NONE("none", null),
-    CUBES("cubes", new CubeFeature()),
-    SPHERES("spheres", new SphereFeature());
+    CUBES("cubes", new CubeFeature(false)),
+    HOLLOW_CUBES("hollow_cubes", new CubeFeature(true)),
+    SPHERES("spheres", new SphereFeature(false)),
+    HOLLOW_SPHERES("hollow_spheres", new SphereFeature(true));
 
     private final String name;
     private final IFeature feature;

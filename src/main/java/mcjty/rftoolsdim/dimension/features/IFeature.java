@@ -10,7 +10,7 @@ import java.util.Random;
 
 public interface IFeature {
     boolean generate(ISeedReader reader, ChunkGenerator generator, Random rand, BlockPos pos,
-                     List<BlockState> states);
+                     List<BlockState> states, long prime);
 
     static BlockState select(List<BlockState> states, Random random) {
         if (states.size() == 1) {

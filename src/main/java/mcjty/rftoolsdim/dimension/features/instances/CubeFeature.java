@@ -14,9 +14,15 @@ import java.util.Random;
 
 public class CubeFeature implements IFeature {
 
+    private final boolean hollow;
+
+    public CubeFeature(boolean hollow) {
+        this.hollow = hollow;
+    }
+
     @Override
     public boolean generate(ISeedReader reader, ChunkGenerator generator, Random rand, BlockPos pos,
-                            List<BlockState> states) {
+                            List<BlockState> states, long prime) {
         ChunkPos cp = new ChunkPos(pos);
         int chunkX = cp.x;
         int chunkZ = cp.z;
@@ -28,7 +34,7 @@ public class CubeFeature implements IFeature {
             for (int dz = -size; dz <= size; dz++) {
                 int cz = chunkZ + dz;
                 if (isFeatureCenter(reader, cx, cz)) {
-                    generate(reader, chunkX, chunkZ, dx, dz, states);
+                    generate(reader, chunkX, chunkZ, dx, dz, states, prime);
                     generated = true;
                 }
             }
@@ -37,8 +43,8 @@ public class CubeFeature implements IFeature {
     }
 
     private void generate(ISeedReader world, int chunkX, int chunkZ, int dx, int dz,
-                          List<BlockState> states) {
-        Random random = new Random(world.getSeed() + (chunkZ+dz) * 256203221L + (chunkX+dx) * 899809363L);
+                          List<BlockState> states, long prime) {
+        Random random = new Random(world.getSeed() + (chunkZ+dz) * prime + (chunkX+dx) * 899809363L);
         random.nextFloat();
         int radius = random.nextInt(12) + 9;
         int centery = random.nextInt(60) + 40;
@@ -46,6 +52,7 @@ public class CubeFeature implements IFeature {
         int centerx = 8 + (dx) * 16;
         int centerz = 8 + (dz) * 16;
 
+        BlockState air = Blocks.AIR.getDefaultState();
         BlockPos.Mutable pos = new BlockPos.Mutable();
         for (int x = 0 ; x < 16 ; x++) {
             int xdist = Math.abs(x - centerx);
@@ -55,10 +62,10 @@ public class CubeFeature implements IFeature {
                     if (zdist <= radius) {
                         for (int y = centery - radius; y <= centery + radius; y++) {
                             pos.setPos(chunkX * 16 + x, y, chunkZ * 16 + z);
-                            if (y == centery - radius || y == centery + radius || xdist == radius || zdist == radius) {
+                            if ((!hollow) || y == centery - radius || y == centery + radius || xdist == radius || zdist == radius) {
                                 world.setBlockState(pos, IFeature.select(states, random), 0);
                             } else {
-                                world.setBlockState(pos, Blocks.AIR.getDefaultState(), 0);
+                                world.setBlockState(pos, air, 0);
                             }
                         }
                     }

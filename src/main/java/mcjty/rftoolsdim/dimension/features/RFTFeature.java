@@ -28,6 +28,9 @@ public class RFTFeature extends Feature<NoFeatureConfig> {
 
     public static ConfiguredFeature<?, ?> RFTFEATURE_CONFIGURED;
 
+    private final static long primes[] = new long[] { 900157, 981961, 50001527, 32667413, 1111114993, 65548559, 320741, 100002509,
+            35567897, 218021, 2900001163L };
+
     public static void registerConfiguredFeatures() {
         Registry<ConfiguredFeature<?, ?>> registry = WorldGenRegistries.CONFIGURED_FEATURE;
 
@@ -52,11 +55,13 @@ public class RFTFeature extends Feature<NoFeatureConfig> {
                 return false;
             }
             boolean generatedSomething = false;
+            int primeIndex = 0;
             for (CompiledFeature feature : features) {
                 if (feature.getFeatureType().getFeature().generate(reader, generator, rand, pos,
-                        feature.getBlocks())) {
+                        feature.getBlocks(), primes[primeIndex % primes.length])) {
                     generatedSomething = true;
                 }
+                primeIndex++;
             }
             return generatedSomething;
         }

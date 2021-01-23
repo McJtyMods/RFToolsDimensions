@@ -91,7 +91,27 @@
   },
   {
     "type": "feature",
+    "key": "hollow_spheres",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "feature",
     "key": "cubes",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "feature",
+    "key": "hollow_cubes",
     "rarity": "common",
     "create": 10,
     "maintain": 10,
