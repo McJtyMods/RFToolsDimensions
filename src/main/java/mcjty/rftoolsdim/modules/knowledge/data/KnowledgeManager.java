@@ -1,5 +1,6 @@
 package mcjty.rftoolsdim.modules.knowledge.data;
 
+import mcjty.lib.varia.DimensionId;
 import mcjty.rftoolsdim.modules.dimlets.DimletModule;
 import mcjty.rftoolsdim.modules.dimlets.data.*;
 import mcjty.rftoolsdim.setup.Registration;
@@ -10,6 +11,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -33,7 +35,8 @@ public class KnowledgeManager {
     }
 
     private void resolve(World world) {
-        long seed = ((ServerWorld) world).getSeed();
+        ServerWorld overworld = DimensionId.overworld().loadWorld(world);
+        long seed = overworld.getSeed();
         if (seed != worldSeed || patterns == null) {
             worldSeed = seed;
             patterns = RandomPatternCreator.createRandomPatterns(seed);
@@ -82,10 +85,13 @@ public class KnowledgeManager {
         }
     }
 
-    @Nonnull
+    @Nullable
     public DimletPattern getPattern(World world, DimletKey key) {
         resolve(world);
         DimletSettings settings = DimletDictionary.get().getSettings(key);
+        if (settings == null) {
+            return null;
+        }
         KnowledgeSet set = getKnowledgeSet(world, key);
         KnowledgeKey pair = new KnowledgeKey(key.getType(), settings.getRarity(), set);
         return patterns.get(pair);
@@ -96,7 +102,9 @@ public class KnowledgeManager {
             Set<DimletPattern> set = new HashSet<>();
             for (DimletKey key : DimletDictionary.get().getDimlets()) {
                 DimletPattern pattern = getPattern(world, key);
-                set.add(pattern);
+                if (pattern != null) {
+                    set.add(pattern);
+                }
             }
             knownPatterns.put(rarity, set);
         }

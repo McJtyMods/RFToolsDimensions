@@ -94,7 +94,13 @@ public class DimletTools {
 
     public static ItemStack getNeededMemoryPart(DimletKey key) {
         DimletSettings settings = DimletDictionary.get().getSettings(key);
+        if (settings == null) {
+            return ItemStack.EMPTY;
+        }
         DimletRarity rarity = settings.getRarity();
+        if (rarity == null) {
+            return ItemStack.EMPTY;
+        }
         switch (rarity) {
             case COMMON:
                 return new ItemStack(DimletModule.PART_MEMORY_0.get());
@@ -110,7 +116,13 @@ public class DimletTools {
 
     public static ItemStack getNeededEnergyPart(DimletKey key) {
         DimletSettings settings = DimletDictionary.get().getSettings(key);
+        if (settings == null) {
+            return ItemStack.EMPTY;
+        }
         DimletRarity rarity = settings.getRarity();
+        if (rarity == null) {
+            return ItemStack.EMPTY;
+        }
         switch (rarity) {
             case COMMON:
                 return new ItemStack(DimletModule.PART_ENERGY_0.get());

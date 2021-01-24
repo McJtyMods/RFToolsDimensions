@@ -19,6 +19,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 public class DimletDictionary {
@@ -53,7 +54,7 @@ public class DimletDictionary {
                         ItemStack neededEssence = DimletTools.getNeededEssence(key);
                         if (DimletTools.isFullEssence(essence, neededEssence, key.getKey())) {
                             DimletPattern neededPattern = KnowledgeManager.get().getPattern(world, key);
-                            if (neededPattern.equals(pattern)) {
+                            if (Objects.equals(neededPattern, pattern)) {
                                 return key;
                             }
                         }

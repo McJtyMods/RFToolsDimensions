@@ -84,21 +84,23 @@ public class DimletItem extends Item implements ITooltipSettings, ITooltipExtras
             items.add(Pair.of(DimletTools.getNeededMemoryPart(key), NOAMOUNT));
 
             DimletPattern pattern = KnowledgeManager.get().getPattern(DimensionId.overworld().getWorld(), key);
-            int cnt = pattern.count(PatternBuilder.SHARD);
-            if (cnt > 0) {
-                items.add(Pair.of(new ItemStack(Registration.DIMENSIONAL_SHARD, cnt), NOERROR));
-            }
-            cnt = pattern.count(PatternBuilder.LEV0);
-            if (cnt > 0) {
-                items.add(Pair.of(new ItemStack(DimletModule.COMMON_ESSENCE.get(), cnt), NOERROR));
-            }
-            cnt = pattern.count(PatternBuilder.LEV1);
-            if (cnt > 0) {
-                items.add(Pair.of(new ItemStack(DimletModule.RARE_ESSENCE.get(), cnt), NOERROR));
-            }
-            cnt = pattern.count(PatternBuilder.LEV2);
-            if (cnt > 0) {
-                items.add(Pair.of(new ItemStack(DimletModule.LEGENDARY_ESSENCE.get(), cnt), NOERROR));
+            if (pattern != null) {
+                int cnt = pattern.count(PatternBuilder.SHARD);
+                if (cnt > 0) {
+                    items.add(Pair.of(new ItemStack(Registration.DIMENSIONAL_SHARD, cnt), NOERROR));
+                }
+                cnt = pattern.count(PatternBuilder.LEV0);
+                if (cnt > 0) {
+                    items.add(Pair.of(new ItemStack(DimletModule.COMMON_ESSENCE.get(), cnt), NOERROR));
+                }
+                cnt = pattern.count(PatternBuilder.LEV1);
+                if (cnt > 0) {
+                    items.add(Pair.of(new ItemStack(DimletModule.RARE_ESSENCE.get(), cnt), NOERROR));
+                }
+                cnt = pattern.count(PatternBuilder.LEV2);
+                if (cnt > 0) {
+                    items.add(Pair.of(new ItemStack(DimletModule.LEGENDARY_ESSENCE.get(), cnt), NOERROR));
+                }
             }
 
             ItemStack essence = DimletTools.getNeededEssence(key);
