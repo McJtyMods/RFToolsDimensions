@@ -39,6 +39,20 @@ public class DimensionalBlobEntity extends MonsterEntity {
     }
 
     @Override
+    public float getRenderScale() {
+        switch (rarity) {
+            case COMMON:
+            case UNCOMMON:
+                return 1.0f;
+            case RARE:
+                return 1.3f;
+            case LEGENDARY:
+                return 1.8f;
+        }
+        return 1.0f;
+    }
+
+    @Override
     public void setBoundingBox(AxisAlignedBB bb) {
         super.setBoundingBox(bb);
         calculateTargetBox(bb);

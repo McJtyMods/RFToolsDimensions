@@ -18,11 +18,11 @@ public class Spawner {
     public static void spawnOne(ServerWorld world, PlayerEntity player, Random random) {
         double distanceX;
         double distanceZ;
-        distanceX = random.nextDouble() * 80 - 40;
-        distanceZ = random.nextDouble() * 80 - 40;
-        while (distanceX < 16 && distanceZ < 16) {
-            distanceX = random.nextDouble() * 80 - 40;
-            distanceZ = random.nextDouble() * 80 - 40;
+        distanceX = random.nextDouble() * 100 - 50;
+        distanceZ = random.nextDouble() * 100 - 50;
+        while (distanceX < 22 && distanceZ < 22) {
+            distanceX = random.nextDouble() * 100 - 50;
+            distanceZ = random.nextDouble() * 100 - 50;
         }
         int x = (int) (player.getPosX() + distanceX);
         int z = (int) (player.getPosZ() + distanceZ);
@@ -41,7 +41,6 @@ public class Spawner {
         if (entity.canSpawn(world, SpawnReason.NATURAL) && entity.isNotColliding(world)) {
             entity.onInitialSpawn(world, world.getDifficultyForLocation(entity.getPosition()), SpawnReason.NATURAL, null, null);
             world.func_242417_l(entity);
-            System.out.println("Spawner.spawnOne");
         }
     }
 

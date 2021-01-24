@@ -21,4 +21,18 @@ Ways to get knowledge (patterns):
 
 
 Todo:
-Command to generate configs for all blocks/fluids/biomes which a modpack maker can edit and tweak
+- Blobs:
+    - Make depend on dimension power
+    - Make legendary invulnerable based on power
+    - Fix the bounding box
+- Dimlets:
+    - More terrain types
+    - More feature types
+    - Liquid dimlets
+    - Structures
+- Biome manager: implement default biome manager
+- Power system for dimensions
+- Dimension Enscriber
+- Dimension Builder
+- Dimlet Workbench should respect knowledge holder with knowledge
+- Implement Knowledge Item loot

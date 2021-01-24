@@ -34,7 +34,7 @@ public class ForgeEventHandlers {
                 if (random.nextInt(20) == 10) {
                     ServerWorld serverWorld = (ServerWorld) event.world;
                     long count = serverWorld.getEntities().filter(s -> s instanceof DimensionalBlobEntity).count();
-                    if (count < 50) {
+                    if (count < 20) {
                         for (ServerPlayerEntity player : serverWorld.getPlayers()) {
                             for (int i = 0 ; i < 20 ; i++) {
                                 Spawner.spawnOne(serverWorld, player, random);
