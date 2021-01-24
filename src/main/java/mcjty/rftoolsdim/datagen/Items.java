@@ -56,6 +56,9 @@ public class Items extends BaseItemModelProvider {
         itemGenerated(KnowledgeModule.RARE_LOST_KNOWLEDGE.get(), "item/rare_lost_knowledge");
         itemGenerated(KnowledgeModule.LEGENDARY_LOST_KNOWLEDGE.get(), "item/legendary_lost_knowledge");
 
+        itemGenerated(DimensionBuilderModule.EMPTY_DIMENSION_TAB.get(), "item/empty_dimension_tab");
+        itemGenerated(DimensionBuilderModule.REALIZED_DIMENSION_TAB.get(), "item/realized_dimension_tab");
+
     }
 
     @Override

@@ -6,6 +6,8 @@ import mcjty.lib.gui.GenericGuiContainer;
 import mcjty.lib.modules.IModule;
 import mcjty.rftoolsdim.modules.dimensionbuilder.blocks.DimensionBuilderTileEntity;
 import mcjty.rftoolsdim.modules.dimensionbuilder.client.GuiDimensionBuilder;
+import mcjty.rftoolsdim.modules.dimensionbuilder.items.EmptyDimensionTab;
+import mcjty.rftoolsdim.modules.dimensionbuilder.items.RealizedDimensionTab;
 import mcjty.rftoolsdim.setup.Config;
 import mcjty.rftoolsdim.setup.Registration;
 import net.minecraft.inventory.container.ContainerType;
@@ -24,6 +26,9 @@ public class DimensionBuilderModule implements IModule {
     public static final RegistryObject<Item> DIMENSION_BUILDER_ITEM = ITEMS.register("dimension_builder", () -> new BlockItem(DIMENSION_BUILDER.get(), Registration.createStandardProperties()));
     public static final RegistryObject<TileEntityType<DimensionBuilderTileEntity>> TYPE_DIMENSION_BUILDER = TILES.register("dimension_builder", () -> TileEntityType.Builder.create(DimensionBuilderTileEntity::new, DIMENSION_BUILDER.get()).build(null));
     public static final RegistryObject<ContainerType<GenericContainer>> CONTAINER_DIMENSION_BUILDER = CONTAINERS.register("dimension_builder", GenericContainer::createContainerType);
+
+    public static final RegistryObject<EmptyDimensionTab> EMPTY_DIMENSION_TAB = ITEMS.register("empty_dimension_tab", EmptyDimensionTab::new);
+    public static final RegistryObject<RealizedDimensionTab> REALIZED_DIMENSION_TAB = ITEMS.register("realized_dimension_tab", RealizedDimensionTab::new);
 
     @Override
     public void init(FMLCommonSetupEvent event) {

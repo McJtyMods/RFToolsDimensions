@@ -144,5 +144,9 @@ public class Recipes extends BaseRecipeProvider {
                         .key('u', ItemTags.LEAVES)
                         .addCriterion("sponge", hasItem(Blocks.SPONGE)),
                 "usu", "sCs", "usu");
+
+        build(consumer, ShapedRecipeBuilder.shapedRecipe(DimensionBuilderModule.EMPTY_DIMENSION_TAB.get())
+                        .addCriterion("redstone", hasItem(Items.REDSTONE)),
+                "prp", "rpr", "prp");
     }
 }
