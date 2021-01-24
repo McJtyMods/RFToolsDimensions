@@ -30,6 +30,7 @@ Todo:
     - More feature types
     - Liquid dimlets
     - Structures
+    - Special (yellow) dimlets: owner, powerless, ...
 - Biome manager: implement default biome manager
 - Power system for dimensions
 - Dimension Enscriber

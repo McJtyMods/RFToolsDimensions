@@ -6,6 +6,8 @@ import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import mcjty.lib.varia.DimensionId;
+import mcjty.rftoolsdim.dimension.data.DimensionData;
+import mcjty.rftoolsdim.dimension.data.PersistantDimensionManager;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
 import net.minecraft.server.MinecraftServer;
@@ -28,7 +30,13 @@ public class CommandListDim implements Command<CommandSource> {
         MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
         for (ServerWorld world : server.getWorlds()) {
             DimensionId id = DimensionId.fromWorld(world);
-            context.getSource().sendFeedback(new StringTextComponent(id.getName()), true);
+            String output = id.getName();
+            // @todo 1.16 list power and other data
+//            DimensionData data = PersistantDimensionManager.get(world).getData(id.getRegistryName());
+//            if (data != null) {
+//                output += " (" + (data.getName() == null ? "<null>" : data.getName()) + ")";
+//            }
+            context.getSource().sendFeedback(new StringTextComponent(output), true);
         }
         return 0;
     }

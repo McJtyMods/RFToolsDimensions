@@ -2,7 +2,7 @@ package mcjty.rftoolsdim.dimension.biomes;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import mcjty.rftoolsdim.dimension.DimensionSettings;
+import mcjty.rftoolsdim.dimension.data.DimensionSettings;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryLookupCodec;
 import net.minecraft.world.biome.Biome;
@@ -13,7 +13,7 @@ import net.minecraft.world.gen.feature.structure.Structure;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static mcjty.rftoolsdim.dimension.DimensionSettings.SETTINGS_CODEC;
+import static mcjty.rftoolsdim.dimension.data.DimensionSettings.SETTINGS_CODEC;
 
 public class RFTBiomeProvider extends BiomeProvider {
 

@@ -54,10 +54,6 @@ public class GuiDimensionBuilder extends GenericGuiContainer<DimensionBuilderTil
         toplevel.bounds(guiLeft, guiTop, xSize, ySize);
 
         window = new Window(this, toplevel);
-//        tileEntity.requestBuildingPercentage();
-
-        // @todo
-//        window.bind(RFToolsDimMessages.INSTANCE, "redstone", tileEntity, GenericTileEntity.VALUE_RSMODE.getName());
     }
 
     private ImageChoiceLabel initRedstoneMode() {
@@ -70,30 +66,27 @@ public class GuiDimensionBuilder extends GenericGuiContainer<DimensionBuilderTil
 
     @Override
     protected void drawGuiContainerBackgroundLayer(MatrixStack matrixStack, float partialTicks, int x, int y) {
-//        int pct = DimensionBuilderTileEntity.getBuildPercentage();
-//
-//        if (pct == DimensionBuilderTileEntity.ERROR_NOOWNER) {
-//            error1.setText("Builder has");
-//            error2.setText("no owner!");
-//            percentage.setText("");
-//        } else if (pct == DimensionBuilderTileEntity.ERROR_TOOMANYDIMENSIONS) {
-//            error1.setText("Too many");
-//            error2.setText("dimensions!");
-//            percentage.setText("");
-//        } else {
-//            int x = ((pct - 1) / 4) % 5;
-//            int y = ((pct - 1) / 4) / 5;
-//            stages.setImage(iconStages, x * 48, y * 48);
-//            percentage.setText(pct + "%");
-//            error1.setText("");
-//            error2.setText("");
-//        }
+        int pct = tileEntity.getBuildPercentage();
+        int error = tileEntity.getErrorMode();
+
+        if (error == DimensionBuilderTileEntity.ERROR_NOOWNER) {
+            error1.text("Builder has");
+            error2.text("no owner!");
+            percentage.text("");
+        } else if (error == DimensionBuilderTileEntity.ERROR_TOOMANYDIMENSIONS) {
+            error1.text("Too many");
+            error2.text("dimensions!");
+            percentage.text("");
+        } else {
+            int px = ((pct - 1) / 4) % 5;
+            int py = ((pct - 1) / 4) / 5;
+            stages.image(iconStages, px * 48, py * 48);
+            percentage.text(pct + "%");
+            error1.text("");
+            error2.text("");
+        }
 
         drawWindow(matrixStack);
-
-//        energyBar.setValue(GenericEnergyStorageTileEntity.getCurrentRF());
-//
-//        tileEntity.requestRfFromServer(RFToolsDim.MODID);
-//        tileEntity.requestBuildingPercentage();
+        updateEnergyBar(energyBar);
     }
 }

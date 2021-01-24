@@ -31,7 +31,7 @@
   },
   {
     "type": "terrain",
-    "key": "common",
+    "key": "normal",
     "rarity": "common",
     "create": 10,
     "maintain": 10,

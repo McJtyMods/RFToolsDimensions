@@ -1,7 +1,7 @@
 package mcjty.rftoolsdim.dimension.terraintypes;
 
 import mcjty.rftoolsdim.dimension.DimensionRegistry;
-import mcjty.rftoolsdim.dimension.DimensionSettings;
+import mcjty.rftoolsdim.dimension.data.DimensionSettings;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.gen.ChunkGenerator;

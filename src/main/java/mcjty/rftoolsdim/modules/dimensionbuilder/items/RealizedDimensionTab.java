@@ -1,6 +1,9 @@
 package mcjty.rftoolsdim.modules.dimensionbuilder.items;
 
 import mcjty.lib.varia.Logging;
+import mcjty.rftoolsdim.dimension.data.DimensionData;
+import mcjty.rftoolsdim.dimension.data.PersistantDimensionManager;
+import mcjty.rftoolsdim.dimension.descriptor.DimensionDescriptor;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -8,6 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
@@ -28,15 +32,14 @@ public class RealizedDimensionTab extends Item {
         ItemStack stack = player.getHeldItem(hand);
         if ((!world.isRemote) && player.isSneaking()) {
             CompoundNBT tagCompound = stack.getTag();
-            Logging.message(player, tagCompound.getString("descriptionString"));
-            int id = tagCompound.getInt("id");
-            if (id != 0) {
-                // @todo 1.16
-//                RfToolsDimensionManager dimensionManager = RfToolsDimensionManager.getDimensionManager(world);
-//                DimensionInformation information = dimensionManager.getDimensionInformation(id);
-//                if (information != null) {
-//                    information.dump(player);
-//                }
+            Logging.message(player, tagCompound.getString("descriptor"));
+            if (tagCompound.contains("dimension")) {
+                String dimension = tagCompound.getString("dimension");
+                DimensionData data = PersistantDimensionManager.get(world).getData(new ResourceLocation(dimension));
+                if (data != null) {
+                    DimensionDescriptor descriptor = data.getDescriptor();
+                    descriptor.dump(player);
+                }
             }
         }
         return ActionResult.resultSuccess(stack);
@@ -49,17 +52,17 @@ public class RealizedDimensionTab extends Item {
         CompoundNBT tagCompound = stack.getTag();
         if (tagCompound != null) {
             String name = tagCompound.getString("name");
-            int id = 0;
+            ResourceLocation dimension = null;
             if (name != null) {
-                id = tagCompound.getInt("id");
-                if (id == 0) {
+                if (!tagCompound.contains("dimension")) {
                     list.add(new StringTextComponent(TextFormatting.BLUE + "Name: " + name));
                 } else {
-                    list.add(new StringTextComponent(TextFormatting.BLUE + "Name: " + name + " (Id " + id + ")"));
+                    dimension = new ResourceLocation(tagCompound.getString("dimension"));
+                    list.add(new StringTextComponent(TextFormatting.BLUE + "Name: " + name + " (Dimension " + dimension.getPath() + ")"));
                 }
             }
 
-            String descriptionString = tagCompound.getString("descriptionString");
+            String descriptionString = tagCompound.getString("descriptor");
             constructDescriptionHelp(list, descriptionString);
 
             Integer ticksLeft = tagCompound.getInt("ticksLeft");
@@ -92,7 +95,10 @@ public class RealizedDimensionTab extends Item {
                 int createCost = tagCompound.getInt("rfCreateCost");
                 int maintainCost = tagCompound.getInt("rfMaintainCost");
                 int tickCost = tagCompound.getInt("tickCost");
-                int percentage = (tickCost - ticksLeft) * 100 / tickCost;
+                int percentage = 0;
+                if (tickCost != 0) {
+                    percentage = (tickCost - ticksLeft) * 100 / tickCost;
+                }
                 list.add(new StringTextComponent(TextFormatting.BLUE + "Dimension progress: " + percentage + "%"));
                 list.add(new StringTextComponent(TextFormatting.YELLOW + "    Creation cost: " + createCost + " RF/tick"));
                 list.add(new StringTextComponent(TextFormatting.YELLOW + "    Maintenance cost: " + maintainCost + " RF/tick"));

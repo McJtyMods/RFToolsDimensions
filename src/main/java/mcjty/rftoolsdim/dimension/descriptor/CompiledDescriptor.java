@@ -10,10 +10,14 @@ import net.minecraft.block.Blocks;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import static mcjty.rftoolsdim.dimension.descriptor.DescriptorError.Code.*;
+import static mcjty.rftoolsdim.dimension.descriptor.DescriptorError.ERROR;
 
 /**
  * Read a DimletDescriptor and store it in a more conveniant manner
@@ -31,21 +35,22 @@ public class CompiledDescriptor {
     }
 
     /**
-     * Compile this descriptor. Return null if all is ok. Otherwise return an error string
+     * Compile this descriptor
      */
-    public String compile(DimensionDescriptor descriptor) {
+    @Nonnull
+    public DescriptorError compile(DimensionDescriptor descriptor) {
         List<BlockState> collectedBlocks = new ArrayList<>();
 
-        for (DimletKey dimletDescriptor : descriptor.getDimletDescriptors()) {
+        for (DimletKey dimletDescriptor : descriptor.getDimlets()) {
             String name = dimletDescriptor.getKey();
             switch (dimletDescriptor.getType()) {
                 case TERRAIN:
                     if (terrainType != null) {
-                        return "You can only have one terrain type!";
+                        return ERROR(ONLY_ONE_TERRAIN);
                     }
                     terrainType = TerrainType.byName(name);
                     if (terrainType == null) {
-                        return "Bad terrain type: " + name + "!";
+                        return ERROR(BAD_TERRAIN_TYPE, name);
                     }
                     baseBlocks.addAll(collectedBlocks);
                     collectedBlocks.clear();
@@ -55,11 +60,11 @@ public class CompiledDescriptor {
                     break;
                 case BIOME_CONTROLLER:
                     if (biomeControllerType != null) {
-                        return "You can only have one biome controller!";
+                        return ERROR(ONLY_ONE_BIOME_CONTROLLER);
                     }
                     biomeControllerType = BiomeControllerType.byName(name);
                     if (biomeControllerType == null) {
-                        return "Bad biome controller type: " + name + "!";
+                        return ERROR(BAD_BIOME_CONTROLLER, name);
                     }
                     break;
                 case BIOME:
@@ -68,7 +73,7 @@ public class CompiledDescriptor {
                 case FEATURE: {
                     FeatureType feature = FeatureType.byName(name);
                     if (feature == null) {
-                        return "Bad feature: " + name + "!";
+                        return ERROR(BAD_FEATURE, name);
                     }
                     CompiledFeature compiledFeature = new CompiledFeature(feature);
                     compiledFeature.getBlocks().addAll(collectedBlocks);
@@ -82,7 +87,7 @@ public class CompiledDescriptor {
                 case BLOCK: {
                     Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(name));
                     if (block == null) {
-                        return "Bad block: " + name + "!";
+                        return ERROR(BAD_BLOCK, name);
                     }
                     collectedBlocks.add(block.getDefaultState());
                     break;
@@ -91,7 +96,7 @@ public class CompiledDescriptor {
         }
 
         if (!collectedBlocks.isEmpty()) {
-            return "Dangling blocks! Blocks should come before either a terrain or a feature";
+            return ERROR(DANGLING_BLOCKS);
         }
 
         if (terrainType == null) {
@@ -101,7 +106,7 @@ public class CompiledDescriptor {
             biomeControllerType = BiomeControllerType.SINGLE;
         }
 
-        return null;
+        return DescriptorError.OK;
     }
 
     public List<BlockState> getBaseBlocks() {

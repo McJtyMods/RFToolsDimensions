@@ -9,7 +9,7 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import mcjty.lib.varia.DimensionId;
 import mcjty.lib.varia.TeleportationTools;
 import mcjty.rftoolsdim.RFToolsDim;
-import mcjty.rftoolsdim.dimension.DimensionManager;
+import mcjty.rftoolsdim.dimension.data.DimensionManager;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
 import net.minecraft.entity.player.ServerPlayerEntity;

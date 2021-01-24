@@ -1,10 +1,11 @@
-package mcjty.rftoolsdim.dimension;
+package mcjty.rftoolsdim.dimension.data;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import mcjty.lib.varia.DimensionId;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.dimension.descriptor.CompiledDescriptor;
+import mcjty.rftoolsdim.dimension.descriptor.DescriptorError;
 import mcjty.rftoolsdim.dimension.descriptor.DimensionDescriptor;
 import mcjty.rftoolsdim.dimension.terraintypes.BaseChunkGenerator;
 import mcjty.rftoolsdim.dimension.terraintypes.TerrainType;
@@ -23,6 +24,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Manages runtime handling of a dimension. That includes the compiled descriptors and creation of dimensions
+ */
 public class DimensionManager {
 
     private final Map<ResourceLocation, CompiledDescriptor> compiledDescriptorMap = new HashMap<>();
@@ -68,21 +72,40 @@ public class DimensionManager {
         return world;
     }
 
-    private void createWorld(World world, String name, DimensionDescriptor descriptor) {
+    public void createWorld(World world, String name, DimensionDescriptor descriptor) {
+        ResourceLocation id = new ResourceLocation(RFToolsDim.MODID, name);
+
+        PersistantDimensionManager mgr = PersistantDimensionManager.get(world);
+        DimensionData data = mgr.getData(id);
+        if (data != null) {
+            RFToolsDim.setup.getLogger().error("There is already a dimension with this id: " + name);
+            throw new RuntimeException("There is already a dimension with this id: " + name);
+        }
+
+        data = mgr.getData(descriptor);
+        if (data != null) {
+            RFToolsDim.setup.getLogger().error("There is already a dimension with this descriptor: " + name);
+            throw new RuntimeException("There is already a dimension with this descriptor: " + name);
+        }
+
         CompiledDescriptor compiledDescriptor = new CompiledDescriptor();
-        String error = compiledDescriptor.compile(descriptor);
-        if (error != null) {
-            RFToolsDim.setup.getLogger().error("Error compiling dimension descriptor: " + error);
-            throw new RuntimeException("Error compiling dimension descriptor: " + error);
+        DescriptorError error = compiledDescriptor.compile(descriptor);
+        if (!error.isOk()) {
+            RFToolsDim.setup.getLogger().error("Error compiling dimension descriptor: " + error.getMessage());
+            throw new RuntimeException("Error compiling dimension descriptor: " + error.getMessage());
         }
         TerrainType terrainType = compiledDescriptor.getTerrainType();
 
         DimensionSettings settings = new DimensionSettings(descriptor.compact());
 
-        RegistryKey<World> key = RegistryKey.getOrCreateKey(Registry.WORLD_KEY, new ResourceLocation(RFToolsDim.MODID, name));
+        RegistryKey<World> key = RegistryKey.getOrCreateKey(Registry.WORLD_KEY, id);
         DimensionType type = world.getServer().func_244267_aX().getRegistry(Registry.DIMENSION_TYPE_KEY).getOrDefault(terrainType.getTypeId());
         DimensionHelper.getOrCreateWorld(world.getServer(), key,
                 (server, registryKey) -> new Dimension(() -> type, terrainType.getGeneratorSupplier().apply(server, settings)));
+
+        data = new DimensionData(id, descriptor);
+        mgr.register(data);
+
     }
 
     // Returns null on success, otherwise an error string

@@ -3,9 +3,13 @@ package mcjty.rftoolsdim.dimension.descriptor;
 import com.google.gson.*;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletKey;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletType;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TextFormatting;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * This class describes a dimension by its list of dimlets. It can be used to generate DimensionInformation objects
@@ -22,13 +26,13 @@ import java.util.List;
  */
 public class DimensionDescriptor {
 
-    private List<DimletKey> dimletDescriptors = new ArrayList<>();
+    private List<DimletKey> dimlets = new ArrayList<>();
 
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
     private static final Gson GSON_COMPACT = new GsonBuilder().disableHtmlEscaping().create();
 
-    public List<DimletKey> getDimletDescriptors() {
-        return dimletDescriptors;
+    public List<DimletKey> getDimlets() {
+        return dimlets;
     }
 
     public void read(String json) {
@@ -40,7 +44,7 @@ public class DimensionDescriptor {
     }
 
     public void read(JsonArray object) {
-        dimletDescriptors.clear();
+        dimlets.clear();
         for (JsonElement element : object) {
             JsonObject dimletJson = element.getAsJsonObject();
             String type;
@@ -57,13 +61,13 @@ public class DimensionDescriptor {
                 name = dimletJson.get("n").getAsString();
             }
             DimletKey dimletDescriptor = new DimletKey(dimletType, name);
-            dimletDescriptors.add(dimletDescriptor);
+            dimlets.add(dimletDescriptor);
         }
     }
 
     public String write() {
         JsonArray root = new JsonArray();
-        for (DimletKey dimletDescriptor : dimletDescriptors) {
+        for (DimletKey dimletDescriptor : dimlets) {
             JsonObject dimletJson = new JsonObject();
             dimletJson.addProperty("type", dimletDescriptor.getType().name());
             dimletJson.addProperty("name", dimletDescriptor.getKey());
@@ -75,13 +79,36 @@ public class DimensionDescriptor {
     // Write a more compact form of the dimension. This is stored with the dimension itself
     public String compact() {
         JsonArray root = new JsonArray();
-        for (DimletKey dimletDescriptor : dimletDescriptors) {
+        for (DimletKey dimletDescriptor : dimlets) {
             JsonObject dimletJson = new JsonObject();
             dimletJson.addProperty("t", dimletDescriptor.getType().getShortName());
             dimletJson.addProperty("n", dimletDescriptor.getKey());
             root.add(dimletJson);
         }
         return GSON_COMPACT.toJson(root);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DimensionDescriptor that = (DimensionDescriptor) o;
+        return Objects.equals(dimlets, that.dimlets);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(dimlets);
+    }
+
+    public void dump(PlayerEntity player) {
+        for (DimletKey dimlet : dimlets) {
+            player.sendStatusMessage(
+                    new StringTextComponent(dimlet.getType().name() + ": ")
+                    .mergeStyle(TextFormatting.AQUA)
+                    .append(new StringTextComponent(dimlet.getKey()).mergeStyle(TextFormatting.WHITE))
+                    , false);
+        }
 
     }
 }

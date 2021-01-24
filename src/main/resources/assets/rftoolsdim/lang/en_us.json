@@ -23,6 +23,9 @@
   "item.rftoolsdim.rare_lost_knowledge": "Rare Lost Knowledge",
   "item.rftoolsdim.legendary_lost_knowledge": "Legendary Lost Knowledge",
 
+  "item.rftoolsdim.empty_dimension_tab": "Empty Dimension Tab",
+  "item.rftoolsdim.realized_dimension_tab": "Realized Dimension Tab",
+
   "item.rftoolsdim.part_energy_0": "Common Energy Module",
   "item.rftoolsdim.part_energy_1": "Uncommon Energy Module",
   "item.rftoolsdim.part_energy_2": "Rare Energy Module",

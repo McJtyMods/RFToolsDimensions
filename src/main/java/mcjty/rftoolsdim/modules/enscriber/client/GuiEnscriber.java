@@ -11,13 +11,20 @@ import mcjty.lib.gui.widgets.TextField;
 import mcjty.lib.typed.TypedMap;
 import mcjty.lib.varia.Logging;
 import mcjty.rftoolsdim.RFToolsDim;
+import mcjty.rftoolsdim.dimension.descriptor.DescriptorError;
+import mcjty.rftoolsdim.modules.dimensionbuilder.DimensionBuilderModule;
 import mcjty.rftoolsdim.modules.enscriber.EnscriberModule;
 import mcjty.rftoolsdim.modules.enscriber.blocks.EnscriberTileEntity;
 import mcjty.rftoolsdim.setup.RFToolsDimMessages;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.StringTextComponent;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static mcjty.lib.gui.widgets.Widgets.*;
 import static mcjty.rftoolsdim.modules.enscriber.blocks.EnscriberTileEntity.PARAM_NAME;
@@ -62,7 +69,6 @@ public class GuiEnscriber extends GenericGuiContainer<EnscriberTileEntity, Gener
         toplevel.bounds(guiLeft, guiTop, xSize, ySize);
 
         window = new Window(this, toplevel);
-        window.bind(RFToolsDimMessages.INSTANCE, "name", tileEntity, EnscriberTileEntity.VALUE_NAME.getName());
     }
 
     private void extractDimlets() {
@@ -78,9 +84,14 @@ public class GuiEnscriber extends GenericGuiContainer<EnscriberTileEntity, Gener
     }
 
     private void storeDimlets() {
+        String name = nameField.getText();
+        if (name == null || name.trim().isEmpty()) {
+            Minecraft.getInstance().player.sendStatusMessage(new StringTextComponent("Name is required!"), false);
+            return;
+        }
         sendServerCommandTyped(RFToolsDimMessages.INSTANCE, EnscriberTileEntity.CMD_STORE,
                 TypedMap.builder()
-                        .put(PARAM_NAME, nameField.getText())
+                        .put(PARAM_NAME, name)
                         .build());
     }
 
@@ -89,12 +100,11 @@ public class GuiEnscriber extends GenericGuiContainer<EnscriberTileEntity, Gener
         extractButton.enabled(false);
         storeButton.enabled(false);
         if (!slot.getStack().isEmpty()) {
-            // @todo 1.16
-//            if (slot.getStack().getItem() == ModItems.emptyDimensionTabItem) {
-//                storeButton.setEnabled(true);
-//            } else if (slot.getStack().getItem() == ModItems.realizedDimensionTabItem) {
-//                extractButton.setEnabled(true);
-//            }
+            if (slot.getStack().getItem() == DimensionBuilderModule.EMPTY_DIMENSION_TAB.get()) {
+                storeButton.enabled(true);
+            } else if (slot.getStack().getItem() == DimensionBuilderModule.REALIZED_DIMENSION_TAB.get()) {
+                extractButton.enabled(true);
+            }
         }
     }
 
@@ -124,109 +134,22 @@ public class GuiEnscriber extends GenericGuiContainer<EnscriberTileEntity, Gener
     }
 
     private void validateDimlets() {
-        // @todo 1.16
-//        java.util.List<String> tooltips = new ArrayList<>();
-//
-//        TerrainType terrainType = null;
-//        int cntTerrain = 0;
-//        int cntBiomes = 0;
-//        int cntController = 0;
-//        int cntOwner = 0;
-//        for (int i = DimensionEnscriberContainer.SLOT_DIMLETS ; i < DimensionEnscriberContainer.SLOT_TAB ; i++) {
-//            Slot slot = inventorySlots.getSlot(i);
-//            if (slot != null && !slot.getStack().isEmpty()) {
-//                ItemStack stack = slot.getStack();
-//                DimletKey key = KnownDimletConfiguration.getDimletKey(stack);
-//                if (key.getType() == DimletType.DIMLET_TERRAIN) {
-//                    cntTerrain++;
-//                    terrainType = DimletObjectMapping.getTerrain(key);
-//                } else if (key.getType() == DimletType.DIMLET_BIOME) {
-//                    cntBiomes++;
-//                } else if (key.getType() == DimletType.DIMLET_CONTROLLER) {
-//                    cntController++;
-//                } else if (key.getType() == DimletType.DIMLET_SPECIAL && DimletObjectMapping.getSpecial(key) == SpecialType.SPECIAL_OWNER) {
-//                    cntOwner++;
-//                }
-//            }
-//        }
-//        if (cntOwner > 1) {
-//            tooltips.add("Using more then one owner dimlet is not useful!");
-//        }
-//        if (GeneralConfiguration.ownerDimletsNeeded && cntOwner != 1) {
-//            tooltips.add("You cannot make a dimension without an owner dimlet!");
-//            storeButton.setEnabled(false);
-//        }
-//        if (cntTerrain > 1) {
-//            tooltips.add("Using more then one TERRAIN is not useful!");
-//            terrainType = null;
-//        }
-//        if (cntController > 1) {
-//            tooltips.add("Using more then one CONTROLLER is not useful!");
-//        }
-//
-//        java.util.List<DimletKey> modifiers = new ArrayList<>();
-//        for (int i = DimensionEnscriberContainer.SLOT_DIMLETS ; i < DimensionEnscriberContainer.SLOT_TAB ; i++) {
-//            Slot slot = inventorySlots.getSlot(i);
-//            if (slot != null && !slot.getStack().isEmpty()) {
-//                ItemStack stack = slot.getStack();
-//                DimletKey key = KnownDimletConfiguration.getDimletKey(stack);
-//                DimletType type = key.getType();
-//                if (type.dimletType.isModifier()) {
-//                    modifiers.add(key);
-//                } else {
-//                    List<DimletKey> modifiersForType = extractModifiersForType(modifiers, type);
-//                    if (type == DimletType.DIMLET_TERRAIN) {
-//                        if (DimletObjectMapping.getTerrain(key) == TerrainType.TERRAIN_VOID && !modifiersForType.isEmpty()) {
-//                            tooltips.add("VOID terrain cannot use modifiers");
-//                        }
-//                    } else if (type == DimletType.DIMLET_FEATURE) {
-//                        FeatureType featureType = DimletObjectMapping.getFeature(key);
-//                        Counter<DimletType> modifierAmountUsed = new Counter<>();
-//                        for (DimletKey modifier : modifiersForType) {
-//                            modifierAmountUsed.increment(modifier.getType());
-//                        }
-//                        for (Map.Entry<DimletType, Integer> entry : modifierAmountUsed.entrySet()) {
-//                            Integer amountSupported = featureType.getSupportedModifierAmount(entry.getKey());
-//                            if (amountSupported == null) {
-//                                tooltips.add(shortenName(featureType.name()) + " does not use " + shortenName(entry.getKey().name()) + " modifiers!");
-//                            } else if (amountSupported == 1 && entry.getValue() > 1) {
-//                                tooltips.add(shortenName(featureType.name()) + " only needs one " + shortenName(entry.getKey().name()) + " modifier!");
-//                            }
-//                        }
-//
-//                        if (terrainType == null && !featureType.supportsAllTerrains()) {
-//                            tooltips.add(shortenName(featureType.name()) + " is possibly useless as it does not work on all terrains!");
-//                        }
-//                        if (terrainType != null && !featureType.isTerrainSupported(terrainType)) {
-//                            tooltips.add(shortenName(featureType.name()) + " does not work for terrain " + shortenName(terrainType.name()) + "!");
-//                        }
-//                    } else if (type == DimletType.DIMLET_CONTROLLER) {
-//                        ControllerType controllerType = DimletObjectMapping.getController(key);
-//                        int neededBiomes = controllerType.getNeededBiomes();
-//                        if (neededBiomes != -1) {
-//                            if (cntBiomes > neededBiomes) {
-//                                tooltips.add("Too many biomes specified for " + shortenName(controllerType.name()) + "!");
-//                            } else if (cntBiomes < neededBiomes) {
-//                                tooltips.add("Too few biomes specified for " + shortenName(controllerType.name()) + "!");
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//
-//        if (!modifiers.isEmpty()) {
-//            tooltips.add("There are dangling modifiers in this descriptor");
-//        }
-//
-//        boolean error = true;
-//        if (tooltips.isEmpty()) {
-//            tooltips.add("Everything appears to be alright");
-//            error = false;
-//        }
-//        validateField.setTooltips(tooltips.toArray(new String[tooltips.size()]));
-//        validateField.setColor(error ? 0xFF0000 : 0x008800);
-//        validateField.setText(error ? "Warn" : "Ok");
+        int errorCode = tileEntity.getClientErrorCode();
+        DescriptorError.Code error = DescriptorError.Code.values()[errorCode];
+
+        List<String> tooltips = new ArrayList<>();
+        if (error == DescriptorError.Code.OK) {
+            tooltips.add("Everything appears to be alright");
+            validateField.color(0x008800);
+            validateField.text("Ok");
+            storeButton.enabled(true);
+        } else {
+            tooltips.add(error.getMessage());
+            validateField.color(0xFF0000);
+            validateField.text("Error");
+            storeButton.enabled(false);
+        }
+        validateField.tooltips(tooltips.toArray(new String[tooltips.size()]));
     }
 
     @Override
@@ -234,9 +157,14 @@ public class GuiEnscriber extends GenericGuiContainer<EnscriberTileEntity, Gener
         enableButtons();
         validateDimlets();
 
-        if (tileEntity.hasTabSlotChangedAndClear()) {
-            setNameFromDimensionTab();
+        if (nameField.getText().trim().isEmpty()) {
+            storeButton.enabled(false);
+            storeButton.tooltips("A dimension name is needed!");
+        } else {
+            storeButton.tooltips("Store dimlets in a", "empty dimension tab");
         }
+
+        setNameFromDimensionTab();
 
         drawWindow(matrixStack);
     }

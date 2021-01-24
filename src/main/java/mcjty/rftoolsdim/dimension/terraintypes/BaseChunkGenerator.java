@@ -1,6 +1,6 @@
 package mcjty.rftoolsdim.dimension.terraintypes;
 
-import mcjty.rftoolsdim.dimension.DimensionSettings;
+import mcjty.rftoolsdim.dimension.data.DimensionSettings;
 import mcjty.rftoolsdim.dimension.biomes.RFTBiomeProvider;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;

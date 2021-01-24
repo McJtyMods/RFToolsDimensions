@@ -2,7 +2,7 @@ package mcjty.rftoolsdim.dimension.terraintypes;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import mcjty.rftoolsdim.dimension.DimensionSettings;
+import mcjty.rftoolsdim.dimension.data.DimensionSettings;
 import net.minecraft.block.BlockState;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.registry.Registry;
