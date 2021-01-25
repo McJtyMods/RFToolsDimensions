@@ -2,11 +2,11 @@ package mcjty.rftoolsdim.setup;
 
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.dimension.features.RFTFeature;
-import mcjty.rftoolsdim.modules.blob.BlobModule;
+import mcjty.rftoolsdim.dimension.power.PowerHandler;
 import mcjty.rftoolsdim.modules.blob.entities.DimensionalBlobEntity;
 import mcjty.rftoolsdim.modules.blob.tools.Spawner;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.world.World;
 import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.event.TickEvent;
@@ -14,7 +14,6 @@ import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
-import java.util.List;
 import java.util.Random;
 
 public class ForgeEventHandlers {
@@ -25,20 +24,29 @@ public class ForgeEventHandlers {
     }
 
     private Random random = new Random();
+    private PowerHandler powerHandler = new PowerHandler();
 
     @SubscribeEvent
     public void onWorldTick(TickEvent.WorldTickEvent event) {
-        // This should be in PotentialSpawns but that doesn't appear to be working correctly
         if (event.phase == TickEvent.Phase.START && !event.world.isRemote) {
-            if (RFToolsDim.MODID.equals(event.world.getDimensionKey().getLocation().getNamespace())) {
-                if (random.nextInt(20) == 10) {
-                    ServerWorld serverWorld = (ServerWorld) event.world;
-                    long count = serverWorld.getEntities().filter(s -> s instanceof DimensionalBlobEntity).count();
-                    if (count < 20) {
-                        for (ServerPlayerEntity player : serverWorld.getPlayers()) {
-                            for (int i = 0 ; i < 20 ; i++) {
-                                Spawner.spawnOne(serverWorld, player, random);
-                            }
+            // This should be in PotentialSpawns but that doesn't appear to be working correctly
+            handleSpawning(event);
+
+            if (event.world.getDimensionKey() == World.OVERWORLD) {
+                powerHandler.handlePower(event.world);
+            }
+        }
+    }
+
+    private void handleSpawning(TickEvent.WorldTickEvent event) {
+        if (RFToolsDim.MODID.equals(event.world.getDimensionKey().getLocation().getNamespace())) {
+            if (random.nextInt(20) == 10) {
+                ServerWorld serverWorld = (ServerWorld) event.world;
+                long count = serverWorld.getEntities().filter(s -> s instanceof DimensionalBlobEntity).count();
+                if (count < 20) {
+                    for (ServerPlayerEntity player : serverWorld.getPlayers()) {
+                        for (int i = 0 ; i < 20 ; i++) {
+                            Spawner.spawnOne(serverWorld, player, random);
                         }
                     }
                 }

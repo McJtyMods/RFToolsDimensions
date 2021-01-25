@@ -31,11 +31,10 @@ public class CommandListDim implements Command<CommandSource> {
         for (ServerWorld world : server.getWorlds()) {
             DimensionId id = DimensionId.fromWorld(world);
             String output = id.getName();
-            // @todo 1.16 list power and other data
-//            DimensionData data = PersistantDimensionManager.get(world).getData(id.getRegistryName());
-//            if (data != null) {
-//                output += " (" + (data.getName() == null ? "<null>" : data.getName()) + ")";
-//            }
+            DimensionData data = PersistantDimensionManager.get(world).getData(id.getRegistryName());
+            if (data != null) {
+                output += " (" + data.getEnergy() + ")";
+            }
             context.getSource().sendFeedback(new StringTextComponent(output), true);
         }
         return 0;

@@ -19,6 +19,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.server.ServerWorld;
 
+import javax.annotation.Nullable;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
@@ -40,7 +41,10 @@ public class DimensionManager {
     /**
      * Get the dimension information for a given world
      */
-    public CompiledDescriptor getDimensionInformation(World world) {
+    public CompiledDescriptor getDimensionInformation(@Nullable World world) {
+        if (world == null) {
+            return null;
+        }
         RegistryKey<World> type = world.getDimensionKey();
         ResourceLocation id = type.getLocation();
         if (!compiledDescriptorMap.containsKey(id)) {

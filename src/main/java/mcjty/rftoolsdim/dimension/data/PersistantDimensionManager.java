@@ -40,6 +40,10 @@ public class PersistantDimensionManager extends AbstractWorldData<PersistantDime
         return dataByDescriptor.get(descriptor);
     }
 
+    public Map<ResourceLocation, DimensionData> getData() {
+        return data;
+    }
+
     // No error checking! It is assumed the caller checks before!
     public void register(DimensionData dd) {
         data.put(dd.getId(), dd);

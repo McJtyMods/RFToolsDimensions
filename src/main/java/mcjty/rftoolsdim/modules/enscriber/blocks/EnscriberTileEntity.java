@@ -20,7 +20,6 @@ import mcjty.rftoolsdim.dimension.data.PersistantDimensionManager;
 import mcjty.rftoolsdim.dimension.descriptor.CompiledDescriptor;
 import mcjty.rftoolsdim.dimension.descriptor.DescriptorError;
 import mcjty.rftoolsdim.dimension.descriptor.DimensionDescriptor;
-import mcjty.rftoolsdim.dimension.tools.DimensionCost;
 import mcjty.rftoolsdim.modules.dimensionbuilder.DimensionBuilderModule;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletDictionary;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletKey;
@@ -161,9 +160,11 @@ public class EnscriberTileEntity extends GenericTileEntity {
             tagCompound.putInt("ticksLeft", 0);
             tagCompound.putString("dimension", data.getId().toString());
         } else {
-
-            tagCompound.putInt("ticksLeft", DimensionCost.calculateCreateCost(descriptor));
-            tagCompound.putInt("tickCost", DimensionCost.calculateCreateCost(descriptor));
+            CompiledDescriptor compiledDescriptor = new CompiledDescriptor();
+            compiledDescriptor.compile(descriptor);
+            tagCompound.putInt("ticksLeft", compiledDescriptor.getActualCostPerTick());
+            tagCompound.putInt("tickCost", compiledDescriptor.getActualCostPerTick());
+            tagCompound.putInt("rfCreateCost", compiledDescriptor.getCreateCostPerTick());
         }
 
         return realizedTab;

@@ -3,7 +3,9 @@ package mcjty.rftoolsdim.dimension.descriptor;
 import mcjty.rftoolsdim.dimension.biomes.BiomeControllerType;
 import mcjty.rftoolsdim.dimension.features.FeatureType;
 import mcjty.rftoolsdim.dimension.terraintypes.TerrainType;
+import mcjty.rftoolsdim.modules.dimlets.data.DimletDictionary;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletKey;
+import mcjty.rftoolsdim.modules.dimlets.data.DimletSettings;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -34,16 +36,26 @@ public class CompiledDescriptor {
         return terrainType;
     }
 
+    private int createCostPerTick = 0;
+    private int actualCostPerTick = 0;
+
     /**
      * Compile this descriptor
      */
     @Nonnull
     public DescriptorError compile(DimensionDescriptor descriptor) {
+        createCostPerTick = 0;
+        actualCostPerTick = 0;
         List<BlockState> collectedBlocks = new ArrayList<>();
 
-        for (DimletKey dimletDescriptor : descriptor.getDimlets()) {
-            String name = dimletDescriptor.getKey();
-            switch (dimletDescriptor.getType()) {
+        for (DimletKey dimlet : descriptor.getDimlets()) {
+            DimletSettings settings = DimletDictionary.get().getSettings(dimlet);
+            if (settings != null) {
+                createCostPerTick += settings.getCreateCost();
+                actualCostPerTick += settings.getTickCost();
+            }
+            String name = dimlet.getKey();
+            switch (dimlet.getType()) {
                 case TERRAIN:
                     if (terrainType != null) {
                         return ERROR(ONLY_ONE_TERRAIN);
@@ -107,6 +119,14 @@ public class CompiledDescriptor {
         }
 
         return DescriptorError.OK;
+    }
+
+    public int getCreateCostPerTick() {
+        return createCostPerTick;
+    }
+
+    public int getActualCostPerTick() {
+        return actualCostPerTick;
     }
 
     public List<BlockState> getBaseBlocks() {

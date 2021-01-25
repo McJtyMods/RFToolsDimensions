@@ -42,7 +42,8 @@
   "entity.rftoolsdim.dimensional_blob_rare": "Rare Blob",
   "entity.rftoolsdim.dimensional_blob_legendary": "Legendary Blob",
 
-  "block.rftoolsdim.xxx": "Xxx",
+  "death.dimension.powerfailure": "%s dies in a collapsing world!",
+
   "_comment": "Creative Tabs",
   "itemGroup.rftoolsdim": "RFTools Dimensions",
 

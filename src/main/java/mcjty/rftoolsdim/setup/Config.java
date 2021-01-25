@@ -2,6 +2,7 @@ package mcjty.rftoolsdim.setup;
 
 
 import mcjty.lib.modules.Modules;
+import mcjty.rftoolsdim.dimension.DimensionConfig;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.config.ModConfig;
@@ -19,6 +20,7 @@ public class Config {
 
     public static void register(Modules modules) {
         setupGeneralConfig();
+        DimensionConfig.init();
         modules.initConfig();
 
         SERVER_CONFIG = SERVER_BUILDER.build();

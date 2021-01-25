@@ -18,6 +18,7 @@ import mcjty.lib.tileentity.GenericEnergyStorage;
 import mcjty.lib.tileentity.GenericTileEntity;
 import mcjty.rftoolsbase.tools.ManualHelper;
 import mcjty.rftoolsdim.RFToolsDim;
+import mcjty.rftoolsdim.dimension.DimensionConfig;
 import mcjty.rftoolsdim.dimension.data.DimensionData;
 import mcjty.rftoolsdim.dimension.data.DimensionManager;
 import mcjty.rftoolsdim.dimension.data.PersistantDimensionManager;
@@ -174,14 +175,14 @@ public class DimensionBuilderTileEntity extends GenericTileEntity implements ITi
 //            if (isCheaterDimension(tagCompound)) {
 //                rf = MachineConfiguration.BUILDER_MAXENERGY;
 //            } else {
-//                rf = getStoredPower();
+                rf = energyStorage.getEnergy();
 //            }
 
-//            long energy = dimensionStorage.getEnergyLevel(id);
-//            long maxEnergy = PowerConfiguration.MAX_DIMENSION_POWER - energy;      // Max energy the dimension can still get.
-//            if (rf > maxEnergy) {
-//                rf = maxEnergy;
-//            }
+            long energy = data.getEnergy();
+            long maxEnergy = DimensionConfig.MAX_DIMENSION_POWER.get() - energy;      // Max energy the dimension can still get.
+            if (rf > maxEnergy) {
+                rf = maxEnergy;
+            }
 //            if (Logging.debugMode) {
 //                counter--;
 //                if (counter < 0) {
@@ -190,10 +191,10 @@ public class DimensionBuilderTileEntity extends GenericTileEntity implements ITi
 //                }
 //            }
 //            if (!isCheaterDimension(tagCompound)) {
-//                consumeEnergy(rf);
+                energyStorage.consumeEnergy(rf);
 //            }
-//            dimensionStorage.setEnergyLevel(id, energy + rf);
-//            dimensionStorage.save();
+            data.setEnergy(world, energy + rf);
+            PersistantDimensionManager.get(world).save();
         }
     }
 
