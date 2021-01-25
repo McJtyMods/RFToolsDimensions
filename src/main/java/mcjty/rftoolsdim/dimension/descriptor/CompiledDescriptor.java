@@ -37,7 +37,8 @@ public class CompiledDescriptor {
     }
 
     private int createCostPerTick = 0;
-    private int actualCostPerTick = 0;
+    private int maintainCostPerTick = 0;
+    private int actualTickCost = 0;
 
     /**
      * Compile this descriptor
@@ -45,14 +46,16 @@ public class CompiledDescriptor {
     @Nonnull
     public DescriptorError compile(DimensionDescriptor descriptor) {
         createCostPerTick = 0;
-        actualCostPerTick = 0;
+        maintainCostPerTick = 0;
+        actualTickCost = 0;
         List<BlockState> collectedBlocks = new ArrayList<>();
 
         for (DimletKey dimlet : descriptor.getDimlets()) {
             DimletSettings settings = DimletDictionary.get().getSettings(dimlet);
             if (settings != null) {
                 createCostPerTick += settings.getCreateCost();
-                actualCostPerTick += settings.getTickCost();
+                actualTickCost += settings.getTickCost();
+                maintainCostPerTick += settings.getMaintainCost();
             }
             String name = dimlet.getKey();
             switch (dimlet.getType()) {
@@ -125,8 +128,19 @@ public class CompiledDescriptor {
         return createCostPerTick;
     }
 
-    public int getActualCostPerTick() {
-        return actualCostPerTick;
+    public int getActualTickCost() {
+        return actualTickCost;
+    }
+
+    /**
+     * Get the actual cost per tick after accounting for efficiency dimlets
+     */
+    public int getActualPowerCost() {
+        return maintainCostPerTick; // @todo 1.16
+    }
+
+    public int getMaintainCostPerTick() {
+        return maintainCostPerTick;
     }
 
     public List<BlockState> getBaseBlocks() {

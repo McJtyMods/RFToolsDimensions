@@ -4,6 +4,7 @@ import mcjty.lib.varia.Logging;
 import mcjty.rftoolsdim.dimension.data.DimensionData;
 import mcjty.rftoolsdim.dimension.data.PersistantDimensionManager;
 import mcjty.rftoolsdim.dimension.descriptor.DimensionDescriptor;
+import mcjty.rftoolsdim.dimension.power.ClientPowerManager;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -51,46 +52,24 @@ public class RealizedDimensionTab extends Item {
         // @todo 1.16 tooltip system
         CompoundNBT tagCompound = stack.getTag();
         if (tagCompound != null) {
-            String name = tagCompound.getString("name");
-            ResourceLocation dimension = null;
-            if (name != null) {
-                if (!tagCompound.contains("dimension")) {
-                    list.add(new StringTextComponent(TextFormatting.BLUE + "Name: " + name));
-                } else {
-                    dimension = new ResourceLocation(tagCompound.getString("dimension"));
-                    list.add(new StringTextComponent(TextFormatting.BLUE + "Name: " + name + " (Dimension " + dimension.getPath() + ")"));
-                }
+            ResourceLocation dimension = tagCompound.contains("dimension") ? new ResourceLocation(tagCompound.getString("dimension")) : null;
+            if (dimension != null) {
+                list.add(new StringTextComponent("Name: " + dimension.getPath()).mergeStyle(TextFormatting.BLUE));
+            } else if (tagCompound.contains("name")) {
+                String name = tagCompound.getString("name");
+                list.add(new StringTextComponent("Name: " + name).mergeStyle(TextFormatting.BLUE));
             }
 
             String descriptionString = tagCompound.getString("descriptor");
             constructDescriptionHelp(list, descriptionString);
 
-            Integer ticksLeft = tagCompound.getInt("ticksLeft");
+            int ticksLeft = tagCompound.getInt("ticksLeft");
             if (ticksLeft == 0) {
-                // @todo 1.16
-//                DimensionInformation information = RfToolsDimensionManager.getDimensionManagerClient().getDimensionInformation(id);
-//                if (information == null) {
-//                    list.add(new StringTextComponent(TextFormatting.RED + "Dimension information Missing!"));
-//                } else {
-//                    list.add(new StringTextComponent(TextFormatting.BLUE + "Dimension ready!"));
-//                    int maintainCost = tagCompound.getInt("rfMaintainCost");
-//                    int actualCost = information.getActualRfCost();
-//                    if (actualCost == maintainCost || actualCost == 0) {
-//                        list.add(new StringTextComponent(TextFormatting.YELLOW + "    Maintenance cost: " + maintainCost + " RF/tick"));
-//                    } else {
-//                        list.add(new StringTextComponent(TextFormatting.YELLOW + "    Maintenance cost: " + actualCost + " RF/tick (Specified: " + maintainCost + " RF/tick)"));
-//                    }
-//                    if (id != 0) {
-//                        if (System.currentTimeMillis() - lastTime > 500) {
-//                            lastTime = System.currentTimeMillis();
-//                            RFToolsDimMessages.INSTANCE.sendToServer(new PacketGetDimensionEnergy(id));
-//                        }
-//
-//                        DimensionStorage storage = DimensionStorage.getDimensionStorage(world);
-//                        long power = storage.getEnergyLevel(id);
-//                        list.add(new StringTextComponent(TextFormatting.YELLOW + "    Current power: " + power + " RF"));
-//                    }
-//                }
+                long power = ClientPowerManager.get().getPower(dimension);
+                list.add(new StringTextComponent("Dimension ready!").mergeStyle(TextFormatting.BLUE));
+                int maintainCost = tagCompound.getInt("rfMaintainCost");
+                list.add(new StringTextComponent(TextFormatting.YELLOW + "    Maintenance cost: " + maintainCost + " RF/tick"));
+                list.add(new StringTextComponent(TextFormatting.YELLOW + "    Current power: " + power + " RF"));
             } else {
                 int createCost = tagCompound.getInt("rfCreateCost");
                 int maintainCost = tagCompound.getInt("rfMaintainCost");

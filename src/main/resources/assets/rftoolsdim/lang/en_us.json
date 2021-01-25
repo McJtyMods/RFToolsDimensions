@@ -26,6 +26,8 @@
   "item.rftoolsdim.empty_dimension_tab": "Empty Dimension Tab",
   "item.rftoolsdim.realized_dimension_tab": "Realized Dimension Tab",
 
+  "item.rftoolsdim.dimension_monitor": "Dimension Monitor",
+
   "item.rftoolsdim.part_energy_0": "Common Energy Module",
   "item.rftoolsdim.part_energy_1": "Uncommon Energy Module",
   "item.rftoolsdim.part_energy_2": "Rare Energy Module",

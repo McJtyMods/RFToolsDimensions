@@ -9,6 +9,8 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biomes;
 import net.minecraft.world.biome.provider.BiomeProvider;
 import net.minecraft.world.gen.feature.structure.Structure;
+import net.minecraft.world.gen.layer.Layer;
+import net.minecraft.world.gen.layer.LayerUtil;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,6 +28,7 @@ public class RFTBiomeProvider extends BiomeProvider {
                     SETTINGS_CODEC.fieldOf("settings").forGetter(RFTBiomeProvider::getSettings)
             ).apply(instance, RFTBiomeProvider::new));
 
+    private final Layer genBiomes;
     private final List<Biome> biomes;
     private final Registry<Biome> biomeRegistry;
     private final DimensionSettings settings;
@@ -35,6 +38,7 @@ public class RFTBiomeProvider extends BiomeProvider {
         this.settings = settings;
         this.biomeRegistry = biomeRegistry;
         biomes = getBiomes(biomeRegistry, settings);
+        this.genBiomes = LayerUtil.func_237215_a_(0 /*@todo 1.16 seed*/, false, 4, 4);
     }
 
     public DimensionSettings getSettings() {
@@ -74,7 +78,7 @@ public class RFTBiomeProvider extends BiomeProvider {
     public Biome getNoiseBiome(int x, int y, int z) {
         switch (settings.getCompiledDescriptor().getBiomeControllerType()) {
             case DEFAULT:
-                return biomes.get(0);   // @todo 1.16 implement correctly!
+                return this.genBiomes.func_242936_a(this.biomeRegistry, x, z);
             case CHECKER:
                 if ((x+y)%2 == 0 || biomes.size() <= 1) {
                     return biomes.get(0);

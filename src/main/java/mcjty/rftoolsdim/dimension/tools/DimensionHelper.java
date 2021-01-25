@@ -2,7 +2,7 @@ package mcjty.rftoolsdim.dimension.tools;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Lifecycle;
-import mcjty.rftoolsdim.dimension.network.DimensionUpdatePacket;
+import mcjty.rftoolsdim.dimension.network.PacketDimensionUpdate;
 import mcjty.rftoolsdim.setup.RFToolsDimMessages;
 import mcjty.rftoolsdim.tools.ReflectionHelper;
 import net.minecraft.server.MinecraftServer;
@@ -132,7 +132,7 @@ public class DimensionHelper {
         // fire world load event
         MinecraftForge.EVENT_BUS.post(new WorldEvent.Load(newWorld)); // event isn't cancellable
 
-        RFToolsDimMessages.INSTANCE.send(PacketDistributor.ALL.noArg(), new DimensionUpdatePacket(worldKey, true));
+        RFToolsDimMessages.INSTANCE.send(PacketDistributor.ALL.noArg(), new PacketDimensionUpdate(worldKey, true));
 
         return newWorld;
     }

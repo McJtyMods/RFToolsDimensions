@@ -8,7 +8,7 @@ import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public class DimensionUpdatePacket {
+public class PacketDimensionUpdate {
 
     private final RegistryKey<World> id;
     private final boolean add;
@@ -21,12 +21,12 @@ public class DimensionUpdatePacket {
         return this.add;
     }
 
-    public DimensionUpdatePacket(PacketBuffer buf) {
+    public PacketDimensionUpdate(PacketBuffer buf) {
         id = RegistryKey.getOrCreateKey(Registry.WORLD_KEY, buf.readResourceLocation());
         add = buf.readBoolean();
     }
 
-    public DimensionUpdatePacket(RegistryKey<World> id, boolean add) {
+    public PacketDimensionUpdate(RegistryKey<World> id, boolean add) {
         this.id = id;
         this.add = add;
     }
@@ -39,7 +39,8 @@ public class DimensionUpdatePacket {
 
     public void handle(Supplier<NetworkEvent.Context> supplier) {
         NetworkEvent.Context ctx = supplier.get();
-        ctx.enqueueWork(() -> DimensionUpdatePacketClient.handleUpdateDimensionsPacket(this));
+        ctx.enqueueWork(() -> PacketDimensionUpdateClient.handleUpdateDimensionsPacket(this));
+        ctx.setPacketHandled(true);
     }
 
 }

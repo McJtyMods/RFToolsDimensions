@@ -6,6 +6,7 @@ import mcjty.lib.gui.GenericGuiContainer;
 import mcjty.lib.modules.IModule;
 import mcjty.rftoolsdim.modules.dimensionbuilder.blocks.DimensionBuilderTileEntity;
 import mcjty.rftoolsdim.modules.dimensionbuilder.client.GuiDimensionBuilder;
+import mcjty.rftoolsdim.modules.dimensionbuilder.items.DimensionMonitorItem;
 import mcjty.rftoolsdim.modules.dimensionbuilder.items.EmptyDimensionTab;
 import mcjty.rftoolsdim.modules.dimensionbuilder.items.RealizedDimensionTab;
 import mcjty.rftoolsdim.setup.Config;
@@ -30,6 +31,8 @@ public class DimensionBuilderModule implements IModule {
     public static final RegistryObject<EmptyDimensionTab> EMPTY_DIMENSION_TAB = ITEMS.register("empty_dimension_tab", EmptyDimensionTab::new);
     public static final RegistryObject<RealizedDimensionTab> REALIZED_DIMENSION_TAB = ITEMS.register("realized_dimension_tab", RealizedDimensionTab::new);
 
+    public static final RegistryObject<DimensionMonitorItem> DIMENSION_MONITOR = ITEMS.register("dimension_monitor", DimensionMonitorItem::new);
+
     @Override
     public void init(FMLCommonSetupEvent event) {
 
@@ -39,6 +42,7 @@ public class DimensionBuilderModule implements IModule {
     public void initClient(FMLClientSetupEvent event) {
         event.enqueueWork(() -> {
             GenericGuiContainer.register(CONTAINER_DIMENSION_BUILDER.get(), GuiDimensionBuilder::new);
+            DimensionMonitorItem.initOverrides(DIMENSION_MONITOR.get());
         });
 
     }

@@ -2,7 +2,8 @@ package mcjty.rftoolsdim.setup;
 
 import mcjty.lib.network.PacketHandler;
 import mcjty.rftoolsdim.RFToolsDim;
-import mcjty.rftoolsdim.dimension.network.DimensionUpdatePacket;
+import mcjty.rftoolsdim.dimension.network.PacketDimensionUpdate;
+import mcjty.rftoolsdim.dimension.network.PacketPropagatePowerToClients;
 import mcjty.rftoolsdim.modules.dimlets.network.PacketRequestDimlets;
 import mcjty.rftoolsdim.modules.dimlets.network.PacketSendDimletsToClient;
 import mcjty.rftoolsdim.modules.workbench.network.PacketPatternToClient;
@@ -28,10 +29,11 @@ public class RFToolsDimMessages {
 
         INSTANCE = net;
 
-        net.registerMessage(id(), DimensionUpdatePacket.class, DimensionUpdatePacket::toBytes, DimensionUpdatePacket::new, DimensionUpdatePacket::handle);
+        net.registerMessage(id(), PacketDimensionUpdate.class, PacketDimensionUpdate::toBytes, PacketDimensionUpdate::new, PacketDimensionUpdate::handle);
         net.registerMessage(id(), PacketRequestDimlets.class, PacketRequestDimlets::toBytes, PacketRequestDimlets::new, PacketRequestDimlets::handle);
         net.registerMessage(id(), PacketSendDimletsToClient.class, PacketSendDimletsToClient::toBytes, PacketSendDimletsToClient::new, PacketSendDimletsToClient::handle);
         net.registerMessage(id(), PacketPatternToClient.class, PacketPatternToClient::toBytes, PacketPatternToClient::new, PacketPatternToClient::handle);
+        net.registerMessage(id(), PacketPropagatePowerToClients.class, PacketPropagatePowerToClients::toBytes, PacketPropagatePowerToClients::new, PacketPropagatePowerToClients::handle);
 
         PacketHandler.registerStandardMessages(id(), net);
     }

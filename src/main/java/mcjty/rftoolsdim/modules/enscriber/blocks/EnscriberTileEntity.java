@@ -155,17 +155,21 @@ public class EnscriberTileEntity extends GenericTileEntity {
 
         PersistantDimensionManager mgr = PersistantDimensionManager.get(world);
         DimensionData data = mgr.getData(descriptor);
+
+        CompiledDescriptor compiledDescriptor = new CompiledDescriptor();
+        compiledDescriptor.compile(descriptor);
+
         if (data != null) {
             // The dimension was already created.
             tagCompound.putInt("ticksLeft", 0);
             tagCompound.putString("dimension", data.getId().toString());
         } else {
-            CompiledDescriptor compiledDescriptor = new CompiledDescriptor();
-            compiledDescriptor.compile(descriptor);
-            tagCompound.putInt("ticksLeft", compiledDescriptor.getActualCostPerTick());
-            tagCompound.putInt("tickCost", compiledDescriptor.getActualCostPerTick());
-            tagCompound.putInt("rfCreateCost", compiledDescriptor.getCreateCostPerTick());
+            tagCompound.putInt("ticksLeft", compiledDescriptor.getActualTickCost());
         }
+
+        tagCompound.putInt("tickCost", compiledDescriptor.getActualTickCost());
+        tagCompound.putInt("rfCreateCost", compiledDescriptor.getCreateCostPerTick());
+        tagCompound.putInt("rfMaintainCost", compiledDescriptor.getActualPowerCost());
 
         return realizedTab;
     }

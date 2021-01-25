@@ -148,5 +148,9 @@ public class Recipes extends BaseRecipeProvider {
         build(consumer, ShapedRecipeBuilder.shapedRecipe(DimensionBuilderModule.EMPTY_DIMENSION_TAB.get())
                         .addCriterion("redstone", hasItem(Items.REDSTONE)),
                 "prp", "rpr", "prp");
+        build(consumer, ShapedRecipeBuilder.shapedRecipe(DimensionBuilderModule.DIMENSION_MONITOR.get())
+                        .key('C', Blocks.COMPARATOR)
+                        .addCriterion("redstone", hasItem(Items.REDSTONE)),
+                " s ", "rCr", " s ");
     }
 }

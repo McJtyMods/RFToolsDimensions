@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "rftoolsdim:item/monitor/monitoritem4"
+  }
+}

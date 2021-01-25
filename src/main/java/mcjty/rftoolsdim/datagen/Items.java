@@ -9,6 +9,10 @@ import mcjty.rftoolsdim.modules.essences.EssencesModule;
 import mcjty.rftoolsdim.modules.knowledge.KnowledgeModule;
 import mcjty.rftoolsdim.modules.workbench.WorkbenchModule;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
 public class Items extends BaseItemModelProvider {
@@ -59,6 +63,26 @@ public class Items extends BaseItemModelProvider {
         itemGenerated(DimensionBuilderModule.EMPTY_DIMENSION_TAB.get(), "item/empty_dimension_tab");
         itemGenerated(DimensionBuilderModule.REALIZED_DIMENSION_TAB.get(), "item/realized_dimension_tab");
 
+        ResourceLocation powerId = new ResourceLocation(RFToolsDim.MODID, "power");
+
+        getBuilder(DimensionBuilderModule.DIMENSION_MONITOR.get().getRegistryName().getPath())
+                .parent(getExistingFile(mcLoc("item/handheld")))
+                .texture("layer0", "item/monitor/monitoritem0")
+                .override().predicate(powerId, 0).model(createMonitorModel(0)).end()
+                .override().predicate(powerId, 1).model(createMonitorModel(1)).end()
+                .override().predicate(powerId, 2).model(createMonitorModel(2)).end()
+                .override().predicate(powerId, 3).model(createMonitorModel(3)).end()
+                .override().predicate(powerId, 4).model(createMonitorModel(4)).end()
+                .override().predicate(powerId, 5).model(createMonitorModel(5)).end()
+                .override().predicate(powerId, 6).model(createMonitorModel(6)).end()
+                .override().predicate(powerId, 7).model(createMonitorModel(7)).end()
+                .override().predicate(powerId, 8).model(createMonitorModel(8)).end()
+        ;
+    }
+
+    private ItemModelBuilder createMonitorModel(int suffix) {
+        return getBuilder("monitoritem" + suffix).parent(getExistingFile(mcLoc("item/handheld")))
+                .texture("layer0", "item/monitor/monitoritem" + suffix);
     }
 
     @Override

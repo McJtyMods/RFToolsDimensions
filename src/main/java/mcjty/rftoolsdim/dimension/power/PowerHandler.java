@@ -5,12 +5,16 @@ import mcjty.rftoolsdim.dimension.data.DimensionData;
 import mcjty.rftoolsdim.dimension.data.DimensionManager;
 import mcjty.rftoolsdim.dimension.data.PersistantDimensionManager;
 import mcjty.rftoolsdim.dimension.descriptor.CompiledDescriptor;
+import mcjty.rftoolsdim.dimension.network.PacketPropagatePowerToClients;
+import mcjty.rftoolsdim.setup.RFToolsDimMessages;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.fml.network.PacketDistributor;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -23,7 +27,7 @@ public class PowerHandler {
     private int counterEffects = EFFECTS_MAX;
 
 
-    public void handlePower(World world) {
+    public void handlePower(World overworld) {
         counter--;
         if (counter <= 0) {
             counter = MAXTICKS;
@@ -34,8 +38,19 @@ public class PowerHandler {
                 counterEffects = EFFECTS_MAX;
                 doEffects = true;
             }
-            handlePower(world, doEffects);
+            handlePower(overworld, doEffects);
+
+            sendOutPower(overworld);
         }
+    }
+
+    private void sendOutPower(World overworld) {
+        PersistantDimensionManager mgr = PersistantDimensionManager.get(overworld);
+        Map<ResourceLocation, Long> powerMap = new HashMap<>();
+        for (Map.Entry<ResourceLocation, DimensionData> entry : mgr.getData().entrySet()) {
+            powerMap.put(entry.getKey(), entry.getValue().getEnergy());
+        }
+        RFToolsDimMessages.INSTANCE.send(PacketDistributor.ALL.noArg(), new PacketPropagatePowerToClients(powerMap));
     }
 
     private void handlePower(World overworld, boolean doEffects) {
@@ -67,9 +82,8 @@ public class PowerHandler {
     }
 
     private long handlePowerDimension(boolean doEffects, ServerWorld world, DimensionData data, CompiledDescriptor compiledDescriptor) {
-        int cost = 0;
+        int cost = compiledDescriptor.getActualPowerCost();
 //        if (PowerConfiguration.dimensionDifficulty != -1) {   // @todo 1.16 config
-        cost = compiledDescriptor.getActualCostPerTick();
 //        }
 
         long power = data.getEnergy();

@@ -7,9 +7,9 @@ import net.minecraft.world.World;
 
 import java.util.Set;
 
-public class DimensionUpdatePacketClient {
+public class PacketDimensionUpdateClient {
 
-    public static void handleUpdateDimensionsPacket(DimensionUpdatePacket packet) {
+    public static void handleUpdateDimensionsPacket(PacketDimensionUpdate packet) {
         ClientPlayerEntity player = Minecraft.getInstance().player;
         RegistryKey<World> key = packet.getId();
         if (player == null || key == null)
