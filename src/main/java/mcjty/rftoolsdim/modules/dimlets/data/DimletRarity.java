@@ -14,7 +14,12 @@ public enum DimletRarity {
     static {
         for (DimletRarity type : values()) {
             TYPE_MAP.put(type.name().toLowerCase(), type);
+            TYPE_MAP.put(type.getShortName(), type);
         }
+    }
+
+    public String getShortName() {
+        return name().substring(0, 1).toLowerCase();
     }
 
     public static DimletRarity byName(String name) {

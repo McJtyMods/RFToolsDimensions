@@ -10,12 +10,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static mcjty.rftoolsdim.modules.knowledge.data.PatternBuilder.*;
 
@@ -26,7 +22,7 @@ public class KnowledgeManager {
     // All patterns by knowledge key
     private Map<KnowledgeKey, DimletPattern> patterns = null;
     // All patterns that are actually used by dimlets
-    private final Map<DimletRarity, Set<DimletPattern>> knownPatterns = new HashMap<>();
+    private final Map<DimletRarity, List<KnowledgeKey>> knownPatterns = new HashMap<>();
 
     private static final KnowledgeManager INSTANCE = new KnowledgeManager();
 
@@ -86,24 +82,32 @@ public class KnowledgeManager {
     }
 
     @Nullable
-    public DimletPattern getPattern(World world, DimletKey key) {
+    public KnowledgeKey getKnowledgeKey(World world, DimletKey key) {
         resolve(world);
         DimletSettings settings = DimletDictionary.get().getSettings(key);
         if (settings == null) {
             return null;
         }
         KnowledgeSet set = getKnowledgeSet(world, key);
-        KnowledgeKey pair = new KnowledgeKey(key.getType(), settings.getRarity(), set);
-        return patterns.get(pair);
+        return new KnowledgeKey(key.getType(), settings.getRarity(), set);
     }
 
-    public Set<DimletPattern> getKnownPatterns(World world, DimletRarity rarity) {
+    @Nullable
+    public DimletPattern getPattern(World world, DimletKey key) {
+        return patterns.get(getKnowledgeKey(world, key));
+    }
+
+    public DimletPattern getPattern(KnowledgeKey kkey) {
+        return patterns.get(kkey);
+    }
+
+    public List<KnowledgeKey> getKnownPatterns(World world, DimletRarity rarity) {
         if (!knownPatterns.containsKey(rarity)) {
-            Set<DimletPattern> set = new HashSet<>();
+            List<KnowledgeKey> set = new ArrayList<>();
             for (DimletKey key : DimletDictionary.get().getDimlets()) {
-                DimletPattern pattern = getPattern(world, key);
-                if (pattern != null) {
-                    set.add(pattern);
+                KnowledgeKey kkey = getKnowledgeKey(world, key);
+                if (kkey != null) {
+                    set.add(kkey);
                 }
             }
             knownPatterns.put(rarity, set);

@@ -6,6 +6,7 @@ import mcjty.rftoolsdim.modules.dimlets.data.DimletType;
 import mcjty.rftoolsdim.modules.dimlets.items.DimletItem;
 import mcjty.rftoolsdim.modules.dimlets.items.PartItem;
 import mcjty.rftoolsdim.modules.dimlets.lootmodifier.EndermanLootModifier;
+import mcjty.rftoolsdim.setup.Config;
 import mcjty.rftoolsdim.setup.Registration;
 import net.minecraft.item.Item;
 import net.minecraftforge.fml.RegistryObject;
@@ -61,6 +62,6 @@ public class DimletModule implements IModule {
 
     @Override
     public void initConfig() {
-
+        DimletConfig.init(Config.SERVER_BUILDER, Config.CLIENT_BUILDER);
     }
 }

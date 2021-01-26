@@ -16,6 +16,13 @@ public class KnowledgeKey {
         this.set = set;
     }
 
+    public KnowledgeKey(String data) {
+        String[] split = data.split(":");
+        type = DimletType.byName(split[0]);
+        rarity = DimletRarity.byName(split[1]);
+        set = KnowledgeSet.valueOf(split[2]);
+    }
+
     public DimletType getType() {
         return type;
     }
@@ -26,6 +33,10 @@ public class KnowledgeKey {
 
     public KnowledgeSet getSet() {
         return set;
+    }
+
+    public String serialize() {
+        return type.getShortName() + ":" + rarity.getShortName() + set.name();
     }
 
     @Override
