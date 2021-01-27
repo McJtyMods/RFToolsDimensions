@@ -1,6 +1,7 @@
 {
   "replace": false,
   "entries": [
-    "rftoolsdim:enderman_extra"
+    "rftoolsdim:enderman_extra",
+    "rftoolsdim:chest_extra"
   ]
 }

@@ -2,11 +2,12 @@
   "type": "rftoolsdim:enderman_extra",
   "conditions": [
     {
-      "condition": "minecraft:entity_properties",
-      "predicate": {
-        "type": "minecraft:enderman"
-      },
-      "entity": "this"
+      "condition": "rftoolsdim:check_tables",
+      "tables": [
+        "minecraft:chests/desert_pyramid",
+        "minecraft:chests/simple_dungeon",
+        "minecraft:chests/abandoned_mineshaft"
+      ]
     }
   ],
   "commonKnowledgeChance": 0.05,

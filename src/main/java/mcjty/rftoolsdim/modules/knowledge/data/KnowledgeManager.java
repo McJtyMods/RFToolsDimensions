@@ -76,7 +76,7 @@ public class KnowledgeManager {
             return KnowledgeSet.SET1;
         } else {
             // Calculate a hash based on the modid
-            int i = id.getNamespace().hashCode();
+            int i = Math.abs(id.getNamespace().hashCode());
             return KnowledgeSet.values()[i%(KnowledgeSet.values().length)];
         }
     }
@@ -94,6 +94,7 @@ public class KnowledgeManager {
 
     @Nullable
     public DimletPattern getPattern(World world, DimletKey key) {
+        resolve(world);
         return patterns.get(getKnowledgeKey(world, key));
     }
 
