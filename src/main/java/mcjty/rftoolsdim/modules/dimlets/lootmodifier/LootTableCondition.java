@@ -34,8 +34,12 @@ public class LootTableCondition implements ILootCondition {
         Vector3d pos = lootContext.get(LootParameters.field_237457_g_);
         if (pos != null) {
             BlockState state = lootContext.getWorld().getBlockState(new BlockPos(pos));
-            ResourceLocation lootTable = state.getBlock().getLootTable();
-            return tables.contains(lootTable);
+            if (state.getBlock() instanceof ChestBlock) {
+                // @todo correct loottable
+                return true;
+            }
+//            ResourceLocation lootTable = state.getBlock().getLootTable();
+//            return tables.contains(lootTable);
         }
         return false;
     }

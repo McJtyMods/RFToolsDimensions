@@ -170,6 +170,9 @@ public class DimensionBuilderTileEntity extends GenericTileEntity implements ITi
         if (tagCompound.contains("dimension")) {
             String dimension = tagCompound.getString("dimension");
             DimensionData data = PersistantDimensionManager.get(world).getData(new ResourceLocation(dimension));
+            if (data == null) {
+                return;
+            }
             long rf;
             // @todo 1.16
 //            if (isCheaterDimension(tagCompound)) {

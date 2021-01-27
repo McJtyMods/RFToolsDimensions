@@ -4,14 +4,17 @@ import com.mojang.serialization.Codec;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.dimension.descriptor.CompiledDescriptor;
 import mcjty.rftoolsdim.dimension.descriptor.CompiledFeature;
+import mcjty.rftoolsdim.dimension.features.buildings.SpawnPlatform;
 import mcjty.rftoolsdim.dimension.terraintypes.BaseChunkGenerator;
 import mcjty.rftoolsdim.setup.Registration;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.WorldGenRegistries;
 import net.minecraft.world.ISeedReader;
 import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
@@ -29,7 +32,7 @@ public class RFTFeature extends Feature<NoFeatureConfig> {
     public static ConfiguredFeature<?, ?> RFTFEATURE_CONFIGURED;
 
     private final static long primes[] = new long[] { 900157, 981961, 50001527, 32667413, 1111114993, 65548559, 320741, 100002509,
-            35567897, 218021, 2900001163L };
+            35567897, 218021, 2900001163L, 3399018867L };
 
     public static void registerConfiguredFeatures() {
         Registry<ConfiguredFeature<?, ?>> registry = WorldGenRegistries.CONFIGURED_FEATURE;
@@ -63,6 +66,20 @@ public class RFTFeature extends Feature<NoFeatureConfig> {
                 }
                 primeIndex++;
             }
+
+            ChunkPos cp = new ChunkPos(pos);
+            if (cp.x == 0 && cp.z == 0) {
+                // Spawn platform
+                int height = 0;reader.getHeight(Heightmap.Type.WORLD_SURFACE, 8, 8);
+                if (height <= 1 || height > 250) {
+                    height = 65;
+                }
+                String receiverName = reader.getWorld().getDimensionKey().getLocation().getPath();
+                SpawnPlatform.SPAWN_PLATFORM.get().generate(reader, new BlockPos(3, height, 3),
+                        receiverName);
+                generatedSomething = true;
+            }
+
             return generatedSomething;
         }
         return false;
