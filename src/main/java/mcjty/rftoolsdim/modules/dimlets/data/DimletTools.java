@@ -41,6 +41,8 @@ public class DimletTools {
                 return DimletModule.BIOME_DIMLET.get();
             case FEATURE:
                 return DimletModule.FEATURE_DIMLET.get();
+            case TIME:
+                return DimletModule.TIME_DIMLET.get();
             case BLOCK:
                 return DimletModule.BLOCK_DIMLET.get();
         }
@@ -57,6 +59,8 @@ public class DimletTools {
                 return DimletModule.EMPTY_BIOME_DIMLET.get();
             case FEATURE:
                 return DimletModule.EMPTY_FEATURE_DIMLET.get();
+            case TIME:
+                return DimletModule.EMPTY_TIME_DIMLET.get();
             case BLOCK:
                 return DimletModule.EMPTY_BLOCK_DIMLET.get();
         }

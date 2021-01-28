@@ -51,6 +51,10 @@ public class Recipes extends BaseRecipeProvider {
                         .key('C', Items.CLAY_BALL)
                         .addCriterion("empty_dimlet", hasItem(DimletModule.EMPTY_DIMLET.get())),
                 "rCr", "CEC", "rCr");
+        build(consumer, ShapedRecipeBuilder.shapedRecipe(DimletModule.EMPTY_TIME_DIMLET.get())
+                        .key('C', Items.CLOCK)
+                        .addCriterion("empty_dimlet", hasItem(DimletModule.EMPTY_DIMLET.get())),
+                "rCr", "CEC", "rCr");
 
         build(consumer, ShapedRecipeBuilder.shapedRecipe(DimletModule.PART_ENERGY_0.get())
                         .key('g', Tags.Items.DUSTS_GLOWSTONE)

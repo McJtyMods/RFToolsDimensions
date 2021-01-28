@@ -4,6 +4,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import mcjty.lib.varia.DimensionId;
 import mcjty.rftoolsdim.RFToolsDim;
+import mcjty.rftoolsdim.dimension.DimensionRegistry;
+import mcjty.rftoolsdim.dimension.TimeType;
 import mcjty.rftoolsdim.dimension.descriptor.CompiledDescriptor;
 import mcjty.rftoolsdim.dimension.descriptor.DescriptorError;
 import mcjty.rftoolsdim.dimension.descriptor.DimensionDescriptor;
@@ -102,8 +104,10 @@ public class DimensionManager {
 
         DimensionSettings settings = new DimensionSettings(descriptor.compact());
 
+        TimeType timeType = compiledDescriptor.getTimeType();
+
         RegistryKey<World> key = RegistryKey.getOrCreateKey(Registry.WORLD_KEY, id);
-        DimensionType type = world.getServer().func_244267_aX().getRegistry(Registry.DIMENSION_TYPE_KEY).getOrDefault(terrainType.getTypeId());
+        DimensionType type = world.getServer().func_244267_aX().getRegistry(Registry.DIMENSION_TYPE_KEY).getOrDefault(timeType.getDimensionType());
         ServerWorld result = DimensionHelper.getOrCreateWorld(world.getServer(), key,
                 (server, registryKey) -> new Dimension(() -> type, terrainType.getGeneratorSupplier().apply(server, settings)));
 

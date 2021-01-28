@@ -1,5 +1,6 @@
 package mcjty.rftoolsdim.dimension.descriptor;
 
+import mcjty.rftoolsdim.dimension.TimeType;
 import mcjty.rftoolsdim.dimension.biomes.BiomeControllerType;
 import mcjty.rftoolsdim.dimension.features.FeatureType;
 import mcjty.rftoolsdim.dimension.terraintypes.TerrainType;
@@ -31,10 +32,7 @@ public class CompiledDescriptor {
     private final Set<CompiledFeature> features = new HashSet<>();
     private BiomeControllerType biomeControllerType = null;
     private final List<ResourceLocation> biomes = new ArrayList<>();
-
-    public TerrainType getTerrainType() {
-        return terrainType;
-    }
+    private TimeType timeType = null;
 
     private int createCostPerTick = 0;
     private int maintainCostPerTick = 0;
@@ -85,6 +83,16 @@ public class CompiledDescriptor {
                 case BIOME:
                     biomes.add(new ResourceLocation(name));
                     break;
+                case TIME: {
+                    if (timeType != null) {
+                        return ERROR(ONLY_ONE_TIME);
+                    }
+                    timeType = TimeType.byName(name);
+                    if (timeType == null) {
+                        return ERROR(BAD_TIME, name);
+                    }
+                    break;
+                }
                 case FEATURE: {
                     FeatureType feature = FeatureType.byName(name);
                     if (feature == null) {
@@ -114,14 +122,26 @@ public class CompiledDescriptor {
             return ERROR(DANGLING_BLOCKS);
         }
 
+        // @todo Randomize!
         if (terrainType == null) {
             terrainType = TerrainType.NORMAL;
+        }
+        if (timeType == null) {
+            timeType = TimeType.NORMAL;
         }
         if (biomeControllerType == null) {
             biomeControllerType = BiomeControllerType.SINGLE;
         }
 
         return DescriptorError.OK;
+    }
+
+    public TimeType getTimeType() {
+        return timeType;
+    }
+
+    public TerrainType getTerrainType() {
+        return terrainType;
     }
 
     public int getCreateCostPerTick() {

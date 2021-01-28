@@ -8,6 +8,7 @@ public enum DimletType {
     BIOME_CONTROLLER("bc"),
     BIOME("bi"),
     FEATURE("f"),
+    TIME("ti"),
     BLOCK("b");
 
     private final String shortName;

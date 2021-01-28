@@ -49,8 +49,10 @@ public class DescriptorError {
         OK(null),
         ONLY_ONE_BIOME_CONTROLLER("You can only have one biome controller!"),
         ONLY_ONE_TERRAIN("You can only have one terrain type!"),
+        ONLY_ONE_TIME("You can only have one time dimlet!"),
         BAD_BLOCK("Bad block!"),
         BAD_FEATURE("Bad feature!"),
+        BAD_TIME("Bad time!"),
         BAD_TERRAIN_TYPE("Bad terrain type!"),
         BAD_BIOME_CONTROLLER("Bad biome controller!"),
         DANGLING_BLOCKS("Dangling blocks! Blocks should come before either a terrain or a feature");

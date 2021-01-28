@@ -1,11 +1,41 @@
 [
   {
+    "type": "time",
+    "key": "normal",
+    "rarity": "uncommon",
+    "create": 30,
+    "maintain": 20,
+    "ticks": 10,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "time",
+    "key": "night",
+    "rarity": "rare",
+    "create": 300,
+    "maintain": 100,
+    "ticks": 100,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "time",
+    "key": "day",
+    "rarity": "rare",
+    "create": 300,
+    "maintain": 500,
+    "ticks": 100,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
     "type": "terrain",
     "key": "void",
     "rarity": "common",
     "create": 10,
     "maintain": 10,
-    "ticks": 1,
+    "ticks": 10,
     "worldgen": true,
     "dimlet": true
   },
@@ -15,7 +45,7 @@
     "rarity": "common",
     "create": 10,
     "maintain": 10,
-    "ticks": 1,
+    "ticks": 20,
     "worldgen": true,
     "dimlet": true
   },
@@ -25,7 +55,7 @@
     "rarity": "common",
     "create": 10,
     "maintain": 10,
-    "ticks": 1,
+    "ticks": 20,
     "worldgen": true,
     "dimlet": true
   },
@@ -35,7 +65,7 @@
     "rarity": "common",
     "create": 10,
     "maintain": 10,
-    "ticks": 1,
+    "ticks": 10,
     "worldgen": true,
     "dimlet": true
   },

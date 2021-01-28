@@ -35,3 +35,4 @@ Todo:
 - Implement Knowledge Item loot
 - Dimension Monitor tooltip
 - Dimension Type is time based + time dimlets
+- Better tooltip for dimlet: add key without shift

@@ -1,6 +1,7 @@
 package mcjty.rftoolsdim.dimension.features.buildings;
 
 import mcjty.rftoolsdim.compat.RFToolsUtilityCompat;
+import mcjty.rftoolsdim.modules.decorative.DecorativeModule;
 import net.minecraft.block.Blocks;
 import net.minecraftforge.common.util.Lazy;
 
@@ -10,8 +11,8 @@ public class SpawnPlatform extends BuildingTemplate {
 
     public SpawnPlatform() {
         addPalette('_', Blocks.COMMAND_BLOCK.getDefaultState());
-        addPalette('#', Blocks.BLUE_TERRACOTTA.getDefaultState());
-        addPalette('.', Blocks.CYAN_TERRACOTTA.getDefaultState());
+        addPalette('#', DecorativeModule.DIMENSIONAL_SMALL_BLOCK.get().getDefaultState());
+        addPalette('.', DecorativeModule.DIMENSIONAL_BLANK.get().getDefaultState());
         addPalette('*', Blocks.GLOWSTONE.getDefaultState());
         addPalette(' ', Blocks.AIR.getDefaultState());
 
