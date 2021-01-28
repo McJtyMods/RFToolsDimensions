@@ -2,6 +2,7 @@ package mcjty.rftoolsdim;
 
 import mcjty.lib.modules.Modules;
 import mcjty.rftoolsdim.modules.blob.BlobModule;
+import mcjty.rftoolsdim.modules.decorative.DecorativeModule;
 import mcjty.rftoolsdim.modules.dimensionbuilder.DimensionBuilderModule;
 import mcjty.rftoolsdim.modules.dimlets.DimletModule;
 import mcjty.rftoolsdim.modules.enscriber.EnscriberModule;
@@ -47,5 +48,6 @@ public class RFToolsDim {
         modules.register(new BlobModule());
         modules.register(new KnowledgeModule());
         modules.register(new EssencesModule());
+        modules.register(new DecorativeModule());
     }
 }

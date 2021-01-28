@@ -2,6 +2,7 @@ package mcjty.rftoolsdim.datagen;
 
 import mcjty.lib.datagen.BaseRecipeProvider;
 import mcjty.rftoolsbase.modules.various.VariousModule;
+import mcjty.rftoolsdim.modules.decorative.DecorativeModule;
 import mcjty.rftoolsdim.modules.dimensionbuilder.DimensionBuilderModule;
 import mcjty.rftoolsdim.modules.dimlets.DimletModule;
 import mcjty.rftoolsdim.modules.enscriber.EnscriberModule;
@@ -152,5 +153,33 @@ public class Recipes extends BaseRecipeProvider {
                         .key('C', Blocks.COMPARATOR)
                         .addCriterion("redstone", hasItem(Items.REDSTONE)),
                 " s ", "rCr", " s ");
+
+        build(consumer, ShapedRecipeBuilder.shapedRecipe(DecorativeModule.DIMENSIONAL_BLANK.get())
+                        .addCriterion("shard", hasItem(VariousModule.DIMENSIONALSHARD.get())),
+                "ss", "ss");
+        build(consumer, ShapedRecipeBuilder.shapedRecipe(DecorativeModule.DIMENSIONAL_BLOCK.get())
+                        .key('S', Tags.Items.STONE)
+                        .addCriterion("shard", hasItem(VariousModule.DIMENSIONALSHARD.get())),
+                "Ss", "ss");
+        build(consumer, ShapedRecipeBuilder.shapedRecipe(DecorativeModule.DIMENSIONAL_SMALL_BLOCK.get())
+                        .key('S', Tags.Items.STONE)
+                        .addCriterion("shard", hasItem(VariousModule.DIMENSIONALSHARD.get())),
+                "ss", "sS");
+        build(consumer, ShapedRecipeBuilder.shapedRecipe(DecorativeModule.DIMENSIONAL_CROSS_BLOCK.get())
+                        .key('S', Tags.Items.STONE)
+                        .addCriterion("shard", hasItem(VariousModule.DIMENSIONALSHARD.get())),
+                "Ss", "sS");
+        build(consumer, ShapedRecipeBuilder.shapedRecipe(DecorativeModule.DIMENSIONAL_CROSS2_BLOCK.get())
+                        .key('S', Tags.Items.STONE)
+                        .addCriterion("shard", hasItem(VariousModule.DIMENSIONALSHARD.get())),
+                "sS", "Ss");
+        build(consumer, ShapedRecipeBuilder.shapedRecipe(DecorativeModule.DIMENSIONAL_PATTERN1_BLOCK.get())
+                        .key('S', Tags.Items.STONE)
+                        .addCriterion("shard", hasItem(VariousModule.DIMENSIONALSHARD.get())),
+                "sS", "sS");
+        build(consumer, ShapedRecipeBuilder.shapedRecipe(DecorativeModule.DIMENSIONAL_PATTERN2_BLOCK.get())
+                        .key('S', Tags.Items.STONE)
+                        .addCriterion("shard", hasItem(VariousModule.DIMENSIONALSHARD.get())),
+                "Ss", "Ss");
     }
 }

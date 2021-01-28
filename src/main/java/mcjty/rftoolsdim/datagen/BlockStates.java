@@ -2,6 +2,7 @@ package mcjty.rftoolsdim.datagen;
 
 import mcjty.lib.datagen.BaseBlockStateProvider;
 import mcjty.rftoolsdim.RFToolsDim;
+import mcjty.rftoolsdim.modules.decorative.DecorativeModule;
 import mcjty.rftoolsdim.modules.dimensionbuilder.DimensionBuilderModule;
 import mcjty.rftoolsdim.modules.enscriber.EnscriberModule;
 import mcjty.rftoolsdim.modules.essences.EssencesModule;
@@ -25,5 +26,13 @@ public class BlockStates extends BaseBlockStateProvider {
         orientedBlock(EnscriberModule.ENSCRIBER.get(), frontBasedModel("enscriber", modLoc("block/dimensionenscriber")));
         singleTextureBlock(EssencesModule.BLOCK_ABSORBER.get(), BLOCK_FOLDER + "/block_absorber", "block/blockabsorber");
         singleTextureBlock(EssencesModule.BIOME_ABSORBER.get(), BLOCK_FOLDER + "/biome_absorber", "block/biomeabsorber");
+
+        singleTextureBlock(DecorativeModule.DIMENSIONAL_BLOCK.get(), BLOCK_FOLDER + "/dimensional_block", "block/decorative/dimblock_block");
+        singleTextureBlock(DecorativeModule.DIMENSIONAL_BLANK.get(), BLOCK_FOLDER + "/dimensional_blank_block", "block/decorative/dimblock_blank_stone");
+        singleTextureBlock(DecorativeModule.DIMENSIONAL_CROSS_BLOCK.get(), BLOCK_FOLDER + "/dimensional_cross_block", "block/decorative/dimblock_pattern3");
+        singleTextureBlock(DecorativeModule.DIMENSIONAL_CROSS2_BLOCK.get(), BLOCK_FOLDER + "/dimensional_cross2_block", "block/decorative/dimblock_pattern4");
+        singleTextureBlock(DecorativeModule.DIMENSIONAL_PATTERN1_BLOCK.get(), BLOCK_FOLDER + "/dimensional_pattern1_block", "block/decorative/dimblock_pattern7");
+        singleTextureBlock(DecorativeModule.DIMENSIONAL_PATTERN2_BLOCK.get(), BLOCK_FOLDER + "/dimensional_pattern2_block", "block/decorative/dimblock_pattern8");
+        singleTextureBlock(DecorativeModule.DIMENSIONAL_SMALL_BLOCK.get(), BLOCK_FOLDER + "/dimensional_small_blocks", "block/decorative/dimblock_small_blocks");
     }
 }

@@ -2,6 +2,7 @@ package mcjty.rftoolsdim.datagen;
 
 import mcjty.lib.datagen.BaseItemModelProvider;
 import mcjty.rftoolsdim.RFToolsDim;
+import mcjty.rftoolsdim.modules.decorative.DecorativeModule;
 import mcjty.rftoolsdim.modules.dimensionbuilder.DimensionBuilderModule;
 import mcjty.rftoolsdim.modules.dimlets.DimletModule;
 import mcjty.rftoolsdim.modules.enscriber.EnscriberModule;
@@ -29,6 +30,14 @@ public class Items extends BaseItemModelProvider {
         parentedBlock(EnscriberModule.ENSCRIBER.get(), "block/enscriber");
         parentedBlock(EssencesModule.BLOCK_ABSORBER.get(), "block/block_absorber");
         parentedBlock(EssencesModule.BIOME_ABSORBER.get(), "block/biome_absorber");
+
+        parentedBlock(DecorativeModule.DIMENSIONAL_BLOCK.get(), "block/dimensional_block");
+        parentedBlock(DecorativeModule.DIMENSIONAL_BLANK.get(), "block/dimensional_blank_block");
+        parentedBlock(DecorativeModule.DIMENSIONAL_CROSS_BLOCK.get(), "block/dimensional_cross_block");
+        parentedBlock(DecorativeModule.DIMENSIONAL_CROSS2_BLOCK.get(), "block/dimensional_cross2_block");
+        parentedBlock(DecorativeModule.DIMENSIONAL_PATTERN1_BLOCK.get(), "block/dimensional_pattern1_block");
+        parentedBlock(DecorativeModule.DIMENSIONAL_PATTERN2_BLOCK.get(), "block/dimensional_pattern2_block");
+        parentedBlock(DecorativeModule.DIMENSIONAL_SMALL_BLOCK.get(), "block/dimensional_small_blocks");
 
         itemGenerated(DimletModule.EMPTY_DIMLET.get(), "item/dimlets/empty_dimlet");
         itemGenerated(DimletModule.EMPTY_TERRAIN_DIMLET.get(), "item/dimlets/empty_terrain_dimlet");

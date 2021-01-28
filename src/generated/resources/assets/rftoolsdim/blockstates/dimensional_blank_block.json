@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "rftoolsdim:block/dimensional_blank_block"
+    }
+  }
+}

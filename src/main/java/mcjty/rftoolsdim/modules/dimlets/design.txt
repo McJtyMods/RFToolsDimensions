@@ -33,3 +33,5 @@ Todo:
     - Special (yellow) dimlets: owner, powerless, ...
 - Dimlet Workbench should respect knowledge holder with knowledge
 - Implement Knowledge Item loot
+- Dimension Monitor tooltip
+- Dimension Type is time based + time dimlets
