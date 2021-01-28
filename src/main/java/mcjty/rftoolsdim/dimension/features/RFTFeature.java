@@ -70,19 +70,21 @@ public class RFTFeature extends Feature<NoFeatureConfig> {
             ChunkPos cp = new ChunkPos(pos);
             if (cp.x == 0 && cp.z == 0) {
                 // Spawn platform
-                int height = 0;reader.getHeight(Heightmap.Type.WORLD_SURFACE, 8, 8);
-                if (height <= 1 || height > 250) {
-                    height = 65;
-                }
-                String receiverName = reader.getWorld().getDimensionKey().getLocation().getPath();
-                SpawnPlatform.SPAWN_PLATFORM.get().generate(reader, new BlockPos(3, height, 3),
-                        receiverName);
+                generateSpawnPlatform(reader);
                 generatedSomething = true;
             }
 
             return generatedSomething;
         }
         return false;
+    }
+
+    private void generateSpawnPlatform(ISeedReader reader) {
+        int height = reader.getHeight(Heightmap.Type.WORLD_SURFACE, 8, 8);
+        if (height <= 1 || height > 250) {
+            height = 65;
+        }
+        SpawnPlatform.SPAWN_PLATFORM.get().generate(reader, new BlockPos(3, height, 3));
     }
 
 }

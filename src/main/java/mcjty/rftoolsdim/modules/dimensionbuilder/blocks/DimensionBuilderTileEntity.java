@@ -16,8 +16,10 @@ import mcjty.lib.container.GenericContainer;
 import mcjty.lib.container.NoDirectionItemHander;
 import mcjty.lib.tileentity.GenericEnergyStorage;
 import mcjty.lib.tileentity.GenericTileEntity;
+import mcjty.lib.varia.Broadcaster;
 import mcjty.rftoolsbase.tools.ManualHelper;
 import mcjty.rftoolsdim.RFToolsDim;
+import mcjty.rftoolsdim.compat.RFToolsUtilityCompat;
 import mcjty.rftoolsdim.dimension.DimensionConfig;
 import mcjty.rftoolsdim.dimension.data.DimensionData;
 import mcjty.rftoolsdim.dimension.data.DimensionManager;
@@ -25,6 +27,7 @@ import mcjty.rftoolsdim.dimension.data.PersistantDimensionManager;
 import mcjty.rftoolsdim.dimension.descriptor.DimensionDescriptor;
 import mcjty.rftoolsdim.modules.dimensionbuilder.DimensionBuilderConfig;
 import mcjty.rftoolsdim.modules.dimensionbuilder.DimensionBuilderModule;
+import net.minecraft.block.Blocks;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -35,6 +38,9 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.IntReferenceHolder;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.gen.Heightmap;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.common.util.LazyOptional;
@@ -255,13 +261,27 @@ public class DimensionBuilderTileEntity extends GenericTileEntity implements ITi
                 String descriptorString = tagCompound.getString("descriptor");
                 DimensionDescriptor descriptor = new DimensionDescriptor();
                 descriptor.read(descriptorString);
-                DimensionManager.get().createWorld(world, name, descriptor);
+                ServerWorld newworld = DimensionManager.get().createWorld(this.world, name, descriptor);
                 ResourceLocation id = new ResourceLocation(RFToolsDim.MODID, name);
                 tagCompound.putString("dimension", id.toString());
                 markDirty();
+
+                placeMatterReceiver(newworld, name);
             }
         }
         return ticksLeft;
+    }
+
+    private void placeMatterReceiver(ServerWorld newworld, String name) {
+        int y = 250;
+        while (y >= 1) {
+            if (newworld.getBlockState(new BlockPos(8, y, 8)).getBlock() == Blocks.COMMAND_BLOCK) {
+                RFToolsUtilityCompat.createTeleporter(newworld, new BlockPos(8, y, 8), name);
+                return;
+            }
+            y--;
+        }
+        Broadcaster.broadcast(world, pos.getX(), pos.getY(), pos.getZ(), "Error placing matter receiver in dimensions!", 40);
     }
 
     private boolean isCheaterDimension(CompoundNBT tag) {

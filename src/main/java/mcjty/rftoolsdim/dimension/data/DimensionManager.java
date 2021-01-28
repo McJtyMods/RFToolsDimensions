@@ -76,7 +76,7 @@ public class DimensionManager {
         return world;
     }
 
-    public void createWorld(World world, String name, DimensionDescriptor descriptor) {
+    public ServerWorld createWorld(World world, String name, DimensionDescriptor descriptor) {
         ResourceLocation id = new ResourceLocation(RFToolsDim.MODID, name);
 
         PersistantDimensionManager mgr = PersistantDimensionManager.get(world);
@@ -104,11 +104,12 @@ public class DimensionManager {
 
         RegistryKey<World> key = RegistryKey.getOrCreateKey(Registry.WORLD_KEY, id);
         DimensionType type = world.getServer().func_244267_aX().getRegistry(Registry.DIMENSION_TYPE_KEY).getOrDefault(terrainType.getTypeId());
-        DimensionHelper.getOrCreateWorld(world.getServer(), key,
+        ServerWorld result = DimensionHelper.getOrCreateWorld(world.getServer(), key,
                 (server, registryKey) -> new Dimension(() -> type, terrainType.getGeneratorSupplier().apply(server, settings)));
 
         data = new DimensionData(id, descriptor);
         mgr.register(data);
+        return result;
 
     }
 

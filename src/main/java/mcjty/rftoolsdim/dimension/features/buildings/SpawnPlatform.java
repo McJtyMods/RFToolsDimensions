@@ -9,10 +9,7 @@ public class SpawnPlatform extends BuildingTemplate {
     public static final Lazy<SpawnPlatform> SPAWN_PLATFORM = Lazy.of(SpawnPlatform::new);
 
     public SpawnPlatform() {
-        addPalette('_', (reader, pos, object) -> {
-            String name = (String) object;
-//            RFToolsUtilityCompat.createTeleporter(reader, pos, name);
-        });
+        addPalette('_', Blocks.COMMAND_BLOCK.getDefaultState());
         addPalette('#', Blocks.BLUE_TERRACOTTA.getDefaultState());
         addPalette('.', Blocks.CYAN_TERRACOTTA.getDefaultState());
         addPalette('*', Blocks.GLOWSTONE.getDefaultState());

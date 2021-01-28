@@ -15,10 +15,9 @@ public class RFToolsUtilityCompat {
         if (ModList.get().isLoaded("rftoolsutility")) {
             registerInternal();
         }
-
     }
 
-    private static boolean registered;
+    private static boolean registered = false;
     public static ITeleportationManager teleportationManager = null;
 
     private static void registerInternal() {
