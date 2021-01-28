@@ -36,7 +36,7 @@ public class KnowledgeKey {
     }
 
     public String serialize() {
-        return type.getShortName() + ":" + rarity.getShortName() + set.name();
+        return type.getShortName() + ":" + rarity.getShortName() + ":" + set.name();
     }
 
     @Override

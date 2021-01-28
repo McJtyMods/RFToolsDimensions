@@ -1,15 +1,15 @@
 package mcjty.rftoolsdim.modules.dimensionbuilder.items;
 
 import mcjty.lib.McJtyLib;
+import mcjty.lib.builder.TooltipBuilder;
+import mcjty.lib.tooltips.ITooltipSettings;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.dimension.DimensionConfig;
 import mcjty.rftoolsdim.dimension.power.ClientPowerManager;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.client.world.ClientWorld;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemModelsProperties;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
@@ -17,8 +17,33 @@ import net.minecraft.world.World;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class DimensionMonitorItem extends Item {
-    private static long lastTime = 0;
+import static mcjty.lib.builder.TooltipBuilder.header;
+import static mcjty.lib.builder.TooltipBuilder.key;
+
+public class DimensionMonitorItem extends Item implements ITooltipSettings {
+
+    private final TooltipBuilder tooltipBuilder = new TooltipBuilder()
+            .info(key("message.rftoolsdim.shiftmessage"), TooltipBuilder.parameter("power", this::getPowerString))
+            .infoShift(header(),
+                    TooltipBuilder.parameter("power", this::getPowerString),
+                    TooltipBuilder.parameter("name", this::getDimensionName));
+
+    private String getDimensionName(ItemStack stack) {
+        World world = McJtyLib.proxy.getClientWorld();
+        if (world == null) {
+            return "";
+        }
+        return world.getDimensionKey().getLocation().getPath();
+    }
+
+    private String getPowerString(ItemStack s) {
+        World world = McJtyLib.proxy.getClientWorld();
+        if (world == null) {
+            return "";
+        }
+        long power = ClientPowerManager.get().getPower(world.getDimensionKey().getLocation());
+        return power == -1 ? "<n.a.>" : ""+power;
+    }
 
     public DimensionMonitorItem() {
         super(new Properties().group(RFToolsDim.setup.getTab()).maxStackSize(1));
@@ -27,7 +52,7 @@ public class DimensionMonitorItem extends Item {
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> list, ITooltipFlag flagIn) {
         super.addInformation(stack, worldIn, list, flagIn);
-        // @todo 1.16 tooltip system
+        tooltipBuilder.makeTooltip(getRegistryName(), stack, list, flagIn);
     }
 
     public static void initOverrides(DimensionMonitorItem item) {

@@ -12,17 +12,13 @@ import mcjty.lib.gui.events.SelectionEvent;
 import mcjty.lib.gui.layout.HorizontalAlignment;
 import mcjty.lib.gui.widgets.*;
 import mcjty.lib.typed.TypedMap;
-import mcjty.lib.varia.ItemStackList;
 import mcjty.rftoolsbase.RFToolsBase;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.modules.dimlets.client.DimletClientHelper;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletKey;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletTools;
 import mcjty.rftoolsdim.modules.dimlets.network.PacketRequestDimlets;
-import mcjty.rftoolsdim.modules.knowledge.KnowledgeModule;
-import mcjty.rftoolsdim.modules.knowledge.data.DimletPattern;
 import mcjty.rftoolsdim.modules.knowledge.data.KnowledgeManager;
-import mcjty.rftoolsdim.modules.knowledge.data.PatternBuilder;
 import mcjty.rftoolsdim.modules.workbench.WorkbenchModule;
 import mcjty.rftoolsdim.modules.workbench.blocks.WorkbenchTileEntity;
 import mcjty.rftoolsdim.setup.RFToolsDimMessages;
@@ -88,7 +84,8 @@ public class GuiWorkbench extends GenericGuiContainer<WorkbenchTileEntity, Gener
 
         window = new Window(this, toplevel);
         dimletListAge = -1;
-        RFToolsDimMessages.INSTANCE.sendToServer(new PacketRequestDimlets());
+
+        RFToolsDimMessages.INSTANCE.sendToServer(new PacketRequestDimlets(tileEntity.getPos()));
     }
 
     private void createDimlet() {
@@ -103,13 +100,16 @@ public class GuiWorkbench extends GenericGuiContainer<WorkbenchTileEntity, Gener
         }
         Panel widget = itemList.getChild(selected);
         Object userObject = widget.getUserObject();
-        if (userObject instanceof DimletKey) {
-            DimletKey key = (DimletKey) userObject;
-            sendServerCommandTyped(RFToolsDimMessages.INSTANCE, WorkbenchTileEntity.CMD_HILIGHT_PATTERN,
-                    TypedMap.builder()
-                            .put(PARAM_TYPE, key.getType().name())
-                            .put(PARAM_ID, key.getKey())
-                            .build());
+        if (userObject instanceof DimletClientHelper.DimletWithInfo) {
+            DimletClientHelper.DimletWithInfo key = (DimletClientHelper.DimletWithInfo) userObject;
+            if (key.isCraftable()) {
+                DimletKey dimlet = key.getDimlet();
+                sendServerCommandTyped(RFToolsDimMessages.INSTANCE, WorkbenchTileEntity.CMD_HILIGHT_PATTERN,
+                        TypedMap.builder()
+                                .put(PARAM_TYPE, dimlet.getType().name())
+                                .put(PARAM_ID, dimlet.getKey())
+                                .build());
+            }
         }
     }
 
@@ -184,13 +184,16 @@ public class GuiWorkbench extends GenericGuiContainer<WorkbenchTileEntity, Gener
         }
         Panel widget = itemList.getChild(selected);
         Object userObject = widget.getUserObject();
-        if (userObject instanceof DimletKey) {
-            DimletKey key = (DimletKey) userObject;
-            sendServerCommandTyped(RFToolsDimMessages.INSTANCE, WorkbenchTileEntity.CMD_SUGGESTPARTS,
-                    TypedMap.builder()
-                            .put(PARAM_TYPE, key.getType().name())
-                            .put(PARAM_ID, key.getKey())
-                            .build());
+        if (userObject instanceof DimletClientHelper.DimletWithInfo) {
+            DimletClientHelper.DimletWithInfo key = (DimletClientHelper.DimletWithInfo) userObject;
+            if (key.isCraftable()) {
+                DimletKey dimlet = key.getDimlet();
+                sendServerCommandTyped(RFToolsDimMessages.INSTANCE, WorkbenchTileEntity.CMD_SUGGESTPARTS,
+                        TypedMap.builder()
+                                .put(PARAM_TYPE, dimlet.getType().name())
+                                .put(PARAM_ID, dimlet.getKey())
+                                .build());
+            }
         }
     }
 
@@ -209,7 +212,7 @@ public class GuiWorkbench extends GenericGuiContainer<WorkbenchTileEntity, Gener
 
         String filter = searchBar.getText().toLowerCase();
         DimletClientHelper.dimlets.stream()
-                .filter(key -> dimletMatches(filter, key))
+                .filter(key -> dimletMatches(filter, key.getDimlet()))
                 .sorted()
                 .forEachOrdered(this::addItemToList);
 
@@ -224,14 +227,14 @@ public class GuiWorkbench extends GenericGuiContainer<WorkbenchTileEntity, Gener
                 || key.getType().name().toLowerCase().contains(filter);
     }
 
-    private void addItemToList(DimletKey key) {
+    private void addItemToList(DimletClientHelper.DimletWithInfo key) {
         Panel panel = positional().desiredWidth(113).desiredHeight(16).userObject(key);
         itemList.children(panel);
-        BlockRender blockRender = new BlockRender().renderItem(DimletTools.getDimletStack(key)).hint(1, 0, 16, 16)
+        BlockRender blockRender = new BlockRender().renderItem(DimletTools.getDimletStack(key.getDimlet())).hint(1, 0, 16, 16)
                 .userObject(key);
         panel.children(blockRender);
-        String displayName = DimletTools.getReadableName(key);
-        AbstractWidget label = label(displayName).color(StyleConfig.colorTextInListNormal).horizontalAlignment(HorizontalAlignment.ALIGN_LEFT)
+        String displayName = DimletTools.getReadableName(key.getDimlet());
+        AbstractWidget label = label(displayName).color(key.isCraftable() ? StyleConfig.colorTextInListNormal : StyleConfig.colorTextDisabled).horizontalAlignment(HorizontalAlignment.ALIGN_LEFT)
                 .hint(20, 0, 95, 16).userObject(key);
         panel.children(label);
     }

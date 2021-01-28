@@ -12,12 +12,22 @@ public class DimletKey implements Comparable<DimletKey> {
         this.key = key;
     }
 
+    public DimletKey(String serialized) {
+        String[] split = serialized.split("#");
+        this.type = DimletType.byName(split[0]);
+        this.key = split[1];
+    }
+
     public DimletType getType() {
         return type;
     }
 
     public String getKey() {
         return key;
+    }
+
+    public String serialize() {
+        return type.getShortName() + "#" + key;
     }
 
     @Override

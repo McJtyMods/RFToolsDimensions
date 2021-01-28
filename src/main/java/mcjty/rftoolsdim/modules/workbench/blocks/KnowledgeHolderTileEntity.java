@@ -11,6 +11,7 @@ import mcjty.lib.container.GenericContainer;
 import mcjty.lib.container.NoDirectionItemHander;
 import mcjty.lib.tileentity.GenericTileEntity;
 import mcjty.rftoolsbase.tools.ManualHelper;
+import mcjty.rftoolsdim.modules.knowledge.data.KnowledgeKey;
 import mcjty.rftoolsdim.modules.knowledge.items.LostKnowledgeItem;
 import mcjty.rftoolsdim.modules.workbench.WorkbenchModule;
 import net.minecraft.inventory.container.INamedContainerProvider;
@@ -24,6 +25,8 @@ import net.minecraftforge.items.CapabilityItemHandler;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
+import java.util.Set;
 
 import static mcjty.lib.builder.TooltipBuilder.*;
 import static mcjty.lib.container.ContainerFactory.CONTAINER_CONTAINER;
@@ -51,6 +54,16 @@ public class KnowledgeHolderTileEntity extends GenericTileEntity {
         return item instanceof LostKnowledgeItem;
     }
 
+    public void addKnownKnowledgeKeys(Set<KnowledgeKey> keys) {
+        for (int i = 0 ; i < items.getSlots() ; i++) {
+            ItemStack stack = items.getStackInSlot(i);
+            if (!stack.isEmpty()) {
+                KnowledgeKey key = LostKnowledgeItem.getKnowledgeKey(stack);
+                keys.add(key);
+            }
+        }
+    }
+
     public static BaseBlock createBlock() {
         return new BaseBlock(new BlockBuilder()
                 .tileEntitySupplier(KnowledgeHolderTileEntity::new)
@@ -69,8 +82,7 @@ public class KnowledgeHolderTileEntity extends GenericTileEntity {
         return new NoDirectionItemHander(this, CONTAINER_FACTORY.get()) {
             @Override
             public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
-                // @todo 1.15
-                return true;
+                return isValidKnowledgeItem(stack);
             }
 
             @Override

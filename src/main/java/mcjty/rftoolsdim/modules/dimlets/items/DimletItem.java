@@ -28,7 +28,7 @@ import static mcjty.lib.builder.TooltipBuilder.*;
 public class DimletItem extends Item implements ITooltipSettings, ITooltipExtras {
 
     private final TooltipBuilder tooltipBuilder = new TooltipBuilder()
-            .info(key("message.rftoolsdim.shiftmessage"))
+            .info(key("message.rftoolsdim.shiftmessage"), TooltipBuilder.parameter("key", DimletItem::isReadyDimlet, DimletTools::getDimletDescription))
             .infoShift(header(), gold(), TooltipBuilder.parameter("key", DimletItem::isReadyDimlet, DimletTools::getDimletDescription));
 
     private final DimletType type;

@@ -13,8 +13,10 @@ import mcjty.lib.tileentity.GenericTileEntity;
 import mcjty.lib.typed.Key;
 import mcjty.lib.typed.Type;
 import mcjty.lib.typed.TypedMap;
+import mcjty.lib.varia.OrientationTools;
 import mcjty.rftoolsbase.tools.ManualHelper;
 import mcjty.rftoolsdim.modules.dimlets.DimletModule;
+import mcjty.rftoolsdim.modules.dimlets.client.DimletClientHelper;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletDictionary;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletKey;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletTools;
@@ -22,6 +24,7 @@ import mcjty.rftoolsdim.modules.dimlets.data.DimletType;
 import mcjty.rftoolsdim.modules.dimlets.items.DimletItem;
 import mcjty.rftoolsdim.modules.dimlets.items.PartItem;
 import mcjty.rftoolsdim.modules.knowledge.data.DimletPattern;
+import mcjty.rftoolsdim.modules.knowledge.data.KnowledgeKey;
 import mcjty.rftoolsdim.modules.knowledge.data.KnowledgeManager;
 import mcjty.rftoolsdim.modules.workbench.WorkbenchModule;
 import mcjty.rftoolsdim.modules.workbench.network.PacketPatternToClient;
@@ -31,6 +34,7 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.capabilities.Capability;
@@ -42,6 +46,7 @@ import net.minecraftforge.items.ItemHandlerHelper;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.*;
 import java.util.function.Predicate;
 
 import static mcjty.lib.builder.TooltipBuilder.*;
@@ -52,6 +57,9 @@ import static mcjty.rftoolsdim.modules.knowledge.data.DimletPattern.PATTERN_DIM;
 import static mcjty.rftoolsdim.setup.Registration.DIMENSIONAL_SHARD;
 
 public class WorkbenchTileEntity extends GenericTileEntity {
+
+    public static final String CMD_GETDIMLETS = "workbench.getdimlets";
+    public static final String CLIENT_CMD_GETDIMLETS = "workbench.getdimlets";
 
     public static final String CMD_SUGGESTPARTS = "workbench.suggestParts";
     public static final String CMD_CHEATDIMLET = "workbench.cheatDimlet";
@@ -268,6 +276,55 @@ public class WorkbenchTileEntity extends GenericTileEntity {
             }
         };
     }
+
+    private Set<KnowledgeKey> getSupportedKnowledgeKeys() {
+        Set<KnowledgeKey> knownKeys = new HashSet<>();
+        for (Direction direction : OrientationTools.DIRECTION_VALUES) {
+            TileEntity tileEntity = world.getTileEntity(pos.offset(direction));
+            if (tileEntity instanceof KnowledgeHolderTileEntity) {
+                ((KnowledgeHolderTileEntity) tileEntity).addKnownKnowledgeKeys(knownKeys);
+            }
+        }
+        return knownKeys;
+    }
+
+    public List<DimletClientHelper.DimletWithInfo> getDimlets() {
+        Set<KnowledgeKey> knownKeys = getSupportedKnowledgeKeys();
+        List<DimletClientHelper.DimletWithInfo> dimlets = new ArrayList<>();
+        for (DimletKey dimlet : DimletDictionary.get().getDimlets()) {
+            KnowledgeKey kkey = KnowledgeManager.get().getKnowledgeKey(world, dimlet);
+            boolean craftable = knownKeys.contains(kkey);
+            dimlets.add(new DimletClientHelper.DimletWithInfo(dimlet, craftable));
+        }
+        return dimlets;
+    }
+
+    @Nonnull
+    @Override
+    public <T> List<T> executeWithResultList(String command, TypedMap args, Type<T> type) {
+        List<T> rc = super.executeWithResultList(command, args, type);
+        if (!rc.isEmpty()) {
+            return rc;
+        }
+        if (CMD_GETDIMLETS.equals(command)) {
+            return type.convert(getDimlets());
+        }
+        return Collections.emptyList();
+    }
+
+    @Override
+    public <T> boolean receiveListFromServer(String command, List<T> list, Type<T> type) {
+        boolean rc = super.receiveListFromServer(command, list, type);
+        if (rc) {
+            return true;
+        }
+        if (CLIENT_CMD_GETDIMLETS.equals(command)) {
+            DimletClientHelper.setDimletsOnGui(Type.create(DimletClientHelper.DimletWithInfo.class).convert(list));
+            return true;
+        }
+        return false;
+    }
+
 
     @Nonnull
     @Override

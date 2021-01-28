@@ -80,6 +80,7 @@ public class EndermanLootModifier extends LootModifier {
     protected List<ItemStack> doApply(List<ItemStack> generatedLoot, LootContext context) {
         Random random = context.getRandom();
 
+        spawnKnowledge(generatedLoot, context, random, 0.8f, DimletRarity.COMMON);
         spawnKnowledge(generatedLoot, context, random, commonKnowledgeChance, DimletRarity.COMMON);
         spawnKnowledge(generatedLoot, context, random, uncommonKnowledgeChance, DimletRarity.UNCOMMON);
         spawnKnowledge(generatedLoot, context, random, rareKnowledgeChance, DimletRarity.RARE);
