@@ -27,6 +27,7 @@ public class Items extends BaseItemModelProvider {
         parentedBlock(DimensionBuilderModule.DIMENSION_BUILDER.get(), "block/dimension_builder");
         parentedBlock(WorkbenchModule.WORKBENCH.get(), "block/dimlet_workbench");
         parentedBlock(WorkbenchModule.HOLDER.get(), "block/knowledge_holder");
+        parentedBlock(WorkbenchModule.RESEARCHER.get(), "block/researcher");
         parentedBlock(EnscriberModule.ENSCRIBER.get(), "block/enscriber");
         parentedBlock(EssencesModule.BLOCK_ABSORBER.get(), "block/block_absorber");
         parentedBlock(EssencesModule.BIOME_ABSORBER.get(), "block/biome_absorber");

@@ -1,12 +1,9 @@
 package mcjty.rftoolsdim.modules.knowledge.items;
 
 import mcjty.lib.builder.TooltipBuilder;
-import mcjty.lib.tooltips.ITooltipExtras;
 import mcjty.lib.tooltips.ITooltipSettings;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletRarity;
-import mcjty.rftoolsdim.modules.dimlets.items.DimletItem;
 import mcjty.rftoolsdim.modules.knowledge.KnowledgeModule;
-import mcjty.rftoolsdim.modules.knowledge.data.DimletPattern;
 import mcjty.rftoolsdim.modules.knowledge.data.KnowledgeKey;
 import mcjty.rftoolsdim.modules.knowledge.data.KnowledgeManager;
 import mcjty.rftoolsdim.setup.Registration;
@@ -16,16 +13,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
-import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 import static mcjty.lib.builder.TooltipBuilder.*;
 
-public class LostKnowledgeItem extends Item implements ITooltipSettings, ITooltipExtras {
+public class LostKnowledgeItem extends Item implements ITooltipSettings {
 
     private final TooltipBuilder tooltipBuilder = new TooltipBuilder()
             .info(key("message.rftoolsdim.shiftmessage"))
@@ -33,14 +28,13 @@ public class LostKnowledgeItem extends Item implements ITooltipSettings, IToolti
                     parameter("pattern", this::getPatternString),
                     parameter("reason", s -> getReasonString(s) != null, this::getReasonString));
 
+    private final DimletRarity rarity;
+
     private String getReasonString(ItemStack stack) {
         CompoundNBT tag = stack.getTag();
-        if (tag != null && tag.contains("pattern")) {
-            String pattern = tag.getString("pattern");
-            KnowledgeKey kkey = new KnowledgeKey(pattern);
-            return null;//@todo 1.16 find reason kkey.getReason();
+        if (tag != null && tag.contains("reason")) {
+            return tag.getString("reason");
         }
-
         return null;
     }
 
@@ -51,12 +45,16 @@ public class LostKnowledgeItem extends Item implements ITooltipSettings, IToolti
             KnowledgeKey kkey = new KnowledgeKey(pattern);
             return kkey.getRarity().name().toLowerCase() + " " + kkey.getType().name().toLowerCase();
         }
-
         return "<Unknown>";
     }
 
-    public LostKnowledgeItem() {
+    public LostKnowledgeItem(DimletRarity rarity) {
         super(Registration.createStandardProperties());
+        this.rarity = rarity;
+    }
+
+    public DimletRarity getRarity() {
+        return rarity;
     }
 
     @Nullable
@@ -64,8 +62,7 @@ public class LostKnowledgeItem extends Item implements ITooltipSettings, IToolti
         CompoundNBT tag = stack.getTag();
         if (tag != null && tag.contains("pattern")) {
             String pattern = tag.getString("pattern");
-            KnowledgeKey kkey = new KnowledgeKey(pattern);
-            return kkey;
+            return new KnowledgeKey(pattern);
         }
         return null;
     }
@@ -76,17 +73,18 @@ public class LostKnowledgeItem extends Item implements ITooltipSettings, IToolti
         tooltipBuilder.makeTooltip(getRegistryName(), itemStack, list, flags);
     }
 
-    @Override
-    public List<Pair<ItemStack, Integer>> getItems(ItemStack stack) {
-        List<Pair<ItemStack, Integer>> items = new ArrayList<>();
-        KnowledgeKey key = getKnowledgeKey(stack);
-        if (key != null) {
-            DimletPattern pattern = KnowledgeManager.get().getPattern(key);
-            if (pattern != null) {
-                DimletItem.addPatternItems(pattern, items);
-            }
+    public static ItemStack createUnresearchedLostKnowledge(DimletRarity rarity) {
+        switch (rarity) {
+            case COMMON:
+                return new ItemStack(KnowledgeModule.COMMON_LOST_KNOWLEDGE.get());
+            case UNCOMMON:
+                return new ItemStack(KnowledgeModule.UNCOMMON_LOST_KNOWLEDGE.get());
+            case RARE:
+                return new ItemStack(KnowledgeModule.RARE_LOST_KNOWLEDGE.get());
+            case LEGENDARY:
+                return new ItemStack(KnowledgeModule.LEGENDARY_LOST_KNOWLEDGE.get());
         }
-        return items;
+        return ItemStack.EMPTY;
     }
 
     public static ItemStack createRandomLostKnowledge(World world, DimletRarity rarity, Random random) {
@@ -110,7 +108,12 @@ public class LostKnowledgeItem extends Item implements ITooltipSettings, IToolti
                 break;
         }
         ItemStack result = new ItemStack(item);
-        result.getOrCreateTag().putString("pattern", patterns.get(random.nextInt(patterns.size())).serialize());
+        KnowledgeKey kkey = patterns.get(random.nextInt(patterns.size()));
+        result.getOrCreateTag().putString("pattern", kkey.serialize());
+        String reason = KnowledgeManager.get().getReason(world, kkey);
+        if (reason != null) {
+            result.getTag().putString("reason", reason);
+        }
         return result;
     }
 }

@@ -9,9 +9,9 @@
       "entity": "this"
     }
   ],
-  "commonKnowledgeChance": 0.05,
-  "uncommonKnowledgeChance": 0.01,
-  "rareKnowledgeChance": 0.001,
+  "commonKnowledgeChance": 0.1,
+  "uncommonKnowledgeChance": 0.02,
+  "rareKnowledgeChance": 0.002,
   "legendaryKnowledgeChance": 0,
   "commonDimletChance": 0.02,
   "uncommonDimletChance": 0.005,

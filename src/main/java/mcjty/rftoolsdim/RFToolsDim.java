@@ -13,9 +13,11 @@ import mcjty.rftoolsdim.setup.Config;
 import mcjty.rftoolsdim.setup.ModSetup;
 import mcjty.rftoolsdim.setup.Registration;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.registries.ForgeRegistries;
 
 @Mod(RFToolsDim.MODID)
 public class RFToolsDim {
@@ -35,8 +37,12 @@ public class RFToolsDim {
 
         FMLJavaModLoadingContext.get().getModEventBus().addListener(setup::init);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(modules::init);
+        MinecraftForge.EVENT_BUS.addListener(KnowledgeModule::onWorldLoad);
+
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
             FMLJavaModLoadingContext.get().getModEventBus().addListener(modules::initClient);
+            FMLJavaModLoadingContext.get().getModEventBus().addListener(WorkbenchModule::onTextureStitch);
+            FMLJavaModLoadingContext.get().getModEventBus().addListener(DimensionBuilderModule::onTextureStitch);
         });
     }
 

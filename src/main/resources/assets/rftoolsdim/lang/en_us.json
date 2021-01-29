@@ -5,6 +5,7 @@
   "block.rftoolsdim.enscriber": "Enscriber",
   "block.rftoolsdim.block_absorber": "Block Absorber",
   "block.rftoolsdim.biome_absorber": "Biome Absorber",
+  "block.rftoolsdim.researcher": "Researcher",
 
   "item.rftoolsdim.empty_dimlet": "Empty Dimlet",
   "item.rftoolsdim.terrain_dimlet": "Terrain Dimlet",
@@ -95,11 +96,14 @@
   "message.rftoolsdim.rare_essence.header": "This is an ingredient for a dimlet",
   "message.rftoolsdim.rare_essence.gold": "Use this in the Dimlet Workbench to create a dimlet",
 
-  "message.rftoolsdim.dimension_builder.header": "The Dimension Builder can create (and maintain) a dimension as described by a realized dimension tab",
-  "message.rftoolsdim.dimension_builder.gold": "Be careful to chunkload the dimension builder so that power is maintained at all times!",
+  "message.rftoolsdim.dimension_builder.header": "The Dimension Builder can create (and maintain) a dimension as described by a realized dimension tab. Be careful to chunkload the dimension builder so that power is maintained at all times!",
+  "message.rftoolsdim.dimension_builder.gold": "Infusing bonus: reduced power consumption and faster processing",
 
   "message.rftoolsdim.enscriber.header": "With this device you can create new dimension tabs based on dimlets",
   "message.rftoolsdim.enscriber.gold": "The realized dimension tab created by this device can be used by the Dimension Builder",
+
+  "message.rftoolsdim.researcher.header": "This device can research various things in order to get knowledge",
+  "message.rftoolsdim.researcher.gold": "Infusing bonus: reduced power consumption and faster processing",
 
   "message.rftoolsdim.dimlet_workbench.header": "With the Dimlet Workbench you can create dimlets",
   "message.rftoolsdim.dimlet_workbench.gold": "To use this you need to place a Knowledge Holder adjacent to it",

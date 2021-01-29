@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "rur",
+    "XFC",
+    "rur"
+  ],
+  "key": {
+    "C": {
+      "item": "minecraft:enchanting_table"
+    },
+    "X": {
+      "item": "minecraft:comparator"
+    },
+    "u": {
+      "item": "rftoolsdim:empty_dimlet"
+    },
+    "r": {
+      "item": "minecraft:redstone"
+    },
+    "F": {
+      "item": "rftoolsbase:machine_frame"
+    }
+  },
+  "result": {
+    "item": "rftoolsdim:researcher"
+  }
+}

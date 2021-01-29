@@ -5,16 +5,19 @@ import mcjty.lib.container.GenericContainer;
 import mcjty.lib.gui.GenericGuiContainer;
 import mcjty.lib.modules.IModule;
 import mcjty.rftoolsdim.modules.dimensionbuilder.blocks.DimensionBuilderTileEntity;
+import mcjty.rftoolsdim.modules.dimensionbuilder.client.DimensionBuilderRenderer;
 import mcjty.rftoolsdim.modules.dimensionbuilder.client.GuiDimensionBuilder;
 import mcjty.rftoolsdim.modules.dimensionbuilder.items.DimensionMonitorItem;
 import mcjty.rftoolsdim.modules.dimensionbuilder.items.EmptyDimensionTab;
 import mcjty.rftoolsdim.modules.dimensionbuilder.items.RealizedDimensionTab;
 import mcjty.rftoolsdim.setup.Config;
 import mcjty.rftoolsdim.setup.Registration;
+import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntityType;
+import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -33,6 +36,14 @@ public class DimensionBuilderModule implements IModule {
 
     public static final RegistryObject<DimensionMonitorItem> DIMENSION_MONITOR = ITEMS.register("dimension_monitor", DimensionMonitorItem::new);
 
+    public static void onTextureStitch(TextureStitchEvent.Pre event) {
+        if (!event.getMap().getTextureLocation().equals(AtlasTexture.LOCATION_BLOCKS_TEXTURE)) {
+            return;
+        }
+        event.addSprite(DimensionBuilderRenderer.STAGES);
+    }
+
+
     @Override
     public void init(FMLCommonSetupEvent event) {
 
@@ -44,7 +55,7 @@ public class DimensionBuilderModule implements IModule {
             GenericGuiContainer.register(CONTAINER_DIMENSION_BUILDER.get(), GuiDimensionBuilder::new);
             DimensionMonitorItem.initOverrides(DIMENSION_MONITOR.get());
         });
-
+        DimensionBuilderRenderer.register();
     }
 
     @Override

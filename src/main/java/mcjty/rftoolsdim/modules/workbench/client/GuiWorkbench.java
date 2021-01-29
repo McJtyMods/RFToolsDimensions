@@ -167,12 +167,13 @@ public class GuiWorkbench extends GenericGuiContainer<WorkbenchTileEntity, Gener
         }
         Panel widget = itemList.getChild(selected);
         Object userObject = widget.getUserObject();
-        if (userObject instanceof DimletKey) {
-            DimletKey key = (DimletKey) userObject;
+        if (userObject instanceof DimletClientHelper.DimletWithInfo) {
+            DimletClientHelper.DimletWithInfo key = (DimletClientHelper.DimletWithInfo) userObject;
+            DimletKey dimlet = key.getDimlet();
             sendServerCommandTyped(RFToolsDimMessages.INSTANCE, WorkbenchTileEntity.CMD_CHEATDIMLET,
                     TypedMap.builder()
-                            .put(PARAM_TYPE, key.getType().name())
-                            .put(PARAM_ID, key.getKey())
+                            .put(PARAM_TYPE, dimlet.getType().name())
+                            .put(PARAM_ID, dimlet.getKey())
                             .build());
         }
     }

@@ -8,6 +8,7 @@ import mcjty.rftoolsdim.modules.enscriber.EnscriberModule;
 import mcjty.rftoolsdim.modules.essences.EssencesModule;
 import mcjty.rftoolsdim.modules.workbench.WorkbenchModule;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
 import static net.minecraftforge.client.model.generators.ModelProvider.BLOCK_FOLDER;
@@ -34,5 +35,10 @@ public class BlockStates extends BaseBlockStateProvider {
         singleTextureBlock(DecorativeModule.DIMENSIONAL_PATTERN1_BLOCK.get(), BLOCK_FOLDER + "/dimensional_pattern1_block", "block/decorative/dimblock_pattern7");
         singleTextureBlock(DecorativeModule.DIMENSIONAL_PATTERN2_BLOCK.get(), BLOCK_FOLDER + "/dimensional_pattern2_block", "block/decorative/dimblock_pattern8");
         singleTextureBlock(DecorativeModule.DIMENSIONAL_SMALL_BLOCK.get(), BLOCK_FOLDER + "/dimensional_small_blocks", "block/decorative/dimblock_small_blocks");
+
+        simpleBlock(WorkbenchModule.RESEARCHER.get(), models().slab("researcher",
+                modLoc("block/researcher_side"),
+                new ResourceLocation("rftoolsbase", "block/base/machinebottom"),
+                new ResourceLocation("rftoolsbase", "block/base/machinetop")));
     }
 }

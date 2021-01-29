@@ -35,11 +35,23 @@ public class KnowledgeManager {
     private Map<KnowledgeKey, DimletPattern> patterns = null;
     // All patterns that are actually used by dimlets
     private final Map<DimletRarity, List<KnowledgeKey>> knownPatterns = new HashMap<>();
+    // All patterns with their corresponding reason (if any)
+    private final Map<KnowledgeKey, String> keyReasons = new HashMap<>();
 
     private static final KnowledgeManager INSTANCE = new KnowledgeManager();
 
+    private final CommonTags commonTags = new CommonTags();
+
     public static KnowledgeManager get() {
         return INSTANCE;
+    }
+
+    public void clear() {
+        commonTags.clear();
+        keyReasons.clear();
+        knownPatterns.clear();
+        patterns = null;
+        worldSeed = -1;
     }
 
     private void resolve(World world) {
@@ -83,7 +95,7 @@ public class KnowledgeManager {
     }
 
     @Nullable
-    public static String getKnowledgeSetReason(DimletKey key) {
+    private String getKnowledgeSetReason(DimletKey key) {
         switch (key.getType()) {
             case TERRAIN:
                 return null;
@@ -92,7 +104,7 @@ public class KnowledgeManager {
             case BIOME:
                 Biome biome = ForgeRegistries.BIOMES.getValue(new ResourceLocation(key.getKey()));
                 if (biome != null) {
-                    return biome.getCategory().getName();
+                    return biome.getCategory().getName() + " biomes";
                 }
                 return null;
             case FEATURE:
@@ -102,14 +114,14 @@ public class KnowledgeManager {
             case BLOCK:
                 ResourceLocation tagId = getMostCommonTagForBlock(key);
                 if (tagId != null) {
-                    return tagId.toString();
+                    return tagId.getPath();
                 }
                 return null;
         }
         return null;
     }
 
-    private KnowledgeSet getKnowledgeSet(World world, DimletKey key) {
+    private KnowledgeSet getKnowledgeSet(DimletKey key) {
         switch (key.getType()) {
             case TERRAIN:
                 return TerrainType.byName(key.getKey()).getSet();
@@ -139,7 +151,7 @@ public class KnowledgeManager {
         return KnowledgeSet.values()[i%(KnowledgeSet.values().length)];
     }
 
-    private static ResourceLocation getMostCommonTagForBlock(DimletKey key) {
+    private ResourceLocation getMostCommonTagForBlock(DimletKey key) {
         ResourceLocation mostImportant = null;
         Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(key.getKey()));
         if (block == null) {
@@ -149,9 +161,13 @@ public class KnowledgeManager {
             int maxAmount = -1;
             for (ResourceLocation tag : tags) {
                 List<Block> elements = BlockTags.createOptional(tag).getAllElements();
-                if (elements.size() > maxAmount) {
+                int size = elements.size();
+                if (commonTags.isCommon(tag)) {
+                    size += 10; // Extra bonus
+                }
+                if (size > maxAmount) {
                     mostImportant = tag;
-                    maxAmount = elements.size();
+                    maxAmount = size;
                 }
             }
         }
@@ -175,7 +191,7 @@ public class KnowledgeManager {
         if (settings == null) {
             return null;
         }
-        KnowledgeSet set = getKnowledgeSet(world, key);
+        KnowledgeSet set = getKnowledgeSet(key);
         return new KnowledgeKey(key.getType(), settings.getRarity(), set);
     }
 
@@ -185,17 +201,25 @@ public class KnowledgeManager {
         return patterns.get(getKnowledgeKey(world, key));
     }
 
-    public DimletPattern getPattern(KnowledgeKey kkey) {
-        return patterns.get(kkey);
+    public String getReason(World world, KnowledgeKey key) {
+        getKnownPatterns(world, key.getRarity());   // Make sure to refresh known patterns (and keyReasons)
+        return keyReasons.get(key);
     }
 
     public List<KnowledgeKey> getKnownPatterns(World world, DimletRarity rarity) {
         if (!knownPatterns.containsKey(rarity)) {
             List<KnowledgeKey> set = new ArrayList<>();
             for (DimletKey key : DimletDictionary.get().getDimlets()) {
-                KnowledgeKey kkey = getKnowledgeKey(world, key);
-                if (kkey != null) {
-                    set.add(kkey);
+                DimletSettings settings = DimletDictionary.get().getSettings(key);
+                if (settings != null && Objects.equals(settings.getRarity(), rarity)) {
+                    KnowledgeKey kkey = getKnowledgeKey(world, key);
+                    if (kkey != null) {
+                        set.add(kkey);
+                        String reason = getKnowledgeSetReason(key);
+                        if (reason != null) {
+                            keyReasons.put(kkey, reason);
+                        }
+                    }
                 }
             }
             RFToolsDim.setup.getLogger().info("Patterns for rarity " + rarity.name() + ": " + set.size());

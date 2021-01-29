@@ -138,6 +138,12 @@ public class Recipes extends BaseRecipeProvider {
                         .key('u', DimletModule.EMPTY_DIMLET.get())
                         .addCriterion("frame", hasItem(VariousModule.MACHINE_FRAME.get())),
                 "pup", "CFC", "pup");
+        build(consumer, ShapedRecipeBuilder.shapedRecipe(WorkbenchModule.RESEARCHER.get())
+                        .key('C', Blocks.ENCHANTING_TABLE)
+                        .key('X', Blocks.COMPARATOR)
+                        .key('u', DimletModule.EMPTY_DIMLET.get())
+                        .addCriterion("frame", hasItem(VariousModule.MACHINE_FRAME.get())),
+                "rur", "XFC", "rur");
 
         build(consumer, ShapedRecipeBuilder.shapedRecipe(EssencesModule.BLOCK_ABSORBER.get())
                         .key('C', Blocks.SPONGE)

@@ -23,6 +23,7 @@ import mcjty.rftoolsdim.modules.dimlets.data.DimletTools;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletType;
 import mcjty.rftoolsdim.modules.dimlets.items.DimletItem;
 import mcjty.rftoolsdim.modules.dimlets.items.PartItem;
+import mcjty.rftoolsdim.modules.knowledge.data.CommonTags;
 import mcjty.rftoolsdim.modules.knowledge.data.DimletPattern;
 import mcjty.rftoolsdim.modules.knowledge.data.KnowledgeKey;
 import mcjty.rftoolsdim.modules.knowledge.data.KnowledgeManager;

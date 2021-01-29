@@ -95,7 +95,7 @@ public class EndermanLootModifier extends LootModifier {
 
     private void spawnKnowledge(List<ItemStack> generatedLoot, LootContext context, Random random, float chance, DimletRarity rarity) {
         if (random.nextFloat() < chance) {
-            ItemStack stack = LostKnowledgeItem.createRandomLostKnowledge(context.getWorld(), rarity, random);
+            ItemStack stack = LostKnowledgeItem.createUnresearchedLostKnowledge(rarity);
             if (!stack.isEmpty()) {
                 generatedLoot.add(stack);
             }

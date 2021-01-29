@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/slab",
+  "textures": {
+    "side": "rftoolsdim:block/researcher_side",
+    "bottom": "rftoolsbase:block/base/machinebottom",
+    "top": "rftoolsbase:block/base/machinetop"
+  }
+}
