@@ -1,16 +1,18 @@
 package mcjty.rftoolsdim.dimension;
 
+import mcjty.rftoolsdim.modules.knowledge.data.KnowledgeSet;
 import net.minecraft.util.ResourceLocation;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public enum TimeType {
-    NORMAL("normal", DimensionRegistry.NORMAL_TIME_ID),
-    DAY("day", DimensionRegistry.FIXED_DAY_ID),
-    NIGHT("night", DimensionRegistry.FIXED_NIGHT_ID);
+    NORMAL("normal", KnowledgeSet.SET1, DimensionRegistry.NORMAL_TIME_ID),
+    DAY("day", KnowledgeSet.SET2, DimensionRegistry.FIXED_DAY_ID),
+    NIGHT("night", KnowledgeSet.SET2, DimensionRegistry.FIXED_NIGHT_ID);
 
     private final String name;
+    private final KnowledgeSet set;
     private final ResourceLocation dimensionType;
 
     private static final Map<String, TimeType> TYPE_BY_NAME = new HashMap<>();
@@ -21,13 +23,18 @@ public enum TimeType {
         }
     }
 
-    TimeType(String name, ResourceLocation dimensionType) {
+    TimeType(String name, KnowledgeSet set, ResourceLocation dimensionType) {
         this.name = name;
+        this.set = set;
         this.dimensionType = dimensionType;
     }
 
     public String getName() {
         return name;
+    }
+
+    public KnowledgeSet getSet() {
+        return set;
     }
 
     public ResourceLocation getDimensionType() {

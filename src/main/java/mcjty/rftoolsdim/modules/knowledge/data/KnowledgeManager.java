@@ -1,14 +1,26 @@
 package mcjty.rftoolsdim.modules.knowledge.data;
 
 import mcjty.lib.varia.DimensionId;
+import mcjty.rftoolsdim.RFToolsDim;
+import mcjty.rftoolsdim.dimension.TimeType;
+import mcjty.rftoolsdim.dimension.biomes.BiomeControllerType;
+import mcjty.rftoolsdim.dimension.features.FeatureType;
+import mcjty.rftoolsdim.dimension.terraintypes.TerrainType;
 import mcjty.rftoolsdim.modules.dimlets.DimletModule;
-import mcjty.rftoolsdim.modules.dimlets.data.*;
+import mcjty.rftoolsdim.modules.dimlets.data.DimletDictionary;
+import mcjty.rftoolsdim.modules.dimlets.data.DimletKey;
+import mcjty.rftoolsdim.modules.dimlets.data.DimletRarity;
+import mcjty.rftoolsdim.modules.dimlets.data.DimletSettings;
 import mcjty.rftoolsdim.setup.Registration;
+import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -70,15 +82,90 @@ public class KnowledgeManager {
         return EMPTY;
     }
 
-    private KnowledgeSet getKnowledgeSet(World world, DimletKey key) {
-        ResourceLocation id = DimletTools.getResourceLocation(key);
-        if (id == null) {
-            return KnowledgeSet.SET1;
-        } else {
-            // Calculate a hash based on the modid
-            int i = Math.abs(id.getNamespace().hashCode());
-            return KnowledgeSet.values()[i%(KnowledgeSet.values().length)];
+    @Nullable
+    public static String getKnowledgeSetReason(DimletKey key) {
+        switch (key.getType()) {
+            case TERRAIN:
+                return null;
+            case BIOME_CONTROLLER:
+                return null;
+            case BIOME:
+                Biome biome = ForgeRegistries.BIOMES.getValue(new ResourceLocation(key.getKey()));
+                if (biome != null) {
+                    return biome.getCategory().getName();
+                }
+                return null;
+            case FEATURE:
+                return null;
+            case TIME:
+                return null;
+            case BLOCK:
+                ResourceLocation tagId = getMostCommonTagForBlock(key);
+                if (tagId != null) {
+                    return tagId.toString();
+                }
+                return null;
         }
+        return null;
+    }
+
+    private KnowledgeSet getKnowledgeSet(World world, DimletKey key) {
+        switch (key.getType()) {
+            case TERRAIN:
+                return TerrainType.byName(key.getKey()).getSet();
+            case BIOME_CONTROLLER:
+                return BiomeControllerType.byName(key.getKey()).getSet();
+            case BIOME:
+                return getBiomeKnowledgeSet(key);
+            case FEATURE:
+                return FeatureType.byName(key.getKey()).getSet();
+            case TIME:
+                return TimeType.byName(key.getKey()).getSet();
+            case BLOCK:
+                return getBlockKnowledgeSet(key);
+        }
+
+        return KnowledgeSet.SET1;
+    }
+
+    /// Create a knowledge set based on the most important tag for a given block
+    private KnowledgeSet getBlockKnowledgeSet(DimletKey key) {
+        ResourceLocation tagId = getMostCommonTagForBlock(key);
+        if (tagId == null) {
+            return KnowledgeSet.SET1;
+        }
+
+        int i = Math.abs(tagId.hashCode());
+        return KnowledgeSet.values()[i%(KnowledgeSet.values().length)];
+    }
+
+    private static ResourceLocation getMostCommonTagForBlock(DimletKey key) {
+        ResourceLocation mostImportant = null;
+        Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(key.getKey()));
+        if (block == null) {
+            RFToolsDim.setup.getLogger().error("Block '" + key.getKey() + "' is missing!");
+        } else {
+            Set<ResourceLocation> tags = block.getTags();
+            int maxAmount = -1;
+            for (ResourceLocation tag : tags) {
+                List<Block> elements = BlockTags.createOptional(tag).getAllElements();
+                if (elements.size() > maxAmount) {
+                    mostImportant = tag;
+                    maxAmount = elements.size();
+                }
+            }
+        }
+        return mostImportant;
+    }
+
+    /// Create a knowledge set based on the category of a biome
+    private KnowledgeSet getBiomeKnowledgeSet(DimletKey key) {
+        Biome biome = ForgeRegistries.BIOMES.getValue(new ResourceLocation(key.getKey()));
+        if (biome == null) {
+            RFToolsDim.setup.getLogger().error("Biome '" + key.getKey() + "' is missing!");
+            return KnowledgeSet.SET1;
+        }
+        return KnowledgeSet.values()[biome.getCategory().ordinal() % KnowledgeSet.values().length];
     }
 
     @Nullable
@@ -111,6 +198,7 @@ public class KnowledgeManager {
                     set.add(kkey);
                 }
             }
+            RFToolsDim.setup.getLogger().info("Patterns for rarity " + rarity.name() + ": " + set.size());
             knownPatterns.put(rarity, set);
         }
         return knownPatterns.get(rarity);

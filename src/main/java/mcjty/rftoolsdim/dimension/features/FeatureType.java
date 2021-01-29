@@ -2,18 +2,20 @@ package mcjty.rftoolsdim.dimension.features;
 
 import mcjty.rftoolsdim.dimension.features.instances.CubeFeature;
 import mcjty.rftoolsdim.dimension.features.instances.SphereFeature;
+import mcjty.rftoolsdim.modules.knowledge.data.KnowledgeSet;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public enum FeatureType {
-    NONE("none", null),
-    CUBES("cubes", new CubeFeature(false)),
-    HOLLOW_CUBES("hollow_cubes", new CubeFeature(true)),
-    SPHERES("spheres", new SphereFeature(false)),
-    HOLLOW_SPHERES("hollow_spheres", new SphereFeature(true));
+    NONE("none", KnowledgeSet.SET1, null),
+    CUBES("cubes", KnowledgeSet.SET2, new CubeFeature(false)),
+    HOLLOW_CUBES("hollow_cubes", KnowledgeSet.SET2, new CubeFeature(true)),
+    SPHERES("spheres", KnowledgeSet.SET3, new SphereFeature(false)),
+    HOLLOW_SPHERES("hollow_spheres", KnowledgeSet.SET3, new SphereFeature(true));
 
     private final String name;
+    private final KnowledgeSet set;
     private final IFeature feature;
 
     private static final Map<String, FeatureType> FEATURE_BY_NAME = new HashMap<>();
@@ -24,13 +26,18 @@ public enum FeatureType {
         }
     }
 
-    FeatureType(String name, IFeature feature) {
+    FeatureType(String name, KnowledgeSet set, IFeature feature) {
         this.name = name;
+        this.set = set;
         this.feature = feature;
     }
 
     public String getName() {
         return name;
+    }
+
+    public KnowledgeSet getSet() {
+        return set;
     }
 
     public IFeature getFeature() {

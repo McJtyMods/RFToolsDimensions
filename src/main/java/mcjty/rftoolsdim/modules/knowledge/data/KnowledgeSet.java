@@ -5,5 +5,6 @@ public enum KnowledgeSet {
     SET2,
     SET3,
     SET4,
-    SET5
+    SET5,
+    SET6
 }

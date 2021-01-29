@@ -19,7 +19,9 @@ import net.minecraft.world.World;
 import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nullable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 import static mcjty.lib.builder.TooltipBuilder.*;
 
@@ -27,7 +29,20 @@ public class LostKnowledgeItem extends Item implements ITooltipSettings, IToolti
 
     private final TooltipBuilder tooltipBuilder = new TooltipBuilder()
             .info(key("message.rftoolsdim.shiftmessage"))
-            .infoShift(header(), gold(), parameter("pattern", this::getPatternString));
+            .infoShift(header(), gold(),
+                    parameter("pattern", this::getPatternString),
+                    parameter("reason", s -> getReasonString(s) != null, this::getReasonString));
+
+    private String getReasonString(ItemStack stack) {
+        CompoundNBT tag = stack.getTag();
+        if (tag != null && tag.contains("pattern")) {
+            String pattern = tag.getString("pattern");
+            KnowledgeKey kkey = new KnowledgeKey(pattern);
+            return null;//@todo 1.16 find reason kkey.getReason();
+        }
+
+        return null;
+    }
 
     private String getPatternString(ItemStack stack) {
         CompoundNBT tag = stack.getTag();

@@ -118,18 +118,22 @@
   "message.rftoolsdim.common_lost_knowledge.header": "A common knowledge pattern",
   "message.rftoolsdim.common_lost_knowledge.gold": "This can be used in a Knowledge Holder to help with creating dimlets",
   "message.rftoolsdim.common_lost_knowledge.pattern": "Pattern: ",
+  "message.rftoolsdim.common_lost_knowledge.reason": "Reason: ",
 
   "message.rftoolsdim.uncommon_lost_knowledge.header": "An uncommon knowledge pattern",
   "message.rftoolsdim.uncommon_lost_knowledge.gold": "This can be used in a Knowledge Holder to help with creating dimlets",
   "message.rftoolsdim.uncommon_lost_knowledge.pattern": "Pattern: ",
+  "message.rftoolsdim.uncommon_lost_knowledge.reason": "Reason: ",
 
   "message.rftoolsdim.rare_lost_knowledge.header": "A rare knowledge pattern",
   "message.rftoolsdim.rare_lost_knowledge.gold": "This can be used in a Knowledge Holder to help with creating dimlets",
   "message.rftoolsdim.rare_lost_knowledge.pattern": "Pattern: ",
+  "message.rftoolsdim.rare_lost_knowledge.reason": "Reason: ",
 
   "message.rftoolsdim.legendary_lost_knowledge.header": "A legendary knowledge pattern",
   "message.rftoolsdim.legendary_lost_knowledge.gold": "This can be used in a Knowledge Holder to help with creating dimlets",
   "message.rftoolsdim.legendary_lost_knowledge.pattern": "Pattern: ",
+  "message.rftoolsdim.legendary_lost_knowledge.reason": "Reason: ",
 
   "message.rftoolsdim.dimension_monitor.header": "This device can monitor the current power in a dimension",
   "message.rftoolsdim.dimension_monitor.power": "Power: ",

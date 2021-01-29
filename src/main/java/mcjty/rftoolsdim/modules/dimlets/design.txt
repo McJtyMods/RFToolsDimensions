@@ -36,3 +36,4 @@ Todo:
 - Dimension Monitor tooltip
 - Dimension Type is time based + time dimlets
 - Better tooltip for dimlet: add key without shift
+- Dimlets for rftoolsdim decorative blocks
