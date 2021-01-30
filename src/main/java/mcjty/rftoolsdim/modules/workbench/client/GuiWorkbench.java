@@ -42,7 +42,7 @@ public class GuiWorkbench extends GenericGuiContainer<WorkbenchTileEntity, Gener
 
     private TextField searchBar;
     private WidgetList itemList;
-    private Slider slider;
+    private ToggleButton allFilter;
     private long dimletListAge = -1;
 
     private static String[] pattern = null;
@@ -75,11 +75,12 @@ public class GuiWorkbench extends GenericGuiContainer<WorkbenchTileEntity, Gener
                 }
             }
         });
-        slider = slider(243, 22, 8, 132).scrollableName("widgets");
+        Slider slider = slider(243, 22, 8, 132).scrollableName("widgets");
 
-        Button createButton = button(210, 158, 40, 18, "Create").event(this::createDimlet);
+        Button createButton = button(210, 178, 40, 18, "Create").event(this::createDimlet);
+        allFilter = new ToggleButton().hint(210, 158, 40, 18).text("All").event(this::toggleAll);
 
-        Panel toplevel = positional().background(iconLocation).children(searchBar, itemList, slider, createButton);
+        Panel toplevel = positional().background(iconLocation).children(searchBar, itemList, slider, createButton, allFilter);
         toplevel.bounds(guiLeft, guiTop, xSize, ySize);
 
         window = new Window(this, toplevel);
@@ -198,6 +199,10 @@ public class GuiWorkbench extends GenericGuiContainer<WorkbenchTileEntity, Gener
         }
     }
 
+    private void toggleAll() {
+        dimletListAge = -1;
+    }
+
 
     private void search(String filter) {
         dimletListAge = -1;
@@ -213,7 +218,7 @@ public class GuiWorkbench extends GenericGuiContainer<WorkbenchTileEntity, Gener
 
         String filter = searchBar.getText().toLowerCase();
         DimletClientHelper.dimlets.stream()
-                .filter(key -> dimletMatches(filter, key.getDimlet()))
+                .filter(key -> dimletMatches(filter, key))
                 .sorted()
                 .forEachOrdered(this::addItemToList);
 
@@ -222,10 +227,14 @@ public class GuiWorkbench extends GenericGuiContainer<WorkbenchTileEntity, Gener
         }
     }
 
-    private boolean dimletMatches(String filter, DimletKey key) {
-        String readableName = DimletTools.getReadableName(key);
-        return readableName.toLowerCase().contains(filter)
-                || key.getType().name().toLowerCase().contains(filter);
+    private boolean dimletMatches(String filter, DimletClientHelper.DimletWithInfo key) {
+        if (allFilter.isPressed() || key.isCraftable()) {
+            DimletKey dimlet = key.getDimlet();
+            String readableName = DimletTools.getReadableName(dimlet);
+            return readableName.toLowerCase().contains(filter)
+                    || dimlet.getType().name().toLowerCase().contains(filter);
+        }
+        return false;
     }
 
     private void addItemToList(DimletClientHelper.DimletWithInfo key) {

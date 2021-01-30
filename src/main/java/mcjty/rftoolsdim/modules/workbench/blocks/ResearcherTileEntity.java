@@ -129,8 +129,8 @@ public class ResearcherTileEntity extends GenericTileEntity implements ITickable
             if (!stack.isEmpty()) {
                 progress--;
                 if (progress <= 0) {
-                    research();
                     progress = 0;
+                    research();
                     markDirtyClient();
                 }
                 energyStorage.consumeEnergy((long) (WorkbenchConfig.RESEARCHER_USE_PER_TICK.get() / (1 + infusable.getInfusedFactor() / 3.0f)));
@@ -147,7 +147,10 @@ public class ResearcherTileEntity extends GenericTileEntity implements ITickable
                 DimletRarity rarity = ((LostKnowledgeItem) item).getRarity();
                 ItemStack researched = LostKnowledgeItem.createRandomLostKnowledge(world, rarity, world.getRandom());
                 items.setStackInSlot(SLOT_OUT, researched);
-                items.setStackInSlot(SLOT_IN, ItemStack.EMPTY);
+                items.decrStackSize(SLOT_IN, 1);
+                if (!items.getStackInSlot(SLOT_IN).isEmpty()) {
+                    progress = getMaxProgress();
+                }
             }
         }
     }
