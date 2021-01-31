@@ -71,4 +71,28 @@ public class DimletDictionary {
         DimletPackages.readPackage(filename, this::register);
     }
 
+    @Nullable
+    public DimletKey getBlockDimlet(String block) {
+        for (Map.Entry<DimletKey, DimletSettings> entry : dimlets.entrySet()) {
+            DimletKey key = entry.getKey();
+            if (key.getType().equals(DimletType.BLOCK)) {
+                if (Objects.equals(key.getKey(), block)) {
+                    return key;
+                }
+            }
+        }
+        return null;
+    }
+
+    public DimletKey getBiomeDimlet(String biomeId) {
+        for (Map.Entry<DimletKey, DimletSettings> entry : dimlets.entrySet()) {
+            DimletKey key = entry.getKey();
+            if (key.getType().equals(DimletType.BIOME)) {
+                if (Objects.equals(key.getKey(), biomeId)) {
+                    return key;
+                }
+            }
+        }
+        return null;
+    }
 }

@@ -2,8 +2,12 @@ package mcjty.rftoolsdim.modules.knowledge.items;
 
 import mcjty.lib.builder.TooltipBuilder;
 import mcjty.lib.tooltips.ITooltipSettings;
+import mcjty.rftoolsdim.modules.dimlets.data.DimletDictionary;
+import mcjty.rftoolsdim.modules.dimlets.data.DimletKey;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletRarity;
+import mcjty.rftoolsdim.modules.dimlets.data.DimletSettings;
 import mcjty.rftoolsdim.modules.knowledge.KnowledgeModule;
+import mcjty.rftoolsdim.modules.knowledge.data.DimletPattern;
 import mcjty.rftoolsdim.modules.knowledge.data.KnowledgeKey;
 import mcjty.rftoolsdim.modules.knowledge.data.KnowledgeManager;
 import mcjty.rftoolsdim.setup.Registration;
@@ -87,11 +91,39 @@ public class LostKnowledgeItem extends Item implements ITooltipSettings {
         return ItemStack.EMPTY;
     }
 
+    public static ItemStack createLostKnowledge(World world, DimletKey key) {
+        DimletSettings settings = DimletDictionary.get().getSettings(key);
+        if (settings != null) {
+            KnowledgeKey kkey = KnowledgeManager.get().getKnowledgeKey(world, key);
+            if (kkey != null) {
+                DimletRarity rarity = settings.getRarity();
+                return createLostKnowledgeStack(world, rarity, kkey);
+            }
+        }
+        return ItemStack.EMPTY;
+    }
+
     public static ItemStack createRandomLostKnowledge(World world, DimletRarity rarity, Random random) {
         List<KnowledgeKey> patterns = KnowledgeManager.get().getKnownPatterns(world, rarity);
         if (patterns.isEmpty()) {
             return ItemStack.EMPTY;
         }
+        KnowledgeKey kkey = patterns.get(random.nextInt(patterns.size()));
+        return createLostKnowledgeStack(world, rarity, kkey);
+    }
+
+    private static ItemStack createLostKnowledgeStack(World world, DimletRarity rarity, KnowledgeKey kkey) {
+        LostKnowledgeItem item = getKnowledgeItem(rarity);
+        ItemStack result = new ItemStack(item);
+        result.getOrCreateTag().putString("pattern", kkey.serialize());
+        String reason = KnowledgeManager.get().getReason(world, kkey);
+        if (reason != null) {
+            result.getTag().putString("reason", reason);
+        }
+        return result;
+    }
+
+    private static LostKnowledgeItem getKnowledgeItem(DimletRarity rarity) {
         LostKnowledgeItem item = KnowledgeModule.COMMON_LOST_KNOWLEDGE.get();
         switch (rarity) {
             case COMMON:
@@ -107,13 +139,6 @@ public class LostKnowledgeItem extends Item implements ITooltipSettings {
                 item = KnowledgeModule.LEGENDARY_LOST_KNOWLEDGE.get();
                 break;
         }
-        ItemStack result = new ItemStack(item);
-        KnowledgeKey kkey = patterns.get(random.nextInt(patterns.size()));
-        result.getOrCreateTag().putString("pattern", kkey.serialize());
-        String reason = KnowledgeManager.get().getReason(world, kkey);
-        if (reason != null) {
-            result.getTag().putString("reason", reason);
-        }
-        return result;
+        return item;
     }
 }

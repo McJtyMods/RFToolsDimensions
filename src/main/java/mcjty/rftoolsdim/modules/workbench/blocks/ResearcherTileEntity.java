@@ -15,11 +15,19 @@ import mcjty.lib.container.NoDirectionItemHander;
 import mcjty.lib.tileentity.GenericEnergyStorage;
 import mcjty.lib.tileentity.GenericTileEntity;
 import mcjty.rftoolsbase.tools.ManualHelper;
+import mcjty.rftoolsdim.modules.dimlets.data.DimletDictionary;
+import mcjty.rftoolsdim.modules.dimlets.data.DimletKey;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletRarity;
+import mcjty.rftoolsdim.modules.dimlets.data.DimletTools;
+import mcjty.rftoolsdim.modules.dimlets.items.DimletItem;
+import mcjty.rftoolsdim.modules.essences.EssencesModule;
+import mcjty.rftoolsdim.modules.essences.blocks.BiomeAbsorberTileEntity;
+import mcjty.rftoolsdim.modules.essences.blocks.BlockAbsorberTileEntity;
 import mcjty.rftoolsdim.modules.knowledge.data.KnowledgeKey;
 import mcjty.rftoolsdim.modules.knowledge.items.LostKnowledgeItem;
 import mcjty.rftoolsdim.modules.workbench.WorkbenchConfig;
 import mcjty.rftoolsdim.modules.workbench.WorkbenchModule;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.Item;
@@ -28,6 +36,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.IntReferenceHolder;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
@@ -38,6 +47,7 @@ import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -96,6 +106,12 @@ public class ResearcherTileEntity extends GenericTileEntity implements ITickable
         if (item instanceof LostKnowledgeItem) {
             KnowledgeKey key = LostKnowledgeItem.getKnowledgeKey(stack);
             return key == null;
+        } else if (item == EssencesModule.BLOCK_ABSORBER_ITEM.get()) {
+            return true;
+        } else if (item == EssencesModule.BIOME_ABSORBER_ITEM.get()) {
+            return true;
+        } else if (DimletItem.isReadyDimlet(stack)) {
+            return true;
         }
         return false;
     }
@@ -144,15 +160,64 @@ public class ResearcherTileEntity extends GenericTileEntity implements ITickable
         if (!stack.isEmpty()) {
             Item item = stack.getItem();
             if (item instanceof LostKnowledgeItem) {
-                DimletRarity rarity = ((LostKnowledgeItem) item).getRarity();
-                ItemStack researched = LostKnowledgeItem.createRandomLostKnowledge(world, rarity, world.getRandom());
-                items.setStackInSlot(SLOT_OUT, researched);
-                items.decrStackSize(SLOT_IN, 1);
-                if (!items.getStackInSlot(SLOT_IN).isEmpty()) {
-                    progress = getMaxProgress();
+                researchKnowledge((LostKnowledgeItem) item);
+            } else if (item == EssencesModule.BLOCK_ABSORBER_ITEM.get()) {
+                researchBlockAbsorber(stack);
+            } else if (item == EssencesModule.BIOME_ABSORBER_ITEM.get()) {
+                researchBiomeAbsorber(stack);
+            } else if (DimletItem.isReadyDimlet(stack)) {
+                researchDimlet(stack);
+            }
+        }
+    }
+
+    private void researchDimlet(ItemStack stack) {
+        DimletKey key = DimletTools.getDimletKey(stack);
+        if (key != null) {
+            ItemStack researched = LostKnowledgeItem.createLostKnowledge(world, key);
+            items.setStackInSlot(SLOT_OUT, researched);
+        }
+        items.decrStackSize(SLOT_IN, 1);
+    }
+
+    private void researchBiomeAbsorber(ItemStack stack) {
+        String biomeId = BiomeAbsorberTileEntity.getBiome(stack);
+        if (biomeId != null && !biomeId.isEmpty()) {
+            DimletKey key = DimletDictionary.get().getBiomeDimlet(biomeId);
+            if (key != null) {
+                int absorberProgress = BiomeAbsorberTileEntity.getProgress(stack);
+                if (world.getRandom().nextInt(100) < absorberProgress) {
+                    ItemStack researched = LostKnowledgeItem.createLostKnowledge(world, key);
+                    items.setStackInSlot(SLOT_OUT, researched);
                 }
             }
         }
+        items.decrStackSize(SLOT_IN, 1);
+    }
+
+    private void researchBlockAbsorber(ItemStack stack) {
+        String blockId = BlockAbsorberTileEntity.getBlock(stack);
+        if (blockId != null && !blockId.isEmpty()) {
+            DimletKey key = DimletDictionary.get().getBlockDimlet(blockId);
+            if (key != null) {
+                int absorberProgress = BlockAbsorberTileEntity.getProgress(stack);
+                if (world.getRandom().nextInt(100) < absorberProgress) {
+                    ItemStack researched = LostKnowledgeItem.createLostKnowledge(world, key);
+                    items.setStackInSlot(SLOT_OUT, researched);
+                }
+            }
+        }
+        items.decrStackSize(SLOT_IN, 1);
+    }
+
+    private void researchKnowledge(LostKnowledgeItem item) {
+        DimletRarity rarity = item.getRarity();
+        ItemStack researched = LostKnowledgeItem.createRandomLostKnowledge(world, rarity, world.getRandom());
+        items.setStackInSlot(SLOT_OUT, researched);
+        if (!items.getStackInSlot(SLOT_IN).isEmpty()) {
+            progress = getMaxProgress();
+        }
+        items.decrStackSize(SLOT_IN, 1);
     }
 
     public int getProgress() {
