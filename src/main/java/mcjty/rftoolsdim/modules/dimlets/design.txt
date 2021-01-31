@@ -31,9 +31,8 @@ Todo:
     - Liquid dimlets
     - Structures
     - Special (yellow) dimlets: owner, powerless, ...
-- Dimlet Workbench should respect knowledge holder with knowledge
 - Implement Knowledge Item loot
-- Dimension Monitor tooltip
-- Dimension Type is time based + time dimlets
-- Better tooltip for dimlet: add key without shift
 - Dimlets for rftoolsdim decorative blocks
+- Researcher: allow to research absorbers
+- Researcher: allow to research dimlets
+- Random dimension features

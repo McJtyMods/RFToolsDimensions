@@ -184,7 +184,7 @@ public class WorkbenchTileEntity extends GenericTileEntity {
         tryFindAndFitItem(player, s -> s.isItemEqual(DimletTools.getEmptyDimletStack(key.getType())), SLOT_EMPTY_DIMLET);
         tryFindAndFitItem(player, s -> s.isItemEqual(DimletTools.getNeededMemoryPart(key)), SLOT_MEMORY_PART);
         tryFindAndFitItem(player, s -> s.isItemEqual(DimletTools.getNeededEnergyPart(key)), SLOT_ENERGY_PART);
-        ItemStack essence = DimletTools.getNeededEssence(key);
+        ItemStack essence = DimletTools.getNeededEssence(key, DimletDictionary.get().getSettings(key));
         if (!essence.isEmpty()) {
             tryFindAndFitItem(player, s -> DimletTools.isFullEssence(s, essence, key.getKey()), SLOT_ESSENCE);
         } else {

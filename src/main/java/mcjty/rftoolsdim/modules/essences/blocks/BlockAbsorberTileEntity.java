@@ -42,7 +42,7 @@ public class BlockAbsorberTileEntity extends GenericTileEntity implements ITicka
     private static final int ABSORB_SPEED = 2;
 
     private int absorbing = 0;
-    private BlockState absorbingBlock = null;
+    private Block absorbingBlock = null;
     private int timer = ABSORB_SPEED;
     private Set<BlockPos> toscan = new HashSet<>();
 
@@ -129,7 +129,7 @@ public class BlockAbsorberTileEntity extends GenericTileEntity implements ITicka
                         absorbing = EssencesConfig.maxBlockAbsorption.get();
                         if (Item.getItemFromBlock(b.getBlock()) != null) {
                             // Safety
-                            absorbingBlock = b;
+                            absorbingBlock = b.getBlock();
                             toscan.clear();
                         }
                     }
@@ -153,7 +153,7 @@ public class BlockAbsorberTileEntity extends GenericTileEntity implements ITicka
 
                     if (blockMatches(c)) {
                         BlockState oldState = world.getBlockState(c);
-                        SoundTools.playSound(world, absorbingBlock.getBlock().getSoundType(oldState, world, c, null).getBreakSound(), getPos().getX(), getPos().getY(), getPos().getZ(), 1.0f, 1.0f);
+                        SoundTools.playSound(world, absorbingBlock.getSoundType(oldState, world, c, null).getBreakSound(), getPos().getX(), getPos().getY(), getPos().getZ(), 1.0f, 1.0f);
                         world.setBlockState(c, Blocks.AIR.getDefaultState());
                         absorbing--;
                         BlockState newState = world.getBlockState(c);
@@ -188,14 +188,14 @@ public class BlockAbsorberTileEntity extends GenericTileEntity implements ITicka
     }
 
     private boolean blockMatches(BlockPos c) {
-        return world.getBlockState(c).equals(absorbingBlock);
+        return world.getBlockState(c).getBlock().equals(absorbingBlock);
     }
 
     public int getAbsorbing() {
         return absorbing;
     }
 
-    public BlockState getAbsorbingBlock() {
+    public Block getAbsorbingBlock() {
         return absorbingBlock;
     }
 
@@ -232,7 +232,7 @@ public class BlockAbsorberTileEntity extends GenericTileEntity implements ITicka
             if (info.contains("block")) {
                 Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(info.getString("block")));
                 if (block != null) {
-                    absorbingBlock = block.getDefaultState();
+                    absorbingBlock = block;
                 }
             }
         }
@@ -263,7 +263,7 @@ public class BlockAbsorberTileEntity extends GenericTileEntity implements ITicka
         CompoundNBT info = getOrCreateInfo(tagCompound);
         info.putInt("absorbing", absorbing);
         if (absorbingBlock != null) {
-            info.putString("block", absorbingBlock.getBlock().getRegistryName().toString());
+            info.putString("block", absorbingBlock.getRegistryName().toString());
         }
     }
 }

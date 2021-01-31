@@ -3,6 +3,7 @@ package mcjty.rftoolsdim.modules.dimlets.data;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import mcjty.lib.varia.JSonTools;
+import net.minecraft.item.ItemStack;
 
 public class DimletSettings {
 
@@ -12,6 +13,7 @@ public class DimletSettings {
     private final int tickCost;
     private final boolean worldgen;
     private final boolean dimlet;
+    private final ItemStack essence;
 
     private DimletSettings(Builder builder) {
         this.rarity = builder.rarity;
@@ -20,6 +22,7 @@ public class DimletSettings {
         this.tickCost = builder.tickCost;
         this.worldgen = builder.worldgen;
         this.dimlet = builder.dimlet;
+        this.essence = builder.essence;
         if (rarity == null) {
             throw new IllegalStateException("Dimlet without rarity!");
         }
@@ -34,6 +37,11 @@ public class DimletSettings {
         jsonObject.add("ticks", new JsonPrimitive(tickCost));
         jsonObject.add("worldgen", new JsonPrimitive(worldgen));
         jsonObject.add("dimlet", new JsonPrimitive(dimlet));
+        if (!essence.isEmpty()) {
+            JsonObject json = JSonTools.itemStackToJson(essence);
+            jsonObject.add("essence", json);
+        }
+
     }
 
     public static DimletSettings parse(JsonObject jsonObject) {
@@ -46,8 +54,15 @@ public class DimletSettings {
         JSonTools.getElement(jsonObject, "ticks").ifPresent(e -> builder.tickCost(e.getAsInt()));
         JSonTools.getElement(jsonObject, "worldgen").ifPresent(e -> builder.worldgen(e.getAsBoolean()));
         JSonTools.getElement(jsonObject, "dimlet").ifPresent(e -> builder.dimlet(e.getAsBoolean()));
+        if (jsonObject.has("essence")) {
+            builder.essence(JSonTools.jsonToItemStack(jsonObject.getAsJsonObject("essence")));
+        }
 
         return builder.build();
+    }
+
+    public ItemStack getEssence() {
+        return essence;
     }
 
     public DimletRarity getRarity() {
@@ -95,6 +110,7 @@ public class DimletSettings {
         private Integer tickCost;
         private Boolean worldgen;
         private Boolean dimlet;
+        private ItemStack essence = ItemStack.EMPTY;
 
         private Builder() {
 
@@ -119,6 +135,11 @@ public class DimletSettings {
             if (dimlet == null) {
                 dimlet = false;
             }
+            return this;
+        }
+
+        public Builder essence(ItemStack stack) {
+            this.essence = stack;
             return this;
         }
 

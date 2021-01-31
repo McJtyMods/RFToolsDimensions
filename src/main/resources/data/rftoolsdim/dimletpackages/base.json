@@ -7,7 +7,10 @@
     "maintain": 20,
     "ticks": 10,
     "worldgen": true,
-    "dimlet": true
+    "dimlet": true,
+    "essence": {
+      "item": "minecraft:redstone"
+    }
   },
   {
     "type": "time",
@@ -17,7 +20,10 @@
     "maintain": 100,
     "ticks": 100,
     "worldgen": true,
-    "dimlet": true
+    "dimlet": true,
+    "essence": {
+      "item": "minecraft:black_dye"
+    }
   },
   {
     "type": "time",
@@ -27,7 +33,10 @@
     "maintain": 500,
     "ticks": 100,
     "worldgen": true,
-    "dimlet": true
+    "dimlet": true,
+    "essence": {
+      "item": "minecraft:glowstone_dust"
+    }
   },
   {
     "type": "terrain",
@@ -37,7 +46,10 @@
     "maintain": 10,
     "ticks": 10,
     "worldgen": true,
-    "dimlet": true
+    "dimlet": true,
+    "essence": {
+      "item": "minecraft:obsidian"
+    }
   },
   {
     "type": "terrain",
@@ -47,7 +59,10 @@
     "maintain": 10,
     "ticks": 20,
     "worldgen": true,
-    "dimlet": true
+    "dimlet": true,
+    "essence": {
+      "item": "minecraft:paper"
+    }
   },
   {
     "type": "terrain",
@@ -57,7 +72,10 @@
     "maintain": 10,
     "ticks": 20,
     "worldgen": true,
-    "dimlet": true
+    "dimlet": true,
+    "essence": {
+      "item": "minecraft:nether_wart"
+    }
   },
   {
     "type": "terrain",
@@ -67,7 +85,10 @@
     "maintain": 10,
     "ticks": 10,
     "worldgen": true,
-    "dimlet": true
+    "dimlet": true,
+    "essence": {
+      "item": "minecraft:dirt"
+    }
   },
   {
     "type": "biome_controller",
@@ -77,7 +98,10 @@
     "maintain": 10,
     "ticks": 1,
     "worldgen": true,
-    "dimlet": true
+    "dimlet": true,
+    "essence": {
+      "item": "minecraft:dirt"
+    }
   },
   {
     "type": "biome_controller",
@@ -87,7 +111,10 @@
     "maintain": 10,
     "ticks": 1,
     "worldgen": true,
-    "dimlet": true
+    "dimlet": true,
+    "essence": {
+      "item": "minecraft:stone"
+    }
   },
   {
     "type": "biome_controller",
@@ -97,7 +124,10 @@
     "maintain": 10,
     "ticks": 1,
     "worldgen": true,
-    "dimlet": true
+    "dimlet": true,
+    "essence": {
+      "item": "minecraft:redstone"
+    }
   },
   {
     "type": "feature",
@@ -107,7 +137,10 @@
     "maintain": 10,
     "ticks": 1,
     "worldgen": true,
-    "dimlet": true
+    "dimlet": true,
+    "essence": {
+      "item": "minecraft:redstone"
+    }
   },
   {
     "type": "feature",
@@ -117,7 +150,10 @@
     "maintain": 10,
     "ticks": 1,
     "worldgen": true,
-    "dimlet": true
+    "dimlet": true,
+    "essence": {
+      "item": "minecraft:clay_ball"
+    }
   },
   {
     "type": "feature",
@@ -127,7 +163,10 @@
     "maintain": 10,
     "ticks": 1,
     "worldgen": true,
-    "dimlet": true
+    "dimlet": true,
+    "essence": {
+      "item": "minecraft:slime_ball"
+    }
   },
   {
     "type": "feature",
@@ -137,7 +176,10 @@
     "maintain": 10,
     "ticks": 1,
     "worldgen": true,
-    "dimlet": true
+    "dimlet": true,
+    "essence": {
+      "item": "minecraft:stone"
+    }
   },
   {
     "type": "feature",
@@ -147,6 +189,9 @@
     "maintain": 10,
     "ticks": 1,
     "worldgen": true,
-    "dimlet": true
+    "dimlet": true,
+    "essence": {
+      "item": "minecraft:glass"
+    }
   }
 ]

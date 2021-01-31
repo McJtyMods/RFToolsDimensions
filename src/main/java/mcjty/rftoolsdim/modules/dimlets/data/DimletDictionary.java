@@ -38,7 +38,7 @@ public class DimletDictionary {
             if (type.equals(key.getType())) {
                 if (memoryPart.isItemEqual(DimletTools.getNeededMemoryPart(key))) {
                     if (energyPart.isItemEqual(DimletTools.getNeededEnergyPart(key))) {
-                        ItemStack neededEssence = DimletTools.getNeededEssence(key);
+                        ItemStack neededEssence = DimletTools.getNeededEssence(key, entry.getValue());
                         if (DimletTools.isFullEssence(essence, neededEssence, key.getKey())) {
                             DimletPattern neededPattern = KnowledgeManager.get().getPattern(world, key);
                             if (Objects.equals(neededPattern, pattern)) {

@@ -7,6 +7,14 @@
   "block.rftoolsdim.biome_absorber": "Biome Absorber",
   "block.rftoolsdim.researcher": "Researcher",
 
+  "block.rftoolsdim.dimensional_blank_block": "Dimensional Blank Block",
+  "block.rftoolsdim.dimensional_block": "Dimensional Block",
+  "block.rftoolsdim.dimensional_small_blocks": "Dimensional Small Blocks",
+  "block.rftoolsdim.dimensional_cross_block": "Dimensional Cross Block",
+  "block.rftoolsdim.dimensional_cross2_block": "Dimensional Cross2 Block",
+  "block.rftoolsdim.dimensional_pattern1_block": "Dimensional Pattern1 Block",
+  "block.rftoolsdim.dimensional_pattern2_block": "Dimensional Pattern2 Block",
+
   "item.rftoolsdim.empty_dimlet": "Empty Dimlet",
   "item.rftoolsdim.terrain_dimlet": "Terrain Dimlet",
   "item.rftoolsdim.empty_terrain_dimlet": "Empty Terrain Dimlet",

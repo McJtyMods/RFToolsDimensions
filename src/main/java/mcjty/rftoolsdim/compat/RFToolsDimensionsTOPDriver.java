@@ -10,6 +10,7 @@ import mcjty.rftoolsdim.modules.essences.blocks.BlockAbsorberTileEntity;
 import mcjty.theoneprobe.api.IProbeHitData;
 import mcjty.theoneprobe.api.IProbeInfo;
 import mcjty.theoneprobe.api.ProbeMode;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -59,9 +60,9 @@ public class RFToolsDimensionsTOPDriver implements TOPDriver {
             McJtyLibTOPDriver.DRIVER.addStandardProbeInfo(mode, probeInfo, player, world, blockState, data);
             Tools.safeConsume(world.getTileEntity(data.getPos()), (BlockAbsorberTileEntity te) -> {
                 int absorbing = te.getAbsorbing();
-                BlockState block = te.getAbsorbingBlock();
+                Block block = te.getAbsorbingBlock();
                 int pct = ((EssencesConfig.maxBlockAbsorption.get() - absorbing) * 100) / EssencesConfig.maxBlockAbsorption.get();
-                ItemStack stack = new ItemStack(block.getBlock(), 1);
+                ItemStack stack = new ItemStack(block, 1);
                 probeInfo.text((new StringTextComponent("Block: ").append(new TranslationTextComponent(stack.getTranslationKey())).mergeStyle(TextFormatting.GREEN)))
                         .horizontal()
                         .progress(pct, 100, probeInfo.defaultProgressStyle().suffix("%"))

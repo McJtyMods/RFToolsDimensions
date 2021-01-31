@@ -140,7 +140,10 @@ public class DimletTools {
         return ItemStack.EMPTY;
     }
 
-    public static ItemStack getNeededEssence(DimletKey key) {
+    public static ItemStack getNeededEssence(DimletKey key, DimletSettings settings) {
+        if (!settings.getEssence().isEmpty()) {
+            return settings.getEssence();
+        }
         switch (key.getType()) {
             case TERRAIN:
                 return ItemStack.EMPTY;
@@ -150,8 +153,11 @@ public class DimletTools {
                 return new ItemStack(EssencesModule.BIOME_ABSORBER_ITEM.get());
             case FEATURE:
                 return ItemStack.EMPTY;
+            case TIME:
+                return ItemStack.EMPTY;
             case BLOCK:
                 return new ItemStack(EssencesModule.BLOCK_ABSORBER_ITEM.get());
+
         }
         return ItemStack.EMPTY;
     }
@@ -167,6 +173,8 @@ public class DimletTools {
             case BIOME:
                 return new ResourceLocation(dimletKey.getKey());
             case FEATURE:
+                return null;
+            case TIME:
                 return null;
             case BLOCK:
                 return new ResourceLocation(dimletKey.getKey());
@@ -185,6 +193,8 @@ public class DimletTools {
                 String trans = "biome." + id.getNamespace() + "." + id.getPath();
                 return new TranslationTextComponent(trans);
             case FEATURE:
+                return new StringTextComponent(dimletKey.getKey().toLowerCase());
+            case TIME:
                 return new StringTextComponent(dimletKey.getKey().toLowerCase());
             case BLOCK:
                 Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(dimletKey.getKey()));
@@ -206,6 +216,8 @@ public class DimletTools {
                 return I18n.format(trans);
             case FEATURE:
                 return dimletKey.getKey().toLowerCase();
+            case TIME:
+                return dimletKey.getKey().toLowerCase();
             case BLOCK:
                 Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(dimletKey.getKey()));
                 return I18n.format(block.getTranslationKey());
@@ -225,6 +237,8 @@ public class DimletTools {
                 if (Objects.equals(desiredKey, block)) {
                     return BlockAbsorberTileEntity.getProgress(stack) >= 100;
                 }
+            } else {
+                return true;
             }
         }
         return false;
