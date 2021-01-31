@@ -10,6 +10,7 @@ import mcjty.rftoolsdim.dimension.network.PacketPropagatePowerToClients;
 import mcjty.rftoolsdim.modules.dimensionbuilder.items.PhasedFieldGenerator;
 import mcjty.rftoolsdim.setup.RFToolsDimMessages;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.ResourceLocation;
@@ -78,7 +79,7 @@ public class PowerHandler {
                 // Special effect handling.
                 if (doEffects && power > 0) {
                     // @todo 1.16
-//                handleEffectsForDimension(power, id, information);
+                    handleEffectsForDimension(power, world, entry.getValue());
                 }
                 if (world != null && !world.getPlayers().isEmpty()) {
                     handleRandomEffects(world, entry.getValue());
@@ -106,6 +107,47 @@ public class PowerHandler {
         return power;
     }
 
+    private void handleEffectsForDimension(long power, ServerWorld world, DimensionData information) {
+        if (world != null) {
+            // @todo 1.16 handle dimension specific effects
+//            Set<EffectType> effects = information.getEffectTypes();
+            List<ServerPlayerEntity> players = new ArrayList<>(world.getPlayers());
+            for (ServerPlayerEntity player : players) {
+                // @todo 1.16
+//                for (EffectType effect : effects) {
+//                    Potion potionEffect = effectsMap.get(effect);
+//                    if (potionEffect != null) {
+//                        Integer amplifier = effectAmplifierMap.get(effect);
+//                        if (amplifier == null) {
+//                            amplifier = 0;
+//                        }
+//                        player.addPotionEffect(new PotionEffect(potionEffect, EFFECTS_MAX*MAXTICKS*3, amplifier, true, true));
+//                    } else if (effect == EffectType.EFFECT_FLIGHT) {
+////                        BuffProperties.addBuff(player, PlayerBuff.BUFF_FLIGHT, EFFECTS_MAX * MAXTICKS * 2);
+//                        // @todo
+//                    }
+//                }
+                if (power < DimensionConfig.DIMPOWER_WARN3.get()) {
+                    // We are VERY low on power. Start bad effects.
+                    player.addPotionEffect(new EffectInstance(Effects.SLOWNESS, EFFECTS_MAX*MAXTICKS*2, 4, true, true));
+                    player.addPotionEffect(new EffectInstance(Effects.MINING_FATIGUE, EFFECTS_MAX*MAXTICKS*2, 4, true, true));
+                    player.addPotionEffect(new EffectInstance(Effects.POISON, EFFECTS_MAX*MAXTICKS*2, 2, true, true));
+                    player.addPotionEffect(new EffectInstance(Effects.HUNGER, EFFECTS_MAX*MAXTICKS*2, 2, true, true));
+                } else if (power < DimensionConfig.DIMPOWER_WARN2.get()) {
+                    player.addPotionEffect(new EffectInstance(Effects.SLOWNESS, EFFECTS_MAX*MAXTICKS*2, 2, true, true));
+                    player.addPotionEffect(new EffectInstance(Effects.MINING_FATIGUE, EFFECTS_MAX*MAXTICKS*2, 2, true, true));
+                    player.addPotionEffect(new EffectInstance(Effects.HUNGER, EFFECTS_MAX*MAXTICKS*2, 1, true, true));
+                } else if (power < DimensionConfig.DIMPOWER_WARN1.get()) {
+                    player.addPotionEffect(new EffectInstance(Effects.SLOWNESS, EFFECTS_MAX*MAXTICKS*2, 0, true, true));
+                    player.addPotionEffect(new EffectInstance(Effects.MINING_FATIGUE, EFFECTS_MAX*MAXTICKS*2, 0, true, true));
+                }
+            }
+
+        }
+    }
+
+
+
     private void handleLowPower(ServerWorld world, long power, boolean doEffects, int phasedCost) {
 
         if (power <= 0) {
@@ -119,7 +161,7 @@ public class PowerHandler {
                         player.attackEntityFrom(new DamageSourcePowerLow("powerLow"), 1000000.0f);
                     } else {
                         if (doEffects && DimensionConfig.PHASED_FIELD_GENERATOR_DEBUF.get()) {
-                            player.addPotionEffect(new EffectInstance(Effects.SLOWNESS, EFFECTS_MAX * MAXTICKS, 4, true, true));
+                            player.addPotionEffect(new EffectInstance(Effects.SLOWNESS, EFFECTS_MAX * MAXTICKS, 2, true, true));
                             player.addPotionEffect(new EffectInstance(Effects.MINING_FATIGUE, EFFECTS_MAX * MAXTICKS, 2, true, true));
                             player.addPotionEffect(new EffectInstance(Effects.HUNGER, EFFECTS_MAX * MAXTICKS, 2, true, true));
                         }
