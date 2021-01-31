@@ -1,13 +1,17 @@
 package mcjty.rftoolsdim.dimension.power;
 
 import mcjty.lib.varia.DimensionId;
+import mcjty.rftoolsdim.dimension.DimensionConfig;
 import mcjty.rftoolsdim.dimension.data.DimensionData;
 import mcjty.rftoolsdim.dimension.data.DimensionManager;
 import mcjty.rftoolsdim.dimension.data.PersistantDimensionManager;
 import mcjty.rftoolsdim.dimension.descriptor.CompiledDescriptor;
 import mcjty.rftoolsdim.dimension.network.PacketPropagatePowerToClients;
+import mcjty.rftoolsdim.modules.dimensionbuilder.items.PhasedFieldGenerator;
 import mcjty.rftoolsdim.setup.RFToolsDimMessages;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
@@ -61,21 +65,24 @@ public class PowerHandler {
             ServerWorld world = DimensionId.fromResourceLocation(entry.getKey()).loadWorld(overworld);
             CompiledDescriptor compiledDescriptor = DimensionManager.get().getDimensionInformation(world);
 
-            // If there is an activity probe we only drain power if the dimension is loaded (a player is there or a chunkloader)
-            // @todo 1.16
+            if (compiledDescriptor != null) {
+
+                // If there is an activity probe we only drain power if the dimension is loaded (a player is there or a chunkloader)
+                // @todo 1.16
 //            if (!information.isCheater() && ((world != null && world.getChunkProvider().getLoadedChunkCount() > 0) || information.getProbeCounter() == 0)) {
-            power = handlePowerDimension(doEffects, world, entry.getValue(), compiledDescriptor);
+                power = handlePowerDimension(doEffects, world, entry.getValue(), compiledDescriptor);
 //            } else {
 //                power = dimensionStorage.getEnergyLevel(id);
 //            }
 
-            // Special effect handling.
-            if (doEffects && power > 0) {
-                // @todo 1.16
+                // Special effect handling.
+                if (doEffects && power > 0) {
+                    // @todo 1.16
 //                handleEffectsForDimension(power, id, information);
-            }
-            if (world != null && !world.getPlayers().isEmpty()) {
-                handleRandomEffects(world, entry.getValue());
+                }
+                if (world != null && !world.getPlayers().isEmpty()) {
+                    handleRandomEffects(world, entry.getValue());
+                }
             }
         }
         mgr.save();
@@ -100,7 +107,7 @@ public class PowerHandler {
     }
 
     private void handleLowPower(ServerWorld world, long power, boolean doEffects, int phasedCost) {
-//        getPotions();
+
         if (power <= 0) {
             // We ran out of power!
             if (world != null) {
@@ -108,15 +115,15 @@ public class PowerHandler {
                 // @todo 1.16
 //                if (PowerConfiguration.dimensionDifficulty >= 1) {
                 for (PlayerEntity player : players) {
-//                        if (!RfToolsDimensionManager.checkValidPhasedFieldGenerator(player, true, phasedCost)) {
-                    player.attackEntityFrom(new DamageSourcePowerLow("powerLow"), 1000000.0f);
-//                        } else {
-//                            if (doEffects && PowerConfiguration.phasedFieldGeneratorDebuf) {
-//                                player.addPotionEffect(new PotionEffect(moveSlowdown, EFFECTS_MAX * MAXTICKS, 4, true, true));
-//                                player.addPotionEffect(new PotionEffect(digSlowdown, EFFECTS_MAX * MAXTICKS, 2, true, true));
-//                                player.addPotionEffect(new PotionEffect(hunger, EFFECTS_MAX * MAXTICKS, 2, true, true));
-//                            }
-//                        }
+                    if (!PhasedFieldGenerator.checkValidPhasedFieldGenerator(player, true, phasedCost)) {
+                        player.attackEntityFrom(new DamageSourcePowerLow("powerLow"), 1000000.0f);
+                    } else {
+                        if (doEffects && DimensionConfig.PHASED_FIELD_GENERATOR_DEBUF.get()) {
+                            player.addPotionEffect(new EffectInstance(Effects.SLOWNESS, EFFECTS_MAX * MAXTICKS, 4, true, true));
+                            player.addPotionEffect(new EffectInstance(Effects.MINING_FATIGUE, EFFECTS_MAX * MAXTICKS, 2, true, true));
+                            player.addPotionEffect(new EffectInstance(Effects.HUNGER, EFFECTS_MAX * MAXTICKS, 2, true, true));
+                        }
+                    }
                 }
 //                } else {
 //                    Random random = new Random();
@@ -154,7 +161,6 @@ public class PowerHandler {
 //            handleHowlingWolf(world, information);
 //        }
     }
-
 
 
 }

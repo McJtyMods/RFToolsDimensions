@@ -90,11 +90,29 @@ public class Items extends BaseItemModelProvider {
                 .override().predicate(powerId, 7).model(createMonitorModel(7)).end()
                 .override().predicate(powerId, 8).model(createMonitorModel(8)).end()
         ;
+        getBuilder(DimensionBuilderModule.PHASED_FIELD_GENERATOR.get().getRegistryName().getPath())
+                .parent(getExistingFile(mcLoc("item/handheld")))
+                .texture("layer0", "item/pfg/phasedfieldgeneratoriteml0")
+                .override().predicate(powerId, 0).model(createPFGModel(0)).end()
+                .override().predicate(powerId, 1).model(createPFGModel(1)).end()
+                .override().predicate(powerId, 2).model(createPFGModel(2)).end()
+                .override().predicate(powerId, 3).model(createPFGModel(3)).end()
+                .override().predicate(powerId, 4).model(createPFGModel(4)).end()
+                .override().predicate(powerId, 5).model(createPFGModel(5)).end()
+                .override().predicate(powerId, 6).model(createPFGModel(6)).end()
+                .override().predicate(powerId, 7).model(createPFGModel(7)).end()
+                .override().predicate(powerId, 8).model(createPFGModel(8)).end()
+        ;
     }
 
     private ItemModelBuilder createMonitorModel(int suffix) {
         return getBuilder("monitoritem" + suffix).parent(getExistingFile(mcLoc("item/handheld")))
                 .texture("layer0", "item/monitor/monitoritem" + suffix);
+    }
+
+    private ItemModelBuilder createPFGModel(int suffix) {
+        return getBuilder("phasedfieldgenerator" + suffix).parent(getExistingFile(mcLoc("item/handheld")))
+                .texture("layer0", "item/pfg/phasedfieldgeneratoriteml" + suffix);
     }
 
     @Override

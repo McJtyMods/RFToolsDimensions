@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "rsr",
+    "sCs",
+    "rsr"
+  ],
+  "key": {
+    "C": {
+      "item": "minecraft:ender_eye"
+    },
+    "r": {
+      "item": "minecraft:redstone"
+    },
+    "s": {
+      "item": "rftoolsbase:dimensionalshard"
+    }
+  },
+  "result": {
+    "item": "rftoolsdim:phased_field_generator"
+  }
+}

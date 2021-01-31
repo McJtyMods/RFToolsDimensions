@@ -32,7 +32,3 @@ Todo:
     - Structures
     - Special (yellow) dimlets: owner, powerless, ...
 - Implement Knowledge Item loot
-- Dimlets for rftoolsdim decorative blocks
-- Researcher: allow to research absorbers
-- Researcher: allow to research dimlets
-- Random dimension features

@@ -38,6 +38,7 @@
   "item.rftoolsdim.realized_dimension_tab": "Realized Dimension Tab",
 
   "item.rftoolsdim.dimension_monitor": "Dimension Monitor",
+  "item.rftoolsdim.phased_field_generator": "Phased Field Generator",
 
   "item.rftoolsdim.part_energy_0": "Common Energy Module",
   "item.rftoolsdim.part_energy_1": "Uncommon Energy Module",
@@ -164,6 +165,10 @@
 
   "message.rftoolsdim.dimension_monitor.header": "This device can monitor the current power in a dimension",
   "message.rftoolsdim.dimension_monitor.power": "Power: ",
-  "message.rftoolsdim.dimension_monitor.name": "Name: "
+  "message.rftoolsdim.dimension_monitor.name": "Name: ",
+
+  "message.rftoolsdim.phased_field_generator.header": "This RF/charged module gives a temporary protection while visiting an unpowered dimension",
+  "message.rftoolsdim.phased_field_generator.gold": "Always keep on your hotbar and don't let the power run out!!",
+  "message.rftoolsdim.phased_field_generator.power": "Power: "
 
 }

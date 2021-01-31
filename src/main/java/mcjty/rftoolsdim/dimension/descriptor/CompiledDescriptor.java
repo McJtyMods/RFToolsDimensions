@@ -125,6 +125,9 @@ public class CompiledDescriptor {
         // @todo Randomize!
         if (terrainType == null) {
             terrainType = TerrainType.NORMAL;
+            if (baseBlocks.isEmpty()) {
+                baseBlocks.add(Blocks.STONE.getDefaultState());
+            }
         }
         if (timeType == null) {
             timeType = TimeType.NORMAL;

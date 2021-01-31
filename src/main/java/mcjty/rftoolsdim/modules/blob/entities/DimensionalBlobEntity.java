@@ -3,17 +3,23 @@ package mcjty.rftoolsdim.modules.blob.entities;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletRarity;
 import net.minecraft.entity.EntityPredicate;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.ILivingEntityData;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.IServerWorld;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class DimensionalBlobEntity extends MonsterEntity {
@@ -34,8 +40,24 @@ public class DimensionalBlobEntity extends MonsterEntity {
         calculateTargetBox(getBoundingBox());
     }
 
-    public static AttributeModifierMap.MutableAttribute registerAttributes() {
-        return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.25D);
+    private static int getDefaultMaxHealth(DimletRarity rarity) {
+        switch (rarity) {
+            case COMMON:
+                return 20;
+            case UNCOMMON:
+                return 50;
+            case RARE:
+                return 200;
+            case LEGENDARY:
+                return 1000000;
+        }
+        return 20;
+    }
+
+    public static AttributeModifierMap.MutableAttribute registerAttributes(DimletRarity rarity) {
+        return MonsterEntity.func_234295_eP_()
+                .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.25D)
+                .createMutableAttribute(Attributes.MAX_HEALTH, getDefaultMaxHealth(rarity));
     }
 
     @Override

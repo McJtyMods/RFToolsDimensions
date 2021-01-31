@@ -9,6 +9,7 @@ import mcjty.rftoolsdim.modules.dimensionbuilder.client.DimensionBuilderRenderer
 import mcjty.rftoolsdim.modules.dimensionbuilder.client.GuiDimensionBuilder;
 import mcjty.rftoolsdim.modules.dimensionbuilder.items.DimensionMonitorItem;
 import mcjty.rftoolsdim.modules.dimensionbuilder.items.EmptyDimensionTab;
+import mcjty.rftoolsdim.modules.dimensionbuilder.items.PhasedFieldGenerator;
 import mcjty.rftoolsdim.modules.dimensionbuilder.items.RealizedDimensionTab;
 import mcjty.rftoolsdim.setup.Config;
 import mcjty.rftoolsdim.setup.Registration;
@@ -35,6 +36,7 @@ public class DimensionBuilderModule implements IModule {
     public static final RegistryObject<RealizedDimensionTab> REALIZED_DIMENSION_TAB = ITEMS.register("realized_dimension_tab", RealizedDimensionTab::new);
 
     public static final RegistryObject<DimensionMonitorItem> DIMENSION_MONITOR = ITEMS.register("dimension_monitor", DimensionMonitorItem::new);
+    public static final RegistryObject<PhasedFieldGenerator> PHASED_FIELD_GENERATOR = ITEMS.register("phased_field_generator", PhasedFieldGenerator::new);
 
     public static void onTextureStitch(TextureStitchEvent.Pre event) {
         if (!event.getMap().getTextureLocation().equals(AtlasTexture.LOCATION_BLOCKS_TEXTURE)) {
@@ -54,6 +56,7 @@ public class DimensionBuilderModule implements IModule {
         event.enqueueWork(() -> {
             GenericGuiContainer.register(CONTAINER_DIMENSION_BUILDER.get(), GuiDimensionBuilder::new);
             DimensionMonitorItem.initOverrides(DIMENSION_MONITOR.get());
+            PhasedFieldGenerator.initOverrides(PHASED_FIELD_GENERATOR.get());
         });
         DimensionBuilderRenderer.register();
     }

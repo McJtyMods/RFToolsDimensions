@@ -44,9 +44,9 @@ public class BlobModule implements IModule {
         EntitySpawnPlacementRegistry.register(DIMENSIONAL_BLOB_COMMON.get(), EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MonsterEntity::canMonsterSpawnInLight);
         EntitySpawnPlacementRegistry.register(DIMENSIONAL_BLOB_RARE.get(), EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MonsterEntity::canMonsterSpawnInLight);
         EntitySpawnPlacementRegistry.register(DIMENSIONAL_BLOB_LEGENDARY.get(), EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MonsterEntity::canMonsterSpawnInLight);
-        GlobalEntityTypeAttributes.put(DIMENSIONAL_BLOB_COMMON.get(), DimensionalBlobEntity.registerAttributes().create());
-        GlobalEntityTypeAttributes.put(DIMENSIONAL_BLOB_RARE.get(), DimensionalBlobEntity.registerAttributes().create());
-        GlobalEntityTypeAttributes.put(DIMENSIONAL_BLOB_LEGENDARY.get(), DimensionalBlobEntity.registerAttributes().create());
+        GlobalEntityTypeAttributes.put(DIMENSIONAL_BLOB_COMMON.get(), DimensionalBlobEntity.registerAttributes(DimletRarity.COMMON).create());
+        GlobalEntityTypeAttributes.put(DIMENSIONAL_BLOB_RARE.get(), DimensionalBlobEntity.registerAttributes(DimletRarity.RARE).create());
+        GlobalEntityTypeAttributes.put(DIMENSIONAL_BLOB_LEGENDARY.get(), DimensionalBlobEntity.registerAttributes(DimletRarity.LEGENDARY).create());
     }
 
     @Override

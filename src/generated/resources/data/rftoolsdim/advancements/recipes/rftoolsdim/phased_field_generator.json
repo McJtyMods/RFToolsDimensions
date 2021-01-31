@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "rftoolsdim:phased_field_generator"
+    ]
+  },
+  "criteria": {
+    "redstone": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "minecraft:redstone"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "rftoolsdim:phased_field_generator"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "redstone",
+      "has_the_recipe"
+    ]
+  ]
+}

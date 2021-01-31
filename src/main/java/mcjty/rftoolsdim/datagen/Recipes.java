@@ -163,6 +163,10 @@ public class Recipes extends BaseRecipeProvider {
                         .key('C', Blocks.COMPARATOR)
                         .addCriterion("redstone", hasItem(Items.REDSTONE)),
                 " s ", "rCr", " s ");
+        build(consumer, ShapedRecipeBuilder.shapedRecipe(DimensionBuilderModule.PHASED_FIELD_GENERATOR.get())
+                        .key('C', Items.ENDER_EYE)
+                        .addCriterion("redstone", hasItem(Items.REDSTONE)),
+                "rsr", "sCs", "rsr");
 
         build(consumer, ShapedRecipeBuilder.shapedRecipe(DecorativeModule.DIMENSIONAL_BLANK.get())
                         .addCriterion("shard", hasItem(VariousModule.DIMENSIONALSHARD.get())),
