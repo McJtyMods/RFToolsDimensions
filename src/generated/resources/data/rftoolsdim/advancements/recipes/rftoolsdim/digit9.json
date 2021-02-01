@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "rftoolsdim:digit9"
+    ]
+  },
+  "criteria": {
+    "empty_dimlet": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "rftoolsdim:empty_dimlet"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "rftoolsdim:digit9"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "empty_dimlet",
+      "has_the_recipe"
+    ]
+  ]
+}

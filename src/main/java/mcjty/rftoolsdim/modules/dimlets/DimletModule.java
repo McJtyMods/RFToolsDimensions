@@ -24,7 +24,8 @@ import static mcjty.rftoolsdim.setup.Registration.ITEMS;
 import static mcjty.rftoolsdim.setup.Registration.LOOT_MODIFIER_SERIALIZERS;
 import static mcjty.rftoolsdim.setup.Registration.RECIPE_SERIALIZERS;
 
-public class DimletModule implements IModule {
+public class
+DimletModule implements IModule {
 
     public static final RegistryObject<DimletItem> EMPTY_DIMLET = ITEMS.register("empty_dimlet", () -> new DimletItem(null, false));
 

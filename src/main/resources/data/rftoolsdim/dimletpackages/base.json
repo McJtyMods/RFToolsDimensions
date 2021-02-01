@@ -1,5 +1,105 @@
 [
   {
+    "type": "digit",
+    "key": "0",
+    "rarity": "common",
+    "create": 0,
+    "maintain": 0,
+    "ticks": 0,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "digit",
+    "key": "1",
+    "rarity": "common",
+    "create": 0,
+    "maintain": 0,
+    "ticks": 0,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "digit",
+    "key": "2",
+    "rarity": "common",
+    "create": 0,
+    "maintain": 0,
+    "ticks": 0,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "digit",
+    "key": "3",
+    "rarity": "common",
+    "create": 0,
+    "maintain": 0,
+    "ticks": 0,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "digit",
+    "key": "4",
+    "rarity": "common",
+    "create": 0,
+    "maintain": 0,
+    "ticks": 0,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "digit",
+    "key": "5",
+    "rarity": "common",
+    "create": 0,
+    "maintain": 0,
+    "ticks": 0,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "digit",
+    "key": "6",
+    "rarity": "common",
+    "create": 0,
+    "maintain": 0,
+    "ticks": 0,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "digit",
+    "key": "7",
+    "rarity": "common",
+    "create": 0,
+    "maintain": 0,
+    "ticks": 0,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "digit",
+    "key": "8",
+    "rarity": "common",
+    "create": 0,
+    "maintain": 0,
+    "ticks": 0,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "digit",
+    "key": "9",
+    "rarity": "common",
+    "create": 0,
+    "maintain": 0,
+    "ticks": 0,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
     "type": "time",
     "key": "normal",
     "rarity": "uncommon",
@@ -140,6 +240,19 @@
     "dimlet": true,
     "essence": {
       "item": "minecraft:redstone"
+    }
+  },
+  {
+    "type": "feature",
+    "key": "tendrils",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true,
+    "essence": {
+      "item": "minecraft:string"
     }
   },
   {

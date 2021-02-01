@@ -65,11 +65,11 @@ public class DimensionalBlobEntity extends MonsterEntity {
         switch (rarity) {
             case COMMON:
             case UNCOMMON:
-                return 1.0f;
+                return 1.5f;
             case RARE:
-                return 1.3f;
+                return 2.2f;
             case LEGENDARY:
-                return 1.8f;
+                return 4.7f;
         }
         return 1.0f;
     }

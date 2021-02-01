@@ -47,6 +47,11 @@ public class DigitCycleRecipe extends AbstractRecipeAdaptor {
     }
 
     @Override
+    public ItemStack getRecipeOutput() {
+        return DimletTools.getDimletStack(new DimletKey(DimletType.DIGIT, output));
+    }
+
+    @Override
     public ItemStack getCraftingResult(CraftingInventory inv) {
         return DimletTools.getDimletStack(new DimletKey(DimletType.DIGIT, output));
     }

@@ -25,6 +25,7 @@ import net.minecraft.util.text.StringTextComponent;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import static mcjty.lib.gui.widgets.Widgets.*;
 import static mcjty.rftoolsdim.modules.enscriber.blocks.EnscriberTileEntity.PARAM_NAME;
@@ -32,6 +33,7 @@ import static mcjty.rftoolsdim.modules.enscriber.blocks.EnscriberTileEntity.PARA
 public class GuiEnscriber extends GenericGuiContainer<EnscriberTileEntity, GenericContainer> {
     public static final int ENSCRIBER_WIDTH = 256;
     public static final int ENSCRIBER_HEIGHT = 224;
+    public static final String REGEX = "[a-z0-9_\\.\\-]+";
 
     private Button extractButton;
     private Button storeButton;
@@ -152,14 +154,25 @@ public class GuiEnscriber extends GenericGuiContainer<EnscriberTileEntity, Gener
         validateField.tooltips(tooltips.toArray(new String[tooltips.size()]));
     }
 
+    private boolean validateName(String name) {
+        if (name.trim().isEmpty()) {
+            return false;
+        }
+        return Pattern.matches(REGEX, name);
+    }
+
     @Override
     protected void drawGuiContainerBackgroundLayer(MatrixStack matrixStack, float partialTicks, int x, int y) {
         enableButtons();
         validateDimlets();
 
-        if (nameField.getText().trim().isEmpty()) {
+        String name = nameField.getText().trim();
+        if (name.isEmpty()) {
             storeButton.enabled(false);
             storeButton.tooltips("A dimension name is needed!");
+        } else if (!validateName(name)) {
+            storeButton.enabled(false);
+            storeButton.tooltips("The dimension name is invalid (only lowercase, no special characters)!");
         } else {
             storeButton.tooltips("Store dimlets in a", "empty dimension tab");
         }

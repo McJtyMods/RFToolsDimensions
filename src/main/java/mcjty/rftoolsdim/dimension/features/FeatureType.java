@@ -2,6 +2,7 @@ package mcjty.rftoolsdim.dimension.features;
 
 import mcjty.rftoolsdim.dimension.features.instances.CubeFeature;
 import mcjty.rftoolsdim.dimension.features.instances.SphereFeature;
+import mcjty.rftoolsdim.dimension.features.instances.TendrilsFeature;
 import mcjty.rftoolsdim.modules.knowledge.data.KnowledgeSet;
 
 import java.util.HashMap;
@@ -12,7 +13,8 @@ public enum FeatureType {
     CUBES("cubes", KnowledgeSet.SET2, new CubeFeature(false)),
     HOLLOW_CUBES("hollow_cubes", KnowledgeSet.SET2, new CubeFeature(true)),
     SPHERES("spheres", KnowledgeSet.SET3, new SphereFeature(false)),
-    HOLLOW_SPHERES("hollow_spheres", KnowledgeSet.SET3, new SphereFeature(true));
+    HOLLOW_SPHERES("hollow_spheres", KnowledgeSet.SET3, new SphereFeature(true)),
+    TENDRILS("tendrils", KnowledgeSet.SET4, new TendrilsFeature());
 
     private final String name;
     private final KnowledgeSet set;

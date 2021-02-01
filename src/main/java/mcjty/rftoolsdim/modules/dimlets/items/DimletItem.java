@@ -15,7 +15,9 @@ import mcjty.rftoolsdim.modules.knowledge.data.PatternBuilder;
 import mcjty.rftoolsdim.setup.Registration;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
 import org.apache.commons.lang3.tuple.Pair;
@@ -74,6 +76,16 @@ public class DimletItem extends Item implements ITooltipSettings, ITooltipExtras
     public void addInformation(ItemStack itemStack, World world, List<ITextComponent> list, ITooltipFlag flags) {
         super.addInformation(itemStack, world, list, flags);
         tooltipBuilder.makeTooltip(getRegistryName(), itemStack, list, flags);
+    }
+
+    @Override
+    public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items) {
+        if (this.isInGroup(group)) {
+            items.add(new ItemStack(DimletModule.EMPTY_DIMLET.get()));
+            for (int i = 0 ; i < 10 ; i++) {
+                items.add(DimletTools.getDimletStack(new DimletKey(DimletType.DIGIT, "" + i)));
+            }
+        }
     }
 
     @Override

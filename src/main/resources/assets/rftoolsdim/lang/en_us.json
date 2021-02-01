@@ -65,6 +65,7 @@
   "_comment": "Messages",
   "message.rftoolsdim.shiftmessage": "<Press Shift>",
   "message.rftoolsdim.empty_dimlet.header": "This is the base ingredient for creating dimlets",
+  "message.rftoolsdim.empty_dimlet.gold": "Use this in the Dimlet Workbench to create new dimlets",
 
   "message.rftoolsdim.terrain_dimlet.header": "Terrain dimlets control the main shape of the terrain in a dimension",
   "message.rftoolsdim.terrain_dimlet.gold": "Use this dimlet in a Dimension Enscriber to create a Dimension Tab",

@@ -23,6 +23,11 @@ public class DimletRecipe extends AbstractRecipeAdaptor {
     }
 
     @Override
+    public ItemStack getRecipeOutput() {
+        return DimletTools.getDimletStack(key);
+    }
+
+    @Override
     public ItemStack getCraftingResult(CraftingInventory inv) {
         return DimletTools.getDimletStack(key);
     }
