@@ -45,6 +45,8 @@ public class DimletTools {
                 return DimletModule.TIME_DIMLET.get();
             case BLOCK:
                 return DimletModule.BLOCK_DIMLET.get();
+            case DIGIT:
+                return DimletModule.DIGIT_DIMLET.get();
         }
         return null;
     }
@@ -63,6 +65,8 @@ public class DimletTools {
                 return DimletModule.EMPTY_TIME_DIMLET.get();
             case BLOCK:
                 return DimletModule.EMPTY_BLOCK_DIMLET.get();
+            case DIGIT:
+                return null;
         }
         return null;
     }
@@ -157,7 +161,8 @@ public class DimletTools {
                 return ItemStack.EMPTY;
             case BLOCK:
                 return new ItemStack(EssencesModule.BLOCK_ABSORBER_ITEM.get());
-
+            case DIGIT:
+                return ItemStack.EMPTY;
         }
         return ItemStack.EMPTY;
     }
@@ -178,6 +183,8 @@ public class DimletTools {
                 return null;
             case BLOCK:
                 return new ResourceLocation(dimletKey.getKey());
+            case DIGIT:
+                return null;
         }
         return null;
     }
@@ -199,6 +206,8 @@ public class DimletTools {
             case BLOCK:
                 Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(dimletKey.getKey()));
                 return new TranslationTextComponent(block.getTranslationKey());
+            case DIGIT:
+                return new StringTextComponent(dimletKey.getKey());
         }
         return new StringTextComponent("<unknown>");
     }
@@ -221,6 +230,8 @@ public class DimletTools {
             case BLOCK:
                 Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(dimletKey.getKey()));
                 return I18n.format(block.getTranslationKey());
+            case DIGIT:
+                return dimletKey.getKey();
         }
         return "<unknown>";
     }

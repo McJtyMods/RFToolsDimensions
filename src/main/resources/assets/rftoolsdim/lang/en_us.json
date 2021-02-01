@@ -28,6 +28,7 @@
   "item.rftoolsdim.empty_feature_dimlet": "Empty Feature Dimlet",
   "item.rftoolsdim.block_dimlet": "Block Dimlet",
   "item.rftoolsdim.empty_block_dimlet": "Empty Block Dimlet",
+  "item.rftoolsdim.digit_dimlet": "Digit Dimlet",
 
   "item.rftoolsdim.common_lost_knowledge": "Common Lost Knowledge",
   "item.rftoolsdim.uncommon_lost_knowledge": "Uncommon Lost Knowledge",
@@ -83,6 +84,9 @@
   "message.rftoolsdim.block_dimlet.header": "Block dimlets are modifiers to change what blocks are used with the terrain or features. Place them in front of the terrain or feature dimlet",
   "message.rftoolsdim.block_dimlet.gold": "Use this dimlet in a Dimension Enscriber to create a Dimension Tab",
   "message.rftoolsdim.block_dimlet.key": "Key: ",
+  "message.rftoolsdim.digit_dimlet.header": "Digit dimlets have no effect. They can help make unique dimensions because every dimension needs its own unique sequence of dimlets",
+  "message.rftoolsdim.digit_dimlet.gold": "Use this dimlet in a Dimension Enscriber to create a Dimension Tab",
+  "message.rftoolsdim.digit_dimlet.key": "Key: ",
 
   "message.rftoolsdim.empty_terrain_dimlet.header": "Terrain dimlets control the main shape of the terrain in a dimension",
   "message.rftoolsdim.empty_terrain_dimlet.gold": "Use the Dimlet Workbench to convert this to a full dimlet",

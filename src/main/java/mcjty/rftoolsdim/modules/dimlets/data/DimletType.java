@@ -9,7 +9,8 @@ public enum DimletType {
     BIOME("bi"),
     FEATURE("f"),
     TIME("ti"),
-    BLOCK("b");
+    BLOCK("b"),
+    DIGIT("d");
 
     private final String shortName;
 
@@ -24,6 +25,10 @@ public enum DimletType {
 
     DimletType(String shortName) {
         this.shortName = shortName;
+    }
+
+    public boolean usesKnowledgeSystem() {
+        return this != DIGIT;
     }
 
     public String getShortName() {

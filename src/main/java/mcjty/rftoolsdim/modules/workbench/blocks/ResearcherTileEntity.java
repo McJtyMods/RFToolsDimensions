@@ -111,7 +111,7 @@ public class ResearcherTileEntity extends GenericTileEntity implements ITickable
         } else if (item == EssencesModule.BIOME_ABSORBER_ITEM.get()) {
             return true;
         } else if (DimletItem.isReadyDimlet(stack)) {
-            return true;
+            return DimletTools.getDimletKey(stack).getType().usesKnowledgeSystem();
         }
         return false;
     }

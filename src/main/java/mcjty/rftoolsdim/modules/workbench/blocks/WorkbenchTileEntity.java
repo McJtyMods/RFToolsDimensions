@@ -23,7 +23,6 @@ import mcjty.rftoolsdim.modules.dimlets.data.DimletTools;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletType;
 import mcjty.rftoolsdim.modules.dimlets.items.DimletItem;
 import mcjty.rftoolsdim.modules.dimlets.items.PartItem;
-import mcjty.rftoolsdim.modules.knowledge.data.CommonTags;
 import mcjty.rftoolsdim.modules.knowledge.data.DimletPattern;
 import mcjty.rftoolsdim.modules.knowledge.data.KnowledgeKey;
 import mcjty.rftoolsdim.modules.knowledge.data.KnowledgeManager;
@@ -181,6 +180,10 @@ public class WorkbenchTileEntity extends GenericTileEntity {
     }
 
     private void suggestParts(PlayerEntity player, DimletKey key) {
+        if (!key.getType().usesKnowledgeSystem()) {
+            return;
+        }
+
         tryFindAndFitItem(player, s -> s.isItemEqual(DimletTools.getEmptyDimletStack(key.getType())), SLOT_EMPTY_DIMLET);
         tryFindAndFitItem(player, s -> s.isItemEqual(DimletTools.getNeededMemoryPart(key)), SLOT_MEMORY_PART);
         tryFindAndFitItem(player, s -> s.isItemEqual(DimletTools.getNeededEnergyPart(key)), SLOT_ENERGY_PART);

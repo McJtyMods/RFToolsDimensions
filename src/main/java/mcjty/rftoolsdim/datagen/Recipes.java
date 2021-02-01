@@ -2,9 +2,15 @@ package mcjty.rftoolsdim.datagen;
 
 import mcjty.lib.datagen.BaseRecipeProvider;
 import mcjty.rftoolsbase.modules.various.VariousModule;
+import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.modules.decorative.DecorativeModule;
 import mcjty.rftoolsdim.modules.dimensionbuilder.DimensionBuilderModule;
 import mcjty.rftoolsdim.modules.dimlets.DimletModule;
+import mcjty.rftoolsdim.modules.dimlets.data.DimletKey;
+import mcjty.rftoolsdim.modules.dimlets.data.DimletTools;
+import mcjty.rftoolsdim.modules.dimlets.data.DimletType;
+import mcjty.rftoolsdim.modules.dimlets.recipes.DimletCycleRecipeBuilder;
+import mcjty.rftoolsdim.modules.dimlets.recipes.DimletRecipeBuilder;
 import mcjty.rftoolsdim.modules.enscriber.EnscriberModule;
 import mcjty.rftoolsdim.modules.essences.EssencesModule;
 import mcjty.rftoolsdim.modules.knowledge.KnowledgeModule;
@@ -14,7 +20,9 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.data.IFinishedRecipe;
 import net.minecraft.data.ShapedRecipeBuilder;
 import net.minecraft.item.Items;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.Tags;
 
 import java.util.function.Consumer;
@@ -55,6 +63,23 @@ public class Recipes extends BaseRecipeProvider {
                         .key('C', Items.CLOCK)
                         .addCriterion("empty_dimlet", hasItem(DimletModule.EMPTY_DIMLET.get())),
                 "rCr", "CEC", "rCr");
+        build(consumer, DimletRecipeBuilder.shapedRecipe(DimletModule.DIGIT_DIMLET.get())
+                        .key('C', Items.REDSTONE_TORCH)
+                        .dimletKey(new DimletKey(DimletType.DIGIT, "0"))
+                        .addCriterion("empty_dimlet", hasItem(DimletModule.EMPTY_DIMLET.get())),
+                " C ", "CEC", " C ");
+        build(consumer, new ResourceLocation(RFToolsDim.MODID, "digit1"), DimletCycleRecipeBuilder.shapedRecipe(DimletModule.DIGIT_DIMLET.get())
+                        .key('C', Ingredient.fromStacks(DimletTools.getDimletStack(new DimletKey(DimletType.DIGIT, "0"))))
+                        .input("0")
+                        .output("1")
+                        .addCriterion("empty_dimlet", hasItem(DimletModule.EMPTY_DIMLET.get())),
+                "C");
+        build(consumer, new ResourceLocation(RFToolsDim.MODID, "digit2"), DimletCycleRecipeBuilder.shapedRecipe(DimletModule.DIGIT_DIMLET.get())
+                        .key('C', Ingredient.fromStacks(DimletTools.getDimletStack(new DimletKey(DimletType.DIGIT, "1"))))
+                        .input("1")
+                        .output("2")
+                        .addCriterion("empty_dimlet", hasItem(DimletModule.EMPTY_DIMLET.get())),
+                "C");
 
         build(consumer, ShapedRecipeBuilder.shapedRecipe(DimletModule.PART_ENERGY_0.get())
                         .key('g', Tags.Items.DUSTS_GLOWSTONE)

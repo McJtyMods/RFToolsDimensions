@@ -8,6 +8,8 @@ import mcjty.rftoolsdim.modules.dimlets.items.DimletItem;
 import mcjty.rftoolsdim.modules.dimlets.items.PartItem;
 import mcjty.rftoolsdim.modules.dimlets.lootmodifier.EndermanLootModifier;
 import mcjty.rftoolsdim.modules.dimlets.lootmodifier.LootTableCondition;
+import mcjty.rftoolsdim.modules.dimlets.recipes.DimletCycleRecipeSerializer;
+import mcjty.rftoolsdim.modules.dimlets.recipes.DimletRecipeSerializer;
 import mcjty.rftoolsdim.setup.Config;
 import mcjty.rftoolsdim.setup.Registration;
 import net.minecraft.item.Item;
@@ -20,6 +22,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 
 import static mcjty.rftoolsdim.setup.Registration.ITEMS;
 import static mcjty.rftoolsdim.setup.Registration.LOOT_MODIFIER_SERIALIZERS;
+import static mcjty.rftoolsdim.setup.Registration.RECIPE_SERIALIZERS;
 
 public class DimletModule implements IModule {
 
@@ -38,6 +41,7 @@ public class DimletModule implements IModule {
     public static final RegistryObject<DimletItem> BIOME_CONTROLLER_DIMLET = ITEMS.register("biome_controller_dimlet", () -> new DimletItem(DimletType.BIOME_CONTROLLER, true));
     public static final RegistryObject<DimletItem> BLOCK_DIMLET = ITEMS.register("block_dimlet", () -> new DimletItem(DimletType.BLOCK, true));
     public static final RegistryObject<DimletItem> TIME_DIMLET = ITEMS.register("time_dimlet", () -> new DimletItem(DimletType.TIME, true));
+    public static final RegistryObject<DimletItem> DIGIT_DIMLET = ITEMS.register("digit_dimlet", () -> new DimletItem(DimletType.DIGIT, true));
 
     public static final RegistryObject<PartItem> PART_ENERGY_0 = ITEMS.register("part_energy_0", PartItem::new);
     public static final RegistryObject<PartItem> PART_ENERGY_1 = ITEMS.register("part_energy_1", PartItem::new);
@@ -53,6 +57,8 @@ public class DimletModule implements IModule {
     public static final RegistryObject<Item> LEGENDARY_ESSENCE = ITEMS.register("legendary_essence", () -> new Item(Registration.createStandardProperties()));
 
     public static final RegistryObject<EndermanLootModifier.Serializer> ENDERMAN_LOOT_MODIFIER = LOOT_MODIFIER_SERIALIZERS.register("enderman_extra", EndermanLootModifier.Serializer::new);
+    public static final RegistryObject<DimletRecipeSerializer> DIMLET_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register("dimlet_recipe", DimletRecipeSerializer::new);
+    public static final RegistryObject<DimletCycleRecipeSerializer> DIMLET_CYCLE_SERIALIZER = RECIPE_SERIALIZERS.register("dimlet_cycle_recipe", DimletCycleRecipeSerializer::new);
 
     public static LootConditionType LOOT_TABLE_CONDITION;
 
