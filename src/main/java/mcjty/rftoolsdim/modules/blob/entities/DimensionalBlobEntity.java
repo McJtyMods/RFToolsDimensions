@@ -1,35 +1,34 @@
 package mcjty.rftoolsdim.modules.blob.entities;
 
+import mcjty.rftoolsdim.dimension.data.DimensionData;
+import mcjty.rftoolsdim.dimension.data.PersistantDimensionManager;
+import mcjty.rftoolsdim.modules.blob.BlobConfig;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletRarity;
 import net.minecraft.entity.EntityPredicate;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ILivingEntityData;
-import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.IServerWorld;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
 public class DimensionalBlobEntity extends MonsterEntity {
 
-    public float squishAmount;
+    private float squishAmount;
     public float squishFactor;
     public float prevSquishFactor;
 
     private final DimletRarity rarity;
     private AxisAlignedBB targetBox = null;
+
+    private int tickCounter = 5;
 
     private final static EntityPredicate PREDICATE = new EntityPredicate()
             .setLineOfSiteRequired();
@@ -41,17 +40,49 @@ public class DimensionalBlobEntity extends MonsterEntity {
     }
 
     private static int getDefaultMaxHealth(DimletRarity rarity) {
+        // There is no UNCOMMON mob
         switch (rarity) {
             case COMMON:
-                return 20;
-            case UNCOMMON:
-                return 50;
+                return BlobConfig.BLOB_COMMON_HEALTH.get();
             case RARE:
-                return 200;
+                return BlobConfig.BLOB_RARE_HEALTH.get();
             case LEGENDARY:
-                return 1000000;
+                return BlobConfig.BLOB_LEGENDARY_HEALTH.get();
+            case UNCOMMON:
+                throw new IllegalStateException("There is no uncommon blob!");
         }
-        return 20;
+        throw new IllegalStateException("Unknown blob type!");
+    }
+
+    private int getRegenLevel() {
+        switch (rarity) {
+            case COMMON:
+                return BlobConfig.BLOB_COMMON_REGEN.get();
+            case UNCOMMON:
+                throw new IllegalStateException("There is no uncommon blob!");
+            case RARE:
+                return BlobConfig.BLOB_RARE_REGEN.get();
+            case LEGENDARY:
+                return BlobConfig.BLOB_LEGENDARY_REGEN.get();
+        }
+        throw new IllegalStateException("Unknown blob type!");
+    }
+
+    @Override
+    public void livingTick() {
+        super.livingTick();
+        if (!world.isRemote) {
+            DimensionData data = PersistantDimensionManager.get(world).getData(world.getDimensionKey().getLocation());
+            if (data != null) {
+                if (data.getEnergy() >= BlobConfig.BLOB_REGENERATION_LEVEL.get()) {
+                    tickCounter--;
+                    if (tickCounter <= 0) {
+                        tickCounter = 5;
+                        addPotionEffect(new EffectInstance(Effects.REGENERATION, 20, getRegenLevel()));
+                    }
+                }
+            }
+        }
     }
 
     public static AttributeModifierMap.MutableAttribute registerAttributes(DimletRarity rarity) {

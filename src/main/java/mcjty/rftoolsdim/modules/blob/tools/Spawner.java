@@ -1,5 +1,7 @@
 package mcjty.rftoolsdim.modules.blob.tools;
 
+import mcjty.rftoolsdim.dimension.data.DimensionData;
+import mcjty.rftoolsdim.dimension.descriptor.CompiledDescriptor;
 import mcjty.rftoolsdim.modules.blob.BlobModule;
 import mcjty.rftoolsdim.modules.blob.entities.DimensionalBlobEntity;
 import net.minecraft.entity.EntityType;
@@ -15,7 +17,7 @@ import java.util.Random;
 
 public class Spawner {
 
-    public static void spawnOne(ServerWorld world, PlayerEntity player, Random random) {
+    public static void spawnOne(ServerWorld world, PlayerEntity player, CompiledDescriptor compiledDescriptor, DimensionData data, Random random) {
         double distanceX;
         double distanceZ;
         distanceX = random.nextDouble() * 100 - 50;
@@ -26,7 +28,7 @@ public class Spawner {
         }
         int x = (int) (player.getPosX() + distanceX);
         int z = (int) (player.getPosZ() + distanceZ);
-        EntityType<DimensionalBlobEntity> type = randomBlob(random);
+        EntityType<DimensionalBlobEntity> type = randomBlob(compiledDescriptor, data, random);
         BlockPos pos = getValidSpawnablePosition(random, world, x, z);
         boolean nocollisions = world.hasNoCollisions(type.getBoundingBoxWithSizeApplied(x, pos.getY(), z));
         boolean canSpawn = true;//EntitySpawnPlacementRegistry.canSpawnEntity(type, world, SpawnReason.NATURAL, new BlockPos(x, pos.getY(), z), random);
@@ -44,10 +46,13 @@ public class Spawner {
         }
     }
 
-    private static EntityType<DimensionalBlobEntity> randomBlob(Random random) {
-        // @todo base this on power of the dimension
-        if (random.nextFloat() < .1) {
-            if (random.nextFloat() < .1) {
+    private static EntityType<DimensionalBlobEntity> randomBlob(CompiledDescriptor compiledDescriptor, DimensionData data, Random random) {
+        float perTick = compiledDescriptor != null ? compiledDescriptor.getActualPowerCost() : 0;
+        perTick = Math.min(perTick, 50000.0f);
+        float rareChance = .1f + perTick / 150000.0f;
+
+        if (random.nextFloat() < rareChance) {
+            if (random.nextFloat() < rareChance) {
                 return BlobModule.DIMENSIONAL_BLOB_LEGENDARY.get();
             }
             return BlobModule.DIMENSIONAL_BLOB_RARE.get();

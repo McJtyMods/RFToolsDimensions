@@ -1,6 +1,10 @@
 package mcjty.rftoolsdim.setup;
 
 import mcjty.rftoolsdim.RFToolsDim;
+import mcjty.rftoolsdim.dimension.data.DimensionData;
+import mcjty.rftoolsdim.dimension.data.DimensionManager;
+import mcjty.rftoolsdim.dimension.data.PersistantDimensionManager;
+import mcjty.rftoolsdim.dimension.descriptor.CompiledDescriptor;
 import mcjty.rftoolsdim.dimension.features.RFTFeature;
 import mcjty.rftoolsdim.dimension.power.PowerHandler;
 import mcjty.rftoolsdim.modules.blob.entities.DimensionalBlobEntity;
@@ -42,11 +46,13 @@ public class ForgeEventHandlers {
         if (RFToolsDim.MODID.equals(event.world.getDimensionKey().getLocation().getNamespace())) {
             if (random.nextInt(20) == 10) {
                 ServerWorld serverWorld = (ServerWorld) event.world;
+                CompiledDescriptor compiledDescriptor = DimensionManager.get().getCompiledDescriptor(serverWorld);
+                DimensionData data = PersistantDimensionManager.get(serverWorld).getData(serverWorld.getDimensionKey().getLocation());
                 long count = serverWorld.getEntities().filter(s -> s instanceof DimensionalBlobEntity).count();
                 if (count < 20) {
                     for (ServerPlayerEntity player : serverWorld.getPlayers()) {
                         for (int i = 0 ; i < 20 ; i++) {
-                            Spawner.spawnOne(serverWorld, player, random);
+                            Spawner.spawnOne(serverWorld, player, compiledDescriptor, data, random);
                         }
                     }
                 }

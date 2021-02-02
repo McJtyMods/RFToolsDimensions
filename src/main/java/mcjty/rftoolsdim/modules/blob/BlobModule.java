@@ -4,6 +4,7 @@ import mcjty.lib.modules.IModule;
 import mcjty.rftoolsdim.modules.blob.client.DimensionalBlobRender;
 import mcjty.rftoolsdim.modules.blob.entities.DimensionalBlobEntity;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletRarity;
+import mcjty.rftoolsdim.setup.Config;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntitySpawnPlacementRegistry;
 import net.minecraft.entity.EntityType;
@@ -58,6 +59,6 @@ public class BlobModule implements IModule {
 
     @Override
     public void initConfig() {
-
+        BlobConfig.init(Config.SERVER_BUILDER, Config.CLIENT_BUILDER);
     }
 }

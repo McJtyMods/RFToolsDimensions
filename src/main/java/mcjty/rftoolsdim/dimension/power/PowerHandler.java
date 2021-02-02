@@ -64,7 +64,7 @@ public class PowerHandler {
             // Power handling.
             long power;
             ServerWorld world = DimensionId.fromResourceLocation(entry.getKey()).loadWorld(overworld);
-            CompiledDescriptor compiledDescriptor = DimensionManager.get().getDimensionInformation(world);
+            CompiledDescriptor compiledDescriptor = DimensionManager.get().getCompiledDescriptor(world);
 
             if (compiledDescriptor != null) {
 

@@ -43,7 +43,7 @@ public class DimensionManager {
     /**
      * Get the dimension information for a given world
      */
-    public CompiledDescriptor getDimensionInformation(@Nullable World world) {
+    public CompiledDescriptor getCompiledDescriptor(@Nullable World world) {
         if (world == null) {
             return null;
         }
