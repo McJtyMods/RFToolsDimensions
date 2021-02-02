@@ -18,9 +18,15 @@ public class DimensionConfig {
     public static ForgeConfigSpec.LongValue DIMPOWER_WARN2;
     public static ForgeConfigSpec.LongValue DIMPOWER_WARN3;
 
+    public static ForgeConfigSpec.DoubleValue RANDOMIZED_DIMLET_COST_FACTOR;
+
 
     public static void init() {
         SERVER_BUILDER.comment("Dimension settings").push(SUB_CATEGORY_DIMENSION);
+
+        RANDOMIZED_DIMLET_COST_FACTOR = SERVER_BUILDER
+                .comment("The maintenance cost of randomized dimlets is multiplied with this value before applying to the dimension")
+                .defineInRange("randomizedDimletCostFactor", 0.1, 0, 10.0);
 
         MAX_DIMENSION_POWER = SERVER_BUILDER
                 .comment("Maximum power in a dimension")

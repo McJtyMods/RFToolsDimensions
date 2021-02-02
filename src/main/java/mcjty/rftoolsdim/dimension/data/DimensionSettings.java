@@ -15,7 +15,7 @@ public class DimensionSettings {
     public static final Codec<DimensionSettings> SETTINGS_CODEC = RecordCodecBuilder.create(instance ->
             instance.group(
                     Codec.STRING.fieldOf("dimlets").forGetter(DimensionSettings::getDimlets),
-                    Codec.STRING.fieldOf("randomized").forGetter(DimensionSettings::getDimlets)
+                    Codec.STRING.fieldOf("randomized").forGetter(DimensionSettings::getRandomized)
             ).apply(instance, DimensionSettings::new));
 
     private final String dimlets;
@@ -42,10 +42,11 @@ public class DimensionSettings {
             DimensionDescriptor randomizedDescriptor = new DimensionDescriptor();
             randomizedDescriptor.read(getRandomized());
             compiledDescriptor = new CompiledDescriptor();
+//randomizedDescriptor = DimensionDescriptor.EMPTY;//@todo
             DescriptorError error = compiledDescriptor.compile(descriptor, randomizedDescriptor);
             if (!error.isOk()) {
                 RFToolsDim.setup.getLogger().error("Error compiling dimension descriptor: " + error.getMessage());
-                throw new RuntimeException("Error compiling dimension descriptor: " + error.getMessage());
+//                throw new RuntimeException("Error compiling dimension descriptor: " + error.getMessage());
             }
         }
         return compiledDescriptor;

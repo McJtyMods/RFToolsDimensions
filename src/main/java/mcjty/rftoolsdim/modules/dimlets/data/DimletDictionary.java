@@ -4,6 +4,7 @@ import mcjty.rftoolsdim.modules.knowledge.data.DimletPattern;
 import mcjty.rftoolsdim.modules.knowledge.data.KnowledgeManager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -14,6 +15,7 @@ public class DimletDictionary {
 
     private Map<DimletKey, DimletSettings> dimlets = new HashMap<>();
     private Map<DimletRarity, List<DimletKey>> dimletsByRarity = new HashMap<>();
+    private Map<Pair<DimletType, DimletRarity>, List<DimletKey>> dimletsByRarityAndType = new HashMap<>();
 
     public static DimletDictionary get() {
         return INSTANCE;
@@ -55,17 +57,84 @@ public class DimletDictionary {
 
     @Nullable
     public DimletKey getRandomDimlet(DimletRarity rarity, Random random) {
-        if (!dimletsByRarity.containsKey(rarity)) {
-            List<DimletKey> dimletKeys = new ArrayList<>();
-
-            dimletsByRarity.put(rarity, dimletKeys);
-        }
-        List<DimletKey> keys = dimletsByRarity.get(rarity);
+        List<DimletKey> keys = getDimletsByRarity(rarity);
         if (keys.isEmpty()) {
             return null;
         }
-        return keys.get(random.nextInt(keys.size()));
+        if (keys.size() == 1) {
+            return keys.get(0);
+        } else {
+            return keys.get(random.nextInt(keys.size()));
+        }
     }
+
+
+    @Nullable
+    public DimletKey getRandomDimlet(DimletType type, Random random) {
+        DimletRarity rarity = DimletRarity.COMMON;
+        if (random.nextFloat() < .1f) {
+            rarity = DimletRarity.UNCOMMON;
+            if (random.nextFloat() < .1f) {
+                rarity = DimletRarity.RARE;
+                if (random.nextFloat() < .1f) {
+                    rarity = DimletRarity.LEGENDARY;
+                }
+            }
+        }
+        while (true) {
+            List<DimletKey> keys = getDimletsByRarityAndType(type, rarity);
+            if (!keys.isEmpty()) {
+                if (keys.size() == 1) {
+                    return keys.get(0);
+                } else {
+                    return keys.get(random.nextInt(keys.size()));
+                }
+            }
+            switch (rarity) {
+                case COMMON:
+                    return null;
+                case UNCOMMON:
+                    rarity = DimletRarity.COMMON;
+                    break;
+                case RARE:
+                    rarity = DimletRarity.UNCOMMON;
+                    break;
+                case LEGENDARY:
+                    rarity = DimletRarity.RARE;
+                    break;
+            }
+        }
+    }
+
+    private List<DimletKey> getDimletsByRarity(DimletRarity rarity) {
+        if (!dimletsByRarity.containsKey(rarity)) {
+            List<DimletKey> dimletKeys = new ArrayList<>();
+            for (Map.Entry<DimletKey, DimletSettings> entry : dimlets.entrySet()) {
+                if (entry.getValue().getRarity() == rarity) {
+                    DimletKey key = entry.getKey();
+                    dimletKeys.add(key);
+                }
+            }
+            dimletsByRarity.put(rarity, dimletKeys);
+        }
+        return dimletsByRarity.get(rarity);
+    }
+
+    private List<DimletKey> getDimletsByRarityAndType(DimletType type, DimletRarity rarity) {
+        Pair<DimletType, DimletRarity> pair = Pair.of(type, rarity);
+        if (!dimletsByRarityAndType.containsKey(pair)) {
+            List<DimletKey> dimletKeys = new ArrayList<>();
+            List<DimletKey> dimletsByRarity = getDimletsByRarity(rarity);
+            for (DimletKey key : dimletsByRarity) {
+                if (key.getType() == type) {
+                    dimletKeys.add(key);
+                }
+            }
+            dimletsByRarityAndType.put(pair, dimletKeys);
+        }
+        return dimletsByRarityAndType.get(pair);
+    }
+
 
     public void readPackage(String filename) {
         DimletPackages.readPackage(filename, this::register);

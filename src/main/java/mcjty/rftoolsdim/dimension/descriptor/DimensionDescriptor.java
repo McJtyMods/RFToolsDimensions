@@ -1,6 +1,7 @@
 package mcjty.rftoolsdim.dimension.descriptor;
 
 import com.google.gson.*;
+import mcjty.rftoolsdim.modules.dimlets.data.DimletDictionary;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletKey;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletType;
 import net.minecraft.entity.player.PlayerEntity;
@@ -10,6 +11,7 @@ import net.minecraft.util.text.TextFormatting;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 
 /**
  * This class describes a dimension by its list of dimlets. It can be used to generate DimensionInformation objects
@@ -111,6 +113,84 @@ public class DimensionDescriptor {
                     .append(new StringTextComponent(dimlet.getKey()).mergeStyle(TextFormatting.WHITE))
                     , false);
         }
-
     }
+
+    /// Create a randomized descriptor based on this one (i.e. completing the things that are missing randomly)
+    public DimensionDescriptor createRandomizedDescriptor(Random random) {
+        DimensionDescriptor randomizedDescriptor = new DimensionDescriptor();
+
+        List<DimletKey> dimlets = getDimlets();
+        List<DimletKey> randomized = randomizedDescriptor.getDimlets();
+
+        if (!hasTerrain(dimlets)) {
+            DimletKey terrainDimlet = DimletDictionary.get().getRandomDimlet(DimletType.TERRAIN, random);
+            if (terrainDimlet != null) {
+                addBlockDimlets(randomized, random);
+                randomized.add(terrainDimlet);
+            }
+        }
+        if (!hasFeatures(dimlets)) {
+            int cnt = random.nextInt(3);
+            for (int i = 0 ; i < cnt ; i++) {
+                DimletKey featureDimlet = DimletDictionary.get().getRandomDimlet(DimletType.FEATURE, random);
+                if (featureDimlet != null) {
+                    addBlockDimlets(randomized, random);
+                    randomized.add(featureDimlet);
+                }
+            }
+        }
+        if (!hasBiomeController(dimlets)) {
+            DimletKey controllerDimlet = DimletDictionary.get().getRandomDimlet(DimletType.BIOME_CONTROLLER, random);
+            if (controllerDimlet != null) {
+                addBiomeDimlets(randomized, random);
+                randomized.add(controllerDimlet);
+            }
+        }
+        if (!hasTimeDimlet(dimlets)) {
+            DimletKey timeDimlet = DimletDictionary.get().getRandomDimlet(DimletType.TIME, random);
+            if (timeDimlet != null) {
+                randomized.add(timeDimlet);
+            }
+        }
+
+        return randomizedDescriptor;
+    }
+
+
+    private void addBiomeDimlets(List<DimletKey> randomized, Random random) {
+        int cnt = random.nextInt(8)+1;
+        for (int i = 0 ; i < cnt ; i++) {
+            DimletKey dimlet = DimletDictionary.get().getRandomDimlet(DimletType.BIOME, random);
+            if (dimlet != null) {
+                randomized.add(dimlet);
+            }
+        }
+    }
+
+    private void addBlockDimlets(List<DimletKey> randomized, Random random) {
+        int cnt = Math.max(1, random.nextInt(6)-2);
+        for (int i = 0 ; i < cnt ; i++) {
+            DimletKey dimlet = DimletDictionary.get().getRandomDimlet(DimletType.BLOCK, random);
+            if (dimlet != null) {
+                randomized.add(dimlet);
+            }
+        }
+    }
+
+    private boolean hasTerrain(List<DimletKey> dimlets) {
+        return dimlets.stream().anyMatch(key -> key.getType() == DimletType.TERRAIN);
+    }
+
+    private boolean hasFeatures(List<DimletKey> dimlets) {
+        return dimlets.stream().anyMatch(key -> key.getType() == DimletType.FEATURE);
+    }
+
+    private boolean hasBiomeController(List<DimletKey> dimlets) {
+        return dimlets.stream().anyMatch(key -> key.getType() == DimletType.BIOME_CONTROLLER);
+    }
+
+    private boolean hasTimeDimlet(List<DimletKey> dimlets) {
+        return dimlets.stream().anyMatch(key -> key.getType() == DimletType.TIME);
+    }
+
 }

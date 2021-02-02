@@ -40,6 +40,9 @@ public class RealizedDimensionTab extends Item {
                 if (data != null) {
                     DimensionDescriptor descriptor = data.getDescriptor();
                     descriptor.dump(player);
+                    player.sendStatusMessage(new StringTextComponent("-----------------------------"), false);
+                    DimensionDescriptor randomized = data.getRandomizedDescriptor();
+                    randomized.dump(player);
                 }
             }
         }

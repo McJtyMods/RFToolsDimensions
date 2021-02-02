@@ -21,11 +21,6 @@ Ways to get knowledge (patterns):
 
 
 Todo:
-- Blobs:
-    - Make depend on dimension power
-    - Make legendary invulnerable based on power
-    - Fix the bounding box
-    - Increase loot
 - Dimlets:
     - More terrain types
     - More feature types
@@ -35,7 +30,4 @@ Todo:
     - Digit dimlets
 - Implement Knowledge Item loot
 - Dimension:
-    - Randomize
     - Dimlet houses
-- Enscriber:
-    - Validate dimension names

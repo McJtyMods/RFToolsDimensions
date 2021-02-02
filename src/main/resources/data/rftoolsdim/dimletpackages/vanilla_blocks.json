@@ -291,16 +291,6 @@
   },
   {
     "type": "block",
-    "key": "minecraft:anvil",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
     "key": "minecraft:basalt",
     "rarity": "common",
     "create": 10,
@@ -681,47 +671,7 @@
   },
   {
     "type": "block",
-    "key": "minecraft:cactus",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:cake",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:cartography_table",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
     "key": "minecraft:carved_pumpkin",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:chipped_anvil",
     "rarity": "common",
     "create": 10,
     "maintain": 10,
@@ -871,16 +821,6 @@
   },
   {
     "type": "block",
-    "key": "minecraft:composter",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
     "key": "minecraft:cracked_nether_bricks",
     "rarity": "common",
     "create": 10,
@@ -902,16 +842,6 @@
   {
     "type": "block",
     "key": "minecraft:cracked_stone_bricks",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:crafting_table",
     "rarity": "common",
     "create": 10,
     "maintain": 10,
@@ -1092,16 +1022,6 @@
   {
     "type": "block",
     "key": "minecraft:cyan_wool",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:damaged_anvil",
     "rarity": "common",
     "create": 10,
     "maintain": 10,
@@ -1361,61 +1281,51 @@
   },
   {
     "type": "block",
-    "key": "minecraft:end_portal_frame",
-    "rarity": "legendary",
-    "create": 2000,
-    "maintain": 2000,
-    "ticks": 100,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
     "key": "minecraft:end_stone",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
+    "rarity": "uncommon",
+    "create": 80,
+    "maintain": 60,
+    "ticks": 40,
     "worldgen": true,
     "dimlet": true
   },
   {
     "type": "block",
     "key": "minecraft:end_stone_brick_slab",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
+    "rarity": "uncommon",
+    "create": 80,
+    "maintain": 60,
+    "ticks": 40,
     "worldgen": true,
     "dimlet": true
   },
   {
     "type": "block",
     "key": "minecraft:end_stone_brick_stairs",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
+    "rarity": "uncommon",
+    "create": 80,
+    "maintain": 60,
+    "ticks": 40,
     "worldgen": true,
     "dimlet": true
   },
   {
     "type": "block",
     "key": "minecraft:end_stone_brick_wall",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
+    "rarity": "uncommon",
+    "create": 80,
+    "maintain": 60,
+    "ticks": 40,
     "worldgen": true,
     "dimlet": true
   },
   {
     "type": "block",
     "key": "minecraft:end_stone_bricks",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
+    "rarity": "uncommon",
+    "create": 80,
+    "maintain": 60,
+    "ticks": 40,
     "worldgen": true,
     "dimlet": true
   },
@@ -1472,10 +1382,10 @@
   {
     "type": "block",
     "key": "minecraft:gold_block",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
+    "rarity": "rare",
+    "create": 200,
+    "maintain": 200,
+    "ticks": 150,
     "worldgen": true,
     "dimlet": true
   },
@@ -1661,16 +1571,6 @@
   },
   {
     "type": "block",
-    "key": "minecraft:grindstone",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
     "key": "minecraft:hay_block",
     "rarity": "common",
     "create": 10,
@@ -1762,10 +1662,10 @@
   {
     "type": "block",
     "key": "minecraft:iron_block",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
+    "rarity": "uncommon",
+    "create": 200,
+    "maintain": 200,
+    "ticks": 200,
     "worldgen": true,
     "dimlet": true
   },
@@ -2032,16 +1932,6 @@
   {
     "type": "block",
     "key": "minecraft:lodestone",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:loom",
     "rarity": "common",
     "create": 10,
     "maintain": 10,
@@ -2321,16 +2211,6 @@
   },
   {
     "type": "block",
-    "key": "minecraft:note_block",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
     "key": "minecraft:oak_fence",
     "rarity": "common",
     "create": 10,
@@ -2412,10 +2292,10 @@
   {
     "type": "block",
     "key": "minecraft:obsidian",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
+    "rarity": "uncommon",
+    "create": 30,
+    "maintain": 30,
+    "ticks": 30,
     "worldgen": true,
     "dimlet": true
   },
@@ -2532,26 +2412,6 @@
   {
     "type": "block",
     "key": "minecraft:pink_wool",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:piston",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:piston_head",
     "rarity": "common",
     "create": 10,
     "maintain": 10,
@@ -3131,41 +2991,11 @@
   },
   {
     "type": "block",
-    "key": "minecraft:redstone_lamp",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
     "key": "minecraft:redstone_ore",
     "rarity": "uncommon",
     "create": 100,
     "maintain": 100,
     "ticks": 100,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:repeater",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:respawn_anchor",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
     "worldgen": true,
     "dimlet": true
   },
@@ -3561,16 +3391,6 @@
   },
   {
     "type": "block",
-    "key": "minecraft:stonecutter",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
     "key": "minecraft:stripped_acacia_log",
     "rarity": "common",
     "create": 10,
@@ -3742,16 +3562,6 @@
   {
     "type": "block",
     "key": "minecraft:terracotta",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:tnt",
     "rarity": "common",
     "create": 10,
     "maintain": 10,

@@ -164,8 +164,8 @@ public class EnscriberTileEntity extends GenericTileEntity {
             tagCompound.putString("dimension", data.getId().toString());
             compiledDescriptor.compile(descriptor, data.getRandomizedDescriptor());
         } else {
-            tagCompound.putInt("ticksLeft", compiledDescriptor.getActualTickCost());
             compiledDescriptor.compile(descriptor, DimensionDescriptor.EMPTY);  // Randomized part not known yet
+            tagCompound.putInt("ticksLeft", compiledDescriptor.getActualTickCost());
         }
 
         tagCompound.putInt("tickCost", compiledDescriptor.getActualTickCost());
@@ -293,6 +293,11 @@ public class EnscriberTileEntity extends GenericTileEntity {
             protected void onUpdate(int index) {
                 super.onUpdate(index);
                 validateDimlets();
+            }
+
+            @Override
+            public int getSlotLimit(int slot) {
+                return 1;
             }
         };
     }
