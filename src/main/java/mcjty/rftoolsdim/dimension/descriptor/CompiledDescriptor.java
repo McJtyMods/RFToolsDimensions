@@ -42,7 +42,7 @@ public class CompiledDescriptor {
      * Compile this descriptor
      */
     @Nonnull
-    public DescriptorError compile(DimensionDescriptor descriptor) {
+    public DescriptorError compile(DimensionDescriptor descriptor, DimensionDescriptor randomizedDescriptor) {
         createCostPerTick = 0;
         maintainCostPerTick = 0;
         actualTickCost = 0;

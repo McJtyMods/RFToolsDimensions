@@ -157,14 +157,15 @@ public class EnscriberTileEntity extends GenericTileEntity {
         DimensionData data = mgr.getData(descriptor);
 
         CompiledDescriptor compiledDescriptor = new CompiledDescriptor();
-        compiledDescriptor.compile(descriptor);
 
         if (data != null) {
             // The dimension was already created.
             tagCompound.putInt("ticksLeft", 0);
             tagCompound.putString("dimension", data.getId().toString());
+            compiledDescriptor.compile(descriptor, data.getRandomizedDescriptor());
         } else {
             tagCompound.putInt("ticksLeft", compiledDescriptor.getActualTickCost());
+            compiledDescriptor.compile(descriptor, DimensionDescriptor.EMPTY);  // Randomized part not known yet
         }
 
         tagCompound.putInt("tickCost", compiledDescriptor.getActualTickCost());
@@ -212,7 +213,7 @@ public class EnscriberTileEntity extends GenericTileEntity {
     private void validateDimlets() {
         DimensionDescriptor descriptor = convertToDimensionDescriptor(null, false);
         CompiledDescriptor compiledDescriptor = new CompiledDescriptor();
-        error = compiledDescriptor.compile(descriptor);
+        error = compiledDescriptor.compile(descriptor, DimensionDescriptor.EMPTY);  // We just need to check the descriptor. Not randomized
     }
 
     public int getClientErrorCode() {

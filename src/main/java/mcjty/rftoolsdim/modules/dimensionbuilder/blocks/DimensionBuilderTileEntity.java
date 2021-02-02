@@ -27,6 +27,9 @@ import mcjty.rftoolsdim.dimension.data.PersistantDimensionManager;
 import mcjty.rftoolsdim.dimension.descriptor.DimensionDescriptor;
 import mcjty.rftoolsdim.modules.dimensionbuilder.DimensionBuilderConfig;
 import mcjty.rftoolsdim.modules.dimensionbuilder.DimensionBuilderModule;
+import mcjty.rftoolsdim.modules.dimlets.data.DimletDictionary;
+import mcjty.rftoolsdim.modules.dimlets.data.DimletKey;
+import mcjty.rftoolsdim.modules.dimlets.data.DimletType;
 import net.minecraft.block.Blocks;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
@@ -48,6 +51,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.List;
 import java.util.Random;
 
 import static mcjty.lib.builder.TooltipBuilder.*;
@@ -260,7 +264,10 @@ public class DimensionBuilderTileEntity extends GenericTileEntity implements ITi
                 String descriptorString = tagCompound.getString("descriptor");
                 DimensionDescriptor descriptor = new DimensionDescriptor();
                 descriptor.read(descriptorString);
-                ServerWorld newworld = DimensionManager.get().createWorld(this.world, name, descriptor);
+
+                DimensionDescriptor randomizedDescriptor = createRandomizedDescriptor(descriptor);
+
+                ServerWorld newworld = DimensionManager.get().createWorld(this.world, name, descriptor, randomizedDescriptor);
                 ResourceLocation id = new ResourceLocation(RFToolsDim.MODID, name);
                 tagCompound.putString("dimension", id.toString());
                 markDirty();
@@ -269,6 +276,25 @@ public class DimensionBuilderTileEntity extends GenericTileEntity implements ITi
             }
         }
         return ticksLeft;
+    }
+
+    private DimensionDescriptor createRandomizedDescriptor(DimensionDescriptor descriptor) {
+        DimensionDescriptor randomizedDescriptor = new DimensionDescriptor();
+
+        List<DimletKey> dimlets = descriptor.getDimlets();
+        List<DimletKey> randomized = randomizedDescriptor.getDimlets();
+
+        if (!hasTerrain(dimlets)) {
+//            DimletDictionary.get().getRandomDimlet()
+            // @todo
+        }
+
+
+        return randomizedDescriptor;
+    }
+
+    private boolean hasTerrain(List<DimletKey> dimlets) {
+        return dimlets.stream().anyMatch(key -> key.getType() == DimletType.TERRAIN);
     }
 
     private void placeMatterReceiver(ServerWorld newworld, String name) {

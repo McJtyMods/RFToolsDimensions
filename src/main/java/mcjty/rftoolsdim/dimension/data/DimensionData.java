@@ -10,11 +10,13 @@ public class DimensionData {
 
     private final ResourceLocation id;
     private final DimensionDescriptor descriptor;
+    private final DimensionDescriptor randomizedDescriptor;
     private long energy;
 
-    public DimensionData(ResourceLocation id, DimensionDescriptor descriptor) {
+    public DimensionData(ResourceLocation id, DimensionDescriptor descriptor, DimensionDescriptor randomizedDescriptor) {
         this.id = id;
         this.descriptor = descriptor;
+        this.randomizedDescriptor = randomizedDescriptor;
     }
 
     public DimensionData(CompoundNBT tag) {
@@ -22,11 +24,18 @@ public class DimensionData {
         descriptor = new DimensionDescriptor();
         descriptor.read(tag.getString("descriptor"));
         energy = tag.getLong("energy");
+        if (tag.contains("randomized")) {
+            randomizedDescriptor = new DimensionDescriptor();
+            randomizedDescriptor.read(tag.getString("randomized"));
+        } else {
+            randomizedDescriptor = DimensionDescriptor.EMPTY;
+        }
     }
 
     public void write(CompoundNBT tag) {
         tag.putString("id", id.toString());
         tag.putString("descriptor", descriptor.compact());
+        tag.putString("randomized", randomizedDescriptor.compact());
         tag.putLong("energy", energy);
     }
 
@@ -36,6 +45,10 @@ public class DimensionData {
 
     public DimensionDescriptor getDescriptor() {
         return descriptor;
+    }
+
+    public DimensionDescriptor getRandomizedDescriptor() {
+        return randomizedDescriptor;
     }
 
     public long getEnergy() {

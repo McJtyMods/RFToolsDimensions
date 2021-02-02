@@ -31,6 +31,8 @@ public class DimensionDescriptor {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
     private static final Gson GSON_COMPACT = new GsonBuilder().disableHtmlEscaping().create();
 
+    public static final DimensionDescriptor EMPTY = new DimensionDescriptor();
+
     public List<DimletKey> getDimlets() {
         return dimlets;
     }

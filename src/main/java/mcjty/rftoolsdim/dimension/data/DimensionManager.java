@@ -78,7 +78,7 @@ public class DimensionManager {
         return world;
     }
 
-    public ServerWorld createWorld(World world, String name, DimensionDescriptor descriptor) {
+    public ServerWorld createWorld(World world, String name, DimensionDescriptor descriptor, DimensionDescriptor randomizedDescriptor) {
         ResourceLocation id = new ResourceLocation(RFToolsDim.MODID, name);
 
         PersistantDimensionManager mgr = PersistantDimensionManager.get(world);
@@ -95,14 +95,14 @@ public class DimensionManager {
         }
 
         CompiledDescriptor compiledDescriptor = new CompiledDescriptor();
-        DescriptorError error = compiledDescriptor.compile(descriptor);
+        DescriptorError error = compiledDescriptor.compile(descriptor, randomizedDescriptor);
         if (!error.isOk()) {
             RFToolsDim.setup.getLogger().error("Error compiling dimension descriptor: " + error.getMessage());
             throw new RuntimeException("Error compiling dimension descriptor: " + error.getMessage());
         }
         TerrainType terrainType = compiledDescriptor.getTerrainType();
 
-        DimensionSettings settings = new DimensionSettings(descriptor.compact());
+        DimensionSettings settings = new DimensionSettings(descriptor.compact(), randomizedDescriptor.compact());
 
         TimeType timeType = compiledDescriptor.getTimeType();
 
@@ -111,7 +111,7 @@ public class DimensionManager {
         ServerWorld result = DimensionHelper.getOrCreateWorld(world.getServer(), key,
                 (server, registryKey) -> new Dimension(() -> type, terrainType.getGeneratorSupplier().apply(server, settings)));
 
-        data = new DimensionData(id, descriptor);
+        data = new DimensionData(id, descriptor, randomizedDescriptor);
         mgr.register(data);
         return result;
 
@@ -142,7 +142,7 @@ public class DimensionManager {
             throw new UncheckedIOException(ex);
         }
 
-        createWorld(world, name, descriptor);
+        createWorld(world, name, descriptor, DimensionDescriptor.EMPTY);
         return null;
     }
 }
