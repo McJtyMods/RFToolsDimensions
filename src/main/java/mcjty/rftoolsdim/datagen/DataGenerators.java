@@ -1,5 +1,6 @@
 package mcjty.rftoolsdim.datagen;
 
+import mcjty.rftoolsdim.modules.dimlets.DimletModule;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -12,6 +13,7 @@ public class DataGenerators {
     public static void gatherData(GatherDataEvent event) {
         DataGenerator generator = event.getGenerator();
         if (event.includeServer()) {
+            DimletModule.registerLootHelpers();
             generator.addProvider(new Recipes(generator));
             generator.addProvider(new LootTables(generator));
         }

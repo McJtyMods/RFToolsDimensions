@@ -19,6 +19,7 @@ public class DimensionConfig {
     public static ForgeConfigSpec.LongValue DIMPOWER_WARN3;
 
     public static ForgeConfigSpec.DoubleValue RANDOMIZED_DIMLET_COST_FACTOR;
+    public static ForgeConfigSpec.DoubleValue DIMLET_HUT_CHANCE;
 
 
     public static void init() {
@@ -27,6 +28,10 @@ public class DimensionConfig {
         RANDOMIZED_DIMLET_COST_FACTOR = SERVER_BUILDER
                 .comment("The maintenance cost of randomized dimlets is multiplied with this value before applying to the dimension")
                 .defineInRange("randomizedDimletCostFactor", 0.1, 0, 10.0);
+
+        DIMLET_HUT_CHANCE = SERVER_BUILDER
+                .comment("The chance of a dimlet hut for a given chunk")
+                .defineInRange("dimletHutChance", 0.005, 0, 1.0);
 
         MAX_DIMENSION_POWER = SERVER_BUILDER
                 .comment("Maximum power in a dimension")

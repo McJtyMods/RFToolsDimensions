@@ -8,15 +8,21 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
 
 public class BuildingTemplate {
 
     private final Map<Character, BlockState> palette = new HashMap<>();
+    private final Map<Character, BiConsumer<ISeedReader, BlockPos>> paletteSpecial = new HashMap<>();
 
     private final List<Slice> slices = new ArrayList<>();
 
     public void addPalette(Character key, BlockState state) {
         palette.put(key, state);
+    }
+
+    public void addPalette(Character key, BiConsumer<ISeedReader, BlockPos> consumer) {
+        paletteSpecial.put(key, consumer);
     }
 
     public void generate(ISeedReader reader, BlockPos pos) {
@@ -28,7 +34,11 @@ public class BuildingTemplate {
                 for (int x = 0 ; x < row.length() ; x++) {
                     mpos.setPos(pos.getX() + x, y, z);
                     char key = row.charAt(x);
-                    reader.setBlockState(mpos, palette.get(key), 0);
+                    if (paletteSpecial.containsKey(key)) {
+                        paletteSpecial.get(key).accept(reader, mpos);
+                    } else {
+                        reader.setBlockState(mpos, palette.get(key), 0);
+                    }
                 }
                 z++;
             }

@@ -2,8 +2,10 @@ package mcjty.rftoolsdim.dimension.features;
 
 import com.mojang.serialization.Codec;
 import mcjty.rftoolsdim.RFToolsDim;
+import mcjty.rftoolsdim.dimension.DimensionConfig;
 import mcjty.rftoolsdim.dimension.descriptor.CompiledDescriptor;
 import mcjty.rftoolsdim.dimension.descriptor.CompiledFeature;
+import mcjty.rftoolsdim.dimension.features.buildings.DimletHut;
 import mcjty.rftoolsdim.dimension.features.buildings.SpawnPlatform;
 import mcjty.rftoolsdim.dimension.terraintypes.BaseChunkGenerator;
 import mcjty.rftoolsdim.setup.Registration;
@@ -70,7 +72,10 @@ public class RFTFeature extends Feature<NoFeatureConfig> {
             ChunkPos cp = new ChunkPos(pos);
             if (cp.x == 0 && cp.z == 0) {
                 // Spawn platform
-                generateSpawnPlatform(reader);
+                SpawnPlatform.SPAWN_PLATFORM.get().generate(reader, new BlockPos(3, getFloorHeight(reader, cp), 3));
+                generatedSomething = true;
+            } else if (rand.nextFloat() < DimensionConfig.DIMLET_HUT_CHANCE.get()) {
+                DimletHut.DIMLET_HUT.get().generate(reader, new BlockPos(cp.getXStart() + 4, getFloorHeight(reader, cp), cp.getZStart() + 4));
                 generatedSomething = true;
             }
 
@@ -79,12 +84,12 @@ public class RFTFeature extends Feature<NoFeatureConfig> {
         return false;
     }
 
-    private void generateSpawnPlatform(ISeedReader reader) {
-        int height = reader.getHeight(Heightmap.Type.WORLD_SURFACE, 8, 8);
+    private int getFloorHeight(ISeedReader reader, ChunkPos cp) {
+        int height = reader.getHeight(Heightmap.Type.WORLD_SURFACE, cp.getXStart() + 8, cp.getZStart() + 8);
         if (height <= 1 || height > 250) {
             height = 65;
         }
-        SpawnPlatform.SPAWN_PLATFORM.get().generate(reader, new BlockPos(3, height, 3));
+        return height;
     }
 
 }
