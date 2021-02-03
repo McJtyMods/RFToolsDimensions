@@ -14,6 +14,7 @@ public class DimensionRegistry {
     public static final ResourceLocation WAVES_ID = new ResourceLocation(RFToolsDim.MODID, "waves");
     public static final ResourceLocation FLAT_ID = new ResourceLocation(RFToolsDim.MODID, "flat");
     public static final ResourceLocation NORMAL_ID = new ResourceLocation(RFToolsDim.MODID, "normal");
+    public static final ResourceLocation ISLANDS_ID = new ResourceLocation(RFToolsDim.MODID, "islands");
 
     public static final ResourceLocation FIXED_DAY_ID = new ResourceLocation(RFToolsDim.MODID, "fixed_day");
     public static final ResourceLocation FIXED_NIGHT_ID = new ResourceLocation(RFToolsDim.MODID, "fixed_night");

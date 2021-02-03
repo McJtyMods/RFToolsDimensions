@@ -38,7 +38,7 @@ public class RFTBiomeProvider extends BiomeProvider {
         this.settings = settings;
         this.biomeRegistry = biomeRegistry;
         biomes = getBiomes(biomeRegistry, settings);
-        this.genBiomes = LayerUtil.func_237215_a_(0 /*@todo 1.16 seed*/, false, 4, 4);
+        this.genBiomes = LayerUtil.func_237215_a_(settings.getSeed(), false, 4, 4);
     }
 
     public DimensionSettings getSettings() {

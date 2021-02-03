@@ -270,12 +270,27 @@ public class WorkbenchTileEntity extends GenericTileEntity {
         return new NoDirectionItemHander(this, CONTAINER_FACTORY.get()) {
             @Override
             public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
-                // @todo 1.15
-                return true;
+                switch (slot) {
+                    case SLOT_EMPTY_DIMLET:
+                        return stack.getItem() == DimletModule.EMPTY_DIMLET.get();
+                    case SLOT_MEMORY_PART:
+                        return stack.getItem() instanceof PartItem;
+                    case SLOT_ENERGY_PART:
+                        return stack.getItem() instanceof PartItem;
+                    case SLOT_ESSENCE:
+                        return true;
+                    case SLOT_OUTPUT:
+                        return DimletItem.isReadyDimlet(stack);
+                    default:
+                        return isValidPatternItem(stack);
+                }
             }
 
             @Override
             public boolean isItemInsertable(int slot, @Nonnull ItemStack stack) {
+                if (slot == SLOT_OUTPUT) {
+                    return false;
+                }
                 return isItemValid(slot, stack);
             }
         };

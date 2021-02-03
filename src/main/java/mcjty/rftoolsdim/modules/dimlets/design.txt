@@ -26,9 +26,12 @@ Todo:
     - More feature types
     - Liquid dimlets
     - Structures
-    - Special (yellow) dimlets: owner, powerless, ...
+    - Feature to inhibit default structures
+    - Feature to set default structures
+    - Special (yellow) dimlets: owner, cheater, ...
     - Digit dimlets
 - Implement Knowledge Item loot
 - Dimension:
     - Dimlet houses
-    - FIX SEED!
+
+Check why randomized always gives single?

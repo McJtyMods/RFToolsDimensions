@@ -264,7 +264,8 @@ public class DimensionBuilderTileEntity extends GenericTileEntity implements ITi
 
                 DimensionDescriptor randomizedDescriptor = descriptor.createRandomizedDescriptor(random);
 
-                ServerWorld newworld = DimensionManager.get().createWorld(this.world, name, descriptor, randomizedDescriptor);
+                long seed = random.nextLong();
+                ServerWorld newworld = DimensionManager.get().createWorld(this.world, name, seed, descriptor, randomizedDescriptor);
                 ResourceLocation id = new ResourceLocation(RFToolsDim.MODID, name);
                 tagCompound.putString("dimension", id.toString());
                 CompiledDescriptor compiledDescriptor = DimensionManager.get().getCompiledDescriptor(newworld);

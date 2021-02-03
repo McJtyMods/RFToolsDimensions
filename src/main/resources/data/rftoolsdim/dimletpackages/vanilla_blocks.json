@@ -211,26 +211,6 @@
   },
   {
     "type": "block",
-    "key": "minecraft:acacia_slab",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:acacia_stairs",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
     "key": "minecraft:acacia_wood",
     "rarity": "common",
     "create": 10,
@@ -261,36 +241,6 @@
   },
   {
     "type": "block",
-    "key": "minecraft:andesite_slab",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:andesite_stairs",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:andesite_wall",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
     "key": "minecraft:basalt",
     "rarity": "common",
     "create": 10,
@@ -302,10 +252,10 @@
   {
     "type": "block",
     "key": "minecraft:bedrock",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
+    "rarity": "legendary",
+    "create": 1000,
+    "maintain": 1000,
+    "ticks": 1000,
     "worldgen": true,
     "dimlet": true
   },
@@ -342,26 +292,6 @@
   {
     "type": "block",
     "key": "minecraft:birch_planks",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:birch_slab",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:birch_stairs",
     "rarity": "common",
     "create": 10,
     "maintain": 10,
@@ -432,36 +362,6 @@
   {
     "type": "block",
     "key": "minecraft:blackstone",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:blackstone_slab",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:blackstone_stairs",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:blackstone_wall",
     "rarity": "common",
     "create": 10,
     "maintain": 10,
@@ -552,36 +452,6 @@
   {
     "type": "block",
     "key": "minecraft:brain_coral_block",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:brick_slab",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:brick_stairs",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:brick_wall",
     "rarity": "common",
     "create": 10,
     "maintain": 10,
@@ -791,36 +661,6 @@
   },
   {
     "type": "block",
-    "key": "minecraft:cobblestone_slab",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:cobblestone_stairs",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:cobblestone_wall",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
     "key": "minecraft:cracked_nether_bricks",
     "rarity": "common",
     "create": 10,
@@ -901,26 +741,6 @@
   },
   {
     "type": "block",
-    "key": "minecraft:crimson_slab",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:crimson_stairs",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
     "key": "minecraft:crimson_stem",
     "rarity": "common",
     "create": 10,
@@ -951,27 +771,7 @@
   },
   {
     "type": "block",
-    "key": "minecraft:cut_red_sandstone_slab",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
     "key": "minecraft:cut_sandstone",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:cut_sandstone_slab",
     "rarity": "common",
     "create": 10,
     "maintain": 10,
@@ -1071,26 +871,6 @@
   },
   {
     "type": "block",
-    "key": "minecraft:dark_oak_slab",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:dark_oak_stairs",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
     "key": "minecraft:dark_oak_wood",
     "rarity": "common",
     "create": 10,
@@ -1102,26 +882,6 @@
   {
     "type": "block",
     "key": "minecraft:dark_prismarine",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:dark_prismarine_slab",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:dark_prismarine_stairs",
     "rarity": "common",
     "create": 10,
     "maintain": 10,
@@ -1211,36 +971,6 @@
   },
   {
     "type": "block",
-    "key": "minecraft:diorite_slab",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:diorite_stairs",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:diorite_wall",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
     "key": "minecraft:dirt",
     "rarity": "common",
     "create": 10,
@@ -1282,36 +1012,6 @@
   {
     "type": "block",
     "key": "minecraft:end_stone",
-    "rarity": "uncommon",
-    "create": 80,
-    "maintain": 60,
-    "ticks": 40,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:end_stone_brick_slab",
-    "rarity": "uncommon",
-    "create": 80,
-    "maintain": 60,
-    "ticks": 40,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:end_stone_brick_stairs",
-    "rarity": "uncommon",
-    "create": 80,
-    "maintain": 60,
-    "ticks": 40,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:end_stone_brick_wall",
     "rarity": "uncommon",
     "create": 80,
     "maintain": 60,
@@ -1402,36 +1102,6 @@
   {
     "type": "block",
     "key": "minecraft:granite",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:granite_slab",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:granite_stairs",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:granite_wall",
     "rarity": "common",
     "create": 10,
     "maintain": 10,
@@ -1731,26 +1401,6 @@
   },
   {
     "type": "block",
-    "key": "minecraft:jungle_slab",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:jungle_stairs",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
     "key": "minecraft:jungle_wood",
     "rarity": "common",
     "create": 10,
@@ -2021,66 +1671,6 @@
   },
   {
     "type": "block",
-    "key": "minecraft:mossy_cobblestone_slab",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:mossy_cobblestone_stairs",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:mossy_cobblestone_wall",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:mossy_stone_brick_slab",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:mossy_stone_brick_stairs",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:mossy_stone_brick_wall",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
     "key": "minecraft:mossy_stone_bricks",
     "rarity": "common",
     "create": 10,
@@ -2112,36 +1702,6 @@
   {
     "type": "block",
     "key": "minecraft:nether_brick_fence",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:nether_brick_slab",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:nether_brick_stairs",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:nether_brick_wall",
     "rarity": "common",
     "create": 10,
     "maintain": 10,
@@ -2251,26 +1811,6 @@
   },
   {
     "type": "block",
-    "key": "minecraft:oak_slab",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:oak_stairs",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
     "key": "minecraft:oak_wood",
     "rarity": "common",
     "create": 10,
@@ -2361,16 +1901,6 @@
   },
   {
     "type": "block",
-    "key": "minecraft:petrified_oak_slab",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
     "key": "minecraft:pink_concrete",
     "rarity": "common",
     "create": 10,
@@ -2441,26 +1971,6 @@
   },
   {
     "type": "block",
-    "key": "minecraft:polished_andesite_slab",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:polished_andesite_stairs",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
     "key": "minecraft:polished_basalt",
     "rarity": "common",
     "create": 10,
@@ -2481,67 +1991,7 @@
   },
   {
     "type": "block",
-    "key": "minecraft:polished_blackstone_brick_slab",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:polished_blackstone_brick_stairs",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:polished_blackstone_brick_wall",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
     "key": "minecraft:polished_blackstone_bricks",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:polished_blackstone_slab",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:polished_blackstone_stairs",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:polished_blackstone_wall",
     "rarity": "common",
     "create": 10,
     "maintain": 10,
@@ -2561,47 +2011,7 @@
   },
   {
     "type": "block",
-    "key": "minecraft:polished_diorite_slab",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:polished_diorite_stairs",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
     "key": "minecraft:polished_granite",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:polished_granite_slab",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:polished_granite_stairs",
     "rarity": "common",
     "create": 10,
     "maintain": 10,
@@ -2621,57 +2031,7 @@
   },
   {
     "type": "block",
-    "key": "minecraft:prismarine_brick_slab",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:prismarine_brick_stairs",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
     "key": "minecraft:prismarine_bricks",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:prismarine_slab",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:prismarine_stairs",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:prismarine_wall",
     "rarity": "common",
     "create": 10,
     "maintain": 10,
@@ -2761,31 +2121,11 @@
   },
   {
     "type": "block",
-    "key": "minecraft:purpur_slab",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:purpur_stairs",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
     "key": "minecraft:quartz_block",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
+    "rarity": "uncommon",
+    "create": 100,
+    "maintain": 100,
+    "ticks": 50,
     "worldgen": true,
     "dimlet": true
   },
@@ -2802,26 +2142,6 @@
   {
     "type": "block",
     "key": "minecraft:quartz_pillar",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:quartz_slab",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:quartz_stairs",
     "rarity": "common",
     "create": 10,
     "maintain": 10,
@@ -2871,36 +2191,6 @@
   },
   {
     "type": "block",
-    "key": "minecraft:red_nether_brick_slab",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:red_nether_brick_stairs",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:red_nether_brick_wall",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
     "key": "minecraft:red_nether_bricks",
     "rarity": "common",
     "create": 10,
@@ -2922,36 +2212,6 @@
   {
     "type": "block",
     "key": "minecraft:red_sandstone",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:red_sandstone_slab",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:red_sandstone_stairs",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:red_sandstone_wall",
     "rarity": "common",
     "create": 10,
     "maintain": 10,
@@ -3021,36 +2281,6 @@
   },
   {
     "type": "block",
-    "key": "minecraft:sandstone_slab",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:sandstone_stairs",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:sandstone_wall",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
     "key": "minecraft:sea_lantern",
     "rarity": "common",
     "create": 10,
@@ -3091,47 +2321,7 @@
   },
   {
     "type": "block",
-    "key": "minecraft:smooth_quartz_slab",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:smooth_quartz_stairs",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
     "key": "minecraft:smooth_red_sandstone",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:smooth_red_sandstone_slab",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:smooth_red_sandstone_stairs",
     "rarity": "common",
     "create": 10,
     "maintain": 10,
@@ -3151,37 +2341,7 @@
   },
   {
     "type": "block",
-    "key": "minecraft:smooth_sandstone_slab",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:smooth_sandstone_stairs",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
     "key": "minecraft:smooth_stone",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:smooth_stone_slab",
     "rarity": "common",
     "create": 10,
     "maintain": 10,
@@ -3281,26 +2441,6 @@
   },
   {
     "type": "block",
-    "key": "minecraft:spruce_slab",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:spruce_stairs",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
     "key": "minecraft:spruce_wood",
     "rarity": "common",
     "create": 10,
@@ -3331,57 +2471,7 @@
   },
   {
     "type": "block",
-    "key": "minecraft:stone_brick_slab",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:stone_brick_stairs",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:stone_brick_wall",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
     "key": "minecraft:stone_bricks",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:stone_slab",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:stone_stairs",
     "rarity": "common",
     "create": 10,
     "maintain": 10,
@@ -3622,26 +2712,6 @@
   {
     "type": "block",
     "key": "minecraft:warped_planks",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:warped_slab",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:warped_stairs",
     "rarity": "common",
     "create": 10,
     "maintain": 10,

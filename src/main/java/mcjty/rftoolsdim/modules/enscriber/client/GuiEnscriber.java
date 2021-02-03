@@ -110,31 +110,6 @@ public class GuiEnscriber extends GenericGuiContainer<EnscriberTileEntity, Gener
         }
     }
 
-    // @todo 1.16
-//    private java.util.List<DimletKey> extractModifiersForType(java.util.List<DimletKey> modifiers, DimletType type) {
-//        java.util.List<DimletKey> modifiersForType = new ArrayList<>();
-//        int i = 0;
-//        while (i < modifiers.size()) {
-//            DimletKey modifier = modifiers.get(i);
-//            if (type.dimletType.isModifiedBy(modifier.getType())) {
-//                modifiersForType.add(modifier);
-//                modifiers.remove(i);
-//            } else {
-//                i++;
-//            }
-//        }
-//        return modifiersForType;
-//    }
-
-    private String shortenName(String name) {
-        int idx = name.indexOf('_');
-        if (idx == -1) {
-            return name;
-        } else {
-            return name.substring(idx+1);
-        }
-    }
-
     private void validateDimlets() {
         int errorCode = tileEntity.getClientErrorCode();
         DescriptorError.Code error = DescriptorError.Code.values()[errorCode];

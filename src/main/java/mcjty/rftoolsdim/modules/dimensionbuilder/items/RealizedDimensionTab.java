@@ -1,10 +1,17 @@
 package mcjty.rftoolsdim.modules.dimensionbuilder.items;
 
+import mcjty.lib.McJtyLib;
+import mcjty.lib.varia.DimensionId;
 import mcjty.lib.varia.Logging;
 import mcjty.rftoolsdim.dimension.data.DimensionData;
+import mcjty.rftoolsdim.dimension.data.DimensionSettings;
 import mcjty.rftoolsdim.dimension.data.PersistantDimensionManager;
+import mcjty.rftoolsdim.dimension.descriptor.CompiledDescriptor;
+import mcjty.rftoolsdim.dimension.descriptor.CompiledFeature;
+import mcjty.rftoolsdim.dimension.descriptor.DescriptorError;
 import mcjty.rftoolsdim.dimension.descriptor.DimensionDescriptor;
 import mcjty.rftoolsdim.dimension.power.ClientPowerManager;
+import mcjty.rftoolsdim.dimension.terraintypes.BaseChunkGenerator;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -17,6 +24,8 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
+import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.server.ServerWorld;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -38,11 +47,20 @@ public class RealizedDimensionTab extends Item {
                 String dimension = tagCompound.getString("dimension");
                 DimensionData data = PersistantDimensionManager.get(world).getData(new ResourceLocation(dimension));
                 if (data != null) {
+                    player.sendStatusMessage(new StringTextComponent(TextFormatting.BLUE + "Energy: " + TextFormatting.WHITE + data.getEnergy()), false);
                     DimensionDescriptor descriptor = data.getDescriptor();
                     descriptor.dump(player);
                     player.sendStatusMessage(new StringTextComponent("-----------------------------"), false);
                     DimensionDescriptor randomized = data.getRandomizedDescriptor();
                     randomized.dump(player);
+                }
+
+                DimensionId id = DimensionId.fromResourceLocation(new ResourceLocation(dimension));
+                ServerWorld serverWorld = id.getWorld();
+                ChunkGenerator generator = serverWorld.getChunkProvider().generator;
+                if (generator instanceof BaseChunkGenerator) {
+                    DimensionSettings settings = ((BaseChunkGenerator) generator).getSettings();
+                    player.sendStatusMessage(new StringTextComponent(TextFormatting.BLUE + "Seed: " + TextFormatting.WHITE + settings.getSeed()), false);
                 }
             }
         }
@@ -63,8 +81,13 @@ public class RealizedDimensionTab extends Item {
                 list.add(new StringTextComponent("Name: " + name).mergeStyle(TextFormatting.BLUE));
             }
 
-            String descriptionString = tagCompound.getString("descriptor");
-            constructDescriptionHelp(list, descriptionString);
+            if (McJtyLib.proxy.isSneaking()) {
+                String descriptionString = tagCompound.getString("descriptor");
+                String randomizedString = tagCompound.getString("randomized");
+                constructDescriptionHelp(list, descriptionString, randomizedString);
+            } else {
+                list.add(new StringTextComponent(TextFormatting.GREEN + "    <Press Shift>"));
+            }
 
             int ticksLeft = tagCompound.getInt("ticksLeft");
             if (ticksLeft == 0) {
@@ -89,35 +112,24 @@ public class RealizedDimensionTab extends Item {
         }
     }
 
-    private void constructDescriptionHelp(List<ITextComponent> list, String descriptionString) {
-        // @todo 1.16
-//        Map<DimletType,List<DimletKey>> dimletTypeListMap = new HashMap<>();
-//        for (DimletKey descriptor : DimensionDescriptor.parseDescriptionString(descriptionString)) {
-//            DimletType type = descriptor.getType();
-//            if (!dimletTypeListMap.containsKey(type)) {
-//                dimletTypeListMap.put(type, new ArrayList<>());
-//            }
-//            dimletTypeListMap.get(descriptor.getType()).add(descriptor);
-//        }
-//
-//        for (Map.Entry<DimletType, List<DimletKey>> entry : dimletTypeListMap.entrySet()) {
-//            DimletType type = entry.getKey();
-//            List<DimletKey> keys = entry.getValue();
-//            if (keys != null && !keys.isEmpty()) {
-//                if (type == DimletType.DIMLET_DIGIT) {
-//                    String digitString = "";
-//                    for (DimletKey key : keys) {
-//                        digitString += DimletObjectMapping.getDigit(key);
-//                    }
-//                    list.add(new StringTextComponent(TextFormatting.GREEN + "Digits " + digitString));
-//                } else {
-//                    if (keys.size() == 1) {
-//                        list.add(new StringTextComponent(TextFormatting.GREEN + type.dimletType.getName() + " 1 dimlet"));
-//                    } else {
-//                        list.add(new StringTextComponent(TextFormatting.GREEN + type.dimletType.getName() + " " + keys.size() + " dimlets"));
-//                    }
-//                }
-//            }
-//        }
+    private void constructDescriptionHelp(List<ITextComponent> list, String descriptionString, String randomizedString) {
+        DimensionDescriptor descriptor = new DimensionDescriptor();
+        descriptor.read(descriptionString);
+        DimensionDescriptor randomizedDescriptor = new DimensionDescriptor();
+        if (!randomizedString.isEmpty()) {
+            randomizedDescriptor.read(randomizedString);
+        }
+        CompiledDescriptor compiledDescriptor = new CompiledDescriptor();
+        DescriptorError error = compiledDescriptor.compile(descriptor, randomizedDescriptor);
+        if (error.isOk()) {
+            list.add(new StringTextComponent(TextFormatting.GREEN + "    Terrain: " + TextFormatting.WHITE + compiledDescriptor.getTerrainType().getName()));
+            list.add(new StringTextComponent(TextFormatting.GREEN + "    Biome Controller: " + TextFormatting.WHITE + compiledDescriptor.getBiomeControllerType().getName()));
+            list.add(new StringTextComponent(TextFormatting.GREEN + "    Time: " + TextFormatting.WHITE + compiledDescriptor.getTimeType().getName()));
+            for (CompiledFeature feature : compiledDescriptor.getFeatures()) {
+                list.add(new StringTextComponent(TextFormatting.GREEN + "    Feature: " + TextFormatting.WHITE + feature.getFeatureType().getName()));
+            }
+        } else {
+            list.add(new StringTextComponent(TextFormatting.RED + "Parse error: " + error.getMessage()));
+        }
     }
 }

@@ -13,7 +13,8 @@ public enum TerrainType {
     FLAT("flat", KnowledgeSet.SET1, FlatChunkGenerator::new),
     WAVES("waves", KnowledgeSet.SET1, WavesChunkGenerator::new),
     VOID("void", KnowledgeSet.SET2, VoidChunkGenerator::new),
-    NORMAL("normal", KnowledgeSet.SET3, NormalChunkGenerator::new);
+    NORMAL("normal", KnowledgeSet.SET3, NormalChunkGenerator::new),
+    ISLANDS("islands", KnowledgeSet.SET4, IslandsChunkGenerator::new);
 
     private final String name;
     private final KnowledgeSet set;

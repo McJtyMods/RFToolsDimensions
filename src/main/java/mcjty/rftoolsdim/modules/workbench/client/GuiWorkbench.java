@@ -125,7 +125,6 @@ public class GuiWorkbench extends GenericGuiContainer<WorkbenchTileEntity, Gener
             matrixStack.translate(guiLeft, guiTop, 0.0F);
             RenderSystem.color4f(1.0F, 0.0F, 0.0F, 1.0F);
             RenderSystem.enableRescaleNormal();
-            // @todo 1.15
 
             itemRenderer.zLevel = 100.0F;
             GlStateManager.enableDepthTest();

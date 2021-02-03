@@ -29,7 +29,7 @@ public abstract class BaseChunkGenerator extends ChunkGenerator {
     public BaseChunkGenerator(Registry<Biome> registry, DimensionSettings settings) {
         super(new RFTBiomeProvider(registry, settings), new DimensionStructuresSettings(false));
         this.settings = settings;
-        this.randomSeed = new SharedSeedRandom(0);  // @todo 1.16 SEED
+        this.randomSeed = new SharedSeedRandom(settings.getSeed());
 //        this.surfaceDepthNoise = (INoiseGenerator)(noisesettings.func_236178_i_() ? new PerlinNoiseGenerator(this.randomSeed, IntStream.rangeClosed(-3, 0)) : new OctavesNoiseGenerator(this.randomSeed, IntStream.rangeClosed(-3, 0)));
         this.surfaceDepthNoise = new PerlinNoiseGenerator(this.randomSeed, IntStream.rangeClosed(-3, 0));  //) : new OctavesNoiseGenerator(this.randomSeed, IntStream.rangeClosed(-3, 0)));
         defaultBlocks.addAll(settings.getCompiledDescriptor().getBaseBlocks());

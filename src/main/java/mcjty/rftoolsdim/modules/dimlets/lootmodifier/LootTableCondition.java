@@ -35,7 +35,7 @@ public class LootTableCondition implements ILootCondition {
         if (pos != null) {
             BlockState state = lootContext.getWorld().getBlockState(new BlockPos(pos));
             if (state.getBlock() instanceof ChestBlock) {
-                // @todo correct loottable
+                // @todo correct loottable (supported in 1.16.5?)
                 return true;
             }
 //            ResourceLocation lootTable = state.getBlock().getLootTable();

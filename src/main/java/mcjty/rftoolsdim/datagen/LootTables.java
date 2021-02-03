@@ -37,13 +37,13 @@ public class LootTables extends BaseLootTableProvider {
 
         LootPool.Builder builder = LootPool.builder()
                 .name(DimensionRegistry.HUT_LOOT.getPath())
-                .rolls(RandomValueRange.of(1, 7))
+                .rolls(RandomValueRange.of(1, 5))
                 .addEntry(DimletLootEntry.builder(DimletRarity.COMMON)
-                        .weight(6)
+                        .weight(14)
                         .acceptFunction(SetCount
                                 .builder(RandomValueRange.of(0, 2))))
                 .addEntry(DimletLootEntry.builder(DimletRarity.UNCOMMON)
-                        .weight(3)
+                        .weight(4)
                         .acceptFunction(SetCount
                                 .builder(RandomValueRange.of(0, 2))))
                 .addEntry(DimletLootEntry.builder(DimletRarity.RARE)
@@ -55,11 +55,11 @@ public class LootTables extends BaseLootTableProvider {
                         .acceptFunction(SetCount
                                 .builder(RandomValueRange.of(0, 1))))
                 .addEntry(ItemLootEntry.builder(KnowledgeModule.COMMON_LOST_KNOWLEDGE.get())
-                        .weight(6)
+                        .weight(14)
                         .acceptFunction(SetCount
                                 .builder(RandomValueRange.of(0, 3))))
                 .addEntry(ItemLootEntry.builder(KnowledgeModule.UNCOMMON_LOST_KNOWLEDGE.get())
-                        .weight(3)
+                        .weight(4)
                         .acceptFunction(SetCount
                                 .builder(RandomValueRange.of(0, 3))))
                 .addEntry(ItemLootEntry.builder(KnowledgeModule.RARE_LOST_KNOWLEDGE.get())

@@ -78,7 +78,7 @@ public class DimensionManager {
         return world;
     }
 
-    public ServerWorld createWorld(World world, String name, DimensionDescriptor descriptor, DimensionDescriptor randomizedDescriptor) {
+    public ServerWorld createWorld(World world, String name, long seed, DimensionDescriptor descriptor, DimensionDescriptor randomizedDescriptor) {
         ResourceLocation id = new ResourceLocation(RFToolsDim.MODID, name);
 
         PersistantDimensionManager mgr = PersistantDimensionManager.get(world);
@@ -102,7 +102,7 @@ public class DimensionManager {
         }
         TerrainType terrainType = compiledDescriptor.getTerrainType();
 
-        DimensionSettings settings = new DimensionSettings(descriptor.compact(), randomizedDescriptor.compact());
+        DimensionSettings settings = new DimensionSettings(seed, descriptor.compact(), randomizedDescriptor.compact());
 
         TimeType timeType = compiledDescriptor.getTimeType();
 
@@ -118,7 +118,7 @@ public class DimensionManager {
     }
 
     // Returns null on success, otherwise an error string
-    public String createDimension(World world, String name, String filename) {
+    public String createDimension(World world, String name, long seed, String filename) {
 //        RegistryKey<World> key = RegistryKey.getOrCreateKey(Registry.WORLD_KEY, new ResourceLocation(RFToolsDim.MODID, name));
         DimensionId id = DimensionId.fromResourceLocation(new ResourceLocation(RFToolsDim.MODID, name));
         if (id.loadWorld(world) != null) {
@@ -142,7 +142,7 @@ public class DimensionManager {
             throw new UncheckedIOException(ex);
         }
 
-        createWorld(world, name, descriptor, DimensionDescriptor.EMPTY);
+        createWorld(world, name, seed, descriptor, DimensionDescriptor.EMPTY);
         return null;
     }
 }

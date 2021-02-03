@@ -78,7 +78,6 @@ public class PowerHandler {
 
                 // Special effect handling.
                 if (doEffects && power > 0) {
-                    // @todo 1.16
                     handleEffectsForDimension(power, world, entry.getValue());
                 }
                 if (world != null && !world.getPlayers().isEmpty()) {

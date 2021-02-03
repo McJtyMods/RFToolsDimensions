@@ -2,18 +2,25 @@ package mcjty.rftoolsdim.commands;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.mojang.serialization.Dynamic;
-import com.mojang.serialization.JsonOps;
-import net.minecraft.block.Blocks;
+import mcjty.rftoolsdim.dimension.data.DimensionData;
+import mcjty.rftoolsdim.dimension.data.DimensionManager;
+import mcjty.rftoolsdim.dimension.data.DimensionSettings;
+import mcjty.rftoolsdim.dimension.data.PersistantDimensionManager;
+import mcjty.rftoolsdim.dimension.descriptor.DimensionDescriptor;
+import mcjty.rftoolsdim.dimension.terraintypes.BaseChunkGenerator;
+import mcjty.rftoolsdim.modules.dimlets.data.DimletKey;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
-import net.minecraft.world.gen.feature.OreFeatureConfig;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.server.ServerWorld;
 
 public class CommandDump implements Command<CommandSource> {
 
@@ -29,11 +36,38 @@ public class CommandDump implements Command<CommandSource> {
 
     @Override
     public int run(CommandContext<CommandSource> context) throws CommandSyntaxException {
-        OreFeatureConfig config = new OreFeatureConfig(OreFeatureConfig.FillerBlockType.BASE_STONE_OVERWORLD, Blocks.GLOWSTONE.getDefaultState(), 30);
-        // @todo 1.16.3
-//        Dynamic<JsonElement> serialized = config.serialize(JsonOps.INSTANCE);
-//        JsonElement value = serialized.getValue();
-//        System.out.println("json = " + GSON.toJson(value));
+        ServerWorld world = context.getSource().getWorld();
+        ResourceLocation location = world.getDimensionKey().getLocation();
+        feedback(context, TextFormatting.BLUE + "Dimension: " + TextFormatting.WHITE + location.toString());
+        DimensionData data = PersistantDimensionManager.get(world).getData(location);
+        if (data == null) {
+            feedback(context, TextFormatting.RED + "Not an RFTools Dimensions!");
+            return 0;
+        }
+        feedback(context, TextFormatting.BLUE + "Energy: " + TextFormatting.WHITE + data.getEnergy());
+
+        ChunkGenerator generator = world.getChunkProvider().generator;
+        if (generator instanceof BaseChunkGenerator) {
+            DimensionSettings settings = ((BaseChunkGenerator) generator).getSettings();
+            feedback(context, TextFormatting.BLUE + "Seed: " + TextFormatting.WHITE + settings.getSeed());
+        }
+
+        DimensionDescriptor descriptor = data.getDescriptor();
+        feedback(context, TextFormatting.GREEN + "Standard dimlets:");
+        for (DimletKey dimlet : descriptor.getDimlets()) {
+            feedback(context, TextFormatting.BLUE + "    " + dimlet.getType().name() + ": " + TextFormatting.WHITE + dimlet.getKey());
+        }
+
+        DimensionDescriptor randomizedDescriptor = data.getRandomizedDescriptor();
+        feedback(context, TextFormatting.GREEN + "Randomized dimlets:");
+        for (DimletKey dimlet : randomizedDescriptor.getDimlets()) {
+            feedback(context, TextFormatting.BLUE + "    " + dimlet.getType().name() + ": " + TextFormatting.WHITE + dimlet.getKey());
+        }
+
         return 0;
+    }
+
+    private void feedback(CommandContext<CommandSource> context, String message) {
+        context.getSource().sendFeedback(new StringTextComponent(message), false);
     }
 }

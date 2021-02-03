@@ -8,10 +8,7 @@ import mcjty.rftoolsdim.compat.RFToolsUtilityCompat;
 import mcjty.rftoolsdim.dimension.DimensionRegistry;
 import mcjty.rftoolsdim.dimension.biomes.RFTBiomeProvider;
 import mcjty.rftoolsdim.dimension.features.RFTFeature;
-import mcjty.rftoolsdim.dimension.terraintypes.FlatChunkGenerator;
-import mcjty.rftoolsdim.dimension.terraintypes.NormalChunkGenerator;
-import mcjty.rftoolsdim.dimension.terraintypes.VoidChunkGenerator;
-import mcjty.rftoolsdim.dimension.terraintypes.WavesChunkGenerator;
+import mcjty.rftoolsdim.dimension.terraintypes.*;
 import mcjty.rftoolsdim.modules.dimlets.DimletModule;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.registry.Registry;
@@ -45,6 +42,7 @@ public class ModSetup extends DefaultModSetup {
             Registry.register(Registry.CHUNK_GENERATOR_CODEC, WAVES_ID, WavesChunkGenerator.CODEC);
             Registry.register(Registry.CHUNK_GENERATOR_CODEC, FLAT_ID, FlatChunkGenerator.CODEC);
             Registry.register(Registry.CHUNK_GENERATOR_CODEC, NORMAL_ID, NormalChunkGenerator.CODEC);
+            Registry.register(Registry.CHUNK_GENERATOR_CODEC, ISLANDS_ID, IslandsChunkGenerator.CODEC);
             Registry.register(Registry.BIOME_PROVIDER_CODEC, DimensionRegistry.BIOMES_ID, RFTBiomeProvider.CODEC);
         });
     }

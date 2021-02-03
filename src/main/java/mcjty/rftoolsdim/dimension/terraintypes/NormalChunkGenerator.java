@@ -9,6 +9,7 @@ import mcjty.rftoolsdim.dimension.data.DimensionSettings;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.SharedSeedRandom;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.*;
 import net.minecraft.util.registry.Registry;
@@ -64,7 +65,7 @@ public class NormalChunkGenerator extends BaseChunkGenerator {
     });
 
     // These seem to correspond to default overworld settings
-    private NoiseSettings noisesettings = new NoiseSettings(256,
+    private static final NoiseSettings noisesettings = new NoiseSettings(256,
             new ScalingSettings(0.9999999814507745D, 0.9999999814507745D, 80.0D, 160.0D),
             new SlideSettings(-10, 3, 0),
             new SlideSettings(-30, 0, 0),
@@ -83,28 +84,46 @@ public class NormalChunkGenerator extends BaseChunkGenerator {
     private final int noiseSizeZ;
 
     public NormalChunkGenerator(MinecraftServer server, DimensionSettings settings) {
-        this(server.func_244267_aX().getRegistry(Registry.BIOME_KEY), settings);
+        this(server.func_244267_aX().getRegistry(Registry.BIOME_KEY), settings, noisesettings);
     }
 
     public NormalChunkGenerator(Registry<Biome> registry, DimensionSettings settings) {
+        this(registry, settings, noisesettings);
+    }
+
+    protected NoiseSettings getNoisesettings() {
+        return noisesettings;
+    }
+
+    protected NormalChunkGenerator(MinecraftServer server, DimensionSettings settings, NoiseSettings ns) {
+        this(server.func_244267_aX().getRegistry(Registry.BIOME_KEY), settings, ns);
+    }
+
+    protected NormalChunkGenerator(Registry<Biome> registry, DimensionSettings settings, NoiseSettings ns) {
         super(registry, settings);
 
-        this.verticalNoiseGranularity = noisesettings.func_236175_f_() * 4;
-        this.horizontalNoiseGranularity = noisesettings.func_236174_e_() * 4;
+        this.verticalNoiseGranularity = ns.func_236175_f_() * 4;
+        this.horizontalNoiseGranularity = ns.func_236174_e_() * 4;
         this.noiseSizeX = 16 / this.horizontalNoiseGranularity;
-        this.noiseSizeY = noisesettings.func_236169_a_() / this.verticalNoiseGranularity;
+        this.noiseSizeY = ns.func_236169_a_() / this.verticalNoiseGranularity;
         this.noiseSizeZ = 16 / this.horizontalNoiseGranularity;
 
         this.oct1 = new OctavesNoiseGenerator(this.randomSeed, IntStream.rangeClosed(-15, 0));
         this.oct2 = new OctavesNoiseGenerator(this.randomSeed, IntStream.rangeClosed(-15, 0));
         this.oct4 = new OctavesNoiseGenerator(this.randomSeed, IntStream.rangeClosed(-7, 0));
 
-        this.surfaceDepthNoise = noisesettings.func_236178_i_() ? new PerlinNoiseGenerator(this.randomSeed, IntStream.rangeClosed(-3, 0)) : new OctavesNoiseGenerator(this.randomSeed, IntStream.rangeClosed(-3, 0));
+        this.surfaceDepthNoise = ns.func_236178_i_() ? new PerlinNoiseGenerator(this.randomSeed, IntStream.rangeClosed(-3, 0)) : new OctavesNoiseGenerator(this.randomSeed, IntStream.rangeClosed(-3, 0));
         randomSeed.skip(2620);
         this.oct3 = new OctavesNoiseGenerator(this.randomSeed, IntStream.rangeClosed(-15, 0));
 
         // @todo For end islands this might be useful
-        this.simplexNoise = null;//@todo 1.16new SimplexNoiseGenerator(randomSeed);
+        if (ns.func_236180_k_()) {
+            SharedSeedRandom sharedseedrandom = new SharedSeedRandom(settings.getSeed());
+            sharedseedrandom.skip(17292);
+            this.simplexNoise = new SimplexNoiseGenerator(sharedseedrandom);
+        } else {
+            this.simplexNoise = null;
+        }
     }
 
     @Override
@@ -312,7 +331,7 @@ public class NormalChunkGenerator extends BaseChunkGenerator {
                     float f5 = biome.getScale();
                     float f6;
                     float f7;
-                    if (noisesettings.func_236181_l_() && f4 > 0.0F) {
+                    if (getNoisesettings().func_236181_l_() && f4 > 0.0F) {
                         f6 = 1.0F + f4 * 2.0F;
                         f7 = 1.0F + f5 * 4.0F;
                     } else {
@@ -336,19 +355,20 @@ public class NormalChunkGenerator extends BaseChunkGenerator {
             d1 = 96.0D / d18;
         }
 
-        double d12 = 684.412D * noisesettings.func_236171_b_().func_236151_a_();
-        double d13 = 684.412D * noisesettings.func_236171_b_().func_236153_b_();
-        double d14 = d12 / noisesettings.func_236171_b_().func_236154_c_();
-        double d15 = d13 / noisesettings.func_236171_b_().func_236155_d_();
-        double d17 = noisesettings.func_236172_c_().func_236186_a_();
-        double d19 = noisesettings.func_236172_c_().func_236188_b_();
-        double d20 = noisesettings.func_236172_c_().func_236189_c_();
-        double d21 = noisesettings.func_236173_d_().func_236186_a_();
-        double d2 = noisesettings.func_236173_d_().func_236188_b_();
-        double d3 = noisesettings.func_236173_d_().func_236189_c_();
-        double d4 = noisesettings.func_236179_j_() ? this.func_236095_c_(noiseX, noiseZ) : 0.0D;
-        double d5 = noisesettings.func_236176_g_();
-        double d6 = noisesettings.func_236177_h_();
+        NoiseSettings ns = getNoisesettings();
+        double d12 = 684.412D * ns.func_236171_b_().func_236151_a_();
+        double d13 = 684.412D * ns.func_236171_b_().func_236153_b_();
+        double d14 = d12 / ns.func_236171_b_().func_236154_c_();
+        double d15 = d13 / ns.func_236171_b_().func_236155_d_();
+        double d17 = ns.func_236172_c_().func_236186_a_();
+        double d19 = ns.func_236172_c_().func_236188_b_();
+        double d20 = ns.func_236172_c_().func_236189_c_();
+        double d21 = ns.func_236173_d_().func_236186_a_();
+        double d2 = ns.func_236173_d_().func_236188_b_();
+        double d3 = ns.func_236173_d_().func_236189_c_();
+        double d4 = ns.func_236179_j_() ? this.func_236095_c_(noiseX, noiseZ) : 0.0D;
+        double d5 = ns.func_236176_g_();
+        double d6 = ns.func_236177_h_();
 
         for(int i1 = 0; i1 <= this.noiseSizeY; ++i1) {
             double d7 = this.func_222552_a(noiseX, i1, noiseZ, d12, d13, d14, d15);

@@ -33,7 +33,7 @@ public class SphereFeature implements IFeature {
             int cx = chunkX + dx;
             for (int dz = -size; dz <= size; dz++) {
                 int cz = chunkZ + dz;
-                if (isFeatureCenter(reader, cx, cz)) {
+                if (isFeatureCenter(reader, cx, cz, prime)) {
                     generate(reader, chunkX, chunkZ, dx, dz, states, prime);
                     generated = true;
                 }
@@ -76,9 +76,9 @@ public class SphereFeature implements IFeature {
         }
     }
 
-    private static boolean isFeatureCenter(IWorld world, int chunkX, int chunkZ) {
+    private static boolean isFeatureCenter(ISeedReader world, int chunkX, int chunkZ, long prime) {
         double factor = 0.05f;
-        Random random = new Random(chunkX * 3347 + chunkZ * 3399018867L);   // @todo check primes?
+        Random random = new Random((chunkX * prime + chunkZ * 3399018867L) ^ world.getSeed());
         random.nextFloat();
         double value = random.nextFloat();
         return value < factor;

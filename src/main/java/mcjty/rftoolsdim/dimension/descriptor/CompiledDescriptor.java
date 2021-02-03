@@ -72,7 +72,7 @@ public class CompiledDescriptor {
             return ERROR(DANGLING_BLOCKS);
         }
 
-        // @todo Randomize!
+        // In case something is still missing (shouldn't be possible)
         if (terrainType == null) {
             terrainType = TerrainType.NORMAL;
             if (baseBlocks.isEmpty()) {
