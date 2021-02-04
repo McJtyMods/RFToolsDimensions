@@ -1,5 +1,6 @@
 package mcjty.rftoolsdim.modules.dimensionbuilder.client;
 
+import mcjty.lib.McJtyLib;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.dimension.DimensionConfig;
 import mcjty.rftoolsdim.dimension.power.ClientPowerManager;
@@ -14,22 +15,20 @@ import net.minecraft.world.World;
 public class ClientHelpers {
 
     public static String getDimensionName(ItemStack stack) {
-//        World world = McJtyLib.proxy.getClientWorld();
-//        if (world == null) {
-//            return "";
-//        }
-//        return world.getDimensionKey().getLocation().getPath();
-        return "XX";
+        World world = McJtyLib.proxy.getClientWorld();
+        if (world == null) {
+            return "";
+        }
+        return world.getDimensionKey().getLocation().getPath();
     }
 
     public static String getPowerString(ItemStack s) {
-//        World world = McJtyLib.proxy.getClientWorld();
-//        if (world == null) {
-//            return "";
-//        }
-//        long power = ClientPowerManager.get().getPower(world.getDimensionKey().getLocation());
-//        return power == -1 ? "<n.a.>" : ""+power;
-        return "YY";
+        World world = McJtyLib.proxy.getClientWorld();
+        if (world == null) {
+            return "";
+        }
+        long power = ClientPowerManager.get().getPower(world.getDimensionKey().getLocation());
+        return power == -1 ? "<n.a.>" : ""+power;
     }
 
     public static void initOverrides(DimensionMonitorItem item) {
