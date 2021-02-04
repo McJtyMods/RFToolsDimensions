@@ -3,6 +3,7 @@ package mcjty.rftoolsdim.dimension.features;
 import com.mojang.serialization.Codec;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.dimension.DimensionConfig;
+import mcjty.rftoolsdim.dimension.data.DimensionManager;
 import mcjty.rftoolsdim.dimension.descriptor.CompiledDescriptor;
 import mcjty.rftoolsdim.dimension.descriptor.CompiledFeature;
 import mcjty.rftoolsdim.dimension.features.buildings.BuildingTemplate;
@@ -74,6 +75,7 @@ public class RFTFeature extends Feature<NoFeatureConfig> {
             if (cp.x == 0 && cp.z == 0) {
                 // Spawn platform
                 int floorHeight = getFloorHeight(reader, cp);
+                DimensionManager.get().registerPlatformHeight(reader.getWorld().getDimensionKey().getLocation(), floorHeight);
                 SpawnPlatform.SPAWN_PLATFORM.get().generate(reader, new BlockPos(3, floorHeight, 3),
                         compiledDescriptor.getBaseBlocks(), BuildingTemplate.GenerateFlag.PLAIN);
                 generatedSomething = true;

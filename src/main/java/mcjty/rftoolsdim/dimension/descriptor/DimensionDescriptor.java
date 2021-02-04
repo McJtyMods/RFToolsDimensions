@@ -126,6 +126,7 @@ public class DimensionDescriptor {
             DimletKey terrainDimlet = DimletDictionary.get().getRandomDimlet(DimletType.TERRAIN, random);
             if (terrainDimlet != null) {
                 addBlockDimlets(randomized, random);
+                addAttributeDimlets(randomized, random);
                 randomized.add(terrainDimlet);
             }
         }
@@ -156,6 +157,15 @@ public class DimensionDescriptor {
         return randomizedDescriptor;
     }
 
+    private void addAttributeDimlets(List<DimletKey> randomized, Random random) {
+        int cnt = random.nextInt(3);
+        for (int i = 0 ; i < cnt ; i++) {
+            DimletKey dimlet = DimletDictionary.get().getRandomDimlet(DimletType.ATTRIBUTE, random);
+            if (dimlet != null) {
+                randomized.add(dimlet);
+            }
+        }
+    }
 
     private void addBiomeDimlets(List<DimletKey> randomized, Random random) {
         int cnt = random.nextInt(8)+1;

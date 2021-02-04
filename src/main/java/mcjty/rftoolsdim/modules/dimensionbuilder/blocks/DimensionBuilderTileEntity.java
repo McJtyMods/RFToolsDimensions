@@ -239,8 +239,6 @@ public class DimensionBuilderTileEntity extends GenericTileEntity implements ITi
         Float inf = infusableHandler.map(IInfusable::getInfusedFactor).orElse(0.0f);
         createCost = (int) (createCost * (2.0f - inf) / 2.0f);
 
-
-
         if (isCheaterDimension(tagCompound) || (energyStorage.getEnergyStored() >= createCost)) {
             if (isCheaterDimension(tagCompound)) {
                 ticksLeft = 0;
@@ -287,7 +285,12 @@ public class DimensionBuilderTileEntity extends GenericTileEntity implements ITi
             }
             y--;
         }
-        Broadcaster.broadcast(world, pos.getX(), pos.getY(), pos.getZ(), "Error placing matter receiver in dimensions!", 40);
+        // It failed, the commandblock may have been overwritten. Luckily we recorded the height
+        // of the platform somewhere
+        int platformHeight = DimensionManager.get().getPlatformHeight(newworld.getDimensionKey().getLocation());
+        RFToolsUtilityCompat.createTeleporter(newworld, new BlockPos(8, platformHeight, 8), name);
+        newworld.setBlockState(new BlockPos(8, platformHeight+1, 8), Blocks.AIR.getDefaultState());
+        newworld.setBlockState(new BlockPos(8, platformHeight+2, 8), Blocks.AIR.getDefaultState());
     }
 
     private boolean isCheaterDimension(CompoundNBT tag) {

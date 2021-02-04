@@ -17,6 +17,8 @@ import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.structure.StructureManager;
 
+import java.util.Set;
+
 public class FlatChunkGenerator extends BaseChunkGenerator {
 
     public static final Codec<FlatChunkGenerator> CODEC = RecordCodecBuilder.create(instance ->
@@ -51,7 +53,18 @@ public class FlatChunkGenerator extends BaseChunkGenerator {
         Heightmap hmOcean = chunk.getHeightmap(Heightmap.Type.OCEAN_FLOOR_WG);
         Heightmap hmWorld = chunk.getHeightmap(Heightmap.Type.WORLD_SURFACE_WG);
 
-        for (int y = 0 ; y <= FLAT_LEVEL ; y++) {
+        Set<AttributeType> attributeTypes = settings.getCompiledDescriptor().getAttributeTypes();
+        boolean flatter = attributeTypes.contains(AttributeType.FLATTER);
+        boolean elevated = attributeTypes.contains(AttributeType.ELEVATED);
+
+        int flatLevel = FLAT_LEVEL;
+        if (flatter) {
+            flatLevel /= 2;
+        } else if (elevated) {
+            flatLevel *= 2;
+        }
+
+        for (int y = 0 ; y <= flatLevel ; y++) {
             for (int x = 0; x < 16; ++x) {
                 for (int z = 0; z < 16; ++z) {
                     BlockState state = getDefaultBlock();

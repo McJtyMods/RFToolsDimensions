@@ -16,6 +16,8 @@
   "block.rftoolsdim.dimensional_pattern2_block": "Dimensional Pattern2 Block",
 
   "item.rftoolsdim.empty_dimlet": "Empty Dimlet",
+  "item.rftoolsdim.attribute_dimlet": "Attribute Dimlet",
+  "item.rftoolsdim.empty_attribute_dimlet": "Empty Attribute Dimlet",
   "item.rftoolsdim.terrain_dimlet": "Terrain Dimlet",
   "item.rftoolsdim.empty_terrain_dimlet": "Empty Terrain Dimlet",
   "item.rftoolsdim.time_dimlet": "Time Dimlet",
@@ -29,6 +31,7 @@
   "item.rftoolsdim.block_dimlet": "Block Dimlet",
   "item.rftoolsdim.empty_block_dimlet": "Empty Block Dimlet",
   "item.rftoolsdim.digit_dimlet": "Digit Dimlet",
+  "item.rftoolsdim.special_dimlet": "Special Dimlet",
 
   "item.rftoolsdim.common_lost_knowledge": "Common Lost Knowledge",
   "item.rftoolsdim.uncommon_lost_knowledge": "Uncommon Lost Knowledge",
@@ -67,6 +70,9 @@
   "message.rftoolsdim.empty_dimlet.header": "This is the base ingredient for creating dimlets",
   "message.rftoolsdim.empty_dimlet.gold": "Use this in the Dimlet Workbench to create new dimlets",
 
+  "message.rftoolsdim.attribute_dimlet.header": "Attribute dimlets are modifiers for terrain dimlets to alter how the terrain is generated",
+  "message.rftoolsdim.attribute_dimlet.gold": "Use this dimlet in a Dimension Enscriber to create a Dimension Tab",
+  "message.rftoolsdim.attribute_dimlet.key": "Key: ",
   "message.rftoolsdim.terrain_dimlet.header": "Terrain dimlets control the main shape of the terrain in a dimension",
   "message.rftoolsdim.terrain_dimlet.gold": "Use this dimlet in a Dimension Enscriber to create a Dimension Tab",
   "message.rftoolsdim.terrain_dimlet.key": "Key: ",
@@ -88,7 +94,12 @@
   "message.rftoolsdim.digit_dimlet.header": "Digit dimlets have no effect. They can help make unique dimensions because every dimension needs its own unique sequence of dimlets",
   "message.rftoolsdim.digit_dimlet.gold": "Use this dimlet in a Dimension Enscriber to create a Dimension Tab",
   "message.rftoolsdim.digit_dimlet.key": "Key: ",
+  "message.rftoolsdim.special_dimlet.header": "Special dimlets are dimlets that provide special functionality in a dimension",
+  "message.rftoolsdim.special_dimlet.gold": "Use this dimlet in a Dimension Enscriber to create a Dimension Tab",
+  "message.rftoolsdim.special_dimlet.key": "Key: ",
 
+  "message.rftoolsdim.empty_attribute_dimlet.header": "Attribute dimlets can later generation of the terrain",
+  "message.rftoolsdim.empty_attribute_dimlet.gold": "Use the Dimlet Workbench to convert this to a full dimlet",
   "message.rftoolsdim.empty_terrain_dimlet.header": "Terrain dimlets control the main shape of the terrain in a dimension",
   "message.rftoolsdim.empty_terrain_dimlet.gold": "Use the Dimlet Workbench to convert this to a full dimlet",
   "message.rftoolsdim.empty_time_dimlet.header": "Time dimlets control how time flows in a dimension",

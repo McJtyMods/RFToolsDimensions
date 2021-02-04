@@ -53,9 +53,12 @@ public class DescriptorError {
         BAD_BLOCK("Bad block!"),
         BAD_FEATURE("Bad feature!"),
         BAD_TIME("Bad time!"),
+        BAD_ATTRIBUTE("Bad attribute!"),
+        BAD_SPECIAL_TYPE("Bad special type!"),
         BAD_TERRAIN_TYPE("Bad terrain type!"),
         BAD_BIOME_CONTROLLER("Bad biome controller!"),
-        DANGLING_BLOCKS("Dangling blocks! Blocks should come before either a terrain or a feature");
+        DANGLING_BLOCKS("Dangling blocks! Blocks should come before either a terrain or a feature!"),
+        DANGLING_ATTRIBUTES("Dangling attributes! Attributes should come before a terrain!");
 
         private final String message;
 

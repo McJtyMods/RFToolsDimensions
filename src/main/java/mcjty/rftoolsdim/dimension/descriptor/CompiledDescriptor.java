@@ -1,9 +1,11 @@
 package mcjty.rftoolsdim.dimension.descriptor;
 
 import mcjty.rftoolsdim.dimension.DimensionConfig;
+import mcjty.rftoolsdim.dimension.SpecialDimletType;
 import mcjty.rftoolsdim.dimension.TimeType;
 import mcjty.rftoolsdim.dimension.biomes.BiomeControllerType;
 import mcjty.rftoolsdim.dimension.features.FeatureType;
+import mcjty.rftoolsdim.dimension.terraintypes.AttributeType;
 import mcjty.rftoolsdim.dimension.terraintypes.TerrainType;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletDictionary;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletKey;
@@ -29,6 +31,8 @@ import static mcjty.rftoolsdim.dimension.descriptor.DescriptorError.ERROR;
 public class CompiledDescriptor {
 
     private TerrainType terrainType = null;
+    private final Set<AttributeType> attributeTypes = new HashSet<>();
+    private final Set<SpecialDimletType> specialDimletTypes = new HashSet<>();
     private final List<BlockState> baseBlocks = new ArrayList<>();
     private final Set<CompiledFeature> features = new HashSet<>();
     private BiomeControllerType biomeControllerType = null;
@@ -50,9 +54,10 @@ public class CompiledDescriptor {
         randomizedCostPerTick = 0;
         actualTickCost = 100;       // @todo make configurable
         List<BlockState> collectedBlocks = new ArrayList<>();
+        Set<AttributeType> collectedAttributes = new HashSet<>();
 
         for (DimletKey dimlet : descriptor.getDimlets()) {
-            DescriptorError error = handleDimlet(collectedBlocks, dimlet);
+            DescriptorError error = handleDimlet(collectedBlocks, collectedAttributes, dimlet);
             if (error != null) {
                 return error;
             }
@@ -60,7 +65,7 @@ public class CompiledDescriptor {
         int originalMaintainCost = maintainCostPerTick;
         maintainCostPerTick = 0;
         for (DimletKey dimlet : randomizedDescriptor.getDimlets()) {
-            DescriptorError error = handleDimlet(collectedBlocks, dimlet);
+            DescriptorError error = handleDimlet(collectedBlocks, collectedAttributes, dimlet);
             if (error != null) {
                 return error;
             }
@@ -68,8 +73,19 @@ public class CompiledDescriptor {
         randomizedCostPerTick = (int) (maintainCostPerTick * DimensionConfig.RANDOMIZED_DIMLET_COST_FACTOR.get());
         maintainCostPerTick = originalMaintainCost;
 
+        if (specialDimletTypes.contains(SpecialDimletType.CHEATER)) {
+            createCostPerTick = 0;
+            maintainCostPerTick = 0;
+            randomizedCostPerTick = 0;
+            actualTickCost = 1;
+        }
+
         if (!collectedBlocks.isEmpty()) {
             return ERROR(DANGLING_BLOCKS);
+        }
+
+        if (!collectedAttributes.isEmpty()) {
+            return ERROR(DANGLING_ATTRIBUTES);
         }
 
         return DescriptorError.OK;
@@ -91,7 +107,7 @@ public class CompiledDescriptor {
         }
     }
 
-    private DescriptorError handleDimlet(List<BlockState> collectedBlocks, DimletKey dimlet) {
+    private DescriptorError handleDimlet(List<BlockState> collectedBlocks, Set<AttributeType> collectedAttributes, DimletKey dimlet) {
         DimletSettings settings = DimletDictionary.get().getSettings(dimlet);
         if (settings != null) {
             createCostPerTick += settings.getCreateCost();
@@ -113,7 +129,25 @@ public class CompiledDescriptor {
                 if (baseBlocks.isEmpty()) {
                     baseBlocks.add(Blocks.STONE.getDefaultState());
                 }
+                attributeTypes.addAll(collectedAttributes);
+                collectedAttributes.clear();
                 break;
+            case ATTRIBUTE: {
+                AttributeType type = AttributeType.byName(dimlet.getKey());
+                if (type == null) {
+                    return ERROR(BAD_ATTRIBUTE, name);
+                }
+                collectedAttributes.add(type);
+                break;
+            }
+            case SPECIAL: {
+                SpecialDimletType type = SpecialDimletType.byName(dimlet.getKey());
+                if (type == null) {
+                    return ERROR(BAD_SPECIAL_TYPE, name);
+                }
+                specialDimletTypes.add(type);
+                break;
+            }
             case BIOME_CONTROLLER:
                 if (biomeControllerType != null) {
                     return ERROR(ONLY_ONE_BIOME_CONTROLLER);
@@ -168,6 +202,14 @@ public class CompiledDescriptor {
 
     public TerrainType getTerrainType() {
         return terrainType;
+    }
+
+    public Set<AttributeType> getAttributeTypes() {
+        return attributeTypes;
+    }
+
+    public Set<SpecialDimletType> getSpecialDimletTypes() {
+        return specialDimletTypes;
     }
 
     public int getCreateCostPerTick() {

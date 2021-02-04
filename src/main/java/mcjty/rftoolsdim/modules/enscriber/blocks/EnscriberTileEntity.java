@@ -15,16 +15,14 @@ import mcjty.lib.typed.Type;
 import mcjty.lib.typed.TypedMap;
 import mcjty.lib.varia.Logging;
 import mcjty.rftoolsbase.tools.ManualHelper;
+import mcjty.rftoolsdim.dimension.DimensionConfig;
 import mcjty.rftoolsdim.dimension.data.DimensionData;
 import mcjty.rftoolsdim.dimension.data.PersistantDimensionManager;
 import mcjty.rftoolsdim.dimension.descriptor.CompiledDescriptor;
 import mcjty.rftoolsdim.dimension.descriptor.DescriptorError;
 import mcjty.rftoolsdim.dimension.descriptor.DimensionDescriptor;
 import mcjty.rftoolsdim.modules.dimensionbuilder.DimensionBuilderModule;
-import mcjty.rftoolsdim.modules.dimlets.data.DimletDictionary;
-import mcjty.rftoolsdim.modules.dimlets.data.DimletKey;
-import mcjty.rftoolsdim.modules.dimlets.data.DimletSettings;
-import mcjty.rftoolsdim.modules.dimlets.data.DimletTools;
+import mcjty.rftoolsdim.modules.dimlets.data.*;
 import mcjty.rftoolsdim.modules.dimlets.items.DimletItem;
 import mcjty.rftoolsdim.modules.enscriber.EnscriberModule;
 import net.minecraft.entity.player.PlayerEntity;
@@ -118,15 +116,24 @@ public class EnscriberTileEntity extends GenericTileEntity {
         return null;
     }
 
-    private void storeDimlets(PlayerEntity player, String name) {
-        // @todo 1.16
-//        if (GeneralConfiguration.ownerDimletsNeeded) {
-//            if (checkOwnerDimlet()) {
-//                Logging.warn(player, "You need an owner dimlet to make a dimension!");
-//                return;
-//            }
-//        }
+    private boolean checkOwnerDimlet() {
+        for (int i = 0 ; i < items.getSlots() ; i++) {
+            ItemStack stack = items.getStackInSlot(i);
+            DimletKey dimletKey = DimletTools.getDimletKey(stack);
+            if (DimletTools.isOwnerDimlet(dimletKey)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
+    private void storeDimlets(PlayerEntity player, String name) {
+        if (DimensionConfig.OWNER_DIMLET_REQUIRED.get()) {
+            if (checkOwnerDimlet()) {
+                Logging.warn(player, "You need an owner dimlet to make a dimension!");
+                return;
+            }
+        }
 
         DimensionDescriptor descriptor = convertToDimensionDescriptor(player, true);
         ItemStack realizedTab = createRealizedTab(descriptor);
@@ -231,14 +238,13 @@ public class EnscriberTileEntity extends GenericTileEntity {
             List<DimletKey> dimlets = descriptor.getDimlets();
             int idx = SLOT_DIMLETS;
             for (DimletKey key : dimlets) {
-                // @todo 1.16
-//                int id = tagCompound.getInteger("id");
-//                if (GeneralConfiguration.ownerDimletsNeeded && id != 0) {
-//                    // If we need owner dimlets and the dimension is created we don't extract the owern dimlet.
-//                    if (key.getType() == DimletType.DIMLET_SPECIAL && DimletObjectMapping.getSpecial(key) == SpecialType.SPECIAL_OWNER) {
-//                        continue;
-//                    }
-//                }
+                boolean hasDimension = tagCompound.contains("dimension");
+                if (DimensionConfig.OWNER_DIMLET_REQUIRED.get() && hasDimension) {
+                    // If we need owner dimlets and the dimension is created we don't extract the owern dimlet.
+                    if (DimletTools.isOwnerDimlet(key)) {
+                        continue;
+                    }
+                }
 
                 ItemStack dimletStack = DimletTools.getDimletStack(key);
                 // @todo 1.16

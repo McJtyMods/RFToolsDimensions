@@ -34,6 +34,10 @@ public class DimensionManager {
 
     private final Map<ResourceLocation, CompiledDescriptor> compiledDescriptorMap = new HashMap<>();
 
+    // This information can be used by the dimension builder to place the matter receiver if it can't find the commandblock
+    // (because it may be overwritten by other things)
+    private final Map<ResourceLocation, Integer> platformHeightMap = new HashMap<>();
+
     private static final DimensionManager instance = new DimensionManager();
 
     public static DimensionManager get() {
@@ -141,5 +145,13 @@ public class DimensionManager {
 
         createWorld(world, name, seed, descriptor, DimensionDescriptor.EMPTY);
         return null;
+    }
+
+    public void registerPlatformHeight(ResourceLocation location, int floorHeight) {
+        platformHeightMap.put(location, floorHeight);
+    }
+
+    public int getPlatformHeight(ResourceLocation location) {
+        return platformHeightMap.getOrDefault(location, 65);
     }
 }

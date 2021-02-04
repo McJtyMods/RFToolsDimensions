@@ -1,5 +1,6 @@
 package mcjty.rftoolsdim.modules.dimlets.data;
 
+import mcjty.rftoolsdim.dimension.SpecialDimletType;
 import mcjty.rftoolsdim.modules.dimlets.DimletModule;
 import mcjty.rftoolsdim.modules.dimlets.items.DimletItem;
 import mcjty.rftoolsdim.modules.essences.EssencesModule;
@@ -17,6 +18,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Locale;
 import java.util.Objects;
 
 public class DimletTools {
@@ -35,6 +37,8 @@ public class DimletTools {
         switch (type) {
             case TERRAIN:
                 return DimletModule.TERRAIN_DIMLET.get();
+            case ATTRIBUTE:
+                return DimletModule.ATTRIBUTE_DIMLET.get();
             case BIOME_CONTROLLER:
                 return DimletModule.BIOME_CONTROLLER_DIMLET.get();
             case BIOME:
@@ -47,6 +51,8 @@ public class DimletTools {
                 return DimletModule.BLOCK_DIMLET.get();
             case DIGIT:
                 return DimletModule.DIGIT_DIMLET.get();
+            case SPECIAL:
+                return DimletModule.SPECIAL_DIMLET.get();
         }
         return null;
     }
@@ -55,6 +61,8 @@ public class DimletTools {
         switch (type) {
             case TERRAIN:
                 return DimletModule.EMPTY_TERRAIN_DIMLET.get();
+            case ATTRIBUTE:
+                return DimletModule.EMPTY_ATTRIBUTE_DIMLET.get();
             case BIOME_CONTROLLER:
                 return DimletModule.EMPTY_BIOME_CONTROLLER_DIMLET.get();
             case BIOME:
@@ -66,6 +74,8 @@ public class DimletTools {
             case BLOCK:
                 return DimletModule.EMPTY_BLOCK_DIMLET.get();
             case DIGIT:
+                return null;
+            case SPECIAL:
                 return null;
         }
         return null;
@@ -151,6 +161,8 @@ public class DimletTools {
         switch (key.getType()) {
             case TERRAIN:
                 return ItemStack.EMPTY;
+            case ATTRIBUTE:
+                return ItemStack.EMPTY;
             case BIOME_CONTROLLER:
                 return ItemStack.EMPTY;
             case BIOME:
@@ -163,6 +175,8 @@ public class DimletTools {
                 return new ItemStack(EssencesModule.BLOCK_ABSORBER_ITEM.get());
             case DIGIT:
                 return ItemStack.EMPTY;
+            case SPECIAL:
+                return ItemStack.EMPTY;
         }
         return ItemStack.EMPTY;
     }
@@ -172,6 +186,8 @@ public class DimletTools {
     public static ResourceLocation getResourceLocation(DimletKey dimletKey) {
         switch (dimletKey.getType()) {
             case TERRAIN:
+                return null;
+            case ATTRIBUTE:
                 return null;
             case BIOME_CONTROLLER:
                 return null;
@@ -185,6 +201,8 @@ public class DimletTools {
                 return new ResourceLocation(dimletKey.getKey());
             case DIGIT:
                 return null;
+            case SPECIAL:
+                return null;
         }
         return null;
     }
@@ -192,6 +210,8 @@ public class DimletTools {
     public static ITextComponent getReadable(DimletKey dimletKey) {
         switch (dimletKey.getType()) {
             case TERRAIN:
+                return new StringTextComponent(dimletKey.getKey().toLowerCase());
+            case ATTRIBUTE:
                 return new StringTextComponent(dimletKey.getKey().toLowerCase());
             case BIOME_CONTROLLER:
                 return new StringTextComponent(dimletKey.getKey().toLowerCase());
@@ -208,6 +228,8 @@ public class DimletTools {
                 return new TranslationTextComponent(block.getTranslationKey());
             case DIGIT:
                 return new StringTextComponent(dimletKey.getKey());
+            case SPECIAL:
+                return new StringTextComponent(dimletKey.getKey());
         }
         return new StringTextComponent("<unknown>");
     }
@@ -216,6 +238,8 @@ public class DimletTools {
     public static String getReadableName(DimletKey dimletKey) {
         switch (dimletKey.getType()) {
             case TERRAIN:
+                return dimletKey.getKey().toLowerCase();
+            case ATTRIBUTE:
                 return dimletKey.getKey().toLowerCase();
             case BIOME_CONTROLLER:
                 return dimletKey.getKey().toLowerCase();
@@ -231,6 +255,8 @@ public class DimletTools {
                 Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(dimletKey.getKey()));
                 return I18n.format(block.getTranslationKey());
             case DIGIT:
+                return dimletKey.getKey();
+            case SPECIAL:
                 return dimletKey.getKey();
         }
         return "<unknown>";
@@ -253,5 +279,9 @@ public class DimletTools {
             }
         }
         return false;
+    }
+
+    public static boolean isOwnerDimlet(DimletKey dimletKey) {
+        return dimletKey != null && dimletKey.getType() == DimletType.SPECIAL && dimletKey.getKey().equals(SpecialDimletType.OWNER.name().toLowerCase());
     }
 }

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "ppp",
+    "pEp",
+    "ppp"
+  ],
+  "key": {
+    "p": {
+      "item": "minecraft:paper"
+    },
+    "E": {
+      "item": "rftoolsdim:empty_dimlet"
+    }
+  },
+  "result": {
+    "item": "rftoolsdim:empty_attribute_dimlet"
+  }
+}

@@ -5,6 +5,7 @@ import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.dimension.TimeType;
 import mcjty.rftoolsdim.dimension.biomes.BiomeControllerType;
 import mcjty.rftoolsdim.dimension.features.FeatureType;
+import mcjty.rftoolsdim.dimension.terraintypes.AttributeType;
 import mcjty.rftoolsdim.dimension.terraintypes.TerrainType;
 import mcjty.rftoolsdim.modules.dimlets.DimletModule;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletDictionary;
@@ -99,6 +100,8 @@ public class KnowledgeManager {
         switch (key.getType()) {
             case TERRAIN:
                 return null;
+            case ATTRIBUTE:
+                return null;
             case BIOME_CONTROLLER:
                 return null;
             case BIOME:
@@ -125,6 +128,8 @@ public class KnowledgeManager {
         switch (key.getType()) {
             case TERRAIN:
                 return TerrainType.byName(key.getKey()).getSet();
+            case ATTRIBUTE:
+                return AttributeType.byName(key.getKey()).getSet();
             case BIOME_CONTROLLER:
                 return BiomeControllerType.byName(key.getKey()).getSet();
             case BIOME:
@@ -135,6 +140,10 @@ public class KnowledgeManager {
                 return TimeType.byName(key.getKey()).getSet();
             case BLOCK:
                 return getBlockKnowledgeSet(key);
+            case DIGIT:
+                break;
+            case SPECIAL:
+                break;
         }
 
         return KnowledgeSet.SET1;

@@ -5,12 +5,14 @@ import java.util.Map;
 
 public enum DimletType {
     TERRAIN("t"),
+    ATTRIBUTE("a"),
     BIOME_CONTROLLER("bc"),
     BIOME("bi"),
     FEATURE("f"),
     TIME("ti"),
     BLOCK("b"),
-    DIGIT("d");
+    DIGIT("d"),
+    SPECIAL("s");
 
     private final String shortName;
 
@@ -28,7 +30,7 @@ public enum DimletType {
     }
 
     public boolean usesKnowledgeSystem() {
-        return this != DIGIT;
+        return this != DIGIT && this != SPECIAL;
     }
 
     public String getShortName() {

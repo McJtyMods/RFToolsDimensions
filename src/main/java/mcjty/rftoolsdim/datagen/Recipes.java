@@ -45,6 +45,9 @@ public class Recipes extends BaseRecipeProvider {
                         .key('C', Tags.Items.COBBLESTONE)
                         .addCriterion("empty_dimlet", hasItem(DimletModule.EMPTY_DIMLET.get())),
                 "CDC", "DED", "CDC");
+        build(consumer, ShapedRecipeBuilder.shapedRecipe(DimletModule.EMPTY_ATTRIBUTE_DIMLET.get())
+                        .addCriterion("empty_dimlet", hasItem(DimletModule.EMPTY_DIMLET.get())),
+                "ppp", "pEp", "ppp");
         build(consumer, ShapedRecipeBuilder.shapedRecipe(DimletModule.EMPTY_FEATURE_DIMLET.get())
                         .addCriterion("empty_dimlet", hasItem(DimletModule.EMPTY_DIMLET.get())),
                 "rcr", "cEc", "rcr");

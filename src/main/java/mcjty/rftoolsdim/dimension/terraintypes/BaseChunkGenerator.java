@@ -55,6 +55,10 @@ public abstract class BaseChunkGenerator extends ChunkGenerator {
 
     @Override
     public void generateSurface(WorldGenRegion region, IChunk chunk) {
+        if (settings.getCompiledDescriptor().getAttributeTypes().contains(AttributeType.NOBIOMESURFACE)) {
+            this.makeBedrock(chunk);
+            return;
+        }
         ChunkPos chunkpos = chunk.getPos();
         int cx = chunkpos.x;
         int cz = chunkpos.z;
@@ -63,7 +67,6 @@ public abstract class BaseChunkGenerator extends ChunkGenerator {
         ChunkPos chunkpos1 = chunk.getPos();
         int xStart = chunkpos1.getXStart();
         int zStart = chunkpos1.getZStart();
-        double d0 = 0.0625D;
         BlockPos.Mutable mpos = new BlockPos.Mutable();
 
         for(int x = 0; x < 16; ++x) {
@@ -71,9 +74,9 @@ public abstract class BaseChunkGenerator extends ChunkGenerator {
                 int xx = xStart + x;
                 int zz = zStart + z;
                 int yy = chunk.getTopBlockY(Heightmap.Type.WORLD_SURFACE_WG, x, z) + 1;
-                double d1 = this.surfaceDepthNoise.noiseAt((double)xx * 0.0625D, (double)zz * 0.0625D, 0.0625D, (double)x * 0.0625D) * 15.0D;
+                double noise = this.surfaceDepthNoise.noiseAt((double)xx * 0.0625D, (double)zz * 0.0625D, 0.0625D, (double)x * 0.0625D) * 15.0D;
                 region.getBiome(mpos.setPos(xStart + x, yy, zStart + z))
-                        .buildSurface(sharedseedrandom, chunk, xx, zz, yy, d1, defaultBlocks.get(0), this.defaultFluid, this.getSeaLevel(), region.getSeed());
+                        .buildSurface(sharedseedrandom, chunk, xx, zz, yy, noise, defaultBlocks.get(0), this.defaultFluid, this.getSeaLevel(), region.getSeed());
             }
         }
         this.makeBedrock(chunk);

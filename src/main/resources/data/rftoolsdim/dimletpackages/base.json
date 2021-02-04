@@ -1,5 +1,25 @@
 [
   {
+    "type": "special",
+    "key": "cheater",
+    "rarity": "common",
+    "create": 0,
+    "maintain": 0,
+    "ticks": 0,
+    "worldgen": false,
+    "dimlet": true
+  },
+  {
+    "type": "special",
+    "key": "owner",
+    "rarity": "common",
+    "create": 0,
+    "maintain": 0,
+    "ticks": 0,
+    "worldgen": false,
+    "dimlet": true
+  },
+  {
     "type": "digit",
     "key": "0",
     "rarity": "common",
@@ -136,6 +156,58 @@
     "dimlet": true,
     "essence": {
       "item": "minecraft:glowstone_dust"
+    }
+  },
+  {
+    "type": "attribute",
+    "key": "default",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 10,
+    "worldgen": true,
+    "dimlet": true,
+    "essence": {
+      "item": "minecraft:paper"
+    }
+  },
+  {
+    "type": "attribute",
+    "key": "nobiomesurface",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 10,
+    "worldgen": true,
+    "dimlet": true,
+    "essence": {
+      "item": "minecraft:dirt"
+    }
+  },
+  {
+    "type": "attribute",
+    "key": "flatter",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 10,
+    "worldgen": true,
+    "dimlet": true,
+    "essence": {
+      "item": "minecraft:stone_pressure_plate"
+    }
+  },
+  {
+    "type": "attribute",
+    "key": "elevated",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 10,
+    "worldgen": true,
+    "dimlet": true,
+    "essence": {
+      "item": "minecraft:white_wool"
     }
   },
   {

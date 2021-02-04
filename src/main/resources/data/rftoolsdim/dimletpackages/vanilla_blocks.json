@@ -171,26 +171,6 @@
   },
   {
     "type": "block",
-    "key": "minecraft:acacia_fence",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:acacia_fence_gate",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
     "key": "minecraft:acacia_log",
     "rarity": "common",
     "create": 10,
@@ -256,26 +236,6 @@
     "create": 1000,
     "maintain": 1000,
     "ticks": 1000,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:birch_fence",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:birch_fence_gate",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
     "worldgen": true,
     "dimlet": true
   },
@@ -691,26 +651,6 @@
   },
   {
     "type": "block",
-    "key": "minecraft:crimson_fence",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:crimson_fence_gate",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
     "key": "minecraft:crimson_hyphae",
     "rarity": "common",
     "create": 10,
@@ -822,26 +762,6 @@
   {
     "type": "block",
     "key": "minecraft:cyan_wool",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:dark_oak_fence",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:dark_oak_fence_gate",
     "rarity": "common",
     "create": 10,
     "maintain": 10,
@@ -1361,26 +1281,6 @@
   },
   {
     "type": "block",
-    "key": "minecraft:jungle_fence",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:jungle_fence_gate",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
     "key": "minecraft:jungle_log",
     "rarity": "common",
     "create": 10,
@@ -1701,16 +1601,6 @@
   },
   {
     "type": "block",
-    "key": "minecraft:nether_brick_fence",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
     "key": "minecraft:nether_bricks",
     "rarity": "common",
     "create": 10,
@@ -1762,26 +1652,6 @@
   {
     "type": "block",
     "key": "minecraft:netherrack",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:oak_fence",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:oak_fence_gate",
     "rarity": "common",
     "create": 10,
     "maintain": 10,
@@ -2401,26 +2271,6 @@
   },
   {
     "type": "block",
-    "key": "minecraft:spruce_fence",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:spruce_fence_gate",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
     "key": "minecraft:spruce_log",
     "rarity": "common",
     "create": 10,
@@ -2641,16 +2491,6 @@
   },
   {
     "type": "block",
-    "key": "minecraft:target",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
     "key": "minecraft:terracotta",
     "rarity": "common",
     "create": 10,
@@ -2662,26 +2502,6 @@
   {
     "type": "block",
     "key": "minecraft:tube_coral_block",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:warped_fence",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:warped_fence_gate",
     "rarity": "common",
     "create": 10,
     "maintain": 10,

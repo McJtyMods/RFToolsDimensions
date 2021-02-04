@@ -18,6 +18,8 @@ public class DimensionConfig {
     public static ForgeConfigSpec.LongValue DIMPOWER_WARN2;
     public static ForgeConfigSpec.LongValue DIMPOWER_WARN3;
 
+    public static ForgeConfigSpec.BooleanValue OWNER_DIMLET_REQUIRED;
+
     public static ForgeConfigSpec.DoubleValue RANDOMIZED_DIMLET_COST_FACTOR;
     public static ForgeConfigSpec.DoubleValue DIMLET_HUT_CHANCE;
 
@@ -66,6 +68,9 @@ public class DimensionConfig {
                 .comment("If true you will get some debufs when the PFG is in use. If false there will be no debufs")
                 .define("phasedFieldGeneratorDebuf", true);
 
+        OWNER_DIMLET_REQUIRED = SERVER_BUILDER
+                .comment("If true creating dimensions requires an owner dimlet")
+                .define("ownerDimletRequired", false);
 
         SERVER_BUILDER.pop();
     }

@@ -31,4 +31,5 @@ Todo:
     - Special (yellow) dimlets: owner, cheater, ...
     - Digit dimlets
 - Implement Knowledge Item loot
-
+- Enscriber:
+    - Test press multiple store

@@ -29,7 +29,7 @@ public class DimensionBuilderRenderer extends TileEntityRenderer<DimensionBuilde
         te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
             if (!h.getStackInSlot(DimensionBuilderTileEntity.SLOT_DIMENSION_TAB).isEmpty()) {
                 matrixStack.push();
-                matrixStack.translate(0, 1.2, 0);
+                matrixStack.translate(0.1, 1.2, 0.1);
                 matrixStack.scale(0.8f, 0.8f, 0.8f);
                 RenderHelper.renderBillboardQuadBright(matrixStack, buffer, 0.5f, STAGES, RenderSettings.builder()
                         .color(255, 255, 255)

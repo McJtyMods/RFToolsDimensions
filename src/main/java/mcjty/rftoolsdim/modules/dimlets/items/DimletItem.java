@@ -45,8 +45,13 @@ public class DimletItem extends Item implements ITooltipSettings, ITooltipExtras
     }
 
     public static boolean isReadyDimlet(ItemStack stack) {
-        if (stack.getItem() instanceof DimletItem) {
-            return ((DimletItem)stack.getItem()).isReady;
+        Item item = stack.getItem();
+        return isReadyDimlet(item);
+    }
+
+    private static boolean isReadyDimlet(Item item) {
+        if (item instanceof DimletItem) {
+            return ((DimletItem) item).isReady;
         }
         return false;
     }
@@ -82,9 +87,21 @@ public class DimletItem extends Item implements ITooltipSettings, ITooltipExtras
     @Override
     public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items) {
         if (this.isInGroup(group)) {
-            items.add(new ItemStack(DimletModule.EMPTY_DIMLET.get()));
-            for (int i = 0 ; i < 10 ; i++) {
-                items.add(DimletTools.getDimletStack(new DimletKey(DimletType.DIGIT, "" + i)));
+            if (this == DimletModule.SPECIAL_DIMLET.get()) {
+                ItemStack stack = DimletTools.getDimletStack(new DimletKey(DimletType.SPECIAL, "owner"));
+                if (!stack.isEmpty()) {
+                    items.add(stack);
+                }
+                stack = DimletTools.getDimletStack(new DimletKey(DimletType.SPECIAL, "cheater"));
+                if (!stack.isEmpty()) {
+                    items.add(stack);
+                }
+            } else if (this == DimletModule.DIGIT_DIMLET.get()) {
+                for (int i = 0 ; i < 10 ; i++) {
+                    items.add(DimletTools.getDimletStack(new DimletKey(DimletType.DIGIT, "" + i)));
+                }
+            } else {
+                items.add(new ItemStack(this));
             }
         }
     }
