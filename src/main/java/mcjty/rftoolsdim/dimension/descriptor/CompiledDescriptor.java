@@ -72,6 +72,10 @@ public class CompiledDescriptor {
             return ERROR(DANGLING_BLOCKS);
         }
 
+        return DescriptorError.OK;
+    }
+
+    public void complete() {
         // In case something is still missing (shouldn't be possible)
         if (terrainType == null) {
             terrainType = TerrainType.NORMAL;
@@ -85,8 +89,6 @@ public class CompiledDescriptor {
         if (biomeControllerType == null) {
             biomeControllerType = BiomeControllerType.SINGLE;
         }
-
-        return DescriptorError.OK;
     }
 
     private DescriptorError handleDimlet(List<BlockState> collectedBlocks, DimletKey dimlet) {

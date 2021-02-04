@@ -100,6 +100,7 @@ public class DimensionManager {
             RFToolsDim.setup.getLogger().error("Error compiling dimension descriptor: " + error.getMessage());
             throw new RuntimeException("Error compiling dimension descriptor: " + error.getMessage());
         }
+        compiledDescriptor.complete();
         TerrainType terrainType = compiledDescriptor.getTerrainType();
 
         DimensionSettings settings = new DimensionSettings(seed, descriptor.compact(), randomizedDescriptor.compact());
@@ -119,15 +120,11 @@ public class DimensionManager {
 
     // Returns null on success, otherwise an error string
     public String createDimension(World world, String name, long seed, String filename) {
-//        RegistryKey<World> key = RegistryKey.getOrCreateKey(Registry.WORLD_KEY, new ResourceLocation(RFToolsDim.MODID, name));
         DimensionId id = DimensionId.fromResourceLocation(new ResourceLocation(RFToolsDim.MODID, name));
         if (id.loadWorld(world) != null) {
             return "Dimension already exists!";
         }
 
-//        if (compiledDescriptorMap.containsKey(new ResourceLocation(RFToolsDim.MODID, name))) {
-//            return "Dimension already exists!";
-//        }
         DimensionDescriptor descriptor = new DimensionDescriptor();
         if (!filename.endsWith(".json")) {
             filename += ".json";

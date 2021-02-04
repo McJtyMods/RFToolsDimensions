@@ -32,4 +32,3 @@ Todo:
     - Digit dimlets
 - Implement Knowledge Item loot
 
-Check why randomized always gives single?

@@ -3,6 +3,7 @@ package mcjty.rftoolsdim.dimension.terraintypes;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import mcjty.rftoolsdim.dimension.data.DimensionSettings;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.registry.Registry;
@@ -29,6 +30,8 @@ public class IslandsChunkGenerator extends NormalChunkGenerator {
             new SlideSettings(-3000, 64, -46), new SlideSettings(-30, 7, 1),
             2, 1, 0.0D, 0.0D, true, false, false, false);
 
+    private final BlockState air;
+
     @Override
     protected NoiseSettings getNoisesettings() {
         return islands;
@@ -36,10 +39,17 @@ public class IslandsChunkGenerator extends NormalChunkGenerator {
 
     public IslandsChunkGenerator(MinecraftServer server, DimensionSettings settings) {
         super(server, settings, islands);
+        air = Blocks.AIR.getDefaultState();
     }
 
     public IslandsChunkGenerator(Registry<Biome> registry, DimensionSettings settings) {
         super(registry, settings, islands);
+        air = Blocks.AIR.getDefaultState();
+    }
+
+    @Override
+    protected BlockState getBaseLiquid() {
+        return air;
     }
 
     @Override

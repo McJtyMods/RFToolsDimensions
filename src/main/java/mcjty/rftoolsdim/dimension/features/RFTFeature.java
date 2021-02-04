@@ -73,7 +73,8 @@ public class RFTFeature extends Feature<NoFeatureConfig> {
             ChunkPos cp = new ChunkPos(pos);
             if (cp.x == 0 && cp.z == 0) {
                 // Spawn platform
-                SpawnPlatform.SPAWN_PLATFORM.get().generate(reader, new BlockPos(3, getFloorHeight(reader, cp), 3),
+                int floorHeight = getFloorHeight(reader, cp);
+                SpawnPlatform.SPAWN_PLATFORM.get().generate(reader, new BlockPos(3, floorHeight, 3),
                         compiledDescriptor.getBaseBlocks(), BuildingTemplate.GenerateFlag.PLAIN);
                 generatedSomething = true;
             } else if (rand.nextFloat() < DimensionConfig.DIMLET_HUT_CHANCE.get()) {

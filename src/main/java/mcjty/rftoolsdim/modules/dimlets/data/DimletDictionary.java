@@ -71,7 +71,21 @@ public class DimletDictionary {
 
     @Nullable
     public DimletKey getRandomDimlet(DimletType type, Random random) {
-        DimletRarity rarity = DimletRarity.COMMON;
+        DimletKey key = getRandomDimletInternal(type, DimletRarity.COMMON, random);
+        if (key == null) {
+            key = getRandomDimletInternal(type, DimletRarity.UNCOMMON, random);
+            if (key == null) {
+                key = getRandomDimletInternal(type, DimletRarity.RARE, random);
+                if (key == null) {
+                    key = getRandomDimletInternal(type, DimletRarity.LEGENDARY, random);
+                }
+            }
+        }
+        return key;
+    }
+
+    private DimletKey getRandomDimletInternal(DimletType type, DimletRarity startAt, Random random) {
+        DimletRarity rarity = startAt;
         if (random.nextFloat() < .1f) {
             rarity = DimletRarity.UNCOMMON;
             if (random.nextFloat() < .1f) {

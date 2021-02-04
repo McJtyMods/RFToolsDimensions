@@ -16,6 +16,7 @@ import net.minecraft.loot.conditions.ILootCondition;
 import net.minecraft.loot.functions.ILootFunction;
 import net.minecraft.util.JSONUtils;
 
+import java.util.Random;
 import java.util.function.Consumer;
 
 public class DimletLootEntry extends StandaloneLootEntry {
@@ -27,9 +28,11 @@ public class DimletLootEntry extends StandaloneLootEntry {
         this.rarity = rarity;
     }
 
+    private Random random = new Random();
+
     @Override
     protected void func_216154_a(Consumer<ItemStack> stackConsumer, LootContext context) {
-        DimletKey dimlet = DimletDictionary.get().getRandomDimlet(rarity, context.getRandom());
+        DimletKey dimlet = DimletDictionary.get().getRandomDimlet(rarity, random);
         if (dimlet != null) {
             stackConsumer.accept(DimletTools.getDimletStack(dimlet));
         }

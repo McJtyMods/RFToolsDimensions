@@ -497,12 +497,16 @@ public class NormalChunkGenerator extends BaseChunkGenerator {
         }
     }
 
+    protected BlockState getBaseLiquid() {
+        return this.defaultFluid;
+    }
+
     private BlockState func_236086_a_(double p_236086_1_, int p_236086_3_) {
         BlockState blockstate;
         if (p_236086_1_ > 0.0D) {
             blockstate = getDefaultBlock(); // @todo 1.16 check
         } else if (p_236086_3_ < this.getSeaLevel()) {
-            blockstate = this.defaultFluid;
+            blockstate = getBaseLiquid();
         } else {
             blockstate = Blocks.AIR.getDefaultState();
         }

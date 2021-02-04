@@ -20,6 +20,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.Lazy;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
@@ -30,7 +31,7 @@ import static mcjty.lib.builder.TooltipBuilder.*;
 
 public class DimletItem extends Item implements ITooltipSettings, ITooltipExtras {
 
-    private final TooltipBuilder tooltipBuilder = new TooltipBuilder()
+    private final Lazy<TooltipBuilder> tooltipBuilder = () -> new TooltipBuilder()
             .info(key("message.rftoolsdim.shiftmessage"), TooltipBuilder.parameter("key", DimletItem::isReadyDimlet, DimletTools::getDimletDescription))
             .infoShift(header(), gold(), TooltipBuilder.parameter("key", DimletItem::isReadyDimlet, DimletTools::getDimletDescription));
 
@@ -75,7 +76,7 @@ public class DimletItem extends Item implements ITooltipSettings, ITooltipExtras
     @Override
     public void addInformation(ItemStack itemStack, World world, List<ITextComponent> list, ITooltipFlag flags) {
         super.addInformation(itemStack, world, list, flags);
-        tooltipBuilder.makeTooltip(getRegistryName(), itemStack, list, flags);
+        tooltipBuilder.get().makeTooltip(getRegistryName(), itemStack, list, flags);
     }
 
     @Override

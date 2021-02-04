@@ -31,7 +31,6 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 public class RealizedDimensionTab extends Item {
-    private static long lastTime = 0;
 
     public RealizedDimensionTab() {
         super(new Item.Properties().maxStackSize(1));
@@ -122,9 +121,15 @@ public class RealizedDimensionTab extends Item {
         CompiledDescriptor compiledDescriptor = new CompiledDescriptor();
         DescriptorError error = compiledDescriptor.compile(descriptor, randomizedDescriptor);
         if (error.isOk()) {
-            list.add(new StringTextComponent(TextFormatting.GREEN + "    Terrain: " + TextFormatting.WHITE + compiledDescriptor.getTerrainType().getName()));
-            list.add(new StringTextComponent(TextFormatting.GREEN + "    Biome Controller: " + TextFormatting.WHITE + compiledDescriptor.getBiomeControllerType().getName()));
-            list.add(new StringTextComponent(TextFormatting.GREEN + "    Time: " + TextFormatting.WHITE + compiledDescriptor.getTimeType().getName()));
+            if (compiledDescriptor.getTerrainType() != null) {
+                list.add(new StringTextComponent(TextFormatting.GREEN + "    Terrain: " + TextFormatting.WHITE + compiledDescriptor.getTerrainType().getName()));
+            }
+            if (compiledDescriptor.getBiomeControllerType() != null) {
+                list.add(new StringTextComponent(TextFormatting.GREEN + "    Biome Controller: " + TextFormatting.WHITE + compiledDescriptor.getBiomeControllerType().getName()));
+            }
+            if (compiledDescriptor.getTimeType() != null) {
+                list.add(new StringTextComponent(TextFormatting.GREEN + "    Time: " + TextFormatting.WHITE + compiledDescriptor.getTimeType().getName()));
+            }
             for (CompiledFeature feature : compiledDescriptor.getFeatures()) {
                 list.add(new StringTextComponent(TextFormatting.GREEN + "    Feature: " + TextFormatting.WHITE + feature.getFeatureType().getName()));
             }

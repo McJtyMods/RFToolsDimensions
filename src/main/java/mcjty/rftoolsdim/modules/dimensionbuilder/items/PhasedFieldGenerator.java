@@ -18,6 +18,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.common.util.Lazy;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -30,7 +31,7 @@ public class PhasedFieldGenerator extends Item implements IEnergyItem, ITooltipS
     private long maxReceive;
     private long maxExtract;
 
-    private final TooltipBuilder tooltipBuilder = new TooltipBuilder()
+    private final Lazy<TooltipBuilder> tooltipBuilder = () -> new TooltipBuilder()
             .info(key("message.rftoolsdim.shiftmessage"))
             .infoShift(header(), gold(),
                     TooltipBuilder.parameter("power", this::getEnergyString));
@@ -64,7 +65,7 @@ public class PhasedFieldGenerator extends Item implements IEnergyItem, ITooltipS
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> list, ITooltipFlag flagIn) {
         super.addInformation(stack, worldIn, list, flagIn);
-        tooltipBuilder.makeTooltip(getRegistryName(), stack, list, flagIn);
+        tooltipBuilder.get().makeTooltip(getRegistryName(), stack, list, flagIn);
     }
 
     @Override
