@@ -13,10 +13,8 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemModelsProperties;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
@@ -67,23 +65,6 @@ public class PhasedFieldGenerator extends Item implements IEnergyItem, ITooltipS
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> list, ITooltipFlag flagIn) {
         super.addInformation(stack, worldIn, list, flagIn);
         tooltipBuilder.makeTooltip(getRegistryName(), stack, list, flagIn);
-    }
-
-    public static void initOverrides(PhasedFieldGenerator item) {
-        ItemModelsProperties.registerProperty(item, new ResourceLocation(RFToolsDim.MODID, "power"), (stack, world, livingEntity) -> {
-            long power = 0;
-            if (stack.hasTag()) {
-                power = stack.getTag().getLong("Energy");
-            }
-            long max = DimensionBuilderConfig.PHASEDFIELD_MAXENERGY.get();
-            long level = (9 * power) / max;
-            if (level < 0) {
-                level = 0;
-            } else if (level > 8) {
-                level = 9;
-            }
-            return 8-level;
-        });
     }
 
     @Override
