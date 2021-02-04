@@ -31,7 +31,5 @@ Todo:
     - Special (yellow) dimlets: owner, cheater, ...
     - Digit dimlets
 - Implement Knowledge Item loot
-- Dimension:
-    - Dimlet houses
 
 Check why randomized always gives single?

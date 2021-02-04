@@ -41,7 +41,6 @@ public class RFToolsDim {
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
             FMLJavaModLoadingContext.get().getModEventBus().addListener(modules::initClient);
             FMLJavaModLoadingContext.get().getModEventBus().addListener(WorkbenchModule::onTextureStitch);
-            FMLJavaModLoadingContext.get().getModEventBus().addListener(DimensionBuilderModule::onTextureStitch);
 //            FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientEventHandlers::onClientTick);
         });
     }
