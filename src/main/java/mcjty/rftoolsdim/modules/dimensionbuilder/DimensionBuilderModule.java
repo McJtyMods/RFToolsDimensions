@@ -7,19 +7,14 @@ import mcjty.lib.modules.IModule;
 import mcjty.rftoolsdim.modules.dimensionbuilder.blocks.DimensionBuilderTileEntity;
 import mcjty.rftoolsdim.modules.dimensionbuilder.client.DimensionBuilderRenderer;
 import mcjty.rftoolsdim.modules.dimensionbuilder.client.GuiDimensionBuilder;
-import mcjty.rftoolsdim.modules.dimensionbuilder.items.DimensionMonitorItem;
-import mcjty.rftoolsdim.modules.dimensionbuilder.items.EmptyDimensionTab;
-import mcjty.rftoolsdim.modules.dimensionbuilder.items.PhasedFieldGenerator;
-import mcjty.rftoolsdim.modules.dimensionbuilder.items.RealizedDimensionTab;
+import mcjty.rftoolsdim.modules.dimensionbuilder.items.*;
 import mcjty.rftoolsdim.setup.Config;
 import mcjty.rftoolsdim.setup.Registration;
-import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -56,7 +51,7 @@ public class DimensionBuilderModule implements IModule {
     public void initClient(FMLClientSetupEvent event) {
         event.enqueueWork(() -> {
             GenericGuiContainer.register(CONTAINER_DIMENSION_BUILDER.get(), GuiDimensionBuilder::new);
-            DimensionMonitorItem.initOverrides(DIMENSION_MONITOR.get());
+            DimensionMonitorClientStuff.initOverrides(DIMENSION_MONITOR.get());
             PhasedFieldGenerator.initOverrides(PHASED_FIELD_GENERATOR.get());
         });
         DimensionBuilderRenderer.register();
