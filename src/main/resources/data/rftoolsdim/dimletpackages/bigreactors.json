@@ -1,0 +1,62 @@
+[
+  {
+    "type": "block",
+    "key": "bigreactors:yellorium_block",
+    "rarity": "rare",
+    "create": 600,
+    "maintain": 600,
+    "ticks": 600,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "block",
+    "key": "bigreactors:cyanite_block",
+    "rarity": "rare",
+    "create": 600,
+    "maintain": 600,
+    "ticks": 600,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "block",
+    "key": "bigreactors:graphite_block",
+    "rarity": "uncommon",
+    "create": 100,
+    "maintain": 100,
+    "ticks": 100,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "block",
+    "key": "bigreactors:yellorite_ore",
+    "rarity": "uncommon",
+    "create": 100,
+    "maintain": 100,
+    "ticks": 100,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "block",
+    "key": "bigreactors:anglesite_ore",
+    "rarity": "uncommon",
+    "create": 100,
+    "maintain": 100,
+    "ticks": 100,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "block",
+    "key": "bigreactors:benitoite_ore",
+    "rarity": "uncommon",
+    "create": 100,
+    "maintain": 100,
+    "ticks": 100,
+    "worldgen": true,
+    "dimlet": true
+  }
+]

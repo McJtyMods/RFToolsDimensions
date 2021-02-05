@@ -33,7 +33,11 @@ public class DimletItem extends Item implements ITooltipSettings, ITooltipExtras
 
     private final Lazy<TooltipBuilder> tooltipBuilder = () -> new TooltipBuilder()
             .info(key("message.rftoolsdim.shiftmessage"), TooltipBuilder.parameter("key", DimletItem::isReadyDimlet, DimletTools::getDimletDescription))
-            .infoShift(header(), gold(), TooltipBuilder.parameter("key", DimletItem::isReadyDimlet, DimletTools::getDimletDescription));
+            .infoShift(header(), gold(),
+                    TooltipBuilder.parameter("key", DimletItem::isReadyDimlet, DimletTools::getDimletDescription),
+                    TooltipBuilder.parameter("rarity", DimletItem::isReadyDimlet, DimletTools::getDimletRarity),
+                    TooltipBuilder.parameter("cost", DimletItem::isReadyDimlet, DimletTools::getDimletCost)
+            );
 
     private final DimletType type;
     private final boolean isReady;

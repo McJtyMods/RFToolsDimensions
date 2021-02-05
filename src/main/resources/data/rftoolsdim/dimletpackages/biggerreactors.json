@@ -1,0 +1,62 @@
+[
+  {
+    "type": "block",
+    "key": "biggerreactors:blutonium_block",
+    "rarity": "rare",
+    "create": 600,
+    "maintain": 600,
+    "ticks": 600,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "block",
+    "key": "biggerreactors:cyanite_block",
+    "rarity": "rare",
+    "create": 600,
+    "maintain": 600,
+    "ticks": 600,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "block",
+    "key": "biggerreactors:graphite_block",
+    "rarity": "uncommon",
+    "create": 100,
+    "maintain": 100,
+    "ticks": 100,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "block",
+    "key": "biggerreactors:ludicrite_block",
+    "rarity": "rare",
+    "create": 600,
+    "maintain": 600,
+    "ticks": 600,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "block",
+    "key": "biggerreactors:yellorite_ore",
+    "rarity": "uncommon",
+    "create": 100,
+    "maintain": 100,
+    "ticks": 100,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "block",
+    "key": "biggerreactors:yellorium_block",
+    "rarity": "rare",
+    "create": 300,
+    "maintain": 300,
+    "ticks": 300,
+    "worldgen": true,
+    "dimlet": true
+  }
+]

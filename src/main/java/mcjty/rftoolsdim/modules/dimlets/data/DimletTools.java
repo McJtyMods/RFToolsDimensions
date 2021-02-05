@@ -7,6 +7,7 @@ import mcjty.rftoolsdim.modules.essences.EssencesModule;
 import mcjty.rftoolsdim.modules.essences.blocks.BiomeAbsorberTileEntity;
 import mcjty.rftoolsdim.modules.essences.blocks.BlockAbsorberTileEntity;
 import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -14,6 +15,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.biome.Biome;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nonnull;
@@ -30,6 +32,40 @@ public class DimletTools {
             return "<Unknown>";
         } else {
             return getReadableName(key);
+        }
+    }
+
+    // Use client side!
+    public static String getDimletRarity(ItemStack stack) {
+        DimletKey key = getDimletKey(stack);
+        if (key == null) {
+            return "<Unknown>";
+        } else {
+            DimletSettings settings = DimletDictionary.get().getSettings(key);
+            if (settings != null) {
+                DimletRarity rarity = settings.getRarity();
+                return rarity.name();
+            } else {
+                return "<Unknown>";
+            }
+        }
+    }
+
+    // Use client side!
+    public static String getDimletCost(ItemStack stack) {
+        DimletKey key = getDimletKey(stack);
+        if (key == null) {
+            return "<Unknown>";
+        } else {
+            DimletSettings settings = DimletDictionary.get().getSettings(key);
+            if (settings != null) {
+                int createCost = settings.getCreateCost();
+                int maintainCost = settings.getMaintainCost();
+                int tickCost = settings.getTickCost();
+                return "C " + createCost + ", M " + maintainCost + ", T " + tickCost;
+            } else {
+                return "<Unknown>";
+            }
         }
     }
 
@@ -283,5 +319,18 @@ public class DimletTools {
 
     public static boolean isOwnerDimlet(DimletKey dimletKey) {
         return dimletKey != null && dimletKey.getType() == DimletType.SPECIAL && dimletKey.getKey().equals(SpecialDimletType.OWNER.name().toLowerCase());
+    }
+
+    /// Return true if this dimlet can exist (refers to an existing block/biome/...)
+    public static boolean isValidDimlet(DimletKey key) {
+        switch (key.getType()) {
+            case BIOME:
+                return ForgeRegistries.BIOMES.getValue(new ResourceLocation(key.getKey())) != null;
+            case BLOCK:
+                Block value = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(key.getKey()));
+                return value != null && value != Blocks.AIR;
+            default:
+                return true;
+        }
     }
 }

@@ -22,7 +22,9 @@ public class DimletDictionary {
     }
 
     private void register(DimletKey key, DimletSettings settings) {
-        dimlets.put(key, settings);
+        if (DimletTools.isValidDimlet(key)) {
+            dimlets.put(key, settings);
+        }
     }
 
     public Set<DimletKey> getDimlets() {

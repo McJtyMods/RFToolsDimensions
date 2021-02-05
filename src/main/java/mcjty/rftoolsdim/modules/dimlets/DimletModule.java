@@ -69,11 +69,9 @@ DimletModule implements IModule {
 
     @Override
     public void init(FMLCommonSetupEvent event) {
-        DimletDictionary.get().readPackage("base.json");
-        DimletDictionary.get().readPackage("vanilla_blocks.json");
-        DimletDictionary.get().readPackage("vanilla_biomes.json");
-        DimletDictionary.get().readPackage("rftools.json");
-
+        for (String file : DimletConfig.DIMLET_PACKAGES.get()) {
+            DimletDictionary.get().readPackage(file);
+        }
         event.enqueueWork(() -> {
             registerLootHelpers();
         });

@@ -28,8 +28,7 @@ Todo:
     - Structures
     - Feature to inhibit default structures
     - Feature to set default structures
-    - Special (yellow) dimlets: owner, cheater, ...
-    - Digit dimlets
+    - Efficiency dimlet
 - Implement Knowledge Item loot
 - Enscriber:
     - Test press multiple store

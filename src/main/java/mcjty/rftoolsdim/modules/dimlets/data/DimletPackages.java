@@ -77,6 +77,8 @@ public class DimletPackages {
     }
 
     public static void readPackage(String filename, BiConsumer<DimletKey, DimletSettings> consumer) {
+        RFToolsDim.setup.getLogger().info("Reading dimlet package: " + filename);
+
         InputStream inputStream = null;
 
         Path configPath = FMLPaths.CONFIGDIR.get();
