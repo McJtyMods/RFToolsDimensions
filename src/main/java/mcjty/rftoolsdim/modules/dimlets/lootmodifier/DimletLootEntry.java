@@ -28,7 +28,7 @@ public class DimletLootEntry extends StandaloneLootEntry {
         this.rarity = rarity;
     }
 
-    private Random random = new Random();
+    private final Random random = new Random();
 
     @Override
     protected void func_216154_a(Consumer<ItemStack> stackConsumer, LootContext context) {

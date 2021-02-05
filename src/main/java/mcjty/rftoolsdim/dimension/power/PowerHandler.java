@@ -6,7 +6,7 @@ import mcjty.rftoolsdim.dimension.data.DimensionData;
 import mcjty.rftoolsdim.dimension.data.DimensionManager;
 import mcjty.rftoolsdim.dimension.data.PersistantDimensionManager;
 import mcjty.rftoolsdim.dimension.descriptor.CompiledDescriptor;
-import mcjty.rftoolsdim.dimension.network.PacketPropagatePowerToClients;
+import mcjty.rftoolsdim.dimension.network.PackagePropageDataToClients;
 import mcjty.rftoolsdim.modules.dimensionbuilder.items.PhasedFieldGenerator;
 import mcjty.rftoolsdim.setup.RFToolsDimMessages;
 import net.minecraft.entity.player.PlayerEntity;
@@ -55,7 +55,8 @@ public class PowerHandler {
         for (Map.Entry<ResourceLocation, DimensionData> entry : mgr.getData().entrySet()) {
             powerMap.put(entry.getKey(), entry.getValue().getEnergy());
         }
-        RFToolsDimMessages.INSTANCE.send(PacketDistributor.ALL.noArg(), new PacketPropagatePowerToClients(powerMap));
+        RFToolsDimMessages.INSTANCE.send(PacketDistributor.ALL.noArg(), new PackagePropageDataToClients(powerMap,
+                ((ServerWorld) overworld).getSeed()));
     }
 
     private void handlePower(World overworld, boolean doEffects) {

@@ -29,6 +29,3 @@ Todo:
     - Feature to inhibit default structures
     - Feature to set default structures
     - Efficiency dimlet
-- Implement Knowledge Item loot
-- Enscriber:
-    - Test press multiple store

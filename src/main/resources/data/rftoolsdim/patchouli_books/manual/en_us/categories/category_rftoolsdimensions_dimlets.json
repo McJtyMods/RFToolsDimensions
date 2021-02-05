@@ -1,0 +1,7 @@
+{
+  "name": "Creating Dimlets",
+  "description": "Creating dimlets can be done using the Dimlet Workbench and the Knowledge Holder",
+  "parent": "rftoolsdim:category_rftoolsdimensions",
+  "icon": "rftoolsdim:empty_dimlet",
+  "sortnum": 10
+}

@@ -44,7 +44,7 @@ public class BlockAbsorberTileEntity extends GenericTileEntity implements ITicka
     private int absorbing = 0;
     private Block absorbingBlock = null;
     private int timer = ABSORB_SPEED;
-    private Set<BlockPos> toscan = new HashSet<>();
+    private final Set<BlockPos> toscan = new HashSet<>();
 
     public BlockAbsorberTileEntity() {
         super(EssencesModule.TYPE_BLOCK_ABSORBER.get());
@@ -57,7 +57,7 @@ public class BlockAbsorberTileEntity extends GenericTileEntity implements ITicka
                         .sound(SoundType.METAL)
                         .notSolid())
                 .tileEntitySupplier(BlockAbsorberTileEntity::new)
-                .manualEntry(ManualHelper.create("rftoolsdim:dimensionbuilder"))
+                .manualEntry(ManualHelper.create("rftoolsdim:dimlets/dimlet_workbench"))
                 .topDriver(RFToolsDimensionsTOPDriver.DRIVER)
                 .info(key("message.rftoolsdim.shiftmessage"))
                 .infoShift(header(),

@@ -21,7 +21,7 @@ import java.util.function.Supplier;
 public class PacketSendDimletsToClient {
 
     private final BlockPos pos;
-    private List<DimletClientHelper.DimletWithInfo> dimlets;
+    private final List<DimletClientHelper.DimletWithInfo> dimlets;
 
     public PacketSendDimletsToClient(BlockPos pos, List<DimletClientHelper.DimletWithInfo> dimlets) {
         this.pos = pos;

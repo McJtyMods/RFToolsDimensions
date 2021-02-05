@@ -1,0 +1,12 @@
+{
+  "name": "Knowledge Holder",
+  "icon": "rftoolsdim:knowledge_holder",
+  "category": "rftoolsdim:category_rftoolsdimensions_dimlets",
+  "sortnum": 30,
+  "pages": [
+    {
+      "type": "text",
+      "text": "The Knowledge Holder is a big storage item that can only hold knowledge. Set this block adjacent to a Dimlet Workbench so that you can create dimlets that correspond to the knowledge that you discovered"
+    }
+  ]
+}

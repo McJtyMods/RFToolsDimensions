@@ -1,5 +1,6 @@
 package mcjty.rftoolsdim.modules.dimlets.data;
 
+import mcjty.lib.varia.DimensionId;
 import mcjty.rftoolsdim.modules.knowledge.data.DimletPattern;
 import mcjty.rftoolsdim.modules.knowledge.data.KnowledgeManager;
 import net.minecraft.item.ItemStack;
@@ -11,11 +12,11 @@ import java.util.*;
 
 public class DimletDictionary {
 
-    private static DimletDictionary INSTANCE = new DimletDictionary();
+    private static final DimletDictionary INSTANCE = new DimletDictionary();
 
-    private Map<DimletKey, DimletSettings> dimlets = new HashMap<>();
-    private Map<DimletRarity, List<DimletKey>> dimletsByRarity = new HashMap<>();
-    private Map<Pair<DimletType, DimletRarity>, List<DimletKey>> dimletsByRarityAndType = new HashMap<>();
+    private final Map<DimletKey, DimletSettings> dimlets = new HashMap<>();
+    private final Map<DimletRarity, List<DimletKey>> dimletsByRarity = new HashMap<>();
+    private final Map<Pair<DimletType, DimletRarity>, List<DimletKey>> dimletsByRarityAndType = new HashMap<>();
 
     public static DimletDictionary get() {
         return INSTANCE;
@@ -44,7 +45,7 @@ public class DimletDictionary {
                     if (energyPart.isItemEqual(DimletTools.getNeededEnergyPart(key))) {
                         ItemStack neededEssence = DimletTools.getNeededEssence(key, entry.getValue());
                         if (DimletTools.isFullEssence(essence, neededEssence, key.getKey())) {
-                            DimletPattern neededPattern = KnowledgeManager.get().getPattern(world, key);
+                            DimletPattern neededPattern = KnowledgeManager.get().getPattern(DimensionId.overworld().loadWorld(world).getSeed(), key);
                             if (Objects.equals(neededPattern, pattern)) {
                                 return key;
                             }

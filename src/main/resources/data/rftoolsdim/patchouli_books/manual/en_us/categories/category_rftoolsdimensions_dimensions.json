@@ -1,0 +1,7 @@
+{
+  "name": "Creating Dimensions",
+  "description": "To create dimensions you need the Enscriber and Dimension Builder",
+  "parent": "rftoolsdim:category_rftoolsdimensions",
+  "icon": "rftoolsdim:dimension_builder",
+  "sortnum": 20
+}

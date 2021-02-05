@@ -35,7 +35,7 @@ public class RFTFeature extends Feature<NoFeatureConfig> {
 
     public static ConfiguredFeature<?, ?> RFTFEATURE_CONFIGURED;
 
-    private final static long primes[] = new long[] { 900157, 981961, 50001527, 32667413, 1111114993, 65548559, 320741, 100002509,
+    private final static long[] primes = new long[] { 900157, 981961, 50001527, 32667413, 1111114993, 65548559, 320741, 100002509,
             35567897, 218021, 2900001163L, 3399018867L };
 
     public static void registerConfiguredFeatures() {

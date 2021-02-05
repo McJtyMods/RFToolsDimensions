@@ -1,0 +1,12 @@
+{
+  "name": "Dimlets",
+  "icon": "rftoolsdim:empty_dimlet",
+  "category": "rftoolsdim:category_rftoolsdimensions_dimlets",
+  "sortnum": 10,
+  "pages": [
+    {
+      "type": "text",
+      "text": "Dimlets are little items that help describe a dimension. They represent various features of a dimension.$(br2)You can loot dimlets from enderman as a rare drop but it's best to make them using the $(l:rftoolsdim:dimlets/dimlet_workbench)Dimlet Workbench$(/l)"
+    }
+  ]
+}

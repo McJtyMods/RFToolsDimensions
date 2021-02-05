@@ -41,7 +41,7 @@ public class BiomeAbsorberTileEntity extends GenericTileEntity implements ITicka
                         .notSolid())
                 .tileEntitySupplier(BiomeAbsorberTileEntity::new)
                 .topDriver(RFToolsDimensionsTOPDriver.DRIVER)
-                .manualEntry(ManualHelper.create("rftoolsdim:dimensionbuilder"))
+                .manualEntry(ManualHelper.create("rftoolsdim:dimlets/dimlet_workbench"))
                 .info(key("message.rftoolsdim.shiftmessage"))
                 .infoShift(header(),
                         parameter("block", BiomeAbsorberTileEntity::getBiomeName),

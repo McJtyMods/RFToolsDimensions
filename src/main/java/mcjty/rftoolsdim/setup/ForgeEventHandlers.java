@@ -27,8 +27,8 @@ public class ForgeEventHandlers {
         event.getGeneration().getFeatures(GenerationStage.Decoration.RAW_GENERATION).add(() -> RFTFeature.RFTFEATURE_CONFIGURED);
     }
 
-    private Random random = new Random();
-    private PowerHandler powerHandler = new PowerHandler();
+    private final Random random = new Random();
+    private final PowerHandler powerHandler = new PowerHandler();
 
     @SubscribeEvent
     public void onWorldTick(TickEvent.WorldTickEvent event) {

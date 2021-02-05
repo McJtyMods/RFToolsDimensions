@@ -15,8 +15,8 @@ import java.util.Random;
 
 public class TendrilsFeature implements IFeature {
 
-    private int range = 8;
-    private Random rand = new Random();
+    private final int range = 8;
+    private final Random rand = new Random();
 
     public TendrilsFeature() {
 

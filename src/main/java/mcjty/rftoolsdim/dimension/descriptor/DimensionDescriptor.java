@@ -28,7 +28,7 @@ import java.util.Random;
  */
 public class DimensionDescriptor {
 
-    private List<DimletKey> dimlets = new ArrayList<>();
+    private final List<DimletKey> dimlets = new ArrayList<>();
 
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
     private static final Gson GSON_COMPACT = new GsonBuilder().disableHtmlEscaping().create();

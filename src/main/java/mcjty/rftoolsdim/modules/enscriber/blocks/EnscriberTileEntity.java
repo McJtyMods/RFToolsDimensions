@@ -22,7 +22,10 @@ import mcjty.rftoolsdim.dimension.descriptor.CompiledDescriptor;
 import mcjty.rftoolsdim.dimension.descriptor.DescriptorError;
 import mcjty.rftoolsdim.dimension.descriptor.DimensionDescriptor;
 import mcjty.rftoolsdim.modules.dimensionbuilder.DimensionBuilderModule;
-import mcjty.rftoolsdim.modules.dimlets.data.*;
+import mcjty.rftoolsdim.modules.dimlets.data.DimletDictionary;
+import mcjty.rftoolsdim.modules.dimlets.data.DimletKey;
+import mcjty.rftoolsdim.modules.dimlets.data.DimletSettings;
+import mcjty.rftoolsdim.modules.dimlets.data.DimletTools;
 import mcjty.rftoolsdim.modules.dimlets.items.DimletItem;
 import mcjty.rftoolsdim.modules.enscriber.EnscriberModule;
 import net.minecraft.entity.player.PlayerEntity;
@@ -94,7 +97,7 @@ public class EnscriberTileEntity extends GenericTileEntity {
         return new BaseBlock(new BlockBuilder()
                 .tileEntitySupplier(EnscriberTileEntity::new)
                 .infusable()
-                .manualEntry(ManualHelper.create("rftoolsdim:dimensionbuilder"))
+                .manualEntry(ManualHelper.create("rftoolsdim:dimensions/enscriber"))
                 .info(key("message.rftoolsdim.shiftmessage"))
                 .infoShift(header(), gold())) {
             @Override
@@ -109,8 +112,7 @@ public class EnscriberTileEntity extends GenericTileEntity {
         if (!stack.isEmpty() && stack.getItem() == DimensionBuilderModule.REALIZED_DIMENSION_TAB.get()) {
             CompoundNBT tagCompound = stack.getTag();
             if (tagCompound != null) {
-                String name = tagCompound.getString("name");
-                return name;
+                return tagCompound.getString("name");
             }
         }
         return null;

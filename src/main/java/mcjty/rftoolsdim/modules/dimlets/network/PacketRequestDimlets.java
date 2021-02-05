@@ -4,7 +4,6 @@ import mcjty.lib.network.ICommandHandler;
 import mcjty.lib.typed.Type;
 import mcjty.lib.typed.TypedMap;
 import mcjty.rftoolsdim.modules.dimlets.client.DimletClientHelper;
-import mcjty.rftoolsdim.modules.dimlets.data.DimletKey;
 import mcjty.rftoolsdim.modules.workbench.blocks.WorkbenchTileEntity;
 import mcjty.rftoolsdim.setup.RFToolsDimMessages;
 import net.minecraft.network.PacketBuffer;

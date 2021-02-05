@@ -25,7 +25,6 @@ import net.minecraftforge.items.CapabilityItemHandler;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
 import java.util.Set;
 
 import static mcjty.lib.builder.TooltipBuilder.*;
@@ -68,7 +67,7 @@ public class KnowledgeHolderTileEntity extends GenericTileEntity {
         return new BaseBlock(new BlockBuilder()
                 .tileEntitySupplier(KnowledgeHolderTileEntity::new)
                 .infusable()
-                .manualEntry(ManualHelper.create("rftoolsdim:dimensionbuilder"))
+                .manualEntry(ManualHelper.create("rftoolsdim:dimlets/knowledge_holder"))
                 .info(key("message.rftoolsdim.shiftmessage"))
                 .infoShift(header(), gold())) {
             @Override

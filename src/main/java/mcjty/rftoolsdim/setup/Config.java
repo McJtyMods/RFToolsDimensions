@@ -34,9 +34,6 @@ public class Config {
         SERVER_BUILDER.comment("General settings").push(CATEGORY_GENERAL);
         CLIENT_BUILDER.comment("General settings").push(CATEGORY_GENERAL);
 
-//        PowerCellConfig.setup(COMMON_BUILDER);
-//        CoalGeneratorConfig.setup(COMMON_BUILDER);
-
         SERVER_BUILDER.pop();
         CLIENT_BUILDER.pop();
     }

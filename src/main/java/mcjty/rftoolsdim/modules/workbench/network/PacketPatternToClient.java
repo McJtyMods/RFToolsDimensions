@@ -8,7 +8,7 @@ import java.util.function.Supplier;
 
 public class PacketPatternToClient {
 
-    private String[] pattern;
+    private final String[] pattern;
 
     public PacketPatternToClient(String[] pattern) {
         this.pattern = pattern;

@@ -1,0 +1,12 @@
+{
+  "name": "Dimension Builder",
+  "icon": "rftoolsdim:dimension_builder",
+  "category": "rftoolsdim:category_rftoolsdimensions_dimensions",
+  "sortnum": 20,
+  "pages": [
+    {
+      "type": "text",
+      "text": "The Dimension Builder takes a Realized Dimension Tab and creates a dimension from it. If the dimension is already created it will maintain the dimension (give it power)"
+    }
+  ]
+}

@@ -27,9 +27,9 @@ import static mcjty.lib.builder.TooltipBuilder.*;
 
 public class PhasedFieldGenerator extends Item implements IEnergyItem, ITooltipSettings {
 
-    private long capacity;
-    private long maxReceive;
-    private long maxExtract;
+    private final long capacity;
+    private final long maxReceive;
+    private final long maxExtract;
 
     private final Lazy<TooltipBuilder> tooltipBuilder = () -> new TooltipBuilder()
             .info(key("message.rftoolsdim.shiftmessage"))

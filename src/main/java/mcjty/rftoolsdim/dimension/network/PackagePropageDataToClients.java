@@ -1,22 +1,20 @@
 package mcjty.rftoolsdim.dimension.network;
 
-import mcjty.rftoolsdim.dimension.power.ClientPowerManager;
+import mcjty.rftoolsdim.dimension.data.ClientDimensionData;
 import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.RegistryKey;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
-public class PacketPropagatePowerToClients {
+public class PackagePropageDataToClients {
 
-    private Map<ResourceLocation, Long> powerMap;
+    private final Map<ResourceLocation, Long> powerMap;
+    private final long seed;
 
-    public PacketPropagatePowerToClients(PacketBuffer buf) {
+    public PackagePropageDataToClients(PacketBuffer buf) {
         int size = buf.readInt();
         powerMap = new HashMap<>(size);
         for (int i = 0 ; i < size ; i++) {
@@ -24,10 +22,12 @@ public class PacketPropagatePowerToClients {
             long power = buf.readLong();
             powerMap.put(id, power);
         }
+        seed = buf.readLong();
     }
 
-    public PacketPropagatePowerToClients(Map<ResourceLocation, Long> powerMap) {
+    public PackagePropageDataToClients(Map<ResourceLocation, Long> powerMap, long seed) {
         this.powerMap = new HashMap<>(powerMap);
+        this.seed = seed;
     }
 
     public void toBytes(PacketBuffer buf) {
@@ -36,12 +36,13 @@ public class PacketPropagatePowerToClients {
             buf.writeResourceLocation(entry.getKey());
             buf.writeLong(entry.getValue());
         }
+        buf.writeLong(seed);
     }
 
 
     public void handle(Supplier<NetworkEvent.Context> supplier) {
         NetworkEvent.Context ctx = supplier.get();
-        ctx.enqueueWork(() -> ClientPowerManager.get().updatePowerFromServer(powerMap));
+        ctx.enqueueWork(() -> ClientDimensionData.get().updateDataFromServer(powerMap, seed));
         ctx.setPacketHandled(true);
     }
 

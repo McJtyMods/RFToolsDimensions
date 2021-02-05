@@ -1,0 +1,12 @@
+{
+  "name": "Researcher",
+  "icon": "rftoolsdim:researcher",
+  "category": "rftoolsdim:category_rftoolsdimensions_dimlets",
+  "sortnum": 40,
+  "pages": [
+    {
+      "type": "text",
+      "text": "The Researcher is used to find out what type of knowledge you have. You can use it on knowledge items that you loot from enderman or from chests. The Researcher can also research dimlets or block or biome essence items"
+    }
+  ]
+}

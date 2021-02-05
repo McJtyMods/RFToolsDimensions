@@ -55,9 +55,7 @@ public class KnowledgeManager {
         worldSeed = -1;
     }
 
-    private void resolve(World world) {
-        ServerWorld overworld = DimensionId.overworld().loadWorld(world);
-        long seed = overworld.getSeed();
+    private void resolve(long seed) {
         if (seed != worldSeed || patterns == null) {
             worldSeed = seed;
             patterns = RandomPatternCreator.createRandomPatterns(seed);
@@ -113,6 +111,8 @@ public class KnowledgeManager {
             case FEATURE:
                 return null;
             case TIME:
+                return null;
+            case SPECIAL:
                 return null;
             case BLOCK:
                 ResourceLocation tagId = getMostCommonTagForBlock(key);
@@ -194,8 +194,8 @@ public class KnowledgeManager {
     }
 
     @Nullable
-    public KnowledgeKey getKnowledgeKey(World world, DimletKey key) {
-        resolve(world);
+    public KnowledgeKey getKnowledgeKey(long seed, DimletKey key) {
+        resolve(seed);
         DimletSettings settings = DimletDictionary.get().getSettings(key);
         if (settings == null) {
             return null;
@@ -205,9 +205,8 @@ public class KnowledgeManager {
     }
 
     @Nullable
-    public DimletPattern getPattern(World world, DimletKey key) {
-        resolve(world);
-        return patterns.get(getKnowledgeKey(world, key));
+    public DimletPattern getPattern(long seed, DimletKey key) {
+        return patterns.get(getKnowledgeKey(seed, key));
     }
 
     public String getReason(World world, KnowledgeKey key) {
@@ -221,7 +220,7 @@ public class KnowledgeManager {
             for (DimletKey key : DimletDictionary.get().getDimlets()) {
                 DimletSettings settings = DimletDictionary.get().getSettings(key);
                 if (settings != null && Objects.equals(settings.getRarity(), rarity)) {
-                    KnowledgeKey kkey = getKnowledgeKey(world, key);
+                    KnowledgeKey kkey = getKnowledgeKey(DimensionId.overworld().loadWorld(world).getSeed(), key);
                     if (kkey != null) {
                         set.add(kkey);
                         String reason = getKnowledgeSetReason(key);

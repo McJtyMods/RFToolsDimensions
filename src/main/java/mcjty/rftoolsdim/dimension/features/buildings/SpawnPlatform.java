@@ -1,6 +1,5 @@
 package mcjty.rftoolsdim.dimension.features.buildings;
 
-import mcjty.rftoolsdim.compat.RFToolsUtilityCompat;
 import mcjty.rftoolsdim.modules.decorative.DecorativeModule;
 import net.minecraft.block.Blocks;
 import net.minecraftforge.common.util.Lazy;

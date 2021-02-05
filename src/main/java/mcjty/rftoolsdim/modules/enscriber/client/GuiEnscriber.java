@@ -119,7 +119,6 @@ public class GuiEnscriber extends GenericGuiContainer<EnscriberTileEntity, Gener
             tooltips.add("Everything appears to be alright");
             validateField.color(0x008800);
             validateField.text("Ok");
-            storeButton.enabled(true);
         } else {
             tooltips.add(error.getMessage());
             validateField.color(0xFF0000);

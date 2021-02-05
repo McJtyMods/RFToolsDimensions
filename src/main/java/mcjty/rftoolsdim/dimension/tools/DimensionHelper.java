@@ -71,9 +71,8 @@ public class DimensionHelper {
             // for vanilla worlds, forge fires the world load event *after* the world is put into the map
             // we'll do the same for consistency
             // (this is why we're not just using map::computeIfAbsent)
-            ServerWorld newWorld = createAndRegisterWorldAndDimension(server, map, worldKey, dimensionFactory);
 
-            return newWorld;
+            return createAndRegisterWorldAndDimension(server, map, worldKey, dimensionFactory);
         }
     }
 

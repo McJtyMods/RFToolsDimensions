@@ -16,7 +16,6 @@ import mcjty.lib.container.GenericContainer;
 import mcjty.lib.container.NoDirectionItemHander;
 import mcjty.lib.tileentity.GenericEnergyStorage;
 import mcjty.lib.tileentity.GenericTileEntity;
-import mcjty.lib.varia.Broadcaster;
 import mcjty.rftoolsbase.tools.ManualHelper;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.compat.RFToolsUtilityCompat;
@@ -100,7 +99,6 @@ public class DimensionBuilderTileEntity extends GenericTileEntity implements ITi
     // For usage in the gui
     private int clientBuildPercentage = 0;
 
-    private int creative = -1;      // -1 is unknown
     private int state = 0;          // For front state
 
     public static int OK = 0;
@@ -118,7 +116,7 @@ public class DimensionBuilderTileEntity extends GenericTileEntity implements ITi
         return new BaseBlock(new BlockBuilder()
                 .tileEntitySupplier(DimensionBuilderTileEntity::new)
                 .infusable()
-                .manualEntry(ManualHelper.create("rftoolsdim:dimensionbuilder"))
+                .manualEntry(ManualHelper.create("rftoolsdim:dimensions/dimension_builder"))
                 .info(key("message.rftoolsdim.shiftmessage"))
                 .infoShift(header(), gold())) {
             @Override
@@ -170,8 +168,6 @@ public class DimensionBuilderTileEntity extends GenericTileEntity implements ITi
         }
     }
 
-    private static int counter = 20;
-
     private void maintainDimensionTick(CompoundNBT tagCompound) {
         if (tagCompound.contains("dimension")) {
             String dimension = tagCompound.getString("dimension");
@@ -192,13 +188,6 @@ public class DimensionBuilderTileEntity extends GenericTileEntity implements ITi
             if (rf > maxEnergy) {
                 rf = maxEnergy;
             }
-//            if (Logging.debugMode) {
-//                counter--;
-//                if (counter < 0) {
-//                    counter = 20;
-//                    Logging.log("#################### id:" + id + ", rf:" + rf + ", energy:" + energy + ", max:" + maxEnergy);
-//                }
-//            }
 //            if (!isCheaterDimension(tagCompound)) {
                 energyStorage.consumeEnergy(rf);
 //            }
@@ -207,7 +196,7 @@ public class DimensionBuilderTileEntity extends GenericTileEntity implements ITi
         }
     }
 
-    private static Random random = new Random();
+    private static final Random random = new Random();
 
     private int createDimensionTick(CompoundNBT tagCompound, int ticksLeft) {
 

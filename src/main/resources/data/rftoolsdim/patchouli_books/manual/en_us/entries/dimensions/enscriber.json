@@ -1,0 +1,12 @@
+{
+  "name": "Enscriber",
+  "icon": "rftoolsdim:enscriber",
+  "category": "rftoolsdim:category_rftoolsdimensions_dimensions",
+  "sortnum": 10,
+  "pages": [
+    {
+      "type": "text",
+      "text": "Using the Enscriber you can combine various dimlets into a Realized Dimension Tab. That tab you can then give to the Dimension Builder"
+    }
+  ]
+}

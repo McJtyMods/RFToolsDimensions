@@ -111,26 +111,6 @@
   },
   {
     "type": "block",
-    "key": "mekanism:brine",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "mekanism:chlorine",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
     "key": "mekanism:copper_ore",
     "rarity": "uncommon",
     "create": 100,
@@ -156,16 +136,6 @@
     "create": 100,
     "maintain": 100,
     "ticks": 100,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "mekanism:lithium",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
     "worldgen": true,
     "dimlet": true
   },

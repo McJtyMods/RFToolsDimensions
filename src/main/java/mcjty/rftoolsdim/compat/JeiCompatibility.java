@@ -4,17 +4,12 @@ import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.modules.dimlets.DimletModule;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletKey;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletTools;
-import mcjty.rftoolsdim.modules.dimlets.data.DimletType;
-import mcjty.rftoolsdim.modules.dimlets.items.DimletItem;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.ingredients.subtypes.ISubtypeInterpreter;
 import mezz.jei.api.registration.ISubtypeRegistration;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.RegistryObject;
-
-import static mcjty.rftoolsdim.setup.Registration.ITEMS;
 
 @JeiPlugin
 public class JeiCompatibility implements IModPlugin {

@@ -1,7 +1,6 @@
 package mcjty.rftoolsdim.compat;
 
 import mcjty.rftoolsbase.api.teleportation.ITeleportationManager;
-import mcjty.theoneprobe.api.ITheOneProbe;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ISeedReader;
 import net.minecraftforge.fml.InterModComms;

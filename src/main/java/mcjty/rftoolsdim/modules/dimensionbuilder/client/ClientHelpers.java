@@ -3,7 +3,7 @@ package mcjty.rftoolsdim.modules.dimensionbuilder.client;
 import mcjty.lib.McJtyLib;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.dimension.DimensionConfig;
-import mcjty.rftoolsdim.dimension.power.ClientPowerManager;
+import mcjty.rftoolsdim.dimension.data.ClientDimensionData;
 import mcjty.rftoolsdim.modules.dimensionbuilder.DimensionBuilderConfig;
 import mcjty.rftoolsdim.modules.dimensionbuilder.items.DimensionMonitorItem;
 import mcjty.rftoolsdim.modules.dimensionbuilder.items.PhasedFieldGenerator;
@@ -27,7 +27,7 @@ public class ClientHelpers {
         if (world == null) {
             return "";
         }
-        long power = ClientPowerManager.get().getPower(world.getDimensionKey().getLocation());
+        long power = ClientDimensionData.get().getPower(world.getDimensionKey().getLocation());
         return power == -1 ? "<n.a.>" : ""+power;
     }
 
@@ -40,7 +40,7 @@ public class ClientHelpers {
                 }
                 w = livingEntity.getEntityWorld();
             }
-            long power = ClientPowerManager.get().getPower(w.getDimensionKey().getLocation());
+            long power = ClientDimensionData.get().getPower(w.getDimensionKey().getLocation());
             long max = DimensionConfig.MAX_DIMENSION_POWER.get();
             long level = (9 * power) / max;
             if (level < 0) {

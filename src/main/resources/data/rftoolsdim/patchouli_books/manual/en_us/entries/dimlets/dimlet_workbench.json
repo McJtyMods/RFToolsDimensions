@@ -1,0 +1,12 @@
+{
+  "name": "Dimlet Workbench",
+  "icon": "rftoolsdim:dimlet_workbench",
+  "category": "rftoolsdim:category_rftoolsdimensions_dimlets",
+  "sortnum": 20,
+  "pages": [
+    {
+      "type": "text",
+      "text": "The Dimlet Workbench is the main tool you need to create dimlets. It also needs at least one $(l:rftoolsdim:dimlets/knowledge_holder)Knowledge Holder$(/l) setting adjacent to it. You will need knowledge to be able to make dimlets"
+    }
+  ]
+}

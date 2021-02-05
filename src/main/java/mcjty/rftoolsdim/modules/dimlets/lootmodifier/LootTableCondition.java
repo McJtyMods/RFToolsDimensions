@@ -18,10 +18,7 @@ import java.util.Set;
 
 public class LootTableCondition implements ILootCondition {
 
-    private final Set<ResourceLocation> tables;
-
     public LootTableCondition(Set<ResourceLocation> tables) {
-        this.tables = new HashSet<>(tables);
     }
 
     @Override

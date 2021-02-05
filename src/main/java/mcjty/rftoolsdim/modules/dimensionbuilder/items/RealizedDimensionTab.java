@@ -10,7 +10,7 @@ import mcjty.rftoolsdim.dimension.descriptor.CompiledDescriptor;
 import mcjty.rftoolsdim.dimension.descriptor.CompiledFeature;
 import mcjty.rftoolsdim.dimension.descriptor.DescriptorError;
 import mcjty.rftoolsdim.dimension.descriptor.DimensionDescriptor;
-import mcjty.rftoolsdim.dimension.power.ClientPowerManager;
+import mcjty.rftoolsdim.dimension.data.ClientDimensionData;
 import mcjty.rftoolsdim.dimension.terraintypes.BaseChunkGenerator;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
@@ -90,7 +90,7 @@ public class RealizedDimensionTab extends Item {
 
             int ticksLeft = tagCompound.getInt("ticksLeft");
             if (ticksLeft == 0) {
-                long power = ClientPowerManager.get().getPower(dimension);
+                long power = ClientDimensionData.get().getPower(dimension);
                 list.add(new StringTextComponent("Dimension ready!").mergeStyle(TextFormatting.BLUE));
                 int maintainCost = tagCompound.getInt("rfMaintainCost");
                 list.add(new StringTextComponent(TextFormatting.YELLOW + "    Maintenance cost: " + maintainCost + " RF/tick"));

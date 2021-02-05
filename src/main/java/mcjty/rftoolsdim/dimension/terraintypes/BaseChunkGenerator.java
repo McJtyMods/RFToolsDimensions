@@ -1,7 +1,7 @@
 package mcjty.rftoolsdim.dimension.terraintypes;
 
-import mcjty.rftoolsdim.dimension.data.DimensionSettings;
 import mcjty.rftoolsdim.dimension.biomes.RFTBiomeProvider;
+import mcjty.rftoolsdim.dimension.data.DimensionSettings;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.SharedSeedRandom;
@@ -23,8 +23,8 @@ public abstract class BaseChunkGenerator extends ChunkGenerator {
     protected INoiseGenerator surfaceDepthNoise;
     protected final SharedSeedRandom randomSeed;
 
-    protected List<BlockState> defaultBlocks = new ArrayList<>();
-    protected BlockState defaultFluid = Blocks.WATER.getDefaultState();
+    protected final List<BlockState> defaultBlocks = new ArrayList<>();
+    protected final BlockState defaultFluid = Blocks.WATER.getDefaultState();
 
     public BaseChunkGenerator(Registry<Biome> registry, DimensionSettings settings) {
         super(new RFTBiomeProvider(registry, settings), new DimensionStructuresSettings(false));

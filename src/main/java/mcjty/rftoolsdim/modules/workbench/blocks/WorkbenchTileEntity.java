@@ -13,6 +13,7 @@ import mcjty.lib.tileentity.GenericTileEntity;
 import mcjty.lib.typed.Key;
 import mcjty.lib.typed.Type;
 import mcjty.lib.typed.TypedMap;
+import mcjty.lib.varia.DimensionId;
 import mcjty.lib.varia.OrientationTools;
 import mcjty.rftoolsbase.tools.ManualHelper;
 import mcjty.rftoolsdim.modules.dimlets.DimletModule;
@@ -106,7 +107,7 @@ public class WorkbenchTileEntity extends GenericTileEntity {
         return new BaseBlock(new BlockBuilder()
                 .tileEntitySupplier(WorkbenchTileEntity::new)
                 .infusable()
-                .manualEntry(ManualHelper.create("rftoolsdim:dimensionbuilder"))
+                .manualEntry(ManualHelper.create("rftoolsdim:dimlets/dimlet_workbench"))
                 .info(key("message.rftoolsdim.shiftmessage"))
                 .infoShift(header(), gold())) {
             @Override
@@ -132,7 +133,7 @@ public class WorkbenchTileEntity extends GenericTileEntity {
             return false;
         }
 
-        String pattern[] = new String[PATTERN_DIM];
+        String[] pattern = new String[PATTERN_DIM];
         int slot = SLOT_PATTERN;
         for (int y = 0 ; y < PATTERN_DIM ; y++) {
             String p = "";
@@ -171,7 +172,7 @@ public class WorkbenchTileEntity extends GenericTileEntity {
     }
 
     private void hilightPattern(PlayerEntity player, DimletKey key) {
-        DimletPattern pattern = KnowledgeManager.get().getPattern(world, key);
+        DimletPattern pattern = KnowledgeManager.get().getPattern(DimensionId.overworld().loadWorld(player.world).getSeed(), key);
         if (pattern != null) {
             String[] p = pattern.getPattern();
             RFToolsDimMessages.INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player),
@@ -194,7 +195,7 @@ public class WorkbenchTileEntity extends GenericTileEntity {
             tryFindAndFitItem(player, s -> false, SLOT_ESSENCE);
         }
 
-        DimletPattern pattern = KnowledgeManager.get().getPattern(world, key);
+        DimletPattern pattern = KnowledgeManager.get().getPattern(DimensionId.overworld().loadWorld(world).getSeed(), key);
         if (pattern != null) {
             String[] p = pattern.getPattern();
             int slotNumber = SLOT_PATTERN;
@@ -311,7 +312,7 @@ public class WorkbenchTileEntity extends GenericTileEntity {
         Set<KnowledgeKey> knownKeys = getSupportedKnowledgeKeys();
         List<DimletClientHelper.DimletWithInfo> dimlets = new ArrayList<>();
         for (DimletKey dimlet : DimletDictionary.get().getDimlets()) {
-            KnowledgeKey kkey = KnowledgeManager.get().getKnowledgeKey(world, dimlet);
+            KnowledgeKey kkey = KnowledgeManager.get().getKnowledgeKey(DimensionId.overworld().loadWorld(world).getSeed(), dimlet);
             boolean craftable = knownKeys.contains(kkey);
             dimlets.add(new DimletClientHelper.DimletWithInfo(dimlet, craftable));
         }
