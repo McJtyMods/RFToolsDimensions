@@ -206,7 +206,11 @@ public class KnowledgeManager {
 
     @Nullable
     public DimletPattern getPattern(long seed, DimletKey key) {
-        return patterns.get(getKnowledgeKey(seed, key));
+        KnowledgeKey kkey = getKnowledgeKey(seed, key);
+        if (kkey == null) {
+            return null;
+        }
+        return patterns.get(kkey);
     }
 
     public String getReason(World world, KnowledgeKey key) {
