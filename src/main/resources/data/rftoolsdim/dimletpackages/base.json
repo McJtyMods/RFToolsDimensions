@@ -173,6 +173,19 @@
   },
   {
     "type": "attribute",
+    "key": "nooceans",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 10,
+    "worldgen": true,
+    "dimlet": true,
+    "essence": {
+      "item": "minecraft:sponge"
+    }
+  },
+  {
+    "type": "attribute",
     "key": "nobiomesurface",
     "rarity": "common",
     "create": 10,

@@ -24,7 +24,7 @@ public abstract class BaseChunkGenerator extends ChunkGenerator {
     protected final SharedSeedRandom randomSeed;
 
     protected final List<BlockState> defaultBlocks = new ArrayList<>();
-    protected final BlockState defaultFluid = Blocks.WATER.getDefaultState();
+    private BlockState defaultFluid;
 
     public BaseChunkGenerator(Registry<Biome> registry, DimensionSettings settings) {
         super(new RFTBiomeProvider(registry, settings), new DimensionStructuresSettings(false));
@@ -33,6 +33,10 @@ public abstract class BaseChunkGenerator extends ChunkGenerator {
 //        this.surfaceDepthNoise = (INoiseGenerator)(noisesettings.func_236178_i_() ? new PerlinNoiseGenerator(this.randomSeed, IntStream.rangeClosed(-3, 0)) : new OctavesNoiseGenerator(this.randomSeed, IntStream.rangeClosed(-3, 0)));
         this.surfaceDepthNoise = new PerlinNoiseGenerator(this.randomSeed, IntStream.rangeClosed(-3, 0));  //) : new OctavesNoiseGenerator(this.randomSeed, IntStream.rangeClosed(-3, 0)));
         defaultBlocks.addAll(settings.getCompiledDescriptor().getBaseBlocks());
+        defaultFluid = Blocks.WATER.getDefaultState();
+        if (settings.getCompiledDescriptor().getAttributeTypes().contains(AttributeType.NOOCEANS)) {
+            defaultFluid = Blocks.AIR.getDefaultState();
+        }
     }
 
     // Get a (possibly random) default block
@@ -76,11 +80,16 @@ public abstract class BaseChunkGenerator extends ChunkGenerator {
                 int yy = chunk.getTopBlockY(Heightmap.Type.WORLD_SURFACE_WG, x, z) + 1;
                 double noise = this.surfaceDepthNoise.noiseAt((double)xx * 0.0625D, (double)zz * 0.0625D, 0.0625D, (double)x * 0.0625D) * 15.0D;
                 region.getBiome(mpos.setPos(xStart + x, yy, zStart + z))
-                        .buildSurface(sharedseedrandom, chunk, xx, zz, yy, noise, defaultBlocks.get(0), this.defaultFluid, this.getSeaLevel(), region.getSeed());
+                        .buildSurface(sharedseedrandom, chunk, xx, zz, yy, noise, defaultBlocks.get(0), getBaseLiquid(), this.getSeaLevel(), region.getSeed());
             }
         }
         this.makeBedrock(chunk);
     }
+
+    protected BlockState getBaseLiquid() {
+        return this.defaultFluid;
+    }
+
 
     protected void makeBedrock(IChunk chunk) {
 

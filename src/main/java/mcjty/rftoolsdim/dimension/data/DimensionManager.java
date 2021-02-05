@@ -43,6 +43,11 @@ public class DimensionManager {
         return instance;
     }
 
+    public void clear() {
+        platformHeightMap.clear();
+        compiledDescriptorMap.clear();
+    }
+
     /**
      * Get the dimension information for a given world
      */
@@ -153,4 +158,5 @@ public class DimensionManager {
     public int getPlatformHeight(ResourceLocation location) {
         return platformHeightMap.getOrDefault(location, 65);
     }
+
 }

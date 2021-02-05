@@ -29,3 +29,6 @@ Todo:
     - Feature to inhibit default structures
     - Feature to set default structures
     - Efficiency dimlet
+
+DimensionManager, PersistantData, ClientData : clean on login
+Attribute: no ocean (dry)

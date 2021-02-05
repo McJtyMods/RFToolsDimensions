@@ -1,7 +1,9 @@
 package mcjty.rftoolsdim.setup;
 
+import mcjty.rftoolsdim.dimension.data.ClientDimensionData;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.world.ClientWorld;
+import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.event.TickEvent;
 
 public class ClientEventHandlers {
@@ -14,6 +16,10 @@ public class ClientEventHandlers {
 
             });
         }
+    }
+
+    public static void onPlayerLogin(ClientPlayerNetworkEvent.LoggedInEvent event) {
+        ClientDimensionData.get().clear();
     }
 
 }

@@ -29,4 +29,9 @@ public class ClientDimensionData {
         this.powerMap.putAll(powerMap);
         this.worldSeed = seed;
     }
+
+    public void clear() {
+        worldSeed = -1;
+        powerMap.clear();
+    }
 }
