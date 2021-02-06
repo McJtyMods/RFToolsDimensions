@@ -1,7 +1,5 @@
 7.0.0-alpha:
-- Safer client-side registrations (thread-safety)
-- Various cleanups and fixes
-- Fixed a problem on servers
+- First alpha release of RFTools Dimensions
 
 5.71:
 - When disconnecting from a server it was possible that left-over dimension information from that server was still kept in the client which would cause crashes when trying to play single player after that
