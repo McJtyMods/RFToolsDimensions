@@ -60,8 +60,8 @@ public class ResearcherTileEntity extends GenericTileEntity implements ITickable
     public static int SLOT_OUT = 1;
 
     public static final Lazy<ContainerFactory> CONTAINER_FACTORY = Lazy.of(() -> new ContainerFactory(2)
-            .slot(specific(ResearcherTileEntity::isResearchable), CONTAINER_CONTAINER, SLOT_IN, 64, 24)
-            .slot(generic(), CONTAINER_CONTAINER, SLOT_OUT, 118, 24)
+            .slot(specific(ResearcherTileEntity::isResearchable).in().out(), CONTAINER_CONTAINER, SLOT_IN, 64, 24)
+            .slot(generic().out(), CONTAINER_CONTAINER, SLOT_OUT, 118, 24)
             .playerSlots(10, 70));
 
     private final IInfusable infusable = new DefaultInfusable(ResearcherTileEntity.this);
@@ -138,16 +138,20 @@ public class ResearcherTileEntity extends GenericTileEntity implements ITickable
             if (!items.getStackInSlot(SLOT_OUT).isEmpty()) {
                 return; // Can't do anything
             }
-            ItemStack stack = items.getStackInSlot(SLOT_IN);
-            if (!stack.isEmpty()) {
-                progress--;
-                if (progress <= 0) {
-                    progress = 0;
-                    research();
-                    markDirtyClient();
+
+            long consume = (long) (WorkbenchConfig.RESEARCHER_USE_PER_TICK.get() / (1 + infusable.getInfusedFactor() / 3.0f));
+            if (energyStorage.getEnergy() >= consume) {
+                ItemStack stack = items.getStackInSlot(SLOT_IN);
+                if (!stack.isEmpty()) {
+                    progress--;
+                    if (progress <= 0) {
+                        progress = 0;
+                        research();
+                        markDirtyClient();
+                    }
+                    energyStorage.consumeEnergy(consume);
+                    markDirtyQuick();
                 }
-                energyStorage.consumeEnergy((long) (WorkbenchConfig.RESEARCHER_USE_PER_TICK.get() / (1 + infusable.getInfusedFactor() / 3.0f)));
-                markDirtyQuick();
             }
         }
     }

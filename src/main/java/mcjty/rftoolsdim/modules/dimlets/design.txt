@@ -29,4 +29,3 @@ Todo:
     - Feature to inhibit default structures
     - Feature to set default structures
     - Efficiency dimlet
-- Make dimension buffer size based on tick cost of dimension

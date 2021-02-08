@@ -11,7 +11,7 @@ import java.util.function.Supplier;
 
 public class PackagePropageDataToClients {
 
-    private final Map<ResourceLocation, Long> powerMap;
+    private final Map<ResourceLocation, ClientDimensionData.Power> powerMap;
     private final long seed;
 
     public PackagePropageDataToClients(PacketBuffer buf) {
@@ -20,21 +20,23 @@ public class PackagePropageDataToClients {
         for (int i = 0 ; i < size ; i++) {
             ResourceLocation id = buf.readResourceLocation();
             long power = buf.readLong();
-            powerMap.put(id, power);
+            long max = buf.readLong();
+            powerMap.put(id, new ClientDimensionData.Power(power, max));
         }
         seed = buf.readLong();
     }
 
-    public PackagePropageDataToClients(Map<ResourceLocation, Long> powerMap, long seed) {
-        this.powerMap = new HashMap<>(powerMap);
+    public PackagePropageDataToClients(Map<ResourceLocation, ClientDimensionData.Power> powerMap, long seed) {
+        this.powerMap = powerMap;
         this.seed = seed;
     }
 
     public void toBytes(PacketBuffer buf) {
         buf.writeInt(powerMap.size());
-        for (Map.Entry<ResourceLocation, Long> entry : powerMap.entrySet()) {
+        for (Map.Entry<ResourceLocation, ClientDimensionData.Power> entry : powerMap.entrySet()) {
             buf.writeResourceLocation(entry.getKey());
-            buf.writeLong(entry.getValue());
+            buf.writeLong(entry.getValue().getPower());
+            buf.writeLong(entry.getValue().getMax());
         }
         buf.writeLong(seed);
     }

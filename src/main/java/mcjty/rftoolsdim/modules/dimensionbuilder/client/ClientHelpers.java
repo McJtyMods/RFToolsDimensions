@@ -27,8 +27,10 @@ public class ClientHelpers {
         if (world == null) {
             return "";
         }
-        long power = ClientDimensionData.get().getPower(world.getDimensionKey().getLocation());
-        return power == -1 ? "<n.a.>" : ""+power;
+        ResourceLocation id = world.getDimensionKey().getLocation();
+        long power = ClientDimensionData.get().getPower(id);
+        long max = ClientDimensionData.get().getMaxPower(id);
+        return power == -1 ? "<n.a.>" : ""+power + " (" + max + ")";
     }
 
     public static void initOverrides(DimensionMonitorItem item) {
@@ -40,8 +42,12 @@ public class ClientHelpers {
                 }
                 w = livingEntity.getEntityWorld();
             }
-            long power = ClientDimensionData.get().getPower(w.getDimensionKey().getLocation());
-            long max = DimensionConfig.MAX_DIMENSION_POWER.get();
+            ResourceLocation id = w.getDimensionKey().getLocation();
+            long power = ClientDimensionData.get().getPower(id);
+            long max = ClientDimensionData.get().getMaxPower(id);
+            if (max < 0) {
+                return 8;
+            }
             long level = (9 * power) / max;
             if (level < 0) {
                 level = 0;

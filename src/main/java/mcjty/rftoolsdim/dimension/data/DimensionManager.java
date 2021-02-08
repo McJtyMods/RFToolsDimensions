@@ -57,8 +57,12 @@ public class DimensionManager {
         }
         RegistryKey<World> type = world.getDimensionKey();
         ResourceLocation id = type.getLocation();
+        return getCompiledDescriptor((ServerWorld) world, id);
+    }
+
+    public CompiledDescriptor getCompiledDescriptor(ServerWorld world, ResourceLocation id) {
         if (!compiledDescriptorMap.containsKey(id)) {
-            ChunkGenerator generator = ((ServerWorld) world).getChunkProvider().generator;
+            ChunkGenerator generator = world.getChunkProvider().generator;
             if (generator instanceof BaseChunkGenerator) {
                 CompiledDescriptor compiledDescriptor = ((BaseChunkGenerator) generator).getSettings().getCompiledDescriptor();
                 compiledDescriptorMap.put(id, compiledDescriptor);

@@ -19,12 +19,12 @@ import mcjty.lib.tileentity.GenericTileEntity;
 import mcjty.rftoolsbase.tools.ManualHelper;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.compat.RFToolsUtilityCompat;
-import mcjty.rftoolsdim.dimension.DimensionConfig;
 import mcjty.rftoolsdim.dimension.data.DimensionData;
 import mcjty.rftoolsdim.dimension.data.DimensionManager;
 import mcjty.rftoolsdim.dimension.data.PersistantDimensionManager;
 import mcjty.rftoolsdim.dimension.descriptor.CompiledDescriptor;
 import mcjty.rftoolsdim.dimension.descriptor.DimensionDescriptor;
+import mcjty.rftoolsdim.dimension.power.PowerHandler;
 import mcjty.rftoolsdim.modules.dimensionbuilder.DimensionBuilderConfig;
 import mcjty.rftoolsdim.modules.dimensionbuilder.DimensionBuilderModule;
 import net.minecraft.block.Blocks;
@@ -171,7 +171,8 @@ public class DimensionBuilderTileEntity extends GenericTileEntity implements ITi
     private void maintainDimensionTick(CompoundNBT tagCompound) {
         if (tagCompound.contains("dimension")) {
             String dimension = tagCompound.getString("dimension");
-            DimensionData data = PersistantDimensionManager.get(world).getData(new ResourceLocation(dimension));
+            ResourceLocation id = new ResourceLocation(dimension);
+            DimensionData data = PersistantDimensionManager.get(world).getData(id);
             if (data == null) {
                 return;
             }
@@ -184,7 +185,7 @@ public class DimensionBuilderTileEntity extends GenericTileEntity implements ITi
 //            }
 
             long energy = data.getEnergy();
-            long maxEnergy = DimensionConfig.MAX_DIMENSION_POWER.get() - energy;      // Max energy the dimension can still get.
+            long maxEnergy = PowerHandler.calculateDimensionPower(id, (ServerWorld) world) - energy;
             if (rf > maxEnergy) {
                 rf = maxEnergy;
             }

@@ -34,7 +34,7 @@ import static mcjty.lib.container.SlotDefinition.specific;
 public class KnowledgeHolderTileEntity extends GenericTileEntity {
 
     public static final Lazy<ContainerFactory> CONTAINER_FACTORY = Lazy.of(() -> new ContainerFactory(13*8)
-            .box(specific(KnowledgeHolderTileEntity::isValidKnowledgeItem), CONTAINER_CONTAINER, 0, 11, 10, 13, 8)
+            .box(specific(KnowledgeHolderTileEntity::isValidKnowledgeItem).in().out(), CONTAINER_CONTAINER, 0, 11, 10, 13, 8)
             .playerSlots(11, 158));
 
     private final NoDirectionItemHander items = createItemHandler();

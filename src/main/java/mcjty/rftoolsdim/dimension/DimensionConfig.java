@@ -8,7 +8,12 @@ public class DimensionConfig {
 
     public static final String SUB_CATEGORY_DIMENSION = "dimensions";
 
-    public static ForgeConfigSpec.LongValue MAX_DIMENSION_POWER;
+    public static ForgeConfigSpec.LongValue POWER_MULTIPLES;
+    public static ForgeConfigSpec.IntValue MIN_POWER_THRESSHOLD;
+    public static ForgeConfigSpec.IntValue MAX_POWER_THRESSHOLD;
+    public static ForgeConfigSpec.LongValue MAX_DIMENSION_POWER_MIN;
+    public static ForgeConfigSpec.LongValue MAX_DIMENSION_POWER_MAX;
+
     public static ForgeConfigSpec.BooleanValue ENABLE_DYNAMIC_PHASECOST;
     public static ForgeConfigSpec.DoubleValue DYNAMIC_PHASECOST_AMOUNT;
     public static ForgeConfigSpec.BooleanValue PHASED_FIELD_GENERATOR_DEBUF;
@@ -35,9 +40,21 @@ public class DimensionConfig {
                 .comment("The chance of a dimlet hut for a given chunk")
                 .defineInRange("dimletHutChance", 0.005, 0, 1.0);
 
-        MAX_DIMENSION_POWER = SERVER_BUILDER
-                .comment("Maximum power in a dimension")
-                .defineInRange("maxDimensionPower", 40000000L, 0, Long.MAX_VALUE);
+        MIN_POWER_THRESSHOLD = SERVER_BUILDER
+                .comment("At this maintenance cost thresshold and below the minimum dimension power (dimensionPowerMinimum is used")
+                .defineInRange("minPowerThresshold", 100, 0, Integer.MAX_VALUE);
+        MAX_POWER_THRESSHOLD = SERVER_BUILDER
+                .comment("At this maintenance cost thresshold and above the maximum dimension power (dimensionPowerMaximum is used")
+                .defineInRange("maxPowerThresshold", 5000, 0, Integer.MAX_VALUE);
+        MAX_DIMENSION_POWER_MIN = SERVER_BUILDER
+                .comment("Maximum power in a dimension. This is the minimum value used by dimensions that don't consume a lot of power")
+                .defineInRange("dimensionPowerMinimum", 20000000L, 0, Long.MAX_VALUE);
+        MAX_DIMENSION_POWER_MAX = SERVER_BUILDER
+                .comment("Maximum power in a dimension. This is the maximum value used by dimensions that consume a lot of power")
+                .defineInRange("dimensionPowerMaximum", 40000000L, 0, Long.MAX_VALUE);
+        POWER_MULTIPLES = SERVER_BUILDER
+                .comment("Maximum power of a dimension is always a multiple of this value")
+                .defineInRange("powerMultiples", 500000L, 1, Long.MAX_VALUE);
 
         DIMPOWER_WARN0 = SERVER_BUILDER
                 .comment("The zero level at which power warning signs are starting to happen. This is only used for lighting level. No other debuffs occur at this level.")
