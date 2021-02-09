@@ -31,6 +31,7 @@ public class LootTables extends BaseLootTableProvider {
         addStandardTable(WorkbenchModule.HOLDER.get());
         addStandardTable(EnscriberModule.ENSCRIBER.get());
         addStandardTable(EssencesModule.BLOCK_ABSORBER.get());
+        addStandardTable(EssencesModule.FLUID_ABSORBER.get());
         addStandardTable(EssencesModule.BIOME_ABSORBER.get());
 
         addItemDropTable(BlobModule.DIMENSIONAL_BLOB_COMMON.get(), DimletModule.COMMON_ESSENCE.get(), 3, 5, 0, 1);

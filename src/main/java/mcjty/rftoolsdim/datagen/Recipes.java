@@ -58,6 +58,10 @@ public class Recipes extends BaseRecipeProvider {
                         .key('C', Items.CLAY_BALL)
                         .addCriterion("empty_dimlet", hasItem(DimletModule.EMPTY_DIMLET.get())),
                 "CCC", "CEC", "CCC");
+        build(consumer, ShapedRecipeBuilder.shapedRecipe(DimletModule.EMPTY_FLUID_DIMLET.get())
+                        .key('C', Items.CLAY_BALL)
+                        .addCriterion("empty_dimlet", hasItem(DimletModule.EMPTY_DIMLET.get())),
+                "CWC", "CEC", "CCC");
         build(consumer, ShapedRecipeBuilder.shapedRecipe(DimletModule.EMPTY_BIOME_DIMLET.get())
                         .key('C', Items.CLAY_BALL)
                         .addCriterion("empty_dimlet", hasItem(DimletModule.EMPTY_DIMLET.get())),
@@ -180,6 +184,11 @@ public class Recipes extends BaseRecipeProvider {
                         .key('u', Blocks.SLIME_BLOCK)
                         .addCriterion("sponge", hasItem(Blocks.SPONGE)),
                 "usu", "sCs", "usu");
+        build(consumer, ShapedRecipeBuilder.shapedRecipe(EssencesModule.FLUID_ABSORBER.get())
+                        .key('C', Blocks.SPONGE)
+                        .key('u', Blocks.SLIME_BLOCK)
+                        .addCriterion("sponge", hasItem(Blocks.SPONGE)),
+                "uWu", "sCs", "usu");
         build(consumer, ShapedRecipeBuilder.shapedRecipe(EssencesModule.BIOME_ABSORBER.get())
                         .key('C', Blocks.SPONGE)
                         .key('u', ItemTags.LEAVES)

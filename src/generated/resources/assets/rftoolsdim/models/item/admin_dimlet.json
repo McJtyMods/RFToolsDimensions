@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "rftoolsdim:item/dimlets/special_dimlet"
+    "layer0": "rftoolsdim:item/dimlets/admin_dimlet"
   }
 }

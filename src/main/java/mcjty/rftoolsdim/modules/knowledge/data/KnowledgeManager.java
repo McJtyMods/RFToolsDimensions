@@ -20,7 +20,6 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nullable;
@@ -112,7 +111,7 @@ public class KnowledgeManager {
                 return null;
             case TIME:
                 return null;
-            case SPECIAL:
+            case ADMIN:
                 return null;
             case BLOCK:
                 ResourceLocation tagId = getMostCommonTagForBlock(key);
@@ -120,6 +119,8 @@ public class KnowledgeManager {
                     return tagId.getPath();
                 }
                 return null;
+            case FLUID:
+                return new ResourceLocation(key.getKey()).getNamespace();
         }
         return null;
     }
@@ -140,13 +141,20 @@ public class KnowledgeManager {
                 return TimeType.byName(key.getKey()).getSet();
             case BLOCK:
                 return getBlockKnowledgeSet(key);
+            case FLUID:
+                return getFluidKnowledgeSet(key);
             case DIGIT:
                 break;
-            case SPECIAL:
+            case ADMIN:
                 break;
         }
 
         return KnowledgeSet.SET1;
+    }
+
+    private KnowledgeSet getFluidKnowledgeSet(DimletKey key) {
+        int i = Math.abs(new ResourceLocation(key.getKey()).getNamespace().hashCode());
+        return KnowledgeSet.values()[i%(KnowledgeSet.values().length)];
     }
 
     /// Create a knowledge set based on the most important tag for a given block

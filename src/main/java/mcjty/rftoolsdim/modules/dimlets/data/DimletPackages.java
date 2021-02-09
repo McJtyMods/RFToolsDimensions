@@ -52,6 +52,10 @@ public class DimletPackages {
         }
     }
 
+    private static void writeFluids(JsonArray root, String modid) {
+        // @todo
+    }
+
     private static void writeBlocks(JsonArray root, String modid) {
         for (Map.Entry<RegistryKey<Block>, Block> entry : ForgeRegistries.BLOCKS.getEntries()) {
             ResourceLocation id = entry.getKey().getLocation();

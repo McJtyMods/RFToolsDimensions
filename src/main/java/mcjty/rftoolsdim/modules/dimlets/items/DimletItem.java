@@ -91,12 +91,12 @@ public class DimletItem extends Item implements ITooltipSettings, ITooltipExtras
     @Override
     public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items) {
         if (this.isInGroup(group)) {
-            if (this == DimletModule.SPECIAL_DIMLET.get()) {
-                ItemStack stack = DimletTools.getDimletStack(new DimletKey(DimletType.SPECIAL, "owner"));
+            if (this == DimletModule.ADMIN_DIMLET.get()) {
+                ItemStack stack = DimletTools.getDimletStack(new DimletKey(DimletType.ADMIN, "owner"));
                 if (!stack.isEmpty()) {
                     items.add(stack);
                 }
-                stack = DimletTools.getDimletStack(new DimletKey(DimletType.SPECIAL, "cheater"));
+                stack = DimletTools.getDimletStack(new DimletKey(DimletType.ADMIN, "cheater"));
                 if (!stack.isEmpty()) {
                     items.add(stack);
                 }

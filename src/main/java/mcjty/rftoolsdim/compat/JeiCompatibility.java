@@ -31,7 +31,7 @@ public class JeiCompatibility implements IModPlugin {
         registration.registerSubtypeInterpreter(DimletModule.BLOCK_DIMLET.get(), DimletInterpreter.INSTANCE);
         registration.registerSubtypeInterpreter(DimletModule.TIME_DIMLET.get(), DimletInterpreter.INSTANCE);
         registration.registerSubtypeInterpreter(DimletModule.DIGIT_DIMLET.get(), DimletInterpreter.INSTANCE);
-        registration.registerSubtypeInterpreter(DimletModule.SPECIAL_DIMLET.get(), DimletInterpreter.INSTANCE);
+        registration.registerSubtypeInterpreter(DimletModule.ADMIN_DIMLET.get(), DimletInterpreter.INSTANCE);
     }
 
     public static class DimletInterpreter implements ISubtypeInterpreter {

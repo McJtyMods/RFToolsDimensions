@@ -24,8 +24,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 
 import static mcjty.rftoolsdim.setup.Registration.*;
 
-public class
-DimletModule implements IModule {
+public class DimletModule implements IModule {
 
     public static final RegistryObject<DimletItem> EMPTY_DIMLET = ITEMS.register("empty_dimlet", () -> new DimletItem(null, false));
 
@@ -35,6 +34,7 @@ DimletModule implements IModule {
     public static final RegistryObject<DimletItem> EMPTY_BIOME_DIMLET = ITEMS.register("empty_biome_dimlet", () -> new DimletItem(DimletType.BIOME, false));
     public static final RegistryObject<DimletItem> EMPTY_BIOME_CONTROLLER_DIMLET = ITEMS.register("empty_biome_controller_dimlet", () -> new DimletItem(DimletType.BIOME_CONTROLLER, false));
     public static final RegistryObject<DimletItem> EMPTY_BLOCK_DIMLET = ITEMS.register("empty_block_dimlet", () -> new DimletItem(DimletType.BLOCK, false));
+    public static final RegistryObject<DimletItem> EMPTY_FLUID_DIMLET = ITEMS.register("empty_fluid_dimlet", () -> new DimletItem(DimletType.FLUID, false));
     public static final RegistryObject<DimletItem> EMPTY_TIME_DIMLET = ITEMS.register("empty_time_dimlet", () -> new DimletItem(DimletType.TIME, false));
 
     public static final RegistryObject<DimletItem> TERRAIN_DIMLET = ITEMS.register("terrain_dimlet", () -> new DimletItem(DimletType.TERRAIN, true));
@@ -43,9 +43,10 @@ DimletModule implements IModule {
     public static final RegistryObject<DimletItem> BIOME_DIMLET = ITEMS.register("biome_dimlet", () -> new DimletItem(DimletType.BIOME, true));
     public static final RegistryObject<DimletItem> BIOME_CONTROLLER_DIMLET = ITEMS.register("biome_controller_dimlet", () -> new DimletItem(DimletType.BIOME_CONTROLLER, true));
     public static final RegistryObject<DimletItem> BLOCK_DIMLET = ITEMS.register("block_dimlet", () -> new DimletItem(DimletType.BLOCK, true));
+    public static final RegistryObject<DimletItem> FLUID_DIMLET = ITEMS.register("fluid_dimlet", () -> new DimletItem(DimletType.FLUID, true));
     public static final RegistryObject<DimletItem> TIME_DIMLET = ITEMS.register("time_dimlet", () -> new DimletItem(DimletType.TIME, true));
     public static final RegistryObject<DimletItem> DIGIT_DIMLET = ITEMS.register("digit_dimlet", () -> new DimletItem(DimletType.DIGIT, true));
-    public static final RegistryObject<DimletItem> SPECIAL_DIMLET = ITEMS.register("special_dimlet", () -> new DimletItem(DimletType.SPECIAL, true));
+    public static final RegistryObject<DimletItem> ADMIN_DIMLET = ITEMS.register("admin_dimlet", () -> new DimletItem(DimletType.ADMIN, true));
 
     public static final RegistryObject<PartItem> PART_ENERGY_0 = ITEMS.register("part_energy_0", PartItem::new);
     public static final RegistryObject<PartItem> PART_ENERGY_1 = ITEMS.register("part_energy_1", PartItem::new);

@@ -12,7 +12,8 @@ public enum DimletType {
     TIME("ti"),
     BLOCK("b"),
     DIGIT("d"),
-    SPECIAL("s");
+    ADMIN("ad"),
+    FLUID("fl");
 
     private final String shortName;
 
@@ -30,7 +31,7 @@ public enum DimletType {
     }
 
     public boolean usesKnowledgeSystem() {
-        return this != DIGIT && this != SPECIAL;
+        return this != DIGIT && this != ADMIN;
     }
 
     public String getShortName() {

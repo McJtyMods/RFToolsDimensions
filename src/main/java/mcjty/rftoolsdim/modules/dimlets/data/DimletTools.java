@@ -1,6 +1,6 @@
 package mcjty.rftoolsdim.modules.dimlets.data;
 
-import mcjty.rftoolsdim.dimension.SpecialDimletType;
+import mcjty.rftoolsdim.dimension.AdminDimletType;
 import mcjty.rftoolsdim.modules.dimlets.DimletModule;
 import mcjty.rftoolsdim.modules.dimlets.items.DimletItem;
 import mcjty.rftoolsdim.modules.essences.EssencesModule;
@@ -9,6 +9,7 @@ import mcjty.rftoolsdim.modules.essences.blocks.BlockAbsorberTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
@@ -83,10 +84,12 @@ public class DimletTools {
                 return DimletModule.TIME_DIMLET.get();
             case BLOCK:
                 return DimletModule.BLOCK_DIMLET.get();
+            case FLUID:
+                return DimletModule.FLUID_DIMLET.get();
             case DIGIT:
                 return DimletModule.DIGIT_DIMLET.get();
-            case SPECIAL:
-                return DimletModule.SPECIAL_DIMLET.get();
+            case ADMIN:
+                return DimletModule.ADMIN_DIMLET.get();
         }
         return null;
     }
@@ -107,9 +110,11 @@ public class DimletTools {
                 return DimletModule.EMPTY_TIME_DIMLET.get();
             case BLOCK:
                 return DimletModule.EMPTY_BLOCK_DIMLET.get();
+            case FLUID:
+                return DimletModule.EMPTY_FLUID_DIMLET.get();
             case DIGIT:
                 return null;
-            case SPECIAL:
+            case ADMIN:
                 return null;
         }
         return null;
@@ -207,9 +212,11 @@ public class DimletTools {
                 return ItemStack.EMPTY;
             case BLOCK:
                 return new ItemStack(EssencesModule.BLOCK_ABSORBER_ITEM.get());
+            case FLUID:
+                return new ItemStack(EssencesModule.FLUID_ABSORBER_ITEM.get());
             case DIGIT:
                 return ItemStack.EMPTY;
-            case SPECIAL:
+            case ADMIN:
                 return ItemStack.EMPTY;
         }
         return ItemStack.EMPTY;
@@ -233,9 +240,11 @@ public class DimletTools {
                 return null;
             case BLOCK:
                 return new ResourceLocation(dimletKey.getKey());
+            case FLUID:
+                return new ResourceLocation(dimletKey.getKey());
             case DIGIT:
                 return null;
-            case SPECIAL:
+            case ADMIN:
                 return null;
         }
         return null;
@@ -260,9 +269,12 @@ public class DimletTools {
             case BLOCK:
                 Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(dimletKey.getKey()));
                 return new TranslationTextComponent(block.getTranslationKey());
+            case FLUID:
+                Fluid fluid = ForgeRegistries.FLUIDS.getValue(new ResourceLocation(dimletKey.getKey()));
+                return new TranslationTextComponent(fluid.getDefaultState().getBlockState().getBlock().getTranslationKey());
             case DIGIT:
                 return new StringTextComponent(dimletKey.getKey());
-            case SPECIAL:
+            case ADMIN:
                 return new StringTextComponent(dimletKey.getKey());
         }
         return new StringTextComponent("<unknown>");
@@ -288,9 +300,12 @@ public class DimletTools {
             case BLOCK:
                 Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(dimletKey.getKey()));
                 return I18n.format(block.getTranslationKey());
+            case FLUID:
+                Fluid fluid = ForgeRegistries.FLUIDS.getValue(new ResourceLocation(dimletKey.getKey()));
+                return I18n.format(fluid.getDefaultState().getBlockState().getBlock().getTranslationKey());
             case DIGIT:
                 return dimletKey.getKey();
-            case SPECIAL:
+            case ADMIN:
                 return dimletKey.getKey();
         }
         return "<unknown>";
@@ -316,7 +331,7 @@ public class DimletTools {
     }
 
     public static boolean isOwnerDimlet(DimletKey dimletKey) {
-        return dimletKey != null && dimletKey.getType() == DimletType.SPECIAL && dimletKey.getKey().equals(SpecialDimletType.OWNER.name().toLowerCase());
+        return dimletKey != null && dimletKey.getType() == DimletType.ADMIN && dimletKey.getKey().equals(AdminDimletType.OWNER.name().toLowerCase());
     }
 
     /// Return true if this dimlet can exist (refers to an existing block/biome/...)
@@ -327,6 +342,9 @@ public class DimletTools {
             case BLOCK:
                 Block value = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(key.getKey()));
                 return value != null && value != Blocks.AIR;
+            case FLUID:
+                Fluid fluid = ForgeRegistries.FLUIDS.getValue(new ResourceLocation(key.getKey()));
+                return fluid != null && fluid.getDefaultState().getBlockState().getBlock() != Blocks.AIR;
             default:
                 return true;
         }

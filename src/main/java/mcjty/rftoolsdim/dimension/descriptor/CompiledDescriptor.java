@@ -1,7 +1,7 @@
 package mcjty.rftoolsdim.dimension.descriptor;
 
 import mcjty.rftoolsdim.dimension.DimensionConfig;
-import mcjty.rftoolsdim.dimension.SpecialDimletType;
+import mcjty.rftoolsdim.dimension.AdminDimletType;
 import mcjty.rftoolsdim.dimension.TimeType;
 import mcjty.rftoolsdim.dimension.biomes.BiomeControllerType;
 import mcjty.rftoolsdim.dimension.features.FeatureType;
@@ -13,7 +13,9 @@ import mcjty.rftoolsdim.modules.dimlets.data.DimletSettings;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nonnull;
@@ -32,7 +34,7 @@ public class CompiledDescriptor {
 
     private TerrainType terrainType = null;
     private final Set<AttributeType> attributeTypes = new HashSet<>();
-    private final Set<SpecialDimletType> specialDimletTypes = new HashSet<>();
+    private final Set<AdminDimletType> adminDimletTypes = new HashSet<>();
     private final List<BlockState> baseBlocks = new ArrayList<>();
     private final Set<CompiledFeature> features = new HashSet<>();
     private BiomeControllerType biomeControllerType = null;
@@ -53,11 +55,13 @@ public class CompiledDescriptor {
         maintainCostPerTick = 10;   // @todo 1.16 make configurable
         randomizedCostPerTick = 0;
         actualTickCost = 100;       // @todo make configurable
+
         List<BlockState> collectedBlocks = new ArrayList<>();
+        List<BlockState> collectedFluids = new ArrayList<>();
         Set<AttributeType> collectedAttributes = new HashSet<>();
 
         for (DimletKey dimlet : descriptor.getDimlets()) {
-            DescriptorError error = handleDimlet(collectedBlocks, collectedAttributes, dimlet);
+            DescriptorError error = handleDimlet(collectedBlocks, collectedFluids, collectedAttributes, dimlet);
             if (error != null) {
                 return error;
             }
@@ -65,7 +69,7 @@ public class CompiledDescriptor {
         int originalMaintainCost = maintainCostPerTick;
         maintainCostPerTick = 0;
         for (DimletKey dimlet : randomizedDescriptor.getDimlets()) {
-            DescriptorError error = handleDimlet(collectedBlocks, collectedAttributes, dimlet);
+            DescriptorError error = handleDimlet(collectedBlocks, collectedFluids, collectedAttributes, dimlet);
             if (error != null) {
                 return error;
             }
@@ -73,7 +77,7 @@ public class CompiledDescriptor {
         randomizedCostPerTick = (int) (maintainCostPerTick * DimensionConfig.RANDOMIZED_DIMLET_COST_FACTOR.get());
         maintainCostPerTick = originalMaintainCost;
 
-        if (specialDimletTypes.contains(SpecialDimletType.CHEATER)) {
+        if (adminDimletTypes.contains(AdminDimletType.CHEATER)) {
             createCostPerTick = 0;
             maintainCostPerTick = 0;
             randomizedCostPerTick = 0;
@@ -82,6 +86,10 @@ public class CompiledDescriptor {
 
         if (!collectedBlocks.isEmpty()) {
             return ERROR(DANGLING_BLOCKS);
+        }
+
+        if (!collectedFluids.isEmpty()) {
+            return ERROR(DANGLING_FLUIDS);
         }
 
         if (!collectedAttributes.isEmpty()) {
@@ -107,7 +115,7 @@ public class CompiledDescriptor {
         }
     }
 
-    private DescriptorError handleDimlet(List<BlockState> collectedBlocks, Set<AttributeType> collectedAttributes, DimletKey dimlet) {
+    private DescriptorError handleDimlet(List<BlockState> collectedBlocks, List<BlockState> collectedFluids, Set<AttributeType> collectedAttributes, DimletKey dimlet) {
         DimletSettings settings = DimletDictionary.get().getSettings(dimlet);
         if (settings != null) {
             createCostPerTick += settings.getCreateCost();
@@ -140,12 +148,12 @@ public class CompiledDescriptor {
                 collectedAttributes.add(type);
                 break;
             }
-            case SPECIAL: {
-                SpecialDimletType type = SpecialDimletType.byName(dimlet.getKey());
+            case ADMIN: {
+                AdminDimletType type = AdminDimletType.byName(dimlet.getKey());
                 if (type == null) {
-                    return ERROR(BAD_SPECIAL_TYPE, name);
+                    return ERROR(BAD_ADMIN_TYPE, name);
                 }
-                specialDimletTypes.add(type);
+                adminDimletTypes.add(type);
                 break;
             }
             case BIOME_CONTROLLER:
@@ -192,6 +200,20 @@ public class CompiledDescriptor {
                 collectedBlocks.add(block.getDefaultState());
                 break;
             }
+
+            case FLUID: {
+                Fluid fluid = ForgeRegistries.FLUIDS.getValue(new ResourceLocation(name));
+                if (fluid == null) {
+                    return ERROR(BAD_FLUID, name);
+                }
+                BlockState blockState = fluid.getDefaultState().getBlockState();
+                if (blockState != null && !blockState.isAir()) {
+                    collectedFluids.add(blockState);
+                } else {
+                    return ERROR(FLUID_HAS_NO_BLOCK, name);
+                }
+                break;
+            }
         }
         return null;
     }
@@ -208,8 +230,8 @@ public class CompiledDescriptor {
         return attributeTypes;
     }
 
-    public Set<SpecialDimletType> getSpecialDimletTypes() {
-        return specialDimletTypes;
+    public Set<AdminDimletType> getSpecialDimletTypes() {
+        return adminDimletTypes;
     }
 
     public int getCreateCostPerTick() {

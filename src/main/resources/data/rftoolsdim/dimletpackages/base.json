@@ -1,6 +1,6 @@
 [
   {
-    "type": "special",
+    "type": "admin",
     "key": "cheater",
     "rarity": "common",
     "create": 0,
@@ -10,7 +10,7 @@
     "dimlet": true
   },
   {
-    "type": "special",
+    "type": "admin",
     "key": "owner",
     "rarity": "common",
     "create": 0,

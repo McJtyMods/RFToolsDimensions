@@ -28,6 +28,7 @@ public class Items extends BaseItemModelProvider {
         parentedBlock(WorkbenchModule.RESEARCHER.get(), "block/researcher");
         parentedBlock(EnscriberModule.ENSCRIBER.get(), "block/enscriber");
         parentedBlock(EssencesModule.BLOCK_ABSORBER.get(), "block/block_absorber");
+        parentedBlock(EssencesModule.FLUID_ABSORBER.get(), "block/fluid_absorber");
         parentedBlock(EssencesModule.BIOME_ABSORBER.get(), "block/biome_absorber");
 
         parentedBlock(DecorativeModule.DIMENSIONAL_BLOCK.get(), "block/dimensional_block");
@@ -45,16 +46,19 @@ public class Items extends BaseItemModelProvider {
         itemGenerated(DimletModule.EMPTY_BIOME_DIMLET.get(), "item/dimlets/empty_biome_dimlet");
         itemGenerated(DimletModule.EMPTY_BIOME_CONTROLLER_DIMLET.get(), "item/dimlets/empty_biome_controller_dimlet");
         itemGenerated(DimletModule.EMPTY_BLOCK_DIMLET.get(), "item/dimlets/empty_block_dimlet");
+        itemGenerated(DimletModule.EMPTY_FLUID_DIMLET.get(), "item/dimlets/empty_fluid_dimlet");
         itemGenerated(DimletModule.EMPTY_TIME_DIMLET.get(), "item/dimlets/empty_time_dimlet");
+
         itemGenerated(DimletModule.TERRAIN_DIMLET.get(), "item/dimlets/terrain_dimlet");
         itemGenerated(DimletModule.ATTRIBUTE_DIMLET.get(), "item/dimlets/attribute_dimlet");
         itemGenerated(DimletModule.FEATURE_DIMLET.get(), "item/dimlets/feature_dimlet");
         itemGenerated(DimletModule.BIOME_DIMLET.get(), "item/dimlets/biome_dimlet");
         itemGenerated(DimletModule.BIOME_CONTROLLER_DIMLET.get(), "item/dimlets/biome_controller_dimlet");
         itemGenerated(DimletModule.BLOCK_DIMLET.get(), "item/dimlets/block_dimlet");
+        itemGenerated(DimletModule.FLUID_DIMLET.get(), "item/dimlets/fluid_dimlet");
         itemGenerated(DimletModule.TIME_DIMLET.get(), "item/dimlets/time_dimlet");
         itemGenerated(DimletModule.DIGIT_DIMLET.get(), "item/dimlets/digit_dimlet");
-        itemGenerated(DimletModule.SPECIAL_DIMLET.get(), "item/dimlets/special_dimlet");
+        itemGenerated(DimletModule.ADMIN_DIMLET.get(), "item/dimlets/admin_dimlet");
 
         itemGenerated(DimletModule.PART_ENERGY_0.get(), "item/parts/part_energy_0");
         itemGenerated(DimletModule.PART_ENERGY_1.get(), "item/parts/part_energy_1");

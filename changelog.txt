@@ -3,6 +3,8 @@ Upcoming:
 - The dimension monitor now shows maximum power of a dimension in the tooltip
 - Fixed the researcher and knowledge holder not being automatable
 - Fixed the researcher not using power
+- Renamed the special dimlets to admin dimlets
+- Added fluid dimlets (not functional yet)
 
 7.0.0-alpha:
 - First alpha release of RFTools Dimensions
