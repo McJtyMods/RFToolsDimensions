@@ -91,10 +91,11 @@ public class RealizedDimensionTab extends Item {
             int ticksLeft = tagCompound.getInt("ticksLeft");
             if (ticksLeft == 0) {
                 long power = ClientDimensionData.get().getPower(dimension);
+                long max = ClientDimensionData.get().getMaxPower(dimension);
                 list.add(new StringTextComponent("Dimension ready!").mergeStyle(TextFormatting.BLUE));
                 int maintainCost = tagCompound.getInt("rfMaintainCost");
                 list.add(new StringTextComponent(TextFormatting.YELLOW + "    Maintenance cost: " + maintainCost + " RF/tick"));
-                list.add(new StringTextComponent(TextFormatting.YELLOW + "    Current power: " + power + " RF"));
+                list.add(new StringTextComponent(TextFormatting.YELLOW + "    Current power: " + power + " (" + max +")"));
             } else {
                 int createCost = tagCompound.getInt("rfCreateCost");
                 int maintainCost = tagCompound.getInt("rfMaintainCost");

@@ -185,7 +185,7 @@ public class DimensionBuilderTileEntity extends GenericTileEntity implements ITi
 //            }
 
             long energy = data.getEnergy();
-            long maxEnergy = PowerHandler.calculateDimensionPower(id, (ServerWorld) world) - energy;
+            long maxEnergy = PowerHandler.calculateMaxDimensionPower(id, (ServerWorld) world) - energy;
             if (rf > maxEnergy) {
                 rf = maxEnergy;
             }

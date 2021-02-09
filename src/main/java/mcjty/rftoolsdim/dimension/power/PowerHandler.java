@@ -32,24 +32,28 @@ public class PowerHandler {
     private static final int EFFECTS_MAX = 18;
     private int counterEffects = EFFECTS_MAX;
 
-    public static long calculateDimensionPower(ResourceLocation id, ServerWorld world) {
+    public static long calculateMaxDimensionPower(ResourceLocation id, ServerWorld world) {
         CompiledDescriptor descriptor = DimensionManager.get().getCompiledDescriptor(world, id);
         if (descriptor != null) {
-            int cost = descriptor.getActualPowerCost();
-            if (cost <= DimensionConfig.MIN_POWER_THRESSHOLD.get()) {
-                return DimensionConfig.MAX_DIMENSION_POWER_MIN.get();
-            } else if (cost >= DimensionConfig.MAX_POWER_THRESSHOLD.get()) {
-                return DimensionConfig.MAX_DIMENSION_POWER_MAX.get();
-            } else {
-                long power = DimensionConfig.MAX_DIMENSION_POWER_MIN.get() + (cost - DimensionConfig.MIN_POWER_THRESSHOLD.get())
-                        * (DimensionConfig.MAX_DIMENSION_POWER_MAX.get() - DimensionConfig.MAX_DIMENSION_POWER_MIN.get())
-                        / (DimensionConfig.MAX_POWER_THRESSHOLD.get() - DimensionConfig.MIN_POWER_THRESSHOLD.get());
-                power = power / DimensionConfig.POWER_MULTIPLES.get();
-                power = power * DimensionConfig.POWER_MULTIPLES.get();
-                return power;
-            }
+            return calculateMaxDimensionPower(descriptor);
         } else {
             return DimensionConfig.MAX_DIMENSION_POWER_MAX.get();
+        }
+    }
+
+    public static long calculateMaxDimensionPower(CompiledDescriptor descriptor) {
+        int cost = descriptor.getActualPowerCost();
+        if (cost <= DimensionConfig.MIN_POWER_THRESSHOLD.get()) {
+            return DimensionConfig.MAX_DIMENSION_POWER_MIN.get();
+        } else if (cost >= DimensionConfig.MAX_POWER_THRESSHOLD.get()) {
+            return DimensionConfig.MAX_DIMENSION_POWER_MAX.get();
+        } else {
+            long power = DimensionConfig.MAX_DIMENSION_POWER_MIN.get() + (cost - DimensionConfig.MIN_POWER_THRESSHOLD.get())
+                    * (DimensionConfig.MAX_DIMENSION_POWER_MAX.get() - DimensionConfig.MAX_DIMENSION_POWER_MIN.get())
+                    / (DimensionConfig.MAX_POWER_THRESSHOLD.get() - DimensionConfig.MIN_POWER_THRESSHOLD.get());
+            power = power / DimensionConfig.POWER_MULTIPLES.get();
+            power = power * DimensionConfig.POWER_MULTIPLES.get();
+            return power;
         }
     }
 
@@ -76,7 +80,7 @@ public class PowerHandler {
         Map<ResourceLocation, ClientDimensionData.Power> powerMap = new HashMap<>();
         for (Map.Entry<ResourceLocation, DimensionData> entry : mgr.getData().entrySet()) {
             long energy = entry.getValue().getEnergy();
-            powerMap.put(entry.getKey(), new ClientDimensionData.Power(energy, PowerHandler.calculateDimensionPower(entry.getKey(), (ServerWorld)  overworld)));
+            powerMap.put(entry.getKey(), new ClientDimensionData.Power(energy, PowerHandler.calculateMaxDimensionPower(entry.getKey(), (ServerWorld)  overworld)));
         }
         RFToolsDimMessages.INSTANCE.send(PacketDistributor.ALL.noArg(), new PackagePropageDataToClients(powerMap,
                 ((ServerWorld) overworld).getSeed()));
@@ -102,7 +106,7 @@ public class PowerHandler {
 
                 // Special effect handling.
                 if (doEffects && power > 0) {
-                    handleEffectsForDimension(power, world, entry.getValue());
+                    handleEffectsForDimension(power, world, compiledDescriptor);
                 }
                 if (world != null && !world.getPlayers().isEmpty()) {
                     handleRandomEffects(world, entry.getValue());
@@ -130,7 +134,7 @@ public class PowerHandler {
         return power;
     }
 
-    private void handleEffectsForDimension(long power, ServerWorld world, DimensionData information) {
+    private void handleEffectsForDimension(long power, ServerWorld world, CompiledDescriptor compiledDescriptor) {
         if (world != null) {
             // @todo 1.16 handle dimension specific effects
 //            Set<EffectType> effects = information.getEffectTypes();
@@ -150,17 +154,20 @@ public class PowerHandler {
 //                        // @todo
 //                    }
 //                }
-                if (power < DimensionConfig.DIMPOWER_WARN3.get()) {
+                long max = PowerHandler.calculateMaxDimensionPower(compiledDescriptor);
+                int percentage = (int) (power * 100 / max);
+
+                if (percentage < DimensionConfig.DIMPOWER_WARN3.get()) {
                     // We are VERY low on power. Start bad effects.
                     player.addPotionEffect(new EffectInstance(Effects.SLOWNESS, EFFECTS_MAX*MAXTICKS*2, 4, true, true));
                     player.addPotionEffect(new EffectInstance(Effects.MINING_FATIGUE, EFFECTS_MAX*MAXTICKS*2, 4, true, true));
                     player.addPotionEffect(new EffectInstance(Effects.POISON, EFFECTS_MAX*MAXTICKS*2, 2, true, true));
                     player.addPotionEffect(new EffectInstance(Effects.HUNGER, EFFECTS_MAX*MAXTICKS*2, 2, true, true));
-                } else if (power < DimensionConfig.DIMPOWER_WARN2.get()) {
+                } else if (percentage < DimensionConfig.DIMPOWER_WARN2.get()) {
                     player.addPotionEffect(new EffectInstance(Effects.SLOWNESS, EFFECTS_MAX*MAXTICKS*2, 2, true, true));
                     player.addPotionEffect(new EffectInstance(Effects.MINING_FATIGUE, EFFECTS_MAX*MAXTICKS*2, 2, true, true));
                     player.addPotionEffect(new EffectInstance(Effects.HUNGER, EFFECTS_MAX*MAXTICKS*2, 1, true, true));
-                } else if (power < DimensionConfig.DIMPOWER_WARN1.get()) {
+                } else if (percentage < DimensionConfig.DIMPOWER_WARN1.get()) {
                     player.addPotionEffect(new EffectInstance(Effects.SLOWNESS, EFFECTS_MAX*MAXTICKS*2, 0, true, true));
                     player.addPotionEffect(new EffectInstance(Effects.MINING_FATIGUE, EFFECTS_MAX*MAXTICKS*2, 0, true, true));
                 }

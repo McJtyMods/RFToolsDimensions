@@ -18,10 +18,10 @@ public class DimensionConfig {
     public static ForgeConfigSpec.DoubleValue DYNAMIC_PHASECOST_AMOUNT;
     public static ForgeConfigSpec.BooleanValue PHASED_FIELD_GENERATOR_DEBUF;
 
-    public static ForgeConfigSpec.LongValue DIMPOWER_WARN0;     // This is only used for darkness calculations.
-    public static ForgeConfigSpec.LongValue DIMPOWER_WARN1;
-    public static ForgeConfigSpec.LongValue DIMPOWER_WARN2;
-    public static ForgeConfigSpec.LongValue DIMPOWER_WARN3;
+    public static ForgeConfigSpec.IntValue DIMPOWER_WARN0;     // This is only used for darkness calculations.
+    public static ForgeConfigSpec.IntValue DIMPOWER_WARN1;
+    public static ForgeConfigSpec.IntValue DIMPOWER_WARN2;
+    public static ForgeConfigSpec.IntValue DIMPOWER_WARN3;
 
     public static ForgeConfigSpec.BooleanValue OWNER_DIMLET_REQUIRED;
 
@@ -57,20 +57,20 @@ public class DimensionConfig {
                 .defineInRange("powerMultiples", 500000L, 1, Long.MAX_VALUE);
 
         DIMPOWER_WARN0 = SERVER_BUILDER
-                .comment("The zero level at which power warning signs are starting to happen. This is only used for lighting level. No other debuffs occur at this level.")
-                .defineInRange("dimensionPowerWarn0", 6000000L, 0, Long.MAX_VALUE);
+                .comment("The zero power percentage at which power warning signs are starting to happen. This is only used for lighting level. No other debuffs occur at this level.")
+                .defineInRange("dimensionPowerWarn0", 12, 0, 100);
 
         DIMPOWER_WARN1 = SERVER_BUILDER
-                .comment("The first level at which power warning signs are starting to happen")
-                .defineInRange("dimensionPowerWarn1", 4000000L, 0, Long.MAX_VALUE);
+                .comment("The first power percentage at which power warning signs are starting to happen")
+                .defineInRange("dimensionPowerWarn1", 9, 0, 100);
 
         DIMPOWER_WARN2 = SERVER_BUILDER
-                .comment("The second level at which power warning signs are starting to become worse")
-                .defineInRange("dimensionPowerWarn2", 1000000L, 0, Long.MAX_VALUE);
+                .comment("The second power percentage at which power warning signs are starting to become worse")
+                .defineInRange("dimensionPowerWarn2", 2, 0, 100);
 
         DIMPOWER_WARN3 = SERVER_BUILDER
-                .comment("The third level at which power warning signs are starting to be very bad")
-                .defineInRange("dimensionPowerWarn3", 500000L, 0, Long.MAX_VALUE);
+                .comment("The third power percentage at which power warning signs are starting to be very bad")
+                .defineInRange("dimensionPowerWarn3", 1, 0, 100);
 
 
         ENABLE_DYNAMIC_PHASECOST = SERVER_BUILDER
