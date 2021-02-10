@@ -4,6 +4,7 @@ import mcjty.lib.blocks.BaseBlock;
 import mcjty.lib.blocks.RotationType;
 import mcjty.lib.builder.BlockBuilder;
 import mcjty.lib.tileentity.GenericTileEntity;
+import mcjty.lib.varia.FluidTools;
 import mcjty.lib.varia.NBTTools;
 import mcjty.lib.varia.SoundTools;
 import mcjty.rftoolsbase.tools.ManualHelper;
@@ -20,6 +21,8 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.fluid.Fluid;
+import net.minecraft.fluid.FluidState;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -94,7 +97,7 @@ public class FluidAbsorberTileEntity extends GenericTileEntity implements ITicka
         if (absorbing == -1) {
             return "n.a.";
         } else {
-            int pct = ((EssencesConfig.maxBlockAbsorption.get() - absorbing) * 100) / EssencesConfig.maxBlockAbsorption.get();
+            int pct = ((EssencesConfig.maxFluidAbsorption.get() - absorbing) * 100) / EssencesConfig.maxFluidAbsorption.get();
             return pct + "%";
         }
     }
@@ -104,7 +107,7 @@ public class FluidAbsorberTileEntity extends GenericTileEntity implements ITicka
         if (absorbing == -1) {
             return -1;
         } else {
-            return ((EssencesConfig.maxBlockAbsorption.get() - absorbing) * 100) / EssencesConfig.maxBlockAbsorption.get();
+            return ((EssencesConfig.maxFluidAbsorption.get() - absorbing) * 100) / EssencesConfig.maxFluidAbsorption.get();
         }
     }
 
@@ -126,7 +129,7 @@ public class FluidAbsorberTileEntity extends GenericTileEntity implements ITicka
                 BlockState b = isValidSourceBlock(getPos().down());
                 if (b != null) {
                     if (absorbingBlock == null) {
-                        absorbing = EssencesConfig.maxBlockAbsorption.get();
+                        absorbing = EssencesConfig.maxFluidAbsorption.get();
                         if (Item.getItemFromBlock(b.getBlock()) != null) {
                             // Safety
                             absorbingBlock = b.getBlock();
@@ -153,9 +156,16 @@ public class FluidAbsorberTileEntity extends GenericTileEntity implements ITicka
 
                     if (blockMatches(c)) {
                         BlockState oldState = world.getBlockState(c);
-                        SoundTools.playSound(world, absorbingBlock.getSoundType(oldState, world, c, null).getBreakSound(), getPos().getX(), getPos().getY(), getPos().getZ(), 1.0f, 1.0f);
-                        world.setBlockState(c, Blocks.AIR.getDefaultState());
+                        FluidState oldFluidState = world.getFluidState(c);
+                        SoundTools.playSound(world, absorbingBlock.getSoundType(oldFluidState.getBlockState(), world, c, null).getBreakSound(), getPos().getX(), getPos().getY(), getPos().getZ(), 1.0f, 1.0f);
+
+                        BlockPos finalC = c;
+                        FluidTools.pickupFluidBlock(world, c, s -> true, () -> {
+                            world.setBlockState(finalC, Blocks.AIR.getDefaultState(), 2);
+                        });
+
                         absorbing--;
+
                         BlockState newState = world.getBlockState(c);
                         world.notifyBlockUpdate(c, oldState, newState, 3);
                     }
@@ -188,7 +198,7 @@ public class FluidAbsorberTileEntity extends GenericTileEntity implements ITicka
     }
 
     private boolean blockMatches(BlockPos c) {
-        return world.getBlockState(c).getBlock().equals(absorbingBlock);
+        return world.getFluidState(c).getBlockState().getBlock().equals(absorbingBlock);
     }
 
     public int getAbsorbing() {
@@ -200,15 +210,22 @@ public class FluidAbsorberTileEntity extends GenericTileEntity implements ITicka
     }
 
     private BlockState isValidSourceBlock(BlockPos coordinate) {
-        BlockState state = world.getBlockState(coordinate);
-        return isValidDimletBlock(state) ? state : null;
+        FluidState state = world.getFluidState(coordinate);
+        if (isValidDimletFluid(state)) {
+            return state.getBlockState();
+        } else {
+            return null;
+        }
     }
 
-    private boolean isValidDimletBlock(BlockState state) {
-        Block block = state.getBlock();
-        DimletKey key = new DimletKey(DimletType.BLOCK, block.getRegistryName().toString());
-        DimletSettings settings = DimletDictionary.get().getSettings(key);
-        return settings != null && settings.isDimlet();
+    private boolean isValidDimletFluid(FluidState fluidState) {
+        if (fluidState != null && !fluidState.isEmpty()) {
+            Fluid fluid = fluidState.getFluid();
+            DimletKey key = new DimletKey(DimletType.FLUID, fluid.getRegistryName().toString());
+            DimletSettings settings = DimletDictionary.get().getSettings(key);
+            return settings != null && settings.isDimlet();
+        }
+        return false;
     }
 
     @Override
@@ -263,7 +280,7 @@ public class FluidAbsorberTileEntity extends GenericTileEntity implements ITicka
         CompoundNBT info = getOrCreateInfo(tagCompound);
         info.putInt("absorbing", absorbing);
         if (absorbingBlock != null) {
-            info.putString("fluid", absorbingBlock.getRegistryName().toString());
+            info.putString("fluid", absorbingBlock.getDefaultState().getFluidState().getFluid().getRegistryName().toString());
         }
     }
 }

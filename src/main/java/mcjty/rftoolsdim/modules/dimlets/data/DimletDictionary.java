@@ -170,6 +170,20 @@ public class DimletDictionary {
         return null;
     }
 
+    @Nullable
+    public DimletKey getFluidDimlet(String block) {
+        for (Map.Entry<DimletKey, DimletSettings> entry : dimlets.entrySet()) {
+            DimletKey key = entry.getKey();
+            if (key.getType().equals(DimletType.FLUID)) {
+                if (Objects.equals(key.getKey(), block)) {
+                    return key;
+                }
+            }
+        }
+        return null;
+    }
+
+    @Nullable
     public DimletKey getBiomeDimlet(String biomeId) {
         for (Map.Entry<DimletKey, DimletSettings> entry : dimlets.entrySet()) {
             DimletKey key = entry.getKey();

@@ -7,6 +7,7 @@ import mcjty.rftoolsdim.modules.essences.EssencesConfig;
 import mcjty.rftoolsdim.modules.essences.EssencesModule;
 import mcjty.rftoolsdim.modules.essences.blocks.BiomeAbsorberTileEntity;
 import mcjty.rftoolsdim.modules.essences.blocks.BlockAbsorberTileEntity;
+import mcjty.rftoolsdim.modules.essences.blocks.FluidAbsorberTileEntity;
 import mcjty.theoneprobe.api.IProbeHitData;
 import mcjty.theoneprobe.api.IProbeInfo;
 import mcjty.theoneprobe.api.ProbeMode;
@@ -35,6 +36,8 @@ public class RFToolsDimensionsTOPDriver implements TOPDriver {
         if (!drivers.containsKey(id)) {
             if (blockState.getBlock() == EssencesModule.BLOCK_ABSORBER.get()) {
                 drivers.put(id, new BlockAbsorberDriver());
+            } else if (blockState.getBlock() == EssencesModule.FLUID_ABSORBER.get()) {
+                drivers.put(id, new FluidAbsorberDriver());
             } else if (blockState.getBlock() == EssencesModule.BIOME_ABSORBER.get()) {
                 drivers.put(id, new BiomeAbsorberDriver());
             } else {
@@ -64,6 +67,23 @@ public class RFToolsDimensionsTOPDriver implements TOPDriver {
                 int pct = ((EssencesConfig.maxBlockAbsorption.get() - absorbing) * 100) / EssencesConfig.maxBlockAbsorption.get();
                 ItemStack stack = new ItemStack(block, 1);
                 probeInfo.text((new StringTextComponent("Block: ").append(new TranslationTextComponent(stack.getTranslationKey())).mergeStyle(TextFormatting.GREEN)))
+                        .horizontal()
+                        .progress(pct, 100, probeInfo.defaultProgressStyle().suffix("%"))
+                        .item(stack);
+            }, "Bad tile entity!");
+        }
+    }
+
+    private static class FluidAbsorberDriver implements TOPDriver {
+        @Override
+        public void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, PlayerEntity player, World world, BlockState blockState, IProbeHitData data) {
+            McJtyLibTOPDriver.DRIVER.addStandardProbeInfo(mode, probeInfo, player, world, blockState, data);
+            Tools.safeConsume(world.getTileEntity(data.getPos()), (FluidAbsorberTileEntity te) -> {
+                int absorbing = te.getAbsorbing();
+                Block block = te.getAbsorbingBlock();
+                int pct = ((EssencesConfig.maxFluidAbsorption.get() - absorbing) * 100) / EssencesConfig.maxFluidAbsorption.get();
+                ItemStack stack = new ItemStack(block, 1);
+                probeInfo.text((new StringTextComponent("Fluid: ").append(new TranslationTextComponent(stack.getTranslationKey())).mergeStyle(TextFormatting.GREEN)))
                         .horizontal()
                         .progress(pct, 100, probeInfo.defaultProgressStyle().suffix("%"))
                         .item(stack);

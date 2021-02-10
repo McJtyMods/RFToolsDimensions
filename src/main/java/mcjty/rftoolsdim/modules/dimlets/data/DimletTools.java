@@ -6,6 +6,7 @@ import mcjty.rftoolsdim.modules.dimlets.items.DimletItem;
 import mcjty.rftoolsdim.modules.essences.EssencesModule;
 import mcjty.rftoolsdim.modules.essences.blocks.BiomeAbsorberTileEntity;
 import mcjty.rftoolsdim.modules.essences.blocks.BlockAbsorberTileEntity;
+import mcjty.rftoolsdim.modules.essences.blocks.FluidAbsorberTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.resources.I18n;
@@ -322,6 +323,11 @@ public class DimletTools {
                 String block = BlockAbsorberTileEntity.getBlock(stack);
                 if (Objects.equals(desiredKey, block)) {
                     return BlockAbsorberTileEntity.getProgress(stack) >= 100;
+                }
+            } else if (stack.getItem() == EssencesModule.FLUID_ABSORBER_ITEM.get()) {
+                String block = FluidAbsorberTileEntity.getBlock(stack);
+                if (Objects.equals(desiredKey, block)) {
+                    return FluidAbsorberTileEntity.getProgress(stack) >= 100;
                 }
             } else {
                 return true;
