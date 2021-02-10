@@ -325,8 +325,8 @@ public class DimletTools {
                     return BlockAbsorberTileEntity.getProgress(stack) >= 100;
                 }
             } else if (stack.getItem() == EssencesModule.FLUID_ABSORBER_ITEM.get()) {
-                String block = FluidAbsorberTileEntity.getBlock(stack);
-                if (Objects.equals(desiredKey, block)) {
+                String fluid = FluidAbsorberTileEntity.getFluid(stack);
+                if (Objects.equals(desiredKey, fluid)) {
                     return FluidAbsorberTileEntity.getProgress(stack) >= 100;
                 }
             } else {

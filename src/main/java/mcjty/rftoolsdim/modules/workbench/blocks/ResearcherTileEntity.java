@@ -217,9 +217,9 @@ public class ResearcherTileEntity extends GenericTileEntity implements ITickable
     }
 
     private void researchFluidAbsorber(ItemStack stack) {
-        String blockId = FluidAbsorberTileEntity.getBlock(stack);
-        if (blockId != null && !blockId.isEmpty()) {
-            DimletKey key = DimletDictionary.get().getFluidDimlet(blockId);
+        String fluidId = FluidAbsorberTileEntity.getFluid(stack);
+        if (fluidId != null && !fluidId.isEmpty()) {
+            DimletKey key = DimletDictionary.get().getFluidDimlet(fluidId);
             if (key != null) {
                 int absorberProgress = FluidAbsorberTileEntity.getProgress(stack);
                 if (world.getRandom().nextInt(100) < absorberProgress) {

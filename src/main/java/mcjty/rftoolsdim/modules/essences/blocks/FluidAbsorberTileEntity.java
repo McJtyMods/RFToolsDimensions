@@ -79,17 +79,17 @@ public class FluidAbsorberTileEntity extends GenericTileEntity implements ITicka
         if (block == null) {
             return "<Not Set>";
         } else {
-            Block b = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(block));
+            Fluid b = ForgeRegistries.FLUIDS.getValue(new ResourceLocation(block));
             if (b != null) {
-                return I18n.format(b.getTranslationKey());
+                return I18n.format(b.getDefaultState().getBlockState().getBlock().getTranslationKey());
             } else {
                 return "<Invalid>";
             }
         }
     }
 
-    public static String getBlock(ItemStack stack) {
-        return NBTTools.getInfoNBT(stack, CompoundNBT::getString, "block", null);
+    public static String getFluid(ItemStack stack) {
+        return NBTTools.getInfoNBT(stack, CompoundNBT::getString, "fluid", null);
     }
 
     private static String getProgressName(ItemStack stack) {
@@ -130,11 +130,9 @@ public class FluidAbsorberTileEntity extends GenericTileEntity implements ITicka
                 if (b != null) {
                     if (absorbingBlock == null) {
                         absorbing = EssencesConfig.maxFluidAbsorption.get();
-                        if (Item.getItemFromBlock(b.getBlock()) != null) {
-                            // Safety
-                            absorbingBlock = b.getBlock();
-                            toscan.clear();
-                        }
+                        // Safety
+                        absorbingBlock = b.getBlock();
+                        toscan.clear();
                     }
                     toscan.add(getPos().down());
                 }
@@ -247,9 +245,9 @@ public class FluidAbsorberTileEntity extends GenericTileEntity implements ITicka
             CompoundNBT info = tagCompound.getCompound("Info");
             absorbing = info.getInt("absorbing");
             if (info.contains("fluid")) {
-                Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(info.getString("fluid")));
-                if (block != null) {
-                    absorbingBlock = block;
+                Fluid fluid = ForgeRegistries.FLUIDS.getValue(new ResourceLocation(info.getString("fluid")));
+                if (fluid != null) {
+                    absorbingBlock = fluid.getDefaultState().getBlockState().getBlock();
                 }
             }
         }

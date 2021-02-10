@@ -171,11 +171,11 @@ public class DimletDictionary {
     }
 
     @Nullable
-    public DimletKey getFluidDimlet(String block) {
+    public DimletKey getFluidDimlet(String fluid) {
         for (Map.Entry<DimletKey, DimletSettings> entry : dimlets.entrySet()) {
             DimletKey key = entry.getKey();
             if (key.getType().equals(DimletType.FLUID)) {
-                if (Objects.equals(key.getKey(), block)) {
+                if (Objects.equals(key.getKey(), fluid)) {
                     return key;
                 }
             }
