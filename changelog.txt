@@ -5,6 +5,7 @@ Upcoming:
 - Fixed the researcher not using power
 - Renamed the special dimlets to admin dimlets
 - Added fluid dimlets (not functional yet)
+- Loot control for knowledge in chests is better now. Requires 1.16.5
 
 7.0.0-alpha:
 - First alpha release of RFTools Dimensions

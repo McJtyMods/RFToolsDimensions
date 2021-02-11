@@ -24,7 +24,7 @@ public class JeiCompatibility implements IModPlugin {
     public void registerItemSubtypes(ISubtypeRegistration registration) {
         registration.registerSubtypeInterpreter(DimletModule.ATTRIBUTE_DIMLET.get(), DimletInterpreter.INSTANCE);
         registration.registerSubtypeInterpreter(DimletModule.TERRAIN_DIMLET.get(), DimletInterpreter.INSTANCE);
-        registration.registerSubtypeInterpreter(DimletModule.ATTRIBUTE_DIMLET.get(), DimletInterpreter.INSTANCE);
+        registration.registerSubtypeInterpreter(DimletModule.FLUID_DIMLET.get(), DimletInterpreter.INSTANCE);
         registration.registerSubtypeInterpreter(DimletModule.FEATURE_DIMLET.get(), DimletInterpreter.INSTANCE);
         registration.registerSubtypeInterpreter(DimletModule.BIOME_DIMLET.get(), DimletInterpreter.INSTANCE);
         registration.registerSubtypeInterpreter(DimletModule.BIOME_CONTROLLER_DIMLET.get(), DimletInterpreter.INSTANCE);

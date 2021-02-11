@@ -4,7 +4,13 @@
     {
       "condition": "rftoolsdim:check_tables",
       "tables": [
+        "minecraft:chests/village/village_cartographer",
+        "minecraft:chests/village/village_plains_house",
+        "minecraft:chests/village/village_toolsmith",
         "minecraft:chests/desert_pyramid",
+        "minecraft:chests/ruined_portal",
+        "minecraft:chests/shipwreck_treasure",
+        "minecraft:chests/jungle_temple",
         "minecraft:chests/simple_dungeon",
         "minecraft:chests/abandoned_mineshaft"
       ]

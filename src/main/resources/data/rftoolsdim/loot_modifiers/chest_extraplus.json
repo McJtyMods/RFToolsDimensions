@@ -1,0 +1,22 @@
+{
+  "type": "rftoolsdim:enderman_extra",
+  "conditions": [
+    {
+      "condition": "rftoolsdim:check_tables",
+      "tables": [
+        "minecraft:chests/end_city_treasure",
+        "minecraft:chests/pillager_outpost",
+        "minecraft:chests/buried_treasure",
+        "minecraft:chests/woodland_mansion"
+      ]
+    }
+  ],
+  "commonKnowledgeChance": 0.1,
+  "uncommonKnowledgeChance": 0.02,
+  "rareKnowledgeChance": 0.002,
+  "legendaryKnowledgeChance": 0.001,
+  "commonDimletChance": 0.04,
+  "uncommonDimletChance": 0.01,
+  "rareDimletChance": 0.0002,
+  "legendaryDimletChance": 0.00002
+}

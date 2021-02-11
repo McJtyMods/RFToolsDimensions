@@ -1,5 +1,5 @@
 modLoader="javafml"
-loaderVersion="[33,)"
+loaderVersion="[35,)"
 license="MIT License https://github.com/McJtyMods/RFToolsDimensions/blob/1.16/LICENCE"
 issueTrackerURL="http://github.com/McJtyMods/RFToolsDimensions/issues"
 displayURL="http://github.com/McJtyMods/RFToolsDimensions/"
@@ -18,7 +18,7 @@ Create dimensions and power them with Forge Energy
 [[dependencies.rftoolsdim]]
     modId="forge"
     mandatory=true
-    versionRange="[33,)"
+    versionRange="[36,)"
     ordering="NONE"
     side="BOTH"
 [[dependencies.rftoolsdim]]
