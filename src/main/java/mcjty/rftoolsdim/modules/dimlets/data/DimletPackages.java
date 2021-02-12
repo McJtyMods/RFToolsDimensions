@@ -3,6 +3,7 @@ package mcjty.rftoolsdim.modules.dimlets.data;
 import com.google.gson.*;
 import mcjty.rftoolsdim.RFToolsDim;
 import net.minecraft.block.Block;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.util.RegistryKey;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.Biome;
@@ -24,6 +25,7 @@ public class DimletPackages {
 
         JsonArray root = new JsonArray();
         writeBlocks(root, modid);
+        writeFluids(root, modid);
         writeBiomes(root, modid);
 
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
@@ -53,7 +55,20 @@ public class DimletPackages {
     }
 
     private static void writeFluids(JsonArray root, String modid) {
-        // @todo
+        for (Map.Entry<RegistryKey<Fluid>, Fluid> entry : ForgeRegistries.FLUIDS.getEntries()) {
+            ResourceLocation id = entry.getKey().getLocation();
+            if (modid.toLowerCase().equals(id.getNamespace())) {
+                JsonObject object = new JsonObject();
+                object.addProperty("type", DimletType.FLUID.name().toLowerCase());
+                object.addProperty("key", id.toString());
+                DimletSettings settings = DimletSettings.create(DimletRarity.COMMON, 10, 10, 10)
+                        .dimlet(true)
+                        .worldgen(true)
+                        .build();
+                settings.buildElement(object);
+                root.add(object);
+            }
+        }
     }
 
     private static void writeBlocks(JsonArray root, String modid) {

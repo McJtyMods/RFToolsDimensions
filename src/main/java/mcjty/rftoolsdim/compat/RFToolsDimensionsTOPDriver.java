@@ -81,12 +81,12 @@ public class RFToolsDimensionsTOPDriver implements TOPDriver {
             Tools.safeConsume(world.getTileEntity(data.getPos()), (FluidAbsorberTileEntity te) -> {
                 int absorbing = te.getAbsorbing();
                 Block block = te.getAbsorbingBlock();
-                int pct = ((EssencesConfig.maxFluidAbsorption.get() - absorbing) * 100) / EssencesConfig.maxFluidAbsorption.get();
-                ItemStack stack = new ItemStack(block, 1);
-                probeInfo.text((new StringTextComponent("Fluid: ").append(new TranslationTextComponent(stack.getTranslationKey())).mergeStyle(TextFormatting.GREEN)))
-                        .horizontal()
-                        .progress(pct, 100, probeInfo.defaultProgressStyle().suffix("%"))
-                        .item(stack);
+                if (block != null) {
+                    int pct = ((EssencesConfig.maxFluidAbsorption.get() - absorbing) * 100) / EssencesConfig.maxFluidAbsorption.get();
+                    probeInfo.text((new StringTextComponent("Fluid: ").append(new TranslationTextComponent(block.getTranslationKey())).mergeStyle(TextFormatting.GREEN)))
+                            .horizontal()
+                            .progress(pct, 100, probeInfo.defaultProgressStyle().suffix("%"));
+                }
             }, "Bad tile entity!");
         }
     }

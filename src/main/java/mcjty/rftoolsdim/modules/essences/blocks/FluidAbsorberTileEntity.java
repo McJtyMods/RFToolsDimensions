@@ -207,6 +207,14 @@ public class FluidAbsorberTileEntity extends GenericTileEntity implements ITicka
         return absorbingBlock;
     }
 
+    public Fluid getAbsorbingFluid() {
+        if (absorbingBlock != null) {
+            return absorbingBlock.getDefaultState().getFluidState().getFluid();
+        } else {
+            return null;
+        }
+    }
+
     private BlockState isValidSourceBlock(BlockPos coordinate) {
         FluidState state = world.getFluidState(coordinate);
         if (isValidDimletFluid(state)) {
