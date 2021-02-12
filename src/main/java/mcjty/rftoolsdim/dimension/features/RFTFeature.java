@@ -65,7 +65,7 @@ public class RFTFeature extends Feature<NoFeatureConfig> {
             int primeIndex = 0;
             for (CompiledFeature feature : features) {
                 if (feature.getFeatureType().getFeature().generate(reader, generator, rand, pos,
-                        feature.getBlocks(), primes[primeIndex % primes.length])) {
+                        feature.getBlocks(), feature.getFluids(), primes[primeIndex % primes.length])) {
                     generatedSomething = true;
                 }
                 primeIndex++;

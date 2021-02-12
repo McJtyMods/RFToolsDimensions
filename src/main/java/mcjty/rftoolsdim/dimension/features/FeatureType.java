@@ -10,10 +10,12 @@ import java.util.Map;
 
 public enum FeatureType {
     NONE("none", KnowledgeSet.SET1, null),
-    CUBES("cubes", KnowledgeSet.SET2, new CubeFeature(false)),
-    HOLLOW_CUBES("hollow_cubes", KnowledgeSet.SET2, new CubeFeature(true)),
-    SPHERES("spheres", KnowledgeSet.SET3, new SphereFeature(false)),
-    HOLLOW_SPHERES("hollow_spheres", KnowledgeSet.SET3, new SphereFeature(true)),
+    CUBES("cubes", KnowledgeSet.SET2, new CubeFeature(false, false)),
+    HOLLOW_CUBES("hollow_cubes", KnowledgeSet.SET2, new CubeFeature(true, false)),
+    LIQUID_CUBES("liquid_cubes", KnowledgeSet.SET2, new CubeFeature(true, true)),
+    SPHERES("spheres", KnowledgeSet.SET3, new SphereFeature(false, false)),
+    HOLLOW_SPHERES("hollow_spheres", KnowledgeSet.SET3, new SphereFeature(true, false)),
+    LIQUID_SPHERES("liquid_spheres", KnowledgeSet.SET3, new SphereFeature(true, true)),
     TENDRILS("tendrils", KnowledgeSet.SET4, new TendrilsFeature());
 
     private final String name;

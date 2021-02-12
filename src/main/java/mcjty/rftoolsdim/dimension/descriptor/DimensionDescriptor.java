@@ -127,6 +127,7 @@ public class DimensionDescriptor {
             if (terrainDimlet != null) {
                 addBlockDimlets(randomized, random);
                 addAttributeDimlets(randomized, random);
+                addFluidDimlets(randomized, random, 1);
                 randomized.add(terrainDimlet);
             }
         }
@@ -171,6 +172,16 @@ public class DimensionDescriptor {
         int cnt = random.nextInt(8)+1;
         for (int i = 0 ; i < cnt ; i++) {
             DimletKey dimlet = DimletDictionary.get().getRandomDimlet(DimletType.BIOME, random);
+            if (dimlet != null) {
+                randomized.add(dimlet);
+            }
+        }
+    }
+
+    private void addFluidDimlets(List<DimletKey> randomized, Random random, int max) {
+        int cnt = random.nextInt(Math.min(3, max+1));
+        for (int i = 0 ; i < cnt ; i++) {
+            DimletKey dimlet = DimletDictionary.get().getRandomDimlet(DimletType.FLUID, random);
             if (dimlet != null) {
                 randomized.add(dimlet);
             }

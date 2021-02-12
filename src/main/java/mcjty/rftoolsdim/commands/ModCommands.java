@@ -13,6 +13,8 @@ public class ModCommands {
                 Commands.literal(RFToolsDim.MODID)
                         .then(CommandCreateDim.register(dispatcher))
                         .then(CommandListDim.register(dispatcher))
+                        .then(CommandForget.register(dispatcher))
+                        .then(CommandForgetInvalid.register(dispatcher))
                         .then(CommandTpDim.register(dispatcher))
                         .then(CommandDump.register(dispatcher))
                         .then(CommandCreateConfig.register(dispatcher))

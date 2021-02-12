@@ -14,18 +14,22 @@ import java.util.Random;
 public class CubeFeature implements IFeature {
 
     private final boolean hollow;
+    private final boolean liquid;
 
-    public CubeFeature(boolean hollow) {
+    public CubeFeature(boolean hollow, boolean liquid) {
         this.hollow = hollow;
+        this.liquid = liquid;
     }
 
     @Override
     public boolean generate(ISeedReader reader, ChunkGenerator generator, Random rand, BlockPos pos,
-                            List<BlockState> states, long prime) {
+                            List<BlockState> states, List<BlockState> liquids, long prime) {
         ChunkPos cp = new ChunkPos(pos);
         int chunkX = cp.x;
         int chunkZ = cp.z;
         int size = 1;
+
+        BlockState filler = Blocks.AIR.getDefaultState();
 
         boolean generated = false;
         for (int dx = -size; dx <= size; dx++) {
@@ -33,7 +37,11 @@ public class CubeFeature implements IFeature {
             for (int dz = -size; dz <= size; dz++) {
                 int cz = chunkZ + dz;
                 if (isFeatureCenter(reader, cx, cz, prime)) {
-                    generate(reader, chunkX, chunkZ, dx, dz, states, prime);
+                    if (liquid) {
+                        int index = getCenteredIndex(reader, cx, cz, prime, liquids.size());
+                        filler = liquids.get(index);
+                    }
+                    generate(reader, chunkX, chunkZ, dx, dz, states, filler, prime);
                     generated = true;
                 }
             }
@@ -42,7 +50,7 @@ public class CubeFeature implements IFeature {
     }
 
     private void generate(ISeedReader world, int chunkX, int chunkZ, int dx, int dz,
-                          List<BlockState> states, long prime) {
+                          List<BlockState> states, BlockState filler, long prime) {
         Random random = new Random(world.getSeed() + (chunkZ+dz) * prime + (chunkX+dx) * 899809363L);
         random.nextFloat();
         int radius = random.nextInt(12) + 9;
@@ -51,7 +59,6 @@ public class CubeFeature implements IFeature {
         int centerx = 8 + (dx) * 16;
         int centerz = 8 + (dz) * 16;
 
-        BlockState air = Blocks.AIR.getDefaultState();
         BlockPos.Mutable pos = new BlockPos.Mutable();
         for (int x = 0 ; x < 16 ; x++) {
             int xdist = Math.abs(x - centerx);
@@ -64,13 +71,22 @@ public class CubeFeature implements IFeature {
                             if ((!hollow) || y == centery - radius || y == centery + radius || xdist == radius || zdist == radius) {
                                 world.setBlockState(pos, IFeature.select(states, random), 0);
                             } else {
-                                world.setBlockState(pos, air, 0);
+                                world.setBlockState(pos, filler, 0);
                             }
                         }
                     }
                 }
             }
         }
+    }
+
+    private static int getCenteredIndex(ISeedReader world, int chunkX, int chunkZ, long prime, int max) {
+        if (max == 1) {
+            return 0;
+        }
+        Random random = new Random((chunkX * 343457327L + chunkZ * prime) ^ world.getSeed());
+        random.nextFloat();
+        return random.nextInt(max);
     }
 
     private static boolean isFeatureCenter(ISeedReader world, int chunkX, int chunkZ, long prime) {

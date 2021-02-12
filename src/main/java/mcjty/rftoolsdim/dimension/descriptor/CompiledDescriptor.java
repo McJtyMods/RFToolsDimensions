@@ -34,8 +34,10 @@ public class CompiledDescriptor {
 
     private TerrainType terrainType = null;
     private final Set<AttributeType> attributeTypes = new HashSet<>();
-    private final Set<AdminDimletType> adminDimletTypes = new HashSet<>();
     private final List<BlockState> baseBlocks = new ArrayList<>();
+    private BlockState baseLiquid = null;
+
+    private final Set<AdminDimletType> adminDimletTypes = new HashSet<>();
     private final Set<CompiledFeature> features = new HashSet<>();
     private BiomeControllerType biomeControllerType = null;
     private final List<ResourceLocation> biomes = new ArrayList<>();
@@ -100,18 +102,20 @@ public class CompiledDescriptor {
     }
 
     public void complete() {
-        // In case something is still missing (shouldn't be possible)
         if (terrainType == null) {
             terrainType = TerrainType.NORMAL;
-            if (baseBlocks.isEmpty()) {
-                baseBlocks.add(Blocks.STONE.getDefaultState());
-            }
         }
         if (timeType == null) {
             timeType = TimeType.NORMAL;
         }
         if (biomeControllerType == null) {
             biomeControllerType = BiomeControllerType.SINGLE;
+        }
+        if (baseBlocks.isEmpty()) {
+            baseBlocks.add(Blocks.STONE.getDefaultState());
+        }
+        if (baseLiquid == null) {
+            baseLiquid = Blocks.WATER.getDefaultState();
         }
     }
 
@@ -139,6 +143,14 @@ public class CompiledDescriptor {
                 }
                 attributeTypes.addAll(collectedAttributes);
                 collectedAttributes.clear();
+
+                if (collectedFluids.size() > 1) {
+                    return ERROR(ONLY_ONE_FLUID, name);
+                } else if (collectedFluids.size() == 1) {
+                    baseLiquid = collectedFluids.get(0);
+                    collectedFluids.clear();
+                }
+
                 break;
             case ATTRIBUTE: {
                 AttributeType type = AttributeType.byName(dimlet.getKey());
@@ -184,11 +196,19 @@ public class CompiledDescriptor {
                     return ERROR(BAD_FEATURE, name);
                 }
                 CompiledFeature compiledFeature = new CompiledFeature(feature);
+
                 compiledFeature.getBlocks().addAll(collectedBlocks);
                 collectedBlocks.clear();
                 if (compiledFeature.getBlocks().isEmpty()) {
                     compiledFeature.getBlocks().add(Blocks.STONE.getDefaultState());
                 }
+
+                compiledFeature.getFluids().addAll(collectedFluids);
+                collectedFluids.clear();
+                if (compiledFeature.getFluids().isEmpty()) {
+                    compiledFeature.getFluids().add(Blocks.WATER.getDefaultState());
+                }
+
                 features.add(compiledFeature);
                 break;
             }
@@ -230,8 +250,12 @@ public class CompiledDescriptor {
         return attributeTypes;
     }
 
-    public Set<AdminDimletType> getSpecialDimletTypes() {
+    public Set<AdminDimletType> getAdminDimletTypes() {
         return adminDimletTypes;
+    }
+
+    public BlockState getBaseLiquid() {
+        return baseLiquid;
     }
 
     public int getCreateCostPerTick() {

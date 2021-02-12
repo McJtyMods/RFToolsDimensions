@@ -54,6 +54,7 @@ public class DimensionSettings {
                 RFToolsDim.setup.getLogger().error("Error compiling dimension descriptor: " + error.getMessage());
 //                throw new RuntimeException("Error compiling dimension descriptor: " + error.getMessage());
             }
+            compiledDescriptor.complete();
         }
         return compiledDescriptor;
     }

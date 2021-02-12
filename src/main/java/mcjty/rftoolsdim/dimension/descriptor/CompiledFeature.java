@@ -10,6 +10,7 @@ public class CompiledFeature {
 
     private final FeatureType featureType;
     private final List<BlockState> blocks = new ArrayList<>();
+    private final List<BlockState> fluids = new ArrayList<>();
 
     public CompiledFeature(FeatureType featureType) {
         this.featureType = featureType;
@@ -21,5 +22,9 @@ public class CompiledFeature {
 
     public List<BlockState> getBlocks() {
         return blocks;
+    }
+
+    public List<BlockState> getFluids() {
+        return fluids;
     }
 }

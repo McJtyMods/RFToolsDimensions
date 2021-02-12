@@ -52,6 +52,7 @@ public class DescriptorError {
         ONLY_ONE_TIME("You can only have one time dimlet!"),
         BAD_BLOCK("Bad block!"),
         BAD_FLUID("Bad fluid!"),
+        ONLY_ONE_FLUID("Terrain supports only one fluid!"),
         FLUID_HAS_NO_BLOCK("Fluid has no block!"),
         BAD_FEATURE("Bad feature!"),
         BAD_TIME("Bad time!"),

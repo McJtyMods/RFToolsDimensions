@@ -33,7 +33,7 @@ public abstract class BaseChunkGenerator extends ChunkGenerator {
 //        this.surfaceDepthNoise = (INoiseGenerator)(noisesettings.func_236178_i_() ? new PerlinNoiseGenerator(this.randomSeed, IntStream.rangeClosed(-3, 0)) : new OctavesNoiseGenerator(this.randomSeed, IntStream.rangeClosed(-3, 0)));
         this.surfaceDepthNoise = new PerlinNoiseGenerator(this.randomSeed, IntStream.rangeClosed(-3, 0));  //) : new OctavesNoiseGenerator(this.randomSeed, IntStream.rangeClosed(-3, 0)));
         defaultBlocks.addAll(settings.getCompiledDescriptor().getBaseBlocks());
-        defaultFluid = Blocks.WATER.getDefaultState();
+        defaultFluid = settings.getCompiledDescriptor().getBaseLiquid();
         if (settings.getCompiledDescriptor().getAttributeTypes().contains(AttributeType.NOOCEANS)) {
             defaultFluid = Blocks.AIR.getDefaultState();
         }

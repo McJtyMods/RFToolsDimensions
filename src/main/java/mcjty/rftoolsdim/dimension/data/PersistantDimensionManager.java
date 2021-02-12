@@ -51,6 +51,15 @@ public class PersistantDimensionManager extends AbstractWorldData<PersistantDime
         markDirty();
     }
 
+    public void forget(ResourceLocation key) {
+        DimensionData dd = data.get(key);
+        data.remove(key);
+        if (dd != null) {
+            dataByDescriptor.remove(dd.getDescriptor());
+        }
+        markDirty();
+    }
+
     @Override
     public void read(CompoundNBT tag) {
         ListNBT dimensions = tag.getList("dimensions", Constants.NBT.TAG_COMPOUND);

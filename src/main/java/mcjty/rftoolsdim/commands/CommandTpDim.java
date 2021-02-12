@@ -23,7 +23,7 @@ public class CommandTpDim implements Command<CommandSource> {
 
     public static ArgumentBuilder<CommandSource, ?> register(CommandDispatcher<CommandSource> dispatcher) {
         return Commands.literal("tp")
-                .requires(cs -> cs.hasPermissionLevel(0))
+                .requires(cs -> cs.hasPermissionLevel(1))
                 .then(Commands.argument("name", StringArgumentType.string())
                         .executes(CMD));
     }

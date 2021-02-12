@@ -160,7 +160,7 @@ public class TendrilsFeature implements IFeature {
 
     @Override
     public boolean generate(ISeedReader reader, ChunkGenerator generator, Random rand, BlockPos pos,
-                            List<BlockState> states, long prime) {
+                            List<BlockState> states, List<BlockState> liquids, long prime) {
 
         ChunkPos cp = new ChunkPos(pos);
         int chunkX = cp.x;
