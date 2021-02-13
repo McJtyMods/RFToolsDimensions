@@ -20,8 +20,8 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.tileentity.ITickableTileEntity;
@@ -127,7 +127,7 @@ public class BlockAbsorberTileEntity extends GenericTileEntity implements ITicka
                 if (b != null) {
                     if (absorbingBlock == null) {
                         absorbing = EssencesConfig.maxBlockAbsorption.get();
-                        if (Item.getItemFromBlock(b.getBlock()) != null) {
+                        if (b.getBlock().asItem() != Items.AIR) {
                             // Safety
                             absorbingBlock = b.getBlock();
                             toscan.clear();
