@@ -30,6 +30,7 @@ public class DimletConfig {
         defValues.add("quark.json");
         defValues.add("tconstruct.json");
         defValues.add("thermal.json");
+        defValues.add("biomesoplenty.json");
 
         DIMLET_PACKAGES = SERVER_BUILDER
                 .comment("This is a list of dimlet packages that will be used. Later dimlet packages can override dimlets defined in earlier packages. You can place these packages in the 'config/rftoolsdim' folder")

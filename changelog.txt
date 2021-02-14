@@ -8,6 +8,7 @@ Upcoming:
 - Loot control for knowledge in chests is better now. Requires 1.16.5
 - New liquid sphere dimlets
 - Added 'forgetinvalid' and 'forget' commands to unlink/forget invalid dimensions or dimensions in general
+- New dimlets from Demonly. Fluid dimlets for Tinkers Construct, Mekanism, Bigger Reactors, and Biomes O Plenty. Also added biomes from Biomes O Plenty
 
 7.0.0-alpha:
 - First alpha release of RFTools Dimensions

@@ -58,5 +58,15 @@
     "ticks": 300,
     "worldgen": true,
     "dimlet": true
+  },
+  {
+    "type": "fluid",
+    "key": "biggerreactors:fluid_yellorium",
+    "rarity": "rare",
+    "create": 1000,
+    "maintain": 1000,
+    "ticks": 100,
+    "worldgen": true,
+    "dimlet": true
   }
 ]

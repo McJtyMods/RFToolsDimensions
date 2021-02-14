@@ -548,5 +548,455 @@
     "ticks": 10,
     "worldgen": true,
     "dimlet": true
+  },
+  {
+    "type": "fluid",
+    "key": "tconstruct:blood",
+    "rarity": "uncommon",
+    "create": 50,
+    "maintain": 50,
+    "ticks": 30,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "fluid",
+    "key": "tconstruct:blue_slime",
+    "rarity": "uncommon",
+    "create": 50,
+    "maintain": 50,
+    "ticks": 30,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "fluid",
+    "key": "tconstruct:green_slime",
+    "rarity": "uncommon",
+    "create": 50,
+    "maintain": 50,
+    "ticks": 30,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "fluid",
+    "key": "tconstruct:molten_aluminum",
+    "rarity": "rare",
+    "create": 200,
+    "maintain": 200,
+    "ticks": 100,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "fluid",
+    "key": "tconstruct:molten_ardite",
+    "rarity": "rare",
+    "create": 200,
+    "maintain": 200,
+    "ticks": 100,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "fluid",
+    "key": "tconstruct:molten_blaze",
+    "rarity": "rare",
+    "create": 200,
+    "maintain": 200,
+    "ticks": 100,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "fluid",
+    "key": "tconstruct:molten_brass",
+    "rarity": "rare",
+    "create": 200,
+    "maintain": 200,
+    "ticks": 100,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "fluid",
+    "key": "tconstruct:molten_bronze",
+    "rarity": "rare",
+    "create": 200,
+    "maintain": 200,
+    "ticks": 100,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "fluid",
+    "key": "tconstruct:molten_clay",
+    "rarity": "rare",
+    "create": 200,
+    "maintain": 200,
+    "ticks": 100,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "fluid",
+    "key": "tconstruct:molten_cobalt",
+    "rarity": "rare",
+    "create": 200,
+    "maintain": 200,
+    "ticks": 100,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "fluid",
+    "key": "tconstruct:molten_constantan",
+    "rarity": "rare",
+    "create": 200,
+    "maintain": 200,
+    "ticks": 100,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "fluid",
+    "key": "tconstruct:molten_copper",
+    "rarity": "rare",
+    "create": 200,
+    "maintain": 200,
+    "ticks": 100,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "fluid",
+    "key": "tconstruct:molten_debris",
+    "rarity": "rare",
+    "create": 200,
+    "maintain": 200,
+    "ticks": 100,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "fluid",
+    "key": "tconstruct:molten_electrum",
+    "rarity": "rare",
+    "create": 200,
+    "maintain": 200,
+    "ticks": 100,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "fluid",
+    "key": "tconstruct:molten_emerald",
+    "rarity": "rare",
+    "create": 200,
+    "maintain": 200,
+    "ticks": 100,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "fluid",
+    "key": "tconstruct:molten_ender",
+    "rarity": "rare",
+    "create": 200,
+    "maintain": 200,
+    "ticks": 100,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "fluid",
+    "key": "tconstruct:molten_glass",
+    "rarity": "rare",
+    "create": 200,
+    "maintain": 200,
+    "ticks": 100,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "fluid",
+    "key": "tconstruct:molten_gold",
+    "rarity": "rare",
+    "create": 200,
+    "maintain": 200,
+    "ticks": 100,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "fluid",
+    "key": "tconstruct:molten_invar",
+    "rarity": "rare",
+    "create": 200,
+    "maintain": 200,
+    "ticks": 100,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "fluid",
+    "key": "tconstruct:molten_iron",
+    "rarity": "rare",
+    "create": 200,
+    "maintain": 200,
+    "ticks": 100,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "fluid",
+    "key": "tconstruct:molten_knightslime",
+    "rarity": "rare",
+    "create": 200,
+    "maintain": 200,
+    "ticks": 100,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "fluid",
+    "key": "tconstruct:molten_lead",
+    "rarity": "rare",
+    "create": 200,
+    "maintain": 200,
+    "ticks": 100,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "fluid",
+    "key": "tconstruct:molten_manyullyn",
+    "rarity": "rare",
+    "create": 200,
+    "maintain": 200,
+    "ticks": 100,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "fluid",
+    "key": "tconstruct:molten_netherite",
+    "rarity": "rare",
+    "create": 200,
+    "maintain": 200,
+    "ticks": 100,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "fluid",
+    "key": "tconstruct:molten_nickel",
+    "rarity": "rare",
+    "create": 200,
+    "maintain": 200,
+    "ticks": 100,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "fluid",
+    "key": "tconstruct:molten_obsidian",
+    "rarity": "rare",
+    "create": 200,
+    "maintain": 200,
+    "ticks": 100,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "fluid",
+    "key": "tconstruct:molten_osmium",
+    "rarity": "rare",
+    "create": 200,
+    "maintain": 200,
+    "ticks": 100,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "fluid",
+    "key": "tconstruct:molten_pig_iron",
+    "rarity": "rare",
+    "create": 200,
+    "maintain": 200,
+    "ticks": 100,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "fluid",
+    "key": "tconstruct:molten_platinum",
+    "rarity": "rare",
+    "create": 200,
+    "maintain": 200,
+    "ticks": 100,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "fluid",
+    "key": "tconstruct:molten_rose_gold",
+    "rarity": "rare",
+    "create": 200,
+    "maintain": 200,
+    "ticks": 100,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "fluid",
+    "key": "tconstruct:molten_silver",
+    "rarity": "rare",
+    "create": 200,
+    "maintain": 200,
+    "ticks": 100,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "fluid",
+    "key": "tconstruct:molten_steel",
+    "rarity": "rare",
+    "create": 200,
+    "maintain": 200,
+    "ticks": 100,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "fluid",
+    "key": "tconstruct:molten_tin",
+    "rarity": "rare",
+    "create": 200,
+    "maintain": 200,
+    "ticks": 100,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "fluid",
+    "key": "tconstruct:molten_tungsten",
+    "rarity": "rare",
+    "create": 200,
+    "maintain": 200,
+    "ticks": 100,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "fluid",
+    "key": "tconstruct:molten_uranium",
+    "rarity": "rare",
+    "create": 200,
+    "maintain": 200,
+    "ticks": 100,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "fluid",
+    "key": "tconstruct:molten_zinc",
+    "rarity": "rare",
+    "create": 200,
+    "maintain": 200,
+    "ticks": 100,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "fluid",
+    "key": "tconstruct:purple_slime",
+    "rarity": "rare",
+    "create": 200,
+    "maintain": 200,
+    "ticks": 100,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "fluid",
+    "key": "tconstruct:seared_stone",
+    "rarity": "rare",
+    "create": 200,
+    "maintain": 200,
+    "ticks": 100,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "fluid",
+    "key": "tconstruct:magma_cream",
+    "rarity": "rare",
+    "create": 200,
+    "maintain": 200,
+    "ticks": 100,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "fluid",
+    "key": "tconstruct:liquid_soul",
+    "rarity": "rare",
+    "create": 200,
+    "maintain": 200,
+    "ticks": 100,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "fluid",
+    "key": "tconstruct:molten_slimesteel",
+    "rarity": "rare",
+    "create": 200,
+    "maintain": 200,
+    "ticks": 100,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "fluid",
+    "key": "tconstruct:molten_tinkers_bronze",
+    "rarity": "rare",
+    "create": 200,
+    "maintain": 200,
+    "ticks": 100,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "fluid",
+    "key": "tconstruct:molten_hepatizon",
+    "rarity": "rare",
+    "create": 200,
+    "maintain": 200,
+    "ticks": 100,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "fluid",
+    "key": "tconstruct:molten_queens_slime",
+    "rarity": "rare",
+    "create": 200,
+    "maintain": 200,
+    "ticks": 100,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "fluid",
+    "key": "tconstruct:molten_soulsteel",
+    "rarity": "rare",
+    "create": 200,
+    "maintain": 200,
+    "ticks": 100,
+    "worldgen": true,
+    "dimlet": true
   }
 ]
