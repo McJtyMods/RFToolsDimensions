@@ -3,10 +3,10 @@
   "textures": {
     "down": "rftoolsbase:block/base/machinebottom",
     "up": "rftoolsdim:block/dimletworkbenchtop",
-    "north": "rftoolsbase:block/base/machineside",
-    "south": "rftoolsbase:block/base/machineside",
-    "east": "rftoolsbase:block/base/machineside",
-    "west": "rftoolsbase:block/base/machineside",
+    "north": "rftoolsdim:block/dimletworkbenchside",
+    "south": "rftoolsdim:block/dimletworkbenchside",
+    "east": "rftoolsdim:block/dimletworkbenchside",
+    "west": "rftoolsdim:block/dimletworkbenchside",
     "particle": "rftoolsdim:block/dimletworkbenchtop"
   }
 }
