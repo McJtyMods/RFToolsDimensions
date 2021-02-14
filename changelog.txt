@@ -1,4 +1,4 @@
-Upcoming:
+1.16-7.0.1-beta:
 - Max power of a dimension now scales depending on the maintenance cost per tick (configurable)
 - The dimension monitor now shows maximum power of a dimension in the tooltip
 - Fixed the researcher and knowledge holder not being automatable
