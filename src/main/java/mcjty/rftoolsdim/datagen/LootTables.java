@@ -3,6 +3,7 @@ package mcjty.rftoolsdim.datagen;
 import mcjty.lib.datagen.BaseLootTableProvider;
 import mcjty.rftoolsdim.dimension.DimensionRegistry;
 import mcjty.rftoolsdim.modules.blob.BlobModule;
+import mcjty.rftoolsdim.modules.decorative.DecorativeModule;
 import mcjty.rftoolsdim.modules.dimensionbuilder.DimensionBuilderModule;
 import mcjty.rftoolsdim.modules.dimlets.DimletModule;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletRarity;
@@ -33,6 +34,14 @@ public class LootTables extends BaseLootTableProvider {
         addStandardTable(EssencesModule.BLOCK_ABSORBER.get());
         addStandardTable(EssencesModule.FLUID_ABSORBER.get());
         addStandardTable(EssencesModule.BIOME_ABSORBER.get());
+
+        addSimpleTable(DecorativeModule.DIMENSIONAL_SMALL_BLOCK.get());
+        addSimpleTable(DecorativeModule.DIMENSIONAL_BLANK.get());
+        addSimpleTable(DecorativeModule.DIMENSIONAL_BLOCK.get());
+        addSimpleTable(DecorativeModule.DIMENSIONAL_PATTERN1_BLOCK.get());
+        addSimpleTable(DecorativeModule.DIMENSIONAL_PATTERN2_BLOCK.get());
+        addSimpleTable(DecorativeModule.DIMENSIONAL_CROSS_BLOCK.get());
+        addSimpleTable(DecorativeModule.DIMENSIONAL_CROSS2_BLOCK.get());
 
         addItemDropTable(BlobModule.DIMENSIONAL_BLOB_COMMON.get(), DimletModule.COMMON_ESSENCE.get(), 3, 5, 0, 1);
         addItemDropTable(BlobModule.DIMENSIONAL_BLOB_RARE.get(), DimletModule.RARE_ESSENCE.get(), 3, 5, 0, 1);

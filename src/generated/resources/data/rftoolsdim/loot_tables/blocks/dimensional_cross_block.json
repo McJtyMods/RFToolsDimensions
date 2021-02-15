@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "name": "dimensional_cross_block",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "rftoolsdim:dimensional_cross_block"
+        }
+      ]
+    }
+  ]
+}
