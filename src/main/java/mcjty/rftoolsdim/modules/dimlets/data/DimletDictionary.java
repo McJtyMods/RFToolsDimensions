@@ -22,10 +22,12 @@ public class DimletDictionary {
         return INSTANCE;
     }
 
-    private void register(DimletKey key, DimletSettings settings) {
+    private boolean register(DimletKey key, DimletSettings settings) {
         if (DimletTools.isValidDimlet(key)) {
             dimlets.put(key, settings);
+            return true;
         }
+        return false;
     }
 
     public Set<DimletKey> getDimlets() {

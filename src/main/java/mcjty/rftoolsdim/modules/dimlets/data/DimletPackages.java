@@ -1,6 +1,7 @@
 package mcjty.rftoolsdim.modules.dimlets.data;
 
 import com.google.gson.*;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import mcjty.rftoolsdim.RFToolsDim;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
@@ -17,6 +18,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.Map;
 import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
 
 public class DimletPackages {
     public static void writePackage(String filename, String modid) throws IOException {
@@ -99,9 +101,7 @@ public class DimletPackages {
         }
     }
 
-    public static void readPackage(String filename, BiConsumer<DimletKey, DimletSettings> consumer) {
-        RFToolsDim.setup.getLogger().info("Reading dimlet package: " + filename);
-
+    public static void readPackage(String filename, BiFunction<DimletKey, DimletSettings, Boolean> consumer) {
         InputStream inputStream = null;
 
         Path configPath = FMLPaths.CONFIGDIR.get();
@@ -123,6 +123,7 @@ public class DimletPackages {
             }
         }
 
+        int cnt = 0;
         try(BufferedReader br = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
             JsonParser parser = new JsonParser();
             JsonElement root = parser.parse(br);
@@ -133,13 +134,17 @@ public class DimletPackages {
                 String key = object.getAsJsonPrimitive("key").getAsString();
                 DimletKey dimletKey = new DimletKey(DimletType.byName(type), key);
                 DimletSettings settings = DimletSettings.parse(object);
-                consumer.accept(dimletKey, settings);
+                Boolean success = consumer.apply(dimletKey, settings);
+                if (Boolean.TRUE.equals(success)) {
+                    cnt++;
+                }
             }
 
         } catch (IOException ex) {
             RFToolsDim.setup.getLogger().error("Error loading dimlet package: " + filename);
             throw new UncheckedIOException(ex);
         }
+        RFToolsDim.setup.getLogger().info("Reading dimlet package: " + filename + ", " + cnt + " valid dimlets found");
 
     }
 }
