@@ -16,16 +16,16 @@ public class BlobConfig {
 
     public static ForgeConfigSpec.LongValue BLOB_REGENERATION_LEVEL;
 
-    public static void init(ForgeConfigSpec.Builder SERVER_BUILDER, ForgeConfigSpec.Builder CLIENT_BUILDER) {
+    public static void init(ForgeConfigSpec.Builder SERVER_BUILDER, ForgeConfigSpec.Builder COMMON_BUILDER, ForgeConfigSpec.Builder CLIENT_BUILDER) {
         SERVER_BUILDER.comment("Dimension Builder settings").push(SUB_CATEGORY_BLOBS);
 
-        BLOB_COMMON_HEALTH = SERVER_BUILDER
+        BLOB_COMMON_HEALTH = COMMON_BUILDER
                 .comment("Maximum health of the common blob")
                 .defineInRange("commonBlobMaxHealth", 30, 0, Integer.MAX_VALUE);
-        BLOB_RARE_HEALTH = SERVER_BUILDER
+        BLOB_RARE_HEALTH = COMMON_BUILDER
                 .comment("Maximum health of the rare blob")
                 .defineInRange("rareBlobMaxHealth", 250, 0, Integer.MAX_VALUE);
-        BLOB_LEGENDARY_HEALTH = SERVER_BUILDER
+        BLOB_LEGENDARY_HEALTH = COMMON_BUILDER
                 .comment("Maximum health of the legendary blob")
                 .defineInRange("legendaryBlobMaxHealth", 5000, 0, Integer.MAX_VALUE);
 

@@ -40,7 +40,6 @@ public class RFToolsDim {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(setup::init);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(modules::init);
         MinecraftForge.EVENT_BUS.addListener(this::onJoinWorld);
-        MinecraftForge.EVENT_BUS.addListener(KnowledgeModule::onWorldLoad);
 
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
             MinecraftForge.EVENT_BUS.addListener(ClientEventHandlers::onPlayerLogin);

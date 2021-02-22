@@ -23,7 +23,6 @@ import static mcjty.rftoolsdim.dimension.DimensionRegistry.*;
 @Mod.EventBusSubscriber(modid = RFToolsDim.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ModSetup extends DefaultModSetup {
 
-
     public ModSetup() {
         createTab("rftoolsdim", () -> new ItemStack(DimletModule.EMPTY_DIMLET.get()));
     }
@@ -34,7 +33,9 @@ public class ModSetup extends DefaultModSetup {
 
         RFToolsDimMessages.registerMessages("rftoolsdim");
 
-        RFTFeature.registerConfiguredFeatures();
+        e.enqueueWork(() -> {
+                    RFTFeature.registerConfiguredFeatures();
+                });
         MinecraftForge.EVENT_BUS.register(new ForgeEventHandlers());
 
         e.enqueueWork(() -> {
