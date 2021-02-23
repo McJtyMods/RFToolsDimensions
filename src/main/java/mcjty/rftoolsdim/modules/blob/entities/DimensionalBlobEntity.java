@@ -98,6 +98,7 @@ public class DimensionalBlobEntity extends MonsterEntity {
         ModifiableAttributeInstance attr = getAttributeManager().createInstanceIfAbsent(Attributes.MAX_HEALTH);
         if (attr != null) {
             attr.setBaseValue(getDefaultMaxHealth(rarity));
+            setHealth(getDefaultMaxHealth(rarity));
         }
         return super.onInitialSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
     }
