@@ -1,4 +1,4 @@
-Upcoming:
+1.16-7.0.2-beta:
 - Fixed a bug in the 'forgetinvalid' command
 - Added loottables for the decorative blocks
 - Better logging when reading dimlet packages
