@@ -113,7 +113,7 @@ dependencies {
     if (findProject(':TheOneProbe') != null) {
         compile project(':TheOneProbe')
     } else {
-        compile fg.deobf(project.dependencies.create("mcjty.theoneprobe:workspace:${top_version}") {
+        compile fg.deobf(project.dependencies.create("mcjty.theoneprobe:TheOneProbe-${top_version}") {
             transitive = false
         })
     }
