@@ -176,7 +176,7 @@ curseforge {
         changelog = System.getenv('CHANGELOG') == null || System.getenv('CHANGELOG').equals('none') ? getChangelogText() : System.getenv('CHANGELOG')
         changelogType = 'html'
         releaseType = project.curse_type
-        addGameVersion '1.16.5'
+        addGameVersion project.minecraft_version
         mainArtifact(jar) {
             displayName = "${modname} - ${version}"
         }
