@@ -1,7 +1,6 @@
 package mcjty.rftoolsdim.modules.dimlets.data;
 
 import com.google.gson.*;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import mcjty.rftoolsdim.RFToolsDim;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
@@ -17,7 +16,6 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.Map;
-import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 
 public class DimletPackages {
