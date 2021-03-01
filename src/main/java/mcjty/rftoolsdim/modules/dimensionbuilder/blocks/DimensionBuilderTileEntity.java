@@ -16,6 +16,7 @@ import mcjty.lib.container.GenericContainer;
 import mcjty.lib.container.NoDirectionItemHander;
 import mcjty.lib.tileentity.GenericEnergyStorage;
 import mcjty.lib.tileentity.GenericTileEntity;
+import mcjty.lib.varia.DimensionId;
 import mcjty.rftoolsbase.tools.ManualHelper;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.compat.RFToolsUtilityCompat;
@@ -185,7 +186,7 @@ public class DimensionBuilderTileEntity extends GenericTileEntity implements ITi
 //            }
 
             long energy = data.getEnergy();
-            long maxEnergy = PowerHandler.calculateMaxDimensionPower(id, (ServerWorld) world) - energy;
+            long maxEnergy = PowerHandler.calculateMaxDimensionPower(id, world) - energy;
             if (rf > maxEnergy) {
                 rf = maxEnergy;
             }

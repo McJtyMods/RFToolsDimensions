@@ -32,8 +32,8 @@ public class PowerHandler {
     private static final int EFFECTS_MAX = 18;
     private int counterEffects = EFFECTS_MAX;
 
-    public static long calculateMaxDimensionPower(ResourceLocation id, ServerWorld world) {
-        CompiledDescriptor descriptor = DimensionManager.get().getCompiledDescriptor(world, id);
+    public static long calculateMaxDimensionPower(ResourceLocation id, World overworld) {
+        CompiledDescriptor descriptor = DimensionManager.get().getCompiledDescriptor(overworld, id);
         if (descriptor != null) {
             return calculateMaxDimensionPower(descriptor);
         } else {

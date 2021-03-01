@@ -2,6 +2,7 @@ Upcoming:
 - Added loot table for researcher
 - The flat, normal, and waves terrain types now generate a bedrock layer by default
 - New 'nobedrock' attribute dimlet to remove that bedrock layer
+- Fixed a problem with the dimension builder sometimes not recognizing that a dimension belongs to us. Giving false warnings
 
 1.16-7.0.2-beta:
 - Fixed a bug in the 'forgetinvalid' command

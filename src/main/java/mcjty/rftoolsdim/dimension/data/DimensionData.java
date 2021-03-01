@@ -56,20 +56,20 @@ public class DimensionData {
     }
 
     /// 'world' should be a valid world (or overworld). Can be null in case in which case the low power freeze will not happen
-    public void setEnergy(World world, long energy) {
+    public void setEnergy(World overworld, long energy) {
         if (energy != this.energy) {
             long old = this.energy;
             this.energy = energy;
-            if (world != null) {
+            if (overworld != null) {
 //            if (PowerConfiguration.freezeUnpowered) { // @todo 1.16 config
                 if (old == 0 && energy > 0) {
-                    world = DimensionId.fromResourceLocation(id).loadWorld(world);
-                    if (world != null) {
+                    overworld = DimensionId.fromResourceLocation(id).loadWorld(overworld);
+                    if (overworld != null) {
 //                    RfToolsDimensionManager.unfreezeDimension(world);
                     }
                 } else if (energy == 0) {
-                    world = DimensionId.fromResourceLocation(id).loadWorld(world);
-                    if (world != null) {
+                    overworld = DimensionId.fromResourceLocation(id).loadWorld(overworld);
+                    if (overworld != null) {
 //                    RfToolsDimensionManager.freezeDimension(world);
                     }
                 }
