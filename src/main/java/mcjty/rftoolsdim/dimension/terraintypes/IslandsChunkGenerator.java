@@ -9,6 +9,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryLookupCodec;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.chunk.IChunk;
 import net.minecraft.world.gen.ChunkGenerator;
 
 public class IslandsChunkGenerator extends NormalChunkGenerator {
@@ -30,6 +31,10 @@ public class IslandsChunkGenerator extends NormalChunkGenerator {
     public IslandsChunkGenerator(Registry<Biome> registry, DimensionSettings settings) {
         super(registry, settings, SETTING_DEFAULT_ISLANDS);
         air = Blocks.AIR.getDefaultState();
+    }
+
+    @Override
+    protected void makeBedrock(IChunk chunkIn) {
     }
 
     @Override

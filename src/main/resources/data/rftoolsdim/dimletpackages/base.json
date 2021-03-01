@@ -186,6 +186,19 @@
   },
   {
     "type": "attribute",
+    "key": "nobedrock",
+    "rarity": "uncommon",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 10,
+    "worldgen": true,
+    "dimlet": true,
+    "essence": {
+      "item": "minecraft:obsidian"
+    }
+  },
+  {
+    "type": "attribute",
     "key": "nobiomesurface",
     "rarity": "common",
     "create": 10,

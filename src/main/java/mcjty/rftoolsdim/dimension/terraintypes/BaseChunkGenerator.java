@@ -91,7 +91,20 @@ public abstract class BaseChunkGenerator extends ChunkGenerator {
     }
 
 
-    protected void makeBedrock(IChunk chunk) {
-
+    protected void makeBedrock(IChunk chunkIn) {
+        if (settings.getCompiledDescriptor().getAttributeTypes().contains(AttributeType.NOBEDROCK)) {
+            return;
+        }
+        BlockPos.Mutable mpos = new BlockPos.Mutable();
+        int xs = chunkIn.getPos().getXStart();
+        int zs = chunkIn.getPos().getZStart();
+        for(BlockPos blockpos : BlockPos.getAllInBoxMutable(xs, 0, zs, xs + 15, 0, zs + 15)) {
+            for(int y = 4; y >= 0; --y) {
+                if (y <= randomSeed.nextInt(5)) {
+                    chunkIn.setBlockState(mpos.setPos(blockpos.getX(), y, blockpos.getZ()), Blocks.BEDROCK.getDefaultState(), false);
+                }
+            }
+        }
     }
+
 }

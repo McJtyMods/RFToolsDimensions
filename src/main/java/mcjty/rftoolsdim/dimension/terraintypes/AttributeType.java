@@ -10,7 +10,8 @@ public enum AttributeType {
     FLATTER("flatter", KnowledgeSet.SET1),
     ELEVATED("elevated", KnowledgeSet.SET1),
     NOBIOMESURFACE("nobiomesurface", KnowledgeSet.SET1),
-    NOOCEANS("nooceans", KnowledgeSet.SET1);
+    NOOCEANS("nooceans", KnowledgeSet.SET1),
+    NOBEDROCK("nobedrock", KnowledgeSet.SET1);
 
     private final String name;
     private final KnowledgeSet set;

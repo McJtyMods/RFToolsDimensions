@@ -544,38 +544,6 @@ public class NormalChunkGenerator extends BaseChunkGenerator {
         return adouble;
     }
 
-    @Override
-    protected void makeBedrock(IChunk chunkIn) {
-//        BlockPos.Mutable blockpos$mutable = new BlockPos.Mutable();
-//        int i = chunkIn.getPos().getXStart();
-//        int j = chunkIn.getPos().getZStart();
-//        int k = 3;//@todo @@@@@@@@@@@@@@@@@@@@@@@@@ dimensionsettings.func_236118_f_();
-//        int l = 3;//@todo @@@@@@@@@@@@@@@@@@@@@@@@@ this.field_236085_x_ - 1 - dimensionsettings.func_236117_e_();
-//        int i1 = 5;
-//        boolean flag = l + 4 >= 0 && l < noisesettings.func_236169_a_();
-//        boolean flag1 = k + 4 >= 0 && k < noisesettings.func_236169_a_();
-//        if (flag || flag1) {
-//            for(BlockPos blockpos : BlockPos.getAllInBoxMutable(i, 0, j, i + 15, 0, j + 15)) {
-//                if (flag) {
-//                    for(int j1 = 0; j1 < 5; ++j1) {
-//                        if (j1 <= randomSeed.nextInt(5)) {
-//                            chunkIn.setBlockState(blockpos$mutable.setPos(blockpos.getX(), l - j1, blockpos.getZ()), Blocks.BEDROCK.getDefaultState(), false);
-//                        }
-//                    }
-//                }
-//
-//                if (flag1) {
-//                    for(int k1 = 4; k1 >= 0; --k1) {
-//                        if (k1 <= randomSeed.nextInt(5)) {
-//                            chunkIn.setBlockState(blockpos$mutable.setPos(blockpos.getX(), k + k1, blockpos.getZ()), Blocks.BEDROCK.getDefaultState(), false);
-//                        }
-//                    }
-//                }
-//            }
-//
-//        }
-    }
-
     private static double func_222556_a(int x, int y, int z) {
         int xx = x + 12;
         int yy = y + 12;
