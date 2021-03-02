@@ -194,7 +194,7 @@ public class DimletTools {
         return ItemStack.EMPTY;
     }
 
-    public static ItemStack getNeededEssence(DimletKey key, DimletSettings settings) {
+    public static ItemStack getNeededEssence(DimletKey key, @Nonnull DimletSettings settings) {
         if (!settings.getEssence().isEmpty()) {
             return settings.getEssence();
         }

@@ -5,10 +5,7 @@ import mcjty.lib.tooltips.ITooltipExtras;
 import mcjty.lib.tooltips.ITooltipSettings;
 import mcjty.rftoolsdim.dimension.data.ClientDimensionData;
 import mcjty.rftoolsdim.modules.dimlets.DimletModule;
-import mcjty.rftoolsdim.modules.dimlets.data.DimletDictionary;
-import mcjty.rftoolsdim.modules.dimlets.data.DimletKey;
-import mcjty.rftoolsdim.modules.dimlets.data.DimletTools;
-import mcjty.rftoolsdim.modules.dimlets.data.DimletType;
+import mcjty.rftoolsdim.modules.dimlets.data.*;
 import mcjty.rftoolsdim.modules.knowledge.data.DimletPattern;
 import mcjty.rftoolsdim.modules.knowledge.data.KnowledgeManager;
 import mcjty.rftoolsdim.modules.knowledge.data.PatternBuilder;
@@ -124,9 +121,12 @@ public class DimletItem extends Item implements ITooltipSettings, ITooltipExtras
                 addPatternItems(pattern, items);
             }
 
-            ItemStack essence = DimletTools.getNeededEssence(key, DimletDictionary.get().getSettings(key));
-            if (!essence.isEmpty()) {
-                items.add(Pair.of(essence, NOERROR));
+            DimletSettings settings = DimletDictionary.get().getSettings(key);
+            if (settings != null) {
+                ItemStack essence = DimletTools.getNeededEssence(key, settings);
+                if (!essence.isEmpty()) {
+                    items.add(Pair.of(essence, NOERROR));
+                }
             }
 
             return items;

@@ -1,3 +1,6 @@
+Upcoming:
+- Made looking at dimlets (tooltip) slightly safer
+
 1.16-7.0.3-beta:
 - Added loot table for researcher
 - The flat, normal, and waves terrain types now generate a bedrock layer by default
