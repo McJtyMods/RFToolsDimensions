@@ -1,3 +1,6 @@
+Upcoming:
+- Fixed a potential crash bug with dimensions on servers
+
 1.16-7.0.4-beta:
 - Made looking at dimlets (tooltip) slightly safer
 

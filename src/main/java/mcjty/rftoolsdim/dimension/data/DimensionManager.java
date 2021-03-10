@@ -64,6 +64,10 @@ public class DimensionManager {
         if (!compiledDescriptorMap.containsKey(id)) {
             DimensionId dimworld = DimensionId.fromResourceLocation(id);
             ServerWorld world = dimworld.loadWorld(overworld);
+            if (world == null || world.getChunkProvider() == null) {
+                // No data yet
+                return null;
+            }
             ChunkGenerator generator = world.getChunkProvider().generator;
             if (generator instanceof BaseChunkGenerator) {
                 CompiledDescriptor compiledDescriptor = ((BaseChunkGenerator) generator).getSettings().getCompiledDescriptor();
