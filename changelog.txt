@@ -1,5 +1,6 @@
 Upcoming:
 - Fixed a potential crash bug with dimensions on servers
+- A hopper will no longer extract from the input slot of the researcher
 
 1.16-7.0.4-beta:
 - Made looking at dimlets (tooltip) slightly safer
