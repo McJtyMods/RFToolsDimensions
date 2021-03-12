@@ -1,6 +1,7 @@
 Upcoming:
 - Fixed a potential crash bug with dimensions on servers
 - A hopper will no longer extract from the input slot of the researcher
+- If the mod is not minecraft then a dimlet tooltip will also show the mod for block and fluid dimlets
 
 1.16-7.0.4-beta:
 - Made looking at dimlets (tooltip) slightly safer

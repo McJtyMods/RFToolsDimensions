@@ -1,5 +1,6 @@
 package mcjty.rftoolsdim.modules.dimlets.data;
 
+import mcjty.lib.varia.Tools;
 import mcjty.rftoolsdim.dimension.AdminDimletType;
 import mcjty.rftoolsdim.modules.dimlets.DimletModule;
 import mcjty.rftoolsdim.modules.dimlets.items.DimletItem;
@@ -300,10 +301,27 @@ public class DimletTools {
                 return dimletKey.getKey().toLowerCase();
             case BLOCK:
                 Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(dimletKey.getKey()));
-                return I18n.format(block.getTranslationKey());
+                if (block != null) {
+                    String modName = Tools.getModName(block);
+                    if (modName.equalsIgnoreCase("minecraft")) {
+                        return I18n.format(block.getTranslationKey());
+                    } else {
+                        return I18n.format(block.getTranslationKey()) + " (" + modName + ")";
+                    }
+                }
+                return "<Invalid " + dimletKey.getKey() + ">";
             case FLUID:
                 Fluid fluid = ForgeRegistries.FLUIDS.getValue(new ResourceLocation(dimletKey.getKey()));
-                return I18n.format(fluid.getDefaultState().getBlockState().getBlock().getTranslationKey());
+                if (fluid != null) {
+                    String modName = Tools.getModName(fluid);
+                    if (modName.equalsIgnoreCase("minecraft")) {
+                        return I18n.format(fluid.getDefaultState().getBlockState().getBlock().getTranslationKey());
+                    } else {
+                        return I18n.format(fluid.getDefaultState().getBlockState().getBlock().getTranslationKey())
+                                + " (" + modName + ")";
+                    }
+                }
+                return "<Invalid " + dimletKey.getKey() + ">";
             case DIGIT:
                 return dimletKey.getKey();
             case ADMIN:
