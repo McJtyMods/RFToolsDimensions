@@ -69,7 +69,15 @@ public class DimletDictionary {
         if (keys.size() == 1) {
             return keys.get(0);
         } else {
-            return keys.get(random.nextInt(keys.size()));
+            // There are multiple choices, try to give less chance to block dimlets. Do a few attempts to find something else
+            DimletKey dimletKey = null;
+            for (int i = 0 ; i < Math.max(2, Math.min(10, keys.size() / 20)) ; i++) {
+                dimletKey = keys.get(random.nextInt(keys.size()));
+                if (dimletKey.getType() != DimletType.BLOCK) {
+                    return dimletKey;
+                }
+            }
+            return dimletKey;
         }
     }
 
