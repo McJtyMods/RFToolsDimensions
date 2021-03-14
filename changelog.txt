@@ -1,5 +1,6 @@
 Upcoming:
 - Fixed a problem with unknown dimlets crashing the dimlet researcher
+- Fixed a problem with loot generation in dimlet huts. For a given dimension the loot would be the same in every chest
 
 1.16-7.0.5-beta:
 - Fixed a potential crash bug with dimensions on servers
