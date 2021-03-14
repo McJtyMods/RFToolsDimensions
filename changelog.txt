@@ -1,3 +1,6 @@
+Upcoming:
+- Fixed a problem with unknown dimlets crashing the dimlet researcher
+
 1.16-7.0.5-beta:
 - Fixed a potential crash bug with dimensions on servers
 - A hopper will no longer extract from the input slot of the researcher
