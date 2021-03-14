@@ -2,6 +2,7 @@ Upcoming:
 - Fixed a problem with unknown dimlets crashing the dimlet researcher
 - Fixed a problem with loot generation in dimlet huts. For a given dimension the loot would be the same in every chest
 - Improved the chances of getting a non-block dimlet as loot
+- The enscriber will now report a warning when you create a dimension tab for an already existing dimension because you forgot to include digit dimlets
 
 1.16-7.0.5-beta:
 - Fixed a potential crash bug with dimensions on servers

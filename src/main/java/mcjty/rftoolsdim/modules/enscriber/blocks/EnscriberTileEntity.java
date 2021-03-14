@@ -34,6 +34,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.IntReferenceHolder;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.common.util.LazyOptional;
@@ -143,6 +145,8 @@ public class EnscriberTileEntity extends GenericTileEntity {
         DimensionData data = PersistantDimensionManager.get(world).getData(descriptor);
         if (data != null) {
             name = data.getId().getPath();
+            player.sendStatusMessage(new StringTextComponent("This dimension already existed! If this is what you wanted then that's fine. Otherwise you need digit dimlets to make new unique dimensions. The dimlet sequence uniquely identifies a dimension. Names can't be changed")
+                    .mergeStyle(TextFormatting.YELLOW), false);
         }
 
         realizedTab.getOrCreateTag().putString("name", name);
