@@ -1,5 +1,6 @@
 Upcoming:
 - Fixed a few conflicting dimlet workbench recipes for liquid spheres and cubes
+- Fixed a serious chunk generation error in the normal terrain type. After reloading the world new chunks would fall back to island type generation
 
 1.16-7.0.6-beta:
 - Fixed a problem with unknown dimlets crashing the dimlet researcher

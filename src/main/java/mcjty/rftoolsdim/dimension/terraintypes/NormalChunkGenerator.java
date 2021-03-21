@@ -178,7 +178,7 @@ public class NormalChunkGenerator extends BaseChunkGenerator {
     }
 
     public NormalChunkGenerator(Registry<Biome> registry, DimensionSettings settings) {
-        this(registry, settings, SETTING_DEFAULT_ISLANDS);
+        this(registry, settings, SETTING_DEFAULT_OVERWORLD);
     }
 
     protected NormalChunkGenerator(MinecraftServer server, DimensionSettings settings, int idx) {
