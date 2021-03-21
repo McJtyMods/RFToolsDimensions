@@ -1,4 +1,4 @@
-Upcoming:
+1.16-7.0.7-beta:
 - Fixed a few conflicting dimlet workbench recipes for liquid spheres and cubes
 - Fixed a serious chunk generation error in the normal terrain type. After reloading the world new chunks would fall back to island type generation
 
