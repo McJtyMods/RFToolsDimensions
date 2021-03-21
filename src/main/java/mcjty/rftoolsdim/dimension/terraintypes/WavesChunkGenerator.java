@@ -27,7 +27,7 @@ public class WavesChunkGenerator extends BaseChunkGenerator {
             ).apply(instance, WavesChunkGenerator::new));
 
     public WavesChunkGenerator(MinecraftServer server, DimensionSettings settings) {
-        this(server.func_244267_aX().getRegistry(Registry.BIOME_KEY), settings);
+        this(server.getDynamicRegistries().getRegistry(Registry.BIOME_KEY), settings);
     }
 
     public WavesChunkGenerator(Registry<Biome> registry, DimensionSettings settings) {

@@ -50,7 +50,7 @@ public class Registration {
 
     public static final RegistryObject<RFTFeature> RFTFEATURE = FEATURES.register(
             RFTFeature.RFTFEATURE_ID.getPath(),
-            () -> new RFTFeature(NoFeatureConfig.field_236558_a_));
+            () -> new RFTFeature(NoFeatureConfig.CODEC));
 
     public static Item.Properties createStandardProperties() {
         return new Item.Properties().group(RFToolsDim.setup.getTab());

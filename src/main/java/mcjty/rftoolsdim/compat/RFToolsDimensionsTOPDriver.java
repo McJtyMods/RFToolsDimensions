@@ -66,7 +66,7 @@ public class RFToolsDimensionsTOPDriver implements TOPDriver {
                 Block block = te.getAbsorbingBlock();
                 int pct = ((EssencesConfig.maxBlockAbsorption.get() - absorbing) * 100) / EssencesConfig.maxBlockAbsorption.get();
                 ItemStack stack = new ItemStack(block, 1);
-                probeInfo.text((new StringTextComponent("Block: ").append(new TranslationTextComponent(stack.getTranslationKey())).mergeStyle(TextFormatting.GREEN)))
+                probeInfo.text((new StringTextComponent("Block: ").appendSibling(new TranslationTextComponent(stack.getTranslationKey())).mergeStyle(TextFormatting.GREEN)))
                         .horizontal()
                         .progress(pct, 100, probeInfo.defaultProgressStyle().suffix("%"))
                         .item(stack);
@@ -83,7 +83,7 @@ public class RFToolsDimensionsTOPDriver implements TOPDriver {
                 Block block = te.getAbsorbingBlock();
                 if (block != null) {
                     int pct = ((EssencesConfig.maxFluidAbsorption.get() - absorbing) * 100) / EssencesConfig.maxFluidAbsorption.get();
-                    probeInfo.text((new StringTextComponent("Fluid: ").append(new TranslationTextComponent(block.getTranslationKey())).mergeStyle(TextFormatting.GREEN)))
+                    probeInfo.text((new StringTextComponent("Fluid: ").appendSibling(new TranslationTextComponent(block.getTranslationKey())).mergeStyle(TextFormatting.GREEN)))
                             .horizontal()
                             .progress(pct, 100, probeInfo.defaultProgressStyle().suffix("%"));
                 }
@@ -102,7 +102,7 @@ public class RFToolsDimensionsTOPDriver implements TOPDriver {
                 ResourceLocation id = new ResourceLocation(biome);
                 String trans = "biome." + id.getNamespace() + "." + id.getPath();
 
-                probeInfo.text((new StringTextComponent("Biome: ").append(new TranslationTextComponent(trans)).mergeStyle(TextFormatting.GREEN)))
+                probeInfo.text((new StringTextComponent("Biome: ").appendSibling(new TranslationTextComponent(trans)).mergeStyle(TextFormatting.GREEN)))
                         .horizontal()
                         .progress(pct, 100, probeInfo.defaultProgressStyle().suffix("%"));
             }, "Bad tile entity!");

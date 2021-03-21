@@ -174,7 +174,7 @@ public class NormalChunkGenerator extends BaseChunkGenerator {
     private final int noiseSizeZ;
 
     public NormalChunkGenerator(MinecraftServer server, DimensionSettings settings) {
-        this(server.func_244267_aX().getRegistry(Registry.BIOME_KEY), settings, SETTING_DEFAULT_OVERWORLD);
+        this(server.getDynamicRegistries().getRegistry(Registry.BIOME_KEY), settings, SETTING_DEFAULT_OVERWORLD);
     }
 
     public NormalChunkGenerator(Registry<Biome> registry, DimensionSettings settings) {
@@ -182,7 +182,7 @@ public class NormalChunkGenerator extends BaseChunkGenerator {
     }
 
     protected NormalChunkGenerator(MinecraftServer server, DimensionSettings settings, int idx) {
-        this(server.func_244267_aX().getRegistry(Registry.BIOME_KEY), settings, idx);
+        this(server.getDynamicRegistries().getRegistry(Registry.BIOME_KEY), settings, idx);
     }
 
     protected NormalChunkGenerator(Registry<Biome> registry, DimensionSettings settings, int idx) {

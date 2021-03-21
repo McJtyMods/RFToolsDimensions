@@ -38,7 +38,7 @@ public class DimensionalBlobEntity extends MonsterEntity {
     private int tickCounter = 5;
 
     private final static EntityPredicate PREDICATE = new EntityPredicate()
-            .setLineOfSiteRequired();
+            .setIgnoresLineOfSight();
 
     public DimensionalBlobEntity(EntityType<? extends MonsterEntity> type, World worldIn, DimletRarity rarity) {
         super(type, worldIn);

@@ -26,7 +26,7 @@ public class VoidChunkGenerator extends BaseChunkGenerator {
             ).apply(instance, VoidChunkGenerator::new));
 
     public VoidChunkGenerator(MinecraftServer server, DimensionSettings settings) {
-        this(server.func_244267_aX().getRegistry(Registry.BIOME_KEY), settings);
+        this(server.getDynamicRegistries().getRegistry(Registry.BIOME_KEY), settings);
     }
 
     public VoidChunkGenerator(Registry<Biome> registry, DimensionSettings settings) {

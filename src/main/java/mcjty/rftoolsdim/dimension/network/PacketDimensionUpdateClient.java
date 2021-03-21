@@ -15,7 +15,7 @@ public class PacketDimensionUpdateClient {
         if (player == null || key == null)
             return;
 
-        Set<RegistryKey<World>> worlds = player.connection.func_239164_m_();
+        Set<RegistryKey<World>> worlds = player.connection.getDimensionKeys();
         if (worlds == null)
             return;
 

@@ -111,7 +111,7 @@ public class DimensionHelper {
                 dimension.getDimensionType(),
                 chunkListener,
                 dimension.getChunkGenerator(),
-                dimensionGeneratorSettings.func_236227_h_(), // boolean: is-debug-world
+                dimensionGeneratorSettings.hasDebugChunkGenerator(),
                 BiomeManager.getHashedSeed(dimensionGeneratorSettings.getSeed()),
                 ImmutableList.of(), // "special spawn list"
                 // phantoms, raiders, travelling traders, cats are overworld special spawns

@@ -126,7 +126,7 @@ public class DimensionManager {
         TimeType timeType = compiledDescriptor.getTimeType();
 
         RegistryKey<World> key = RegistryKey.getOrCreateKey(Registry.WORLD_KEY, id);
-        DimensionType type = world.getServer().func_244267_aX().getRegistry(Registry.DIMENSION_TYPE_KEY).getOrDefault(timeType.getDimensionType());
+        DimensionType type = world.getServer().getDynamicRegistries().getRegistry(Registry.DIMENSION_TYPE_KEY).getOrDefault(timeType.getDimensionType());
         ServerWorld result = DimensionHelper.getOrCreateWorld(world.getServer(), key,
                 (server, registryKey) -> new Dimension(() -> type, terrainType.getGeneratorSupplier().apply(server, settings)));
 

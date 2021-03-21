@@ -12,7 +12,7 @@ public class ClientEventHandlers {
         if (event.phase == TickEvent.Phase.START) {
             ClientWorld world = Minecraft.getInstance().world;
 
-            world.func_239132_a_().setSkyRenderHandler((ticks, partialTicks, matrixStack, world1, mc) -> {
+            world.getDimensionRenderInfo().setSkyRenderHandler((ticks, partialTicks, matrixStack, world1, mc) -> {
 
             });
         }

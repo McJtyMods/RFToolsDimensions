@@ -28,7 +28,7 @@ public class FlatChunkGenerator extends BaseChunkGenerator {
             ).apply(instance, FlatChunkGenerator::new));
 
     public FlatChunkGenerator(MinecraftServer server, DimensionSettings settings) {
-        this(server.func_244267_aX().getRegistry(Registry.BIOME_KEY), settings);
+        this(server.getDynamicRegistries().getRegistry(Registry.BIOME_KEY), settings);
     }
 
     public static final int FLAT_LEVEL = 64;

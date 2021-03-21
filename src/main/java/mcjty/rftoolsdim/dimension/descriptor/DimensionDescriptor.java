@@ -110,7 +110,7 @@ public class DimensionDescriptor {
             player.sendStatusMessage(
                     new StringTextComponent(dimlet.getType().name() + ": ")
                     .mergeStyle(TextFormatting.AQUA)
-                    .append(new StringTextComponent(dimlet.getKey()).mergeStyle(TextFormatting.WHITE))
+                    .appendSibling(new StringTextComponent(dimlet.getKey()).mergeStyle(TextFormatting.WHITE))
                     , false);
         }
     }
