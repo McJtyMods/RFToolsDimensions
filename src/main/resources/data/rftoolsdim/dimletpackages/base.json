@@ -402,7 +402,7 @@
     "worldgen": true,
     "dimlet": true,
     "essence": {
-      "item": "minecraft:slime_ball"
+      "item": "minecraft:snowball"
     }
   },
   {
@@ -441,7 +441,7 @@
     "worldgen": true,
     "dimlet": true,
     "essence": {
-      "item": "minecraft:glass"
+      "item": "minecraft:ice"
     }
   }
 ]

@@ -1,3 +1,6 @@
+Upcoming:
+- Fixed a few conflicting dimlet workbench recipes for liquid spheres and cubes
+
 1.16-7.0.6-beta:
 - Fixed a problem with unknown dimlets crashing the dimlet researcher
 - Fixed a problem with loot generation in dimlet huts. For a given dimension the loot would be the same in every chest
