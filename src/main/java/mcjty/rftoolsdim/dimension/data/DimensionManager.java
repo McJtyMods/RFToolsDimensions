@@ -96,6 +96,22 @@ public class DimensionManager {
         return world;
     }
 
+    // Check if a given name is available for making a dimension
+    public boolean isNameAvailable(World world, String name) {
+        ResourceLocation id = new ResourceLocation(RFToolsDim.MODID, name);
+
+        PersistantDimensionManager mgr = PersistantDimensionManager.get(world);
+        DimensionData data = mgr.getData(id);
+        return data == null;
+    }
+
+    // Check if a given dimlet descriptor is available for making a new dimension
+    public boolean isDescriptorAvailable(World world, DimensionDescriptor descriptor) {
+        PersistantDimensionManager mgr = PersistantDimensionManager.get(world);
+        DimensionData data = mgr.getData(descriptor);
+        return data == null;
+    }
+
     public ServerWorld createWorld(World world, String name, long seed, DimensionDescriptor descriptor, DimensionDescriptor randomizedDescriptor) {
         ResourceLocation id = new ResourceLocation(RFToolsDim.MODID, name);
 
