@@ -17,6 +17,7 @@ import mcjty.lib.varia.Logging;
 import mcjty.rftoolsbase.tools.ManualHelper;
 import mcjty.rftoolsdim.dimension.DimensionConfig;
 import mcjty.rftoolsdim.dimension.data.DimensionData;
+import mcjty.rftoolsdim.dimension.data.DimensionManager;
 import mcjty.rftoolsdim.dimension.data.PersistantDimensionManager;
 import mcjty.rftoolsdim.dimension.descriptor.CompiledDescriptor;
 import mcjty.rftoolsdim.dimension.descriptor.DescriptorError;
@@ -139,7 +140,7 @@ public class EnscriberTileEntity extends GenericTileEntity {
             }
         }
 
-        DimensionDescriptor descriptor = convertToDimensionDescriptor(player, true);
+        DimensionDescriptor descriptor = convertToDimensionDescriptor(player);
         ItemStack realizedTab = createRealizedTab(descriptor);
 
         DimensionData data = PersistantDimensionManager.get(world).getData(descriptor);
@@ -147,6 +148,17 @@ public class EnscriberTileEntity extends GenericTileEntity {
             name = data.getId().getPath();
             player.sendStatusMessage(new StringTextComponent("This dimension already existed! If this is what you wanted then that's fine. Otherwise you need digit dimlets to make new unique dimensions. The dimlet sequence uniquely identifies a dimension. Names can't be changed")
                     .mergeStyle(TextFormatting.YELLOW), false);
+        } else {
+            if (!DimensionManager.get().isNameAvailable(world, name)) {
+                player.sendStatusMessage(new StringTextComponent("This name is already used by another dimension!")
+                        .mergeStyle(TextFormatting.YELLOW), false);
+                return;
+            }
+        }
+
+        // Clear out the dimlets
+        for (int i = 0 ; i < SIZE_DIMLETS ; i++) {
+            items.setStackInSlot(i, ItemStack.EMPTY);
         }
 
         realizedTab.getOrCreateTag().putString("name", name);
@@ -192,7 +204,7 @@ public class EnscriberTileEntity extends GenericTileEntity {
     /**
      * Convert the dimlets in the inventory to a dimension descriptor.
      */
-    private DimensionDescriptor convertToDimensionDescriptor(@Nullable PlayerEntity player, boolean forReal) {
+    private DimensionDescriptor convertToDimensionDescriptor(@Nullable PlayerEntity player) {
         DimensionDescriptor descriptor = new DimensionDescriptor();
         List<DimletKey> dimlets = descriptor.getDimlets();
 
@@ -211,8 +223,6 @@ public class EnscriberTileEntity extends GenericTileEntity {
                     if (tagCompound != null && tagCompound.getLong("forcedSeed") != 0) {
                         forcedSeed = tagCompound.getLong("forcedSeed");
                     }
-                    if (forReal) {
-                    items.setStackInSlot(i + SLOT_DIMLETS, ItemStack.EMPTY);}
                 } else {
                     if (player != null) {
                         Logging.warn(player, "Dimlet " + key.getType().name() + "." + key.getKey() + " was not included in the tab because it is blacklisted");
@@ -224,7 +234,7 @@ public class EnscriberTileEntity extends GenericTileEntity {
     }
 
     private void validateDimlets() {
-        DimensionDescriptor descriptor = convertToDimensionDescriptor(null, false);
+        DimensionDescriptor descriptor = convertToDimensionDescriptor(null);
         CompiledDescriptor compiledDescriptor = new CompiledDescriptor();
         error = compiledDescriptor.compile(descriptor, DimensionDescriptor.EMPTY);  // We just need to check the descriptor. Not randomized
     }

@@ -202,7 +202,6 @@ public class DimensionBuilderTileEntity extends GenericTileEntity implements ITi
 
     private int createDimensionTick(CompoundNBT tagCompound, int ticksLeft) {
 
-
         // @todo 1.16
 //        if (GeneralConfiguration.dimensionBuilderNeedsOwner) {
 //            if (getOwnerUUID() == null) {
@@ -225,12 +224,20 @@ public class DimensionBuilderTileEntity extends GenericTileEntity implements ITi
 //        }
         errorMode = OK;
 
+        // If we are creating a dimension we should reserve the name
+        String name = tagCompound.getString("name");
+        DimensionManager.get().markReservedName(name);
 
         int createCost = tagCompound.getInt("rfCreateCost");
         Float inf = infusableHandler.map(IInfusable::getInfusedFactor).orElse(0.0f);
         createCost = (int) (createCost * (2.0f - inf) / 2.0f);
 
         if (isCheaterDimension(tagCompound) || (energyStorage.getEnergyStored() >= createCost)) {
+            if (!DimensionManager.get().isNameAvailable(world, name)) {
+                // The name is not available. Stop building!
+                return ticksLeft;
+            }
+
             if (isCheaterDimension(tagCompound)) {
                 ticksLeft = 0;
             } else {
@@ -246,12 +253,20 @@ public class DimensionBuilderTileEntity extends GenericTileEntity implements ITi
             }
             tagCompound.putInt("ticksLeft", ticksLeft);
             if (ticksLeft <= 0) {
-                String name = tagCompound.getString("name");
                 String descriptorString = tagCompound.getString("descriptor");
                 DimensionDescriptor descriptor = new DimensionDescriptor();
                 descriptor.read(descriptorString);
 
                 DimensionDescriptor randomizedDescriptor = descriptor.createRandomizedDescriptor(random);
+
+                if (!DimensionManager.get().isNameAvailable(world, name)) {
+                    // Error!
+                    return 0;
+                }
+                if (!DimensionManager.get().isDescriptorAvailable(world, descriptor)) {
+                    // Error!
+                    return 0;
+                }
 
                 long seed = random.nextLong();
                 ServerWorld newworld = DimensionManager.get().createWorld(this.world, name, seed, descriptor, randomizedDescriptor);

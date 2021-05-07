@@ -37,6 +37,10 @@ public class DimensionManager {
     // (because it may be overwritten by other things)
     private final Map<ResourceLocation, Integer> platformHeightMap = new HashMap<>();
 
+    // A transient map containing dimension names that are being created (with a timestamp). It's up to the
+    // dimension builder to keep this up to date
+    private final Map<String, Long> reservedDimensionNames = new HashMap<>();
+
     private static final DimensionManager instance = new DimensionManager();
 
     public static DimensionManager get() {
@@ -80,6 +84,11 @@ public class DimensionManager {
         return compiledDescriptorMap.get(id);
     }
 
+    // Mark a name of a dimension as being reserved for a given time
+    public void markReservedName(String name) {
+        reservedDimensionNames.put(name, System.currentTimeMillis());
+    }
+
     // Function to get the RFTools Dimensions world for the given name. Supports both rftoolsdim:xxx notation
     // as well as just xxx
     public World getDimWorld(String name) {
@@ -98,6 +107,13 @@ public class DimensionManager {
 
     // Check if a given name is available for making a dimension
     public boolean isNameAvailable(World world, String name) {
+        long currentTime = System.currentTimeMillis();
+        Long reservedTime = reservedDimensionNames.getOrDefault(name, currentTime - 1000000);
+        if (currentTime > reservedTime + 10000) {
+            // We wait at least 10 seconds before freeing a reserved name
+            return false;
+        }
+
         ResourceLocation id = new ResourceLocation(RFToolsDim.MODID, name);
 
         PersistantDimensionManager mgr = PersistantDimensionManager.get(world);
