@@ -1,5 +1,5 @@
 Upcoming:
-- Fixed a problem where a dimension could be created with a duplicate name causing a crash
+- Fixed a problem where a dimension could be created with a duplicate name causing a crash. There are now multiple checks as well as a visual indication that there is a problem
 
 1.16-7.0.7-beta:
 - Fixed a few conflicting dimlet workbench recipes for liquid spheres and cubes

@@ -16,7 +16,6 @@ import mcjty.lib.container.GenericContainer;
 import mcjty.lib.container.NoDirectionItemHander;
 import mcjty.lib.tileentity.GenericEnergyStorage;
 import mcjty.lib.tileentity.GenericTileEntity;
-import mcjty.lib.varia.DimensionId;
 import mcjty.rftoolsbase.tools.ManualHelper;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.compat.RFToolsUtilityCompat;
@@ -105,6 +104,7 @@ public class DimensionBuilderTileEntity extends GenericTileEntity implements ITi
     public static int OK = 0;
     public static int ERROR_NOOWNER = -1;
     public static int ERROR_TOOMANYDIMENSIONS = -2;
+    public static int ERROR_COLLISION = -3;
     private int errorMode = 0;
     private int clientErrorMode = 0;
 
@@ -134,12 +134,31 @@ public class DimensionBuilderTileEntity extends GenericTileEntity implements ITi
         };
     }
 
+    @Nullable
+    @Override
+    public SUpdateTileEntityPacket getUpdatePacket() {
+        CompoundNBT nbtTag = new CompoundNBT();
+        this.writeClientDataToNBT(nbtTag);
+        nbtTag.putInt("errorMode", errorMode);
+        return new SUpdateTileEntityPacket(pos, 1, nbtTag);
+    }
+
+    @Override
+    public CompoundNBT getUpdateTag() {
+        CompoundNBT updateTag = super.getUpdateTag();
+        updateTag.putInt("errorMode", errorMode);
+        return updateTag;
+    }
+
     @Override
     public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket packet) {
         int oldstate = state;
+        int oldError = errorMode;
         super.onDataPacket(net, packet);
-        if (oldstate != state) {
+        errorMode = packet.getNbtCompound().getInt("errorMode");
+        if (oldstate != state || oldError != this.errorMode) {
             getWorld().markBlockRangeForRenderUpdate(pos, getBlockState(), getBlockState());
+            clientErrorMode = errorMode;
         }
     }
 
@@ -226,15 +245,17 @@ public class DimensionBuilderTileEntity extends GenericTileEntity implements ITi
 
         // If we are creating a dimension we should reserve the name
         String name = tagCompound.getString("name");
-        DimensionManager.get().markReservedName(name);
+        DimensionManager.get().markReservedName(world, pos, name);
 
         int createCost = tagCompound.getInt("rfCreateCost");
         Float inf = infusableHandler.map(IInfusable::getInfusedFactor).orElse(0.0f);
         createCost = (int) (createCost * (2.0f - inf) / 2.0f);
 
         if (isCheaterDimension(tagCompound) || (energyStorage.getEnergyStored() >= createCost)) {
-            if (!DimensionManager.get().isNameAvailable(world, name)) {
+            if (!DimensionManager.get().isNameAvailable(world, pos, name)) {
                 // The name is not available. Stop building!
+                errorMode = ERROR_COLLISION;
+                markDirtyClient();
                 return ticksLeft;
             }
 
@@ -259,12 +280,16 @@ public class DimensionBuilderTileEntity extends GenericTileEntity implements ITi
 
                 DimensionDescriptor randomizedDescriptor = descriptor.createRandomizedDescriptor(random);
 
-                if (!DimensionManager.get().isNameAvailable(world, name)) {
+                if (!DimensionManager.get().isNameAvailable(world, pos, name)) {
                     // Error!
+                    errorMode = ERROR_COLLISION;
+                    markDirtyClient();
                     return 0;
                 }
                 if (!DimensionManager.get().isDescriptorAvailable(world, descriptor)) {
                     // Error!
+                    errorMode = ERROR_COLLISION;
+                    markDirtyClient();
                     return 0;
                 }
 

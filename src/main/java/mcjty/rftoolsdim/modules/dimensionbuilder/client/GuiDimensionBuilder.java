@@ -77,6 +77,10 @@ public class GuiDimensionBuilder extends GenericGuiContainer<DimensionBuilderTil
             error1.text("Too many");
             error2.text("dimensions!");
             percentage.text("");
+        } else if (error == DimensionBuilderTileEntity.ERROR_COLLISION) {
+            error1.text("Duplicate");
+            error2.text("name!");
+            percentage.text("");
         } else {
             int px = ((pct - 1) / 4) % 5;
             int py = ((pct - 1) / 4) / 5;

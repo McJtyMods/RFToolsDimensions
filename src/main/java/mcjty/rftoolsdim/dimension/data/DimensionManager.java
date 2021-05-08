@@ -13,6 +13,7 @@ import mcjty.rftoolsdim.dimension.terraintypes.TerrainType;
 import mcjty.rftoolsdim.dimension.tools.DimensionHelper;
 import net.minecraft.util.RegistryKey;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.Dimension;
 import net.minecraft.world.DimensionType;
@@ -39,7 +40,18 @@ public class DimensionManager {
 
     // A transient map containing dimension names that are being created (with a timestamp). It's up to the
     // dimension builder to keep this up to date
-    private final Map<String, Long> reservedDimensionNames = new HashMap<>();
+    private static class ReservedName {
+        private long reservationTime;
+        private final BlockPos pos;
+        private final RegistryKey<World> world;
+
+        public ReservedName(World world, BlockPos pos, long reservationTime) {
+            this.pos = pos;
+            this.world = world.getDimensionKey();
+            this.reservationTime = reservationTime;
+        }
+    }
+    private final Map<String, ReservedName> reservedDimensionNames = new HashMap<>();
 
     private static final DimensionManager instance = new DimensionManager();
 
@@ -85,8 +97,8 @@ public class DimensionManager {
     }
 
     // Mark a name of a dimension as being reserved for a given time
-    public void markReservedName(String name) {
-        reservedDimensionNames.put(name, System.currentTimeMillis());
+    public void markReservedName(World world, BlockPos pos, String name) {
+        reservedDimensionNames.put(name, new ReservedName(world, pos, System.currentTimeMillis()));
     }
 
     // Function to get the RFTools Dimensions world for the given name. Supports both rftoolsdim:xxx notation
@@ -106,12 +118,17 @@ public class DimensionManager {
     }
 
     // Check if a given name is available for making a dimension
-    public boolean isNameAvailable(World world, String name) {
+    // If pos is null we don't check on position
+    public boolean isNameAvailable(World world, @Nullable BlockPos pos, String name) {
         long currentTime = System.currentTimeMillis();
-        Long reservedTime = reservedDimensionNames.getOrDefault(name, currentTime - 1000000);
-        if (currentTime > reservedTime + 10000) {
+        ReservedName reservedName = reservedDimensionNames.get(name);
+        if (reservedName != null) {
             // We wait at least 10 seconds before freeing a reserved name
-            return false;
+            if (currentTime < reservedName.reservationTime + 10000) {
+                if (!reservedName.pos.equals(pos) || !reservedName.world.equals(world.getDimensionKey())) {
+                    return false;
+                }
+            }
         }
 
         ResourceLocation id = new ResourceLocation(RFToolsDim.MODID, name);

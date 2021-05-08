@@ -149,7 +149,7 @@ public class EnscriberTileEntity extends GenericTileEntity {
             player.sendStatusMessage(new StringTextComponent("This dimension already existed! If this is what you wanted then that's fine. Otherwise you need digit dimlets to make new unique dimensions. The dimlet sequence uniquely identifies a dimension. Names can't be changed")
                     .mergeStyle(TextFormatting.YELLOW), false);
         } else {
-            if (!DimensionManager.get().isNameAvailable(world, name)) {
+            if (!DimensionManager.get().isNameAvailable(world, null, name)) {
                 player.sendStatusMessage(new StringTextComponent("This name is already used by another dimension!")
                         .mergeStyle(TextFormatting.YELLOW), false);
                 return;

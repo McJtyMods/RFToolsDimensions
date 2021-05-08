@@ -25,13 +25,24 @@ public class DimensionBuilderRenderer extends TileEntityRenderer<DimensionBuilde
     @Override
     public void render(DimensionBuilderTileEntity te, float v, MatrixStack matrixStack, IRenderTypeBuffer buffer, int combinedLight, int combinedOverlay) {
 
+        int errorMode = te.getErrorMode();
+        int r;
+        int g;
+        int b;
+        if (errorMode != 0) {
+            r = 255;
+            g = b = 0;
+        } else {
+            r = g = b = 255;
+        }
+
         te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
             if (!h.getStackInSlot(DimensionBuilderTileEntity.SLOT_DIMENSION_TAB).isEmpty()) {
                 matrixStack.push();
                 matrixStack.translate(0.1, 1.2, 0.1);
                 matrixStack.scale(0.8f, 0.8f, 0.8f);
                 RenderHelper.renderBillboardQuadBright(matrixStack, buffer, 0.5f, STAGES, RenderSettings.builder()
-                        .color(255, 255, 255)
+                        .color(r, g, b)
                         .renderType(CustomRenderTypes.TRANSLUCENT_LIGHTNING_NOLIGHTMAPS)
 //                        .renderType(RenderType.getTranslucent())
                         .alpha(128)
