@@ -15,7 +15,7 @@ public class DimletDictionary {
     private static final DimletDictionary INSTANCE = new DimletDictionary();
 
     private final Map<DimletKey, DimletSettings> dimlets = new HashMap<>();
-    private final Map<DimletRarity, List<DimletKey>> dimletsByRarity = new HashMap<>();
+    private final Map<DimletRarity, List<DimletKey>> dimletsByRarity = new HashMap<>(); // Only dimlets with worldgen == true
     private final Map<Pair<DimletType, DimletRarity>, List<DimletKey>> dimletsByRarityAndType = new HashMap<>();
 
     public static DimletDictionary get() {
@@ -61,6 +61,7 @@ public class DimletDictionary {
     }
 
     @Nullable
+    /// This only returns dimlets with worldgen == rue
     public DimletKey getRandomDimlet(DimletRarity rarity, Random random) {
         List<DimletKey> keys = getDimletsByRarity(rarity);
         if (keys.isEmpty()) {
@@ -83,6 +84,7 @@ public class DimletDictionary {
 
 
     @Nullable
+    // This only returns dimlet with worldgen == true
     public DimletKey getRandomDimlet(DimletType type, Random random) {
         DimletKey key = getRandomDimletInternal(type, DimletRarity.COMMON, random);
         if (key == null) {
@@ -133,13 +135,16 @@ public class DimletDictionary {
         }
     }
 
+    // This returns only dimlets with worldgen == true
     private List<DimletKey> getDimletsByRarity(DimletRarity rarity) {
         if (!dimletsByRarity.containsKey(rarity)) {
             List<DimletKey> dimletKeys = new ArrayList<>();
             for (Map.Entry<DimletKey, DimletSettings> entry : dimlets.entrySet()) {
                 if (entry.getValue().getRarity() == rarity) {
                     DimletKey key = entry.getKey();
-                    dimletKeys.add(key);
+                    if (getSettings(key).isWorldgen()) {
+                        dimletKeys.add(key);
+                    }
                 }
             }
             dimletsByRarity.put(rarity, dimletKeys);
