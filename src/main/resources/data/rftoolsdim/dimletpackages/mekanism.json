@@ -1081,16 +1081,6 @@
   },
   {
     "type": "block",
-    "key": "mekanismadditions:obsidian_tnt",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
     "key": "mekanismadditions:orange_glow_panel",
     "rarity": "common",
     "create": 10,

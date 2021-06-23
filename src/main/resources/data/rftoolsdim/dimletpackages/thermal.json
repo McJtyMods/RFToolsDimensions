@@ -281,26 +281,6 @@
   },
   {
     "type": "block",
-    "key": "thermal:earth_tnt",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "thermal:eggplant",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
     "key": "thermal:eggplant_block",
     "rarity": "common",
     "create": 10,
@@ -342,16 +322,6 @@
   {
     "type": "block",
     "key": "thermal:energy_cell_frame",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "thermal:fire_tnt",
     "rarity": "common",
     "create": 10,
     "maintain": 10,
@@ -461,16 +431,6 @@
   },
   {
     "type": "block",
-    "key": "thermal:ice_tnt",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
     "key": "thermal:invar_block",
     "rarity": "common",
     "create": 10,
@@ -512,16 +472,6 @@
   {
     "type": "block",
     "key": "thermal:light_gray_rockwool",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "thermal:lightning_tnt",
     "rarity": "common",
     "create": 10,
     "maintain": 10,
@@ -621,16 +571,6 @@
   },
   {
     "type": "block",
-    "key": "thermal:nuke_tnt",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
     "key": "thermal:obsidian_glass",
     "rarity": "common",
     "create": 10,
@@ -702,16 +642,6 @@
   {
     "type": "block",
     "key": "thermal:peanut_block",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "thermal:phyto_tnt",
     "rarity": "common",
     "create": 10,
     "maintain": 10,
