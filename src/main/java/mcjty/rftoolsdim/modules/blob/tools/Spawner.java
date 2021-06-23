@@ -67,6 +67,9 @@ public class Spawner {
     @Nullable
     private static BlockPos getValidSpawnablePosition(Random random, IWorldReader worldIn, int x, int z) {
         int height = worldIn.getHeight(Heightmap.Type.WORLD_SURFACE, x, z);
+        if (height <= 3) {
+            return null;
+        }
         height = random.nextInt(height - 3) + 3;
         BlockPos blockPos = new BlockPos(x, height-1, z);
         while (!isValidSpawnPos(worldIn, blockPos)) {
