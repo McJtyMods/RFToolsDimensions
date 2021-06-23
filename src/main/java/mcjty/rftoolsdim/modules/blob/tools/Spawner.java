@@ -13,6 +13,7 @@ import net.minecraft.world.IWorldReader;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.server.ServerWorld;
 
+import javax.annotation.Nullable;
 import java.util.Random;
 
 public class Spawner {
@@ -30,6 +31,9 @@ public class Spawner {
         int z = (int) (player.getPosZ() + distanceZ);
         EntityType<DimensionalBlobEntity> type = randomBlob(compiledDescriptor, data, random);
         BlockPos pos = getValidSpawnablePosition(random, world, x, z);
+        if (pos == null) {
+            return;
+        }
         boolean nocollisions = world.hasNoCollisions(type.getBoundingBoxWithSizeApplied(x, pos.getY(), z));
         boolean canSpawn = true;//EntitySpawnPlacementRegistry.canSpawnEntity(type, world, SpawnReason.NATURAL, new BlockPos(x, pos.getY(), z), random);
         if (!nocollisions || !canSpawn) {
@@ -60,12 +64,16 @@ public class Spawner {
         return BlobModule.DIMENSIONAL_BLOB_COMMON.get();
     }
 
+    @Nullable
     private static BlockPos getValidSpawnablePosition(Random random, IWorldReader worldIn, int x, int z) {
-        int height = worldIn.getHeight(Heightmap.Type.WORLD_SURFACE, x, z) + 1;
-        height = random.nextInt(height + 1);
+        int height = worldIn.getHeight(Heightmap.Type.WORLD_SURFACE, x, z);
+        height = random.nextInt(height - 3) + 3;
         BlockPos blockPos = new BlockPos(x, height-1, z);
-        while (blockPos.getY() > 1 && !isValidSpawnPos(worldIn, blockPos)) {
+        while (!isValidSpawnPos(worldIn, blockPos)) {
             blockPos = blockPos.down();
+            if (blockPos.getY() <= 1) {
+                return null;
+            }
         }
         return blockPos;
     }
