@@ -7,6 +7,7 @@ import mcjty.rftoolsdim.dimension.data.PersistantDimensionManager;
 import mcjty.rftoolsdim.dimension.descriptor.CompiledDescriptor;
 import mcjty.rftoolsdim.dimension.features.RFTFeature;
 import mcjty.rftoolsdim.dimension.power.PowerHandler;
+import mcjty.rftoolsdim.dimension.terraintypes.AttributeType;
 import mcjty.rftoolsdim.modules.blob.entities.DimensionalBlobEntity;
 import mcjty.rftoolsdim.modules.blob.tools.Spawner;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -48,11 +49,13 @@ public class ForgeEventHandlers {
                 ServerWorld serverWorld = (ServerWorld) event.world;
                 CompiledDescriptor compiledDescriptor = DimensionManager.get().getCompiledDescriptor(serverWorld);
                 DimensionData data = PersistantDimensionManager.get(serverWorld).getData(serverWorld.getDimensionKey().getLocation());
-                long count = serverWorld.getEntities().filter(s -> s instanceof DimensionalBlobEntity).count();
-                if (count < 20) {
-                    for (ServerPlayerEntity player : serverWorld.getPlayers()) {
-                        for (int i = 0 ; i < 5 ; i++) {
-                            Spawner.spawnOne(serverWorld, player, compiledDescriptor, data, random);
+                if (!compiledDescriptor.getAttributeTypes().contains(AttributeType.NOBLOBS)) {
+                    long count = serverWorld.getEntities().filter(s -> s instanceof DimensionalBlobEntity).count();
+                    if (count < 20) {
+                        for (ServerPlayerEntity player : serverWorld.getPlayers()) {
+                            for (int i = 0; i < 5; i++) {
+                                Spawner.spawnOne(serverWorld, player, compiledDescriptor, data, random);
+                            }
                         }
                     }
                 }

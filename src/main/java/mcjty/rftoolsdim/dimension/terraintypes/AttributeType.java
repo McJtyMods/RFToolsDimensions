@@ -11,7 +11,8 @@ public enum AttributeType {
     ELEVATED("elevated", KnowledgeSet.SET1),
     NOBIOMESURFACE("nobiomesurface", KnowledgeSet.SET1),
     NOOCEANS("nooceans", KnowledgeSet.SET1),
-    NOBEDROCK("nobedrock", KnowledgeSet.SET1);
+    NOBEDROCK("nobedrock", KnowledgeSet.SET1),
+    NOBLOBS("noblobs", KnowledgeSet.SET1);
 
     private final String name;
     private final KnowledgeSet set;
