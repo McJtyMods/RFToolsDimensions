@@ -22,7 +22,7 @@ public class VoidChunkGenerator extends BaseChunkGenerator {
     public static final Codec<VoidChunkGenerator> CODEC = RecordCodecBuilder.create(instance ->
             instance.group(
                     RegistryLookupCodec.create(Registry.BIOME_REGISTRY).forGetter(VoidChunkGenerator::getBiomeRegistry),
-                    DimensionSettings.SETTINGS_CODEC.fieldOf("settings").forGetter(VoidChunkGenerator::getSettings)
+                    DimensionSettings.SETTINGS_CODEC.fieldOf("settings").forGetter(VoidChunkGenerator::getDimensionSettings)
             ).apply(instance, VoidChunkGenerator::new));
 
     public VoidChunkGenerator(MinecraftServer server, DimensionSettings settings) {
@@ -40,7 +40,7 @@ public class VoidChunkGenerator extends BaseChunkGenerator {
 
     @Override
     public ChunkGenerator withSeed(long l) {
-        return new VoidChunkGenerator(getBiomeRegistry(), getSettings());
+        return new VoidChunkGenerator(getBiomeRegistry(), getDimensionSettings());
     }
 
     @Override

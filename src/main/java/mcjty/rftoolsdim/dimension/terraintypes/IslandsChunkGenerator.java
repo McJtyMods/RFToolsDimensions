@@ -17,7 +17,7 @@ public class IslandsChunkGenerator extends NormalChunkGenerator {
     public static final Codec<IslandsChunkGenerator> CODEC = RecordCodecBuilder.create(instance ->
             instance.group(
                     RegistryLookupCodec.create(Registry.BIOME_REGISTRY).forGetter(IslandsChunkGenerator::getBiomeRegistry),
-                    DimensionSettings.SETTINGS_CODEC.fieldOf("settings").forGetter(IslandsChunkGenerator::getSettings)
+                    DimensionSettings.SETTINGS_CODEC.fieldOf("settings").forGetter(IslandsChunkGenerator::getDimensionSettings)
             ).apply(instance, IslandsChunkGenerator::new));
 
 

@@ -47,7 +47,7 @@ public class CommandDump implements Command<CommandSource> {
 
         ChunkGenerator generator = world.getChunkSource().generator;
         if (generator instanceof BaseChunkGenerator) {
-            DimensionSettings settings = ((BaseChunkGenerator) generator).getSettings();
+            DimensionSettings settings = ((BaseChunkGenerator) generator).getDimensionSettings();
             feedback(context, TextFormatting.BLUE + "Seed: " + TextFormatting.WHITE + settings.getSeed());
         }
 

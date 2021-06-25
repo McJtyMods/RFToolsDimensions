@@ -42,7 +42,7 @@ public class NormalChunkGenerator extends BaseChunkGenerator {
     public static final Codec<NormalChunkGenerator> CODEC = RecordCodecBuilder.create(instance ->
             instance.group(
                     RegistryLookupCodec.create(Registry.BIOME_REGISTRY).forGetter(NormalChunkGenerator::getBiomeRegistry),
-                    DimensionSettings.SETTINGS_CODEC.fieldOf("settings").forGetter(NormalChunkGenerator::getSettings)
+                    DimensionSettings.SETTINGS_CODEC.fieldOf("settings").forGetter(NormalChunkGenerator::getDimensionSettings)
             ).apply(instance, NormalChunkGenerator::new));
 
     private static final float[] FLOATS1 = Util.make(new float[13824], (floats) -> {
@@ -227,7 +227,7 @@ public class NormalChunkGenerator extends BaseChunkGenerator {
 
     @Override
     public ChunkGenerator withSeed(long l) {
-        return new NormalChunkGenerator(getBiomeRegistry(), getSettings());
+        return new NormalChunkGenerator(getBiomeRegistry(), getDimensionSettings());
     }
 
     @Override

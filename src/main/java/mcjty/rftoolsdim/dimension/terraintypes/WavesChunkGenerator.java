@@ -23,7 +23,7 @@ public class WavesChunkGenerator extends BaseChunkGenerator {
     public static final Codec<WavesChunkGenerator> CODEC = RecordCodecBuilder.create(instance ->
             instance.group(
                     RegistryLookupCodec.create(Registry.BIOME_REGISTRY).forGetter(WavesChunkGenerator::getBiomeRegistry),
-                    DimensionSettings.SETTINGS_CODEC.fieldOf("settings").forGetter(WavesChunkGenerator::getSettings)
+                    DimensionSettings.SETTINGS_CODEC.fieldOf("settings").forGetter(WavesChunkGenerator::getDimensionSettings)
             ).apply(instance, WavesChunkGenerator::new));
 
     public WavesChunkGenerator(MinecraftServer server, DimensionSettings settings) {
@@ -41,7 +41,7 @@ public class WavesChunkGenerator extends BaseChunkGenerator {
 
     @Override
     public ChunkGenerator withSeed(long l) {
-        return new WavesChunkGenerator(getBiomeRegistry(), getSettings());
+        return new WavesChunkGenerator(getBiomeRegistry(), getDimensionSettings());
     }
 
     @Override

@@ -24,7 +24,7 @@ public class FlatChunkGenerator extends BaseChunkGenerator {
     public static final Codec<FlatChunkGenerator> CODEC = RecordCodecBuilder.create(instance ->
             instance.group(
                     RegistryLookupCodec.create(Registry.BIOME_REGISTRY).forGetter(FlatChunkGenerator::getBiomeRegistry),
-                    DimensionSettings.SETTINGS_CODEC.fieldOf("settings").forGetter(FlatChunkGenerator::getSettings)
+                    DimensionSettings.SETTINGS_CODEC.fieldOf("settings").forGetter(FlatChunkGenerator::getDimensionSettings)
             ).apply(instance, FlatChunkGenerator::new));
 
     public FlatChunkGenerator(MinecraftServer server, DimensionSettings settings) {
@@ -44,7 +44,7 @@ public class FlatChunkGenerator extends BaseChunkGenerator {
 
     @Override
     public ChunkGenerator withSeed(long l) {
-        return new FlatChunkGenerator(getBiomeRegistry(), getSettings());
+        return new FlatChunkGenerator(getBiomeRegistry(), getDimensionSettings());
     }
 
     @Override

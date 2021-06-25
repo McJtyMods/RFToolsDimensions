@@ -49,7 +49,7 @@ public abstract class BaseChunkGenerator extends ChunkGenerator {
         }
     }
 
-    public DimensionSettings getSettings() {
+    public DimensionSettings getDimensionSettings() {
         return settings;
     }
 

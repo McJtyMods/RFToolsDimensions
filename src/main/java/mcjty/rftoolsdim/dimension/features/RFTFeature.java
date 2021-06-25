@@ -55,7 +55,7 @@ public class RFTFeature extends Feature<NoFeatureConfig> {
     @Override
     public boolean place(ISeedReader reader, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
         if (generator instanceof BaseChunkGenerator) {
-            CompiledDescriptor compiledDescriptor = ((BaseChunkGenerator) generator).getSettings().getCompiledDescriptor();
+            CompiledDescriptor compiledDescriptor = ((BaseChunkGenerator) generator).getDimensionSettings().getCompiledDescriptor();
             Set<CompiledFeature> features = compiledDescriptor.getFeatures();
             if (features.stream().anyMatch(f -> f.getFeatureType().equals(FeatureType.NONE))) {
                 // Inhibit all other features

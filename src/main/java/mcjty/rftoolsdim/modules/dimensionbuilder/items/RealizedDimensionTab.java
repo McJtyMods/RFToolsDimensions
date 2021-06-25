@@ -58,7 +58,7 @@ public class RealizedDimensionTab extends Item {
                 ServerWorld serverWorld = id.getWorld();
                 ChunkGenerator generator = serverWorld.getChunkSource().generator;
                 if (generator instanceof BaseChunkGenerator) {
-                    DimensionSettings settings = ((BaseChunkGenerator) generator).getSettings();
+                    DimensionSettings settings = ((BaseChunkGenerator) generator).getDimensionSettings();
                     player.displayClientMessage(new StringTextComponent(TextFormatting.BLUE + "Seed: " + TextFormatting.WHITE + settings.getSeed()), false);
                 }
             }
