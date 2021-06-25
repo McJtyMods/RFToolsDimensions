@@ -21,14 +21,14 @@ public class OffsetBlockReader implements IBlockReader {
 
     @Nullable
     @Override
-    public TileEntity getTileEntity(BlockPos pos) {
+    public TileEntity getBlockEntity(BlockPos pos) {
         return null;
     }
 
     @Override
     public BlockState getBlockState(BlockPos pos) {
         int y = pos.getY();
-        return y >= 0 && y <= offset ? belowState : Blocks.AIR.getDefaultState();
+        return y >= 0 && y <= offset ? belowState : Blocks.AIR.defaultBlockState();
     }
 
     public FluidState getFluidState(BlockPos pos) {

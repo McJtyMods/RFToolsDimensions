@@ -40,7 +40,7 @@ public class DimletPackages {
 
     private static void writeBiomes(JsonArray root, String modid) {
         for (Map.Entry<RegistryKey<Biome>, Biome> entry : ForgeRegistries.BIOMES.getEntries()) {
-            ResourceLocation id = entry.getKey().getLocation();
+            ResourceLocation id = entry.getKey().location();
             if (modid.toLowerCase().equals(id.getNamespace())) {
                 JsonObject object = new JsonObject();
                 object.addProperty("type", DimletType.BIOME.name().toLowerCase());
@@ -57,10 +57,10 @@ public class DimletPackages {
 
     private static void writeFluids(JsonArray root, String modid) {
         for (Map.Entry<RegistryKey<Fluid>, Fluid> entry : ForgeRegistries.FLUIDS.getEntries()) {
-            ResourceLocation id = entry.getKey().getLocation();
+            ResourceLocation id = entry.getKey().location();
             if (modid.toLowerCase().equals(id.getNamespace())) {
                 Fluid fluid = entry.getValue();
-                if (fluid.getDefaultState().getBlockState().getBlock() != Blocks.AIR) {
+                if (fluid.defaultFluidState().createLegacyBlock().getBlock() != Blocks.AIR) {
                     JsonObject object = new JsonObject();
                     object.addProperty("type", DimletType.FLUID.name().toLowerCase());
                     object.addProperty("key", id.toString());
@@ -77,10 +77,10 @@ public class DimletPackages {
 
     private static void writeBlocks(JsonArray root, String modid) {
         for (Map.Entry<RegistryKey<Block>, Block> entry : ForgeRegistries.BLOCKS.getEntries()) {
-            ResourceLocation id = entry.getKey().getLocation();
+            ResourceLocation id = entry.getKey().location();
             if (modid.toLowerCase().equals(id.getNamespace())) {
                 Block block = entry.getValue();
-                boolean hasTileEntity = block.hasTileEntity(block.getDefaultState());
+                boolean hasTileEntity = block.hasTileEntity(block.defaultBlockState());
                 // Skip blocks with tile entities
                 if (!hasTileEntity) {
                     boolean isOre = block.getTags().contains(Tags.Blocks.ORES.getName());

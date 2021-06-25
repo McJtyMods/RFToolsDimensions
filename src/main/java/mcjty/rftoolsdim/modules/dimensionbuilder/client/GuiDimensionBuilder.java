@@ -33,8 +33,8 @@ public class GuiDimensionBuilder extends GenericGuiContainer<DimensionBuilderTil
     public GuiDimensionBuilder(DimensionBuilderTileEntity tileEntity, GenericContainer container, PlayerInventory inventory) {
         super(tileEntity, container, inventory, DimensionBuilderModule.DIMENSION_BUILDER.get().getManualEntry());
 
-        xSize = BUILDER_WIDTH;
-        ySize = BUILDER_HEIGHT;
+        imageWidth = BUILDER_WIDTH;
+        imageHeight = BUILDER_HEIGHT;
     }
 
     @Override
@@ -51,7 +51,7 @@ public class GuiDimensionBuilder extends GenericGuiContainer<DimensionBuilderTil
         ImageChoiceLabel redstoneMode = initRedstoneMode();
 
         Panel toplevel = positional().background(iconLocation).children(energyBar, stages, percentage, error1, error2, redstoneMode);
-        toplevel.bounds(guiLeft, guiTop, xSize, ySize);
+        toplevel.bounds(leftPos, topPos, imageWidth, imageHeight);
 
         window = new Window(this, toplevel);
     }
@@ -65,7 +65,7 @@ public class GuiDimensionBuilder extends GenericGuiContainer<DimensionBuilderTil
     }
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(MatrixStack matrixStack, float partialTicks, int x, int y) {
+    protected void renderBg(MatrixStack matrixStack, float partialTicks, int x, int y) {
         int pct = tileEntity.getBuildPercentage();
         int error = tileEntity.getErrorMode();
 

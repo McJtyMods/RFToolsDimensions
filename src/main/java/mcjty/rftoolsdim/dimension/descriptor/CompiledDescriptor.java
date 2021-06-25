@@ -112,10 +112,10 @@ public class CompiledDescriptor {
             biomeControllerType = BiomeControllerType.SINGLE;
         }
         if (baseBlocks.isEmpty()) {
-            baseBlocks.add(Blocks.STONE.getDefaultState());
+            baseBlocks.add(Blocks.STONE.defaultBlockState());
         }
         if (baseLiquid == null) {
-            baseLiquid = Blocks.WATER.getDefaultState();
+            baseLiquid = Blocks.WATER.defaultBlockState();
         }
     }
 
@@ -139,7 +139,7 @@ public class CompiledDescriptor {
                 baseBlocks.addAll(collectedBlocks);
                 collectedBlocks.clear();
                 if (baseBlocks.isEmpty()) {
-                    baseBlocks.add(Blocks.STONE.getDefaultState());
+                    baseBlocks.add(Blocks.STONE.defaultBlockState());
                 }
                 attributeTypes.addAll(collectedAttributes);
                 collectedAttributes.clear();
@@ -200,13 +200,13 @@ public class CompiledDescriptor {
                 compiledFeature.getBlocks().addAll(collectedBlocks);
                 collectedBlocks.clear();
                 if (compiledFeature.getBlocks().isEmpty()) {
-                    compiledFeature.getBlocks().add(Blocks.STONE.getDefaultState());
+                    compiledFeature.getBlocks().add(Blocks.STONE.defaultBlockState());
                 }
 
                 compiledFeature.getFluids().addAll(collectedFluids);
                 collectedFluids.clear();
                 if (compiledFeature.getFluids().isEmpty()) {
-                    compiledFeature.getFluids().add(Blocks.WATER.getDefaultState());
+                    compiledFeature.getFluids().add(Blocks.WATER.defaultBlockState());
                 }
 
                 features.add(compiledFeature);
@@ -217,7 +217,7 @@ public class CompiledDescriptor {
                 if (block == null) {
                     return ERROR(BAD_BLOCK, name);
                 }
-                collectedBlocks.add(block.getDefaultState());
+                collectedBlocks.add(block.defaultBlockState());
                 break;
             }
 
@@ -226,7 +226,7 @@ public class CompiledDescriptor {
                 if (fluid == null) {
                     return ERROR(BAD_FLUID, name);
                 }
-                BlockState blockState = fluid.getDefaultState().getBlockState();
+                BlockState blockState = fluid.defaultFluidState().createLegacyBlock();
                 if (blockState != null && !blockState.isAir()) {
                     collectedFluids.add(blockState);
                 } else {

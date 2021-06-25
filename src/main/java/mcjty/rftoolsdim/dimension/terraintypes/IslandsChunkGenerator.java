@@ -16,7 +16,7 @@ public class IslandsChunkGenerator extends NormalChunkGenerator {
 
     public static final Codec<IslandsChunkGenerator> CODEC = RecordCodecBuilder.create(instance ->
             instance.group(
-                    RegistryLookupCodec.getLookUpCodec(Registry.BIOME_KEY).forGetter(IslandsChunkGenerator::getBiomeRegistry),
+                    RegistryLookupCodec.create(Registry.BIOME_REGISTRY).forGetter(IslandsChunkGenerator::getBiomeRegistry),
                     DimensionSettings.SETTINGS_CODEC.fieldOf("settings").forGetter(IslandsChunkGenerator::getSettings)
             ).apply(instance, IslandsChunkGenerator::new));
 
@@ -25,12 +25,12 @@ public class IslandsChunkGenerator extends NormalChunkGenerator {
 
     public IslandsChunkGenerator(MinecraftServer server, DimensionSettings settings) {
         super(server, settings, SETTING_DEFAULT_ISLANDS);
-        air = Blocks.AIR.getDefaultState();
+        air = Blocks.AIR.defaultBlockState();
     }
 
     public IslandsChunkGenerator(Registry<Biome> registry, DimensionSettings settings) {
         super(registry, settings, SETTING_DEFAULT_ISLANDS);
-        air = Blocks.AIR.getDefaultState();
+        air = Blocks.AIR.defaultBlockState();
     }
 
     @Override
@@ -43,7 +43,7 @@ public class IslandsChunkGenerator extends NormalChunkGenerator {
     }
 
     @Override
-    protected Codec<? extends ChunkGenerator> func_230347_a_() {
+    protected Codec<? extends ChunkGenerator> codec() {
         return CODEC;
     }
 

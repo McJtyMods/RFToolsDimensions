@@ -108,7 +108,7 @@ public class PowerHandler {
                 if (doEffects && power > 0) {
                     handleEffectsForDimension(power, world, compiledDescriptor);
                 }
-                if (world != null && !world.getPlayers().isEmpty()) {
+                if (world != null && !world.players().isEmpty()) {
                     handleRandomEffects(world, entry.getValue());
                 }
             }
@@ -138,7 +138,7 @@ public class PowerHandler {
         if (world != null) {
             // @todo 1.16 handle dimension specific effects
 //            Set<EffectType> effects = information.getEffectTypes();
-            List<ServerPlayerEntity> players = new ArrayList<>(world.getPlayers());
+            List<ServerPlayerEntity> players = new ArrayList<>(world.players());
             for (ServerPlayerEntity player : players) {
                 // @todo 1.16
 //                for (EffectType effect : effects) {
@@ -159,17 +159,17 @@ public class PowerHandler {
 
                 if (percentage < DimensionConfig.DIMPOWER_WARN3.get()) {
                     // We are VERY low on power. Start bad effects.
-                    player.addPotionEffect(new EffectInstance(Effects.SLOWNESS, EFFECTS_MAX*MAXTICKS*2, 4, true, true));
-                    player.addPotionEffect(new EffectInstance(Effects.MINING_FATIGUE, EFFECTS_MAX*MAXTICKS*2, 4, true, true));
-                    player.addPotionEffect(new EffectInstance(Effects.POISON, EFFECTS_MAX*MAXTICKS*2, 2, true, true));
-                    player.addPotionEffect(new EffectInstance(Effects.HUNGER, EFFECTS_MAX*MAXTICKS*2, 2, true, true));
+                    player.addEffect(new EffectInstance(Effects.MOVEMENT_SLOWDOWN, EFFECTS_MAX*MAXTICKS*2, 4, true, true));
+                    player.addEffect(new EffectInstance(Effects.DIG_SLOWDOWN, EFFECTS_MAX*MAXTICKS*2, 4, true, true));
+                    player.addEffect(new EffectInstance(Effects.POISON, EFFECTS_MAX*MAXTICKS*2, 2, true, true));
+                    player.addEffect(new EffectInstance(Effects.HUNGER, EFFECTS_MAX*MAXTICKS*2, 2, true, true));
                 } else if (percentage < DimensionConfig.DIMPOWER_WARN2.get()) {
-                    player.addPotionEffect(new EffectInstance(Effects.SLOWNESS, EFFECTS_MAX*MAXTICKS*2, 2, true, true));
-                    player.addPotionEffect(new EffectInstance(Effects.MINING_FATIGUE, EFFECTS_MAX*MAXTICKS*2, 2, true, true));
-                    player.addPotionEffect(new EffectInstance(Effects.HUNGER, EFFECTS_MAX*MAXTICKS*2, 1, true, true));
+                    player.addEffect(new EffectInstance(Effects.MOVEMENT_SLOWDOWN, EFFECTS_MAX*MAXTICKS*2, 2, true, true));
+                    player.addEffect(new EffectInstance(Effects.DIG_SLOWDOWN, EFFECTS_MAX*MAXTICKS*2, 2, true, true));
+                    player.addEffect(new EffectInstance(Effects.HUNGER, EFFECTS_MAX*MAXTICKS*2, 1, true, true));
                 } else if (percentage < DimensionConfig.DIMPOWER_WARN1.get()) {
-                    player.addPotionEffect(new EffectInstance(Effects.SLOWNESS, EFFECTS_MAX*MAXTICKS*2, 0, true, true));
-                    player.addPotionEffect(new EffectInstance(Effects.MINING_FATIGUE, EFFECTS_MAX*MAXTICKS*2, 0, true, true));
+                    player.addEffect(new EffectInstance(Effects.MOVEMENT_SLOWDOWN, EFFECTS_MAX*MAXTICKS*2, 0, true, true));
+                    player.addEffect(new EffectInstance(Effects.DIG_SLOWDOWN, EFFECTS_MAX*MAXTICKS*2, 0, true, true));
                 }
             }
 
@@ -183,17 +183,17 @@ public class PowerHandler {
         if (power <= 0) {
             // We ran out of power!
             if (world != null) {
-                List<PlayerEntity> players = new ArrayList<>(world.getPlayers());
+                List<PlayerEntity> players = new ArrayList<>(world.players());
                 // @todo 1.16
 //                if (PowerConfiguration.dimensionDifficulty >= 1) {
                 for (PlayerEntity player : players) {
                     if (!PhasedFieldGenerator.checkValidPhasedFieldGenerator(player, true, phasedCost)) {
-                        player.attackEntityFrom(new DamageSourcePowerLow("powerLow"), 1000000.0f);
+                        player.hurt(new DamageSourcePowerLow("powerLow"), 1000000.0f);
                     } else {
                         if (doEffects && DimensionConfig.PHASED_FIELD_GENERATOR_DEBUF.get()) {
-                            player.addPotionEffect(new EffectInstance(Effects.SLOWNESS, EFFECTS_MAX * MAXTICKS, 2, true, true));
-                            player.addPotionEffect(new EffectInstance(Effects.MINING_FATIGUE, EFFECTS_MAX * MAXTICKS, 2, true, true));
-                            player.addPotionEffect(new EffectInstance(Effects.HUNGER, EFFECTS_MAX * MAXTICKS, 2, true, true));
+                            player.addEffect(new EffectInstance(Effects.MOVEMENT_SLOWDOWN, EFFECTS_MAX * MAXTICKS, 2, true, true));
+                            player.addEffect(new EffectInstance(Effects.DIG_SLOWDOWN, EFFECTS_MAX * MAXTICKS, 2, true, true));
+                            player.addEffect(new EffectInstance(Effects.HUNGER, EFFECTS_MAX * MAXTICKS, 2, true, true));
                         }
                     }
                 }

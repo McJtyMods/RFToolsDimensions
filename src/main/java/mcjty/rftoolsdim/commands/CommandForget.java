@@ -23,18 +23,18 @@ public class CommandForget implements Command<CommandSource> {
 
     public static ArgumentBuilder<CommandSource, ?> register(CommandDispatcher<CommandSource> dispatcher) {
         return Commands.literal("forget")
-                .requires(cs -> cs.hasPermissionLevel(1))
+                .requires(cs -> cs.hasPermission(1))
                 .then(Commands.argument("name", StringArgumentType.string())
                         .executes(CMD));
     }
 
     @Override
     public int run(CommandContext<CommandSource> context) throws CommandSyntaxException {
-        SharedConstants.developmentMode = true;
+        SharedConstants.IS_RUNNING_IN_IDE = true;
         String name = context.getArgument("name", String.class);
-        PersistantDimensionManager mgr = PersistantDimensionManager.get(context.getSource().getWorld());
+        PersistantDimensionManager mgr = PersistantDimensionManager.get(context.getSource().getLevel());
         mgr.forget(new ResourceLocation(RFToolsDim.MODID, name));
-        context.getSource().sendFeedback(new StringTextComponent(TextFormatting.YELLOW + "Removed '" + name + "'"), false);
+        context.getSource().sendSuccess(new StringTextComponent(TextFormatting.YELLOW + "Removed '" + name + "'"), false);
         return 0;
     }
 }

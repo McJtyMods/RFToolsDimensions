@@ -19,7 +19,7 @@ public class ClientHelpers {
         if (world == null) {
             return "";
         }
-        return world.getDimensionKey().getLocation().getPath();
+        return world.dimension().location().getPath();
     }
 
     public static String getPowerString(ItemStack s) {
@@ -27,22 +27,22 @@ public class ClientHelpers {
         if (world == null) {
             return "";
         }
-        ResourceLocation id = world.getDimensionKey().getLocation();
+        ResourceLocation id = world.dimension().location();
         long power = ClientDimensionData.get().getPower(id);
         long max = ClientDimensionData.get().getMaxPower(id);
         return power == -1 ? "<n.a.>" : ""+power + " (" + max + ")";
     }
 
     public static void initOverrides(DimensionMonitorItem item) {
-        ItemModelsProperties.registerProperty(item, new ResourceLocation(RFToolsDim.MODID, "power"), (stack, world, livingEntity) -> {
+        ItemModelsProperties.register(item, new ResourceLocation(RFToolsDim.MODID, "power"), (stack, world, livingEntity) -> {
             World w = world;
             if (w == null) {
                 if (livingEntity == null) {
                     return 0;
                 }
-                w = livingEntity.getEntityWorld();
+                w = livingEntity.getCommandSenderWorld();
             }
-            ResourceLocation id = w.getDimensionKey().getLocation();
+            ResourceLocation id = w.dimension().location();
             long power = ClientDimensionData.get().getPower(id);
             long max = ClientDimensionData.get().getMaxPower(id);
             if (max < 0) {
@@ -59,7 +59,7 @@ public class ClientHelpers {
     }
 
     public static void initOverrides(PhasedFieldGenerator item) {
-        ItemModelsProperties.registerProperty(item, new ResourceLocation(RFToolsDim.MODID, "power"), (stack, world, livingEntity) -> {
+        ItemModelsProperties.register(item, new ResourceLocation(RFToolsDim.MODID, "power"), (stack, world, livingEntity) -> {
             long power = 0;
             if (stack.hasTag()) {
                 power = stack.getTag().getLong("Energy");

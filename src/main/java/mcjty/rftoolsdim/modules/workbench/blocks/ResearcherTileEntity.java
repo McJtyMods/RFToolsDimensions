@@ -76,7 +76,7 @@ public class ResearcherTileEntity extends GenericTileEntity implements ITickable
     private final LazyOptional<AutomationFilterItemHander> itemHandler = LazyOptional.of(() -> new AutomationFilterItemHander(items));
 
     private final LazyOptional<INamedContainerProvider> screenHandler = LazyOptional.of(() -> new DefaultContainerProvider<GenericContainer>("Knowledge Holder")
-            .containerSupplier((windowId,player) -> new GenericContainer(WorkbenchModule.CONTAINER_RESEARCHER.get(), windowId, CONTAINER_FACTORY.get(), getPos(), ResearcherTileEntity.this))
+            .containerSupplier((windowId,player) -> new GenericContainer(WorkbenchModule.CONTAINER_RESEARCHER.get(), windowId, CONTAINER_FACTORY.get(), getBlockPos(), ResearcherTileEntity.this))
             .integerListener(new IntReferenceHolder() {
                 @Override
                 public int get() {
@@ -91,7 +91,7 @@ public class ResearcherTileEntity extends GenericTileEntity implements ITickable
             .energyHandler(() -> energyStorage)
             .itemHandler(() -> items));
 
-    public static VoxelShape SLAB = VoxelShapes.create(0f, 0f, 0f, 1f, 0.5f, 1f);
+    public static VoxelShape SLAB = VoxelShapes.box(0f, 0f, 0f, 1f, 0.5f, 1f);
 
     private int progress;
 
@@ -141,7 +141,7 @@ public class ResearcherTileEntity extends GenericTileEntity implements ITickable
 
     @Override
     public void tick() {
-        if (!world.isRemote) {
+        if (!level.isClientSide) {
             if (!items.getStackInSlot(SLOT_OUT).isEmpty()) {
                 return; // Can't do anything
             }
@@ -184,7 +184,7 @@ public class ResearcherTileEntity extends GenericTileEntity implements ITickable
     private void researchDimlet(ItemStack stack) {
         DimletKey key = DimletTools.getDimletKey(stack);
         if (key != null) {
-            ItemStack researched = LostKnowledgeItem.createLostKnowledge(world, key);
+            ItemStack researched = LostKnowledgeItem.createLostKnowledge(level, key);
             items.setStackInSlot(SLOT_OUT, researched);
         }
         items.decrStackSize(SLOT_IN, 1);
@@ -196,8 +196,8 @@ public class ResearcherTileEntity extends GenericTileEntity implements ITickable
             DimletKey key = DimletDictionary.get().getBiomeDimlet(biomeId);
             if (key != null) {
                 int absorberProgress = BiomeAbsorberTileEntity.getProgress(stack);
-                if (world.getRandom().nextInt(100) < absorberProgress) {
-                    ItemStack researched = LostKnowledgeItem.createLostKnowledge(world, key);
+                if (level.getRandom().nextInt(100) < absorberProgress) {
+                    ItemStack researched = LostKnowledgeItem.createLostKnowledge(level, key);
                     items.setStackInSlot(SLOT_OUT, researched);
                 }
             }
@@ -211,8 +211,8 @@ public class ResearcherTileEntity extends GenericTileEntity implements ITickable
             DimletKey key = DimletDictionary.get().getBlockDimlet(blockId);
             if (key != null) {
                 int absorberProgress = BlockAbsorberTileEntity.getProgress(stack);
-                if (world.getRandom().nextInt(100) < absorberProgress) {
-                    ItemStack researched = LostKnowledgeItem.createLostKnowledge(world, key);
+                if (level.getRandom().nextInt(100) < absorberProgress) {
+                    ItemStack researched = LostKnowledgeItem.createLostKnowledge(level, key);
                     items.setStackInSlot(SLOT_OUT, researched);
                 }
             }
@@ -226,8 +226,8 @@ public class ResearcherTileEntity extends GenericTileEntity implements ITickable
             DimletKey key = DimletDictionary.get().getFluidDimlet(fluidId);
             if (key != null) {
                 int absorberProgress = FluidAbsorberTileEntity.getProgress(stack);
-                if (world.getRandom().nextInt(100) < absorberProgress) {
-                    ItemStack researched = LostKnowledgeItem.createLostKnowledge(world, key);
+                if (level.getRandom().nextInt(100) < absorberProgress) {
+                    ItemStack researched = LostKnowledgeItem.createLostKnowledge(level, key);
                     items.setStackInSlot(SLOT_OUT, researched);
                 }
             }
@@ -237,7 +237,7 @@ public class ResearcherTileEntity extends GenericTileEntity implements ITickable
 
     private void researchKnowledge(LostKnowledgeItem item) {
         DimletRarity rarity = item.getRarity();
-        ItemStack researched = LostKnowledgeItem.createRandomLostKnowledge(world, rarity, world.getRandom());
+        ItemStack researched = LostKnowledgeItem.createRandomLostKnowledge(level, rarity, level.getRandom());
         items.setStackInSlot(SLOT_OUT, researched);
         if (!items.getStackInSlot(SLOT_IN).isEmpty()) {
             progress = getMaxProgress();
@@ -266,9 +266,9 @@ public class ResearcherTileEntity extends GenericTileEntity implements ITickable
     }
 
     @Override
-    public CompoundNBT write(CompoundNBT tagCompound) {
+    public CompoundNBT save(CompoundNBT tagCompound) {
         tagCompound.putInt("progress", progress);
-        return super.write(tagCompound);
+        return super.save(tagCompound);
     }
 
     private NoDirectionItemHander createItemHandler() {

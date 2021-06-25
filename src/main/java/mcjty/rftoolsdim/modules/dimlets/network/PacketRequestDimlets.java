@@ -36,12 +36,12 @@ public class PacketRequestDimlets {
     public void handle(Supplier<NetworkEvent.Context> supplier) {
         NetworkEvent.Context ctx = supplier.get();
         ctx.enqueueWork(() -> {
-            World world = ctx.getSender().getEntityWorld();
-            if (world.isBlockLoaded(pos)) {
-                TileEntity te = world.getTileEntity(pos);
+            World world = ctx.getSender().getCommandSenderWorld();
+            if (world.hasChunkAt(pos)) {
+                TileEntity te = world.getBlockEntity(pos);
                 ICommandHandler commandHandler = (ICommandHandler) te;
                 List<DimletClientHelper.DimletWithInfo> list = commandHandler.executeWithResultList(WorkbenchTileEntity.CMD_GETDIMLETS, TypedMap.EMPTY, Type.create(DimletClientHelper.DimletWithInfo.class));
-                RFToolsDimMessages.INSTANCE.sendTo(new PacketSendDimletsToClient(pos, list), ctx.getSender().connection.netManager, NetworkDirection.PLAY_TO_CLIENT);
+                RFToolsDimMessages.INSTANCE.sendTo(new PacketSendDimletsToClient(pos, list), ctx.getSender().connection.connection, NetworkDirection.PLAY_TO_CLIENT);
             }
         });
         ctx.setPacketHandled(true);

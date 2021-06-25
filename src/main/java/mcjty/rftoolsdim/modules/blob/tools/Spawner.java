@@ -27,26 +27,26 @@ public class Spawner {
             distanceX = random.nextDouble() * 100 - 50;
             distanceZ = random.nextDouble() * 100 - 50;
         }
-        int x = (int) (player.getPosX() + distanceX);
-        int z = (int) (player.getPosZ() + distanceZ);
+        int x = (int) (player.getX() + distanceX);
+        int z = (int) (player.getZ() + distanceZ);
         EntityType<DimensionalBlobEntity> type = randomBlob(compiledDescriptor, data, random);
         BlockPos pos = getValidSpawnablePosition(random, world, x, z);
         if (pos == null) {
             return;
         }
-        boolean nocollisions = world.hasNoCollisions(type.getBoundingBoxWithSizeApplied(x, pos.getY(), z));
+        boolean nocollisions = world.noCollision(type.getAABB(x, pos.getY(), z));
         boolean canSpawn = true;//EntitySpawnPlacementRegistry.canSpawnEntity(type, world, SpawnReason.NATURAL, new BlockPos(x, pos.getY(), z), random);
         if (!nocollisions || !canSpawn) {
             return;
         }
         DimensionalBlobEntity entity = type.create(world);
-        entity.setLocationAndAngles(x, pos.getY(), z, random.nextFloat() * 360.0F, 0.0F);
+        entity.moveTo(x, pos.getY(), z, random.nextFloat() * 360.0F, 0.0F);
         if (net.minecraftforge.common.ForgeHooks.canEntitySpawn(entity, world, x, pos.getY(), z, null, SpawnReason.NATURAL) == -1) {
             return;
         }
-        if (entity.canSpawn(world, SpawnReason.NATURAL) && entity.isNotColliding(world)) {
-            entity.onInitialSpawn(world, world.getDifficultyForLocation(entity.getPosition()), SpawnReason.NATURAL, null, null);
-            world.func_242417_l(entity);
+        if (entity.checkSpawnRules(world, SpawnReason.NATURAL) && entity.checkSpawnObstruction(world)) {
+            entity.finalizeSpawn(world, world.getCurrentDifficultyAt(entity.blockPosition()), SpawnReason.NATURAL, null, null);
+            world.addFreshEntityWithPassengers(entity);
         }
     }
 
@@ -73,7 +73,7 @@ public class Spawner {
         height = random.nextInt(height - 3) + 3;
         BlockPos blockPos = new BlockPos(x, height-1, z);
         while (!isValidSpawnPos(worldIn, blockPos)) {
-            blockPos = blockPos.down();
+            blockPos = blockPos.below();
             if (blockPos.getY() <= 1) {
                 return null;
             }
@@ -82,9 +82,9 @@ public class Spawner {
     }
 
     private static boolean isValidSpawnPos(IWorldReader world, BlockPos pos) {
-        if (!world.getBlockState(pos).allowsMovement(world, pos, PathType.LAND)) {
+        if (!world.getBlockState(pos).isPathfindable(world, pos, PathType.LAND)) {
             return false;
         }
-        return world.getBlockState(pos.down()).isSolid();
+        return world.getBlockState(pos.below()).canOcclude();
     }
 }

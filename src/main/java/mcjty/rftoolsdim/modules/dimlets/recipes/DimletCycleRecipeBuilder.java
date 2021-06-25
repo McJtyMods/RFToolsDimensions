@@ -36,7 +36,7 @@ public class DimletCycleRecipeBuilder implements IRecipeBuilder<DimletCycleRecip
     private final int count;
     private final List<String> pattern = Lists.newArrayList();
     private final Map<Character, Ingredient> key = Maps.newLinkedHashMap();
-    private final Advancement.Builder advancementBuilder = Advancement.Builder.builder();
+    private final Advancement.Builder advancementBuilder = Advancement.Builder.advancement();
     private String group;
     private String input;
     private String output;
@@ -56,7 +56,7 @@ public class DimletCycleRecipeBuilder implements IRecipeBuilder<DimletCycleRecip
 
     @Override
     public DimletCycleRecipeBuilder key(Character symbol, ITag<Item> tagIn) {
-        return this.key(symbol, Ingredient.fromTag(tagIn));
+        return this.key(symbol, Ingredient.of(tagIn));
     }
 
     public DimletCycleRecipeBuilder input(String input) {
@@ -71,7 +71,7 @@ public class DimletCycleRecipeBuilder implements IRecipeBuilder<DimletCycleRecip
 
     @Override
     public DimletCycleRecipeBuilder key(Character symbol, IItemProvider itemIn) {
-        return this.key(symbol, Ingredient.fromItems(itemIn));
+        return this.key(symbol, Ingredient.of(itemIn));
     }
 
     @Override
@@ -97,7 +97,7 @@ public class DimletCycleRecipeBuilder implements IRecipeBuilder<DimletCycleRecip
     }
 
     public DimletCycleRecipeBuilder addCriterion(String name, ICriterionInstance criterionIn) {
-        this.advancementBuilder.withCriterion(name, criterionIn);
+        this.advancementBuilder.addCriterion(name, criterionIn);
         return this;
     }
 
@@ -122,10 +122,10 @@ public class DimletCycleRecipeBuilder implements IRecipeBuilder<DimletCycleRecip
 
     public void build(Consumer<IFinishedRecipe> consumerIn, ResourceLocation id) {
         this.validate(id);
-        this.advancementBuilder.withParentId(new ResourceLocation("recipes/root")).withCriterion("has_the_recipe",
-                new RecipeUnlockedTrigger.Instance(EntityPredicate.AndPredicate.ANY_AND /* @todo 1.16, is this right? */, id)).withRewards(AdvancementRewards.Builder.recipe(id)).withRequirementsStrategy(IRequirementsStrategy.OR);
+        this.advancementBuilder.parent(new ResourceLocation("recipes/root")).addCriterion("has_the_recipe",
+                new RecipeUnlockedTrigger.Instance(EntityPredicate.AndPredicate.ANY /* @todo 1.16, is this right? */, id)).rewards(AdvancementRewards.Builder.recipe(id)).requirements(IRequirementsStrategy.OR);
         consumerIn.accept(new DimletCycleRecipeBuilder.Result(id, this.result, this.count, this.group == null ? "" : this.group, this.pattern, this.key, this.advancementBuilder,
-                new ResourceLocation(id.getNamespace(), "recipes/" + this.result.getGroup().getPath() + "/" + id.getPath()), input, output));
+                new ResourceLocation(id.getNamespace(), "recipes/" + this.result.getItemCategory().getRecipeFolderName() + "/" + id.getPath()), input, output));
     }
 
     private void validate(ResourceLocation id) {
@@ -181,7 +181,7 @@ public class DimletCycleRecipeBuilder implements IRecipeBuilder<DimletCycleRecip
         }
 
         @Override
-        public void serialize(JsonObject json) {
+        public void serializeRecipeData(JsonObject json) {
             if (!this.group.isEmpty()) {
                 json.addProperty("group", this.group);
             }
@@ -196,7 +196,7 @@ public class DimletCycleRecipeBuilder implements IRecipeBuilder<DimletCycleRecip
             JsonObject jsonobject = new JsonObject();
 
             for(Map.Entry<Character, Ingredient> entry : this.key.entrySet()) {
-                jsonobject.add(String.valueOf(entry.getKey()), entry.getValue().serialize());
+                jsonobject.add(String.valueOf(entry.getKey()), entry.getValue().toJson());
             }
 
             json.add("key", jsonobject);
@@ -212,7 +212,7 @@ public class DimletCycleRecipeBuilder implements IRecipeBuilder<DimletCycleRecip
         }
 
         @Override
-        public IRecipeSerializer<?> getSerializer() {
+        public IRecipeSerializer<?> getType() {
             return DimletModule.DIMLET_CYCLE_SERIALIZER.get();
         }
 
@@ -220,7 +220,7 @@ public class DimletCycleRecipeBuilder implements IRecipeBuilder<DimletCycleRecip
          * Gets the ID for the recipe.
          */
         @Override
-        public ResourceLocation getID() {
+        public ResourceLocation getId() {
             return this.id;
         }
 
@@ -229,8 +229,8 @@ public class DimletCycleRecipeBuilder implements IRecipeBuilder<DimletCycleRecip
          */
         @Override
         @Nullable
-        public JsonObject getAdvancementJson() {
-            return this.advancementBuilder.serialize();
+        public JsonObject serializeAdvancement() {
+            return this.advancementBuilder.serializeToJson();
         }
 
         /**
@@ -239,7 +239,7 @@ public class DimletCycleRecipeBuilder implements IRecipeBuilder<DimletCycleRecip
          */
         @Override
         @Nullable
-        public ResourceLocation getAdvancementID() {
+        public ResourceLocation getAdvancementId() {
             return this.advancementId;
         }
     }

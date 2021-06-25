@@ -21,12 +21,12 @@ public class VoidChunkGenerator extends BaseChunkGenerator {
 
     public static final Codec<VoidChunkGenerator> CODEC = RecordCodecBuilder.create(instance ->
             instance.group(
-                    RegistryLookupCodec.getLookUpCodec(Registry.BIOME_KEY).forGetter(VoidChunkGenerator::getBiomeRegistry),
+                    RegistryLookupCodec.create(Registry.BIOME_REGISTRY).forGetter(VoidChunkGenerator::getBiomeRegistry),
                     DimensionSettings.SETTINGS_CODEC.fieldOf("settings").forGetter(VoidChunkGenerator::getSettings)
             ).apply(instance, VoidChunkGenerator::new));
 
     public VoidChunkGenerator(MinecraftServer server, DimensionSettings settings) {
-        this(server.getDynamicRegistries().getRegistry(Registry.BIOME_KEY), settings);
+        this(server.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY), settings);
     }
 
     public VoidChunkGenerator(Registry<Biome> registry, DimensionSettings settings) {
@@ -34,17 +34,17 @@ public class VoidChunkGenerator extends BaseChunkGenerator {
     }
 
     @Override
-    protected Codec<? extends ChunkGenerator> func_230347_a_() {
+    protected Codec<? extends ChunkGenerator> codec() {
         return CODEC;
     }
 
     @Override
-    public ChunkGenerator func_230349_a_(long l) {
+    public ChunkGenerator withSeed(long l) {
         return new VoidChunkGenerator(getBiomeRegistry(), getSettings());
     }
 
     @Override
-    public void generateSurface(WorldGenRegion worldGenRegion, IChunk iChunk) {
+    public void buildSurfaceAndBedrock(WorldGenRegion worldGenRegion, IChunk iChunk) {
         // No surface
     }
 
@@ -54,17 +54,17 @@ public class VoidChunkGenerator extends BaseChunkGenerator {
     }
 
     @Override
-    public void func_230352_b_(IWorld iWorld, StructureManager structureManager, IChunk iChunk) {
+    public void fillFromNoise(IWorld iWorld, StructureManager structureManager, IChunk iChunk) {
 
     }
 
     @Override
-    public int getHeight(int x, int z, Heightmap.Type type) {
+    public int getBaseHeight(int x, int z, Heightmap.Type type) {
         return 0;
     }
 
     @Override
-    public IBlockReader func_230348_a_(int x, int z) {
+    public IBlockReader getBaseColumn(int x, int z) {
         return new Blockreader(new BlockState[0]);
     }
 }

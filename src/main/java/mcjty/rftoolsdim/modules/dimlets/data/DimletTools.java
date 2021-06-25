@@ -270,10 +270,10 @@ public class DimletTools {
                 return new StringTextComponent(dimletKey.getKey().toLowerCase());
             case BLOCK:
                 Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(dimletKey.getKey()));
-                return new TranslationTextComponent(block.getTranslationKey());
+                return new TranslationTextComponent(block.getDescriptionId());
             case FLUID:
                 Fluid fluid = ForgeRegistries.FLUIDS.getValue(new ResourceLocation(dimletKey.getKey()));
-                return new TranslationTextComponent(fluid.getDefaultState().getBlockState().getBlock().getTranslationKey());
+                return new TranslationTextComponent(fluid.defaultFluidState().createLegacyBlock().getBlock().getDescriptionId());
             case DIGIT:
                 return new StringTextComponent(dimletKey.getKey());
             case ADMIN:
@@ -294,7 +294,7 @@ public class DimletTools {
             case BIOME:
                 ResourceLocation id = new ResourceLocation(dimletKey.getKey());
                 String trans = "biome." + id.getNamespace() + "." + id.getPath();
-                return I18n.format(trans);
+                return I18n.get(trans);
             case FEATURE:
                 return dimletKey.getKey().toLowerCase();
             case TIME:
@@ -304,9 +304,9 @@ public class DimletTools {
                 if (block != null) {
                     String modName = Tools.getModName(block);
                     if (modName.equalsIgnoreCase("minecraft")) {
-                        return I18n.format(block.getTranslationKey());
+                        return I18n.get(block.getDescriptionId());
                     } else {
-                        return I18n.format(block.getTranslationKey()) + " (" + modName + ")";
+                        return I18n.get(block.getDescriptionId()) + " (" + modName + ")";
                     }
                 }
                 return "<Invalid " + dimletKey.getKey() + ">";
@@ -315,9 +315,9 @@ public class DimletTools {
                 if (fluid != null) {
                     String modName = Tools.getModName(fluid);
                     if (modName.equalsIgnoreCase("minecraft")) {
-                        return I18n.format(fluid.getDefaultState().getBlockState().getBlock().getTranslationKey());
+                        return I18n.get(fluid.defaultFluidState().createLegacyBlock().getBlock().getDescriptionId());
                     } else {
-                        return I18n.format(fluid.getDefaultState().getBlockState().getBlock().getTranslationKey())
+                        return I18n.get(fluid.defaultFluidState().createLegacyBlock().getBlock().getDescriptionId())
                                 + " (" + modName + ")";
                     }
                 }
@@ -331,7 +331,7 @@ public class DimletTools {
     }
 
     public static boolean isFullEssence(ItemStack stack, ItemStack desired, String desiredKey) {
-        if (stack.isItemEqual(desired)) {
+        if (stack.sameItem(desired)) {
             if (stack.getItem() == EssencesModule.BIOME_ABSORBER_ITEM.get()) {
                 String biome = BiomeAbsorberTileEntity.getBiome(stack);
                 if (Objects.equals(desiredKey, biome)) {
@@ -368,7 +368,7 @@ public class DimletTools {
                 return value != null && value != Blocks.AIR;
             case FLUID:
                 Fluid fluid = ForgeRegistries.FLUIDS.getValue(new ResourceLocation(key.getKey()));
-                return fluid != null && fluid.getDefaultState().getBlockState().getBlock() != Blocks.AIR;
+                return fluid != null && fluid.defaultFluidState().createLegacyBlock().getBlock() != Blocks.AIR;
             default:
                 return true;
         }

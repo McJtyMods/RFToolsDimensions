@@ -37,202 +37,202 @@ public class Recipes extends BaseRecipeProvider {
     }
 
     @Override
-    protected void registerRecipes(Consumer<IFinishedRecipe> consumer) {
-        build(consumer, ShapedRecipeBuilder.shapedRecipe(DimletModule.EMPTY_DIMLET.get())
-                        .addCriterion("shard", hasItem(VariousModule.DIMENSIONALSHARD.get())),
+    protected void buildShapelessRecipes(Consumer<IFinishedRecipe> consumer) {
+        build(consumer, ShapedRecipeBuilder.shaped(DimletModule.EMPTY_DIMLET.get())
+                        .unlockedBy("shard", has(VariousModule.DIMENSIONALSHARD.get())),
                 " p ", "psp", " p ");
-        build(consumer, ShapedRecipeBuilder.shapedRecipe(DimletModule.EMPTY_TERRAIN_DIMLET.get())
-                        .key('C', Tags.Items.COBBLESTONE)
-                        .addCriterion("empty_dimlet", hasItem(DimletModule.EMPTY_DIMLET.get())),
+        build(consumer, ShapedRecipeBuilder.shaped(DimletModule.EMPTY_TERRAIN_DIMLET.get())
+                        .define('C', Tags.Items.COBBLESTONE)
+                        .unlockedBy("empty_dimlet", has(DimletModule.EMPTY_DIMLET.get())),
                 "CDC", "DED", "CDC");
-        build(consumer, ShapedRecipeBuilder.shapedRecipe(DimletModule.EMPTY_ATTRIBUTE_DIMLET.get())
-                        .addCriterion("empty_dimlet", hasItem(DimletModule.EMPTY_DIMLET.get())),
+        build(consumer, ShapedRecipeBuilder.shaped(DimletModule.EMPTY_ATTRIBUTE_DIMLET.get())
+                        .unlockedBy("empty_dimlet", has(DimletModule.EMPTY_DIMLET.get())),
                 "ppp", "pEp", "ppp");
-        build(consumer, ShapedRecipeBuilder.shapedRecipe(DimletModule.EMPTY_FEATURE_DIMLET.get())
-                        .addCriterion("empty_dimlet", hasItem(DimletModule.EMPTY_DIMLET.get())),
+        build(consumer, ShapedRecipeBuilder.shaped(DimletModule.EMPTY_FEATURE_DIMLET.get())
+                        .unlockedBy("empty_dimlet", has(DimletModule.EMPTY_DIMLET.get())),
                 "rcr", "cEc", "rcr");
-        build(consumer, ShapedRecipeBuilder.shapedRecipe(DimletModule.EMPTY_BIOME_CONTROLLER_DIMLET.get())
-                        .addCriterion("empty_dimlet", hasItem(DimletModule.EMPTY_DIMLET.get())),
+        build(consumer, ShapedRecipeBuilder.shaped(DimletModule.EMPTY_BIOME_CONTROLLER_DIMLET.get())
+                        .unlockedBy("empty_dimlet", has(DimletModule.EMPTY_DIMLET.get())),
                 "DDD", "DED", "DOD");
-        build(consumer, ShapedRecipeBuilder.shapedRecipe(DimletModule.EMPTY_BLOCK_DIMLET.get())
-                        .key('C', Items.CLAY_BALL)
-                        .addCriterion("empty_dimlet", hasItem(DimletModule.EMPTY_DIMLET.get())),
+        build(consumer, ShapedRecipeBuilder.shaped(DimletModule.EMPTY_BLOCK_DIMLET.get())
+                        .define('C', Items.CLAY_BALL)
+                        .unlockedBy("empty_dimlet", has(DimletModule.EMPTY_DIMLET.get())),
                 "CCC", "CEC", "CCC");
-        build(consumer, ShapedRecipeBuilder.shapedRecipe(DimletModule.EMPTY_FLUID_DIMLET.get())
-                        .key('C', Items.CLAY_BALL)
-                        .addCriterion("empty_dimlet", hasItem(DimletModule.EMPTY_DIMLET.get())),
+        build(consumer, ShapedRecipeBuilder.shaped(DimletModule.EMPTY_FLUID_DIMLET.get())
+                        .define('C', Items.CLAY_BALL)
+                        .unlockedBy("empty_dimlet", has(DimletModule.EMPTY_DIMLET.get())),
                 "CWC", "CEC", "CCC");
-        build(consumer, ShapedRecipeBuilder.shapedRecipe(DimletModule.EMPTY_BIOME_DIMLET.get())
-                        .key('C', Items.CLAY_BALL)
-                        .addCriterion("empty_dimlet", hasItem(DimletModule.EMPTY_DIMLET.get())),
+        build(consumer, ShapedRecipeBuilder.shaped(DimletModule.EMPTY_BIOME_DIMLET.get())
+                        .define('C', Items.CLAY_BALL)
+                        .unlockedBy("empty_dimlet", has(DimletModule.EMPTY_DIMLET.get())),
                 "rCr", "CEC", "rCr");
-        build(consumer, ShapedRecipeBuilder.shapedRecipe(DimletModule.EMPTY_TIME_DIMLET.get())
-                        .key('C', Items.CLOCK)
-                        .addCriterion("empty_dimlet", hasItem(DimletModule.EMPTY_DIMLET.get())),
+        build(consumer, ShapedRecipeBuilder.shaped(DimletModule.EMPTY_TIME_DIMLET.get())
+                        .define('C', Items.CLOCK)
+                        .unlockedBy("empty_dimlet", has(DimletModule.EMPTY_DIMLET.get())),
                 "rCr", "CEC", "rCr");
         build(consumer, DimletRecipeBuilder.shapedRecipe(DimletModule.DIGIT_DIMLET.get())
                         .key('C', Items.REDSTONE_TORCH)
                         .dimletKey(new DimletKey(DimletType.DIGIT, "0"))
-                        .addCriterion("empty_dimlet", hasItem(DimletModule.EMPTY_DIMLET.get())),
+                        .addCriterion("empty_dimlet", has(DimletModule.EMPTY_DIMLET.get())),
                 " C ", "CEC", " C ");
         for (int i = 1 ; i <= 9 ; i++) {
             build(consumer, new ResourceLocation(RFToolsDim.MODID, "digit" + i), DimletCycleRecipeBuilder.shapedRecipe(DimletModule.DIGIT_DIMLET.get())
-                            .key('C', Ingredient.fromStacks(DimletTools.getDimletStack(new DimletKey(DimletType.DIGIT, "0"))))
+                            .key('C', Ingredient.of(DimletTools.getDimletStack(new DimletKey(DimletType.DIGIT, "0"))))
                             .input("" + (i-1))
                             .output("" + i)
-                            .addCriterion("empty_dimlet", hasItem(DimletModule.EMPTY_DIMLET.get())),
+                            .addCriterion("empty_dimlet", has(DimletModule.EMPTY_DIMLET.get())),
                     "C");
         }
         build(consumer, new ResourceLocation(RFToolsDim.MODID, "digit0"), DimletCycleRecipeBuilder.shapedRecipe(DimletModule.DIGIT_DIMLET.get())
-                        .key('C', Ingredient.fromStacks(DimletTools.getDimletStack(new DimletKey(DimletType.DIGIT, "1"))))
+                        .key('C', Ingredient.of(DimletTools.getDimletStack(new DimletKey(DimletType.DIGIT, "1"))))
                         .input("9")
                         .output("0")
-                        .addCriterion("empty_dimlet", hasItem(DimletModule.EMPTY_DIMLET.get())),
+                        .addCriterion("empty_dimlet", has(DimletModule.EMPTY_DIMLET.get())),
                 "C");
 
-        build(consumer, ShapedRecipeBuilder.shapedRecipe(DimletModule.PART_ENERGY_0.get())
-                        .key('g', Tags.Items.DUSTS_GLOWSTONE)
-                        .addCriterion("shard", hasItem(VariousModule.DIMENSIONALSHARD.get())),
+        build(consumer, ShapedRecipeBuilder.shaped(DimletModule.PART_ENERGY_0.get())
+                        .define('g', Tags.Items.DUSTS_GLOWSTONE)
+                        .unlockedBy("shard", has(VariousModule.DIMENSIONALSHARD.get())),
                 "rRr", "RsR", "rgr");
-        build(consumer, ShapedRecipeBuilder.shapedRecipe(DimletModule.PART_MEMORY_0.get())
-                        .key('g', Tags.Items.DUSTS_GLOWSTONE)
-                        .key('l', Tags.Items.STORAGE_BLOCKS_LAPIS)
-                        .addCriterion("shard", hasItem(VariousModule.DIMENSIONALSHARD.get())),
+        build(consumer, ShapedRecipeBuilder.shaped(DimletModule.PART_MEMORY_0.get())
+                        .define('g', Tags.Items.DUSTS_GLOWSTONE)
+                        .define('l', Tags.Items.STORAGE_BLOCKS_LAPIS)
+                        .unlockedBy("shard", has(VariousModule.DIMENSIONALSHARD.get())),
                 "rlr", "lsl", "rgr");
 
-        build(consumer, ShapedRecipeBuilder.shapedRecipe(DimletModule.PART_ENERGY_1.get())
-                        .key('u', DimletModule.COMMON_ESSENCE.get())
-                        .key('M', DimletModule.PART_ENERGY_0.get())
-                        .addCriterion("energy0", hasItem(DimletModule.PART_ENERGY_0.get())),
+        build(consumer, ShapedRecipeBuilder.shaped(DimletModule.PART_ENERGY_1.get())
+                        .define('u', DimletModule.COMMON_ESSENCE.get())
+                        .define('M', DimletModule.PART_ENERGY_0.get())
+                        .unlockedBy("energy0", has(DimletModule.PART_ENERGY_0.get())),
                 "uRu", "RMR", "usu");
-        build(consumer, ShapedRecipeBuilder.shapedRecipe(DimletModule.PART_MEMORY_1.get())
-                        .key('u', DimletModule.COMMON_ESSENCE.get())
-                        .key('l', Tags.Items.STORAGE_BLOCKS_LAPIS)
-                        .key('M', DimletModule.PART_MEMORY_0.get())
-                        .addCriterion("memory0", hasItem(DimletModule.PART_MEMORY_0.get())),
+        build(consumer, ShapedRecipeBuilder.shaped(DimletModule.PART_MEMORY_1.get())
+                        .define('u', DimletModule.COMMON_ESSENCE.get())
+                        .define('l', Tags.Items.STORAGE_BLOCKS_LAPIS)
+                        .define('M', DimletModule.PART_MEMORY_0.get())
+                        .unlockedBy("memory0", has(DimletModule.PART_MEMORY_0.get())),
                 "ulu", "lMl", "usu");
 
-        build(consumer, ShapedRecipeBuilder.shapedRecipe(DimletModule.PART_ENERGY_2.get())
-                        .key('u', DimletModule.RARE_ESSENCE.get())
-                        .key('U', VariousModule.INFUSED_ENDERPEARL.get())
-                        .key('M', DimletModule.PART_ENERGY_1.get())
-                        .addCriterion("energy1", hasItem(DimletModule.PART_ENERGY_1.get())),
+        build(consumer, ShapedRecipeBuilder.shaped(DimletModule.PART_ENERGY_2.get())
+                        .define('u', DimletModule.RARE_ESSENCE.get())
+                        .define('U', VariousModule.INFUSED_ENDERPEARL.get())
+                        .define('M', DimletModule.PART_ENERGY_1.get())
+                        .unlockedBy("energy1", has(DimletModule.PART_ENERGY_1.get())),
                 "uRu", "RMR", "uUu");
-        build(consumer, ShapedRecipeBuilder.shapedRecipe(DimletModule.PART_MEMORY_2.get())
-                        .key('u', DimletModule.RARE_ESSENCE.get())
-                        .key('U', VariousModule.INFUSED_ENDERPEARL.get())
-                        .key('l', Tags.Items.STORAGE_BLOCKS_LAPIS)
-                        .key('M', DimletModule.PART_MEMORY_1.get())
-                        .addCriterion("memory1", hasItem(DimletModule.PART_MEMORY_1.get())),
+        build(consumer, ShapedRecipeBuilder.shaped(DimletModule.PART_MEMORY_2.get())
+                        .define('u', DimletModule.RARE_ESSENCE.get())
+                        .define('U', VariousModule.INFUSED_ENDERPEARL.get())
+                        .define('l', Tags.Items.STORAGE_BLOCKS_LAPIS)
+                        .define('M', DimletModule.PART_MEMORY_1.get())
+                        .unlockedBy("memory1", has(DimletModule.PART_MEMORY_1.get())),
                 "ulu", "lMl", "uUu");
 
-        build(consumer, ShapedRecipeBuilder.shapedRecipe(DimletModule.PART_ENERGY_3.get())
-                        .key('u', DimletModule.LEGENDARY_ESSENCE.get())
-                        .key('U', VariousModule.INFUSED_DIAMOND.get())
-                        .key('M', DimletModule.PART_ENERGY_2.get())
-                        .addCriterion("energy2", hasItem(DimletModule.PART_ENERGY_2.get())),
+        build(consumer, ShapedRecipeBuilder.shaped(DimletModule.PART_ENERGY_3.get())
+                        .define('u', DimletModule.LEGENDARY_ESSENCE.get())
+                        .define('U', VariousModule.INFUSED_DIAMOND.get())
+                        .define('M', DimletModule.PART_ENERGY_2.get())
+                        .unlockedBy("energy2", has(DimletModule.PART_ENERGY_2.get())),
                 "uRu", "RMR", "uUu");
-        build(consumer, ShapedRecipeBuilder.shapedRecipe(DimletModule.PART_MEMORY_3.get())
-                        .key('u', DimletModule.LEGENDARY_ESSENCE.get())
-                        .key('U', VariousModule.INFUSED_DIAMOND.get())
-                        .key('l', Tags.Items.STORAGE_BLOCKS_LAPIS)
-                        .key('M', DimletModule.PART_MEMORY_2.get())
-                        .addCriterion("memory2", hasItem(DimletModule.PART_MEMORY_2.get())),
+        build(consumer, ShapedRecipeBuilder.shaped(DimletModule.PART_MEMORY_3.get())
+                        .define('u', DimletModule.LEGENDARY_ESSENCE.get())
+                        .define('U', VariousModule.INFUSED_DIAMOND.get())
+                        .define('l', Tags.Items.STORAGE_BLOCKS_LAPIS)
+                        .define('M', DimletModule.PART_MEMORY_2.get())
+                        .unlockedBy("memory2", has(DimletModule.PART_MEMORY_2.get())),
                 "ulu", "lMl", "uUu");
 
-        build(consumer, ShapedRecipeBuilder.shapedRecipe(KnowledgeModule.UNCOMMON_LOST_KNOWLEDGE.get())
-                        .key('u', KnowledgeModule.COMMON_LOST_KNOWLEDGE.get())
-                        .addCriterion("knowlege", hasItem(KnowledgeModule.COMMON_LOST_KNOWLEDGE.get())),
+        build(consumer, ShapedRecipeBuilder.shaped(KnowledgeModule.UNCOMMON_LOST_KNOWLEDGE.get())
+                        .define('u', KnowledgeModule.COMMON_LOST_KNOWLEDGE.get())
+                        .unlockedBy("knowlege", has(KnowledgeModule.COMMON_LOST_KNOWLEDGE.get())),
                 "uuu", "uuu", "uuu");
-        build(consumer, ShapedRecipeBuilder.shapedRecipe(KnowledgeModule.RARE_LOST_KNOWLEDGE.get())
-                        .key('u', KnowledgeModule.UNCOMMON_LOST_KNOWLEDGE.get())
-                        .addCriterion("knowlege", hasItem(KnowledgeModule.COMMON_LOST_KNOWLEDGE.get())),
+        build(consumer, ShapedRecipeBuilder.shaped(KnowledgeModule.RARE_LOST_KNOWLEDGE.get())
+                        .define('u', KnowledgeModule.UNCOMMON_LOST_KNOWLEDGE.get())
+                        .unlockedBy("knowlege", has(KnowledgeModule.COMMON_LOST_KNOWLEDGE.get())),
                 "uuu", "uuu", "uuu");
-        build(consumer, ShapedRecipeBuilder.shapedRecipe(KnowledgeModule.LEGENDARY_LOST_KNOWLEDGE.get())
-                        .key('u', KnowledgeModule.RARE_LOST_KNOWLEDGE.get())
-                        .addCriterion("knowlege", hasItem(KnowledgeModule.COMMON_LOST_KNOWLEDGE.get())),
+        build(consumer, ShapedRecipeBuilder.shaped(KnowledgeModule.LEGENDARY_LOST_KNOWLEDGE.get())
+                        .define('u', KnowledgeModule.RARE_LOST_KNOWLEDGE.get())
+                        .unlockedBy("knowlege", has(KnowledgeModule.COMMON_LOST_KNOWLEDGE.get())),
                 "uuu", "uuu", "uuu");
 
-        build(consumer, ShapedRecipeBuilder.shapedRecipe(DimensionBuilderModule.DIMENSION_BUILDER.get())
-                        .key('g', Items.GOLD_INGOT)
-                        .addCriterion("frame", hasItem(VariousModule.MACHINE_FRAME.get())),
+        build(consumer, ShapedRecipeBuilder.shaped(DimensionBuilderModule.DIMENSION_BUILDER.get())
+                        .define('g', Items.GOLD_INGOT)
+                        .unlockedBy("frame", has(VariousModule.MACHINE_FRAME.get())),
                 "oeo", "dFd", "ggg");
-        build(consumer, ShapedRecipeBuilder.shapedRecipe(WorkbenchModule.WORKBENCH.get())
-                        .key('C', Blocks.CRAFTING_TABLE)
-                        .key('u', DimletModule.EMPTY_DIMLET.get())
-                        .addCriterion("frame", hasItem(VariousModule.MACHINE_FRAME.get())),
+        build(consumer, ShapedRecipeBuilder.shaped(WorkbenchModule.WORKBENCH.get())
+                        .define('C', Blocks.CRAFTING_TABLE)
+                        .define('u', DimletModule.EMPTY_DIMLET.get())
+                        .unlockedBy("frame", has(VariousModule.MACHINE_FRAME.get())),
                 "rur", "CFC", "rur");
-        build(consumer, ShapedRecipeBuilder.shapedRecipe(WorkbenchModule.HOLDER.get())
-                        .key('C', Blocks.CHEST)
-                        .key('u', DimletModule.EMPTY_DIMLET.get())
-                        .addCriterion("frame", hasItem(VariousModule.MACHINE_FRAME.get())),
+        build(consumer, ShapedRecipeBuilder.shaped(WorkbenchModule.HOLDER.get())
+                        .define('C', Blocks.CHEST)
+                        .define('u', DimletModule.EMPTY_DIMLET.get())
+                        .unlockedBy("frame", has(VariousModule.MACHINE_FRAME.get())),
                 "sus", "CFC", "sus");
-        build(consumer, ShapedRecipeBuilder.shapedRecipe(EnscriberModule.ENSCRIBER.get())
-                        .key('C', Blocks.CRAFTING_TABLE)
-                        .key('u', DimletModule.EMPTY_DIMLET.get())
-                        .addCriterion("frame", hasItem(VariousModule.MACHINE_FRAME.get())),
+        build(consumer, ShapedRecipeBuilder.shaped(EnscriberModule.ENSCRIBER.get())
+                        .define('C', Blocks.CRAFTING_TABLE)
+                        .define('u', DimletModule.EMPTY_DIMLET.get())
+                        .unlockedBy("frame", has(VariousModule.MACHINE_FRAME.get())),
                 "pup", "CFC", "pup");
-        build(consumer, ShapedRecipeBuilder.shapedRecipe(WorkbenchModule.RESEARCHER.get())
-                        .key('C', Blocks.ENCHANTING_TABLE)
-                        .key('X', Blocks.COMPARATOR)
-                        .key('u', DimletModule.EMPTY_DIMLET.get())
-                        .addCriterion("frame", hasItem(VariousModule.MACHINE_FRAME.get())),
+        build(consumer, ShapedRecipeBuilder.shaped(WorkbenchModule.RESEARCHER.get())
+                        .define('C', Blocks.ENCHANTING_TABLE)
+                        .define('X', Blocks.COMPARATOR)
+                        .define('u', DimletModule.EMPTY_DIMLET.get())
+                        .unlockedBy("frame", has(VariousModule.MACHINE_FRAME.get())),
                 "rur", "XFC", "rur");
 
-        build(consumer, ShapedRecipeBuilder.shapedRecipe(EssencesModule.BLOCK_ABSORBER.get())
-                        .key('C', Blocks.SPONGE)
-                        .key('u', Blocks.SLIME_BLOCK)
-                        .addCriterion("sponge", hasItem(Blocks.SPONGE)),
+        build(consumer, ShapedRecipeBuilder.shaped(EssencesModule.BLOCK_ABSORBER.get())
+                        .define('C', Blocks.SPONGE)
+                        .define('u', Blocks.SLIME_BLOCK)
+                        .unlockedBy("sponge", has(Blocks.SPONGE)),
                 "usu", "sCs", "usu");
-        build(consumer, ShapedRecipeBuilder.shapedRecipe(EssencesModule.FLUID_ABSORBER.get())
-                        .key('C', Blocks.SPONGE)
-                        .key('u', Blocks.SLIME_BLOCK)
-                        .addCriterion("sponge", hasItem(Blocks.SPONGE)),
+        build(consumer, ShapedRecipeBuilder.shaped(EssencesModule.FLUID_ABSORBER.get())
+                        .define('C', Blocks.SPONGE)
+                        .define('u', Blocks.SLIME_BLOCK)
+                        .unlockedBy("sponge", has(Blocks.SPONGE)),
                 "uWu", "sCs", "usu");
-        build(consumer, ShapedRecipeBuilder.shapedRecipe(EssencesModule.BIOME_ABSORBER.get())
-                        .key('C', Blocks.SPONGE)
-                        .key('u', ItemTags.LEAVES)
-                        .addCriterion("sponge", hasItem(Blocks.SPONGE)),
+        build(consumer, ShapedRecipeBuilder.shaped(EssencesModule.BIOME_ABSORBER.get())
+                        .define('C', Blocks.SPONGE)
+                        .define('u', ItemTags.LEAVES)
+                        .unlockedBy("sponge", has(Blocks.SPONGE)),
                 "usu", "sCs", "usu");
 
-        build(consumer, ShapedRecipeBuilder.shapedRecipe(DimensionBuilderModule.EMPTY_DIMENSION_TAB.get())
-                        .addCriterion("redstone", hasItem(Items.REDSTONE)),
+        build(consumer, ShapedRecipeBuilder.shaped(DimensionBuilderModule.EMPTY_DIMENSION_TAB.get())
+                        .unlockedBy("redstone", has(Items.REDSTONE)),
                 "prp", "rpr", "prp");
-        build(consumer, ShapedRecipeBuilder.shapedRecipe(DimensionBuilderModule.DIMENSION_MONITOR.get())
-                        .key('C', Blocks.COMPARATOR)
-                        .addCriterion("redstone", hasItem(Items.REDSTONE)),
+        build(consumer, ShapedRecipeBuilder.shaped(DimensionBuilderModule.DIMENSION_MONITOR.get())
+                        .define('C', Blocks.COMPARATOR)
+                        .unlockedBy("redstone", has(Items.REDSTONE)),
                 " s ", "rCr", " s ");
-        build(consumer, ShapedRecipeBuilder.shapedRecipe(DimensionBuilderModule.PHASED_FIELD_GENERATOR.get())
-                        .key('C', Items.ENDER_EYE)
-                        .addCriterion("redstone", hasItem(Items.REDSTONE)),
+        build(consumer, ShapedRecipeBuilder.shaped(DimensionBuilderModule.PHASED_FIELD_GENERATOR.get())
+                        .define('C', Items.ENDER_EYE)
+                        .unlockedBy("redstone", has(Items.REDSTONE)),
                 "rsr", "sCs", "rsr");
 
-        build(consumer, ShapedRecipeBuilder.shapedRecipe(DecorativeModule.DIMENSIONAL_BLANK.get())
-                        .addCriterion("shard", hasItem(VariousModule.DIMENSIONALSHARD.get())),
+        build(consumer, ShapedRecipeBuilder.shaped(DecorativeModule.DIMENSIONAL_BLANK.get())
+                        .unlockedBy("shard", has(VariousModule.DIMENSIONALSHARD.get())),
                 "ss", "ss");
-        build(consumer, ShapedRecipeBuilder.shapedRecipe(DecorativeModule.DIMENSIONAL_BLOCK.get())
-                        .key('S', Tags.Items.STONE)
-                        .addCriterion("shard", hasItem(VariousModule.DIMENSIONALSHARD.get())),
+        build(consumer, ShapedRecipeBuilder.shaped(DecorativeModule.DIMENSIONAL_BLOCK.get())
+                        .define('S', Tags.Items.STONE)
+                        .unlockedBy("shard", has(VariousModule.DIMENSIONALSHARD.get())),
                 "Ss", "ss");
-        build(consumer, ShapedRecipeBuilder.shapedRecipe(DecorativeModule.DIMENSIONAL_SMALL_BLOCK.get())
-                        .key('S', Tags.Items.STONE)
-                        .addCriterion("shard", hasItem(VariousModule.DIMENSIONALSHARD.get())),
+        build(consumer, ShapedRecipeBuilder.shaped(DecorativeModule.DIMENSIONAL_SMALL_BLOCK.get())
+                        .define('S', Tags.Items.STONE)
+                        .unlockedBy("shard", has(VariousModule.DIMENSIONALSHARD.get())),
                 "ss", "sS");
-        build(consumer, ShapedRecipeBuilder.shapedRecipe(DecorativeModule.DIMENSIONAL_CROSS_BLOCK.get())
-                        .key('S', Tags.Items.STONE)
-                        .addCriterion("shard", hasItem(VariousModule.DIMENSIONALSHARD.get())),
+        build(consumer, ShapedRecipeBuilder.shaped(DecorativeModule.DIMENSIONAL_CROSS_BLOCK.get())
+                        .define('S', Tags.Items.STONE)
+                        .unlockedBy("shard", has(VariousModule.DIMENSIONALSHARD.get())),
                 "Ss", "sS");
-        build(consumer, ShapedRecipeBuilder.shapedRecipe(DecorativeModule.DIMENSIONAL_CROSS2_BLOCK.get())
-                        .key('S', Tags.Items.STONE)
-                        .addCriterion("shard", hasItem(VariousModule.DIMENSIONALSHARD.get())),
+        build(consumer, ShapedRecipeBuilder.shaped(DecorativeModule.DIMENSIONAL_CROSS2_BLOCK.get())
+                        .define('S', Tags.Items.STONE)
+                        .unlockedBy("shard", has(VariousModule.DIMENSIONALSHARD.get())),
                 "sS", "Ss");
-        build(consumer, ShapedRecipeBuilder.shapedRecipe(DecorativeModule.DIMENSIONAL_PATTERN1_BLOCK.get())
-                        .key('S', Tags.Items.STONE)
-                        .addCriterion("shard", hasItem(VariousModule.DIMENSIONALSHARD.get())),
+        build(consumer, ShapedRecipeBuilder.shaped(DecorativeModule.DIMENSIONAL_PATTERN1_BLOCK.get())
+                        .define('S', Tags.Items.STONE)
+                        .unlockedBy("shard", has(VariousModule.DIMENSIONALSHARD.get())),
                 "sS", "sS");
-        build(consumer, ShapedRecipeBuilder.shapedRecipe(DecorativeModule.DIMENSIONAL_PATTERN2_BLOCK.get())
-                        .key('S', Tags.Items.STONE)
-                        .addCriterion("shard", hasItem(VariousModule.DIMENSIONALSHARD.get())),
+        build(consumer, ShapedRecipeBuilder.shaped(DecorativeModule.DIMENSIONAL_PATTERN2_BLOCK.get())
+                        .define('S', Tags.Items.STONE)
+                        .unlockedBy("shard", has(VariousModule.DIMENSIONALSHARD.get())),
                 "Ss", "Ss");
     }
 }

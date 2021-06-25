@@ -14,19 +14,19 @@ public class DimletHut extends BuildingTemplate {
     public static final Lazy<DimletHut> DIMLET_HUT = Lazy.of(DimletHut::new);
 
     public DimletHut() {
-        addPalette('#', DecorativeModule.DIMENSIONAL_SMALL_BLOCK.get().getDefaultState());
-        addPalette('+', DecorativeModule.DIMENSIONAL_BLOCK.get().getDefaultState());
-        addPalette('X', DecorativeModule.DIMENSIONAL_PATTERN2_BLOCK.get().getDefaultState());
-        addPalette('.', DecorativeModule.DIMENSIONAL_BLANK.get().getDefaultState());
-        addPalette('*', Blocks.GLOWSTONE.getDefaultState());
-        addPalette('1', Blocks.LIGHT_BLUE_STAINED_GLASS.getDefaultState());
-        addPalette(' ', Blocks.AIR.getDefaultState());
-        addPalette('D', Blocks.IRON_DOOR.getDefaultState().with(DoorBlock.HALF, DoubleBlockHalf.LOWER));
-        addPalette('d', Blocks.IRON_DOOR.getDefaultState().with(DoorBlock.HALF, DoubleBlockHalf.UPPER));
-        addPalette('_', Blocks.STONE_PRESSURE_PLATE.getDefaultState());
+        addPalette('#', DecorativeModule.DIMENSIONAL_SMALL_BLOCK.get().defaultBlockState());
+        addPalette('+', DecorativeModule.DIMENSIONAL_BLOCK.get().defaultBlockState());
+        addPalette('X', DecorativeModule.DIMENSIONAL_PATTERN2_BLOCK.get().defaultBlockState());
+        addPalette('.', DecorativeModule.DIMENSIONAL_BLANK.get().defaultBlockState());
+        addPalette('*', Blocks.GLOWSTONE.defaultBlockState());
+        addPalette('1', Blocks.LIGHT_BLUE_STAINED_GLASS.defaultBlockState());
+        addPalette(' ', Blocks.AIR.defaultBlockState());
+        addPalette('D', Blocks.IRON_DOOR.defaultBlockState().setValue(DoorBlock.HALF, DoubleBlockHalf.LOWER));
+        addPalette('d', Blocks.IRON_DOOR.defaultBlockState().setValue(DoorBlock.HALF, DoubleBlockHalf.UPPER));
+        addPalette('_', Blocks.STONE_PRESSURE_PLATE.defaultBlockState());
         addPalette('C', (reader, pos) -> {
-            reader.setBlockState(pos, Blocks.CHEST.getDefaultState(), 0);
-            TileEntity te = reader.getTileEntity(pos);
+            reader.setBlock(pos, Blocks.CHEST.defaultBlockState(), 0);
+            TileEntity te = reader.getBlockEntity(pos);
             if (te instanceof ChestTileEntity) {
                 ((ChestTileEntity) te).setLootTable(DimensionRegistry.HUT_LOOT, reader.getRandom().nextLong());
             }

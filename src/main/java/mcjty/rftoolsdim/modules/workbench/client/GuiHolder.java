@@ -23,8 +23,8 @@ public class GuiHolder extends GenericGuiContainer<KnowledgeHolderTileEntity, Ge
     public GuiHolder(KnowledgeHolderTileEntity tileEntity, GenericContainer container, PlayerInventory inventory) {
         super(tileEntity, container, inventory, WorkbenchModule.HOLDER.get().getManualEntry());
 
-        xSize = WIDTH;
-        ySize = HEIGHT;
+        imageWidth = WIDTH;
+        imageHeight = HEIGHT;
     }
 
     @Override
@@ -32,13 +32,13 @@ public class GuiHolder extends GenericGuiContainer<KnowledgeHolderTileEntity, Ge
         super.init();
 
         Panel toplevel = positional().background(iconLocation);
-        toplevel.bounds(guiLeft, guiTop, xSize, ySize);
+        toplevel.bounds(leftPos, topPos, imageWidth, imageHeight);
 
         window = new Window(this, toplevel);
     }
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(MatrixStack matrixStack, float partialTicks, int x, int y) {
+    protected void renderBg(MatrixStack matrixStack, float partialTicks, int x, int y) {
         drawWindow(matrixStack);
     }
 }

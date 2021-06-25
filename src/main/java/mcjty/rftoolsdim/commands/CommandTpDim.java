@@ -23,18 +23,18 @@ public class CommandTpDim implements Command<CommandSource> {
 
     public static ArgumentBuilder<CommandSource, ?> register(CommandDispatcher<CommandSource> dispatcher) {
         return Commands.literal("tp")
-                .requires(cs -> cs.hasPermissionLevel(1))
+                .requires(cs -> cs.hasPermission(1))
                 .then(Commands.argument("name", StringArgumentType.string())
                         .executes(CMD));
     }
 
     @Override
     public int run(CommandContext<CommandSource> context) throws CommandSyntaxException {
-        SharedConstants.developmentMode = true;
+        SharedConstants.IS_RUNNING_IN_IDE = true;
         String name = context.getArgument("name", String.class);
-        ServerPlayerEntity player = context.getSource().asPlayer();
-        int x = player.getPosition().getX();
-        int z = player.getPosition().getZ();
+        ServerPlayerEntity player = context.getSource().getPlayerOrException();
+        int x = player.blockPosition().getX();
+        int z = player.blockPosition().getZ();
         World world = DimensionManager.get().getDimWorld(name);
         if (world == null) {
             RFToolsDim.setup.getLogger().error("Can't find dimension '" + name + "'!");

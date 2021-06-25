@@ -20,7 +20,7 @@ public class CommandCreateConfig implements Command<CommandSource> {
 
     public static ArgumentBuilder<CommandSource, ?> register(CommandDispatcher<CommandSource> dispatcher) {
         return Commands.literal("config")
-                .requires(cs -> cs.hasPermissionLevel(0))
+                .requires(cs -> cs.hasPermission(0))
                 .then(Commands.argument("filename", StringArgumentType.word())
                         .then(Commands.argument("modid", StringArgumentType.string())
                                 .executes(CMD)));
@@ -34,7 +34,7 @@ public class CommandCreateConfig implements Command<CommandSource> {
         try {
             DimletPackages.writePackage(filename, modid);
         } catch (IOException e) {
-            context.getSource().sendFeedback(new StringTextComponent(TextFormatting.RED + e.getMessage()), true);
+            context.getSource().sendSuccess(new StringTextComponent(TextFormatting.RED + e.getMessage()), true);
         }
         return 0;
     }

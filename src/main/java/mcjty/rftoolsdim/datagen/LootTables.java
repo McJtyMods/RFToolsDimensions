@@ -48,44 +48,44 @@ public class LootTables extends BaseLootTableProvider {
         addItemDropTable(BlobModule.DIMENSIONAL_BLOB_RARE.get(), DimletModule.RARE_ESSENCE.get(), 3, 5, 0, 1);
         addItemDropTable(BlobModule.DIMENSIONAL_BLOB_LEGENDARY.get(), DimletModule.LEGENDARY_ESSENCE.get(), 4, 6, 0, 1);
 
-        LootPool.Builder builder = LootPool.builder()
+        LootPool.Builder builder = LootPool.lootPool()
                 .name(DimensionRegistry.HUT_LOOT.getPath())
-                .rolls(RandomValueRange.of(1, 5))
-                .addEntry(DimletLootEntry.builder(DimletRarity.COMMON)
-                        .weight(14)
-                        .acceptFunction(SetCount
-                                .builder(RandomValueRange.of(0, 2))))
-                .addEntry(DimletLootEntry.builder(DimletRarity.UNCOMMON)
-                        .weight(4)
-                        .acceptFunction(SetCount
-                                .builder(RandomValueRange.of(0, 2))))
-                .addEntry(DimletLootEntry.builder(DimletRarity.RARE)
-                        .weight(2)
-                        .acceptFunction(SetCount
-                                .builder(RandomValueRange.of(0, 1))))
-                .addEntry(DimletLootEntry.builder(DimletRarity.LEGENDARY)
-                        .weight(1)
-                        .acceptFunction(SetCount
-                                .builder(RandomValueRange.of(0, 1))))
-                .addEntry(ItemLootEntry.builder(KnowledgeModule.COMMON_LOST_KNOWLEDGE.get())
-                        .weight(14)
-                        .acceptFunction(SetCount
-                                .builder(RandomValueRange.of(0, 3))))
-                .addEntry(ItemLootEntry.builder(KnowledgeModule.UNCOMMON_LOST_KNOWLEDGE.get())
-                        .weight(4)
-                        .acceptFunction(SetCount
-                                .builder(RandomValueRange.of(0, 3))))
-                .addEntry(ItemLootEntry.builder(KnowledgeModule.RARE_LOST_KNOWLEDGE.get())
-                        .weight(2)
-                        .acceptFunction(SetCount
-                                .builder(RandomValueRange.of(0, 2))))
-                .addEntry(ItemLootEntry.builder(KnowledgeModule.LEGENDARY_LOST_KNOWLEDGE.get())
-                        .weight(1)
-                        .acceptFunction(SetCount
-                                .builder(RandomValueRange.of(0, 1))))
+                .setRolls(RandomValueRange.between(1, 5))
+                .add(DimletLootEntry.builder(DimletRarity.COMMON)
+                        .setWeight(14)
+                        .apply(SetCount
+                                .setCount(RandomValueRange.between(0, 2))))
+                .add(DimletLootEntry.builder(DimletRarity.UNCOMMON)
+                        .setWeight(4)
+                        .apply(SetCount
+                                .setCount(RandomValueRange.between(0, 2))))
+                .add(DimletLootEntry.builder(DimletRarity.RARE)
+                        .setWeight(2)
+                        .apply(SetCount
+                                .setCount(RandomValueRange.between(0, 1))))
+                .add(DimletLootEntry.builder(DimletRarity.LEGENDARY)
+                        .setWeight(1)
+                        .apply(SetCount
+                                .setCount(RandomValueRange.between(0, 1))))
+                .add(ItemLootEntry.lootTableItem(KnowledgeModule.COMMON_LOST_KNOWLEDGE.get())
+                        .setWeight(14)
+                        .apply(SetCount
+                                .setCount(RandomValueRange.between(0, 3))))
+                .add(ItemLootEntry.lootTableItem(KnowledgeModule.UNCOMMON_LOST_KNOWLEDGE.get())
+                        .setWeight(4)
+                        .apply(SetCount
+                                .setCount(RandomValueRange.between(0, 3))))
+                .add(ItemLootEntry.lootTableItem(KnowledgeModule.RARE_LOST_KNOWLEDGE.get())
+                        .setWeight(2)
+                        .apply(SetCount
+                                .setCount(RandomValueRange.between(0, 2))))
+                .add(ItemLootEntry.lootTableItem(KnowledgeModule.LEGENDARY_LOST_KNOWLEDGE.get())
+                        .setWeight(1)
+                        .apply(SetCount
+                                .setCount(RandomValueRange.between(0, 1))))
                 ;
 
-        addChestLootTable(DimensionRegistry.HUT_LOOT, LootTable.builder().addLootPool(builder));
+        addChestLootTable(DimensionRegistry.HUT_LOOT, LootTable.lootTable().withPool(builder));
     }
 
     @Override

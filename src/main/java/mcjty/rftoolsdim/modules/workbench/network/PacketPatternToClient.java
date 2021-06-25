@@ -18,14 +18,14 @@ public class PacketPatternToClient {
         int size = buf.readInt();
         pattern = new String[size];
         for (int i = 0 ; i < size ; i++) {
-            pattern[i] = buf.readString(32767);
+            pattern[i] = buf.readUtf(32767);
         }
     }
 
     public void toBytes(PacketBuffer buf) {
         buf.writeInt(pattern.length);
         for (String p : pattern) {
-            buf.writeString(p);
+            buf.writeUtf(p);
         }
     }
 

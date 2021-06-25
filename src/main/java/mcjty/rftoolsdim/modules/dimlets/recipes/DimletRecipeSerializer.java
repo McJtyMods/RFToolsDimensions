@@ -13,8 +13,8 @@ public class DimletRecipeSerializer extends net.minecraftforge.registries.ForgeR
     private final ShapedRecipe.Serializer serializer = new ShapedRecipe.Serializer();
 
     @Override
-    public DimletRecipe read(ResourceLocation recipeId, JsonObject json) {
-        ShapedRecipe recipe = serializer.read(recipeId, json);
+    public DimletRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
+        ShapedRecipe recipe = serializer.fromJson(recipeId, json);
         String typeString = json.getAsJsonPrimitive("dimlettype").getAsString();
         DimletType type = DimletType.byName(typeString);
         String key = json.getAsJsonPrimitive("dimletkey").getAsString();
@@ -22,18 +22,18 @@ public class DimletRecipeSerializer extends net.minecraftforge.registries.ForgeR
     }
 
     @Override
-    public DimletRecipe read(ResourceLocation recipeId, PacketBuffer buffer) {
-        ShapedRecipe recipe = serializer.read(recipeId, buffer);
-        String typeString = buffer.readString(32767);
+    public DimletRecipe fromNetwork(ResourceLocation recipeId, PacketBuffer buffer) {
+        ShapedRecipe recipe = serializer.fromNetwork(recipeId, buffer);
+        String typeString = buffer.readUtf(32767);
         DimletType type = DimletType.byName(typeString);
-        String key = buffer.readString(32767);
+        String key = buffer.readUtf(32767);
         return new DimletRecipe(recipe, new DimletKey(type, key));
     }
 
     @Override
-    public void write(PacketBuffer buffer, DimletRecipe recipe) {
-        serializer.write(buffer, recipe.getRecipe());
-        buffer.writeString(recipe.getKey().getType().name());
-        buffer.writeString(recipe.getKey().getKey());
+    public void toNetwork(PacketBuffer buffer, DimletRecipe recipe) {
+        serializer.toNetwork(buffer, recipe.getRecipe());
+        buffer.writeUtf(recipe.getKey().getType().name());
+        buffer.writeUtf(recipe.getKey().getKey());
     }
 }

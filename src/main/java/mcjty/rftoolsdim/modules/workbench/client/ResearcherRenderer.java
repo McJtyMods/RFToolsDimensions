@@ -31,20 +31,20 @@ public class ResearcherRenderer extends TileEntityRenderer<ResearcherTileEntity>
     public void render(ResearcherTileEntity te, float v, MatrixStack matrixStack, IRenderTypeBuffer buffer, int combinedLight, int combinedOverlay) {
 
         te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
-            matrixStack.push();
+            matrixStack.pushPose();
 
             ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
 
             long millis = System.currentTimeMillis();
             ItemStack stack = h.getStackInSlot(ResearcherTileEntity.SLOT_IN);
             if (!stack.isEmpty()) {
-                matrixStack.push();
+                matrixStack.pushPose();
                 matrixStack.scale(.5f, .5f, .5f);
                 matrixStack.translate(1f, 2.1f, 1f);
                 float angle = (float) ((millis / 45) % 360);
-                matrixStack.rotate(Vector3f.YP.rotationDegrees(angle));
-                itemRenderer.renderItem(stack, ItemCameraTransforms.TransformType.FIXED, 0xf000f0, combinedOverlay, matrixStack, buffer);
-                matrixStack.pop();
+                matrixStack.mulPose(Vector3f.YP.rotationDegrees(angle));
+                itemRenderer.renderStatic(stack, ItemCameraTransforms.TransformType.FIXED, 0xf000f0, combinedOverlay, matrixStack, buffer);
+                matrixStack.popPose();
 
                 matrixStack.translate(0, 0.5f, 0);
                 RenderHelper.renderBillboardQuadBright(matrixStack, buffer, 0.5f, LIGHT, RenderSettings.builder()
@@ -54,7 +54,7 @@ public class ResearcherRenderer extends TileEntityRenderer<ResearcherTileEntity>
                         .build());
             }
 
-            matrixStack.pop();
+            matrixStack.popPose();
         });
     }
 

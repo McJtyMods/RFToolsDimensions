@@ -47,7 +47,7 @@ public class DimensionManager {
 
         public ReservedName(World world, BlockPos pos, long reservationTime) {
             this.pos = pos;
-            this.world = world.getDimensionKey();
+            this.world = world.dimension();
             this.reservationTime = reservationTime;
         }
     }
@@ -71,8 +71,8 @@ public class DimensionManager {
         if (world == null) {
             return null;
         }
-        RegistryKey<World> type = world.getDimensionKey();
-        ResourceLocation id = type.getLocation();
+        RegistryKey<World> type = world.dimension();
+        ResourceLocation id = type.location();
         return getCompiledDescriptor(world, id);
     }
 
@@ -80,11 +80,11 @@ public class DimensionManager {
         if (!compiledDescriptorMap.containsKey(id)) {
             DimensionId dimworld = DimensionId.fromResourceLocation(id);
             ServerWorld world = dimworld.loadWorld(overworld);
-            if (world == null || world.getChunkProvider() == null) {
+            if (world == null || world.getChunkSource() == null) {
                 // No data yet
                 return null;
             }
-            ChunkGenerator generator = world.getChunkProvider().generator;
+            ChunkGenerator generator = world.getChunkSource().generator;
             if (generator instanceof BaseChunkGenerator) {
                 CompiledDescriptor compiledDescriptor = ((BaseChunkGenerator) generator).getSettings().getCompiledDescriptor();
                 compiledDescriptorMap.put(id, compiledDescriptor);
@@ -125,7 +125,7 @@ public class DimensionManager {
         if (reservedName != null) {
             // We wait at least 10 seconds before freeing a reserved name
             if (currentTime < reservedName.reservationTime + 10000) {
-                if (!reservedName.pos.equals(pos) || !reservedName.world.equals(world.getDimensionKey())) {
+                if (!reservedName.pos.equals(pos) || !reservedName.world.equals(world.dimension())) {
                     return false;
                 }
             }
@@ -174,8 +174,8 @@ public class DimensionManager {
 
         TimeType timeType = compiledDescriptor.getTimeType();
 
-        RegistryKey<World> key = RegistryKey.getOrCreateKey(Registry.WORLD_KEY, id);
-        DimensionType type = world.getServer().getDynamicRegistries().getRegistry(Registry.DIMENSION_TYPE_KEY).getOrDefault(timeType.getDimensionType());
+        RegistryKey<World> key = RegistryKey.create(Registry.DIMENSION_REGISTRY, id);
+        DimensionType type = world.getServer().registryAccess().registryOrThrow(Registry.DIMENSION_TYPE_REGISTRY).get(timeType.getDimensionType());
         ServerWorld result = DimensionHelper.getOrCreateWorld(world.getServer(), key,
                 (server, registryKey) -> new Dimension(() -> type, terrainType.getGeneratorSupplier().apply(server, settings)));
 

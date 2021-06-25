@@ -30,7 +30,7 @@ public class RFToolsUtilityCompat {
 
     public static void createTeleporter(ISeedReader reader, BlockPos pos, String name) {
         if (teleportationManager != null) {
-            teleportationManager.createReceiver(reader.getWorld(), pos, name, -1);
+            teleportationManager.createReceiver(reader.getLevel(), pos, name, -1);
         }
     }
 

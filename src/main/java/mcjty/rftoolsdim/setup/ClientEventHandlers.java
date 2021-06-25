@@ -10,9 +10,9 @@ public class ClientEventHandlers {
 
     public static void onClientTick(TickEvent.ClientTickEvent event) {
         if (event.phase == TickEvent.Phase.START) {
-            ClientWorld world = Minecraft.getInstance().world;
+            ClientWorld world = Minecraft.getInstance().level;
 
-            world.getDimensionRenderInfo().setSkyRenderHandler((ticks, partialTicks, matrixStack, world1, mc) -> {
+            world.effects().setSkyRenderHandler((ticks, partialTicks, matrixStack, world1, mc) -> {
 
             });
         }

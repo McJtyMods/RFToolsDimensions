@@ -8,12 +8,12 @@ import net.minecraft.util.text.TranslationTextComponent;
 public class DamageSourcePowerLow extends DamageSource {
     public DamageSourcePowerLow(String damageType) {
         super(damageType);
-        setDamageBypassesArmor();
-        setDamageIsAbsolute();
+        bypassArmor();
+        bypassMagic();
     }
 
     @Override
-    public ITextComponent getDeathMessage(LivingEntity entity) {
+    public ITextComponent getLocalizedDeathMessage(LivingEntity entity) {
         String s = "death.dimension.powerfailure";
         return new TranslationTextComponent(s, entity.getName());
     }

@@ -50,8 +50,8 @@ public class GuiWorkbench extends GenericGuiContainer<WorkbenchTileEntity, Gener
     public GuiWorkbench(WorkbenchTileEntity tileEntity, GenericContainer container, PlayerInventory inventory) {
         super(tileEntity, container, inventory, WorkbenchModule.WORKBENCH.get().getManualEntry());
 
-        xSize = WIDTH;
-        ySize = HEIGHT;
+        imageWidth = WIDTH;
+        imageHeight = HEIGHT;
         pattern = null;
     }
 
@@ -68,7 +68,7 @@ public class GuiWorkbench extends GenericGuiContainer<WorkbenchTileEntity, Gener
 
             @Override
             public void doubleClick(int index) {
-                if (Minecraft.getInstance().player.abilities.isCreativeMode && hasShiftDown()) {
+                if (Minecraft.getInstance().player.abilities.instabuild && hasShiftDown()) {
                     cheatDimlet();
                 } else {
                     suggestParts();
@@ -81,12 +81,12 @@ public class GuiWorkbench extends GenericGuiContainer<WorkbenchTileEntity, Gener
         allFilter = new ToggleButton().hint(210, 158, 40, 18).text("All").event(this::toggleAll);
 
         Panel toplevel = positional().background(iconLocation).children(searchBar, itemList, slider, createButton, allFilter);
-        toplevel.bounds(guiLeft, guiTop, xSize, ySize);
+        toplevel.bounds(leftPos, topPos, imageWidth, imageHeight);
 
         window = new Window(this, toplevel);
         dimletListAge = -1;
 
-        RFToolsDimMessages.INSTANCE.sendToServer(new PacketRequestDimlets(tileEntity.getPos()));
+        RFToolsDimMessages.INSTANCE.sendToServer(new PacketRequestDimlets(tileEntity.getBlockPos()));
     }
 
     private void createDimlet() {
@@ -120,15 +120,15 @@ public class GuiWorkbench extends GenericGuiContainer<WorkbenchTileEntity, Gener
 
     private void renderHilightedPattern(MatrixStack matrixStack) {
         if (pattern != null) {
-            net.minecraft.client.renderer.RenderHelper.setupGui3DDiffuseLighting();
-            matrixStack.push();
-            matrixStack.translate(guiLeft, guiTop, 0.0F);
+            net.minecraft.client.renderer.RenderHelper.setupFor3DItems();
+            matrixStack.pushPose();
+            matrixStack.translate(leftPos, topPos, 0.0F);
             RenderSystem.color4f(1.0F, 0.0F, 0.0F, 1.0F);
             RenderSystem.enableRescaleNormal();
 
-            itemRenderer.zLevel = 100.0F;
-            GlStateManager.enableDepthTest();
-            GlStateManager.disableBlend();
+            itemRenderer.blitOffset = 100.0F;
+            GlStateManager._enableDepthTest();
+            GlStateManager._disableBlend();
             RenderSystem.enableLighting();
 
             for (int y = 0 ; y < pattern.length ; y++) {
@@ -137,26 +137,26 @@ public class GuiWorkbench extends GenericGuiContainer<WorkbenchTileEntity, Gener
                     ItemStack stack = KnowledgeManager.getPatternItem(p.charAt(x));
                     if (!stack.isEmpty()) {
                         int slotIdx = WorkbenchTileEntity.SLOT_PATTERN + y * pattern.length + x;
-                        Slot slot = container.getSlot(slotIdx);
-                        if (!slot.getHasStack()) {
-                            itemRenderer.renderItemAndEffectIntoGUI(stack, guiLeft + slot.xPos, guiTop + slot.yPos);
+                        Slot slot = menu.getSlot(slotIdx);
+                        if (!slot.hasItem()) {
+                            itemRenderer.renderAndDecorateItem(stack, leftPos + slot.x, topPos + slot.y);
 
                             RenderSystem.disableLighting();
-                            GlStateManager.enableBlend();
-                            GlStateManager.disableDepthTest();
-                            this.minecraft.getTextureManager().bindTexture(iconGuiElements);
-                            RenderHelper.drawTexturedModalRect(matrixStack.getLast().getMatrix(), slot.xPos, slot.yPos, 14 * 16, 3 * 16, 16, 16);
-                            GlStateManager.enableDepthTest();
-                            GlStateManager.disableBlend();
+                            GlStateManager._enableBlend();
+                            GlStateManager._disableDepthTest();
+                            this.minecraft.getTextureManager().bind(iconGuiElements);
+                            RenderHelper.drawTexturedModalRect(matrixStack.last().pose(), slot.x, slot.y, 14 * 16, 3 * 16, 16, 16);
+                            GlStateManager._enableDepthTest();
+                            GlStateManager._disableBlend();
                             RenderSystem.enableLighting();
                         }
                     }
                 }
             }
-            itemRenderer.zLevel = 0.0F;
+            itemRenderer.blitOffset = 0.0F;
 
-            matrixStack.pop();
-            net.minecraft.client.renderer.RenderHelper.disableStandardItemLighting();
+            matrixStack.popPose();
+            net.minecraft.client.renderer.RenderHelper.turnOff();
         }
     }
 
@@ -249,7 +249,7 @@ public class GuiWorkbench extends GenericGuiContainer<WorkbenchTileEntity, Gener
     }
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(MatrixStack matrixStack, float partialTicks, int x, int y) {
+    protected void renderBg(MatrixStack matrixStack, float partialTicks, int x, int y) {
         updateList();
         drawWindow(matrixStack);
         renderHilightedPattern(matrixStack);

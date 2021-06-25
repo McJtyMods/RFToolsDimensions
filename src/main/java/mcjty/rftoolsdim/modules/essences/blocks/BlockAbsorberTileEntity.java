@@ -37,6 +37,8 @@ import java.util.Set;
 
 import static mcjty.lib.builder.TooltipBuilder.*;
 
+import net.minecraft.block.AbstractBlock;
+
 public class BlockAbsorberTileEntity extends GenericTileEntity implements ITickableTileEntity {
 
     private static final int ABSORB_SPEED = 2;
@@ -52,10 +54,10 @@ public class BlockAbsorberTileEntity extends GenericTileEntity implements ITicka
 
     public static BaseBlock createBlock() {
         return new BaseBlock(new BlockBuilder()
-                .properties(Block.Properties.create(Material.IRON)
-                        .hardnessAndResistance(2.0f)
+                .properties(AbstractBlock.Properties.of(Material.METAL)
+                        .strength(2.0f)
                         .sound(SoundType.METAL)
-                        .notSolid())
+                        .noOcclusion())
                 .tileEntitySupplier(BlockAbsorberTileEntity::new)
                 .manualEntry(ManualHelper.create("rftoolsdim:dimlets/dimlet_workbench"))
                 .topDriver(RFToolsDimensionsTOPDriver.DRIVER)
@@ -78,7 +80,7 @@ public class BlockAbsorberTileEntity extends GenericTileEntity implements ITicka
         } else {
             Block b = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(block));
             if (b != null) {
-                return I18n.format(b.getTranslationKey());
+                return I18n.get(b.getDescriptionId());
             } else {
                 return "<Invalid>";
             }
@@ -111,7 +113,7 @@ public class BlockAbsorberTileEntity extends GenericTileEntity implements ITicka
 
     @Override
     public void tick() {
-        if (world.isRemote) {
+        if (level.isClientSide) {
             tickClient();
         } else {
             tickServer();
@@ -123,7 +125,7 @@ public class BlockAbsorberTileEntity extends GenericTileEntity implements ITicka
             timer--;
             if (timer <= 0) {
                 timer = ABSORB_SPEED;
-                BlockState b = isValidSourceBlock(getPos().down());
+                BlockState b = isValidSourceBlock(getBlockPos().below());
                 if (b != null) {
                     if (absorbingBlock == null) {
                         absorbing = EssencesConfig.maxBlockAbsorption.get();
@@ -133,11 +135,11 @@ public class BlockAbsorberTileEntity extends GenericTileEntity implements ITicka
                             toscan.clear();
                         }
                     }
-                    toscan.add(getPos().down());
+                    toscan.add(getBlockPos().below());
                 }
 
                 if (!toscan.isEmpty()) {
-                    int r = world.rand.nextInt(toscan.size());
+                    int r = level.random.nextInt(toscan.size());
                     Iterator<BlockPos> iterator = toscan.iterator();
                     BlockPos c = null;
                     for (int i = 0 ; i <= r ; i++) {
@@ -152,12 +154,12 @@ public class BlockAbsorberTileEntity extends GenericTileEntity implements ITicka
                     checkBlock(c, Direction.NORTH);
 
                     if (blockMatches(c)) {
-                        BlockState oldState = world.getBlockState(c);
-                        SoundTools.playSound(world, absorbingBlock.getSoundType(oldState, world, c, null).getBreakSound(), getPos().getX(), getPos().getY(), getPos().getZ(), 1.0f, 1.0f);
-                        world.setBlockState(c, Blocks.AIR.getDefaultState());
+                        BlockState oldState = level.getBlockState(c);
+                        SoundTools.playSound(level, absorbingBlock.getSoundType(oldState, level, c, null).getBreakSound(), getBlockPos().getX(), getBlockPos().getY(), getBlockPos().getZ(), 1.0f, 1.0f);
+                        level.setBlockAndUpdate(c, Blocks.AIR.defaultBlockState());
                         absorbing--;
-                        BlockState newState = world.getBlockState(c);
-                        world.notifyBlockUpdate(c, oldState, newState, 3);
+                        BlockState newState = level.getBlockState(c);
+                        level.sendBlockUpdated(c, oldState, newState, 3);
                     }
                 }
             }
@@ -167,7 +169,7 @@ public class BlockAbsorberTileEntity extends GenericTileEntity implements ITicka
 
     private void tickClient() {
         if (absorbing > 0) {
-            Random rand = world.rand;
+            Random rand = level.random;
 
             double u = rand.nextFloat() * 2.0f - 1.0f;
             double v = (float) (rand.nextFloat() * 2.0f * Math.PI);
@@ -176,19 +178,19 @@ public class BlockAbsorberTileEntity extends GenericTileEntity implements ITicka
             double z = u;
             double r = 1.0f;
 
-            world.addParticle(ParticleTypes.PORTAL, getPos().getX() + 0.5f + x * r, getPos().getY() + 0.5f + y * r, getPos().getZ() + 0.5f + z * r, -x, -y, -z);
+            level.addParticle(ParticleTypes.PORTAL, getBlockPos().getX() + 0.5f + x * r, getBlockPos().getY() + 0.5f + y * r, getBlockPos().getZ() + 0.5f + z * r, -x, -y, -z);
         }
     }
 
     private void checkBlock(BlockPos c, Direction direction) {
-        BlockPos c2 = c.offset(direction);
+        BlockPos c2 = c.relative(direction);
         if (blockMatches(c2)) {
             toscan.add(c2);
         }
     }
 
     private boolean blockMatches(BlockPos c) {
-        return world.getBlockState(c).getBlock().equals(absorbingBlock);
+        return level.getBlockState(c).getBlock().equals(absorbingBlock);
     }
 
     public int getAbsorbing() {
@@ -200,7 +202,7 @@ public class BlockAbsorberTileEntity extends GenericTileEntity implements ITicka
     }
 
     private BlockState isValidSourceBlock(BlockPos coordinate) {
-        BlockState state = world.getBlockState(coordinate);
+        BlockState state = level.getBlockState(coordinate);
         return isValidDimletBlock(state) ? state : null;
     }
 
@@ -239,8 +241,8 @@ public class BlockAbsorberTileEntity extends GenericTileEntity implements ITicka
     }
 
     @Override
-    public CompoundNBT write(CompoundNBT tagCompound) {
-        super.write(tagCompound);
+    public CompoundNBT save(CompoundNBT tagCompound) {
+        super.save(tagCompound);
         int[] x = new int[toscan.size()];
         int[] y = new int[toscan.size()];
         int[] z = new int[toscan.size()];

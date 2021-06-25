@@ -22,7 +22,7 @@ public class EnscriberModule implements IModule {
 
     public static final RegistryObject<BaseBlock> ENSCRIBER = BLOCKS.register("enscriber", EnscriberTileEntity::createBlock);
     public static final RegistryObject<Item> ENSCRIBER_ITEM = ITEMS.register("enscriber", () -> new BlockItem(ENSCRIBER.get(), Registration.createStandardProperties()));
-    public static final RegistryObject<TileEntityType<EnscriberTileEntity>> TYPE_ENSCRIBER = TILES.register("enscriber", () -> TileEntityType.Builder.create(EnscriberTileEntity::new, ENSCRIBER.get()).build(null));
+    public static final RegistryObject<TileEntityType<EnscriberTileEntity>> TYPE_ENSCRIBER = TILES.register("enscriber", () -> TileEntityType.Builder.of(EnscriberTileEntity::new, ENSCRIBER.get()).build(null));
     public static final RegistryObject<ContainerType<GenericContainer>> CONTAINER_ENSCRIBER = CONTAINERS.register("enscriber", GenericContainer::createContainerType);
 
     @Override

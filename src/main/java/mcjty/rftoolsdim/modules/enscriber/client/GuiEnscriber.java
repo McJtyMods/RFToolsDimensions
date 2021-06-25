@@ -45,8 +45,8 @@ public class GuiEnscriber extends GenericGuiContainer<EnscriberTileEntity, Gener
     public GuiEnscriber(EnscriberTileEntity te, GenericContainer container, PlayerInventory inventory) {
         super(te, container, inventory, EnscriberModule.ENSCRIBER.get().getManualEntry());
 
-        xSize = ENSCRIBER_WIDTH;
-        ySize = ENSCRIBER_HEIGHT;
+        imageWidth = ENSCRIBER_WIDTH;
+        imageHeight = ENSCRIBER_HEIGHT;
     }
 
     @Override
@@ -68,14 +68,14 @@ public class GuiEnscriber extends GenericGuiContainer<EnscriberTileEntity, Gener
         setNameFromDimensionTab();
 
         Panel toplevel = positional().background(iconLocation).children(extractButton, storeButton, nameField, validateField);
-        toplevel.bounds(guiLeft, guiTop, xSize, ySize);
+        toplevel.bounds(leftPos, topPos, imageWidth, imageHeight);
 
         window = new Window(this, toplevel);
     }
 
     private void extractDimlets() {
         for (int i = 0 ; i < EnscriberTileEntity.SIZE_DIMLETS ; i++) {
-            ItemStack stack = container.inventorySlots.get(i + EnscriberTileEntity.SLOT_DIMLETS).getStack();
+            ItemStack stack = menu.slots.get(i + EnscriberTileEntity.SLOT_DIMLETS).getItem();
             if (!stack.isEmpty()) {
                 // Cannot extract. There are still items in the way.
                 Logging.warn(minecraft.player, "You cannot extract. Remove all dimlets first!");
@@ -88,7 +88,7 @@ public class GuiEnscriber extends GenericGuiContainer<EnscriberTileEntity, Gener
     private void storeDimlets() {
         String name = nameField.getText();
         if (name == null || name.trim().isEmpty()) {
-            Minecraft.getInstance().player.sendStatusMessage(new StringTextComponent("Name is required!"), false);
+            Minecraft.getInstance().player.displayClientMessage(new StringTextComponent("Name is required!"), false);
             return;
         }
         sendServerCommandTyped(RFToolsDimMessages.INSTANCE, EnscriberTileEntity.CMD_STORE,
@@ -98,13 +98,13 @@ public class GuiEnscriber extends GenericGuiContainer<EnscriberTileEntity, Gener
     }
 
     private void enableButtons() {
-        Slot slot = container.inventorySlots.get(EnscriberTileEntity.SLOT_TAB);
+        Slot slot = menu.slots.get(EnscriberTileEntity.SLOT_TAB);
         extractButton.enabled(false);
         storeButton.enabled(false);
-        if (!slot.getStack().isEmpty()) {
-            if (slot.getStack().getItem() == DimensionBuilderModule.EMPTY_DIMENSION_TAB.get()) {
+        if (!slot.getItem().isEmpty()) {
+            if (slot.getItem().getItem() == DimensionBuilderModule.EMPTY_DIMENSION_TAB.get()) {
                 storeButton.enabled(true);
-            } else if (slot.getStack().getItem() == DimensionBuilderModule.REALIZED_DIMENSION_TAB.get()) {
+            } else if (slot.getItem().getItem() == DimensionBuilderModule.REALIZED_DIMENSION_TAB.get()) {
                 extractButton.enabled(true);
             }
         }
@@ -136,7 +136,7 @@ public class GuiEnscriber extends GenericGuiContainer<EnscriberTileEntity, Gener
     }
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(MatrixStack matrixStack, float partialTicks, int x, int y) {
+    protected void renderBg(MatrixStack matrixStack, float partialTicks, int x, int y) {
         enableButtons();
         validateDimlets();
 

@@ -30,12 +30,12 @@ public abstract class BaseChunkGenerator extends ChunkGenerator {
         super(new RFTBiomeProvider(registry, settings), new DimensionStructuresSettings(false));
         this.settings = settings;
         this.randomSeed = new SharedSeedRandom(settings.getSeed());
-//        this.surfaceDepthNoise = (INoiseGenerator)(noisesettings.func_236178_i_() ? new PerlinNoiseGenerator(this.randomSeed, IntStream.rangeClosed(-3, 0)) : new OctavesNoiseGenerator(this.randomSeed, IntStream.rangeClosed(-3, 0)));
+//        this.surfaceDepthNoise = (INoiseGenerator)(noisesettings.useSimplexSurfaceNoise() ? new PerlinNoiseGenerator(this.randomSeed, IntStream.rangeClosed(-3, 0)) : new OctavesNoiseGenerator(this.randomSeed, IntStream.rangeClosed(-3, 0)));
         this.surfaceDepthNoise = new PerlinNoiseGenerator(this.randomSeed, IntStream.rangeClosed(-3, 0));  //) : new OctavesNoiseGenerator(this.randomSeed, IntStream.rangeClosed(-3, 0)));
         defaultBlocks.addAll(settings.getCompiledDescriptor().getBaseBlocks());
         defaultFluid = settings.getCompiledDescriptor().getBaseLiquid();
         if (settings.getCompiledDescriptor().getAttributeTypes().contains(AttributeType.NOOCEANS)) {
-            defaultFluid = Blocks.AIR.getDefaultState();
+            defaultFluid = Blocks.AIR.defaultBlockState();
         }
     }
 
@@ -54,11 +54,11 @@ public abstract class BaseChunkGenerator extends ChunkGenerator {
     }
 
     public Registry<Biome> getBiomeRegistry() {
-        return ((RFTBiomeProvider)biomeProvider).getBiomeRegistry();
+        return ((RFTBiomeProvider)biomeSource).getBiomeRegistry();
     }
 
     @Override
-    public void generateSurface(WorldGenRegion region, IChunk chunk) {
+    public void buildSurfaceAndBedrock(WorldGenRegion region, IChunk chunk) {
         if (settings.getCompiledDescriptor().getAttributeTypes().contains(AttributeType.NOBIOMESURFACE)) {
             this.makeBedrock(chunk);
             return;
@@ -69,18 +69,18 @@ public abstract class BaseChunkGenerator extends ChunkGenerator {
         SharedSeedRandom sharedseedrandom = new SharedSeedRandom();
         sharedseedrandom.setBaseChunkSeed(cx, cz);
         ChunkPos chunkpos1 = chunk.getPos();
-        int xStart = chunkpos1.getXStart();
-        int zStart = chunkpos1.getZStart();
+        int xStart = chunkpos1.getMinBlockX();
+        int zStart = chunkpos1.getMinBlockZ();
         BlockPos.Mutable mpos = new BlockPos.Mutable();
 
         for(int x = 0; x < 16; ++x) {
             for(int z = 0; z < 16; ++z) {
                 int xx = xStart + x;
                 int zz = zStart + z;
-                int yy = chunk.getTopBlockY(Heightmap.Type.WORLD_SURFACE_WG, x, z) + 1;
-                double noise = this.surfaceDepthNoise.noiseAt((double)xx * 0.0625D, (double)zz * 0.0625D, 0.0625D, (double)x * 0.0625D) * 15.0D;
-                region.getBiome(mpos.setPos(xStart + x, yy, zStart + z))
-                        .buildSurface(sharedseedrandom, chunk, xx, zz, yy, noise, defaultBlocks.get(0), getBaseLiquid(), this.getSeaLevel(), region.getSeed());
+                int yy = chunk.getHeight(Heightmap.Type.WORLD_SURFACE_WG, x, z) + 1;
+                double noise = this.surfaceDepthNoise.getSurfaceNoiseValue((double)xx * 0.0625D, (double)zz * 0.0625D, 0.0625D, (double)x * 0.0625D) * 15.0D;
+                region.getBiome(mpos.set(xStart + x, yy, zStart + z))
+                        .buildSurfaceAt(sharedseedrandom, chunk, xx, zz, yy, noise, defaultBlocks.get(0), getBaseLiquid(), this.getSeaLevel(), region.getSeed());
             }
         }
         this.makeBedrock(chunk);
@@ -96,12 +96,12 @@ public abstract class BaseChunkGenerator extends ChunkGenerator {
             return;
         }
         BlockPos.Mutable mpos = new BlockPos.Mutable();
-        int xs = chunkIn.getPos().getXStart();
-        int zs = chunkIn.getPos().getZStart();
-        for(BlockPos blockpos : BlockPos.getAllInBoxMutable(xs, 0, zs, xs + 15, 0, zs + 15)) {
+        int xs = chunkIn.getPos().getMinBlockX();
+        int zs = chunkIn.getPos().getMinBlockZ();
+        for(BlockPos blockpos : BlockPos.betweenClosed(xs, 0, zs, xs + 15, 0, zs + 15)) {
             for(int y = 4; y >= 0; --y) {
                 if (y <= randomSeed.nextInt(5)) {
-                    chunkIn.setBlockState(mpos.setPos(blockpos.getX(), y, blockpos.getZ()), Blocks.BEDROCK.getDefaultState(), false);
+                    chunkIn.setBlockState(mpos.set(blockpos.getX(), y, blockpos.getZ()), Blocks.BEDROCK.defaultBlockState(), false);
                 }
             }
         }

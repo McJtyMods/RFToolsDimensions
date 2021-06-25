@@ -29,11 +29,11 @@ public class DimensionalBlobModel<T extends DimensionalBlobEntity> extends Segme
     }
 
     @Override
-    public void setRotationAngles(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
     }
 
     @Override
-    public Iterable<ModelRenderer> getParts() {
+    public Iterable<ModelRenderer> parts() {
         return ImmutableList.of(this.bodies, this.rightEye, this.leftEye, this.mouth);
     }
 }

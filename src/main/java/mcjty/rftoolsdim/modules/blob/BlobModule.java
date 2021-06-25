@@ -23,21 +23,21 @@ import static mcjty.rftoolsdim.setup.Registration.ENTITIES;
 public class BlobModule implements IModule {
 
     public static final RegistryObject<EntityType<DimensionalBlobEntity>> DIMENSIONAL_BLOB_COMMON = ENTITIES.register("dimensional_blob_common",
-            () -> EntityType.Builder.create((EntityType<DimensionalBlobEntity> type, World world) -> new DimensionalBlobEntity(type, world, DimletRarity.COMMON),
+            () -> EntityType.Builder.of((EntityType<DimensionalBlobEntity> type, World world) -> new DimensionalBlobEntity(type, world, DimletRarity.COMMON),
                     EntityClassification.MONSTER)
-                    .size(1.0F, 1.0F)
+                    .sized(1.0F, 1.0F)
                     .setShouldReceiveVelocityUpdates(false)
                     .build("dimensional_blob_common"));
     public static final RegistryObject<EntityType<DimensionalBlobEntity>> DIMENSIONAL_BLOB_RARE = ENTITIES.register("dimensional_blob_rare",
-            () -> EntityType.Builder.create((EntityType<DimensionalBlobEntity> type, World world) -> new DimensionalBlobEntity(type, world, DimletRarity.RARE),
+            () -> EntityType.Builder.of((EntityType<DimensionalBlobEntity> type, World world) -> new DimensionalBlobEntity(type, world, DimletRarity.RARE),
                     EntityClassification.MONSTER)
-                    .size(1.3F, 1.3F)
+                    .sized(1.3F, 1.3F)
                     .setShouldReceiveVelocityUpdates(false)
                     .build("dimensional_blob_rare"));
     public static final RegistryObject<EntityType<DimensionalBlobEntity>> DIMENSIONAL_BLOB_LEGENDARY = ENTITIES.register("dimensional_blob_legendary",
-            () -> EntityType.Builder.create((EntityType<DimensionalBlobEntity> type, World world) -> new DimensionalBlobEntity(type, world, DimletRarity.LEGENDARY),
+            () -> EntityType.Builder.of((EntityType<DimensionalBlobEntity> type, World world) -> new DimensionalBlobEntity(type, world, DimletRarity.LEGENDARY),
                     EntityClassification.MONSTER)
-                    .size(1.8F, 1.8F)
+                    .sized(1.8F, 1.8F)
                     .setShouldReceiveVelocityUpdates(false)
                     .build("dimensional_blob_legendary"));
 
@@ -47,15 +47,15 @@ public class BlobModule implements IModule {
 
     @Override
     public void init(FMLCommonSetupEvent event) {
-        EntitySpawnPlacementRegistry.register(DIMENSIONAL_BLOB_COMMON.get(), EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MonsterEntity::canMonsterSpawnInLight);
-        EntitySpawnPlacementRegistry.register(DIMENSIONAL_BLOB_RARE.get(), EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MonsterEntity::canMonsterSpawnInLight);
-        EntitySpawnPlacementRegistry.register(DIMENSIONAL_BLOB_LEGENDARY.get(), EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MonsterEntity::canMonsterSpawnInLight);
+        EntitySpawnPlacementRegistry.register(DIMENSIONAL_BLOB_COMMON.get(), EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MonsterEntity::checkMonsterSpawnRules);
+        EntitySpawnPlacementRegistry.register(DIMENSIONAL_BLOB_RARE.get(), EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MonsterEntity::checkMonsterSpawnRules);
+        EntitySpawnPlacementRegistry.register(DIMENSIONAL_BLOB_LEGENDARY.get(), EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MonsterEntity::checkMonsterSpawnRules);
     }
 
     private void registerEntityAttributes(EntityAttributeCreationEvent event) {
-        event.put(DIMENSIONAL_BLOB_COMMON.get(), DimensionalBlobEntity.registerAttributes(DimletRarity.COMMON).create());
-        event.put(DIMENSIONAL_BLOB_RARE.get(), DimensionalBlobEntity.registerAttributes(DimletRarity.RARE).create());
-        event.put(DIMENSIONAL_BLOB_LEGENDARY.get(), DimensionalBlobEntity.registerAttributes(DimletRarity.LEGENDARY).create());
+        event.put(DIMENSIONAL_BLOB_COMMON.get(), DimensionalBlobEntity.registerAttributes(DimletRarity.COMMON).build());
+        event.put(DIMENSIONAL_BLOB_RARE.get(), DimensionalBlobEntity.registerAttributes(DimletRarity.RARE).build());
+        event.put(DIMENSIONAL_BLOB_LEGENDARY.get(), DimensionalBlobEntity.registerAttributes(DimletRarity.LEGENDARY).build());
     }
 
     @Override

@@ -114,14 +114,14 @@ public class EndermanLootModifier extends LootModifier {
 
         @Override
         public EndermanLootModifier read(ResourceLocation name, JsonObject object, ILootCondition[] conditionsIn) {
-            float commonKnowledgeChance = JSONUtils.getFloat(object, "commonKnowledgeChance");
-            float uncommonKnowledgeChance = JSONUtils.getFloat(object, "uncommonKnowledgeChance");
-            float rareKnowledgeChance = JSONUtils.getFloat(object, "rareKnowledgeChance");
-            float legendaryKnowledgeChance = JSONUtils.getFloat(object, "legendaryKnowledgeChance");
-            float commonDimletChance = JSONUtils.getFloat(object, "commonDimletChance");
-            float uncommonDimletChance = JSONUtils.getFloat(object, "uncommonDimletChance");
-            float rareDimletChance = JSONUtils.getFloat(object, "rareDimletChance");
-            float legendaryDimletChance = JSONUtils.getFloat(object, "legendaryDimletChance");
+            float commonKnowledgeChance = JSONUtils.getAsFloat(object, "commonKnowledgeChance");
+            float uncommonKnowledgeChance = JSONUtils.getAsFloat(object, "uncommonKnowledgeChance");
+            float rareKnowledgeChance = JSONUtils.getAsFloat(object, "rareKnowledgeChance");
+            float legendaryKnowledgeChance = JSONUtils.getAsFloat(object, "legendaryKnowledgeChance");
+            float commonDimletChance = JSONUtils.getAsFloat(object, "commonDimletChance");
+            float uncommonDimletChance = JSONUtils.getAsFloat(object, "uncommonDimletChance");
+            float rareDimletChance = JSONUtils.getAsFloat(object, "rareDimletChance");
+            float legendaryDimletChance = JSONUtils.getAsFloat(object, "legendaryDimletChance");
             return new EndermanLootModifier(conditionsIn,
                     commonKnowledgeChance, uncommonKnowledgeChance, rareKnowledgeChance, legendaryKnowledgeChance,
                     commonDimletChance, uncommonDimletChance, rareDimletChance, legendaryDimletChance);

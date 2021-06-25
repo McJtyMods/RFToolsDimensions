@@ -24,7 +24,7 @@ public class RFTBiomeProvider extends BiomeProvider {
 
     public static final Codec<RFTBiomeProvider> CODEC = RecordCodecBuilder.create(instance ->
             instance.group(
-                    RegistryLookupCodec.getLookUpCodec(Registry.BIOME_KEY).forGetter(RFTBiomeProvider::getBiomeRegistry),
+                    RegistryLookupCodec.create(Registry.BIOME_REGISTRY).forGetter(RFTBiomeProvider::getBiomeRegistry),
                     SETTINGS_CODEC.fieldOf("settings").forGetter(RFTBiomeProvider::getSettings)
             ).apply(instance, RFTBiomeProvider::new));
 
@@ -38,7 +38,7 @@ public class RFTBiomeProvider extends BiomeProvider {
         this.settings = settings;
         this.biomeRegistry = biomeRegistry;
         biomes = getBiomes(biomeRegistry, settings);
-        this.genBiomes = LayerUtil.func_237215_a_(settings.getSeed(), false, 4, 4);
+        this.genBiomes = LayerUtil.getDefaultLayer(settings.getSeed(), false, 4, 4);
     }
 
     public DimensionSettings getSettings() {
@@ -48,9 +48,9 @@ public class RFTBiomeProvider extends BiomeProvider {
     private static List<Biome> getBiomes(Registry<Biome> biomeRegistry, DimensionSettings settings) {
         List<Biome> biomes;
         biomes = settings.getCompiledDescriptor().getBiomes()
-                .stream().map(biomeRegistry::getOrDefault).collect(Collectors.toList());
+                .stream().map(biomeRegistry::get).collect(Collectors.toList());
         if (biomes.isEmpty()) {
-            biomes.add(biomeRegistry.getOrDefault(Biomes.PLAINS.getLocation()));
+            biomes.add(biomeRegistry.get(Biomes.PLAINS.location()));
         }
         return biomes;
     }
@@ -60,17 +60,17 @@ public class RFTBiomeProvider extends BiomeProvider {
     }
 
     @Override
-    public boolean hasStructure(Structure<?> structure) {
+    public boolean canGenerateStructure(Structure<?> structure) {
         return false;
     }
 
     @Override
-    protected Codec<? extends BiomeProvider> getBiomeProviderCodec() {
+    protected Codec<? extends BiomeProvider> codec() {
         return CODEC;
     }
 
     @Override
-    public BiomeProvider getBiomeProvider(long seed) {
+    public BiomeProvider withSeed(long seed) {
         return new RFTBiomeProvider(getBiomeRegistry(), settings);
     }
 
@@ -78,7 +78,7 @@ public class RFTBiomeProvider extends BiomeProvider {
     public Biome getNoiseBiome(int x, int y, int z) {
         switch (settings.getCompiledDescriptor().getBiomeControllerType()) {
             case DEFAULT:
-                return this.genBiomes.func_242936_a(this.biomeRegistry, x, z);
+                return this.genBiomes.get(this.biomeRegistry, x, z);
             case CHECKER:
                 if ((x+y)%2 == 0 || biomes.size() <= 1) {
                     return biomes.get(0);

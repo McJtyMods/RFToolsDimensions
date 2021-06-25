@@ -53,6 +53,6 @@ public class Registration {
             () -> new RFTFeature(NoFeatureConfig.CODEC));
 
     public static Item.Properties createStandardProperties() {
-        return new Item.Properties().group(RFToolsDim.setup.getTab());
+        return new Item.Properties().tab(RFToolsDim.setup.getTab());
     }
 }

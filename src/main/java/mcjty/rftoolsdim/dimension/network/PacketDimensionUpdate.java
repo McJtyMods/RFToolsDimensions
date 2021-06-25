@@ -22,7 +22,7 @@ public class PacketDimensionUpdate {
     }
 
     public PacketDimensionUpdate(PacketBuffer buf) {
-        id = RegistryKey.getOrCreateKey(Registry.WORLD_KEY, buf.readResourceLocation());
+        id = RegistryKey.create(Registry.DIMENSION_REGISTRY, buf.readResourceLocation());
         add = buf.readBoolean();
     }
 
@@ -32,7 +32,7 @@ public class PacketDimensionUpdate {
     }
 
     public void toBytes(PacketBuffer buf) {
-        buf.writeResourceLocation(id.getLocation());
+        buf.writeResourceLocation(id.location());
         buf.writeBoolean(add);
     }
 

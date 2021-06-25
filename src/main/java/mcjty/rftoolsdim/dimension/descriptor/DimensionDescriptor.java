@@ -107,10 +107,10 @@ public class DimensionDescriptor {
 
     public void dump(PlayerEntity player) {
         for (DimletKey dimlet : dimlets) {
-            player.sendStatusMessage(
+            player.displayClientMessage(
                     new StringTextComponent(dimlet.getType().name() + ": ")
-                    .mergeStyle(TextFormatting.AQUA)
-                    .appendSibling(new StringTextComponent(dimlet.getKey()).mergeStyle(TextFormatting.WHITE))
+                    .withStyle(TextFormatting.AQUA)
+                    .append(new StringTextComponent(dimlet.getKey()).withStyle(TextFormatting.WHITE))
                     , false);
         }
     }

@@ -32,11 +32,11 @@ import java.util.function.Function;
 public class DimensionHelper {
 
     public static final Function<MinecraftServer, IChunkStatusListenerFactory> CHUNK_STATUS_LISTENER_FACTORY_FIELD =
-            ReflectionHelper.getInstanceFieldGetter(MinecraftServer.class, "field_213220_d");
+            ReflectionHelper.getInstanceFieldGetter(MinecraftServer.class, "progressListenerFactory");
     public static final Function<MinecraftServer, Executor> BACKGROUND_EXECUTOR_FIELD =
-            ReflectionHelper.getInstanceFieldGetter(MinecraftServer.class, "field_213217_au");
+            ReflectionHelper.getInstanceFieldGetter(MinecraftServer.class, "executor");
     public static final Function<MinecraftServer, SaveFormat.LevelSave> ANVIL_CONVERTER_FOR_ANVIL_FILE_FIELD =
-            ReflectionHelper.getInstanceFieldGetter(MinecraftServer.class, "field_71310_m");
+            ReflectionHelper.getInstanceFieldGetter(MinecraftServer.class, "storageSource");
 
     /**
      * Gets a world, dynamically creating and registering one if it doesn't exist.
@@ -78,8 +78,8 @@ public class DimensionHelper {
 
     @SuppressWarnings("deprecation") // markWorldsDirty is deprecated, see below
     private static ServerWorld createAndRegisterWorldAndDimension(MinecraftServer server, Map<RegistryKey<World>, ServerWorld> map, RegistryKey<World> worldKey, BiFunction<MinecraftServer, RegistryKey<Dimension>, Dimension> dimensionFactory) {
-        ServerWorld overworld = server.getWorld(World.OVERWORLD);
-        RegistryKey<Dimension> dimensionKey = RegistryKey.getOrCreateKey(Registry.DIMENSION_KEY, worldKey.getLocation());
+        ServerWorld overworld = server.getLevel(World.OVERWORLD);
+        RegistryKey<Dimension> dimensionKey = RegistryKey.create(Registry.LEVEL_STEM_REGISTRY, worldKey.location());
         Dimension dimension = dimensionFactory.apply(server, dimensionKey);
 
         // we need to get some private fields from MinecraftServer here
@@ -96,11 +96,11 @@ public class DimensionHelper {
         // (in server init, the dimension is already in the dimension registry,
         // that'll get registered here before the world is instantiated as well)
 
-        IServerConfiguration serverConfig = server.getServerConfiguration();
-        DimensionGeneratorSettings dimensionGeneratorSettings = serverConfig.getDimensionGeneratorSettings();
+        IServerConfiguration serverConfig = server.getWorldData();
+        DimensionGeneratorSettings dimensionGeneratorSettings = serverConfig.worldGenSettings();
         // this next line registers the Dimension
-        dimensionGeneratorSettings.func_236224_e_().register(dimensionKey, dimension, Lifecycle.experimental());
-        DerivedWorldInfo derivedWorldInfo = new DerivedWorldInfo(serverConfig, serverConfig.getServerWorldInfo());
+        dimensionGeneratorSettings.dimensions().register(dimensionKey, dimension, Lifecycle.experimental());
+        DerivedWorldInfo derivedWorldInfo = new DerivedWorldInfo(serverConfig, serverConfig.overworldData());
         // now we have everything we need to create the world instance
         ServerWorld newWorld = new ServerWorld(
                 server,
@@ -108,11 +108,11 @@ public class DimensionHelper {
                 levelSave,
                 derivedWorldInfo,
                 worldKey,
-                dimension.getDimensionType(),
+                dimension.type(),
                 chunkListener,
-                dimension.getChunkGenerator(),
-                dimensionGeneratorSettings.hasDebugChunkGenerator(),
-                BiomeManager.getHashedSeed(dimensionGeneratorSettings.getSeed()),
+                dimension.generator(),
+                dimensionGeneratorSettings.isDebug(),
+                BiomeManager.obfuscateSeed(dimensionGeneratorSettings.seed()),
                 ImmutableList.of(), // "special spawn list"
                 // phantoms, raiders, travelling traders, cats are overworld special spawns
                 // the dimension loader is hardcoded to initialize preexisting non-overworld worlds with no special spawn lists

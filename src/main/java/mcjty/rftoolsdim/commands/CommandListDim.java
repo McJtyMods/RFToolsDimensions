@@ -21,21 +21,21 @@ public class CommandListDim implements Command<CommandSource> {
 
     public static ArgumentBuilder<CommandSource, ?> register(CommandDispatcher<CommandSource> dispatcher) {
         return Commands.literal("list")
-                .requires(cs -> cs.hasPermissionLevel(0))
+                .requires(cs -> cs.hasPermission(0))
                 .executes(CMD);
     }
 
     @Override
     public int run(CommandContext<CommandSource> context) throws CommandSyntaxException {
         MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
-        for (ServerWorld world : server.getWorlds()) {
+        for (ServerWorld world : server.getAllLevels()) {
             DimensionId id = DimensionId.fromWorld(world);
             String output = id.getName();
             DimensionData data = PersistantDimensionManager.get(world).getData(id.getRegistryName());
             if (data != null) {
                 output += " (" + data.getEnergy() + ")";
             }
-            context.getSource().sendFeedback(new StringTextComponent(output), true);
+            context.getSource().sendSuccess(new StringTextComponent(output), true);
         }
         return 0;
     }

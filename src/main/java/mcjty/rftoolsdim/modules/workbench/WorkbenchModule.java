@@ -29,21 +29,21 @@ public class WorkbenchModule implements IModule {
 
     public static final RegistryObject<BaseBlock> WORKBENCH = BLOCKS.register("dimlet_workbench", WorkbenchTileEntity::createBlock);
     public static final RegistryObject<Item> WORKBENCH_ITEM = ITEMS.register("dimlet_workbench", () -> new BlockItem(WORKBENCH.get(), Registration.createStandardProperties()));
-    public static final RegistryObject<TileEntityType<WorkbenchTileEntity>> TYPE_WORKBENCH = TILES.register("dimlet_workbench", () -> TileEntityType.Builder.create(WorkbenchTileEntity::new, WORKBENCH.get()).build(null));
+    public static final RegistryObject<TileEntityType<WorkbenchTileEntity>> TYPE_WORKBENCH = TILES.register("dimlet_workbench", () -> TileEntityType.Builder.of(WorkbenchTileEntity::new, WORKBENCH.get()).build(null));
     public static final RegistryObject<ContainerType<GenericContainer>> CONTAINER_WORKBENCH = CONTAINERS.register("dimlet_workbench", GenericContainer::createContainerType);
 
     public static final RegistryObject<BaseBlock> HOLDER = BLOCKS.register("knowledge_holder", KnowledgeHolderTileEntity::createBlock);
     public static final RegistryObject<Item> HOLDER_ITEM = ITEMS.register("knowledge_holder", () -> new BlockItem(HOLDER.get(), Registration.createStandardProperties()));
-    public static final RegistryObject<TileEntityType<KnowledgeHolderTileEntity>> TYPE_HOLDER = TILES.register("knowledge_holder", () -> TileEntityType.Builder.create(KnowledgeHolderTileEntity::new, HOLDER.get()).build(null));
+    public static final RegistryObject<TileEntityType<KnowledgeHolderTileEntity>> TYPE_HOLDER = TILES.register("knowledge_holder", () -> TileEntityType.Builder.of(KnowledgeHolderTileEntity::new, HOLDER.get()).build(null));
     public static final RegistryObject<ContainerType<GenericContainer>> CONTAINER_HOLDER = CONTAINERS.register("knowledge_holder", GenericContainer::createContainerType);
 
     public static final RegistryObject<BaseBlock> RESEARCHER = BLOCKS.register("researcher", ResearcherTileEntity::createBlock);
     public static final RegistryObject<Item> RESEARCHER_ITEM = ITEMS.register("researcher", () -> new BlockItem(RESEARCHER.get(), Registration.createStandardProperties()));
-    public static final RegistryObject<TileEntityType<ResearcherTileEntity>> TYPE_RESEARCHER = TILES.register("researcher", () -> TileEntityType.Builder.create(ResearcherTileEntity::new, RESEARCHER.get()).build(null));
+    public static final RegistryObject<TileEntityType<ResearcherTileEntity>> TYPE_RESEARCHER = TILES.register("researcher", () -> TileEntityType.Builder.of(ResearcherTileEntity::new, RESEARCHER.get()).build(null));
     public static final RegistryObject<ContainerType<GenericContainer>> CONTAINER_RESEARCHER = CONTAINERS.register("researcher", GenericContainer::createContainerType);
 
     public static void onTextureStitch(TextureStitchEvent.Pre event) {
-        if (!event.getMap().getTextureLocation().equals(AtlasTexture.LOCATION_BLOCKS_TEXTURE)) {
+        if (!event.getMap().location().equals(AtlasTexture.LOCATION_BLOCKS)) {
             return;
         }
         event.addSprite(ResearcherRenderer.LIGHT);

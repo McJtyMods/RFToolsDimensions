@@ -69,7 +69,7 @@ public class DimensionBuilderTileEntity extends GenericTileEntity implements ITi
     private final GenericEnergyStorage energyStorage = new GenericEnergyStorage(this, true, DimensionBuilderConfig.BUILDER_MAXENERGY.get(), DimensionBuilderConfig.BUILDER_RECEIVEPERTICK.get());
     private final LazyOptional<GenericEnergyStorage> energyHandler = LazyOptional.of(() -> energyStorage);
     private final LazyOptional<INamedContainerProvider> screenHandler = LazyOptional.of(() -> new DefaultContainerProvider<GenericContainer>("Dimension Builder")
-            .containerSupplier((windowId,player) -> new GenericContainer(DimensionBuilderModule.CONTAINER_DIMENSION_BUILDER.get(), windowId, CONTAINER_FACTORY.get(), getPos(), DimensionBuilderTileEntity.this))
+            .containerSupplier((windowId,player) -> new GenericContainer(DimensionBuilderModule.CONTAINER_DIMENSION_BUILDER.get(), windowId, CONTAINER_FACTORY.get(), getBlockPos(), DimensionBuilderTileEntity.this))
             .itemHandler(() -> items)
             .energyHandler(() -> energyStorage)
             .shortListener(new IntReferenceHolder() {
@@ -140,7 +140,7 @@ public class DimensionBuilderTileEntity extends GenericTileEntity implements ITi
         CompoundNBT nbtTag = new CompoundNBT();
         this.writeClientDataToNBT(nbtTag);
         nbtTag.putInt("errorMode", errorMode);
-        return new SUpdateTileEntityPacket(pos, 1, nbtTag);
+        return new SUpdateTileEntityPacket(worldPosition, 1, nbtTag);
     }
 
     @Override
@@ -155,16 +155,16 @@ public class DimensionBuilderTileEntity extends GenericTileEntity implements ITi
         int oldstate = state;
         int oldError = errorMode;
         super.onDataPacket(net, packet);
-        errorMode = packet.getNbtCompound().getInt("errorMode");
+        errorMode = packet.getTag().getInt("errorMode");
         if (oldstate != state || oldError != this.errorMode) {
-            getWorld().markBlockRangeForRenderUpdate(pos, getBlockState(), getBlockState());
+            getLevel().setBlocksDirty(worldPosition, getBlockState(), getBlockState());
             clientErrorMode = errorMode;
         }
     }
 
     @Override
     public void tick() {
-        if (!world.isRemote) {
+        if (!level.isClientSide) {
             CompoundNBT tagCompound = hasTab();
             if (tagCompound == null) {
                 setState(-1);
@@ -192,7 +192,7 @@ public class DimensionBuilderTileEntity extends GenericTileEntity implements ITi
         if (tagCompound.contains("dimension")) {
             String dimension = tagCompound.getString("dimension");
             ResourceLocation id = new ResourceLocation(dimension);
-            DimensionData data = PersistantDimensionManager.get(world).getData(id);
+            DimensionData data = PersistantDimensionManager.get(level).getData(id);
             if (data == null) {
                 return;
             }
@@ -205,15 +205,15 @@ public class DimensionBuilderTileEntity extends GenericTileEntity implements ITi
 //            }
 
             long energy = data.getEnergy();
-            long maxEnergy = PowerHandler.calculateMaxDimensionPower(id, world) - energy;
+            long maxEnergy = PowerHandler.calculateMaxDimensionPower(id, level) - energy;
             if (rf > maxEnergy) {
                 rf = maxEnergy;
             }
 //            if (!isCheaterDimension(tagCompound)) {
                 energyStorage.consumeEnergy(rf);
 //            }
-            data.setEnergy(world, energy + rf);
-            PersistantDimensionManager.get(world).save();
+            data.setEnergy(level, energy + rf);
+            PersistantDimensionManager.get(level).save();
         }
     }
 
@@ -245,14 +245,14 @@ public class DimensionBuilderTileEntity extends GenericTileEntity implements ITi
 
         // If we are creating a dimension we should reserve the name
         String name = tagCompound.getString("name");
-        DimensionManager.get().markReservedName(world, pos, name);
+        DimensionManager.get().markReservedName(level, worldPosition, name);
 
         int createCost = tagCompound.getInt("rfCreateCost");
         Float inf = infusableHandler.map(IInfusable::getInfusedFactor).orElse(0.0f);
         createCost = (int) (createCost * (2.0f - inf) / 2.0f);
 
         if (isCheaterDimension(tagCompound) || (energyStorage.getEnergyStored() >= createCost)) {
-            if (!DimensionManager.get().isNameAvailable(world, pos, name)) {
+            if (!DimensionManager.get().isNameAvailable(level, worldPosition, name)) {
                 // The name is not available. Stop building!
                 errorMode = ERROR_COLLISION;
                 markDirtyClient();
@@ -280,13 +280,13 @@ public class DimensionBuilderTileEntity extends GenericTileEntity implements ITi
 
                 DimensionDescriptor randomizedDescriptor = descriptor.createRandomizedDescriptor(random);
 
-                if (!DimensionManager.get().isNameAvailable(world, pos, name)) {
+                if (!DimensionManager.get().isNameAvailable(level, worldPosition, name)) {
                     // Error!
                     errorMode = ERROR_COLLISION;
                     markDirtyClient();
                     return 0;
                 }
-                if (!DimensionManager.get().isDescriptorAvailable(world, descriptor)) {
+                if (!DimensionManager.get().isDescriptorAvailable(level, descriptor)) {
                     // Error!
                     errorMode = ERROR_COLLISION;
                     markDirtyClient();
@@ -294,12 +294,12 @@ public class DimensionBuilderTileEntity extends GenericTileEntity implements ITi
                 }
 
                 long seed = random.nextLong();
-                ServerWorld newworld = DimensionManager.get().createWorld(this.world, name, seed, descriptor, randomizedDescriptor);
+                ServerWorld newworld = DimensionManager.get().createWorld(this.level, name, seed, descriptor, randomizedDescriptor);
                 ResourceLocation id = new ResourceLocation(RFToolsDim.MODID, name);
                 tagCompound.putString("dimension", id.toString());
                 CompiledDescriptor compiledDescriptor = DimensionManager.get().getCompiledDescriptor(newworld);
                 tagCompound.putInt("rfMaintainCost", compiledDescriptor.getActualPowerCost());
-                markDirty();
+                setChanged();
 
                 placeMatterReceiver(newworld, name);
             }
@@ -318,10 +318,10 @@ public class DimensionBuilderTileEntity extends GenericTileEntity implements ITi
         }
         // It failed, the commandblock may have been overwritten. Luckily we recorded the height
         // of the platform somewhere
-        int platformHeight = DimensionManager.get().getPlatformHeight(newworld.getDimensionKey().getLocation());
+        int platformHeight = DimensionManager.get().getPlatformHeight(newworld.dimension().location());
         RFToolsUtilityCompat.createTeleporter(newworld, new BlockPos(8, platformHeight, 8), name);
-        newworld.setBlockState(new BlockPos(8, platformHeight+1, 8), Blocks.AIR.getDefaultState());
-        newworld.setBlockState(new BlockPos(8, platformHeight+2, 8), Blocks.AIR.getDefaultState());
+        newworld.setBlockAndUpdate(new BlockPos(8, platformHeight+1, 8), Blocks.AIR.defaultBlockState());
+        newworld.setBlockAndUpdate(new BlockPos(8, platformHeight+2, 8), Blocks.AIR.defaultBlockState());
     }
 
     private boolean isCheaterDimension(CompoundNBT tag) {
@@ -361,7 +361,7 @@ public class DimensionBuilderTileEntity extends GenericTileEntity implements ITi
     }
 
     public int getBuildPercentage() {
-        if (world.isRemote) {
+        if (level.isClientSide) {
             return clientBuildPercentage;
         } else {
             CompoundNBT tag = hasTab();
@@ -379,7 +379,7 @@ public class DimensionBuilderTileEntity extends GenericTileEntity implements ITi
     }
 
     public int getErrorMode() {
-        if (world.isRemote) {
+        if (level.isClientSide) {
             return clientErrorMode;
         } else {
             return errorMode;
@@ -436,7 +436,7 @@ public class DimensionBuilderTileEntity extends GenericTileEntity implements ITi
 
 
         @Override
-        public String getString() {
+        public String getSerializedName() {
             return name;
         }
     }

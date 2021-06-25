@@ -29,8 +29,8 @@ public class GuiResearcher extends GenericGuiContainer<ResearcherTileEntity, Gen
     public GuiResearcher(ResearcherTileEntity tileEntity, GenericContainer container, PlayerInventory inventory) {
         super(tileEntity, container, inventory, WorkbenchModule.HOLDER.get().getManualEntry());
 
-        xSize = WIDTH;
-        ySize = HEIGHT;
+        imageWidth = WIDTH;
+        imageHeight = HEIGHT;
     }
 
     @Override
@@ -41,7 +41,7 @@ public class GuiResearcher extends GenericGuiContainer<ResearcherTileEntity, Gen
         progress = label(64, 44, 70, 18, "");
 
         Panel toplevel = positional().background(iconLocation).children(energyBar, progress); //.addChild(arrow);
-        toplevel.bounds(guiLeft, guiTop, xSize, ySize);
+        toplevel.bounds(leftPos, topPos, imageWidth, imageHeight);
 
         window = new Window(this, toplevel);
 
@@ -53,7 +53,7 @@ public class GuiResearcher extends GenericGuiContainer<ResearcherTileEntity, Gen
     }
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(MatrixStack matrixStack, float partialTicks, int x, int y) {
+    protected void renderBg(MatrixStack matrixStack, float partialTicks, int x, int y) {
         drawWindow(matrixStack);
         updateEnergyBar(energyBar);
         progress.text(tileEntity.getProgressPercentage() + "%");

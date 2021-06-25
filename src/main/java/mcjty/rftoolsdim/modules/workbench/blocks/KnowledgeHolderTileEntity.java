@@ -41,7 +41,7 @@ public class KnowledgeHolderTileEntity extends GenericTileEntity {
     private final LazyOptional<AutomationFilterItemHander> itemHandler = LazyOptional.of(() -> new AutomationFilterItemHander(items));
 
     private final LazyOptional<INamedContainerProvider> screenHandler = LazyOptional.of(() -> new DefaultContainerProvider<GenericContainer>("Knowledge Holder")
-            .containerSupplier((windowId,player) -> new GenericContainer(WorkbenchModule.CONTAINER_HOLDER.get(), windowId, CONTAINER_FACTORY.get(), getPos(), KnowledgeHolderTileEntity.this))
+            .containerSupplier((windowId,player) -> new GenericContainer(WorkbenchModule.CONTAINER_HOLDER.get(), windowId, CONTAINER_FACTORY.get(), getBlockPos(), KnowledgeHolderTileEntity.this))
             .itemHandler(() -> items));
 
     public KnowledgeHolderTileEntity() {

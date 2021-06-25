@@ -29,7 +29,7 @@ public class CubeFeature implements IFeature {
         int chunkZ = cp.z;
         int size = 1;
 
-        BlockState filler = Blocks.AIR.getDefaultState();
+        BlockState filler = Blocks.AIR.defaultBlockState();
 
         boolean generated = false;
         for (int dx = -size; dx <= size; dx++) {
@@ -67,11 +67,11 @@ public class CubeFeature implements IFeature {
                     int zdist = Math.abs(z - centerz);
                     if (zdist <= radius) {
                         for (int y = centery - radius; y <= centery + radius; y++) {
-                            pos.setPos(chunkX * 16 + x, y, chunkZ * 16 + z);
+                            pos.set(chunkX * 16 + x, y, chunkZ * 16 + z);
                             if ((!hollow) || y == centery - radius || y == centery + radius || xdist == radius || zdist == radius) {
-                                world.setBlockState(pos, IFeature.select(states, random), 0);
+                                world.setBlock(pos, IFeature.select(states, random), 0);
                             } else {
-                                world.setBlockState(pos, filler, 0);
+                                world.setBlock(pos, filler, 0);
                             }
                         }
                     }

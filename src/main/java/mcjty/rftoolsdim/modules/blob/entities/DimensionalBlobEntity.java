@@ -38,7 +38,7 @@ public class DimensionalBlobEntity extends MonsterEntity {
     private int tickCounter = 5;
 
     private final static EntityPredicate PREDICATE = new EntityPredicate()
-            .setIgnoresLineOfSight();
+            .allowUnseeable();
 
     public DimensionalBlobEntity(EntityType<? extends MonsterEntity> type, World worldIn, DimletRarity rarity) {
         super(type, worldIn);
@@ -76,16 +76,16 @@ public class DimensionalBlobEntity extends MonsterEntity {
     }
 
     @Override
-    public void livingTick() {
-        super.livingTick();
-        if (!world.isRemote) {
-            DimensionData data = PersistantDimensionManager.get(world).getData(world.getDimensionKey().getLocation());
+    public void aiStep() {
+        super.aiStep();
+        if (!level.isClientSide) {
+            DimensionData data = PersistantDimensionManager.get(level).getData(level.dimension().location());
             if (data != null) {
                 if (data.getEnergy() >= BlobConfig.BLOB_REGENERATION_LEVEL.get()) {
                     tickCounter--;
                     if (tickCounter <= 0) {
                         tickCounter = 5;
-                        addPotionEffect(new EffectInstance(Effects.REGENERATION, 20, getRegenLevel()));
+                        addEffect(new EffectInstance(Effects.REGENERATION, 20, getRegenLevel()));
                     }
                 }
             }
@@ -94,25 +94,25 @@ public class DimensionalBlobEntity extends MonsterEntity {
 
     @Nullable
     @Override
-    public ILivingEntityData onInitialSpawn(IServerWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
-        ModifiableAttributeInstance attr = getAttributeManager().createInstanceIfAbsent(Attributes.MAX_HEALTH);
+    public ILivingEntityData finalizeSpawn(IServerWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
+        ModifiableAttributeInstance attr = getAttributes().getInstance(Attributes.MAX_HEALTH);
         if (attr != null) {
             attr.setBaseValue(getDefaultMaxHealth(rarity));
             setHealth(getDefaultMaxHealth(rarity));
         }
-        return super.onInitialSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
+        return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
     }
 
     public static AttributeModifierMap.MutableAttribute registerAttributes(DimletRarity rarity) {
         // Note, since this is called before config is init the default max health here will be
         // the default from the config. In onInitialSpawn() this is later corrected
-        return MonsterEntity.func_234295_eP_()
-                .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.25D)
-                .createMutableAttribute(Attributes.MAX_HEALTH, getDefaultMaxHealth(rarity));
+        return MonsterEntity.createMonsterAttributes()
+                .add(Attributes.MOVEMENT_SPEED, 0.25D)
+                .add(Attributes.MAX_HEALTH, getDefaultMaxHealth(rarity));
     }
 
     @Override
-    public float getRenderScale() {
+    public float getScale() {
         switch (rarity) {
             case COMMON:
             case UNCOMMON:
@@ -146,24 +146,24 @@ public class DimensionalBlobEntity extends MonsterEntity {
                     radius = 15.0;
                     break;
             }
-            targetBox = bb.grow(radius);
+            targetBox = bb.inflate(radius);
         }
     }
 
 
     private void infectPlayer(PlayerEntity player) {
-        player.addPotionEffect(new EffectInstance(Effects.HUNGER, 100));
-        player.addPotionEffect(new EffectInstance(Effects.WEAKNESS, 100));
+        player.addEffect(new EffectInstance(Effects.HUNGER, 100));
+        player.addEffect(new EffectInstance(Effects.WEAKNESS, 100));
         switch (rarity) {
             case COMMON:
             case UNCOMMON:
                 break;
             case RARE:
-                player.addPotionEffect(new EffectInstance(Effects.POISON, 100));
+                player.addEffect(new EffectInstance(Effects.POISON, 100));
                 break;
             case LEGENDARY:
-                player.addPotionEffect(new EffectInstance(Effects.POISON, 100));
-                player.addPotionEffect(new EffectInstance(Effects.WITHER, 100));
+                player.addEffect(new EffectInstance(Effects.POISON, 100));
+                player.addEffect(new EffectInstance(Effects.WITHER, 100));
                 break;
         }
     }
@@ -171,20 +171,20 @@ public class DimensionalBlobEntity extends MonsterEntity {
     @Override
     public void tick() {
         super.tick();
-        if (world.isRemote) {
+        if (level.isClientSide) {
             this.squishFactor += (this.squishAmount - this.squishFactor) * 0.5F;
             this.prevSquishFactor = this.squishFactor;
 
-            if (rand.nextFloat() < 0.03f) {
+            if (random.nextFloat() < 0.03f) {
                 this.squishAmount = -0.5F;
-            } else if (rand.nextFloat() < 0.03f) {
+            } else if (random.nextFloat() < 0.03f) {
                 this.squishAmount = 1.0f;
             }
 
             this.squishAmount *= 0.6F;
         } else {
-            if (rand.nextFloat() < .05) {
-                List<PlayerEntity> players = world.getTargettablePlayersWithinAABB(PREDICATE, this, targetBox);
+            if (random.nextFloat() < .05) {
+                List<PlayerEntity> players = level.getNearbyPlayers(PREDICATE, this, targetBox);
                 for (PlayerEntity player : players) {
                     infectPlayer(player);
                 }
@@ -198,7 +198,7 @@ public class DimensionalBlobEntity extends MonsterEntity {
     }
 
     @Override
-    public IPacket<?> createSpawnPacket() {
+    public IPacket<?> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 

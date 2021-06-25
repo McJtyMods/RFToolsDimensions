@@ -89,7 +89,7 @@ public class WorkbenchTileEntity extends GenericTileEntity {
     private final LazyOptional<AutomationFilterItemHander> itemHandler = LazyOptional.of(() -> new AutomationFilterItemHander(items));
 
     private final LazyOptional<INamedContainerProvider> screenHandler = LazyOptional.of(() -> new DefaultContainerProvider<GenericContainer>("Dimlet Workbench")
-            .containerSupplier((windowId,player) -> new GenericContainer(WorkbenchModule.CONTAINER_WORKBENCH.get(), windowId, CONTAINER_FACTORY.get(), getPos(), WorkbenchTileEntity.this))
+            .containerSupplier((windowId,player) -> new GenericContainer(WorkbenchModule.CONTAINER_WORKBENCH.get(), windowId, CONTAINER_FACTORY.get(), getBlockPos(), WorkbenchTileEntity.this))
             .itemHandler(() -> items));
 
     public WorkbenchTileEntity() {
@@ -146,7 +146,7 @@ public class WorkbenchTileEntity extends GenericTileEntity {
             pattern[y] = p;
         }
 
-        DimletKey key = DimletDictionary.get().tryCraft(world, type, memoryPart, energyPart, essenceStack, new DimletPattern(pattern));
+        DimletKey key = DimletDictionary.get().tryCraft(level, type, memoryPart, energyPart, essenceStack, new DimletPattern(pattern));
         if (key == null) {
             return false;
         }
@@ -172,7 +172,7 @@ public class WorkbenchTileEntity extends GenericTileEntity {
     }
 
     private void hilightPattern(PlayerEntity player, DimletKey key) {
-        DimletPattern pattern = KnowledgeManager.get().getPattern(DimensionId.overworld().loadWorld(player.world).getSeed(), key);
+        DimletPattern pattern = KnowledgeManager.get().getPattern(DimensionId.overworld().loadWorld(player.level).getSeed(), key);
         if (pattern != null) {
             String[] p = pattern.getPattern();
             RFToolsDimMessages.INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player),
@@ -185,9 +185,9 @@ public class WorkbenchTileEntity extends GenericTileEntity {
             return;
         }
 
-        tryFindAndFitItem(player, s -> s.isItemEqual(DimletTools.getEmptyDimletStack(key.getType())), SLOT_EMPTY_DIMLET);
-        tryFindAndFitItem(player, s -> s.isItemEqual(DimletTools.getNeededMemoryPart(key)), SLOT_MEMORY_PART);
-        tryFindAndFitItem(player, s -> s.isItemEqual(DimletTools.getNeededEnergyPart(key)), SLOT_ENERGY_PART);
+        tryFindAndFitItem(player, s -> s.sameItem(DimletTools.getEmptyDimletStack(key.getType())), SLOT_EMPTY_DIMLET);
+        tryFindAndFitItem(player, s -> s.sameItem(DimletTools.getNeededMemoryPart(key)), SLOT_MEMORY_PART);
+        tryFindAndFitItem(player, s -> s.sameItem(DimletTools.getNeededEnergyPart(key)), SLOT_ENERGY_PART);
         ItemStack essence = DimletTools.getNeededEssence(key, DimletDictionary.get().getSettings(key));
         if (!essence.isEmpty()) {
             tryFindAndFitItem(player, s -> DimletTools.isFullEssence(s, essence, key.getKey()), SLOT_ESSENCE);
@@ -195,7 +195,7 @@ public class WorkbenchTileEntity extends GenericTileEntity {
             tryFindAndFitItem(player, s -> false, SLOT_ESSENCE);
         }
 
-        DimletPattern pattern = KnowledgeManager.get().getPattern(DimensionId.overworld().loadWorld(world).getSeed(), key);
+        DimletPattern pattern = KnowledgeManager.get().getPattern(DimensionId.overworld().loadWorld(level).getSeed(), key);
         if (pattern != null) {
             String[] p = pattern.getPattern();
             int slotNumber = SLOT_PATTERN;
@@ -203,7 +203,7 @@ public class WorkbenchTileEntity extends GenericTileEntity {
                 for (int x = 0; x < value.length(); x++) {
                     ItemStack neededPattern = KnowledgeManager.getPatternItem(value.charAt(x));
                     if (!neededPattern.isEmpty()) {
-                        tryFindAndFitItem(player, s -> s.isItemEqual(neededPattern), slotNumber);
+                        tryFindAndFitItem(player, s -> s.sameItem(neededPattern), slotNumber);
                     } else {
                         tryFindAndFitItem(player, s -> false, slotNumber);
                     }
@@ -212,7 +212,7 @@ public class WorkbenchTileEntity extends GenericTileEntity {
             }
         }
 
-        player.container.detectAndSendChanges();
+        player.inventoryMenu.broadcastChanges();
     }
 
     private void tryFindAndFitItem(PlayerEntity player, Predicate<ItemStack> desired, int slotNumber) {
@@ -227,7 +227,7 @@ public class WorkbenchTileEntity extends GenericTileEntity {
             items.setStackInSlot(slotNumber, ItemStack.EMPTY);
         }
 
-        NonNullList<ItemStack> inventory = player.inventory.mainInventory;
+        NonNullList<ItemStack> inventory = player.inventory.items;
         for (ItemStack itemStack : inventory) {
             if (desired.test(itemStack)) {
                 ItemStack copy = itemStack.copy();
@@ -300,7 +300,7 @@ public class WorkbenchTileEntity extends GenericTileEntity {
     private Set<KnowledgeKey> getSupportedKnowledgeKeys() {
         Set<KnowledgeKey> knownKeys = new HashSet<>();
         for (Direction direction : OrientationTools.DIRECTION_VALUES) {
-            TileEntity tileEntity = world.getTileEntity(pos.offset(direction));
+            TileEntity tileEntity = level.getBlockEntity(worldPosition.relative(direction));
             if (tileEntity instanceof KnowledgeHolderTileEntity) {
                 ((KnowledgeHolderTileEntity) tileEntity).addKnownKnowledgeKeys(knownKeys);
             }
@@ -312,7 +312,7 @@ public class WorkbenchTileEntity extends GenericTileEntity {
         Set<KnowledgeKey> knownKeys = getSupportedKnowledgeKeys();
         List<DimletClientHelper.DimletWithInfo> dimlets = new ArrayList<>();
         for (DimletKey dimlet : DimletDictionary.get().getDimlets()) {
-            KnowledgeKey kkey = KnowledgeManager.get().getKnowledgeKey(DimensionId.overworld().loadWorld(world).getSeed(), dimlet);
+            KnowledgeKey kkey = KnowledgeManager.get().getKnowledgeKey(DimensionId.overworld().loadWorld(level).getSeed(), dimlet);
             boolean craftable = knownKeys.contains(kkey);
             dimlets.add(new DimletClientHelper.DimletWithInfo(dimlet, craftable));
         }

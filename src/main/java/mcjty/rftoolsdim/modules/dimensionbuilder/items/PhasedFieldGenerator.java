@@ -25,6 +25,8 @@ import java.util.List;
 
 import static mcjty.lib.builder.TooltipBuilder.*;
 
+import net.minecraft.item.Item.Properties;
+
 public class PhasedFieldGenerator extends Item implements IEnergyItem, ITooltipSettings {
 
     private final long capacity;
@@ -41,7 +43,7 @@ public class PhasedFieldGenerator extends Item implements IEnergyItem, ITooltipS
     }
 
     public PhasedFieldGenerator() {
-        super(new Properties().group(RFToolsDim.setup.getTab()).maxStackSize(1));
+        super(new Properties().tab(RFToolsDim.setup.getTab()).stacksTo(1));
 
         capacity = DimensionBuilderConfig.PHASEDFIELD_MAXENERGY.get();
         maxReceive = DimensionBuilderConfig.PHASEDFIELD_RECEIVEPERTICK.get();
@@ -63,8 +65,8 @@ public class PhasedFieldGenerator extends Item implements IEnergyItem, ITooltipS
 
 
     @Override
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> list, ITooltipFlag flagIn) {
-        super.addInformation(stack, worldIn, list, flagIn);
+    public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> list, ITooltipFlag flagIn) {
+        super.appendHoverText(stack, worldIn, list, flagIn);
         tooltipBuilder.get().makeTooltip(getRegistryName(), stack, list, flagIn);
     }
 
@@ -109,8 +111,8 @@ public class PhasedFieldGenerator extends Item implements IEnergyItem, ITooltipS
 
     public static boolean checkValidPhasedFieldGenerator(PlayerEntity player, boolean consume, int tickCost) {
         PlayerInventory inventory = player.inventory;
-        for (int i = 0 ; i < PlayerInventory.getHotbarSize() ; i++) {
-            ItemStack slot = inventory.getStackInSlot(i);
+        for (int i = 0 ; i < PlayerInventory.getSelectionSize() ; i++) {
+            ItemStack slot = inventory.getItem(i);
             if (!slot.isEmpty() && slot.getItem() == DimensionBuilderModule.PHASED_FIELD_GENERATOR.get()) {
                 PhasedFieldGenerator pfg = (PhasedFieldGenerator) slot.getItem();
                 int energyStored = pfg.getEnergyStored(slot);

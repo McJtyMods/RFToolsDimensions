@@ -33,51 +33,51 @@ import java.util.List;
 public class RealizedDimensionTab extends Item {
 
     public RealizedDimensionTab() {
-        super(new Item.Properties().maxStackSize(1));
+        super(new Item.Properties().stacksTo(1));
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
-        ItemStack stack = player.getHeldItem(hand);
-        if ((!world.isRemote) && player.isSneaking()) {
+    public ActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
+        ItemStack stack = player.getItemInHand(hand);
+        if ((!world.isClientSide) && player.isShiftKeyDown()) {
             CompoundNBT tagCompound = stack.getTag();
             Logging.message(player, tagCompound.getString("descriptor"));
             if (tagCompound.contains("dimension")) {
                 String dimension = tagCompound.getString("dimension");
                 DimensionData data = PersistantDimensionManager.get(world).getData(new ResourceLocation(dimension));
                 if (data != null) {
-                    player.sendStatusMessage(new StringTextComponent(TextFormatting.BLUE + "Energy: " + TextFormatting.WHITE + data.getEnergy()), false);
+                    player.displayClientMessage(new StringTextComponent(TextFormatting.BLUE + "Energy: " + TextFormatting.WHITE + data.getEnergy()), false);
                     DimensionDescriptor descriptor = data.getDescriptor();
                     descriptor.dump(player);
-                    player.sendStatusMessage(new StringTextComponent("-----------------------------"), false);
+                    player.displayClientMessage(new StringTextComponent("-----------------------------"), false);
                     DimensionDescriptor randomized = data.getRandomizedDescriptor();
                     randomized.dump(player);
                 }
 
                 DimensionId id = DimensionId.fromResourceLocation(new ResourceLocation(dimension));
                 ServerWorld serverWorld = id.getWorld();
-                ChunkGenerator generator = serverWorld.getChunkProvider().generator;
+                ChunkGenerator generator = serverWorld.getChunkSource().generator;
                 if (generator instanceof BaseChunkGenerator) {
                     DimensionSettings settings = ((BaseChunkGenerator) generator).getSettings();
-                    player.sendStatusMessage(new StringTextComponent(TextFormatting.BLUE + "Seed: " + TextFormatting.WHITE + settings.getSeed()), false);
+                    player.displayClientMessage(new StringTextComponent(TextFormatting.BLUE + "Seed: " + TextFormatting.WHITE + settings.getSeed()), false);
                 }
             }
         }
-        return ActionResult.resultSuccess(stack);
+        return ActionResult.success(stack);
     }
 
     @Override
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> list, ITooltipFlag flagIn) {
-        super.addInformation(stack, worldIn, list, flagIn);
+    public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> list, ITooltipFlag flagIn) {
+        super.appendHoverText(stack, worldIn, list, flagIn);
         // @todo 1.16 tooltip system
         CompoundNBT tagCompound = stack.getTag();
         if (tagCompound != null) {
             ResourceLocation dimension = tagCompound.contains("dimension") ? new ResourceLocation(tagCompound.getString("dimension")) : null;
             if (dimension != null) {
-                list.add(new StringTextComponent("Name: " + dimension.getPath()).mergeStyle(TextFormatting.BLUE));
+                list.add(new StringTextComponent("Name: " + dimension.getPath()).withStyle(TextFormatting.BLUE));
             } else if (tagCompound.contains("name")) {
                 String name = tagCompound.getString("name");
-                list.add(new StringTextComponent("Name: " + name).mergeStyle(TextFormatting.BLUE));
+                list.add(new StringTextComponent("Name: " + name).withStyle(TextFormatting.BLUE));
             }
 
             if (McJtyLib.proxy.isSneaking()) {
@@ -92,7 +92,7 @@ public class RealizedDimensionTab extends Item {
             if (ticksLeft == 0) {
                 long power = ClientDimensionData.get().getPower(dimension);
                 long max = ClientDimensionData.get().getMaxPower(dimension);
-                list.add(new StringTextComponent("Dimension ready!").mergeStyle(TextFormatting.BLUE));
+                list.add(new StringTextComponent("Dimension ready!").withStyle(TextFormatting.BLUE));
                 int maintainCost = tagCompound.getInt("rfMaintainCost");
                 list.add(new StringTextComponent(TextFormatting.YELLOW + "    Maintenance cost: " + maintainCost + " RF/tick"));
                 list.add(new StringTextComponent(TextFormatting.YELLOW + "    Current power: " + power + " (" + max +")"));

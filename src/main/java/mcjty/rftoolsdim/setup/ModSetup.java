@@ -39,12 +39,12 @@ public class ModSetup extends DefaultModSetup {
         MinecraftForge.EVENT_BUS.register(new ForgeEventHandlers());
 
         e.enqueueWork(() -> {
-            Registry.register(Registry.CHUNK_GENERATOR_CODEC, VOID_ID, VoidChunkGenerator.CODEC);
-            Registry.register(Registry.CHUNK_GENERATOR_CODEC, WAVES_ID, WavesChunkGenerator.CODEC);
-            Registry.register(Registry.CHUNK_GENERATOR_CODEC, FLAT_ID, FlatChunkGenerator.CODEC);
-            Registry.register(Registry.CHUNK_GENERATOR_CODEC, NORMAL_ID, NormalChunkGenerator.CODEC);
-            Registry.register(Registry.CHUNK_GENERATOR_CODEC, ISLANDS_ID, IslandsChunkGenerator.CODEC);
-            Registry.register(Registry.BIOME_PROVIDER_CODEC, DimensionRegistry.BIOMES_ID, RFTBiomeProvider.CODEC);
+            Registry.register(Registry.CHUNK_GENERATOR, VOID_ID, VoidChunkGenerator.CODEC);
+            Registry.register(Registry.CHUNK_GENERATOR, WAVES_ID, WavesChunkGenerator.CODEC);
+            Registry.register(Registry.CHUNK_GENERATOR, FLAT_ID, FlatChunkGenerator.CODEC);
+            Registry.register(Registry.CHUNK_GENERATOR, NORMAL_ID, NormalChunkGenerator.CODEC);
+            Registry.register(Registry.CHUNK_GENERATOR, ISLANDS_ID, IslandsChunkGenerator.CODEC);
+            Registry.register(Registry.BIOME_SOURCE, DimensionRegistry.BIOMES_ID, RFTBiomeProvider.CODEC);
         });
     }
 

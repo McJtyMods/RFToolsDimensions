@@ -42,8 +42,8 @@ public class RFTFeature extends Feature<NoFeatureConfig> {
         Registry<ConfiguredFeature<?, ?>> registry = WorldGenRegistries.CONFIGURED_FEATURE;
 
         RFTFEATURE_CONFIGURED = Registration.RFTFEATURE.get()
-                .withConfiguration(NoFeatureConfig.NO_FEATURE_CONFIG)
-                .withPlacement(Placement.RANGE.configure(new TopSolidRangeConfig(1, 0, 1)));
+                .configured(NoFeatureConfig.NONE)
+                .decorated(Placement.RANGE.configured(new TopSolidRangeConfig(1, 0, 1)));
 
         Registry.register(registry, CONFIGURED_RFTFEATURE_ID, RFTFEATURE_CONFIGURED);
     }
@@ -53,7 +53,7 @@ public class RFTFeature extends Feature<NoFeatureConfig> {
     }
 
     @Override
-    public boolean generate(ISeedReader reader, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
+    public boolean place(ISeedReader reader, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
         if (generator instanceof BaseChunkGenerator) {
             CompiledDescriptor compiledDescriptor = ((BaseChunkGenerator) generator).getSettings().getCompiledDescriptor();
             Set<CompiledFeature> features = compiledDescriptor.getFeatures();
@@ -75,12 +75,12 @@ public class RFTFeature extends Feature<NoFeatureConfig> {
             if (cp.x == 0 && cp.z == 0) {
                 // Spawn platform
                 int floorHeight = getFloorHeight(reader, cp);
-                DimensionManager.get().registerPlatformHeight(reader.getWorld().getDimensionKey().getLocation(), floorHeight);
+                DimensionManager.get().registerPlatformHeight(reader.getLevel().dimension().location(), floorHeight);
                 SpawnPlatform.SPAWN_PLATFORM.get().generate(reader, new BlockPos(3, floorHeight, 3),
                         compiledDescriptor.getBaseBlocks(), BuildingTemplate.GenerateFlag.PLAIN);
                 generatedSomething = true;
             } else if (rand.nextFloat() < DimensionConfig.DIMLET_HUT_CHANCE.get()) {
-                DimletHut.DIMLET_HUT.get().generate(reader, new BlockPos(cp.getXStart() + 4, getFloorHeight(reader, cp),cp.getZStart() + 4),
+                DimletHut.DIMLET_HUT.get().generate(reader, new BlockPos(cp.getMinBlockX() + 4, getFloorHeight(reader, cp),cp.getMinBlockZ() + 4),
                         compiledDescriptor.getBaseBlocks(), BuildingTemplate.GenerateFlag.FILLDOWN_IFNOTVOID);
                 generatedSomething = true;
             }
@@ -100,7 +100,7 @@ public class RFTFeature extends Feature<NoFeatureConfig> {
     }
 
     private int getHeightAt(ISeedReader reader, ChunkPos cp, int dx, int dz) {
-        int height = reader.getHeight(Heightmap.Type.WORLD_SURFACE, cp.getXStart() + dx, cp.getZStart() + dz);
+        int height = reader.getHeight(Heightmap.Type.WORLD_SURFACE, cp.getMinBlockX() + dx, cp.getMinBlockZ() + dz);
         if (height <= 1 || height > 250) {
             height = 65;
         }

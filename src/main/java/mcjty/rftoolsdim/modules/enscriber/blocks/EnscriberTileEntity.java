@@ -70,7 +70,7 @@ public class EnscriberTileEntity extends GenericTileEntity {
     private final LazyOptional<AutomationFilterItemHander> itemHandler = LazyOptional.of(() -> new AutomationFilterItemHander(items));
 
     private final LazyOptional<INamedContainerProvider> screenHandler = LazyOptional.of(() -> new DefaultContainerProvider<GenericContainer>("Dimlet Workbench")
-            .containerSupplier((windowId,player) -> new GenericContainer(EnscriberModule.CONTAINER_ENSCRIBER.get(), windowId, CONTAINER_FACTORY.get(), getPos(), EnscriberTileEntity.this))
+            .containerSupplier((windowId,player) -> new GenericContainer(EnscriberModule.CONTAINER_ENSCRIBER.get(), windowId, CONTAINER_FACTORY.get(), getBlockPos(), EnscriberTileEntity.this))
             .itemHandler(() -> items)
             .shortListener(new IntReferenceHolder() {
                 @Override
@@ -143,15 +143,15 @@ public class EnscriberTileEntity extends GenericTileEntity {
         DimensionDescriptor descriptor = convertToDimensionDescriptor(player);
         ItemStack realizedTab = createRealizedTab(descriptor);
 
-        DimensionData data = PersistantDimensionManager.get(world).getData(descriptor);
+        DimensionData data = PersistantDimensionManager.get(level).getData(descriptor);
         if (data != null) {
             name = data.getId().getPath();
-            player.sendStatusMessage(new StringTextComponent("This dimension already existed! If this is what you wanted then that's fine. Otherwise you need digit dimlets to make new unique dimensions. The dimlet sequence uniquely identifies a dimension. Names can't be changed")
-                    .mergeStyle(TextFormatting.YELLOW), false);
+            player.displayClientMessage(new StringTextComponent("This dimension already existed! If this is what you wanted then that's fine. Otherwise you need digit dimlets to make new unique dimensions. The dimlet sequence uniquely identifies a dimension. Names can't be changed")
+                    .withStyle(TextFormatting.YELLOW), false);
         } else {
-            if (!DimensionManager.get().isNameAvailable(world, null, name)) {
-                player.sendStatusMessage(new StringTextComponent("This name is already used by another dimension!")
-                        .mergeStyle(TextFormatting.YELLOW), false);
+            if (!DimensionManager.get().isNameAvailable(level, null, name)) {
+                player.displayClientMessage(new StringTextComponent("This name is already used by another dimension!")
+                        .withStyle(TextFormatting.YELLOW), false);
                 return;
             }
         }
@@ -165,7 +165,7 @@ public class EnscriberTileEntity extends GenericTileEntity {
 
         items.setStackInSlot(SLOT_TAB, realizedTab);
 
-        markDirty();
+        setChanged();
     }
 
     /**
@@ -178,7 +178,7 @@ public class EnscriberTileEntity extends GenericTileEntity {
         String compact = descriptor.compact();
         tagCompound.putString("descriptor", compact);
 
-        PersistantDimensionManager mgr = PersistantDimensionManager.get(world);
+        PersistantDimensionManager mgr = PersistantDimensionManager.get(level);
         DimensionData data = mgr.getData(descriptor);
 
         CompiledDescriptor compiledDescriptor = new CompiledDescriptor();
@@ -273,7 +273,7 @@ public class EnscriberTileEntity extends GenericTileEntity {
         }
 
         items.setStackInSlot(SLOT_TAB, new ItemStack(DimensionBuilderModule.EMPTY_DIMENSION_TAB.get()));
-        markDirty();
+        setChanged();
     }
 
 

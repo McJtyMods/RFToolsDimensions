@@ -44,7 +44,7 @@ public class TendrilsFeature implements IFeature {
 
         int k1 = random.nextInt(p_151541_16_ / 2) + p_151541_16_ / 4;
 
-        BlockState air = Blocks.AIR.getDefaultState();
+        BlockState air = Blocks.AIR.defaultBlockState();
         BlockPos.Mutable mpos = new BlockPos.Mutable();
 
         boolean flag = random.nextInt(6) == 0;
@@ -134,11 +134,11 @@ public class TendrilsFeature implements IFeature {
 
                                     if (d12 > -0.7D && d13 * d13 + d12 * d12 + d14 * d14 < 1.0D) {
 
-                                        mpos.setPos(chunkX * 16 + xx, yy, chunkZ * 16 + zz);
+                                        mpos.set(chunkX * 16 + xx, yy, chunkZ * 16 + zz);
                                         BlockState block = primer.getBlockState(mpos);
 
                                         if (block == air) {
-                                            primer.setBlockState(mpos, IFeature.select(states, random), 0);
+                                            primer.setBlock(mpos, IFeature.select(states, random), 0);
                                         }
                                     }
 

@@ -35,7 +35,7 @@ public class PacketSendDimletsToClient {
         for (int i = 0 ; i < size ; i++) {
             short idx = buf.readShort();
             DimletType type = DimletType.values()[idx];
-            String key = buf.readString(32767);
+            String key = buf.readUtf(32767);
             DimletKey dimlet = new DimletKey(type, key);
             boolean craftable = buf.readBoolean();
             dimlets.add(new DimletClientHelper.DimletWithInfo(dimlet, craftable));
@@ -48,7 +48,7 @@ public class PacketSendDimletsToClient {
         for (DimletClientHelper.DimletWithInfo key : dimlets) {
             DimletKey dimlet = key.getDimlet();
             buf.writeShort(dimlet.getType().ordinal());
-            buf.writeString(dimlet.getKey());
+            buf.writeUtf(dimlet.getKey());
             buf.writeBoolean(key.isCraftable());
         }
     }
@@ -56,7 +56,7 @@ public class PacketSendDimletsToClient {
     public void handle(Supplier<NetworkEvent.Context> supplier) {
         NetworkEvent.Context ctx = supplier.get();
         ctx.enqueueWork(() -> {
-            TileEntity te = McJtyLib.proxy.getClientWorld().getTileEntity(pos);
+            TileEntity te = McJtyLib.proxy.getClientWorld().getBlockEntity(pos);
             if (te instanceof IClientCommandHandler) {
                 IClientCommandHandler clientCommandHandler = (IClientCommandHandler) te;
                 if (!clientCommandHandler.receiveListFromServer(WorkbenchTileEntity.CLIENT_CMD_GETDIMLETS, dimlets, Type.create(DimletClientHelper.DimletWithInfo.class))) {

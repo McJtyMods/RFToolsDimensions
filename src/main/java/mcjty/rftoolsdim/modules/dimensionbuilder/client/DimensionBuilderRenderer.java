@@ -38,7 +38,7 @@ public class DimensionBuilderRenderer extends TileEntityRenderer<DimensionBuilde
 
         te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
             if (!h.getStackInSlot(DimensionBuilderTileEntity.SLOT_DIMENSION_TAB).isEmpty()) {
-                matrixStack.push();
+                matrixStack.pushPose();
                 matrixStack.translate(0.1, 1.2, 0.1);
                 matrixStack.scale(0.8f, 0.8f, 0.8f);
                 RenderHelper.renderBillboardQuadBright(matrixStack, buffer, 0.5f, STAGES, RenderSettings.builder()
@@ -47,7 +47,7 @@ public class DimensionBuilderRenderer extends TileEntityRenderer<DimensionBuilde
 //                        .renderType(RenderType.getTranslucent())
                         .alpha(128)
                         .build());
-                matrixStack.pop();
+                matrixStack.popPose();
             }
         });
     }

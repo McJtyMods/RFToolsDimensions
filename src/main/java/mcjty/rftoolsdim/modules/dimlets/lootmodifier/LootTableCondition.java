@@ -20,7 +20,7 @@ public class LootTableCondition implements ILootCondition {
     }
 
     @Override
-    public LootConditionType getConditionType() {
+    public LootConditionType getType() {
         return DimletModule.LOOT_TABLE_CONDITION;
     }
 

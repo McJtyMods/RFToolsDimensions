@@ -34,9 +34,9 @@ public class DigitCycleRecipe extends AbstractRecipeAdaptor {
     public boolean matches(CraftingInventory inv, World worldIn) {
         boolean matches = super.matches(inv, worldIn);
         if (matches) {
-            for (int i = 0 ; i < inv.getSizeInventory() ; i++) {
-                if (!inv.getStackInSlot(i).isEmpty()) {
-                    DimletKey key = DimletTools.getDimletKey(inv.getStackInSlot(i));
+            for (int i = 0 ; i < inv.getContainerSize() ; i++) {
+                if (!inv.getItem(i).isEmpty()) {
+                    DimletKey key = DimletTools.getDimletKey(inv.getItem(i));
                     if (key != null) {
                         return key.getKey().equals(input);
                     }
@@ -47,12 +47,12 @@ public class DigitCycleRecipe extends AbstractRecipeAdaptor {
     }
 
     @Override
-    public ItemStack getRecipeOutput() {
+    public ItemStack getResultItem() {
         return DimletTools.getDimletStack(new DimletKey(DimletType.DIGIT, output));
     }
 
     @Override
-    public ItemStack getCraftingResult(CraftingInventory inv) {
+    public ItemStack assemble(CraftingInventory inv) {
         return DimletTools.getDimletStack(new DimletKey(DimletType.DIGIT, output));
     }
 

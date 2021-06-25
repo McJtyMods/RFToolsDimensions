@@ -61,12 +61,12 @@ public class RFToolsDimensionsTOPDriver implements TOPDriver {
         @Override
         public void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, PlayerEntity player, World world, BlockState blockState, IProbeHitData data) {
             McJtyLibTOPDriver.DRIVER.addStandardProbeInfo(mode, probeInfo, player, world, blockState, data);
-            Tools.safeConsume(world.getTileEntity(data.getPos()), (BlockAbsorberTileEntity te) -> {
+            Tools.safeConsume(world.getBlockEntity(data.getPos()), (BlockAbsorberTileEntity te) -> {
                 int absorbing = te.getAbsorbing();
                 Block block = te.getAbsorbingBlock();
                 int pct = ((EssencesConfig.maxBlockAbsorption.get() - absorbing) * 100) / EssencesConfig.maxBlockAbsorption.get();
                 ItemStack stack = new ItemStack(block, 1);
-                probeInfo.text((new StringTextComponent("Block: ").appendSibling(new TranslationTextComponent(stack.getTranslationKey())).mergeStyle(TextFormatting.GREEN)))
+                probeInfo.text((new StringTextComponent("Block: ").append(new TranslationTextComponent(stack.getDescriptionId())).withStyle(TextFormatting.GREEN)))
                         .horizontal()
                         .progress(pct, 100, probeInfo.defaultProgressStyle().suffix("%"))
                         .item(stack);
@@ -78,12 +78,12 @@ public class RFToolsDimensionsTOPDriver implements TOPDriver {
         @Override
         public void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, PlayerEntity player, World world, BlockState blockState, IProbeHitData data) {
             McJtyLibTOPDriver.DRIVER.addStandardProbeInfo(mode, probeInfo, player, world, blockState, data);
-            Tools.safeConsume(world.getTileEntity(data.getPos()), (FluidAbsorberTileEntity te) -> {
+            Tools.safeConsume(world.getBlockEntity(data.getPos()), (FluidAbsorberTileEntity te) -> {
                 int absorbing = te.getAbsorbing();
                 Block block = te.getAbsorbingBlock();
                 if (block != null) {
                     int pct = ((EssencesConfig.maxFluidAbsorption.get() - absorbing) * 100) / EssencesConfig.maxFluidAbsorption.get();
-                    probeInfo.text((new StringTextComponent("Fluid: ").appendSibling(new TranslationTextComponent(block.getTranslationKey())).mergeStyle(TextFormatting.GREEN)))
+                    probeInfo.text((new StringTextComponent("Fluid: ").append(new TranslationTextComponent(block.getDescriptionId())).withStyle(TextFormatting.GREEN)))
                             .horizontal()
                             .progress(pct, 100, probeInfo.defaultProgressStyle().suffix("%"));
                 }
@@ -95,14 +95,14 @@ public class RFToolsDimensionsTOPDriver implements TOPDriver {
         @Override
         public void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, PlayerEntity player, World world, BlockState blockState, IProbeHitData data) {
             McJtyLibTOPDriver.DRIVER.addStandardProbeInfo(mode, probeInfo, player, world, blockState, data);
-            Tools.safeConsume(world.getTileEntity(data.getPos()), (BiomeAbsorberTileEntity te) -> {
+            Tools.safeConsume(world.getBlockEntity(data.getPos()), (BiomeAbsorberTileEntity te) -> {
                 int absorbing = te.getAbsorbing();
                 String biome = te.getAbsorbingBiome();
                 int pct = ((EssencesConfig.maxBiomeAbsorption.get() - absorbing) * 100) / EssencesConfig.maxBiomeAbsorption.get();
                 ResourceLocation id = new ResourceLocation(biome);
                 String trans = "biome." + id.getNamespace() + "." + id.getPath();
 
-                probeInfo.text((new StringTextComponent("Biome: ").appendSibling(new TranslationTextComponent(trans)).mergeStyle(TextFormatting.GREEN)))
+                probeInfo.text((new StringTextComponent("Biome: ").append(new TranslationTextComponent(trans)).withStyle(TextFormatting.GREEN)))
                         .horizontal()
                         .progress(pct, 100, probeInfo.defaultProgressStyle().suffix("%"));
             }, "Bad tile entity!");

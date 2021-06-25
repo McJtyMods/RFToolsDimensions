@@ -27,21 +27,21 @@ public class CommandForgetInvalid implements Command<CommandSource> {
 
     public static ArgumentBuilder<CommandSource, ?> register(CommandDispatcher<CommandSource> dispatcher) {
         return Commands.literal("forgetinvalid")
-                .requires(cs -> cs.hasPermissionLevel(1))
+                .requires(cs -> cs.hasPermission(1))
                 .executes(CMD);
     }
 
     @Override
     public int run(CommandContext<CommandSource> context) throws CommandSyntaxException {
-        SharedConstants.developmentMode = true;
-        ServerWorld world = context.getSource().getWorld();
+        SharedConstants.IS_RUNNING_IN_IDE = true;
+        ServerWorld world = context.getSource().getLevel();
         PersistantDimensionManager mgr = PersistantDimensionManager.get(world);
         Set<Map.Entry<ResourceLocation, DimensionData>> entries = new HashSet<>(mgr.getData().entrySet());
         for (Map.Entry<ResourceLocation, DimensionData> entry : entries) {
             CompiledDescriptor descriptor = DimensionManager.get().getCompiledDescriptor(world, entry.getKey());
             if (descriptor == null) {
                 mgr.forget(entry.getKey());
-                context.getSource().sendFeedback(new StringTextComponent(TextFormatting.YELLOW + "Removed '" + entry.getKey() + "'"), false);
+                context.getSource().sendSuccess(new StringTextComponent(TextFormatting.YELLOW + "Removed '" + entry.getKey() + "'"), false);
             }
         }
         return 0;

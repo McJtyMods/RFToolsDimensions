@@ -29,14 +29,14 @@ public class CommandDump implements Command<CommandSource> {
 
     public static ArgumentBuilder<CommandSource, ?> register(CommandDispatcher<CommandSource> dispatcher) {
         return Commands.literal("dump")
-                .requires(cs -> cs.hasPermissionLevel(0))
+                .requires(cs -> cs.hasPermission(0))
                 .executes(CMD);
     }
 
     @Override
     public int run(CommandContext<CommandSource> context) throws CommandSyntaxException {
-        ServerWorld world = context.getSource().getWorld();
-        ResourceLocation location = world.getDimensionKey().getLocation();
+        ServerWorld world = context.getSource().getLevel();
+        ResourceLocation location = world.dimension().location();
         feedback(context, TextFormatting.BLUE + "Dimension: " + TextFormatting.WHITE + location.toString());
         DimensionData data = PersistantDimensionManager.get(world).getData(location);
         if (data == null) {
@@ -45,7 +45,7 @@ public class CommandDump implements Command<CommandSource> {
         }
         feedback(context, TextFormatting.BLUE + "Energy: " + TextFormatting.WHITE + data.getEnergy());
 
-        ChunkGenerator generator = world.getChunkProvider().generator;
+        ChunkGenerator generator = world.getChunkSource().generator;
         if (generator instanceof BaseChunkGenerator) {
             DimensionSettings settings = ((BaseChunkGenerator) generator).getSettings();
             feedback(context, TextFormatting.BLUE + "Seed: " + TextFormatting.WHITE + settings.getSeed());
@@ -67,6 +67,6 @@ public class CommandDump implements Command<CommandSource> {
     }
 
     private void feedback(CommandContext<CommandSource> context, String message) {
-        context.getSource().sendFeedback(new StringTextComponent(message), false);
+        context.getSource().sendSuccess(new StringTextComponent(message), false);
     }
 }

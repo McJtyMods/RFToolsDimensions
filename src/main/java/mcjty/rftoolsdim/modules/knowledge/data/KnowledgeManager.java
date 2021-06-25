@@ -104,7 +104,7 @@ public class KnowledgeManager {
             case BIOME:
                 Biome biome = ForgeRegistries.BIOMES.getValue(new ResourceLocation(key.getKey()));
                 if (biome != null) {
-                    return biome.getCategory().getName() + " biomes";
+                    return biome.getBiomeCategory().getName() + " biomes";
                 }
                 return null;
             case FEATURE:
@@ -177,7 +177,7 @@ public class KnowledgeManager {
             Set<ResourceLocation> tags = block.getTags();
             int maxAmount = -1;
             for (ResourceLocation tag : tags) {
-                List<Block> elements = BlockTags.createOptional(tag).getAllElements();
+                List<Block> elements = BlockTags.createOptional(tag).getValues();
                 int size = elements.size();
                 if (commonTags.isCommon(tag)) {
                     size += 10; // Extra bonus
@@ -198,7 +198,7 @@ public class KnowledgeManager {
             RFToolsDim.setup.getLogger().error("Biome '" + key.getKey() + "' is missing!");
             return KnowledgeSet.SET1;
         }
-        return KnowledgeSet.values()[biome.getCategory().ordinal() % KnowledgeSet.values().length];
+        return KnowledgeSet.values()[biome.getBiomeCategory().ordinal() % KnowledgeSet.values().length];
     }
 
     @Nullable

@@ -26,7 +26,7 @@ public class DimensionalBlobRender extends LivingRenderer<DimensionalBlobEntity,
      * Returns the location of an entity's texture. Doesn't seem to be called unless you call Render.bindEntityTexture.
      */
     @Override
-    public ResourceLocation getEntityTexture(DimensionalBlobEntity entity) {
+    public ResourceLocation getTextureLocation(DimensionalBlobEntity entity) {
         switch (entity.getRarity()) {
             case COMMON:
                 return TEXTURE_COMMON;
@@ -42,18 +42,18 @@ public class DimensionalBlobRender extends LivingRenderer<DimensionalBlobEntity,
 
 
     @Override
-    protected boolean canRenderName(DimensionalBlobEntity entity) {
-        return entity.hasCustomName() && super.canRenderName(entity);
+    protected boolean shouldShowName(DimensionalBlobEntity entity) {
+        return entity.hasCustomName() && super.shouldShowName(entity);
     }
 
     public static final DimensionalBlobRender.Factory FACTORY = new DimensionalBlobRender.Factory();
 
     @Override
-    protected void preRenderCallback(DimensionalBlobEntity entitylivingbaseIn, MatrixStack matrixStackIn, float partialTickTime) {
+    protected void scale(DimensionalBlobEntity entitylivingbaseIn, MatrixStack matrixStackIn, float partialTickTime) {
         float f = 0.999F;
         matrixStackIn.scale(0.999F, 0.999F, 0.999F);
         matrixStackIn.translate(0.0D, 0.301F, 0.0D);
-        float f1 = 2.0f * entitylivingbaseIn.getRenderScale();
+        float f1 = 2.0f * entitylivingbaseIn.getScale();
         float f2 = MathHelper.lerp(partialTickTime, entitylivingbaseIn.prevSquishFactor, entitylivingbaseIn.squishFactor) / (f1 * 0.5F + 1.0F);
         float f3 = 1.0F / (f2 + 1.0F);
         matrixStackIn.scale(f3 * f1, 1.0F / f3 * f1, f3 * f1);

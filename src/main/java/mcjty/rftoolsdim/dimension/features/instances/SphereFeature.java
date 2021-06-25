@@ -29,7 +29,7 @@ public class SphereFeature implements IFeature {
         int chunkZ = cp.z;
         int size = 1;
 
-        BlockState filler = Blocks.AIR.getDefaultState();
+        BlockState filler = Blocks.AIR.defaultBlockState();
 
         boolean generated = false;
         for (int dx = -size; dx <= size; dx++) {
@@ -70,11 +70,11 @@ public class SphereFeature implements IFeature {
                     double dydy = (y-centery) * (y-centery);
                     double sqdist = dxdx + dydy + dzdz;
                     if (sqdist <= sqradius) {
-                        pos.setPos(chunkX * 16 + x, y, chunkZ * 16 + z);
+                        pos.set(chunkX * 16 + x, y, chunkZ * 16 + z);
                         if ((!hollow) || Math.sqrt(sqdist) >= radius-2) {
-                            world.setBlockState(pos, IFeature.select(states, random), 0);
+                            world.setBlock(pos, IFeature.select(states, random), 0);
                         } else {
-                            world.setBlockState(pos, filler, 0);
+                            world.setBlock(pos, filler, 0);
                         }
                     }
                 }

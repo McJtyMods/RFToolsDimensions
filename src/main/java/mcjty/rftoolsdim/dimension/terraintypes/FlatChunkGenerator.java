@@ -23,12 +23,12 @@ public class FlatChunkGenerator extends BaseChunkGenerator {
 
     public static final Codec<FlatChunkGenerator> CODEC = RecordCodecBuilder.create(instance ->
             instance.group(
-                    RegistryLookupCodec.getLookUpCodec(Registry.BIOME_KEY).forGetter(FlatChunkGenerator::getBiomeRegistry),
+                    RegistryLookupCodec.create(Registry.BIOME_REGISTRY).forGetter(FlatChunkGenerator::getBiomeRegistry),
                     DimensionSettings.SETTINGS_CODEC.fieldOf("settings").forGetter(FlatChunkGenerator::getSettings)
             ).apply(instance, FlatChunkGenerator::new));
 
     public FlatChunkGenerator(MinecraftServer server, DimensionSettings settings) {
-        this(server.getDynamicRegistries().getRegistry(Registry.BIOME_KEY), settings);
+        this(server.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY), settings);
     }
 
     public static final int FLAT_LEVEL = 64;
@@ -38,20 +38,20 @@ public class FlatChunkGenerator extends BaseChunkGenerator {
     }
 
     @Override
-    protected Codec<? extends ChunkGenerator> func_230347_a_() {
+    protected Codec<? extends ChunkGenerator> codec() {
         return CODEC;
     }
 
     @Override
-    public ChunkGenerator func_230349_a_(long l) {
+    public ChunkGenerator withSeed(long l) {
         return new FlatChunkGenerator(getBiomeRegistry(), getSettings());
     }
 
     @Override
-    public void func_230352_b_(IWorld iWorld, StructureManager structureManager, IChunk chunk) {
+    public void fillFromNoise(IWorld iWorld, StructureManager structureManager, IChunk chunk) {
         BlockPos.Mutable mpos = new BlockPos.Mutable();
-        Heightmap hmOcean = chunk.getHeightmap(Heightmap.Type.OCEAN_FLOOR_WG);
-        Heightmap hmWorld = chunk.getHeightmap(Heightmap.Type.WORLD_SURFACE_WG);
+        Heightmap hmOcean = chunk.getOrCreateHeightmapUnprimed(Heightmap.Type.OCEAN_FLOOR_WG);
+        Heightmap hmWorld = chunk.getOrCreateHeightmapUnprimed(Heightmap.Type.WORLD_SURFACE_WG);
 
         Set<AttributeType> attributeTypes = settings.getCompiledDescriptor().getAttributeTypes();
         boolean flatter = attributeTypes.contains(AttributeType.FLATTER);
@@ -68,7 +68,7 @@ public class FlatChunkGenerator extends BaseChunkGenerator {
             for (int x = 0; x < 16; ++x) {
                 for (int z = 0; z < 16; ++z) {
                     BlockState state = getDefaultBlock();
-                    chunk.setBlockState(mpos.setPos(x, y, z), state, false);
+                    chunk.setBlockState(mpos.set(x, y, z), state, false);
                     hmOcean.update(x, y, z, state);
                     hmWorld.update(x, y, z, state);
                 }
@@ -77,10 +77,10 @@ public class FlatChunkGenerator extends BaseChunkGenerator {
     }
 
     @Override
-    public int getHeight(int x, int z, Heightmap.Type type) {
+    public int getBaseHeight(int x, int z, Heightmap.Type type) {
         for (int i = FLAT_LEVEL; i >= 0; --i) {
             BlockState blockstate = defaultBlocks.get(0);
-            if (type.getHeightLimitPredicate().test(blockstate)) {
+            if (type.isOpaque().test(blockstate)) {
                 return i + 1;
             }
         }
@@ -88,7 +88,7 @@ public class FlatChunkGenerator extends BaseChunkGenerator {
     }
 
     @Override
-    public IBlockReader func_230348_a_(int x, int z) {
+    public IBlockReader getBaseColumn(int x, int z) {
         return new OffsetBlockReader(defaultBlocks.get(0), FLAT_LEVEL);
     }
 }

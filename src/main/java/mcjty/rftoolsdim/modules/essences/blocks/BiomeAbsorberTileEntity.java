@@ -24,6 +24,8 @@ import java.util.Random;
 
 import static mcjty.lib.builder.TooltipBuilder.*;
 
+import net.minecraft.block.AbstractBlock;
+
 public class BiomeAbsorberTileEntity extends GenericTileEntity implements ITickableTileEntity {
 
     public BiomeAbsorberTileEntity() {
@@ -35,10 +37,10 @@ public class BiomeAbsorberTileEntity extends GenericTileEntity implements ITicka
 
     public static BaseBlock createBlock() {
         return new BaseBlock(new BlockBuilder()
-                .properties(Block.Properties.create(Material.IRON)
-                        .hardnessAndResistance(2.0f)
+                .properties(AbstractBlock.Properties.of(Material.METAL)
+                        .strength(2.0f)
                         .sound(SoundType.METAL)
-                        .notSolid())
+                        .noOcclusion())
                 .tileEntitySupplier(BiomeAbsorberTileEntity::new)
                 .topDriver(RFToolsDimensionsTOPDriver.DRIVER)
                 .manualEntry(ManualHelper.create("rftoolsdim:dimlets/dimlet_workbench"))
@@ -61,7 +63,7 @@ public class BiomeAbsorberTileEntity extends GenericTileEntity implements ITicka
         } else {
             ResourceLocation id = new ResourceLocation(biome);
             String trans = "biome." + id.getNamespace() + "." + id.getPath();
-            return I18n.format(trans);
+            return I18n.get(trans);
         }
     }
 
@@ -90,7 +92,7 @@ public class BiomeAbsorberTileEntity extends GenericTileEntity implements ITicka
 
     @Override
     public void tick() {
-        if (world.isRemote) {
+        if (level.isClientSide) {
             tickClient();
         } else {
             tickServer();
@@ -99,7 +101,7 @@ public class BiomeAbsorberTileEntity extends GenericTileEntity implements ITicka
 
     protected void tickClient() {
         if (absorbing > 0) {
-            Random rand = world.rand;
+            Random rand = level.random;
 
             double u = rand.nextFloat() * 2.0f - 1.0f;
             double v = (float) (rand.nextFloat() * 2.0f * Math.PI);
@@ -108,7 +110,7 @@ public class BiomeAbsorberTileEntity extends GenericTileEntity implements ITicka
             double z = u;
             double r = 1.0f;
 
-            world.addParticle(ParticleTypes.PORTAL, getPos().getX() + 0.5f + x * r, getPos().getY() + 0.5f + y * r, getPos().getZ() + 0.5f + z * r, -x, -y, -z);
+            level.addParticle(ParticleTypes.PORTAL, getBlockPos().getX() + 0.5f + x * r, getBlockPos().getY() + 0.5f + y * r, getBlockPos().getZ() + 0.5f + z * r, -x, -y, -z);
         }
     }
 
@@ -122,14 +124,14 @@ public class BiomeAbsorberTileEntity extends GenericTileEntity implements ITicka
 
     protected void tickServer() {
         if (biomeId == null) {
-            Biome biome = getWorld().getBiome(getPos());
+            Biome biome = getLevel().getBiome(getBlockPos());
             biomeId = biome.getRegistryName().toString();
             absorbing = EssencesConfig.maxBiomeAbsorption.get();
-            markDirty();
+            setChanged();
         }
 
         if (absorbing > 0) {
-            Biome biome = world.getBiome(pos);
+            Biome biome = level.getBiome(worldPosition);
             if (biome == null || !biome.getRegistryName().toString().equals(biomeId)) {
                 return;
             }

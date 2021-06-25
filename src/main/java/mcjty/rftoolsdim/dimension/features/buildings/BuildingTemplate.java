@@ -50,12 +50,12 @@ public class BuildingTemplate {
             int z = pos.getZ();
             for (String row : slice.rows) {
                 for (int x = 0; x < row.length(); x++) {
-                    mpos.setPos(pos.getX() + x, y, z);
+                    mpos.set(pos.getX() + x, y, z);
                     char key = row.charAt(x);
                     if (paletteSpecial.containsKey(key)) {
                         paletteSpecial.get(key).accept(reader, mpos);
                     } else {
-                        reader.setBlockState(mpos, palette.get(key), 0);
+                        reader.setBlock(mpos, palette.get(key), 0);
                     }
                 }
                 z++;
@@ -72,11 +72,11 @@ public class BuildingTemplate {
         for (String row : slice.rows) {
             for (int x = 0; x < row.length(); x++) {
                 for (int yy = y - 1; yy > 1; yy--) {
-                    mpos.setPos(pos.getX() + x, yy, z);
+                    mpos.set(pos.getX() + x, yy, z);
                     BlockState state = reader.getBlockState(mpos);
                     if (state.getBlock().isAir(state, reader, mpos)) {
                         BlockState blockState = IFeature.select(states, reader.getRandom());
-                        reader.setBlockState(mpos, blockState, 0);
+                        reader.setBlock(mpos, blockState, 0);
                     } else {
                         break;
                     }
@@ -95,7 +95,7 @@ public class BuildingTemplate {
             for (int x = 0; x < row.length(); x++) {
                 boolean isVoid = true;
                 for (int yy = y - 1; yy > 1; yy--) {
-                    mpos.setPos(pos.getX() + x, yy, z);
+                    mpos.set(pos.getX() + x, yy, z);
                     BlockState state = reader.getBlockState(mpos);
                     if (!state.getBlock().isAir(state, reader, mpos)) {
                         isVoid = false;
@@ -104,11 +104,11 @@ public class BuildingTemplate {
                 }
                 if (!isVoid) {
                     for (int yy = y - 1; yy > 1; yy--) {
-                        mpos.setPos(pos.getX() + x, yy, z);
+                        mpos.set(pos.getX() + x, yy, z);
                         BlockState state = reader.getBlockState(mpos);
                         if (state.getBlock().isAir(state, reader, mpos)) {
                             BlockState blockState = IFeature.select(states, reader.getRandom());
-                            reader.setBlockState(mpos, blockState, 0);
+                            reader.setBlock(mpos, blockState, 0);
                         } else {
                             break;
                         }

@@ -48,7 +48,7 @@ public class PersistantDimensionManager extends AbstractWorldData<PersistantDime
     public void register(DimensionData dd) {
         data.put(dd.getId(), dd);
         dataByDescriptor.put(dd.getDescriptor(), dd);
-        markDirty();
+        setDirty();
     }
 
     public void forget(ResourceLocation key) {
@@ -57,11 +57,11 @@ public class PersistantDimensionManager extends AbstractWorldData<PersistantDime
         if (dd != null) {
             dataByDescriptor.remove(dd.getDescriptor());
         }
-        markDirty();
+        setDirty();
     }
 
     @Override
-    public void read(CompoundNBT tag) {
+    public void load(CompoundNBT tag) {
         ListNBT dimensions = tag.getList("dimensions", Constants.NBT.TAG_COMPOUND);
         data.clear();
         dataByDescriptor.clear();
@@ -74,7 +74,7 @@ public class PersistantDimensionManager extends AbstractWorldData<PersistantDime
     }
 
     @Override
-    public CompoundNBT write(CompoundNBT compound) {
+    public CompoundNBT save(CompoundNBT compound) {
         CompoundNBT tag = new CompoundNBT();
 
         ListNBT list = new ListNBT();

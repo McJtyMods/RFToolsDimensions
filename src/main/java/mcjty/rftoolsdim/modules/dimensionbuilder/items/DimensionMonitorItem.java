@@ -17,6 +17,8 @@ import java.util.List;
 import static mcjty.lib.builder.TooltipBuilder.header;
 import static mcjty.lib.builder.TooltipBuilder.key;
 
+import net.minecraft.item.Item.Properties;
+
 public class DimensionMonitorItem extends Item implements ITooltipSettings {
 
     private final Lazy<TooltipBuilder> tooltipBuilder = () -> new TooltipBuilder()
@@ -26,12 +28,12 @@ public class DimensionMonitorItem extends Item implements ITooltipSettings {
                     TooltipBuilder.parameter("name", ClientHelpers::getDimensionName));
 
     public DimensionMonitorItem() {
-        super(new Properties().group(RFToolsDim.setup.getTab()).maxStackSize(1));
+        super(new Properties().tab(RFToolsDim.setup.getTab()).stacksTo(1));
     }
 
     @Override
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> list, ITooltipFlag flagIn) {
-        super.addInformation(stack, worldIn, list, flagIn);
+    public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> list, ITooltipFlag flagIn) {
+        super.appendHoverText(stack, worldIn, list, flagIn);
         tooltipBuilder.get().makeTooltip(getRegistryName(), stack, list, flagIn);
     }
 
