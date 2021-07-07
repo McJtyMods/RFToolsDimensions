@@ -55,8 +55,8 @@ public class DimletCycleRecipeBuilder implements IRecipeBuilder<DimletCycleRecip
     }
 
     @Override
-    public DimletCycleRecipeBuilder key(Character symbol, ITag<Item> tagIn) {
-        return this.key(symbol, Ingredient.of(tagIn));
+    public DimletCycleRecipeBuilder define(Character symbol, ITag<Item> tagIn) {
+        return this.define(symbol, Ingredient.of(tagIn));
     }
 
     public DimletCycleRecipeBuilder input(String input) {
@@ -70,12 +70,12 @@ public class DimletCycleRecipeBuilder implements IRecipeBuilder<DimletCycleRecip
     }
 
     @Override
-    public DimletCycleRecipeBuilder key(Character symbol, IItemProvider itemIn) {
-        return this.key(symbol, Ingredient.of(itemIn));
+    public DimletCycleRecipeBuilder define(Character symbol, IItemProvider itemIn) {
+        return this.define(symbol, Ingredient.of(itemIn));
     }
 
     @Override
-    public DimletCycleRecipeBuilder key(Character symbol, Ingredient ingredientIn) {
+    public DimletCycleRecipeBuilder define(Character symbol, Ingredient ingredientIn) {
         if (this.key.containsKey(symbol)) {
             throw new IllegalArgumentException("Symbol '" + symbol + "' is already defined!");
         } else if (symbol == ' ') {
@@ -107,10 +107,12 @@ public class DimletCycleRecipeBuilder implements IRecipeBuilder<DimletCycleRecip
         return this;
     }
 
+    @Override
     public void build(Consumer<IFinishedRecipe> consumerIn) {
         this.build(consumerIn, Registry.ITEM.getKey(this.result));
     }
 
+    @Override
     public void build(Consumer<IFinishedRecipe> consumerIn, String save) {
         ResourceLocation resourcelocation = Registry.ITEM.getKey(this.result);
         if ((new ResourceLocation(save)).equals(resourcelocation)) {
@@ -120,6 +122,7 @@ public class DimletCycleRecipeBuilder implements IRecipeBuilder<DimletCycleRecip
         }
     }
 
+    @Override
     public void build(Consumer<IFinishedRecipe> consumerIn, ResourceLocation id) {
         this.validate(id);
         this.advancementBuilder.parent(new ResourceLocation("recipes/root")).addCriterion("has_the_recipe",

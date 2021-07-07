@@ -71,20 +71,20 @@ public class Recipes extends BaseRecipeProvider {
                         .unlockedBy("empty_dimlet", has(DimletModule.EMPTY_DIMLET.get())),
                 "rCr", "CEC", "rCr");
         build(consumer, DimletRecipeBuilder.shapedRecipe(DimletModule.DIGIT_DIMLET.get())
-                        .key('C', Items.REDSTONE_TORCH)
+                        .define('C', Items.REDSTONE_TORCH)
                         .dimletKey(new DimletKey(DimletType.DIGIT, "0"))
                         .addCriterion("empty_dimlet", has(DimletModule.EMPTY_DIMLET.get())),
                 " C ", "CEC", " C ");
         for (int i = 1 ; i <= 9 ; i++) {
             build(consumer, new ResourceLocation(RFToolsDim.MODID, "digit" + i), DimletCycleRecipeBuilder.shapedRecipe(DimletModule.DIGIT_DIMLET.get())
-                            .key('C', Ingredient.of(DimletTools.getDimletStack(new DimletKey(DimletType.DIGIT, "0"))))
+                            .define('C', Ingredient.of(DimletTools.getDimletStack(new DimletKey(DimletType.DIGIT, "0"))))
                             .input("" + (i-1))
                             .output("" + i)
                             .addCriterion("empty_dimlet", has(DimletModule.EMPTY_DIMLET.get())),
                     "C");
         }
         build(consumer, new ResourceLocation(RFToolsDim.MODID, "digit0"), DimletCycleRecipeBuilder.shapedRecipe(DimletModule.DIGIT_DIMLET.get())
-                        .key('C', Ingredient.of(DimletTools.getDimletStack(new DimletKey(DimletType.DIGIT, "1"))))
+                        .define('C', Ingredient.of(DimletTools.getDimletStack(new DimletKey(DimletType.DIGIT, "1"))))
                         .input("9")
                         .output("0")
                         .addCriterion("empty_dimlet", has(DimletModule.EMPTY_DIMLET.get())),
