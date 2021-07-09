@@ -1,4 +1,4 @@
-Upcoming:
+1.16-7.0.11-beta:
 - Fixed a problem with creating dimensions
 
 1.16-7.0.10-beta:
