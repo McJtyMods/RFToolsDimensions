@@ -32,11 +32,11 @@ import java.util.function.Function;
 public class DimensionHelper {
 
     public static final Function<MinecraftServer, IChunkStatusListenerFactory> CHUNK_STATUS_LISTENER_FACTORY_FIELD =
-            ReflectionHelper.getInstanceFieldGetter(MinecraftServer.class, "progressListenerFactory");
+            ReflectionHelper.getInstanceFieldGetter(MinecraftServer.class, "field_" + "213220_d");
     public static final Function<MinecraftServer, Executor> BACKGROUND_EXECUTOR_FIELD =
-            ReflectionHelper.getInstanceFieldGetter(MinecraftServer.class, "executor");
+            ReflectionHelper.getInstanceFieldGetter(MinecraftServer.class, "field_" + "213217_au");
     public static final Function<MinecraftServer, SaveFormat.LevelSave> ANVIL_CONVERTER_FOR_ANVIL_FILE_FIELD =
-            ReflectionHelper.getInstanceFieldGetter(MinecraftServer.class, "storageSource");
+            ReflectionHelper.getInstanceFieldGetter(MinecraftServer.class, "field_" + "71310_m");
 
     /**
      * Gets a world, dynamically creating and registering one if it doesn't exist.

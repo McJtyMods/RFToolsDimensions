@@ -1,3 +1,6 @@
+Upcoming:
+- Fixed a problem with creating dimensions
+
 1.16-7.0.10-beta:
 - Slightly reduced spawn rate of dimensional blobs
 - Dimensional blobs should no longer spawn over the void
