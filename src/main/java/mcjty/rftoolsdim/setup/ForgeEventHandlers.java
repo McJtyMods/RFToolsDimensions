@@ -10,6 +10,8 @@ import mcjty.rftoolsdim.dimension.power.PowerHandler;
 import mcjty.rftoolsdim.dimension.terraintypes.AttributeType;
 import mcjty.rftoolsdim.modules.blob.entities.DimensionalBlobEntity;
 import mcjty.rftoolsdim.modules.blob.tools.Spawner;
+import mcjty.rftoolsdim.modules.dimlets.DimletConfig;
+import mcjty.rftoolsdim.modules.dimlets.data.DimletDictionary;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.GenerationStage;
@@ -18,6 +20,7 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.event.server.FMLServerStartedEvent;
 
 import java.util.Random;
 
@@ -60,6 +63,15 @@ public class ForgeEventHandlers {
                     }
                 }
             }
+        }
+    }
+
+    @SubscribeEvent
+    public void onWorldLoad(FMLServerStartedEvent event) {
+        RFToolsDim.setup.getLogger().info("Reading dimlet packages: ");
+        DimletDictionary.get().reset();
+        for (String file : DimletConfig.DIMLET_PACKAGES.get()) {
+            DimletDictionary.get().readPackage(file);
         }
     }
 

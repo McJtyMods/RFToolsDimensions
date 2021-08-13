@@ -2,7 +2,6 @@ package mcjty.rftoolsdim.modules.dimlets;
 
 import mcjty.lib.modules.IModule;
 import mcjty.rftoolsdim.RFToolsDim;
-import mcjty.rftoolsdim.modules.dimlets.data.DimletDictionary;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletType;
 import mcjty.rftoolsdim.modules.dimlets.items.DimletItem;
 import mcjty.rftoolsdim.modules.dimlets.items.PartItem;
@@ -70,9 +69,6 @@ public class DimletModule implements IModule {
 
     @Override
     public void init(FMLCommonSetupEvent event) {
-        for (String file : DimletConfig.DIMLET_PACKAGES.get()) {
-            DimletDictionary.get().readPackage(file);
-        }
         event.enqueueWork(() -> {
             registerLootHelpers();
         });

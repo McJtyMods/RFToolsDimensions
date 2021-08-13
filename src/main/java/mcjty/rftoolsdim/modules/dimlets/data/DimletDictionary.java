@@ -22,6 +22,12 @@ public class DimletDictionary {
         return INSTANCE;
     }
 
+    public void reset() {
+        dimlets.clear();
+        dimletsByRarity.clear();
+        dimletsByRarityAndType.clear();
+    }
+
     private boolean register(DimletKey key, DimletSettings settings) {
         if (DimletTools.isValidDimlet(key)) {
             dimlets.put(key, settings);

@@ -202,10 +202,10 @@
   {
     "type": "block",
     "key": "minecraft:ancient_debris",
-    "rarity": "uncommon",
-    "create": 100,
-    "maintain": 100,
-    "ticks": 100,
+    "rarity": "legendary",
+    "create": 1000,
+    "maintain": 300,
+    "ticks": 200,
     "worldgen": true,
     "dimlet": true
   },
@@ -1642,10 +1642,10 @@
   {
     "type": "block",
     "key": "minecraft:netherite_block",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
+    "rarity": "legendary",
+    "create": 1900,
+    "maintain": 900,
+    "ticks": 300,
     "worldgen": true,
     "dimlet": true
   },

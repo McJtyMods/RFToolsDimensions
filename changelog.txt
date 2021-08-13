@@ -1,3 +1,9 @@
+Upcoming:
+- Fixed a problem with the phased field generator configs not being changeable
+- Fixed a problem where changes to the 'dimletPackages' server config were not being used
+- Niels Pilgaard added a dimlet package for Emendatus Enigmatica
+- Changed the rarity of netherite blocks and ancient debris to legendary and raised the cost
+
 1.16-7.0.11-beta:
 - Fixed a problem with creating dimensions
 

@@ -25,13 +25,7 @@ import java.util.List;
 
 import static mcjty.lib.builder.TooltipBuilder.*;
 
-import net.minecraft.item.Item.Properties;
-
 public class PhasedFieldGenerator extends Item implements IEnergyItem, ITooltipSettings {
-
-    private final long capacity;
-    private final long maxReceive;
-    private final long maxExtract;
 
     private final Lazy<TooltipBuilder> tooltipBuilder = () -> new TooltipBuilder()
             .info(key("message.rftoolsdim.shiftmessage"))
@@ -44,10 +38,6 @@ public class PhasedFieldGenerator extends Item implements IEnergyItem, ITooltipS
 
     public PhasedFieldGenerator() {
         super(new Properties().tab(RFToolsDim.setup.getTab()).stacksTo(1));
-
-        capacity = DimensionBuilderConfig.PHASEDFIELD_MAXENERGY.get();
-        maxReceive = DimensionBuilderConfig.PHASEDFIELD_RECEIVEPERTICK.get();
-        maxExtract = DimensionBuilderConfig.PHASEDFIELD_CONSUMEPERTICK.get() * PowerHandler.MAXTICKS;
     }
 
     @Override
@@ -74,7 +64,7 @@ public class PhasedFieldGenerator extends Item implements IEnergyItem, ITooltipS
     public long receiveEnergyL(ItemStack container, long maxReceive, boolean simulate) {
         CompoundNBT tag = container.getOrCreateTag();
         long energy = tag.getLong("Energy");
-        long energyReceived = Math.min(capacity - energy, Math.min(this.maxReceive, maxReceive));
+        long energyReceived = Math.min(getMaxEnergyStoredL(container) - energy, Math.min(DimensionBuilderConfig.PHASEDFIELD_RECEIVEPERTICK.get(), maxReceive));
 
         if (!simulate) {
             energy += energyReceived;
@@ -87,7 +77,7 @@ public class PhasedFieldGenerator extends Item implements IEnergyItem, ITooltipS
     public long extractEnergyL(ItemStack container, long maxExtract, boolean simulate) {
         CompoundNBT tag = container.getOrCreateTag();
         long energy = tag.getLong("Energy");
-        long energyExtracted = Math.min(energy, Math.min(this.maxExtract, maxExtract));
+        long energyExtracted = Math.min(energy, Math.min(DimensionBuilderConfig.PHASEDFIELD_CONSUMEPERTICK.get() * PowerHandler.MAXTICKS, maxExtract));
 
         if (!simulate) {
             energy -= energyExtracted;
@@ -106,7 +96,7 @@ public class PhasedFieldGenerator extends Item implements IEnergyItem, ITooltipS
 
     @Override
     public long getMaxEnergyStoredL(ItemStack container) {
-        return capacity;
+        return DimensionBuilderConfig.PHASEDFIELD_MAXENERGY.get();
     }
 
     public static boolean checkValidPhasedFieldGenerator(PlayerEntity player, boolean consume, int tickCost) {
