@@ -1,5 +1,7 @@
 package mcjty.rftoolsdim.modules.dimlets.data;
 
+import net.minecraft.network.PacketBuffer;
+
 import java.util.Objects;
 
 public class DimletKey implements Comparable<DimletKey> {
@@ -10,6 +12,11 @@ public class DimletKey implements Comparable<DimletKey> {
     public DimletKey(DimletType type, String key) {
         this.type = type;
         this.key = key;
+    }
+
+    public DimletKey(PacketBuffer buf) {
+        type = DimletType.values()[buf.readInt()];
+        key = buf.readUtf(32767);
     }
 
     public DimletKey(String serialized) {
@@ -28,6 +35,11 @@ public class DimletKey implements Comparable<DimletKey> {
 
     public String serialize() {
         return type.getShortName() + "#" + key;
+    }
+
+    public void toBytes(PacketBuffer buf) {
+        buf.writeInt(type.ordinal());
+        buf.writeUtf(key);
     }
 
     @Override

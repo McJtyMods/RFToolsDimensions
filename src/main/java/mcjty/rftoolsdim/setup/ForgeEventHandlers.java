@@ -12,16 +12,23 @@ import mcjty.rftoolsdim.modules.blob.entities.DimensionalBlobEntity;
 import mcjty.rftoolsdim.modules.blob.tools.Spawner;
 import mcjty.rftoolsdim.modules.dimlets.DimletConfig;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletDictionary;
+import mcjty.rftoolsdim.modules.dimlets.data.DimletKey;
+import mcjty.rftoolsdim.modules.dimlets.data.DimletSettings;
+import mcjty.rftoolsdim.modules.dimlets.network.PacketSendDimletPackages;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartedEvent;
+import net.minecraftforge.fml.network.PacketDistributor;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 public class ForgeEventHandlers {
@@ -72,6 +79,26 @@ public class ForgeEventHandlers {
         DimletDictionary.get().reset();
         for (String file : DimletConfig.DIMLET_PACKAGES.get()) {
             DimletDictionary.get().readPackage(file);
+        }
+    }
+
+    @SubscribeEvent
+    public void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
+        // Send over the dimlets to the client
+        RFToolsDim.setup.getLogger().info("Client logged in: sending dimlet packages");
+        Map<DimletKey, DimletSettings> collected = new HashMap<>();
+        DimletDictionary dictionary = DimletDictionary.get();
+        for (DimletKey key : dictionary.getDimlets()) {
+            collected.put(key, dictionary.getSettings(key));
+            if (collected.size() >= 100) {
+                RFToolsDimMessages.INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) event.getPlayer()),
+                        new PacketSendDimletPackages(collected));
+                collected.clear();
+            }
+        }
+        if (!collected.isEmpty()) {
+            RFToolsDimMessages.INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) event.getPlayer()),
+                    new PacketSendDimletPackages(collected));
         }
     }
 

@@ -1,3 +1,6 @@
+Upcoming:
+- Fixed a problem with dimlet information (packages) not getting send over correctly when playing on a server. Now when a player logs in the dimlet packages are synchronised so that you can additionally configure dimlets fully server side
+
 1.16-7.0.12-beta:
 - Fixed a problem with the phased field generator configs not being changeable
 - Fixed a problem where changes to the 'dimletPackages' server config were not being used

@@ -28,7 +28,7 @@ public class DimletDictionary {
         dimletsByRarityAndType.clear();
     }
 
-    private boolean register(DimletKey key, DimletSettings settings) {
+    public boolean register(DimletKey key, DimletSettings settings) {
         if (DimletTools.isValidDimlet(key)) {
             dimlets.put(key, settings);
             return true;

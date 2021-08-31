@@ -4,6 +4,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import mcjty.lib.varia.JSonTools;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.PacketBuffer;
 
 public class DimletSettings {
 
@@ -26,6 +27,26 @@ public class DimletSettings {
         if (rarity == null) {
             throw new IllegalStateException("Dimlet without rarity!");
         }
+    }
+
+    public DimletSettings(PacketBuffer buf) {
+        rarity = DimletRarity.values()[buf.readInt()];
+        createCost = buf.readInt();
+        maintainCost = buf.readInt();
+        tickCost = buf.readInt();
+        worldgen = buf.readBoolean();
+        dimlet = buf.readBoolean();
+        essence = buf.readItem();
+    }
+
+    public void toBytes(PacketBuffer buf) {
+        buf.writeInt(rarity.ordinal());
+        buf.writeInt(createCost);
+        buf.writeInt(maintainCost);
+        buf.writeInt(tickCost);
+        buf.writeBoolean(worldgen);
+        buf.writeBoolean(dimlet);
+        buf.writeItemStack(essence, false);
     }
 
     public void buildElement(JsonObject jsonObject) {
