@@ -273,7 +273,7 @@ public class WorkbenchTileEntity extends GenericTileEntity {
             public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
                 switch (slot) {
                     case SLOT_EMPTY_DIMLET:
-                        return stack.getItem() == DimletModule.EMPTY_DIMLET.get();
+                        return DimletItem.isEmptyDimlet(stack);
                     case SLOT_MEMORY_PART:
                         return stack.getItem() instanceof PartItem;
                     case SLOT_ENERGY_PART:
