@@ -1,5 +1,6 @@
 1.16-7.0.14-beta:
 - Fixed a problem where the first slot of the dimlet workbench would not accept empty dimlets if inserted manually. Only double clicking worked
+- Fixed the fluid absorber also absorbing non-source liquid blocks
 
 1.16-7.0.13-beta:
 - Fixed a problem with dimlet information (packages) not getting send over correctly when playing on a server. Now when a player logs in the dimlet packages are synchronised so that you can additionally configure dimlets fully server side

@@ -15,15 +15,11 @@ import mcjty.rftoolsdim.modules.dimlets.data.DimletSettings;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletType;
 import mcjty.rftoolsdim.modules.essences.EssencesConfig;
 import mcjty.rftoolsdim.modules.essences.EssencesModule;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.SoundType;
+import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.particles.ParticleTypes;
@@ -39,8 +35,6 @@ import java.util.Random;
 import java.util.Set;
 
 import static mcjty.lib.builder.TooltipBuilder.*;
-
-import net.minecraft.block.AbstractBlock;
 
 public class FluidAbsorberTileEntity extends GenericTileEntity implements ITickableTileEntity {
 
@@ -198,7 +192,11 @@ public class FluidAbsorberTileEntity extends GenericTileEntity implements ITicka
     }
 
     private boolean blockMatches(BlockPos c) {
-        return level.getFluidState(c).createLegacyBlock().getBlock().equals(absorbingBlock);
+        FluidState state = level.getFluidState(c);
+        if (state != null && !state.isSource()) {
+            return false;
+        }
+        return state.createLegacyBlock().getBlock().equals(absorbingBlock);
     }
 
     public int getAbsorbing() {
@@ -228,6 +226,9 @@ public class FluidAbsorberTileEntity extends GenericTileEntity implements ITicka
 
     private boolean isValidDimletFluid(FluidState fluidState) {
         if (fluidState != null && !fluidState.isEmpty()) {
+            if (!fluidState.isSource()) {
+                return false;
+            }
             Fluid fluid = fluidState.getType();
             DimletKey key = new DimletKey(DimletType.FLUID, fluid.getRegistryName().toString());
             DimletSettings settings = DimletDictionary.get().getSettings(key);
