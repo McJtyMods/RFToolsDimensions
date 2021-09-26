@@ -390,6 +390,11 @@ public class DimensionBuilderTileEntity extends GenericTileEntity implements ITi
         return stack.getItem() == DimensionBuilderModule.REALIZED_DIMENSION_TAB.get();
     }
 
+    @Override
+    protected boolean needsRedstoneMode() {
+        return true;
+    }
+
     private NoDirectionItemHander createItemHandler() {
         return new NoDirectionItemHander(this, CONTAINER_FACTORY.get()) {
             @Override
