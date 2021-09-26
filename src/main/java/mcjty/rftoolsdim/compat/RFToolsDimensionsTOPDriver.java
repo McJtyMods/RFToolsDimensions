@@ -66,10 +66,12 @@ public class RFToolsDimensionsTOPDriver implements TOPDriver {
                 Block block = te.getAbsorbingBlock();
                 int pct = ((EssencesConfig.maxBlockAbsorption.get() - absorbing) * 100) / EssencesConfig.maxBlockAbsorption.get();
                 ItemStack stack = new ItemStack(block, 1);
-                probeInfo.text((new StringTextComponent("Block: ").append(new TranslationTextComponent(stack.getDescriptionId())).withStyle(TextFormatting.GREEN)))
-                        .horizontal()
-                        .progress(pct, 100, probeInfo.defaultProgressStyle().suffix("%"))
-                        .item(stack);
+                if (!stack.isEmpty()) {
+                    probeInfo.text((new StringTextComponent("Block: ").append(new TranslationTextComponent(stack.getDescriptionId())).withStyle(TextFormatting.GREEN)))
+                            .horizontal()
+                            .progress(pct, 100, probeInfo.defaultProgressStyle().suffix("%"))
+                            .item(stack);
+                }
             }, "Bad tile entity!");
         }
     }

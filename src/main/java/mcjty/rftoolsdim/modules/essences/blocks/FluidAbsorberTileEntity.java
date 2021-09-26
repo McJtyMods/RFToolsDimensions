@@ -4,6 +4,7 @@ import mcjty.lib.blocks.BaseBlock;
 import mcjty.lib.blocks.RotationType;
 import mcjty.lib.builder.BlockBuilder;
 import mcjty.lib.tileentity.GenericTileEntity;
+import mcjty.lib.varia.FakePlayerGetter;
 import mcjty.lib.varia.FluidTools;
 import mcjty.lib.varia.NBTTools;
 import mcjty.lib.varia.SoundTools;
@@ -44,6 +45,8 @@ public class FluidAbsorberTileEntity extends GenericTileEntity implements ITicka
     private Block absorbingBlock = null;
     private int timer = ABSORB_SPEED;
     private final Set<BlockPos> toscan = new HashSet<>();
+
+    private final FakePlayerGetter harvester = new FakePlayerGetter(this, "rftools_fluid_absorber");
 
     public FluidAbsorberTileEntity() {
         super(EssencesModule.TYPE_FLUID_ABSORBER.get());
@@ -216,6 +219,9 @@ public class FluidAbsorberTileEntity extends GenericTileEntity implements ITicka
     }
 
     private BlockState isValidSourceBlock(BlockPos coordinate) {
+        if (!BlockAbsorberTileEntity.allowedToBreak(level.getBlockState(coordinate), level, coordinate, harvester.get())) {
+            return null;
+        }
         FluidState state = level.getFluidState(coordinate);
         if (isValidDimletFluid(state)) {
             return state.createLegacyBlock();

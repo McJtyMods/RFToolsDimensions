@@ -4,6 +4,7 @@ import mcjty.lib.blocks.BaseBlock;
 import mcjty.lib.blocks.RotationType;
 import mcjty.lib.builder.BlockBuilder;
 import mcjty.lib.tileentity.GenericTileEntity;
+import mcjty.lib.varia.FakePlayerGetter;
 import mcjty.lib.varia.NBTTools;
 import mcjty.lib.varia.SoundTools;
 import mcjty.rftoolsbase.tools.ManualHelper;
@@ -20,6 +21,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
@@ -28,6 +30,9 @@ import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.HashSet;
@@ -47,6 +52,8 @@ public class BlockAbsorberTileEntity extends GenericTileEntity implements ITicka
     private Block absorbingBlock = null;
     private int timer = ABSORB_SPEED;
     private final Set<BlockPos> toscan = new HashSet<>();
+
+    private final FakePlayerGetter harvester = new FakePlayerGetter(this, "rftools_absorber");
 
     public BlockAbsorberTileEntity() {
         super(EssencesModule.TYPE_BLOCK_ABSORBER.get());
@@ -201,8 +208,27 @@ public class BlockAbsorberTileEntity extends GenericTileEntity implements ITicka
         return absorbingBlock;
     }
 
+    public static boolean allowedToBreak(BlockState state, World world, BlockPos pos, PlayerEntity player) {
+        float speed = state.getDestroySpeed(world, pos);
+        if (speed < 0) {
+            return false;
+        }
+        if (!state.canHarvestBlock(world, pos, player)) {
+            return false;
+        }
+        if (!state.getBlock().canEntityDestroy(state, world, pos, player)) {
+            return false;
+        }
+        BlockEvent.BreakEvent event = new BlockEvent.BreakEvent(world, pos, state, player);
+        MinecraftForge.EVENT_BUS.post(event);
+        return !event.isCanceled();
+    }
+
     private BlockState isValidSourceBlock(BlockPos coordinate) {
         BlockState state = level.getBlockState(coordinate);
+        if (!allowedToBreak(state, level, coordinate, harvester.get())) {
+            return null;
+        }
         return isValidDimletBlock(state) ? state : null;
     }
 

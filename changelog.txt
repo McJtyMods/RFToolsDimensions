@@ -1,3 +1,6 @@
+Upcoming:
+- Fixed the block and fluid absorbers so that they no longer destroy blocks they shouldn't (like bedrock)
+
 1.16-7.0.14-beta:
 - Fixed a problem where the first slot of the dimlet workbench would not accept empty dimlets if inserted manually. Only double clicking worked
 - Fixed the fluid absorber also absorbing non-source liquid blocks
