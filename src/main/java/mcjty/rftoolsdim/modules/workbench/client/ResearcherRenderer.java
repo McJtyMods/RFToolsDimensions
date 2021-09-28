@@ -43,7 +43,7 @@ public class ResearcherRenderer extends TileEntityRenderer<ResearcherTileEntity>
                 matrixStack.translate(1f, 2.1f, 1f);
                 float angle = (float) ((millis / 45) % 360);
                 matrixStack.mulPose(Vector3f.YP.rotationDegrees(angle));
-                itemRenderer.renderStatic(stack, ItemCameraTransforms.TransformType.FIXED, 0xf000f0, combinedOverlay, matrixStack, buffer);
+                itemRenderer.renderStatic(stack, ItemCameraTransforms.TransformType.FIXED, RenderHelper.MAX_BRIGHTNESS, combinedOverlay, matrixStack, buffer);
                 matrixStack.popPose();
 
                 matrixStack.translate(0, 0.5f, 0);
