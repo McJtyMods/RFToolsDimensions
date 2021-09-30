@@ -14,6 +14,7 @@ import mcjty.lib.container.GenericContainer;
 import mcjty.lib.container.NoDirectionItemHander;
 import mcjty.lib.tileentity.GenericEnergyStorage;
 import mcjty.lib.tileentity.GenericTileEntity;
+import mcjty.lib.varia.Tools;
 import mcjty.rftoolsbase.tools.ManualHelper;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletDictionary;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletKey;
@@ -35,7 +36,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.util.Direction;
-import net.minecraft.util.IntReferenceHolder;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
@@ -60,6 +60,8 @@ public class ResearcherTileEntity extends GenericTileEntity implements ITickable
     public static int SLOT_IN = 0;
     public static int SLOT_OUT = 1;
 
+    private int progress;
+
     public static final Lazy<ContainerFactory> CONTAINER_FACTORY = Lazy.of(() -> new ContainerFactory(2)
             .slot(specific(ResearcherTileEntity::isResearchable).in(), CONTAINER_CONTAINER, SLOT_IN, 64, 24)
             .slot(generic().out(), CONTAINER_CONTAINER, SLOT_OUT, 118, 24)
@@ -77,23 +79,11 @@ public class ResearcherTileEntity extends GenericTileEntity implements ITickable
 
     private final LazyOptional<INamedContainerProvider> screenHandler = LazyOptional.of(() -> new DefaultContainerProvider<GenericContainer>("Knowledge Holder")
             .containerSupplier((windowId,player) -> new GenericContainer(WorkbenchModule.CONTAINER_RESEARCHER.get(), windowId, CONTAINER_FACTORY.get(), getBlockPos(), ResearcherTileEntity.this))
-            .integerListener(new IntReferenceHolder() {
-                @Override
-                public int get() {
-                    return progress;
-                }
-
-                @Override
-                public void set(int value) {
-                    progress = value;
-                }
-            })
+            .integerListener(Tools.holder(() -> progress, v -> progress = v))
             .energyHandler(() -> energyStorage)
             .itemHandler(() -> items));
 
     public static VoxelShape SLAB = VoxelShapes.box(0f, 0f, 0f, 1f, 0.5f, 1f);
-
-    private int progress;
 
     public ResearcherTileEntity() {
         super(WorkbenchModule.TYPE_RESEARCHER.get());

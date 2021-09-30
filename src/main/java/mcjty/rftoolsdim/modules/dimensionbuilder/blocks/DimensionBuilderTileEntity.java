@@ -16,6 +16,7 @@ import mcjty.lib.container.GenericContainer;
 import mcjty.lib.container.NoDirectionItemHander;
 import mcjty.lib.tileentity.GenericEnergyStorage;
 import mcjty.lib.tileentity.GenericTileEntity;
+import mcjty.lib.varia.Tools;
 import mcjty.rftoolsbase.tools.ManualHelper;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.compat.RFToolsUtilityCompat;
@@ -36,7 +37,6 @@ import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.IntReferenceHolder;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.server.ServerWorld;
@@ -56,6 +56,9 @@ import static mcjty.lib.container.SlotDefinition.specific;
 
 public class DimensionBuilderTileEntity extends GenericTileEntity implements ITickableTileEntity {
 
+    private int errorMode = 0;
+    private int clientErrorMode = 0;
+
     public static final int SLOT_DIMENSION_TAB = 0;
 
     public static final Lazy<ContainerFactory> CONTAINER_FACTORY = Lazy.of(() -> new ContainerFactory(1)
@@ -72,28 +75,8 @@ public class DimensionBuilderTileEntity extends GenericTileEntity implements ITi
             .containerSupplier((windowId,player) -> new GenericContainer(DimensionBuilderModule.CONTAINER_DIMENSION_BUILDER.get(), windowId, CONTAINER_FACTORY.get(), getBlockPos(), DimensionBuilderTileEntity.this))
             .itemHandler(() -> items)
             .energyHandler(() -> energyStorage)
-            .shortListener(new IntReferenceHolder() {
-                @Override
-                public int get() {
-                    return errorMode;
-                }
-
-                @Override
-                public void set(int value) {
-                    clientErrorMode = value;
-                }
-            })
-            .integerListener(new IntReferenceHolder() {
-                @Override
-                public int get() {
-                    return getBuildPercentage();
-                }
-
-                @Override
-                public void set(int value) {
-                    clientBuildPercentage = value;
-                }
-            }));
+            .shortListener(Tools.holder(() -> errorMode, v -> clientErrorMode = v))
+            .integerListener(Tools.holder(this::getBuildPercentage, v -> clientBuildPercentage = v)));
     private final LazyOptional<IInfusable> infusableHandler = LazyOptional.of(() -> new DefaultInfusable(DimensionBuilderTileEntity.this));
 
     // For usage in the gui
@@ -105,8 +88,6 @@ public class DimensionBuilderTileEntity extends GenericTileEntity implements ITi
     public static int ERROR_NOOWNER = -1;
     public static int ERROR_TOOMANYDIMENSIONS = -2;
     public static int ERROR_COLLISION = -3;
-    private int errorMode = 0;
-    private int clientErrorMode = 0;
 
 
     public DimensionBuilderTileEntity() {

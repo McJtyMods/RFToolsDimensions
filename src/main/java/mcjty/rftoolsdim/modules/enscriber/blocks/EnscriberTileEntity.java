@@ -14,6 +14,7 @@ import mcjty.lib.typed.Key;
 import mcjty.lib.typed.Type;
 import mcjty.lib.typed.TypedMap;
 import mcjty.lib.varia.Logging;
+import mcjty.lib.varia.Tools;
 import mcjty.rftoolsbase.tools.ManualHelper;
 import mcjty.rftoolsdim.dimension.DimensionConfig;
 import mcjty.rftoolsdim.dimension.data.DimensionData;
@@ -34,7 +35,6 @@ import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
-import net.minecraft.util.IntReferenceHolder;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.capabilities.Capability;
@@ -61,6 +61,9 @@ public class EnscriberTileEntity extends GenericTileEntity {
     public static final int SIZE_DIMLETS = 13*7;
     public static final int SLOT_TAB = SLOT_DIMLETS + SIZE_DIMLETS;
 
+    private DescriptorError error = DescriptorError.OK;
+    private int clientErrorCode = 0;
+
     public static final Lazy<ContainerFactory> CONTAINER_FACTORY = Lazy.of(() -> new ContainerFactory(SIZE_DIMLETS + 1)
             .box(specific(DimletItem::isReadyDimlet), CONTAINER_CONTAINER, SLOT_DIMLETS, 13, 7, 13, 7)
             .slot(specific(EnscriberTileEntity::isDimensionTab), CONTAINER_CONTAINER, SLOT_TAB, 13, 142)
@@ -72,24 +75,11 @@ public class EnscriberTileEntity extends GenericTileEntity {
     private final LazyOptional<INamedContainerProvider> screenHandler = LazyOptional.of(() -> new DefaultContainerProvider<GenericContainer>("Dimlet Workbench")
             .containerSupplier((windowId,player) -> new GenericContainer(EnscriberModule.CONTAINER_ENSCRIBER.get(), windowId, CONTAINER_FACTORY.get(), getBlockPos(), EnscriberTileEntity.this))
             .itemHandler(() -> items)
-            .shortListener(new IntReferenceHolder() {
-                @Override
-                public int get() {
-                    return error.getCode().ordinal();
-                }
-
-                @Override
-                public void set(int value) {
-                    clientErrorCode = value;
-                }
-            }));
+            .shortListener(Tools.holder(() -> error.getCode().ordinal(), v -> clientErrorCode = v)));
 
     public EnscriberTileEntity() {
         super(EnscriberModule.TYPE_ENSCRIBER.get());
     }
-
-    private DescriptorError error = DescriptorError.OK;
-    private int clientErrorCode = 0;
 
     private static boolean isDimensionTab(ItemStack s) {
         return s.getItem() == DimensionBuilderModule.EMPTY_DIMENSION_TAB.get() || s.getItem() == DimensionBuilderModule.REALIZED_DIMENSION_TAB.get();
