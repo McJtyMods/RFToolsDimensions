@@ -1,4 +1,4 @@
-Upcoming:
+1.16-7.0.15-beta:
 - Fixed the block and fluid absorbers so that they no longer destroy blocks they shouldn't (like bedrock)
 - The dimension builder now remembers the redstone setting
 
