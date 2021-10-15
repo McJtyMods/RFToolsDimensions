@@ -6,7 +6,6 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import mcjty.lib.varia.DimensionId;
 import mcjty.lib.varia.TeleportationTools;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.dimension.data.DimensionManager;
@@ -14,6 +13,7 @@ import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.Direction;
+import net.minecraft.util.RegistryKey;
 import net.minecraft.util.SharedConstants;
 import net.minecraft.world.World;
 
@@ -41,7 +41,7 @@ public class CommandTpDim implements Command<CommandSource> {
             return 0;
         }
 
-        DimensionId id = DimensionId.fromWorld(world);
+        RegistryKey<World> id = world.dimension();
         TeleportationTools.teleport(player, id, x, 200, z, Direction.NORTH);
         return 0;
     }
