@@ -1,8 +1,8 @@
 package mcjty.rftoolsdim.modules.dimensionbuilder.items;
 
 import mcjty.lib.McJtyLib;
-import mcjty.lib.varia.DimensionId;
 import mcjty.lib.varia.Logging;
+import mcjty.rftoolsdim.dimension.data.ClientDimensionData;
 import mcjty.rftoolsdim.dimension.data.DimensionData;
 import mcjty.rftoolsdim.dimension.data.DimensionSettings;
 import mcjty.rftoolsdim.dimension.data.PersistantDimensionManager;
@@ -10,7 +10,6 @@ import mcjty.rftoolsdim.dimension.descriptor.CompiledDescriptor;
 import mcjty.rftoolsdim.dimension.descriptor.CompiledFeature;
 import mcjty.rftoolsdim.dimension.descriptor.DescriptorError;
 import mcjty.rftoolsdim.dimension.descriptor.DimensionDescriptor;
-import mcjty.rftoolsdim.dimension.data.ClientDimensionData;
 import mcjty.rftoolsdim.dimension.terraintypes.BaseChunkGenerator;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
@@ -19,13 +18,16 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.RegistryKey;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.fml.server.ServerLifecycleHooks;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -54,8 +56,8 @@ public class RealizedDimensionTab extends Item {
                     randomized.dump(player);
                 }
 
-                DimensionId id = DimensionId.fromResourceLocation(new ResourceLocation(dimension));
-                ServerWorld serverWorld = id.getWorld();
+                RegistryKey<World> id = RegistryKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(dimension));
+                ServerWorld serverWorld = ServerLifecycleHooks.getCurrentServer().getLevel(id);
                 ChunkGenerator generator = serverWorld.getChunkSource().generator;
                 if (generator instanceof BaseChunkGenerator) {
                     DimensionSettings settings = ((BaseChunkGenerator) generator).getDimensionSettings();

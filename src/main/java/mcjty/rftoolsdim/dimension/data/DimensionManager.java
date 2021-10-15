@@ -2,7 +2,6 @@ package mcjty.rftoolsdim.dimension.data;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-import mcjty.lib.varia.DimensionId;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.dimension.TimeType;
 import mcjty.rftoolsdim.dimension.descriptor.CompiledDescriptor;
@@ -20,6 +19,7 @@ import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.fml.server.ServerLifecycleHooks;
 
 import javax.annotation.Nullable;
 import java.io.*;
@@ -78,8 +78,8 @@ public class DimensionManager {
 
     public CompiledDescriptor getCompiledDescriptor(World overworld, ResourceLocation id) {
         if (!compiledDescriptorMap.containsKey(id)) {
-            DimensionId dimworld = DimensionId.fromResourceLocation(id);
-            ServerWorld world = dimworld.loadWorld(overworld);
+            RegistryKey<World> dimworld = RegistryKey.create(Registry.DIMENSION_REGISTRY, id);
+            ServerWorld world = overworld.getServer().getLevel(dimworld);
             if (world == null || world.getChunkSource() == null) {
                 // No data yet
                 return null;
@@ -105,13 +105,13 @@ public class DimensionManager {
     // as well as just xxx
     public World getDimWorld(String name) {
         ResourceLocation id = new ResourceLocation(name);
-        DimensionId type = DimensionId.fromResourceLocation(id);
-        ServerWorld world = type.getWorld();
+        RegistryKey<World> type = RegistryKey.create(Registry.DIMENSION_REGISTRY, id);
+        ServerWorld world = ServerLifecycleHooks.getCurrentServer().getLevel(type);
         if (world == null) {
             if (!name.contains(":")) {
                 id = new ResourceLocation(RFToolsDim.MODID, name);
-                type = DimensionId.fromResourceLocation(id);
-                return type.getWorld();
+                type = RegistryKey.create(Registry.DIMENSION_REGISTRY, id);
+                return ServerLifecycleHooks.getCurrentServer().getLevel(type);
             }
         }
         return world;
@@ -187,8 +187,8 @@ public class DimensionManager {
 
     // Returns null on success, otherwise an error string
     public String createDimension(World world, String name, long seed, String filename) {
-        DimensionId id = DimensionId.fromResourceLocation(new ResourceLocation(RFToolsDim.MODID, name));
-        if (id.loadWorld(world) != null) {
+        RegistryKey<World> id = RegistryKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(RFToolsDim.MODID, name));
+        if (world.getServer().getLevel(id) != null) {
             return "Dimension already exists!";
         }
 

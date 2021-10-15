@@ -1,6 +1,5 @@
 package mcjty.rftoolsdim.dimension.power;
 
-import mcjty.lib.varia.DimensionId;
 import mcjty.rftoolsdim.dimension.DimensionConfig;
 import mcjty.rftoolsdim.dimension.data.ClientDimensionData;
 import mcjty.rftoolsdim.dimension.data.DimensionData;
@@ -14,7 +13,9 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
+import net.minecraft.util.RegistryKey;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.fml.network.PacketDistributor;
@@ -91,7 +92,7 @@ public class PowerHandler {
         for (Map.Entry<ResourceLocation, DimensionData> entry : mgr.getData().entrySet()) {
             // Power handling.
             long power;
-            ServerWorld world = DimensionId.fromResourceLocation(entry.getKey()).loadWorld(overworld);
+            ServerWorld world = overworld.getServer().getLevel(RegistryKey.create(Registry.DIMENSION_REGISTRY, entry.getKey()));
             CompiledDescriptor compiledDescriptor = DimensionManager.get().getCompiledDescriptor(world);
 
             if (compiledDescriptor != null) {
