@@ -11,7 +11,9 @@ import mcjty.rftoolsdim.dimension.data.PersistantDimensionManager;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.RegistryKey;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.fml.server.ServerLifecycleHooks;
 
@@ -29,9 +31,9 @@ public class CommandListDim implements Command<CommandSource> {
     public int run(CommandContext<CommandSource> context) throws CommandSyntaxException {
         MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
         for (ServerWorld world : server.getAllLevels()) {
-            DimensionId id = DimensionId.fromWorld(world);
-            String output = id.getName();
-            DimensionData data = PersistantDimensionManager.get(world).getData(id.getRegistryName());
+            RegistryKey<World> id = world.dimension();
+            String output = id.location().getPath();
+            DimensionData data = PersistantDimensionManager.get(world).getData(id.location());
             if (data != null) {
                 output += " (" + data.getEnergy() + ")";
             }
