@@ -2,6 +2,7 @@ package mcjty.rftoolsdim.modules.dimensionbuilder.items;
 
 import mcjty.lib.McJtyLib;
 import mcjty.lib.varia.Logging;
+import mcjty.lib.varia.WorldTools;
 import mcjty.rftoolsdim.dimension.data.ClientDimensionData;
 import mcjty.rftoolsdim.dimension.data.DimensionData;
 import mcjty.rftoolsdim.dimension.data.DimensionSettings;
@@ -20,7 +21,6 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.RegistryKey;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.registry.Registry;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
@@ -56,7 +56,7 @@ public class RealizedDimensionTab extends Item {
                     randomized.dump(player);
                 }
 
-                RegistryKey<World> id = RegistryKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(dimension));
+                RegistryKey<World> id = WorldTools.getId(dimension);
                 ServerWorld serverWorld = ServerLifecycleHooks.getCurrentServer().getLevel(id);
                 ChunkGenerator generator = serverWorld.getChunkSource().generator;
                 if (generator instanceof BaseChunkGenerator) {

@@ -2,6 +2,7 @@ package mcjty.rftoolsdim.modules.knowledge.items;
 
 import mcjty.lib.builder.TooltipBuilder;
 import mcjty.lib.tooltips.ITooltipSettings;
+import mcjty.lib.varia.WorldTools;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletDictionary;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletKey;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletRarity;
@@ -94,7 +95,7 @@ public class LostKnowledgeItem extends Item implements ITooltipSettings {
     public static ItemStack createLostKnowledge(World world, DimletKey key) {
         DimletSettings settings = DimletDictionary.get().getSettings(key);
         if (settings != null) {
-            KnowledgeKey kkey = KnowledgeManager.get().getKnowledgeKey(world.getServer().getLevel(World.OVERWORLD).getSeed(), key);
+            KnowledgeKey kkey = KnowledgeManager.get().getKnowledgeKey(WorldTools.getOverworld(world).getSeed(), key);
             if (kkey != null) {
                 DimletRarity rarity = settings.getRarity();
                 return createLostKnowledgeStack(world, rarity, kkey);

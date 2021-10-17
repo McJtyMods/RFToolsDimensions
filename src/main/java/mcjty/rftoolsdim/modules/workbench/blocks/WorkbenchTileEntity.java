@@ -14,6 +14,7 @@ import mcjty.lib.typed.Key;
 import mcjty.lib.typed.Type;
 import mcjty.lib.typed.TypedMap;
 import mcjty.lib.varia.OrientationTools;
+import mcjty.lib.varia.WorldTools;
 import mcjty.rftoolsbase.tools.ManualHelper;
 import mcjty.rftoolsdim.modules.dimlets.DimletModule;
 import mcjty.rftoolsdim.modules.dimlets.client.DimletClientHelper;
@@ -37,7 +38,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
-import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.common.util.LazyOptional;
@@ -172,7 +172,7 @@ public class WorkbenchTileEntity extends GenericTileEntity {
     }
 
     private void hilightPattern(PlayerEntity player, DimletKey key) {
-        DimletPattern pattern = KnowledgeManager.get().getPattern(player.level.getServer().getLevel(World.OVERWORLD).getSeed(), key);
+        DimletPattern pattern = KnowledgeManager.get().getPattern(WorldTools.getOverworld(player.level).getSeed(), key);
         if (pattern != null) {
             String[] p = pattern.getPattern();
             RFToolsDimMessages.INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player),
@@ -195,7 +195,7 @@ public class WorkbenchTileEntity extends GenericTileEntity {
             tryFindAndFitItem(player, s -> false, SLOT_ESSENCE);
         }
 
-        DimletPattern pattern = KnowledgeManager.get().getPattern(level.getServer().getLevel(World.OVERWORLD).getSeed(), key);
+        DimletPattern pattern = KnowledgeManager.get().getPattern(WorldTools.getOverworld(level).getSeed(), key);
         if (pattern != null) {
             String[] p = pattern.getPattern();
             int slotNumber = SLOT_PATTERN;
@@ -312,7 +312,7 @@ public class WorkbenchTileEntity extends GenericTileEntity {
         Set<KnowledgeKey> knownKeys = getSupportedKnowledgeKeys();
         List<DimletClientHelper.DimletWithInfo> dimlets = new ArrayList<>();
         for (DimletKey dimlet : DimletDictionary.get().getDimlets()) {
-            KnowledgeKey kkey = KnowledgeManager.get().getKnowledgeKey(level.getServer().getLevel(World.OVERWORLD).getSeed(), dimlet);
+            KnowledgeKey kkey = KnowledgeManager.get().getKnowledgeKey(WorldTools.getOverworld(level).getSeed(), dimlet);
             boolean craftable = knownKeys.contains(kkey);
             dimlets.add(new DimletClientHelper.DimletWithInfo(dimlet, craftable));
         }

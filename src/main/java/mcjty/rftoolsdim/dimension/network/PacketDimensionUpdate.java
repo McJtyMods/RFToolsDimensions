@@ -1,8 +1,8 @@
 package mcjty.rftoolsdim.dimension.network;
 
+import mcjty.lib.varia.WorldTools;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.RegistryKey;
-import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkEvent;
 
@@ -22,7 +22,7 @@ public class PacketDimensionUpdate {
     }
 
     public PacketDimensionUpdate(PacketBuffer buf) {
-        id = RegistryKey.create(Registry.DIMENSION_REGISTRY, buf.readResourceLocation());
+        id = WorldTools.getId(buf.readResourceLocation());
         add = buf.readBoolean();
     }
 

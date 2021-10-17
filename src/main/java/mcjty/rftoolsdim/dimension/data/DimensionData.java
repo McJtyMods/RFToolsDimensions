@@ -1,5 +1,6 @@
 package mcjty.rftoolsdim.dimension.data;
 
+import mcjty.lib.varia.WorldTools;
 import mcjty.rftoolsdim.dimension.descriptor.DimensionDescriptor;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.RegistryKey;
@@ -64,12 +65,12 @@ public class DimensionData {
             if (overworld != null) {
 //            if (PowerConfiguration.freezeUnpowered) { // @todo 1.16 config
                 if (old == 0 && energy > 0) {
-                    overworld = overworld.getServer().getLevel(RegistryKey.create(Registry.DIMENSION_REGISTRY, id));
+                    overworld = WorldTools.getLevel(overworld, id);
                     if (overworld != null) {
 //                    RfToolsDimensionManager.unfreezeDimension(world);
                     }
                 } else if (energy == 0) {
-                    overworld = overworld.getServer().getLevel(RegistryKey.create(Registry.DIMENSION_REGISTRY, id));
+                    overworld = WorldTools.getLevel(overworld, id);
                     if (overworld != null) {
 //                    RfToolsDimensionManager.freezeDimension(world);
                     }

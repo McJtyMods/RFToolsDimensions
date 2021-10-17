@@ -2,6 +2,7 @@ package mcjty.rftoolsdim.dimension.data;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+import mcjty.lib.varia.WorldTools;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.dimension.TimeType;
 import mcjty.rftoolsdim.dimension.descriptor.CompiledDescriptor;
@@ -78,8 +79,7 @@ public class DimensionManager {
 
     public CompiledDescriptor getCompiledDescriptor(World overworld, ResourceLocation id) {
         if (!compiledDescriptorMap.containsKey(id)) {
-            RegistryKey<World> dimworld = RegistryKey.create(Registry.DIMENSION_REGISTRY, id);
-            ServerWorld world = overworld.getServer().getLevel(dimworld);
+            ServerWorld world = WorldTools.getLevel(overworld, id);
             if (world == null || world.getChunkSource() == null) {
                 // No data yet
                 return null;
@@ -105,12 +105,12 @@ public class DimensionManager {
     // as well as just xxx
     public World getDimWorld(String name) {
         ResourceLocation id = new ResourceLocation(name);
-        RegistryKey<World> type = RegistryKey.create(Registry.DIMENSION_REGISTRY, id);
+        RegistryKey<World> type = WorldTools.getId(id);
         ServerWorld world = ServerLifecycleHooks.getCurrentServer().getLevel(type);
         if (world == null) {
             if (!name.contains(":")) {
                 id = new ResourceLocation(RFToolsDim.MODID, name);
-                type = RegistryKey.create(Registry.DIMENSION_REGISTRY, id);
+                type = WorldTools.getId(id);
                 return ServerLifecycleHooks.getCurrentServer().getLevel(type);
             }
         }
@@ -174,7 +174,7 @@ public class DimensionManager {
 
         TimeType timeType = compiledDescriptor.getTimeType();
 
-        RegistryKey<World> key = RegistryKey.create(Registry.DIMENSION_REGISTRY, id);
+        RegistryKey<World> key = WorldTools.getId(id);
         DimensionType type = world.getServer().registryAccess().registryOrThrow(Registry.DIMENSION_TYPE_REGISTRY).get(timeType.getDimensionType());
         ServerWorld result = DimensionHelper.getOrCreateWorld(world.getServer(), key,
                 (server, registryKey) -> new Dimension(() -> type, terrainType.getGeneratorSupplier().apply(server, settings)));
@@ -187,7 +187,7 @@ public class DimensionManager {
 
     // Returns null on success, otherwise an error string
     public String createDimension(World world, String name, long seed, String filename) {
-        RegistryKey<World> id = RegistryKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(RFToolsDim.MODID, name));
+        RegistryKey<World> id = WorldTools.getId(new ResourceLocation(RFToolsDim.MODID, name));
         if (world.getServer().getLevel(id) != null) {
             return "Dimension already exists!";
         }
