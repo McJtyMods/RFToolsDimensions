@@ -14,7 +14,7 @@ import mcjty.lib.typed.Key;
 import mcjty.lib.typed.Type;
 import mcjty.lib.typed.TypedMap;
 import mcjty.lib.varia.OrientationTools;
-import mcjty.lib.varia.WorldTools;
+import mcjty.lib.varia.LevelTools;
 import mcjty.rftoolsbase.tools.ManualHelper;
 import mcjty.rftoolsdim.modules.dimlets.DimletModule;
 import mcjty.rftoolsdim.modules.dimlets.client.DimletClientHelper;
@@ -172,7 +172,7 @@ public class WorkbenchTileEntity extends GenericTileEntity {
     }
 
     private void hilightPattern(PlayerEntity player, DimletKey key) {
-        DimletPattern pattern = KnowledgeManager.get().getPattern(WorldTools.getOverworld(player.level).getSeed(), key);
+        DimletPattern pattern = KnowledgeManager.get().getPattern(LevelTools.getOverworld(player.level).getSeed(), key);
         if (pattern != null) {
             String[] p = pattern.getPattern();
             RFToolsDimMessages.INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player),
@@ -195,7 +195,7 @@ public class WorkbenchTileEntity extends GenericTileEntity {
             tryFindAndFitItem(player, s -> false, SLOT_ESSENCE);
         }
 
-        DimletPattern pattern = KnowledgeManager.get().getPattern(WorldTools.getOverworld(level).getSeed(), key);
+        DimletPattern pattern = KnowledgeManager.get().getPattern(LevelTools.getOverworld(level).getSeed(), key);
         if (pattern != null) {
             String[] p = pattern.getPattern();
             int slotNumber = SLOT_PATTERN;
@@ -312,7 +312,7 @@ public class WorkbenchTileEntity extends GenericTileEntity {
         Set<KnowledgeKey> knownKeys = getSupportedKnowledgeKeys();
         List<DimletClientHelper.DimletWithInfo> dimlets = new ArrayList<>();
         for (DimletKey dimlet : DimletDictionary.get().getDimlets()) {
-            KnowledgeKey kkey = KnowledgeManager.get().getKnowledgeKey(WorldTools.getOverworld(level).getSeed(), dimlet);
+            KnowledgeKey kkey = KnowledgeManager.get().getKnowledgeKey(LevelTools.getOverworld(level).getSeed(), dimlet);
             boolean craftable = knownKeys.contains(kkey);
             dimlets.add(new DimletClientHelper.DimletWithInfo(dimlet, craftable));
         }

@@ -1,6 +1,6 @@
 package mcjty.rftoolsdim.dimension.power;
 
-import mcjty.lib.varia.WorldTools;
+import mcjty.lib.varia.LevelTools;
 import mcjty.rftoolsdim.dimension.DimensionConfig;
 import mcjty.rftoolsdim.dimension.data.ClientDimensionData;
 import mcjty.rftoolsdim.dimension.data.DimensionData;
@@ -91,7 +91,7 @@ public class PowerHandler {
         for (Map.Entry<ResourceLocation, DimensionData> entry : mgr.getData().entrySet()) {
             // Power handling.
             long power;
-            ServerWorld world = WorldTools.getLevel(overworld, entry.getKey());
+            ServerWorld world = LevelTools.getLevel(overworld, entry.getKey());
             CompiledDescriptor compiledDescriptor = DimensionManager.get().getCompiledDescriptor(world);
 
             if (compiledDescriptor != null) {

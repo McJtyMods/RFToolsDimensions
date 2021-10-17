@@ -2,7 +2,7 @@ package mcjty.rftoolsdim.modules.dimensionbuilder.items;
 
 import mcjty.lib.McJtyLib;
 import mcjty.lib.varia.Logging;
-import mcjty.lib.varia.WorldTools;
+import mcjty.lib.varia.LevelTools;
 import mcjty.rftoolsdim.dimension.data.ClientDimensionData;
 import mcjty.rftoolsdim.dimension.data.DimensionData;
 import mcjty.rftoolsdim.dimension.data.DimensionSettings;
@@ -56,7 +56,7 @@ public class RealizedDimensionTab extends Item {
                     randomized.dump(player);
                 }
 
-                RegistryKey<World> id = WorldTools.getId(dimension);
+                RegistryKey<World> id = LevelTools.getId(dimension);
                 ServerWorld serverWorld = ServerLifecycleHooks.getCurrentServer().getLevel(id);
                 ChunkGenerator generator = serverWorld.getChunkSource().generator;
                 if (generator instanceof BaseChunkGenerator) {

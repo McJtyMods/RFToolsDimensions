@@ -1,6 +1,6 @@
 package mcjty.rftoolsdim.modules.knowledge.data;
 
-import mcjty.lib.varia.WorldTools;
+import mcjty.lib.varia.LevelTools;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.dimension.TimeType;
 import mcjty.rftoolsdim.dimension.biomes.BiomeControllerType;
@@ -232,7 +232,7 @@ public class KnowledgeManager {
             for (DimletKey key : DimletDictionary.get().getDimlets()) {
                 DimletSettings settings = DimletDictionary.get().getSettings(key);
                 if (settings != null && Objects.equals(settings.getRarity(), rarity)) {
-                    KnowledgeKey kkey = getKnowledgeKey(WorldTools.getOverworld(world).getSeed(), key);
+                    KnowledgeKey kkey = getKnowledgeKey(LevelTools.getOverworld(world).getSeed(), key);
                     if (kkey != null) {
                         set.add(kkey);
                         String reason = getKnowledgeSetReason(key);

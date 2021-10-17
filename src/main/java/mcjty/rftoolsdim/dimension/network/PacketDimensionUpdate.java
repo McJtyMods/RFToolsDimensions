@@ -1,6 +1,6 @@
 package mcjty.rftoolsdim.dimension.network;
 
-import mcjty.lib.varia.WorldTools;
+import mcjty.lib.varia.LevelTools;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.RegistryKey;
 import net.minecraft.world.World;
@@ -22,7 +22,7 @@ public class PacketDimensionUpdate {
     }
 
     public PacketDimensionUpdate(PacketBuffer buf) {
-        id = WorldTools.getId(buf.readResourceLocation());
+        id = LevelTools.getId(buf.readResourceLocation());
         add = buf.readBoolean();
     }
 
