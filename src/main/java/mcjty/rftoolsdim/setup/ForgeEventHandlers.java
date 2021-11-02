@@ -129,8 +129,4 @@ public class ForgeEventHandlers {
 //                    structureManager, entityClassification, pos);
 //    }
 //
-
-
-    // @todo 1.16 ChunkWatchEvent!
-    // @todo 1.16 PacketDistributor.TRACKING_CHUNK
 }
