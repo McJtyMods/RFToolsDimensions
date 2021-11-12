@@ -32,6 +32,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -166,11 +167,11 @@ public class BlockAbsorberTileEntity extends GenericTileEntity implements ITicka
                         level.setBlockAndUpdate(c, Blocks.AIR.defaultBlockState());
                         absorbing--;
                         BlockState newState = level.getBlockState(c);
-                        level.sendBlockUpdated(c, oldState, newState, 3);
+                        level.sendBlockUpdated(c, oldState, newState, Constants.BlockFlags.DEFAULT);
                     }
                 }
             }
-            markDirtyClient();
+            setChanged();
         }
     }
 

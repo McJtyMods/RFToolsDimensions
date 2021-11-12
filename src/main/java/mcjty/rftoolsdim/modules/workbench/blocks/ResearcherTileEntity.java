@@ -261,6 +261,12 @@ public class ResearcherTileEntity extends GenericTileEntity implements ITickable
         return super.save(tagCompound);
     }
 
+    @Override
+    public void writeClientDataToNBT(CompoundNBT tagCompound) {
+        // Item is required at client side because it is rendered in world
+        writeItemHandlerCap(tagCompound);
+    }
+
     private NoDirectionItemHander createItemHandler() {
         return new NoDirectionItemHander(this, CONTAINER_FACTORY.get()) {
             @Override

@@ -28,6 +28,7 @@ import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.HashSet;
@@ -164,11 +165,11 @@ public class FluidAbsorberTileEntity extends GenericTileEntity implements ITicka
                         absorbing--;
 
                         BlockState newState = level.getBlockState(c);
-                        level.sendBlockUpdated(c, oldState, newState, 3);
+                        level.sendBlockUpdated(c, oldState, newState, Constants.BlockFlags.DEFAULT);
                     }
                 }
             }
-            markDirtyClient();
+            setChanged();
         }
     }
 

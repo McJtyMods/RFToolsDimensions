@@ -137,7 +137,7 @@ public class BiomeAbsorberTileEntity extends GenericTileEntity implements ITicka
             }
 
             absorbing--;
-            markDirtyClient();
+            setChanged();
         }
     }
 

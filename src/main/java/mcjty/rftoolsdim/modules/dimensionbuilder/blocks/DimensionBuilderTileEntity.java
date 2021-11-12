@@ -75,6 +75,7 @@ public class DimensionBuilderTileEntity extends GenericTileEntity implements ITi
             .containerSupplier((windowId,player) -> new GenericContainer(DimensionBuilderModule.CONTAINER_DIMENSION_BUILDER.get(), windowId, CONTAINER_FACTORY.get(), getBlockPos(), DimensionBuilderTileEntity.this))
             .itemHandler(() -> items)
             .energyHandler(() -> energyStorage)
+            .dataListener(Tools.values(new ResourceLocation(RFToolsDim.MODID, "data"), this))
             .shortListener(Tools.holder(() -> errorMode, v -> clientErrorMode = v))
             .integerListener(Tools.holder(this::getBuildPercentage, v -> clientBuildPercentage = v)));
     private final LazyOptional<IInfusable> infusableHandler = LazyOptional.of(() -> new DefaultInfusable(DimensionBuilderTileEntity.this));
@@ -236,7 +237,7 @@ public class DimensionBuilderTileEntity extends GenericTileEntity implements ITi
             if (!DimensionManager.get().isNameAvailable(level, worldPosition, name)) {
                 // The name is not available. Stop building!
                 errorMode = ERROR_COLLISION;
-                markDirtyClient();
+                setChanged();
                 return ticksLeft;
             }
 
@@ -264,13 +265,13 @@ public class DimensionBuilderTileEntity extends GenericTileEntity implements ITi
                 if (!DimensionManager.get().isNameAvailable(level, worldPosition, name)) {
                     // Error!
                     errorMode = ERROR_COLLISION;
-                    markDirtyClient();
+                    setChanged();
                     return 0;
                 }
                 if (!DimensionManager.get().isDescriptorAvailable(level, descriptor)) {
                     // Error!
                     errorMode = ERROR_COLLISION;
-                    markDirtyClient();
+                    setChanged();
                     return 0;
                 }
 
@@ -327,7 +328,7 @@ public class DimensionBuilderTileEntity extends GenericTileEntity implements ITi
             state = 3;
         }
         if (oldstate != state) {
-            markDirtyClient();
+            setChanged();
         }
     }
 
