@@ -14,7 +14,7 @@ import mcjty.lib.typed.Key;
 import mcjty.lib.typed.Type;
 import mcjty.lib.typed.TypedMap;
 import mcjty.lib.varia.Logging;
-import mcjty.lib.varia.Tools;
+import mcjty.lib.varia.Sync;
 import mcjty.rftoolsbase.tools.ManualHelper;
 import mcjty.rftoolsdim.dimension.DimensionConfig;
 import mcjty.rftoolsdim.dimension.data.DimensionData;
@@ -75,7 +75,7 @@ public class EnscriberTileEntity extends GenericTileEntity {
     private final LazyOptional<INamedContainerProvider> screenHandler = LazyOptional.of(() -> new DefaultContainerProvider<GenericContainer>("Dimlet Workbench")
             .containerSupplier((windowId,player) -> new GenericContainer(EnscriberModule.CONTAINER_ENSCRIBER.get(), windowId, CONTAINER_FACTORY.get(), getBlockPos(), EnscriberTileEntity.this))
             .itemHandler(() -> items)
-            .shortListener(Tools.holder(() -> error.getCode().ordinal(), v -> clientErrorCode = v)));
+            .shortListener(Sync.integer(() -> error.getCode().ordinal(), v -> clientErrorCode = v)));
 
     public EnscriberTileEntity() {
         super(EnscriberModule.TYPE_ENSCRIBER.get());

@@ -14,7 +14,7 @@ import mcjty.lib.container.GenericContainer;
 import mcjty.lib.container.NoDirectionItemHander;
 import mcjty.lib.tileentity.GenericEnergyStorage;
 import mcjty.lib.tileentity.GenericTileEntity;
-import mcjty.lib.varia.Tools;
+import mcjty.lib.varia.Sync;
 import mcjty.rftoolsbase.tools.ManualHelper;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletDictionary;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletKey;
@@ -79,7 +79,7 @@ public class ResearcherTileEntity extends GenericTileEntity implements ITickable
 
     private final LazyOptional<INamedContainerProvider> screenHandler = LazyOptional.of(() -> new DefaultContainerProvider<GenericContainer>("Knowledge Holder")
             .containerSupplier((windowId,player) -> new GenericContainer(WorkbenchModule.CONTAINER_RESEARCHER.get(), windowId, CONTAINER_FACTORY.get(), getBlockPos(), ResearcherTileEntity.this))
-            .integerListener(Tools.holder(() -> progress, v -> progress = v))
+            .integerListener(Sync.integer(() -> progress, v -> progress = v))
             .energyHandler(() -> energyStorage)
             .itemHandler(() -> items));
 

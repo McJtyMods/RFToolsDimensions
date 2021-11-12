@@ -16,7 +16,7 @@ import mcjty.lib.container.GenericContainer;
 import mcjty.lib.container.NoDirectionItemHander;
 import mcjty.lib.tileentity.GenericEnergyStorage;
 import mcjty.lib.tileentity.GenericTileEntity;
-import mcjty.lib.varia.Tools;
+import mcjty.lib.varia.Sync;
 import mcjty.rftoolsbase.tools.ManualHelper;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.compat.RFToolsUtilityCompat;
@@ -75,9 +75,9 @@ public class DimensionBuilderTileEntity extends GenericTileEntity implements ITi
             .containerSupplier((windowId,player) -> new GenericContainer(DimensionBuilderModule.CONTAINER_DIMENSION_BUILDER.get(), windowId, CONTAINER_FACTORY.get(), getBlockPos(), DimensionBuilderTileEntity.this))
             .itemHandler(() -> items)
             .energyHandler(() -> energyStorage)
-            .dataListener(Tools.values(new ResourceLocation(RFToolsDim.MODID, "data"), this))
-            .shortListener(Tools.holder(() -> errorMode, v -> clientErrorMode = v))
-            .integerListener(Tools.holder(this::getBuildPercentage, v -> clientBuildPercentage = v)));
+            .dataListener(Sync.values(new ResourceLocation(RFToolsDim.MODID, "data"), this))
+            .shortListener(Sync.integer(() -> errorMode, v -> clientErrorMode = v))
+            .integerListener(Sync.integer(this::getBuildPercentage, v -> clientBuildPercentage = v)));
     private final LazyOptional<IInfusable> infusableHandler = LazyOptional.of(() -> new DefaultInfusable(DimensionBuilderTileEntity.this));
 
     // For usage in the gui
