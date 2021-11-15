@@ -62,14 +62,12 @@ public class ResearcherTileEntity extends GenericTileEntity implements ITickable
             .slot(generic().out(), CONTAINER_CONTAINER, SLOT_OUT, 118, 24)
             .playerSlots(10, 70));
 
-    private final IInfusable infusable = new DefaultInfusable(ResearcherTileEntity.this);
     @Cap(type = CapType.INFUSABLE)
-    private final LazyOptional<IInfusable> infusableHandler = LazyOptional.of(() -> infusable);
+    private final IInfusable infusable = new DefaultInfusable(ResearcherTileEntity.this);
 
+    @Cap(type = CapType.ENERGY)
     private final GenericEnergyStorage energyStorage = new GenericEnergyStorage(this, true, WorkbenchConfig.RESEARCHER_MAXENERGY.get(),
             WorkbenchConfig.RESEARCHER_ENERGY_INPUT_PERTICK.get());
-    @Cap(type = CapType.ENERGY)
-    private final LazyOptional<GenericEnergyStorage> energyHandler = LazyOptional.of(() -> energyStorage);
 
     private final NoDirectionItemHander items = createItemHandler();
     @Cap(type = CapType.ITEMS)
