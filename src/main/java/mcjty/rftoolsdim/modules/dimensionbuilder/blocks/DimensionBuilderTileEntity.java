@@ -14,6 +14,8 @@ import mcjty.lib.container.AutomationFilterItemHander;
 import mcjty.lib.container.ContainerFactory;
 import mcjty.lib.container.GenericContainer;
 import mcjty.lib.container.NoDirectionItemHander;
+import mcjty.lib.sync.GuiSync;
+import mcjty.lib.sync.SyncType;
 import mcjty.lib.tileentity.GenericEnergyStorage;
 import mcjty.lib.tileentity.GenericTileEntity;
 import mcjty.lib.varia.Sync;
@@ -56,8 +58,8 @@ import static mcjty.lib.container.SlotDefinition.specific;
 
 public class DimensionBuilderTileEntity extends GenericTileEntity implements ITickableTileEntity {
 
-    private int errorMode = 0;
-    private int clientErrorMode = 0;
+    @GuiSync
+    private short errorMode = 0;
 
     public static final int SLOT_DIMENSION_TAB = 0;
 
@@ -76,8 +78,8 @@ public class DimensionBuilderTileEntity extends GenericTileEntity implements ITi
             .itemHandler(() -> items)
             .energyHandler(() -> energyStorage)
             .dataListener(Sync.values(new ResourceLocation(RFToolsDim.MODID, "data"), this))
-            .shortListener(Sync.integer(() -> errorMode, v -> clientErrorMode = v))
-            .integerListener(Sync.integer(this::getBuildPercentage, v -> clientBuildPercentage = v)));
+            .integerListener(Sync.integer(this::getBuildPercentage, v -> clientBuildPercentage = v))
+            .setupSync(this));
     private final LazyOptional<IInfusable> infusableHandler = LazyOptional.of(() -> new DefaultInfusable(DimensionBuilderTileEntity.this));
 
     // For usage in the gui
@@ -85,10 +87,10 @@ public class DimensionBuilderTileEntity extends GenericTileEntity implements ITi
 
     private int state = 0;          // For front state
 
-    public static int OK = 0;
-    public static int ERROR_NOOWNER = -1;
-    public static int ERROR_TOOMANYDIMENSIONS = -2;
-    public static int ERROR_COLLISION = -3;
+    public static short OK = 0;
+    public static short ERROR_NOOWNER = -1;
+    public static short ERROR_TOOMANYDIMENSIONS = -2;
+    public static short ERROR_COLLISION = -3;
 
 
     public DimensionBuilderTileEntity() {
@@ -137,10 +139,9 @@ public class DimensionBuilderTileEntity extends GenericTileEntity implements ITi
         int oldstate = state;
         int oldError = errorMode;
         super.onDataPacket(net, packet);
-        errorMode = packet.getTag().getInt("errorMode");
+        errorMode = (short) packet.getTag().getInt("errorMode");
         if (oldstate != state || oldError != this.errorMode) {
             getLevel().setBlocksDirty(worldPosition, getBlockState(), getBlockState());
-            clientErrorMode = errorMode;
         }
     }
 
@@ -361,11 +362,7 @@ public class DimensionBuilderTileEntity extends GenericTileEntity implements ITi
     }
 
     public int getErrorMode() {
-        if (level.isClientSide) {
-            return clientErrorMode;
-        } else {
-            return errorMode;
-        }
+        return errorMode;
     }
 
     private static boolean isRealizedTab(ItemStack stack) {
