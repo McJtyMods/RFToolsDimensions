@@ -1,6 +1,8 @@
 package mcjty.rftoolsdim.modules.enscriber.blocks;
 
 import mcjty.lib.api.container.DefaultContainerProvider;
+import mcjty.lib.blockcommands.Command;
+import mcjty.lib.blockcommands.ServerCommand;
 import mcjty.lib.blocks.BaseBlock;
 import mcjty.lib.blocks.RotationType;
 import mcjty.lib.builder.BlockBuilder;
@@ -12,7 +14,6 @@ import mcjty.lib.tileentity.CapType;
 import mcjty.lib.tileentity.GenericTileEntity;
 import mcjty.lib.typed.Key;
 import mcjty.lib.typed.Type;
-import mcjty.lib.typed.TypedMap;
 import mcjty.lib.varia.Logging;
 import mcjty.lib.varia.Sync;
 import mcjty.rftoolsbase.tools.ManualHelper;
@@ -48,11 +49,6 @@ import static mcjty.lib.container.ContainerFactory.CONTAINER_CONTAINER;
 import static mcjty.lib.container.SlotDefinition.specific;
 
 public class EnscriberTileEntity extends GenericTileEntity {
-
-    public static final String CMD_STORE = "enscriber.store";
-    public static final Key<String> PARAM_NAME = new Key<>("name", Type.STRING);
-
-    public static final String CMD_EXTRACT = "enscriber.extract";
 
     public static final int SLOT_DIMLETS = 0;
     public static final int SIZE_DIMLETS = 13*7;
@@ -264,22 +260,15 @@ public class EnscriberTileEntity extends GenericTileEntity {
         setChanged();
     }
 
+    public static final Key<String> PARAM_NAME = new Key<>("name", Type.STRING);
+    @ServerCommand
+    public static final Command<?> CMD_STORE = Command.<EnscriberTileEntity>create("enscriber.store")
+            .buildCommand((te, player, params) -> te.storeDimlets(player, params.get(PARAM_NAME)));
 
-    @Override
-    public boolean execute(PlayerEntity player, String command, TypedMap params) {
-        boolean rc = super.execute(player, command, params);
-        if (rc) {
-            return true;
-        }
-        if (CMD_STORE.equals(command)) {
-            storeDimlets(player, params.get(PARAM_NAME));
-            return true;
-        } else if (CMD_EXTRACT.equals(command)) {
-            extractDimlets();
-            return true;
-        }
-        return false;
-    }
+    @ServerCommand
+    public static final Command<?> CMD_EXTRACT = Command.<EnscriberTileEntity>create("enscriber.extract")
+            .buildCommand((te, player, params) -> te.extractDimlets());
+
 
     private NoDirectionItemHander createItemHandler() {
         return new NoDirectionItemHander(this, CONTAINER_FACTORY.get()) {
