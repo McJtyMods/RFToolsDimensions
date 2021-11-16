@@ -1,6 +1,8 @@
 package mcjty.rftoolsdim.modules.workbench.blocks;
 
 import mcjty.lib.api.container.DefaultContainerProvider;
+import mcjty.lib.blockcommands.Command;
+import mcjty.lib.blockcommands.ServerCommand;
 import mcjty.lib.blocks.BaseBlock;
 import mcjty.lib.blocks.RotationType;
 import mcjty.lib.builder.BlockBuilder;
@@ -58,13 +60,6 @@ public class WorkbenchTileEntity extends GenericTileEntity {
 
     public static final String CMD_GETDIMLETS = "workbench.getdimlets";
     public static final String CLIENT_CMD_GETDIMLETS = "workbench.getdimlets";
-
-    public static final String CMD_SUGGESTPARTS = "workbench.suggestParts";
-    public static final String CMD_CHEATDIMLET = "workbench.cheatDimlet";
-    public static final String CMD_HILIGHT_PATTERN = "workbench.hilightPattern";
-    public static final String CMD_CREATE_DIMLET = "workbench.createDimlet";
-    public static final Key<String> PARAM_TYPE = new Key<>("type", Type.STRING);
-    public static final Key<String> PARAM_ID = new Key<>("id", Type.STRING);
 
     public static final int SLOT_EMPTY_DIMLET = 0;
     public static final int SLOT_MEMORY_PART = 1;
@@ -237,33 +232,21 @@ public class WorkbenchTileEntity extends GenericTileEntity {
         }
     }
 
-    @Override
-    public boolean execute(PlayerEntity playerMP, String command, TypedMap params) {
-        boolean rc = super.execute(playerMP, command, params);
-        if (rc) {
-            return true;
-        }
-        if (CMD_SUGGESTPARTS.equals(command)) {
-            String type = params.get(PARAM_TYPE);
-            String id = params.get(PARAM_ID);
-            suggestParts(playerMP, new DimletKey(DimletType.byName(type), id));
-            return true;
-        } else if (CMD_HILIGHT_PATTERN.equals(command)) {
-            String type = params.get(PARAM_TYPE);
-            String id = params.get(PARAM_ID);
-            hilightPattern(playerMP, new DimletKey(DimletType.byName(type), id));
-            return true;
-        } else if (CMD_CHEATDIMLET.equals(command)) {
-            String type = params.get(PARAM_TYPE);
-            String id = params.get(PARAM_ID);
-            cheatDimlet(playerMP, new DimletKey(DimletType.byName(type), id));
-            return true;
-        } else if (CMD_CREATE_DIMLET.equals(command)) {
-            createDimlet();
-            return true;
-        }
-        return false;
-    }
+    public static final Key<String> PARAM_TYPE = new Key<>("type", Type.STRING);
+    public static final Key<String> PARAM_ID = new Key<>("id", Type.STRING);
+
+    @ServerCommand
+    public static final Command<?> CMD_SUGGESTPARTS = Command.<WorkbenchTileEntity>create("workbench.suggestParts",
+        (te, player, params) -> te.suggestParts(player, new DimletKey(DimletType.byName(params.get(PARAM_TYPE)), params.get(PARAM_ID))));
+    @ServerCommand
+    public static final Command<?> CMD_CHEATDIMLET = Command.<WorkbenchTileEntity>create("workbench.cheatDimlet",
+        (te, player, params) -> te.createDimlet());
+    @ServerCommand
+    public static final Command<?> CMD_HILIGHT_PATTERN = Command.<WorkbenchTileEntity>create("workbench.hilightPattern",
+        (te, player, params) -> te.hilightPattern(player, new DimletKey(DimletType.byName(params.get(PARAM_TYPE)), params.get(PARAM_ID))));
+    @ServerCommand
+    public static final Command<?> CMD_CREATE_DIMLET = Command.<WorkbenchTileEntity>create("workbench.createDimlet",
+        (te, player, params) -> te.cheatDimlet(player, new DimletKey(DimletType.byName(params.get(PARAM_TYPE)), params.get(PARAM_ID))));
 
     private NoDirectionItemHander createItemHandler() {
         return new NoDirectionItemHander(this, CONTAINER_FACTORY.get()) {

@@ -262,12 +262,12 @@ public class EnscriberTileEntity extends GenericTileEntity {
 
     public static final Key<String> PARAM_NAME = new Key<>("name", Type.STRING);
     @ServerCommand
-    public static final Command<?> CMD_STORE = Command.<EnscriberTileEntity>create("enscriber.store")
-            .buildCommand((te, player, params) -> te.storeDimlets(player, params.get(PARAM_NAME)));
+    public static final Command<?> CMD_STORE = Command.<EnscriberTileEntity>create("enscriber.store",
+            (te, player, params) -> te.storeDimlets(player, params.get(PARAM_NAME)));
 
     @ServerCommand
-    public static final Command<?> CMD_EXTRACT = Command.<EnscriberTileEntity>create("enscriber.extract")
-            .buildCommand((te, player, params) -> te.extractDimlets());
+    public static final Command<?> CMD_EXTRACT = Command.<EnscriberTileEntity>create("enscriber.extract",
+            (te, player, params) -> te.extractDimlets());
 
 
     private NoDirectionItemHander createItemHandler() {
