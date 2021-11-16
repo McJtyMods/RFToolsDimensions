@@ -52,10 +52,14 @@ public class GuiResearcher extends GenericGuiContainer<ResearcherTileEntity, Gen
         energyBar = window.findChild("energybar");
     }
 
-    @Override
-    protected void renderBg(MatrixStack matrixStack, float partialTicks, int x, int y) {
-        drawWindow(matrixStack);
+    private void updateFields() {
         updateEnergyBar(energyBar);
         progress.text(tileEntity.getProgressPercentage() + "%");
+    }
+
+    @Override
+    protected void renderBg(MatrixStack matrixStack, float partialTicks, int x, int y) {
+        updateFields();
+        drawWindow(matrixStack);
     }
 }
