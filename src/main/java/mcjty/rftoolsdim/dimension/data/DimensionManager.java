@@ -80,7 +80,7 @@ public class DimensionManager {
     public CompiledDescriptor getCompiledDescriptor(World overworld, ResourceLocation id) {
         if (!compiledDescriptorMap.containsKey(id)) {
             ServerWorld world = LevelTools.getLevel(overworld, id);
-            if (world == null || world.getChunkSource() == null) {
+            if (world == null) {
                 // No data yet
                 return null;
             }

@@ -13,6 +13,7 @@ import net.minecraft.world.chunk.IChunk;
 import net.minecraft.world.gen.*;
 import net.minecraft.world.gen.settings.DimensionStructuresSettings;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
@@ -58,7 +59,7 @@ public abstract class BaseChunkGenerator extends ChunkGenerator {
     }
 
     @Override
-    public void buildSurfaceAndBedrock(WorldGenRegion region, IChunk chunk) {
+    public void buildSurfaceAndBedrock(@Nonnull WorldGenRegion region, @Nonnull IChunk chunk) {
         if (settings.getCompiledDescriptor().getAttributeTypes().contains(AttributeType.NOBIOMESURFACE)) {
             this.makeBedrock(chunk);
             return;
@@ -78,7 +79,7 @@ public abstract class BaseChunkGenerator extends ChunkGenerator {
                 int xx = xStart + x;
                 int zz = zStart + z;
                 int yy = chunk.getHeight(Heightmap.Type.WORLD_SURFACE_WG, x, z) + 1;
-                double noise = this.surfaceDepthNoise.getSurfaceNoiseValue((double)xx * 0.0625D, (double)zz * 0.0625D, 0.0625D, (double)x * 0.0625D) * 15.0D;
+                double noise = this.surfaceDepthNoise.getSurfaceNoiseValue(xx * 0.0625D, zz * 0.0625D, 0.0625D, x * 0.0625D) * 15.0D;
                 region.getBiome(mpos.set(xStart + x, yy, zStart + z))
                         .buildSurfaceAt(sharedseedrandom, chunk, xx, zz, yy, noise, defaultBlocks.get(0), getBaseLiquid(), this.getSeaLevel(), region.getSeed());
             }

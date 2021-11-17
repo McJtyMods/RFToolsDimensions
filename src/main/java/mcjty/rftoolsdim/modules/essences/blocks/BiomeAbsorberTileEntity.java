@@ -9,7 +9,6 @@ import mcjty.rftoolsbase.tools.ManualHelper;
 import mcjty.rftoolsdim.compat.RFToolsDimensionsTOPDriver;
 import mcjty.rftoolsdim.modules.essences.EssencesConfig;
 import mcjty.rftoolsdim.modules.essences.EssencesModule;
-import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.resources.I18n;
@@ -132,7 +131,7 @@ public class BiomeAbsorberTileEntity extends GenericTileEntity implements ITicka
 
         if (absorbing > 0) {
             Biome biome = level.getBiome(worldPosition);
-            if (biome == null || !biome.getRegistryName().toString().equals(biomeId)) {
+            if (!biome.getRegistryName().toString().equals(biomeId)) {
                 return;
             }
 
@@ -155,13 +154,11 @@ public class BiomeAbsorberTileEntity extends GenericTileEntity implements ITicka
     public void readInfo(CompoundNBT tagCompound) {
         super.readInfo(tagCompound);
         CompoundNBT info = tagCompound.getCompound("Info");
-        if (info != null) {
-            absorbing = info.getInt("absorbing");
-            if (info.contains("biome")) {
-                biomeId = info.getString("biome");
-            } else {
-                biomeId = null;
-            }
+        absorbing = info.getInt("absorbing");
+        if (info.contains("biome")) {
+            biomeId = info.getString("biome");
+        } else {
+            biomeId = null;
         }
     }
 

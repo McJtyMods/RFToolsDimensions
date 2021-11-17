@@ -25,6 +25,7 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.Tags;
 
+import javax.annotation.Nonnull;
 import java.util.function.Consumer;
 
 public class Recipes extends BaseRecipeProvider {
@@ -37,7 +38,7 @@ public class Recipes extends BaseRecipeProvider {
     }
 
     @Override
-    protected void buildShapelessRecipes(Consumer<IFinishedRecipe> consumer) {
+    protected void buildShapelessRecipes(@Nonnull Consumer<IFinishedRecipe> consumer) {
         build(consumer, ShapedRecipeBuilder.shaped(DimletModule.EMPTY_DIMLET.get())
                         .unlockedBy("shard", has(VariousModule.DIMENSIONALSHARD.get())),
                 " p ", "psp", " p ");
@@ -78,8 +79,8 @@ public class Recipes extends BaseRecipeProvider {
         for (int i = 1 ; i <= 9 ; i++) {
             build(consumer, new ResourceLocation(RFToolsDim.MODID, "digit" + i), DimletCycleRecipeBuilder.shapedRecipe(DimletModule.DIGIT_DIMLET.get())
                             .define('C', Ingredient.of(DimletTools.getDimletStack(new DimletKey(DimletType.DIGIT, "0"))))
-                            .input("" + (i-1))
-                            .output("" + i)
+                            .input(String.valueOf(i - 1))
+                            .output(String.valueOf(i))
                             .addCriterion("empty_dimlet", has(DimletModule.EMPTY_DIMLET.get())),
                     "C");
         }

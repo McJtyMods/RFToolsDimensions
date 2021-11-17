@@ -20,6 +20,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.Lazy;
 import org.apache.commons.lang3.tuple.Pair;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -80,13 +81,13 @@ public class DimletItem extends Item implements ITooltipSettings, ITooltipExtras
     }
 
     @Override
-    public void appendHoverText(ItemStack itemStack, World world, List<ITextComponent> list, ITooltipFlag flags) {
+    public void appendHoverText(@Nonnull ItemStack itemStack, World world, @Nonnull List<ITextComponent> list, @Nonnull ITooltipFlag flags) {
         super.appendHoverText(itemStack, world, list, flags);
         tooltipBuilder.get().makeTooltip(getRegistryName(), itemStack, list, flags);
     }
 
     @Override
-    public void fillItemCategory(ItemGroup group, NonNullList<ItemStack> items) {
+    public void fillItemCategory(@Nonnull ItemGroup group, @Nonnull NonNullList<ItemStack> items) {
         if (this.allowdedIn(group)) {
             if (this == DimletModule.ADMIN_DIMLET.get()) {
                 ItemStack stack = DimletTools.getDimletStack(new DimletKey(DimletType.ADMIN, "owner"));
@@ -99,7 +100,7 @@ public class DimletItem extends Item implements ITooltipSettings, ITooltipExtras
                 }
             } else if (this == DimletModule.DIGIT_DIMLET.get()) {
                 for (int i = 0 ; i < 10 ; i++) {
-                    items.add(DimletTools.getDimletStack(new DimletKey(DimletType.DIGIT, "" + i)));
+                    items.add(DimletTools.getDimletStack(new DimletKey(DimletType.DIGIT, String.valueOf(i))));
                 }
             } else {
                 items.add(new ItemStack(this));

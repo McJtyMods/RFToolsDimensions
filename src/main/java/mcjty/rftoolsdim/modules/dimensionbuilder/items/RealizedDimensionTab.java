@@ -29,6 +29,7 @@ import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.fml.server.ServerLifecycleHooks;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
@@ -38,8 +39,9 @@ public class RealizedDimensionTab extends Item {
         super(new Item.Properties().stacksTo(1));
     }
 
+    @Nonnull
     @Override
-    public ActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
+    public ActionResult<ItemStack> use(World world, PlayerEntity player, @Nonnull Hand hand) {
         ItemStack stack = player.getItemInHand(hand);
         if ((!world.isClientSide) && player.isShiftKeyDown()) {
             CompoundNBT tagCompound = stack.getTag();
@@ -69,7 +71,7 @@ public class RealizedDimensionTab extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> list, ITooltipFlag flagIn) {
+    public void appendHoverText(@Nonnull ItemStack stack, @Nullable World worldIn, @Nonnull List<ITextComponent> list, @Nonnull ITooltipFlag flagIn) {
         super.appendHoverText(stack, worldIn, list, flagIn);
         // @todo 1.16 tooltip system
         CompoundNBT tagCompound = stack.getTag();

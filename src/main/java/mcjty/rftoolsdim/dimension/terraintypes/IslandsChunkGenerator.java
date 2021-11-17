@@ -12,6 +12,8 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.IChunk;
 import net.minecraft.world.gen.ChunkGenerator;
 
+import javax.annotation.Nonnull;
+
 public class IslandsChunkGenerator extends NormalChunkGenerator {
 
     public static final Codec<IslandsChunkGenerator> CODEC = RecordCodecBuilder.create(instance ->
@@ -42,6 +44,7 @@ public class IslandsChunkGenerator extends NormalChunkGenerator {
         return air;
     }
 
+    @Nonnull
     @Override
     protected Codec<? extends ChunkGenerator> codec() {
         return CODEC;

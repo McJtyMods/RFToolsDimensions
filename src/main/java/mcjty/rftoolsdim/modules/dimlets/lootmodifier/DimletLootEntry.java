@@ -16,6 +16,7 @@ import net.minecraft.loot.conditions.ILootCondition;
 import net.minecraft.loot.functions.ILootFunction;
 import net.minecraft.util.JSONUtils;
 
+import javax.annotation.Nonnull;
 import java.util.Random;
 import java.util.function.Consumer;
 
@@ -31,7 +32,7 @@ public class DimletLootEntry extends StandaloneLootEntry {
     private final Random random = new Random();
 
     @Override
-    protected void createItemStack(Consumer<ItemStack> stackConsumer, LootContext context) {
+    protected void createItemStack(@Nonnull Consumer<ItemStack> stackConsumer, @Nonnull LootContext context) {
         DimletKey dimlet = DimletDictionary.get().getRandomDimlet(rarity, random);
         if (dimlet != null) {
             stackConsumer.accept(DimletTools.getDimletStack(dimlet));
@@ -43,6 +44,7 @@ public class DimletLootEntry extends StandaloneLootEntry {
     }
 
     @Override
+    @Nonnull
     public LootPoolEntryType getType() {
         return DimletModule.DIMLET_LOOT_ENTRY;
     }
@@ -54,13 +56,14 @@ public class DimletLootEntry extends StandaloneLootEntry {
     public static class Serializer extends StandaloneLootEntry.Serializer<DimletLootEntry> {
 
         @Override
-        public void serializeCustom(JsonObject object, DimletLootEntry entry, JsonSerializationContext conditions) {
+        public void serializeCustom(@Nonnull JsonObject object, @Nonnull DimletLootEntry entry, @Nonnull JsonSerializationContext conditions) {
             super.serializeCustom(object, entry, conditions);
             object.addProperty("rarity", entry.getRarity().name());
         }
 
         @Override
-        protected DimletLootEntry deserialize(JsonObject object, JsonDeserializationContext context, int weight, int quality, ILootCondition[] conditions, ILootFunction[] functions) {
+        @Nonnull
+        protected DimletLootEntry deserialize(@Nonnull JsonObject object, @Nonnull JsonDeserializationContext context, int weight, int quality, @Nonnull ILootCondition[] conditions, @Nonnull ILootFunction[] functions) {
             String rarityString = JSONUtils.getAsString(object, "rarity");
             DimletRarity rarity = DimletRarity.byName(rarityString);
             return new DimletLootEntry(weight, quality, conditions, functions, rarity);

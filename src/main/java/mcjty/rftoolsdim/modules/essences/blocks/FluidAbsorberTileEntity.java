@@ -31,6 +31,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import javax.annotation.Nonnull;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Random;
@@ -158,9 +159,7 @@ public class FluidAbsorberTileEntity extends GenericTileEntity implements ITicka
                         SoundTools.playSound(level, absorbingBlock.getSoundType(oldFluidState.createLegacyBlock(), level, c, null).getBreakSound(), getBlockPos().getX(), getBlockPos().getY(), getBlockPos().getZ(), 1.0f, 1.0f);
 
                         BlockPos finalC = c;
-                        FluidTools.pickupFluidBlock(level, c, s -> true, () -> {
-                            level.setBlock(finalC, Blocks.AIR.defaultBlockState(), 2);
-                        });
+                        FluidTools.pickupFluidBlock(level, c, s -> true, () -> level.setBlock(finalC, Blocks.AIR.defaultBlockState(), 2));
 
                         absorbing--;
 
@@ -197,7 +196,7 @@ public class FluidAbsorberTileEntity extends GenericTileEntity implements ITicka
 
     private boolean blockMatches(BlockPos c) {
         FluidState state = level.getFluidState(c);
-        if (state != null && !state.isSource()) {
+        if (!state.isSource()) {
             return false;
         }
         return state.createLegacyBlock().getBlock().equals(absorbingBlock);
@@ -271,8 +270,9 @@ public class FluidAbsorberTileEntity extends GenericTileEntity implements ITicka
         }
     }
 
+    @Nonnull
     @Override
-    public CompoundNBT save(CompoundNBT tagCompound) {
+    public CompoundNBT save(@Nonnull CompoundNBT tagCompound) {
         super.save(tagCompound);
         int[] x = new int[toscan.size()];
         int[] y = new int[toscan.size()];

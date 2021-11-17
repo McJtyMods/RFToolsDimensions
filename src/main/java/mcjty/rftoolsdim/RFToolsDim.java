@@ -27,7 +27,7 @@ public class RFToolsDim {
 
     public static RFToolsDim instance;
     private final Modules modules = new Modules();
-    public static ModSetup setup = new ModSetup();
+    public static final ModSetup setup = new ModSetup();
 
     public RFToolsDim() {
         instance = this;

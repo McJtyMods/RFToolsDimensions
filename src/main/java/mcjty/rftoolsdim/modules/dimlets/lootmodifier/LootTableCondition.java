@@ -8,6 +8,7 @@ import net.minecraft.loot.LootContext;
 import net.minecraft.loot.conditions.ILootCondition;
 import net.minecraft.util.ResourceLocation;
 
+import javax.annotation.Nonnull;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -19,6 +20,7 @@ public class LootTableCondition implements ILootCondition {
         this.tables = tables;
     }
 
+    @Nonnull
     @Override
     public LootConditionType getType() {
         return DimletModule.LOOT_TABLE_CONDITION;
@@ -34,7 +36,7 @@ public class LootTableCondition implements ILootCondition {
 
 
         @Override
-        public void serialize(JsonObject object, LootTableCondition condition, JsonSerializationContext context) {
+        public void serialize(@Nonnull JsonObject object, LootTableCondition condition, @Nonnull JsonSerializationContext context) {
             JsonArray array = new JsonArray();
             for (ResourceLocation table : condition.tables) {
                 array.add(table.toString());
@@ -42,8 +44,9 @@ public class LootTableCondition implements ILootCondition {
             object.add("tables", array);
         }
 
+        @Nonnull
         @Override
-        public LootTableCondition deserialize(JsonObject object, JsonDeserializationContext context) {
+        public LootTableCondition deserialize(JsonObject object, @Nonnull JsonDeserializationContext context) {
             Set<ResourceLocation> tables = new HashSet<>();
             JsonArray tablesArray = object.getAsJsonArray("tables");
             tables.clear();

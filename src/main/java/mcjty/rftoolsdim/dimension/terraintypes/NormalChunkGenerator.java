@@ -33,6 +33,7 @@ import net.minecraft.world.gen.settings.NoiseSettings;
 import net.minecraft.world.gen.settings.ScalingSettings;
 import net.minecraft.world.gen.settings.SlideSettings;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.function.Predicate;
 import java.util.stream.IntStream;
@@ -58,7 +59,7 @@ public class NormalChunkGenerator extends BaseChunkGenerator {
     private static final float[] FLOAT25 = Util.make(new float[25], (floats) -> {
         for (int i = -2; i <= 2; ++i) {
             for (int j = -2; j <= 2; ++j) {
-                float f = 10.0F / MathHelper.sqrt((float) (i * i + j * j) + 0.2F);
+                float f = 10.0F / MathHelper.sqrt((i * i + j * j) + 0.2F);
                 floats[i + 2 + (j + 2) * 5] = f;
             }
         }
@@ -220,18 +221,20 @@ public class NormalChunkGenerator extends BaseChunkGenerator {
         }
     }
 
+    @Nonnull
     @Override
     protected Codec<? extends ChunkGenerator> codec() {
         return CODEC;
     }
 
+    @Nonnull
     @Override
     public ChunkGenerator withSeed(long l) {
         return new NormalChunkGenerator(getBiomeRegistry(), getDimensionSettings());
     }
 
     @Override
-    public void fillFromNoise(IWorld world, StructureManager structureManager, IChunk chunk) {
+    public void fillFromNoise(@Nonnull IWorld world, @Nonnull StructureManager structureManager, IChunk chunk) {
         ObjectList<StructurePiece> objectlist = new ObjectArrayList<>(10);
         ObjectList<JigsawJunction> objectlist1 = new ObjectArrayList<>(32);
         ChunkPos chunkpos = chunk.getPos();
@@ -311,7 +314,7 @@ public class NormalChunkGenerator extends BaseChunkGenerator {
                             chunksection.acquire();
                         }
 
-                        double d8 = (double) vertN / (double) this.verticalNoiseGranularity;
+                        double d8 = (double) vertN / this.verticalNoiseGranularity;
                         double d9 = MathHelper.lerp(d8, d0, d4);
                         double d10 = MathHelper.lerp(d8, d2, d6);
                         double d11 = MathHelper.lerp(d8, d1, d5);
@@ -320,14 +323,14 @@ public class NormalChunkGenerator extends BaseChunkGenerator {
                         for (int horN = 0; horN < this.horizontalNoiseGranularity; ++horN) {
                             int i3 = cx + nx * this.horizontalNoiseGranularity + horN;
                             int xx = i3 & 15;
-                            double d13 = (double) horN / (double) this.horizontalNoiseGranularity;
+                            double d13 = (double) horN / this.horizontalNoiseGranularity;
                             double d14 = MathHelper.lerp(d13, d9, d10);
                             double d15 = MathHelper.lerp(d13, d11, d12);
 
                             for (int horZ = 0; horZ < this.horizontalNoiseGranularity; ++horZ) {
                                 int l3 = cz + nz * this.horizontalNoiseGranularity + horZ;
                                 int zz = l3 & 15;
-                                double d16 = (double) horZ / (double) this.horizontalNoiseGranularity;
+                                double d16 = (double) horZ / this.horizontalNoiseGranularity;
                                 double d17 = MathHelper.lerp(d16, d14, d15);
                                 double d18 = MathHelper.clamp(d17 / 200.0D, -1.0D, 1.0D);
 
@@ -383,6 +386,7 @@ public class NormalChunkGenerator extends BaseChunkGenerator {
         return this.iterateNoiseColumn(x, z, null, type.isOpaque());
     }
 
+    @Nonnull
     @Override
     public IBlockReader getBaseColumn(int x, int z) {
         BlockState[] ablockstate = new BlockState[this.noiseSizeY * this.verticalNoiseGranularity];
@@ -392,7 +396,7 @@ public class NormalChunkGenerator extends BaseChunkGenerator {
 
     private static double computeContribution(int x, int y, int z) {
         double d0 = x * x + z * z;
-        double d1 = (double) y + 0.5D;
+        double d1 = y + 0.5D;
         double d2 = d1 * d1;
         double d3 = Math.pow(Math.E, -(d2 / 16.0D + d0 / 16.0D));
         double d4 = -d1 * MathHelper.fastInvSqrt(d2 / 2.0D + d0 / 2.0D) / 2.0D;
@@ -466,7 +470,7 @@ public class NormalChunkGenerator extends BaseChunkGenerator {
 
         for (int i1 = 0; i1 <= this.noiseSizeY; ++i1) {
             double d7 = this.sampleAndClampNoise(noiseX, i1, noiseZ, d12, d13, d14, d15);
-            double d8 = 1.0D - (double) i1 * 2.0D / (double) this.noiseSizeY + d4;
+            double d8 = 1.0D - i1 * 2.0D / this.noiseSizeY + d4;
             double d9 = d8 * d5 + d6;
             double d10 = (d9 + d0) * d1;
             if (d10 > 0.0D) {
@@ -476,12 +480,12 @@ public class NormalChunkGenerator extends BaseChunkGenerator {
             }
 
             if (d19 > 0.0D) {
-                double d11 = ((double) (this.noiseSizeY - i1) - d20) / d19;
+                double d11 = ((this.noiseSizeY - i1) - d20) / d19;
                 d7 = MathHelper.clampedLerp(d17, d7, d11);
             }
 
             if (d2 > 0.0D) {
-                double d22 = ((double) i1 - d3) / d2;
+                double d22 = (i1 - d3) / d2;
                 d7 = MathHelper.clampedLerp(d21, d7, d22);
             }
 
@@ -511,24 +515,24 @@ public class NormalChunkGenerator extends BaseChunkGenerator {
         double d3 = 1.0D;
 
         for (int i = 0; i < 16; ++i) {
-            double d4 = OctavesNoiseGenerator.wrap((double) x * p_222552_4_ * d3);
-            double d5 = OctavesNoiseGenerator.wrap((double) y * p_222552_6_ * d3);
-            double d6 = OctavesNoiseGenerator.wrap((double) z * p_222552_4_ * d3);
+            double d4 = OctavesNoiseGenerator.wrap(x * p_222552_4_ * d3);
+            double d5 = OctavesNoiseGenerator.wrap(y * p_222552_6_ * d3);
+            double d6 = OctavesNoiseGenerator.wrap(z * p_222552_4_ * d3);
             double d7 = p_222552_6_ * d3;
             ImprovedNoiseGenerator improvednoisegenerator = this.oct1.getOctaveNoise(i);
             if (improvednoisegenerator != null) {
-                d0 += improvednoisegenerator.noise(d4, d5, d6, d7, (double) y * d7) / d3;
+                d0 += improvednoisegenerator.noise(d4, d5, d6, d7, y * d7) / d3;
             }
 
             ImprovedNoiseGenerator improvednoisegenerator1 = this.oct2.getOctaveNoise(i);
             if (improvednoisegenerator1 != null) {
-                d1 += improvednoisegenerator1.noise(d4, d5, d6, d7, (double) y * d7) / d3;
+                d1 += improvednoisegenerator1.noise(d4, d5, d6, d7, y * d7) / d3;
             }
 
             if (i < 8) {
                 ImprovedNoiseGenerator improvednoisegenerator2 = this.oct4.getOctaveNoise(i);
                 if (improvednoisegenerator2 != null) {
-                    d2 += improvednoisegenerator2.noise(OctavesNoiseGenerator.wrap((double) x * p_222552_8_ * d3), OctavesNoiseGenerator.wrap((double) y * p_222552_10_ * d3), OctavesNoiseGenerator.wrap((double) z * p_222552_8_ * d3), p_222552_10_ * d3, (double) y * p_222552_10_ * d3) / d3;
+                    d2 += improvednoisegenerator2.noise(OctavesNoiseGenerator.wrap(x * p_222552_8_ * d3), OctavesNoiseGenerator.wrap(y * p_222552_10_ * d3), OctavesNoiseGenerator.wrap(z * p_222552_8_ * d3), p_222552_10_ * d3, y * p_222552_10_ * d3) / d3;
                 }
             }
 
@@ -550,7 +554,7 @@ public class NormalChunkGenerator extends BaseChunkGenerator {
         int zz = z + 12;
         if (xx >= 0 && xx < 24) {
             if (yy >= 0 && yy < 24) {
-                return zz >= 0 && zz < 24 ? (double) FLOATS1[zz * 24 * 24 + xx * 24 + yy] : 0.0D;
+                return zz >= 0 && zz < 24 ? FLOATS1[zz * 24 * 24 + xx * 24 + yy] : 0.0D;
             } else {
                 return 0.0D;
             }
@@ -577,8 +581,8 @@ public class NormalChunkGenerator extends BaseChunkGenerator {
         int j = Math.floorDiv(z, this.horizontalNoiseGranularity);
         int k = Math.floorMod(x, this.horizontalNoiseGranularity);
         int l = Math.floorMod(z, this.horizontalNoiseGranularity);
-        double d0 = (double) k / (double) this.horizontalNoiseGranularity;
-        double d1 = (double) l / (double) this.horizontalNoiseGranularity;
+        double d0 = (double) k / this.horizontalNoiseGranularity;
+        double d1 = (double) l / this.horizontalNoiseGranularity;
         double[][] adouble = new double[][]{this.makeAndFillNoiseColumn(i, j), this.makeAndFillNoiseColumn(i, j + 1), this.makeAndFillNoiseColumn(i + 1, j), this.makeAndFillNoiseColumn(i + 1, j + 1)};
 
         for (int i1 = this.noiseSizeY - 1; i1 >= 0; --i1) {
@@ -592,7 +596,7 @@ public class NormalChunkGenerator extends BaseChunkGenerator {
             double d9 = adouble[3][i1 + 1];
 
             for (int j1 = this.verticalNoiseGranularity - 1; j1 >= 0; --j1) {
-                double d10 = (double) j1 / (double) this.verticalNoiseGranularity;
+                double d10 = (double) j1 / this.verticalNoiseGranularity;
                 double d11 = MathHelper.lerp3(d10, d0, d1, d2, d6, d4, d8, d3, d7, d5, d9);
                 int k1 = i1 * this.verticalNoiseGranularity + j1;
                 BlockState blockstate = this.generateBaseState(d11, k1);

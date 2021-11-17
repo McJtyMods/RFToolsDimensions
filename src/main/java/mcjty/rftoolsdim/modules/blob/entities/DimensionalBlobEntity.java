@@ -23,6 +23,7 @@ import net.minecraft.world.IServerWorld;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
@@ -37,7 +38,7 @@ public class DimensionalBlobEntity extends MonsterEntity {
 
     private int tickCounter = 5;
 
-    private final static EntityPredicate PREDICATE = new EntityPredicate()
+    private static final EntityPredicate PREDICATE = new EntityPredicate()
             .allowUnseeable();
 
     public DimensionalBlobEntity(EntityType<? extends MonsterEntity> type, World worldIn, DimletRarity rarity) {
@@ -94,7 +95,7 @@ public class DimensionalBlobEntity extends MonsterEntity {
 
     @Nullable
     @Override
-    public ILivingEntityData finalizeSpawn(IServerWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
+    public ILivingEntityData finalizeSpawn(@Nonnull IServerWorld worldIn, @Nonnull DifficultyInstance difficultyIn, @Nonnull SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
         ModifiableAttributeInstance attr = getAttributes().getInstance(Attributes.MAX_HEALTH);
         if (attr != null) {
             attr.setBaseValue(getDefaultMaxHealth(rarity));
@@ -126,7 +127,7 @@ public class DimensionalBlobEntity extends MonsterEntity {
     }
 
     @Override
-    public void setBoundingBox(AxisAlignedBB bb) {
+    public void setBoundingBox(@Nonnull AxisAlignedBB bb) {
         super.setBoundingBox(bb);
         calculateTargetBox(bb);
     }
@@ -197,6 +198,7 @@ public class DimensionalBlobEntity extends MonsterEntity {
         return rarity;
     }
 
+    @Nonnull
     @Override
     public IPacket<?> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);

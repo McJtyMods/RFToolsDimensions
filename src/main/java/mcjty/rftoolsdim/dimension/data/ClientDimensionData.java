@@ -42,7 +42,7 @@ public class ClientDimensionData {
         private final long power;
         private final long max;
 
-        public final static Power NONE = new Power(-1, -1);
+        public static final Power NONE = new Power(-1, -1);
 
         public Power(long power, long max) {
             this.power = power;

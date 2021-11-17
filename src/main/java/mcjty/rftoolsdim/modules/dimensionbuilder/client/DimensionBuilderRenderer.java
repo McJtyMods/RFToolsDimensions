@@ -14,6 +14,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.items.CapabilityItemHandler;
 
+import javax.annotation.Nonnull;
+
 public class DimensionBuilderRenderer extends TileEntityRenderer<DimensionBuilderTileEntity> {
 
     public static final ResourceLocation STAGES = new ResourceLocation(RFToolsDim.MODID, "block/dimensionstages");
@@ -23,7 +25,7 @@ public class DimensionBuilderRenderer extends TileEntityRenderer<DimensionBuilde
     }
 
     @Override
-    public void render(DimensionBuilderTileEntity te, float v, MatrixStack matrixStack, IRenderTypeBuffer buffer, int combinedLight, int combinedOverlay) {
+    public void render(DimensionBuilderTileEntity te, float v, @Nonnull MatrixStack matrixStack, @Nonnull IRenderTypeBuffer buffer, int combinedLight, int combinedOverlay) {
 
         int errorMode = te.getErrorMode();
         int r;

@@ -15,14 +15,10 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static mcjty.rftoolsdim.dimension.descriptor.DescriptorError.Code.*;
 import static mcjty.rftoolsdim.dimension.descriptor.DescriptorError.ERROR;
@@ -33,11 +29,11 @@ import static mcjty.rftoolsdim.dimension.descriptor.DescriptorError.ERROR;
 public class CompiledDescriptor {
 
     private TerrainType terrainType = null;
-    private final Set<AttributeType> attributeTypes = new HashSet<>();
+    private final Set<AttributeType> attributeTypes = EnumSet.noneOf(AttributeType.class);
     private final List<BlockState> baseBlocks = new ArrayList<>();
     private BlockState baseLiquid = null;
 
-    private final Set<AdminDimletType> adminDimletTypes = new HashSet<>();
+    private final Set<AdminDimletType> adminDimletTypes = EnumSet.noneOf(AdminDimletType.class);
     private final Set<CompiledFeature> features = new HashSet<>();
     private BiomeControllerType biomeControllerType = null;
     private final List<ResourceLocation> biomes = new ArrayList<>();
@@ -60,7 +56,7 @@ public class CompiledDescriptor {
 
         List<BlockState> collectedBlocks = new ArrayList<>();
         List<BlockState> collectedFluids = new ArrayList<>();
-        Set<AttributeType> collectedAttributes = new HashSet<>();
+        Set<AttributeType> collectedAttributes = EnumSet.noneOf(AttributeType.class);
 
         for (DimletKey dimlet : descriptor.getDimlets()) {
             DescriptorError error = handleDimlet(collectedBlocks, collectedFluids, collectedAttributes, dimlet);
@@ -160,6 +156,8 @@ public class CompiledDescriptor {
                 collectedAttributes.add(type);
                 break;
             }
+            case DIGIT:
+                break;
             case ADMIN: {
                 AdminDimletType type = AdminDimletType.byName(dimlet.getKey());
                 if (type == null) {

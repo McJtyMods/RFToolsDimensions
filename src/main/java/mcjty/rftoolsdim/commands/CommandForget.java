@@ -7,7 +7,6 @@ import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import mcjty.rftoolsdim.RFToolsDim;
-import mcjty.rftoolsdim.dimension.data.DimensionManager;
 import mcjty.rftoolsdim.dimension.data.PersistantDimensionManager;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
@@ -15,7 +14,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SharedConstants;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.world.World;
 
 public class CommandForget implements Command<CommandSource> {
 

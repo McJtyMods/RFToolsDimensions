@@ -12,6 +12,7 @@ import net.minecraft.world.gen.feature.structure.Structure;
 import net.minecraft.world.gen.layer.Layer;
 import net.minecraft.world.gen.layer.LayerUtil;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -60,20 +61,23 @@ public class RFTBiomeProvider extends BiomeProvider {
     }
 
     @Override
-    public boolean canGenerateStructure(Structure<?> structure) {
+    public boolean canGenerateStructure(@Nonnull Structure<?> structure) {
         return false;
     }
 
+    @Nonnull
     @Override
     protected Codec<? extends BiomeProvider> codec() {
         return CODEC;
     }
 
+    @Nonnull
     @Override
     public BiomeProvider withSeed(long seed) {
         return new RFTBiomeProvider(getBiomeRegistry(), settings);
     }
 
+    @Nonnull
     @Override
     public Biome getNoiseBiome(int x, int y, int z) {
         switch (settings.getCompiledDescriptor().getBiomeControllerType()) {

@@ -73,8 +73,9 @@ public class PersistantDimensionManager extends AbstractWorldData<PersistantDime
         }
     }
 
+    @Nonnull
     @Override
-    public CompoundNBT save(CompoundNBT compound) {
+    public CompoundNBT save(@Nonnull CompoundNBT compound) {
         CompoundNBT tag = new CompoundNBT();
 
         ListNBT list = new ListNBT();

@@ -11,6 +11,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
 
+import javax.annotation.Nonnull;
+
 
 public class DimensionalBlobRender extends LivingRenderer<DimensionalBlobEntity, DimensionalBlobModel<DimensionalBlobEntity>> {
 
@@ -26,6 +28,7 @@ public class DimensionalBlobRender extends LivingRenderer<DimensionalBlobEntity,
      * Returns the location of an entity's texture. Doesn't seem to be called unless you call Render.bindEntityTexture.
      */
     @Override
+    @Nonnull
     public ResourceLocation getTextureLocation(DimensionalBlobEntity entity) {
         switch (entity.getRarity()) {
             case COMMON:

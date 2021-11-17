@@ -11,6 +11,8 @@ import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.ShapedRecipe;
 import net.minecraft.world.World;
 
+import javax.annotation.Nonnull;
+
 public class DigitCycleRecipe extends AbstractRecipeAdaptor {
 
     private final String input;
@@ -31,7 +33,7 @@ public class DigitCycleRecipe extends AbstractRecipeAdaptor {
     }
 
     @Override
-    public boolean matches(CraftingInventory inv, World worldIn) {
+    public boolean matches(@Nonnull CraftingInventory inv, @Nonnull World worldIn) {
         boolean matches = super.matches(inv, worldIn);
         if (matches) {
             for (int i = 0 ; i < inv.getContainerSize() ; i++) {
@@ -46,17 +48,20 @@ public class DigitCycleRecipe extends AbstractRecipeAdaptor {
         return false;
     }
 
+    @Nonnull
     @Override
     public ItemStack getResultItem() {
         return DimletTools.getDimletStack(new DimletKey(DimletType.DIGIT, output));
     }
 
+    @Nonnull
     @Override
-    public ItemStack assemble(CraftingInventory inv) {
+    public ItemStack assemble(@Nonnull CraftingInventory inv) {
         return DimletTools.getDimletStack(new DimletKey(DimletType.DIGIT, output));
     }
 
     @Override
+    @Nonnull
     public IRecipeSerializer<?> getSerializer() {
         return DimletModule.DIMLET_CYCLE_SERIALIZER.get();
     }

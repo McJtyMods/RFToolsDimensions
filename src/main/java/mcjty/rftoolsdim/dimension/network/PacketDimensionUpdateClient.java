@@ -16,8 +16,6 @@ public class PacketDimensionUpdateClient {
             return;
 
         Set<RegistryKey<World>> worlds = player.connection.levels();
-        if (worlds == null)
-            return;
 
         if (packet.getAdd()) {
             worlds.add(key);

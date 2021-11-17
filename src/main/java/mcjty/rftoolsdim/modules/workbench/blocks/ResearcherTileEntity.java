@@ -51,8 +51,8 @@ import static mcjty.lib.container.SlotDefinition.specific;
 
 public class ResearcherTileEntity extends GenericTileEntity implements ITickableTileEntity {
 
-    public static int SLOT_IN = 0;
-    public static int SLOT_OUT = 1;
+    public static final int SLOT_IN = 0;
+    public static final int SLOT_OUT = 1;
 
     private int progress;
 
@@ -78,7 +78,7 @@ public class ResearcherTileEntity extends GenericTileEntity implements ITickable
             .energyHandler(() -> energyStorage)
             .itemHandler(() -> items));
 
-    public static VoxelShape SLAB = VoxelShapes.box(0f, 0f, 0f, 1f, 0.5f, 1f);
+    public static final VoxelShape SLAB = VoxelShapes.box(0f, 0f, 0f, 1f, 0.5f, 1f);
 
     public ResearcherTileEntity() {
         super(WorkbenchModule.TYPE_RESEARCHER.get());
@@ -117,8 +117,10 @@ public class ResearcherTileEntity extends GenericTileEntity implements ITickable
                 return RotationType.NONE;
             }
 
+            @SuppressWarnings("deprecation")
+            @Nonnull
             @Override
-            public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+            public VoxelShape getShape(@Nonnull BlockState state, @Nonnull IBlockReader worldIn, @Nonnull BlockPos pos, @Nonnull ISelectionContext context) {
                 return SLAB;
             }
         };
@@ -250,8 +252,9 @@ public class ResearcherTileEntity extends GenericTileEntity implements ITickable
         progress = tagCompound.getInt("progress");
     }
 
+    @Nonnull
     @Override
-    public CompoundNBT save(CompoundNBT tagCompound) {
+    public CompoundNBT save(@Nonnull CompoundNBT tagCompound) {
         tagCompound.putInt("progress", progress);
         return super.save(tagCompound);
     }

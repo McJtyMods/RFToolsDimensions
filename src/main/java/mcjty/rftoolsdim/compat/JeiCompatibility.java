@@ -11,10 +11,13 @@ import mezz.jei.api.registration.ISubtypeRegistration;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
+import javax.annotation.Nonnull;
+
 @JeiPlugin
 public class JeiCompatibility implements IModPlugin {
 
 
+    @Nonnull
     @Override
     public ResourceLocation getPluginUid() {
         return new ResourceLocation(RFToolsDim.MODID, "jeiplugin");

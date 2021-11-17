@@ -2,7 +2,6 @@ package mcjty.rftoolsdim.modules.dimensionbuilder.client;
 
 import mcjty.lib.McJtyLib;
 import mcjty.rftoolsdim.RFToolsDim;
-import mcjty.rftoolsdim.dimension.DimensionConfig;
 import mcjty.rftoolsdim.dimension.data.ClientDimensionData;
 import mcjty.rftoolsdim.modules.dimensionbuilder.DimensionBuilderConfig;
 import mcjty.rftoolsdim.modules.dimensionbuilder.items.DimensionMonitorItem;
@@ -30,7 +29,7 @@ public class ClientHelpers {
         ResourceLocation id = world.dimension().location();
         long power = ClientDimensionData.get().getPower(id);
         long max = ClientDimensionData.get().getMaxPower(id);
-        return power == -1 ? "<n.a.>" : ""+power + " (" + max + ")";
+        return power == -1 ? "<n.a.>" : power + " (" + max + ")";
     }
 
     public static void initOverrides(DimensionMonitorItem item) {

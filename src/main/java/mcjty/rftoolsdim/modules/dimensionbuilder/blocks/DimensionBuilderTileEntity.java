@@ -83,10 +83,10 @@ public class DimensionBuilderTileEntity extends GenericTileEntity implements ITi
 
     private int state = 0;          // For front state
 
-    public static short OK = 0;
-    public static short ERROR_NOOWNER = -1;
-    public static short ERROR_TOOMANYDIMENSIONS = -2;
-    public static short ERROR_COLLISION = -3;
+    public static final short OK = 0;
+    public static final short ERROR_NOOWNER = -1;
+    public static final short ERROR_TOOMANYDIMENSIONS = -2;
+    public static final short ERROR_COLLISION = -3;
 
 
     public DimensionBuilderTileEntity() {
@@ -116,6 +116,7 @@ public class DimensionBuilderTileEntity extends GenericTileEntity implements ITi
         return new SUpdateTileEntityPacket(worldPosition, 1, nbtTag);
     }
 
+    @Nonnull
     @Override
     public CompoundNBT getUpdateTag() {
         CompoundNBT updateTag = super.getUpdateTag();
@@ -307,7 +308,6 @@ public class DimensionBuilderTileEntity extends GenericTileEntity implements ITi
 
     private void setState(int ticksLeft) {
         int oldstate = state;
-        state = 0;
         if (ticksLeft == 0) {
             state = 0;
         } else if (ticksLeft == -1) {
@@ -391,6 +391,7 @@ public class DimensionBuilderTileEntity extends GenericTileEntity implements ITi
 
 
         @Override
+        @Nonnull
         public String getSerializedName() {
             return name;
         }

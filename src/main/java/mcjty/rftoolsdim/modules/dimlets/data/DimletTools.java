@@ -303,7 +303,7 @@ public class DimletTools {
                 Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(dimletKey.getKey()));
                 if (block != null) {
                     String modName = Tools.getModName(block);
-                    if (modName.equalsIgnoreCase("minecraft")) {
+                    if ("minecraft".equalsIgnoreCase(modName)) {
                         return I18n.get(block.getDescriptionId());
                     } else {
                         return I18n.get(block.getDescriptionId()) + " (" + modName + ")";
@@ -314,7 +314,7 @@ public class DimletTools {
                 Fluid fluid = ForgeRegistries.FLUIDS.getValue(new ResourceLocation(dimletKey.getKey()));
                 if (fluid != null) {
                     String modName = Tools.getModName(fluid);
-                    if (modName.equalsIgnoreCase("minecraft")) {
+                    if ("minecraft".equalsIgnoreCase(modName)) {
                         return I18n.get(fluid.defaultFluidState().createLegacyBlock().getBlock().getDescriptionId());
                     } else {
                         return I18n.get(fluid.defaultFluidState().createLegacyBlock().getBlock().getDescriptionId())

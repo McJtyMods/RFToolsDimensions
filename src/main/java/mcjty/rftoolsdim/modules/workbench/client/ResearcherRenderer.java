@@ -19,6 +19,8 @@ import net.minecraft.util.math.vector.Vector3f;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.items.CapabilityItemHandler;
 
+import javax.annotation.Nonnull;
+
 public class ResearcherRenderer extends TileEntityRenderer<ResearcherTileEntity> {
 
     public static final ResourceLocation LIGHT = new ResourceLocation(RFToolsDim.MODID, "block/light");
@@ -28,7 +30,7 @@ public class ResearcherRenderer extends TileEntityRenderer<ResearcherTileEntity>
     }
 
     @Override
-    public void render(ResearcherTileEntity te, float v, MatrixStack matrixStack, IRenderTypeBuffer buffer, int combinedLight, int combinedOverlay) {
+    public void render(ResearcherTileEntity te, float v, @Nonnull MatrixStack matrixStack, @Nonnull IRenderTypeBuffer buffer, int combinedLight, int combinedOverlay) {
 
         te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
             matrixStack.pushPose();
@@ -41,7 +43,7 @@ public class ResearcherRenderer extends TileEntityRenderer<ResearcherTileEntity>
                 matrixStack.pushPose();
                 matrixStack.scale(.5f, .5f, .5f);
                 matrixStack.translate(1f, 2.1f, 1f);
-                float angle = (float) ((millis / 45) % 360);
+                float angle = ((millis / 45) % 360);
                 matrixStack.mulPose(Vector3f.YP.rotationDegrees(angle));
                 itemRenderer.renderStatic(stack, ItemCameraTransforms.TransformType.FIXED, RenderHelper.MAX_BRIGHTNESS, combinedOverlay, matrixStack, buffer);
                 matrixStack.popPose();

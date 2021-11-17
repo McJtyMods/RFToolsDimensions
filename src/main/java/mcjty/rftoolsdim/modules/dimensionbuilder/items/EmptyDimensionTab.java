@@ -9,6 +9,7 @@ import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
@@ -19,7 +20,7 @@ public class EmptyDimensionTab extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> list, ITooltipFlag flagIn) {
+    public void appendHoverText(@Nonnull ItemStack stack, @Nullable World worldIn, @Nonnull List<ITextComponent> list, @Nonnull ITooltipFlag flagIn) {
         super.appendHoverText(stack, worldIn, list, flagIn);
         // @todo 1.16 better tooltips
         list.add(new StringTextComponent(TextFormatting.YELLOW + "Put this empty dimension tab in a 'Dimension Enscriber'"));

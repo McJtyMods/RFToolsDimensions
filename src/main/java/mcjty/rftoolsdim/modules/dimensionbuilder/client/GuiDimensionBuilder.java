@@ -15,6 +15,8 @@ import mcjty.rftoolsdim.setup.RFToolsDimMessages;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 
+import javax.annotation.Nonnull;
+
 import static mcjty.lib.gui.widgets.Widgets.*;
 
 public class GuiDimensionBuilder extends GenericGuiContainer<DimensionBuilderTileEntity, GenericContainer> {
@@ -67,7 +69,7 @@ public class GuiDimensionBuilder extends GenericGuiContainer<DimensionBuilderTil
     }
 
     @Override
-    protected void renderBg(MatrixStack matrixStack, float partialTicks, int x, int y) {
+    protected void renderBg(@Nonnull MatrixStack matrixStack, float partialTicks, int x, int y) {
         int pct = tileEntity.getBuildPercentage();
         int error = tileEntity.getErrorMode();
 

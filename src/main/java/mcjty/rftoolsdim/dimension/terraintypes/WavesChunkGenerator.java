@@ -18,6 +18,8 @@ import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.structure.StructureManager;
 
+import javax.annotation.Nonnull;
+
 public class WavesChunkGenerator extends BaseChunkGenerator {
 
     public static final Codec<WavesChunkGenerator> CODEC = RecordCodecBuilder.create(instance ->
@@ -34,18 +36,20 @@ public class WavesChunkGenerator extends BaseChunkGenerator {
         super(registry, settings);
     }
 
+    @Nonnull
     @Override
     protected Codec<? extends ChunkGenerator> codec() {
         return CODEC;
     }
 
+    @Nonnull
     @Override
     public ChunkGenerator withSeed(long l) {
         return new WavesChunkGenerator(getBiomeRegistry(), getDimensionSettings());
     }
 
     @Override
-    public void fillFromNoise(IWorld iWorld, StructureManager structureManager, IChunk chunk) {
+    public void fillFromNoise(@Nonnull IWorld iWorld, @Nonnull StructureManager structureManager, IChunk chunk) {
         ChunkPos chunkpos = chunk.getPos();
 
         BlockPos.Mutable mpos = new BlockPos.Mutable();
@@ -69,7 +73,7 @@ public class WavesChunkGenerator extends BaseChunkGenerator {
     }
 
     @Override
-    public int getBaseHeight(int x, int z, Heightmap.Type type) {
+    public int getBaseHeight(int x, int z, @Nonnull Heightmap.Type type) {
         int realx = x;  // @todo 1.16 is this the actual x/z?
         int realz = z;
         int height = calculateWaveHeight(realx, realz);
@@ -82,6 +86,7 @@ public class WavesChunkGenerator extends BaseChunkGenerator {
         return 0;
     }
 
+    @Nonnull
     @Override
     public IBlockReader getBaseColumn(int x, int z) {
         int realx = x;  // @todo 1.16 is this the actual x/z?

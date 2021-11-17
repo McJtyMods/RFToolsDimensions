@@ -7,6 +7,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class OffsetBlockReader implements IBlockReader {
@@ -21,17 +22,20 @@ public class OffsetBlockReader implements IBlockReader {
 
     @Nullable
     @Override
-    public TileEntity getBlockEntity(BlockPos pos) {
+    public TileEntity getBlockEntity(@Nonnull BlockPos pos) {
         return null;
     }
 
+    @Nonnull
     @Override
     public BlockState getBlockState(BlockPos pos) {
         int y = pos.getY();
         return y >= 0 && y <= offset ? belowState : Blocks.AIR.defaultBlockState();
     }
 
-    public FluidState getFluidState(BlockPos pos) {
+    @Nonnull
+    @Override
+    public FluidState getFluidState(@Nonnull BlockPos pos) {
         return this.getBlockState(pos).getFluidState();
     }
 }

@@ -80,7 +80,7 @@ public class PowerHandler {
         Map<ResourceLocation, ClientDimensionData.Power> powerMap = new HashMap<>();
         for (Map.Entry<ResourceLocation, DimensionData> entry : mgr.getData().entrySet()) {
             long energy = entry.getValue().getEnergy();
-            powerMap.put(entry.getKey(), new ClientDimensionData.Power(energy, PowerHandler.calculateMaxDimensionPower(entry.getKey(), (ServerWorld)  overworld)));
+            powerMap.put(entry.getKey(), new ClientDimensionData.Power(energy, PowerHandler.calculateMaxDimensionPower(entry.getKey(), overworld)));
         }
         RFToolsDimMessages.INSTANCE.send(PacketDistributor.ALL.noArg(), new PackagePropageDataToClients(powerMap,
                 ((ServerWorld) overworld).getSeed()));
@@ -122,7 +122,7 @@ public class PowerHandler {
 //        }
 
         long power = data.getEnergy();
-        power -= cost * MAXTICKS;
+        power -= (long) cost * MAXTICKS;
         if (power < 0) {
             power = 0;
         }

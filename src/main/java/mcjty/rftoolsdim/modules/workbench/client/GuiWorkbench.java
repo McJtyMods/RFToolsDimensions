@@ -28,6 +28,8 @@ import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
+import javax.annotation.Nonnull;
+
 import static mcjty.lib.gui.widgets.Widgets.*;
 import static mcjty.rftoolsdim.modules.workbench.blocks.WorkbenchTileEntity.PARAM_ID;
 import static mcjty.rftoolsdim.modules.workbench.blocks.WorkbenchTileEntity.PARAM_TYPE;
@@ -249,7 +251,7 @@ public class GuiWorkbench extends GenericGuiContainer<WorkbenchTileEntity, Gener
     }
 
     @Override
-    protected void renderBg(MatrixStack matrixStack, float partialTicks, int x, int y) {
+    protected void renderBg(@Nonnull MatrixStack matrixStack, float partialTicks, int x, int y) {
         updateList();
         drawWindow(matrixStack);
         renderHilightedPattern(matrixStack);

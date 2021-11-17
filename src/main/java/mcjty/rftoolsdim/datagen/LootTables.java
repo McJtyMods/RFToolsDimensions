@@ -19,6 +19,8 @@ import net.minecraft.loot.LootTable;
 import net.minecraft.loot.RandomValueRange;
 import net.minecraft.loot.functions.SetCount;
 
+import javax.annotation.Nonnull;
+
 public class LootTables extends BaseLootTableProvider {
 
     public LootTables(DataGenerator dataGeneratorIn) {
@@ -88,6 +90,7 @@ public class LootTables extends BaseLootTableProvider {
         addChestLootTable(DimensionRegistry.HUT_LOOT, LootTable.lootTable().withPool(builder));
     }
 
+    @Nonnull
     @Override
     public String getName() {
         return "RFTools Dimensions LootTables";

@@ -21,10 +21,12 @@ import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
 import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.IFeatureConfig;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
 import net.minecraft.world.gen.placement.Placement;
 import net.minecraft.world.gen.placement.TopSolidRangeConfig;
 
+import javax.annotation.Nonnull;
 import java.util.Random;
 import java.util.Set;
 
@@ -35,14 +37,14 @@ public class RFTFeature extends Feature<NoFeatureConfig> {
 
     public static ConfiguredFeature<?, ?> RFTFEATURE_CONFIGURED;
 
-    private final static long[] primes = new long[] { 900157, 981961, 50001527, 32667413, 1111114993, 65548559, 320741, 100002509,
+    private static final long[] PRIMES = new long[] { 900157, 981961, 50001527, 32667413, 1111114993, 65548559, 320741, 100002509,
             35567897, 218021, 2900001163L, 3399018867L };
 
     public static void registerConfiguredFeatures() {
         Registry<ConfiguredFeature<?, ?>> registry = WorldGenRegistries.CONFIGURED_FEATURE;
 
         RFTFEATURE_CONFIGURED = Registration.RFTFEATURE.get()
-                .configured(NoFeatureConfig.NONE)
+                .configured(IFeatureConfig.NONE)
                 .decorated(Placement.RANGE.configured(new TopSolidRangeConfig(1, 0, 1)));
 
         Registry.register(registry, CONFIGURED_RFTFEATURE_ID, RFTFEATURE_CONFIGURED);
@@ -53,7 +55,7 @@ public class RFTFeature extends Feature<NoFeatureConfig> {
     }
 
     @Override
-    public boolean place(ISeedReader reader, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
+    public boolean place(@Nonnull ISeedReader reader, @Nonnull ChunkGenerator generator, @Nonnull Random rand, @Nonnull BlockPos pos, @Nonnull NoFeatureConfig config) {
         if (generator instanceof BaseChunkGenerator) {
             CompiledDescriptor compiledDescriptor = ((BaseChunkGenerator) generator).getDimensionSettings().getCompiledDescriptor();
             Set<CompiledFeature> features = compiledDescriptor.getFeatures();
@@ -65,7 +67,7 @@ public class RFTFeature extends Feature<NoFeatureConfig> {
             int primeIndex = 0;
             for (CompiledFeature feature : features) {
                 if (feature.getFeatureType().getFeature().generate(reader, generator, rand, pos,
-                        feature.getBlocks(), feature.getFluids(), primes[primeIndex % primes.length])) {
+                        feature.getBlocks(), feature.getFluids(), PRIMES[primeIndex % PRIMES.length])) {
                     generatedSomething = true;
                 }
                 primeIndex++;

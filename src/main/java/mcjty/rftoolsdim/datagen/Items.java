@@ -14,6 +14,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
+import javax.annotation.Nonnull;
+
 public class Items extends BaseItemModelProvider {
 
     public Items(DataGenerator generator, ExistingFileHelper existingFileHelper) {
@@ -121,6 +123,7 @@ public class Items extends BaseItemModelProvider {
                 .texture("layer0", "item/pfg/phasedfieldgeneratoriteml" + suffix);
     }
 
+    @Nonnull
     @Override
     public String getName() {
         return "RFTools Dimensions Item Models";

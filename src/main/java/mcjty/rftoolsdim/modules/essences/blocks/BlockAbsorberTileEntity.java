@@ -45,6 +45,8 @@ import static mcjty.lib.builder.TooltipBuilder.*;
 
 import net.minecraft.block.AbstractBlock;
 
+import javax.annotation.Nonnull;
+
 public class BlockAbsorberTileEntity extends GenericTileEntity implements ITickableTileEntity {
 
     private static final int ABSORB_SPEED = 2;
@@ -267,8 +269,9 @@ public class BlockAbsorberTileEntity extends GenericTileEntity implements ITicka
         }
     }
 
+    @Nonnull
     @Override
-    public CompoundNBT save(CompoundNBT tagCompound) {
+    public CompoundNBT save(@Nonnull CompoundNBT tagCompound) {
         super.save(tagCompound);
         int[] x = new int[toscan.size()];
         int[] y = new int[toscan.size()];

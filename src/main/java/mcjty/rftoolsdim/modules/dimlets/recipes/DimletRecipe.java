@@ -9,6 +9,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.ShapedRecipe;
 
+import javax.annotation.Nonnull;
+
 public class DimletRecipe extends AbstractRecipeAdaptor {
 
     private final DimletKey key;
@@ -22,16 +24,19 @@ public class DimletRecipe extends AbstractRecipeAdaptor {
         return key;
     }
 
+    @Nonnull
     @Override
     public ItemStack getResultItem() {
         return DimletTools.getDimletStack(key);
     }
 
+    @Nonnull
     @Override
-    public ItemStack assemble(CraftingInventory inv) {
+    public ItemStack assemble(@Nonnull CraftingInventory inv) {
         return DimletTools.getDimletStack(key);
     }
 
+    @Nonnull
     @Override
     public IRecipeSerializer<?> getSerializer() {
         return DimletModule.DIMLET_RECIPE_SERIALIZER.get();

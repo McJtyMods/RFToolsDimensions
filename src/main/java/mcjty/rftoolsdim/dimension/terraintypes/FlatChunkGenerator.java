@@ -17,6 +17,7 @@ import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.structure.StructureManager;
 
+import javax.annotation.Nonnull;
 import java.util.Set;
 
 public class FlatChunkGenerator extends BaseChunkGenerator {
@@ -37,18 +38,20 @@ public class FlatChunkGenerator extends BaseChunkGenerator {
         super(registry, settings);
     }
 
+    @Nonnull
     @Override
     protected Codec<? extends ChunkGenerator> codec() {
         return CODEC;
     }
 
+    @Nonnull
     @Override
     public ChunkGenerator withSeed(long l) {
         return new FlatChunkGenerator(getBiomeRegistry(), getDimensionSettings());
     }
 
     @Override
-    public void fillFromNoise(IWorld iWorld, StructureManager structureManager, IChunk chunk) {
+    public void fillFromNoise(@Nonnull IWorld iWorld, @Nonnull StructureManager structureManager, IChunk chunk) {
         BlockPos.Mutable mpos = new BlockPos.Mutable();
         Heightmap hmOcean = chunk.getOrCreateHeightmapUnprimed(Heightmap.Type.OCEAN_FLOOR_WG);
         Heightmap hmWorld = chunk.getOrCreateHeightmapUnprimed(Heightmap.Type.WORLD_SURFACE_WG);
@@ -77,7 +80,7 @@ public class FlatChunkGenerator extends BaseChunkGenerator {
     }
 
     @Override
-    public int getBaseHeight(int x, int z, Heightmap.Type type) {
+    public int getBaseHeight(int x, int z, @Nonnull Heightmap.Type type) {
         for (int i = FLAT_LEVEL; i >= 0; --i) {
             BlockState blockstate = defaultBlocks.get(0);
             if (type.isOpaque().test(blockstate)) {
@@ -87,6 +90,7 @@ public class FlatChunkGenerator extends BaseChunkGenerator {
         return 0;
     }
 
+    @Nonnull
     @Override
     public IBlockReader getBaseColumn(int x, int z) {
         return new OffsetBlockReader(defaultBlocks.get(0), FLAT_LEVEL);

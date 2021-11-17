@@ -4,6 +4,7 @@ import mcjty.rftoolsdim.modules.dimlets.data.DimletKey;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class DimletClientHelper {
 
@@ -35,6 +36,19 @@ public class DimletClientHelper {
         @Override
         public int compareTo(DimletWithInfo o) {
             return getDimlet().compareTo(o.getDimlet());
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            DimletWithInfo that = (DimletWithInfo) o;
+            return craftable == that.craftable && Objects.equals(dimlet, that.dimlet);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(dimlet, craftable);
         }
     }
 }

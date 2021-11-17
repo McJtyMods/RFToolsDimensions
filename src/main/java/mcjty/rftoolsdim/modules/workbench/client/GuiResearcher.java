@@ -13,6 +13,8 @@ import mcjty.rftoolsdim.modules.workbench.blocks.ResearcherTileEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 
+import javax.annotation.Nonnull;
+
 import static mcjty.lib.gui.widgets.Widgets.label;
 import static mcjty.lib.gui.widgets.Widgets.positional;
 
@@ -58,7 +60,7 @@ public class GuiResearcher extends GenericGuiContainer<ResearcherTileEntity, Gen
     }
 
     @Override
-    protected void renderBg(MatrixStack matrixStack, float partialTicks, int x, int y) {
+    protected void renderBg(@Nonnull MatrixStack matrixStack, float partialTicks, int x, int y) {
         updateFields();
         drawWindow(matrixStack);
     }

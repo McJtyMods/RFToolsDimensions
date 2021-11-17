@@ -25,6 +25,7 @@ import net.minecraft.util.registry.Registry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Map;
@@ -122,7 +123,7 @@ public class DimletRecipeBuilder implements IRecipeBuilder<DimletRecipeBuilder> 
         this.validate(id);
         this.advancementBuilder.parent(new ResourceLocation("recipes/root")).addCriterion("has_the_recipe",
                 new RecipeUnlockedTrigger.Instance(EntityPredicate.AndPredicate.ANY /* @todo 1.16, is this right? */, id)).rewards(AdvancementRewards.Builder.recipe(id)).requirements(IRequirementsStrategy.OR);
-        consumerIn.accept(new DimletRecipeBuilder.Result(id, this.result, this.count, this.group == null ? "" : this.group, this.pattern, this.key, this.advancementBuilder,
+        consumerIn.accept(new Result(id, this.result, this.count, this.group == null ? "" : this.group, this.pattern, this.key, this.advancementBuilder,
                 new ResourceLocation(id.getNamespace(), "recipes/" + this.result.getItemCategory().getRecipeFolderName() + "/" + id.getPath()), dimletKey));
     }
 
@@ -154,7 +155,7 @@ public class DimletRecipeBuilder implements IRecipeBuilder<DimletRecipeBuilder> 
         }
     }
 
-    public class Result implements IFinishedRecipe {
+    public static class Result implements IFinishedRecipe {
         private final ResourceLocation id;
         private final Item result;
         private final int count;
@@ -179,7 +180,7 @@ public class DimletRecipeBuilder implements IRecipeBuilder<DimletRecipeBuilder> 
         }
 
         @Override
-        public void serializeRecipeData(JsonObject json) {
+        public void serializeRecipeData(@Nonnull JsonObject json) {
             if (!this.group.isEmpty()) {
                 json.addProperty("group", this.group);
             }
@@ -209,6 +210,7 @@ public class DimletRecipeBuilder implements IRecipeBuilder<DimletRecipeBuilder> 
             json.addProperty("dimletkey", dimletKey.getKey());
         }
 
+        @Nonnull
         @Override
         public IRecipeSerializer<?> getType() {
             return DimletModule.DIMLET_RECIPE_SERIALIZER.get();
@@ -217,6 +219,7 @@ public class DimletRecipeBuilder implements IRecipeBuilder<DimletRecipeBuilder> 
         /**
          * Gets the ID for the recipe.
          */
+        @Nonnull
         @Override
         public ResourceLocation getId() {
             return this.id;
