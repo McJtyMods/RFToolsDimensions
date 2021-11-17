@@ -55,6 +55,9 @@ public class GuiResearcher extends GenericGuiContainer<ResearcherTileEntity, Gen
     }
 
     private void updateFields() {
+        if (window == null) {
+            return;
+        }
         updateEnergyBar(energyBar);
         progress.text(tileEntity.getProgressPercentage() + "%");
     }
