@@ -1,7 +1,6 @@
 package mcjty.rftoolsdim.modules.dimlets.network;
 
-import mcjty.lib.network.ICommandHandler;
-import mcjty.lib.typed.Type;
+import mcjty.lib.tileentity.GenericTileEntity;
 import mcjty.lib.typed.TypedMap;
 import mcjty.rftoolsdim.modules.dimlets.client.DimletClientHelper;
 import mcjty.rftoolsdim.modules.workbench.blocks.WorkbenchTileEntity;
@@ -39,9 +38,10 @@ public class PacketRequestDimlets {
             World world = ctx.getSender().getCommandSenderWorld();
             if (world.hasChunkAt(pos)) {
                 TileEntity te = world.getBlockEntity(pos);
-                ICommandHandler commandHandler = (ICommandHandler) te;
-                List<DimletClientHelper.DimletWithInfo> list = commandHandler.executeWithResultList(WorkbenchTileEntity.CMD_GETDIMLETS, TypedMap.EMPTY, Type.create(DimletClientHelper.DimletWithInfo.class));
-                RFToolsDimMessages.INSTANCE.sendTo(new PacketSendDimletsToClient(pos, list), ctx.getSender().connection.connection, NetworkDirection.PLAY_TO_CLIENT);
+                if (te instanceof GenericTileEntity) {
+                    List<DimletClientHelper.DimletWithInfo> list = ((GenericTileEntity) te).executeServerCommandList(WorkbenchTileEntity.CMD_GETDIMLETS.getName(), ctx.getSender(), TypedMap.EMPTY, DimletClientHelper.DimletWithInfo.class);
+                    RFToolsDimMessages.INSTANCE.sendTo(new PacketSendDimletsToClient(pos, list), ctx.getSender().connection.connection, NetworkDirection.PLAY_TO_CLIENT);
+                }
             }
         });
         ctx.setPacketHandled(true);

@@ -1,15 +1,11 @@
 package mcjty.rftoolsdim.modules.dimlets.network;
 
-import mcjty.lib.McJtyLib;
-import mcjty.lib.network.IClientCommandHandler;
-import mcjty.lib.typed.Type;
-import mcjty.lib.varia.Logging;
+import mcjty.lib.tileentity.GenericTileEntity;
 import mcjty.rftoolsdim.modules.dimlets.client.DimletClientHelper;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletKey;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletType;
 import mcjty.rftoolsdim.modules.workbench.blocks.WorkbenchTileEntity;
 import net.minecraft.network.PacketBuffer;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.network.NetworkEvent;
 
@@ -56,13 +52,7 @@ public class PacketSendDimletsToClient {
     public void handle(Supplier<NetworkEvent.Context> supplier) {
         NetworkEvent.Context ctx = supplier.get();
         ctx.enqueueWork(() -> {
-            TileEntity te = McJtyLib.proxy.getClientWorld().getBlockEntity(pos);
-            if (te instanceof IClientCommandHandler) {
-                IClientCommandHandler clientCommandHandler = (IClientCommandHandler) te;
-                if (!clientCommandHandler.receiveListFromServer(WorkbenchTileEntity.CLIENT_CMD_GETDIMLETS, dimlets, Type.create(DimletClientHelper.DimletWithInfo.class))) {
-                    Logging.log("Command " + WorkbenchTileEntity.CLIENT_CMD_GETDIMLETS + " was not handled!");
-                }
-            }
+            GenericTileEntity.executeClientCommandHelper(pos, WorkbenchTileEntity.CMD_GETDIMLETS.getName(), dimlets);
         });
         ctx.setPacketHandled(true);
     }

@@ -2,6 +2,7 @@ package mcjty.rftoolsdim.modules.workbench.blocks;
 
 import mcjty.lib.api.container.DefaultContainerProvider;
 import mcjty.lib.blockcommands.Command;
+import mcjty.lib.blockcommands.ListCommand;
 import mcjty.lib.blockcommands.ServerCommand;
 import mcjty.lib.blocks.BaseBlock;
 import mcjty.lib.blocks.RotationType;
@@ -14,7 +15,6 @@ import mcjty.lib.tileentity.CapType;
 import mcjty.lib.tileentity.GenericTileEntity;
 import mcjty.lib.typed.Key;
 import mcjty.lib.typed.Type;
-import mcjty.lib.typed.TypedMap;
 import mcjty.lib.varia.LevelTools;
 import mcjty.lib.varia.OrientationTools;
 import mcjty.rftoolsbase.tools.ManualHelper;
@@ -46,7 +46,10 @@ import net.minecraftforge.fml.network.PacketDistributor;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import javax.annotation.Nonnull;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.function.Predicate;
 
 import static mcjty.lib.builder.TooltipBuilder.*;
@@ -57,9 +60,6 @@ import static mcjty.rftoolsdim.modules.knowledge.data.DimletPattern.PATTERN_DIM;
 import static mcjty.rftoolsdim.setup.Registration.DIMENSIONAL_SHARD;
 
 public class WorkbenchTileEntity extends GenericTileEntity {
-
-    public static final String CMD_GETDIMLETS = "workbench.getdimlets";
-    public static final String CLIENT_CMD_GETDIMLETS = "workbench.getdimlets";
 
     public static final int SLOT_EMPTY_DIMLET = 0;
     public static final int SLOT_MEMORY_PART = 1;
@@ -300,29 +300,8 @@ public class WorkbenchTileEntity extends GenericTileEntity {
         return dimlets;
     }
 
-    @Nonnull
-    @Override
-    public <T> List<T> executeWithResultList(String command, TypedMap args, Type<T> type) {
-        List<T> rc = super.executeWithResultList(command, args, type);
-        if (!rc.isEmpty()) {
-            return rc;
-        }
-        if (CMD_GETDIMLETS.equals(command)) {
-            return type.convert(getDimlets());
-        }
-        return Collections.emptyList();
-    }
-
-    @Override
-    public <T> boolean receiveListFromServer(String command, List<T> list, Type<T> type) {
-        boolean rc = super.receiveListFromServer(command, list, type);
-        if (rc) {
-            return true;
-        }
-        if (CLIENT_CMD_GETDIMLETS.equals(command)) {
-            DimletClientHelper.setDimletsOnGui(Type.create(DimletClientHelper.DimletWithInfo.class).convert(list));
-            return true;
-        }
-        return false;
-    }
+    @ServerCommand
+    public static final ListCommand<?, ?> CMD_GETDIMLETS = ListCommand.<WorkbenchTileEntity, DimletClientHelper.DimletWithInfo>create("getdimlets",
+            (te, player, params) -> te.getDimlets(),
+            (te, player, params, list) -> DimletClientHelper.setDimletsOnGui(list));
 }
