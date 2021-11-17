@@ -216,7 +216,7 @@ public class BlockAbsorberTileEntity extends GenericTileEntity implements ITicka
         if (speed < 0) {
             return false;
         }
-        if (!state.canHarvestBlock(world, pos, player)) {
+        if (state.getDestroySpeed(world, pos) < 0) {
             return false;
         }
         if (!state.getBlock().canEntityDestroy(state, world, pos, player)) {
