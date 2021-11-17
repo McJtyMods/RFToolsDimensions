@@ -3,8 +3,6 @@ package mcjty.rftoolsdim.modules.dimensionbuilder.blocks;
 import mcjty.lib.api.container.DefaultContainerProvider;
 import mcjty.lib.api.infusable.DefaultInfusable;
 import mcjty.lib.api.infusable.IInfusable;
-import mcjty.lib.bindings.DefaultValue;
-import mcjty.lib.bindings.IValue;
 import mcjty.lib.blocks.BaseBlock;
 import mcjty.lib.blocks.RotationType;
 import mcjty.lib.builder.BlockBuilder;
@@ -106,13 +104,6 @@ public class DimensionBuilderTileEntity extends GenericTileEntity implements ITi
             public RotationType getRotationType() {
                 return RotationType.ROTATION;
             }
-        };
-    }
-
-    @Override
-    public IValue<?>[] getValues() {
-        return new IValue[]{
-                new DefaultValue<>(VALUE_RSMODE, this::getRSModeInt, this::setRSModeInt),
         };
     }
 
