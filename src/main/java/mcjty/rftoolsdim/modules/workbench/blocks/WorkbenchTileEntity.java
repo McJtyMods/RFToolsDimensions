@@ -300,7 +300,7 @@ public class WorkbenchTileEntity extends GenericTileEntity {
         return dimlets;
     }
 
-    @ServerCommand
+    @ServerCommand(type = DimletClientHelper.DimletWithInfo.class, serializer = DimletClientHelper.DimletWithInfo.Serializer.class)
     public static final ListCommand<?, ?> CMD_GETDIMLETS = ListCommand.<WorkbenchTileEntity, DimletClientHelper.DimletWithInfo>create("rftoolsdim.workbench.getdimlets",
             (te, player, params) -> te.getDimlets(),
             (te, player, params, list) -> DimletClientHelper.setDimletsOnGui(list));
