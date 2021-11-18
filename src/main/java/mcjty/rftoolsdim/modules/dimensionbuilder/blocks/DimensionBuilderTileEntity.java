@@ -57,7 +57,7 @@ public class DimensionBuilderTileEntity extends GenericTileEntity implements ITi
 
     public static final Lazy<ContainerFactory> CONTAINER_FACTORY = Lazy.of(() -> new ContainerFactory(1)
             .slot(specific(DimensionBuilderTileEntity::isRealizedTab).in().out(),
-                    CONTAINER_CONTAINER, SLOT_DIMENSION_TAB, 28, 24)
+                    SLOT_DIMENSION_TAB, 28, 24)
             .playerSlots(10, 70));
 
     @Cap(type = CapType.ITEMS_AUTOMATION)

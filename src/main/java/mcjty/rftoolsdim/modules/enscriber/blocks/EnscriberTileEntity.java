@@ -59,8 +59,8 @@ public class EnscriberTileEntity extends GenericTileEntity {
 
     @Cap(type = CapType.CONTAINER)
     public static final Lazy<ContainerFactory> CONTAINER_FACTORY = Lazy.of(() -> new ContainerFactory(SIZE_DIMLETS + 1)
-            .box(specific(DimletItem::isReadyDimlet), CONTAINER_CONTAINER, SLOT_DIMLETS, 13, 7, 13, 7)
-            .slot(specific(EnscriberTileEntity::isDimensionTab), CONTAINER_CONTAINER, SLOT_TAB, 13, 142)
+            .box(specific(DimletItem::isReadyDimlet), SLOT_DIMLETS, 13, 7, 13, 7)
+            .slot(specific(EnscriberTileEntity::isDimensionTab), SLOT_TAB, 13, 142)
             .playerSlots(85, 142));
 
     @Cap(type = CapType.ITEMS_AUTOMATION)

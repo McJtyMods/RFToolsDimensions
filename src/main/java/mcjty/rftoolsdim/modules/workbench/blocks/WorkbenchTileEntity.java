@@ -69,12 +69,12 @@ public class WorkbenchTileEntity extends GenericTileEntity {
     public static final int SLOT_PATTERN = 5;
 
     public static final Lazy<ContainerFactory> CONTAINER_FACTORY = Lazy.of(() -> new ContainerFactory(4 + PATTERN_DIM* PATTERN_DIM + 1)
-            .slot(specific(DimletItem::isEmptyDimlet).in().out(), CONTAINER_CONTAINER, SLOT_EMPTY_DIMLET, 11, 7)
-            .slot(specific(s -> s.getItem() instanceof PartItem).in().out(), CONTAINER_CONTAINER, SLOT_MEMORY_PART, 33, 7)
-            .slot(specific(s -> s.getItem() instanceof PartItem).in().out(), CONTAINER_CONTAINER, SLOT_ENERGY_PART, 55, 7)
-            .slot(generic().in().out(), CONTAINER_CONTAINER, SLOT_ESSENCE, 77, 7)
-            .slot(generic().out(), CONTAINER_CONTAINER, SLOT_OUTPUT, 232, 158+18+18+22)
-            .box(specific(WorkbenchTileEntity::isValidPatternItem).in().out(), CONTAINER_CONTAINER, SLOT_PATTERN, 11, 28, PATTERN_DIM, PATTERN_DIM)
+            .slot(specific(DimletItem::isEmptyDimlet).in().out(), SLOT_EMPTY_DIMLET, 11, 7)
+            .slot(specific(s -> s.getItem() instanceof PartItem).in().out(), SLOT_MEMORY_PART, 33, 7)
+            .slot(specific(s -> s.getItem() instanceof PartItem).in().out(), SLOT_ENERGY_PART, 55, 7)
+            .slot(generic().in().out(), SLOT_ESSENCE, 77, 7)
+            .slot(generic().out(), SLOT_OUTPUT, 232, 158+18+18+22)
+            .box(specific(WorkbenchTileEntity::isValidPatternItem).in().out(), SLOT_PATTERN, 11, 28, PATTERN_DIM, PATTERN_DIM)
             .playerSlots(11, 158));
 
     @Cap(type = CapType.ITEMS_AUTOMATION)

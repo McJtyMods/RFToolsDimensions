@@ -57,8 +57,8 @@ public class ResearcherTileEntity extends GenericTileEntity implements ITickable
     private int progress;
 
     public static final Lazy<ContainerFactory> CONTAINER_FACTORY = Lazy.of(() -> new ContainerFactory(2)
-            .slot(specific(ResearcherTileEntity::isResearchable).in(), CONTAINER_CONTAINER, SLOT_IN, 64, 24)
-            .slot(generic().out(), CONTAINER_CONTAINER, SLOT_OUT, 118, 24)
+            .slot(specific(ResearcherTileEntity::isResearchable).in(), SLOT_IN, 64, 24)
+            .slot(generic().out(), SLOT_OUT, 118, 24)
             .playerSlots(10, 70));
 
     @Cap(type = CapType.INFUSABLE)
