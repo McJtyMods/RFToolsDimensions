@@ -11,13 +11,13 @@ import mcjty.lib.gui.Window;
 import mcjty.lib.gui.events.SelectionEvent;
 import mcjty.lib.gui.layout.HorizontalAlignment;
 import mcjty.lib.gui.widgets.*;
+import mcjty.lib.network.PacketGetListFromServer;
 import mcjty.lib.typed.TypedMap;
 import mcjty.rftoolsbase.RFToolsBase;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.modules.dimlets.client.DimletClientHelper;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletKey;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletTools;
-import mcjty.rftoolsdim.modules.dimlets.network.PacketRequestDimlets;
 import mcjty.rftoolsdim.modules.knowledge.data.KnowledgeManager;
 import mcjty.rftoolsdim.modules.workbench.WorkbenchModule;
 import mcjty.rftoolsdim.modules.workbench.blocks.WorkbenchTileEntity;
@@ -88,7 +88,7 @@ public class GuiWorkbench extends GenericGuiContainer<WorkbenchTileEntity, Gener
         window = new Window(this, toplevel);
         dimletListAge = -1;
 
-        RFToolsDimMessages.INSTANCE.sendToServer(new PacketRequestDimlets(tileEntity.getBlockPos()));
+        RFToolsDimMessages.INSTANCE.sendToServer(new PacketGetListFromServer(tileEntity.getBlockPos(), WorkbenchTileEntity.CMD_GETDIMLETS.getName()));
     }
 
     private void createDimlet() {

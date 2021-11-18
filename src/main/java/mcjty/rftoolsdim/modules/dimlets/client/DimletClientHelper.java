@@ -1,6 +1,8 @@
 package mcjty.rftoolsdim.modules.dimlets.client;
 
 import mcjty.rftoolsdim.modules.dimlets.data.DimletKey;
+import mcjty.rftoolsdim.modules.dimlets.data.DimletType;
+import net.minecraft.network.PacketBuffer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +25,22 @@ public class DimletClientHelper {
         public DimletWithInfo(DimletKey dimlet, boolean craftable) {
             this.dimlet = dimlet;
             this.craftable = craftable;
+        }
+
+        public static void toPacket(PacketBuffer buf, DimletWithInfo info) {
+            DimletKey dimlet = info.getDimlet();
+            buf.writeShort(dimlet.getType().ordinal());
+            buf.writeUtf(dimlet.getKey());
+            buf.writeBoolean(info.isCraftable());
+        }
+
+        public static DimletWithInfo fromPacket(PacketBuffer buf) {
+            short idx = buf.readShort();
+            DimletType type = DimletType.values()[idx];
+            String key = buf.readUtf(32767);
+            DimletKey dimlet = new DimletKey(type, key);
+            boolean craftable = buf.readBoolean();
+            return new DimletClientHelper.DimletWithInfo(dimlet, craftable);
         }
 
         public DimletKey getDimlet() {

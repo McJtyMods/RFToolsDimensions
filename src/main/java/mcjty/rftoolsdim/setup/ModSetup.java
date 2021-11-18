@@ -1,5 +1,6 @@
 package mcjty.rftoolsdim.setup;
 
+import mcjty.lib.McJtyLib;
 import mcjty.lib.compat.MainCompatHandler;
 import mcjty.lib.setup.DefaultModSetup;
 import mcjty.rftoolsdim.RFToolsDim;
@@ -10,6 +11,8 @@ import mcjty.rftoolsdim.dimension.biomes.RFTBiomeProvider;
 import mcjty.rftoolsdim.dimension.features.RFTFeature;
 import mcjty.rftoolsdim.dimension.terraintypes.*;
 import mcjty.rftoolsdim.modules.dimlets.DimletModule;
+import mcjty.rftoolsdim.modules.dimlets.client.DimletClientHelper;
+import mcjty.rftoolsdim.modules.workbench.blocks.WorkbenchTileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.registry.Registry;
 import net.minecraftforge.common.MinecraftForge;
@@ -34,8 +37,9 @@ public class ModSetup extends DefaultModSetup {
         RFToolsDimMessages.registerMessages("rftoolsdim");
 
         e.enqueueWork(() -> {
-                    RFTFeature.registerConfiguredFeatures();
-                });
+            RFTFeature.registerConfiguredFeatures();
+            McJtyLib.registerCommandInfo(WorkbenchTileEntity.CMD_GETDIMLETS.getName(), DimletClientHelper.DimletWithInfo.class, DimletClientHelper.DimletWithInfo::fromPacket, DimletClientHelper.DimletWithInfo::toPacket);
+        });
         MinecraftForge.EVENT_BUS.register(new ForgeEventHandlers());
 
         e.enqueueWork(() -> {
