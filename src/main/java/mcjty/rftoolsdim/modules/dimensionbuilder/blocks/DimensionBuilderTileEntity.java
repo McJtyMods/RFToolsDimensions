@@ -9,7 +9,7 @@ import mcjty.lib.builder.BlockBuilder;
 import mcjty.lib.container.ContainerFactory;
 import mcjty.lib.container.GenericContainer;
 import mcjty.lib.container.NoDirectionItemHander;
-import mcjty.lib.sync.GuiSync;
+import mcjty.lib.sync.SyncToGui;
 import mcjty.lib.tileentity.Cap;
 import mcjty.lib.tileentity.CapType;
 import mcjty.lib.tileentity.GenericEnergyStorage;
@@ -50,7 +50,7 @@ import static mcjty.lib.container.SlotDefinition.specific;
 
 public class DimensionBuilderTileEntity extends GenericTileEntity implements ITickableTileEntity {
 
-    @GuiSync
+    @SyncToGui
     private short errorMode = 0;
 
     public static final int SLOT_DIMENSION_TAB = 0;
