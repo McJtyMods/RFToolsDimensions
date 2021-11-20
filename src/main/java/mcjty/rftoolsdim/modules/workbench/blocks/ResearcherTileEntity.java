@@ -265,6 +265,11 @@ public class ResearcherTileEntity extends GenericTileEntity implements ITickable
         writeItemHandlerCap(tagCompound);
     }
 
+    @Override
+    public void readClientDataFromNBT(CompoundNBT tagCompound) {
+        readItemHandlerCap(tagCompound);
+    }
+
     private NoDirectionItemHander createItemHandler() {
         return new NoDirectionItemHander(this, CONTAINER_FACTORY.get()) {
             @Override
