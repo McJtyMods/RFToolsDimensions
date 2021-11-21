@@ -322,6 +322,15 @@ public class DimensionBuilderTileEntity extends GenericTileEntity implements ITi
         }
     }
 
+    @Override
+    public void readClientDataFromNBT(CompoundNBT tagCompound) {
+        readItemHandlerCap(tagCompound);
+    }
+
+    @Override
+    public void writeClientDataToNBT(CompoundNBT tagCompound) {
+        writeItemHandlerCap(tagCompound);
+    }
 
     public CompoundNBT hasTab() {
         ItemStack itemStack = items.getStackInSlot(SLOT_DIMENSION_TAB);

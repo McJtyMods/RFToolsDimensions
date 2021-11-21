@@ -57,7 +57,6 @@ public class EnscriberTileEntity extends GenericTileEntity {
     private DescriptorError error = DescriptorError.OK;
     private int clientErrorCode = 0;
 
-    @Cap(type = CapType.CONTAINER)
     public static final Lazy<ContainerFactory> CONTAINER_FACTORY = Lazy.of(() -> new ContainerFactory(SIZE_DIMLETS + 1)
             .box(specific(DimletItem::isReadyDimlet), SLOT_DIMLETS, 13, 7, 13, 7)
             .slot(specific(EnscriberTileEntity::isDimensionTab), SLOT_TAB, 13, 142)
@@ -66,6 +65,7 @@ public class EnscriberTileEntity extends GenericTileEntity {
     @Cap(type = CapType.ITEMS_AUTOMATION)
     private final NoDirectionItemHander items = createItemHandler();
 
+    @Cap(type = CapType.CONTAINER)
     private final LazyOptional<INamedContainerProvider> screenHandler = LazyOptional.of(() -> new DefaultContainerProvider<GenericContainer>("Dimlet Workbench")
             .containerSupplier((windowId,player) -> new GenericContainer(EnscriberModule.CONTAINER_ENSCRIBER.get(), windowId, CONTAINER_FACTORY.get(), getBlockPos(), EnscriberTileEntity.this))
             .itemHandler(() -> items)
