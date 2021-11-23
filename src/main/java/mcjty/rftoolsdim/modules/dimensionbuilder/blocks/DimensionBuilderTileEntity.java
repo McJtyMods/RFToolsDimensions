@@ -363,7 +363,7 @@ public class DimensionBuilderTileEntity extends GenericTileEntity implements ITi
         return errorMode;
     }
 
-    private static boolean isRealizedTab(ItemStack stack) {
+    public static boolean isRealizedTab(ItemStack stack) {
         return stack.getItem() == DimensionBuilderModule.REALIZED_DIMENSION_TAB.get();
     }
 
