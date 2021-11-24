@@ -4,6 +4,7 @@ import mcjty.lib.datagen.BaseBlockStateProvider;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.modules.decorative.DecorativeModule;
 import mcjty.rftoolsdim.modules.dimensionbuilder.DimensionBuilderModule;
+import mcjty.rftoolsdim.modules.dimensioneditor.DimensionEditorModule;
 import mcjty.rftoolsdim.modules.enscriber.EnscriberModule;
 import mcjty.rftoolsdim.modules.essences.EssencesModule;
 import mcjty.rftoolsdim.modules.workbench.WorkbenchModule;
@@ -22,6 +23,7 @@ public class BlockStates extends BaseBlockStateProvider {
     @Override
     protected void registerStatesAndModels() {
         orientedBlock(DimensionBuilderModule.DIMENSION_BUILDER.get(), frontBasedModel("dimension_builder", modLoc("block/dimensionbuilder")));
+        orientedBlock(DimensionEditorModule.DIMENSION_EDITOR.get(), frontBasedModel("dimension_editor", modLoc("block/dimensioneditor")));
         orientedBlock(WorkbenchModule.WORKBENCH.get(), topBasedModel("dimlet_workbench", modLoc("block/dimletworkbenchtop")));
         orientedBlock(WorkbenchModule.HOLDER.get(), frontBasedModel("knowledge_holder", modLoc("block/knowledge_holder")));
         orientedBlock(EnscriberModule.ENSCRIBER.get(), frontBasedModel("enscriber", modLoc("block/dimensionenscriber")));

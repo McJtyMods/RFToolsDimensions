@@ -5,6 +5,7 @@ import mcjty.rftoolsbase.modules.various.VariousModule;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.modules.decorative.DecorativeModule;
 import mcjty.rftoolsdim.modules.dimensionbuilder.DimensionBuilderModule;
+import mcjty.rftoolsdim.modules.dimensioneditor.DimensionEditorModule;
 import mcjty.rftoolsdim.modules.dimlets.DimletModule;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletKey;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletTools;
@@ -158,6 +159,10 @@ public class Recipes extends BaseRecipeProvider {
                         .define('g', Items.GOLD_INGOT)
                         .unlockedBy("frame", has(VariousModule.MACHINE_FRAME.get())),
                 "oeo", "dFd", "ggg");
+        build(consumer, ShapedRecipeBuilder.shaped(DimensionEditorModule.DIMENSION_EDITOR.get())
+                        .define('g', Items.GOLD_INGOT)
+                        .unlockedBy("frame", has(VariousModule.MACHINE_FRAME.get())),
+                "oio", "iFi", "ggg");
         build(consumer, ShapedRecipeBuilder.shaped(WorkbenchModule.WORKBENCH.get())
                         .define('C', Blocks.CRAFTING_TABLE)
                         .define('u', DimletModule.EMPTY_DIMLET.get())

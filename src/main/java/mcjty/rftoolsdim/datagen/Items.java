@@ -4,6 +4,7 @@ import mcjty.lib.datagen.BaseItemModelProvider;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.modules.decorative.DecorativeModule;
 import mcjty.rftoolsdim.modules.dimensionbuilder.DimensionBuilderModule;
+import mcjty.rftoolsdim.modules.dimensioneditor.DimensionEditorModule;
 import mcjty.rftoolsdim.modules.dimlets.DimletModule;
 import mcjty.rftoolsdim.modules.enscriber.EnscriberModule;
 import mcjty.rftoolsdim.modules.essences.EssencesModule;
@@ -25,6 +26,7 @@ public class Items extends BaseItemModelProvider {
     @Override
     protected void registerModels() {
         parentedBlock(DimensionBuilderModule.DIMENSION_BUILDER.get(), "block/dimension_builder");
+        parentedBlock(DimensionEditorModule.DIMENSION_EDITOR.get(), "block/dimension_editor");
         parentedBlock(WorkbenchModule.WORKBENCH.get(), "block/dimlet_workbench");
         parentedBlock(WorkbenchModule.HOLDER.get(), "block/knowledge_holder");
         parentedBlock(WorkbenchModule.RESEARCHER.get(), "block/researcher");

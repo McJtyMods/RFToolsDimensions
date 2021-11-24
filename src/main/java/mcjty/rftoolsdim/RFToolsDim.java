@@ -5,6 +5,7 @@ import mcjty.rftoolsdim.dimension.data.DimensionManager;
 import mcjty.rftoolsdim.modules.blob.BlobModule;
 import mcjty.rftoolsdim.modules.decorative.DecorativeModule;
 import mcjty.rftoolsdim.modules.dimensionbuilder.DimensionBuilderModule;
+import mcjty.rftoolsdim.modules.dimensioneditor.DimensionEditorModule;
 import mcjty.rftoolsdim.modules.dimlets.DimletModule;
 import mcjty.rftoolsdim.modules.enscriber.EnscriberModule;
 import mcjty.rftoolsdim.modules.essences.EssencesModule;
@@ -51,6 +52,7 @@ public class RFToolsDim {
 
     private void setupModules() {
         modules.register(new DimensionBuilderModule());
+        modules.register(new DimensionEditorModule());
         modules.register(new DimletModule());
         modules.register(new EnscriberModule());
         modules.register(new WorkbenchModule());

@@ -5,6 +5,7 @@ import mcjty.rftoolsdim.dimension.DimensionRegistry;
 import mcjty.rftoolsdim.modules.blob.BlobModule;
 import mcjty.rftoolsdim.modules.decorative.DecorativeModule;
 import mcjty.rftoolsdim.modules.dimensionbuilder.DimensionBuilderModule;
+import mcjty.rftoolsdim.modules.dimensioneditor.DimensionEditorModule;
 import mcjty.rftoolsdim.modules.dimlets.DimletModule;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletRarity;
 import mcjty.rftoolsdim.modules.dimlets.lootmodifier.DimletLootEntry;
@@ -30,6 +31,7 @@ public class LootTables extends BaseLootTableProvider {
     @Override
     protected void addTables() {
         addStandardTable(DimensionBuilderModule.DIMENSION_BUILDER.get());
+        addStandardTable(DimensionEditorModule.DIMENSION_EDITOR.get());
         addStandardTable(WorkbenchModule.WORKBENCH.get());
         addStandardTable(WorkbenchModule.HOLDER.get());
         addStandardTable(WorkbenchModule.RESEARCHER.get());
