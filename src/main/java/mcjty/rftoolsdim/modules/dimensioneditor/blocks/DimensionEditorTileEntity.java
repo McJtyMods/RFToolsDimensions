@@ -14,11 +14,8 @@ import mcjty.lib.tileentity.Cap;
 import mcjty.lib.tileentity.CapType;
 import mcjty.lib.tileentity.GenericEnergyStorage;
 import mcjty.lib.tileentity.GenericTileEntity;
-import mcjty.lib.varia.BlockTools;
 import mcjty.lib.varia.LevelTools;
-import mcjty.lib.varia.Sync;
 import mcjty.rftoolsbase.tools.ManualHelper;
-import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.dimension.data.DimensionData;
 import mcjty.rftoolsdim.dimension.data.PersistantDimensionManager;
 import mcjty.rftoolsdim.modules.dimensionbuilder.DimensionBuilderModule;
@@ -35,7 +32,6 @@ import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.state.EnumProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.ITickableTileEntity;
@@ -43,6 +39,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.Heightmap;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.common.util.LazyOptional;
 
@@ -75,7 +72,7 @@ public class DimensionEditorTileEntity extends GenericTileEntity implements ITic
             .containerSupplier((windowId,player) -> new GenericContainer(DimensionBuilderModule.CONTAINER_DIMENSION_BUILDER.get(), windowId, CONTAINER_FACTORY.get(), getBlockPos(), DimensionEditorTileEntity.this))
             .itemHandler(() -> items)
             .energyHandler(() -> energyStorage)
-            .dataListener(Sync.values(new ResourceLocation(RFToolsDim.MODID, "data"), this))
+//            .dataListener(Sync.values(new ResourceLocation(RFToolsDim.MODID, "data"), this))
 //            .integerListener(Sync.integer(this::getBuildPercentage, v -> clientBuildPercentage = v))
             .setupSync(this));
 
@@ -121,11 +118,23 @@ public class DimensionEditorTileEntity extends GenericTileEntity implements ITic
                 "rftoolsutility:matter_receiver".equals(s.getItem().getRegistryName().toString());
     }
 
+
+    public int getEditPercentage() {
+        return editPercentage;
+    }
+
     @Override
     public void tick() {
         if (level.isClientSide()) {
             return;
         }
+
+        if (ticksLeft == -1) {
+            editPercentage = 0;
+        } else {
+            editPercentage = (ticksCost - ticksLeft) * 100 / ticksCost;
+        }
+
         ItemStack injectableItemStack = validateInjectableItemStack();
         if (injectableItemStack.isEmpty()) {
             return;
@@ -409,7 +418,8 @@ public class DimensionEditorTileEntity extends GenericTileEntity implements ITic
             state = 3;
         }
         if (oldstate != state) {
-            markDirtyClient();
+            level.setBlock(worldPosition, getBlockState().setValue(OPERATIONTYPE, DimensionBuilderTileEntity.OperationType.values()[state]), Constants.BlockFlags.DEFAULT_AND_RERENDER);
+            setChanged();
         }
     }
 

@@ -4,17 +4,22 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import mcjty.lib.container.GenericContainer;
 import mcjty.lib.gui.GenericGuiContainer;
 import mcjty.lib.gui.Window;
-import mcjty.lib.gui.widgets.*;
-import mcjty.lib.varia.RedstoneMode;
+import mcjty.lib.gui.widgets.EnergyBar;
+import mcjty.lib.gui.widgets.ImageLabel;
+import mcjty.lib.gui.widgets.Label;
+import mcjty.lib.gui.widgets.Panel;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.modules.dimensionbuilder.DimensionBuilderModule;
 import mcjty.rftoolsdim.modules.dimensioneditor.blocks.DimensionEditorTileEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.container.Slot;
+import net.minecraft.item.Items;
 import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
 
-import static mcjty.lib.gui.widgets.Widgets.*;
+import static mcjty.lib.gui.widgets.Widgets.horizontal;
+import static mcjty.lib.gui.widgets.Widgets.label;
 
 public class GuiDimensionEditor extends GenericGuiContainer<DimensionEditorTileEntity, GenericContainer> {
     public static final int WIDTH = 180;
@@ -52,29 +57,25 @@ public class GuiDimensionEditor extends GenericGuiContainer<DimensionEditorTileE
         toplevel.bounds(leftPos, topPos, imageWidth, imageHeight);
 
         window = new Window(this, toplevel);
-//        tileEntity.requestBuildingPercentage();
     }
 
     @Override
     protected void renderBg(@Nonnull MatrixStack matrixStack, float partialTicks, int x, int y) {
-//        int pct = DimensionEditorTileEntity.getEditPercentage();
-//        if (pct > 0) {
-//            arrow.setImage(iconGuiElements, 144, 0);
-//        } else {
-//            arrow.setImage(iconGuiElements, 192, 0);
-//        }
-//        percentage.setText(pct + "%");
-//
-//        drawWindow();
-//
-//        destroy.setVisible(false);
-//        Slot slot = this.inventorySlots.getSlot(DimensionEditorContainer.SLOT_INJECTINPUT);
-//        if (slot.getHasStack()) {
-//            Block block = BlockTools.getBlock(slot.getStack());
-//            if (block == Blocks.TNT) {
-//                destroy.setVisible(true);
-//            }
-//        }
+        int pct = tileEntity.getEditPercentage();
+        if (pct > 0) {
+            arrow.image(iconGuiElements, 144, 0);
+        } else {
+            arrow.image(iconGuiElements, 192, 0);
+        }
+        percentage.text(pct + "%");
+
+        destroy.visible(false);
+        Slot slot = this.menu.getSlot(DimensionEditorTileEntity.SLOT_INJECTINPUT);
+        if (slot.hasItem()) {
+            if (slot.getItem().getItem() == Items.TNT) {
+                destroy.visible(true);
+            }
+        }
 
         drawWindow(matrixStack);
         updateEnergyBar(energyBar);
