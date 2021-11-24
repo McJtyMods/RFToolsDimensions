@@ -9,10 +9,12 @@ import mcjty.lib.builder.BlockBuilder;
 import mcjty.lib.container.ContainerFactory;
 import mcjty.lib.container.GenericContainer;
 import mcjty.lib.container.NoDirectionItemHander;
+import mcjty.lib.sync.SyncToGui;
 import mcjty.lib.tileentity.Cap;
 import mcjty.lib.tileentity.CapType;
 import mcjty.lib.tileentity.GenericEnergyStorage;
 import mcjty.lib.tileentity.GenericTileEntity;
+import mcjty.lib.varia.BlockTools;
 import mcjty.lib.varia.LevelTools;
 import mcjty.lib.varia.Sync;
 import mcjty.rftoolsbase.tools.ManualHelper;
@@ -23,10 +25,7 @@ import mcjty.rftoolsdim.modules.dimensionbuilder.DimensionBuilderModule;
 import mcjty.rftoolsdim.modules.dimensionbuilder.blocks.DimensionBuilderTileEntity;
 import mcjty.rftoolsdim.modules.dimensioneditor.DimensionEditorConfig;
 import mcjty.rftoolsdim.modules.dimensioneditor.DimensionEditorModule;
-import mcjty.rftoolsdim.modules.dimlets.data.DimletDictionary;
-import mcjty.rftoolsdim.modules.dimlets.data.DimletKey;
-import mcjty.rftoolsdim.modules.dimlets.data.DimletSettings;
-import mcjty.rftoolsdim.modules.dimlets.data.DimletTools;
+import mcjty.rftoolsdim.modules.dimlets.data.*;
 import mcjty.rftoolsdim.modules.dimlets.items.DimletItem;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -36,12 +35,14 @@ import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.state.EnumProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.gen.Heightmap;
 import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.common.util.LazyOptional;
 
@@ -81,7 +82,9 @@ public class DimensionEditorTileEntity extends GenericTileEntity implements ITic
     @Cap(type = CapType.INFUSABLE)
     private final IInfusable infusable = new DefaultInfusable(DimensionEditorTileEntity.this);
 
+    @SyncToGui
     private int editPercentage = 0;
+
     private int ticksLeft = -1;
     private int ticksCost = -1;
     private int rfPerTick = -1;
@@ -269,30 +272,53 @@ public class DimensionEditorTileEntity extends GenericTileEntity implements ITic
     }
 
     private int findGoodReceiverLocation(World dimWorld) {
-        // @todo 1.16
-//        int y = WorldGenerationTools.findSuitableEmptySpot(dimWorld, 8, 8);
-//        y++;
-//        return y;
-        return 0;
+        int y = findSuitableEmptySpot(dimWorld, 8, 8);
+        y++;
+        return y;
+    }
+
+    public static int findSuitableEmptySpot(World world, int x, int z) {
+        int y = world.getHeight(Heightmap.Type.WORLD_SURFACE_WG, x, z);
+        if (y == -1) {
+            return -1;
+        }
+
+        y--;            // y should now be at a solid or liquid block.
+
+        if (y > world.getHeight() - 5) {
+            y = world.getHeight() / 2;
+        }
+
+
+        BlockState state = world.getBlockState(new BlockPos(x, y + 1, z));
+        while (state.getMaterial().isLiquid()) {
+            y++;
+            if (y > world.getHeight()-10) {
+                return -1;
+            }
+            state = world.getBlockState(new BlockPos(x, y + 1, z));
+        }
+
+        return y;
     }
 
     private ItemStack validateInjectableItemStack() {
-//        ItemStack itemStack = inventoryHelper.getStackInSlot(DimensionEditorContainer.SLOT_INJECTINPUT);
-//        if (itemStack.isEmpty()) {
-//            stopInjecting();
-//            return ItemStack.EMPTY;
-//        }
-//
-//        if (isMatterReceiver(itemStack)) {
-//            return itemStack;
-//        }
-//        if (isTNT(itemStack)) {
-//            return canDeleteDimension(itemStack);
-//        }
-//
-//        DimletKey key = KnownDimletConfiguration.getDimletKey(itemStack);
-//        DimletType type = key.getType();
-//        IDimletType itype = type.dimletType;
+        ItemStack itemStack = items.getStackInSlot(SLOT_INJECTINPUT);
+        if (itemStack.isEmpty()) {
+            stopInjecting();
+            return ItemStack.EMPTY;
+        }
+
+        if (isMatterReceiver(itemStack)) {
+            return itemStack;
+        }
+        if (isTNT(itemStack)) {
+            return canDeleteDimension(itemStack);
+        }
+
+        DimletKey key = DimletTools.getDimletKey(itemStack);
+        DimletType type = key.getType();
+        // @todo 1.16
 //        if (itype.isInjectable(key)) {
 //            return itemStack;
 //        } else {
@@ -332,43 +358,30 @@ public class DimensionEditorTileEntity extends GenericTileEntity implements ITic
     }
 
     private boolean isMatterReceiver(ItemStack itemStack) {
-        // @todo 1.16
-//        Block block = BlockTools.getBlock(itemStack);
-//        Block receiver = ForgeRegistries.BLOCKS.getValue(new ResourceLocation("rftools", "matter_receiver"));
-//        if (block == receiver) {
-//            // We can inject matter receivers too.
-//            return true;
-//        }
-        return false;
+        return "rftoolsutility:matter_receiver".equals(itemStack.getItem().getRegistryName().toString());
     }
 
     private boolean isTNT(ItemStack itemStack) {
-        // @todo 1.16
-//        Block block = BlockTools.getBlock(itemStack);
-//        if (block == Blocks.TNT) {
-//            // We can inject TNT to destroy a dimension.
-//            return true;
-//        }
-        return false;
+        return itemStack.getItem() == Items.TNT;
     }
 
     private ItemStack validateDimensionItemStack() {
-//        ItemStack itemStack = inventoryHelper.getStackInSlot(DimensionEditorContainer.SLOT_DIMENSIONTARGET);
-//        if (itemStack.isEmpty()) {
-//            stopInjecting();
-//            return ItemStack.EMPTY;
-//        }
-//
-//        NBTTagCompound tagCompound = itemStack.getTagCompound();
-//        int id = tagCompound.getInteger("id");
-//        if (id == 0) {
-//            // Not a valid dimension.
-//            stopInjecting();
-//            return ItemStack.EMPTY;
-//        }
-//
-//        return itemStack;
-        return ItemStack.EMPTY;
+        ItemStack itemStack = items.getStackInSlot(SLOT_DIMENSIONTARGET);
+        if (itemStack.isEmpty()) {
+            stopInjecting();
+            return ItemStack.EMPTY;
+        }
+
+        String dimension = itemStack.getOrCreateTag().getString("dimension");
+        ResourceLocation id = new ResourceLocation(dimension);
+        DimensionData data = PersistantDimensionManager.get(level).getData(id);
+        if (data == null) {
+            // Not a valid dimension.
+            stopInjecting();
+            return ItemStack.EMPTY;
+        }
+
+        return itemStack;
     }
 
     private void stopInjecting() {
