@@ -66,7 +66,7 @@ public class EnscriberTileEntity extends GenericTileEntity {
     private final NoDirectionItemHander items = createItemHandler();
 
     @Cap(type = CapType.CONTAINER)
-    private final LazyOptional<INamedContainerProvider> screenHandler = LazyOptional.of(() -> new DefaultContainerProvider<GenericContainer>("Dimlet Workbench")
+    private final LazyOptional<INamedContainerProvider> screenHandler = LazyOptional.of(() -> new DefaultContainerProvider<GenericContainer>("Enscriber")
             .containerSupplier(container(EnscriberModule.CONTAINER_ENSCRIBER, CONTAINER_FACTORY,this))
             .itemHandler(() -> items)
             .shortListener(Sync.integer(() -> error.getCode().ordinal(), v -> clientErrorCode = v))

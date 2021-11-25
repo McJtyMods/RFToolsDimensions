@@ -68,7 +68,7 @@ public class DimensionEditorTileEntity extends GenericTileEntity implements ITic
     private final GenericEnergyStorage energyStorage = new GenericEnergyStorage(this, true, DimensionEditorConfig.EDITOR_MAXENERGY.get(), DimensionEditorConfig.EDITOR_RECEIVEPERTICK.get());
 
     @Cap(type = CapType.CONTAINER)
-    private final LazyOptional<INamedContainerProvider> screenHandler = LazyOptional.of(() -> new DefaultContainerProvider<GenericContainer>("Dimension Builder")
+    private final LazyOptional<INamedContainerProvider> screenHandler = LazyOptional.of(() -> new DefaultContainerProvider<GenericContainer>("Dimension Editor")
             .containerSupplier(container(DimensionEditorModule.CONTAINER_DIMENSION_EDITOR, CONTAINER_FACTORY,this))
             .itemHandler(() -> items)
             .energyHandler(() -> energyStorage)
