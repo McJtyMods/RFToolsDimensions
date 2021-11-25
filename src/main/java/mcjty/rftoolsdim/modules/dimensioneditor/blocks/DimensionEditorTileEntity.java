@@ -3,13 +3,13 @@ package mcjty.rftoolsdim.modules.dimensioneditor.blocks;
 import mcjty.lib.api.container.DefaultContainerProvider;
 import mcjty.lib.api.infusable.DefaultInfusable;
 import mcjty.lib.api.infusable.IInfusable;
+import mcjty.lib.bindings.GuiValue;
 import mcjty.lib.blocks.BaseBlock;
 import mcjty.lib.blocks.RotationType;
 import mcjty.lib.builder.BlockBuilder;
 import mcjty.lib.container.ContainerFactory;
 import mcjty.lib.container.GenericContainer;
 import mcjty.lib.container.NoDirectionItemHander;
-import mcjty.lib.sync.SyncToGui;
 import mcjty.lib.tileentity.Cap;
 import mcjty.lib.tileentity.CapType;
 import mcjty.lib.tileentity.GenericEnergyStorage;
@@ -79,7 +79,7 @@ public class DimensionEditorTileEntity extends GenericTileEntity implements ITic
     @Cap(type = CapType.INFUSABLE)
     private final IInfusable infusable = new DefaultInfusable(DimensionEditorTileEntity.this);
 
-    @SyncToGui
+    @GuiValue
     private int editPercentage = 0;
 
     private int ticksLeft = -1;

@@ -3,13 +3,13 @@ package mcjty.rftoolsdim.modules.dimensionbuilder.blocks;
 import mcjty.lib.api.container.DefaultContainerProvider;
 import mcjty.lib.api.infusable.DefaultInfusable;
 import mcjty.lib.api.infusable.IInfusable;
+import mcjty.lib.bindings.GuiValue;
 import mcjty.lib.blocks.BaseBlock;
 import mcjty.lib.blocks.RotationType;
 import mcjty.lib.builder.BlockBuilder;
 import mcjty.lib.container.ContainerFactory;
 import mcjty.lib.container.GenericContainer;
 import mcjty.lib.container.NoDirectionItemHander;
-import mcjty.lib.sync.SyncToGui;
 import mcjty.lib.tileentity.Cap;
 import mcjty.lib.tileentity.CapType;
 import mcjty.lib.tileentity.GenericEnergyStorage;
@@ -45,12 +45,11 @@ import javax.annotation.Nullable;
 import java.util.Random;
 
 import static mcjty.lib.builder.TooltipBuilder.*;
-import static mcjty.lib.container.ContainerFactory.CONTAINER_CONTAINER;
 import static mcjty.lib.container.SlotDefinition.specific;
 
 public class DimensionBuilderTileEntity extends GenericTileEntity implements ITickableTileEntity {
 
-    @SyncToGui
+    @GuiValue
     private short errorMode = 0;
 
     public static final int SLOT_DIMENSION_TAB = 0;
@@ -71,7 +70,6 @@ public class DimensionBuilderTileEntity extends GenericTileEntity implements ITi
             .containerSupplier((windowId,player) -> new GenericContainer(DimensionBuilderModule.CONTAINER_DIMENSION_BUILDER.get(), windowId, CONTAINER_FACTORY.get(), getBlockPos(), DimensionBuilderTileEntity.this))
             .itemHandler(() -> items)
             .energyHandler(() -> energyStorage)
-            .dataListener(Sync.values(new ResourceLocation(RFToolsDim.MODID, "data"), this))
             .integerListener(Sync.integer(this::getBuildPercentage, v -> clientBuildPercentage = v))
             .setupSync(this));
 
