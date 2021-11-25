@@ -24,7 +24,6 @@ import javax.annotation.Nonnull;
 import java.util.Set;
 
 import static mcjty.lib.builder.TooltipBuilder.*;
-import static mcjty.lib.container.ContainerFactory.CONTAINER_CONTAINER;
 import static mcjty.lib.container.SlotDefinition.specific;
 
 public class KnowledgeHolderTileEntity extends GenericTileEntity {
@@ -38,7 +37,7 @@ public class KnowledgeHolderTileEntity extends GenericTileEntity {
 
     @Cap(type = CapType.CONTAINER)
     private final LazyOptional<INamedContainerProvider> screenHandler = LazyOptional.of(() -> new DefaultContainerProvider<GenericContainer>("Knowledge Holder")
-            .containerSupplier((windowId,player) -> new GenericContainer(WorkbenchModule.CONTAINER_HOLDER.get(), windowId, CONTAINER_FACTORY.get(), getBlockPos(), KnowledgeHolderTileEntity.this))
+            .containerSupplier((windowId,player) -> new GenericContainer(WorkbenchModule.CONTAINER_HOLDER, windowId, CONTAINER_FACTORY, this))
             .itemHandler(() -> items));
 
     public KnowledgeHolderTileEntity() {

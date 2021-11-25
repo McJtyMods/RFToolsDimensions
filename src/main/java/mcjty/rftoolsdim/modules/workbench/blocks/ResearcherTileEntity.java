@@ -45,7 +45,6 @@ import net.minecraftforge.common.util.LazyOptional;
 import javax.annotation.Nonnull;
 
 import static mcjty.lib.builder.TooltipBuilder.*;
-import static mcjty.lib.container.ContainerFactory.CONTAINER_CONTAINER;
 import static mcjty.lib.container.SlotDefinition.generic;
 import static mcjty.lib.container.SlotDefinition.specific;
 
@@ -73,7 +72,7 @@ public class ResearcherTileEntity extends GenericTileEntity implements ITickable
 
     @Cap(type = CapType.CONTAINER)
     private final LazyOptional<INamedContainerProvider> screenHandler = LazyOptional.of(() -> new DefaultContainerProvider<GenericContainer>("Knowledge Holder")
-            .containerSupplier((windowId,player) -> new GenericContainer(WorkbenchModule.CONTAINER_RESEARCHER.get(), windowId, CONTAINER_FACTORY.get(), getBlockPos(), ResearcherTileEntity.this))
+            .containerSupplier((windowId,player) -> new GenericContainer(WorkbenchModule.CONTAINER_RESEARCHER, windowId, CONTAINER_FACTORY, this))
             .integerListener(Sync.integer(() -> progress, v -> progress = v))
             .energyHandler(() -> energyStorage)
             .itemHandler(() -> items));

@@ -69,11 +69,9 @@ public class DimensionEditorTileEntity extends GenericTileEntity implements ITic
 
     @Cap(type = CapType.CONTAINER)
     private final LazyOptional<INamedContainerProvider> screenHandler = LazyOptional.of(() -> new DefaultContainerProvider<GenericContainer>("Dimension Builder")
-            .containerSupplier((windowId,player) -> new GenericContainer(DimensionBuilderModule.CONTAINER_DIMENSION_BUILDER.get(), windowId, CONTAINER_FACTORY.get(), getBlockPos(), DimensionEditorTileEntity.this))
+            .containerSupplier((windowId,player) -> new GenericContainer(DimensionBuilderModule.CONTAINER_DIMENSION_BUILDER, windowId, CONTAINER_FACTORY, this))
             .itemHandler(() -> items)
             .energyHandler(() -> energyStorage)
-//            .dataListener(Sync.values(new ResourceLocation(RFToolsDim.MODID, "data"), this))
-//            .integerListener(Sync.integer(this::getBuildPercentage, v -> clientBuildPercentage = v))
             .setupSync(this));
 
     @Cap(type = CapType.INFUSABLE)
