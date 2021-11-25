@@ -11,7 +11,6 @@ import mcjty.lib.tileentity.Cap;
 import mcjty.lib.tileentity.CapType;
 import mcjty.lib.tileentity.GenericTileEntity;
 import mcjty.rftoolsbase.tools.ManualHelper;
-import mcjty.rftoolsdim.modules.enscriber.EnscriberModule;
 import mcjty.rftoolsdim.modules.knowledge.data.KnowledgeKey;
 import mcjty.rftoolsdim.modules.knowledge.items.LostKnowledgeItem;
 import mcjty.rftoolsdim.modules.workbench.WorkbenchModule;
@@ -81,11 +80,6 @@ public class KnowledgeHolderTileEntity extends GenericTileEntity {
             @Override
             public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
                 return isValidKnowledgeItem(stack);
-            }
-
-            @Override
-            public boolean isItemInsertable(int slot, @Nonnull ItemStack stack) {
-                return isItemValid(slot, stack);
             }
         };
     }

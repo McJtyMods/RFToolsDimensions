@@ -282,14 +282,6 @@ public class EnscriberTileEntity extends GenericTileEntity {
             }
 
             @Override
-            public boolean isItemInsertable(int slot, @Nonnull ItemStack stack) {
-                if (slot == SLOT_TAB) {
-                    return EnscriberTileEntity.isDimensionTab(stack);
-                }
-                return stack.getItem() instanceof DimletItem;
-            }
-
-            @Override
             protected void onUpdate(int index) {
                 super.onUpdate(index);
                 validateDimlets();

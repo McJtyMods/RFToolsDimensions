@@ -432,11 +432,6 @@ public class DimensionEditorTileEntity extends GenericTileEntity implements ITic
                     return isValidInput(stack);
                 }
             }
-
-            @Override
-            public boolean isItemInsertable(int slot, @Nonnull ItemStack stack) {
-                return isItemValid(slot, stack);
-            }
         };
     }
 

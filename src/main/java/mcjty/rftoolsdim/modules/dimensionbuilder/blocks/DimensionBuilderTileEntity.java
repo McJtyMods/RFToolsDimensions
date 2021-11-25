@@ -377,11 +377,6 @@ public class DimensionBuilderTileEntity extends GenericTileEntity implements ITi
             public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
                 return isRealizedTab(stack);
             }
-
-            @Override
-            public boolean isItemInsertable(int slot, @Nonnull ItemStack stack) {
-                return isItemValid(slot, stack);
-            }
         };
     }
 
