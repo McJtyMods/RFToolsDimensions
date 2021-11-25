@@ -62,14 +62,20 @@ public class DimensionEditorTileEntity extends GenericTileEntity implements ITic
             .playerSlots(10, 70));
 
     @Cap(type = CapType.ITEMS_AUTOMATION)
-    private final GenericItemHandler items = createItemHandler();
+    private final GenericItemHandler items = GenericItemHandler.create(this, CONTAINER_FACTORY, (slot, stack) -> {
+        if (slot == SLOT_DIMENSIONTARGET) {
+            return DimensionBuilderTileEntity.isRealizedTab(stack);
+        } else {
+            return isValidInput(stack);
+        }
+    });
 
     @Cap(type = CapType.ENERGY)
     private final GenericEnergyStorage energyStorage = new GenericEnergyStorage(this, true, DimensionEditorConfig.EDITOR_MAXENERGY.get(), DimensionEditorConfig.EDITOR_RECEIVEPERTICK.get());
 
     @Cap(type = CapType.CONTAINER)
     private final LazyOptional<INamedContainerProvider> screenHandler = LazyOptional.of(() -> new DefaultContainerProvider<GenericContainer>("Dimension Editor")
-            .containerSupplier(container(DimensionEditorModule.CONTAINER_DIMENSION_EDITOR, CONTAINER_FACTORY,this))
+            .containerSupplier(container(DimensionEditorModule.CONTAINER_DIMENSION_EDITOR, CONTAINER_FACTORY, this))
             .itemHandler(() -> items)
             .energyHandler(() -> energyStorage)
             .setupSync(this));
@@ -161,7 +167,7 @@ public class DimensionEditorTileEntity extends GenericTileEntity implements ITic
             } else {
                 DimletKey key = DimletTools.getDimletKey(injectableItemStack);
                 DimletSettings settings = DimletDictionary.get().getSettings(key);
-                if(false) { // @todo 1.16 DimletObjectMapping.getSpecial(key) == SpecialType.SPECIAL_CHEATER) {
+                if (false) { // @todo 1.16 DimletObjectMapping.getSpecial(key) == SpecialType.SPECIAL_CHEATER) {
                     ticksCost = 1;
                     rfPerTick = 0;
                 } else {
@@ -300,7 +306,7 @@ public class DimensionEditorTileEntity extends GenericTileEntity implements ITic
         BlockState state = world.getBlockState(new BlockPos(x, y + 1, z));
         while (state.getMaterial().isLiquid()) {
             y++;
-            if (y > world.getHeight()-10) {
+            if (y > world.getHeight() - 10) {
                 return -1;
             }
             state = world.getBlockState(new BlockPos(x, y + 1, z));
@@ -421,18 +427,5 @@ public class DimensionEditorTileEntity extends GenericTileEntity implements ITic
         }
     }
 
-
-    private GenericItemHandler createItemHandler() {
-        return new GenericItemHandler(this, CONTAINER_FACTORY.get()) {
-            @Override
-            public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
-                if (slot == SLOT_DIMENSIONTARGET) {
-                    return DimensionBuilderTileEntity.isRealizedTab(stack);
-                } else {
-                    return isValidInput(stack);
-                }
-            }
-        };
-    }
 
 }

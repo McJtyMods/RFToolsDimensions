@@ -282,8 +282,8 @@ public class EnscriberTileEntity extends GenericTileEntity {
             }
 
             @Override
-            protected void onUpdate(int index) {
-                super.onUpdate(index);
+            protected void onUpdate(int index, ItemStack stack) {
+                super.onUpdate(index, stack);
                 validateDimlets();
             }
 

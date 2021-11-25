@@ -61,7 +61,7 @@ public class DimensionBuilderTileEntity extends GenericTileEntity implements ITi
             .playerSlots(10, 70));
 
     @Cap(type = CapType.ITEMS_AUTOMATION)
-    private final GenericItemHandler items = createItemHandler();
+    private final GenericItemHandler items = GenericItemHandler.create(this, CONTAINER_FACTORY, (slot, stack) -> isRealizedTab(stack));
 
     @Cap(type = CapType.ENERGY)
     private final GenericEnergyStorage energyStorage = new GenericEnergyStorage(this, true, DimensionBuilderConfig.BUILDER_MAXENERGY.get(), DimensionBuilderConfig.BUILDER_RECEIVEPERTICK.get());
@@ -369,15 +369,6 @@ public class DimensionBuilderTileEntity extends GenericTileEntity implements ITi
     @Override
     protected boolean needsRedstoneMode() {
         return true;
-    }
-
-    private GenericItemHandler createItemHandler() {
-        return new GenericItemHandler(this, CONTAINER_FACTORY.get()) {
-            @Override
-            public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
-                return isRealizedTab(stack);
-            }
-        };
     }
 
     public enum OperationType implements IStringSerializable {

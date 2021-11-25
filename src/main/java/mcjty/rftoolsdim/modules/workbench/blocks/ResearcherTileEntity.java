@@ -287,8 +287,8 @@ public class ResearcherTileEntity extends GenericTileEntity implements ITickable
             }
 
             @Override
-            protected void onUpdate(int index) {
-                super.onUpdate(index);
+            protected void onUpdate(int index, ItemStack stack) {
+                super.onUpdate(index, stack);
                 if (index == SLOT_IN) {
                     progress = getMaxProgress();
                 }

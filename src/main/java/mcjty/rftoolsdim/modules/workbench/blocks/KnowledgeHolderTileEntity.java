@@ -20,7 +20,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.common.util.LazyOptional;
 
-import javax.annotation.Nonnull;
 import java.util.Set;
 
 import static mcjty.lib.api.container.DefaultContainerProvider.container;
@@ -34,7 +33,7 @@ public class KnowledgeHolderTileEntity extends GenericTileEntity {
             .playerSlots(11, 158));
 
     @Cap(type = CapType.ITEMS_AUTOMATION)
-    private final GenericItemHandler items = createItemHandler();
+    private final GenericItemHandler items = GenericItemHandler.create(this, CONTAINER_FACTORY, (slot, stack) -> isValidKnowledgeItem(stack));
 
     @Cap(type = CapType.CONTAINER)
     private final LazyOptional<INamedContainerProvider> screenHandler = LazyOptional.of(() -> new DefaultContainerProvider<GenericContainer>("Knowledge Holder")
@@ -75,12 +74,4 @@ public class KnowledgeHolderTileEntity extends GenericTileEntity {
         };
     }
 
-    private GenericItemHandler createItemHandler() {
-        return new GenericItemHandler(this, CONTAINER_FACTORY.get()) {
-            @Override
-            public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
-                return isValidKnowledgeItem(stack);
-            }
-        };
-    }
 }
