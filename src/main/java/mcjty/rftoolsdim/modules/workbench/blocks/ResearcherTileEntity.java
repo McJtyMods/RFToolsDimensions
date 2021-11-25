@@ -72,7 +72,7 @@ public class ResearcherTileEntity extends GenericTileEntity implements ITickable
 
     @Cap(type = CapType.CONTAINER)
     private final LazyOptional<INamedContainerProvider> screenHandler = LazyOptional.of(() -> new DefaultContainerProvider<GenericContainer>("Knowledge Holder")
-            .containerSupplier((windowId,player) -> new GenericContainer(WorkbenchModule.CONTAINER_RESEARCHER, windowId, CONTAINER_FACTORY, this))
+            .containerSupplier(windowId -> new GenericContainer(WorkbenchModule.CONTAINER_RESEARCHER, windowId, CONTAINER_FACTORY, this))
             .integerListener(Sync.integer(() -> progress, v -> progress = v))
             .energyHandler(() -> energyStorage)
             .itemHandler(() -> items));

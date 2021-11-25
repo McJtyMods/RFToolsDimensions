@@ -37,7 +37,7 @@ public class KnowledgeHolderTileEntity extends GenericTileEntity {
 
     @Cap(type = CapType.CONTAINER)
     private final LazyOptional<INamedContainerProvider> screenHandler = LazyOptional.of(() -> new DefaultContainerProvider<GenericContainer>("Knowledge Holder")
-            .containerSupplier((windowId,player) -> new GenericContainer(WorkbenchModule.CONTAINER_HOLDER, windowId, CONTAINER_FACTORY, this))
+            .containerSupplier(windowId -> new GenericContainer(WorkbenchModule.CONTAINER_HOLDER, windowId, CONTAINER_FACTORY, this))
             .itemHandler(() -> items));
 
     public KnowledgeHolderTileEntity() {
