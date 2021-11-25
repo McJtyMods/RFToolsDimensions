@@ -44,6 +44,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Random;
 
+import static mcjty.lib.api.container.DefaultContainerProvider.container;
 import static mcjty.lib.builder.TooltipBuilder.*;
 import static mcjty.lib.container.SlotDefinition.specific;
 
@@ -67,7 +68,7 @@ public class DimensionBuilderTileEntity extends GenericTileEntity implements ITi
 
     @Cap(type = CapType.CONTAINER)
     private final LazyOptional<INamedContainerProvider> screenHandler = LazyOptional.of(() -> new DefaultContainerProvider<GenericContainer>("Dimension Builder")
-            .containerSupplier(windowId -> new GenericContainer(DimensionBuilderModule.CONTAINER_DIMENSION_BUILDER, windowId, CONTAINER_FACTORY, this))
+            .containerSupplier(container(DimensionBuilderModule.CONTAINER_DIMENSION_BUILDER, CONTAINER_FACTORY,this))
             .itemHandler(() -> items)
             .energyHandler(() -> energyStorage)
             .integerListener(Sync.integer(this::getBuildPercentage, v -> clientBuildPercentage = v))

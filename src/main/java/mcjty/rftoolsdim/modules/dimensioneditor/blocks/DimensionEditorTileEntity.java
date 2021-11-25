@@ -18,7 +18,6 @@ import mcjty.lib.varia.LevelTools;
 import mcjty.rftoolsbase.tools.ManualHelper;
 import mcjty.rftoolsdim.dimension.data.DimensionData;
 import mcjty.rftoolsdim.dimension.data.PersistantDimensionManager;
-import mcjty.rftoolsdim.modules.dimensionbuilder.DimensionBuilderModule;
 import mcjty.rftoolsdim.modules.dimensionbuilder.blocks.DimensionBuilderTileEntity;
 import mcjty.rftoolsdim.modules.dimensioneditor.DimensionEditorConfig;
 import mcjty.rftoolsdim.modules.dimensioneditor.DimensionEditorModule;
@@ -45,6 +44,7 @@ import net.minecraftforge.common.util.LazyOptional;
 
 import javax.annotation.Nonnull;
 
+import static mcjty.lib.api.container.DefaultContainerProvider.container;
 import static mcjty.lib.builder.TooltipBuilder.*;
 import static mcjty.lib.container.SlotDefinition.specific;
 import static net.minecraftforge.common.util.Constants.BlockFlags.BLOCK_UPDATE;
@@ -69,7 +69,7 @@ public class DimensionEditorTileEntity extends GenericTileEntity implements ITic
 
     @Cap(type = CapType.CONTAINER)
     private final LazyOptional<INamedContainerProvider> screenHandler = LazyOptional.of(() -> new DefaultContainerProvider<GenericContainer>("Dimension Builder")
-            .containerSupplier(windowId -> new GenericContainer(DimensionBuilderModule.CONTAINER_DIMENSION_BUILDER, windowId, CONTAINER_FACTORY, this))
+            .containerSupplier(container(DimensionEditorModule.CONTAINER_DIMENSION_EDITOR, CONTAINER_FACTORY,this))
             .itemHandler(() -> items)
             .energyHandler(() -> energyStorage)
             .setupSync(this));

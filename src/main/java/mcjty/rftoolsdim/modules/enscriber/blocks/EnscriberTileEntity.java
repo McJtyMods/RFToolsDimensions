@@ -44,6 +44,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
+import static mcjty.lib.api.container.DefaultContainerProvider.container;
 import static mcjty.lib.builder.TooltipBuilder.*;
 import static mcjty.lib.container.SlotDefinition.specific;
 
@@ -66,9 +67,10 @@ public class EnscriberTileEntity extends GenericTileEntity {
 
     @Cap(type = CapType.CONTAINER)
     private final LazyOptional<INamedContainerProvider> screenHandler = LazyOptional.of(() -> new DefaultContainerProvider<GenericContainer>("Dimlet Workbench")
-            .containerSupplier(windowId -> new GenericContainer(EnscriberModule.CONTAINER_ENSCRIBER, windowId, CONTAINER_FACTORY, this))
+            .containerSupplier(container(EnscriberModule.CONTAINER_ENSCRIBER, CONTAINER_FACTORY,this))
             .itemHandler(() -> items)
-            .shortListener(Sync.integer(() -> error.getCode().ordinal(), v -> clientErrorCode = v)));
+            .shortListener(Sync.integer(() -> error.getCode().ordinal(), v -> clientErrorCode = v))
+            .setupSync(this));
 
     public EnscriberTileEntity() {
         super(EnscriberModule.TYPE_ENSCRIBER.get());

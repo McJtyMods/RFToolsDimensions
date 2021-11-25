@@ -3,6 +3,7 @@ package mcjty.rftoolsdim.modules.workbench.blocks;
 import mcjty.lib.api.container.DefaultContainerProvider;
 import mcjty.lib.api.infusable.DefaultInfusable;
 import mcjty.lib.api.infusable.IInfusable;
+import mcjty.lib.bindings.GuiValue;
 import mcjty.lib.blocks.BaseBlock;
 import mcjty.lib.blocks.RotationType;
 import mcjty.lib.builder.BlockBuilder;
@@ -13,7 +14,6 @@ import mcjty.lib.tileentity.Cap;
 import mcjty.lib.tileentity.CapType;
 import mcjty.lib.tileentity.GenericEnergyStorage;
 import mcjty.lib.tileentity.GenericTileEntity;
-import mcjty.lib.varia.Sync;
 import mcjty.rftoolsbase.tools.ManualHelper;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletDictionary;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletKey;
@@ -44,6 +44,7 @@ import net.minecraftforge.common.util.LazyOptional;
 
 import javax.annotation.Nonnull;
 
+import static mcjty.lib.api.container.DefaultContainerProvider.container;
 import static mcjty.lib.builder.TooltipBuilder.*;
 import static mcjty.lib.container.SlotDefinition.generic;
 import static mcjty.lib.container.SlotDefinition.specific;
@@ -53,6 +54,7 @@ public class ResearcherTileEntity extends GenericTileEntity implements ITickable
     public static final int SLOT_IN = 0;
     public static final int SLOT_OUT = 1;
 
+    @GuiValue
     private int progress;
 
     public static final Lazy<ContainerFactory> CONTAINER_FACTORY = Lazy.of(() -> new ContainerFactory(2)
@@ -72,10 +74,10 @@ public class ResearcherTileEntity extends GenericTileEntity implements ITickable
 
     @Cap(type = CapType.CONTAINER)
     private final LazyOptional<INamedContainerProvider> screenHandler = LazyOptional.of(() -> new DefaultContainerProvider<GenericContainer>("Knowledge Holder")
-            .containerSupplier(windowId -> new GenericContainer(WorkbenchModule.CONTAINER_RESEARCHER, windowId, CONTAINER_FACTORY, this))
-            .integerListener(Sync.integer(() -> progress, v -> progress = v))
+            .containerSupplier(container(WorkbenchModule.CONTAINER_RESEARCHER, CONTAINER_FACTORY,this))
             .energyHandler(() -> energyStorage)
-            .itemHandler(() -> items));
+            .itemHandler(() -> items)
+            .setupSync(this));
 
     public static final VoxelShape SLAB = VoxelShapes.box(0f, 0f, 0f, 1f, 0.5f, 1f);
 

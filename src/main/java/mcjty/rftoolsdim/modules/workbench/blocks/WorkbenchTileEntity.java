@@ -52,6 +52,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
 
+import static mcjty.lib.api.container.DefaultContainerProvider.container;
 import static mcjty.lib.builder.TooltipBuilder.*;
 import static mcjty.lib.container.SlotDefinition.generic;
 import static mcjty.lib.container.SlotDefinition.specific;
@@ -81,8 +82,9 @@ public class WorkbenchTileEntity extends GenericTileEntity {
 
     @Cap(type = CapType.CONTAINER)
     private final LazyOptional<INamedContainerProvider> screenHandler = LazyOptional.of(() -> new DefaultContainerProvider<GenericContainer>("Dimlet Workbench")
-            .containerSupplier(windowId -> new GenericContainer(WorkbenchModule.CONTAINER_WORKBENCH, windowId, CONTAINER_FACTORY, this))
-            .itemHandler(() -> items));
+            .containerSupplier(container(WorkbenchModule.CONTAINER_WORKBENCH, CONTAINER_FACTORY,this))
+            .itemHandler(() -> items)
+            .setupSync(this));
 
     public WorkbenchTileEntity() {
         super(WorkbenchModule.TYPE_WORKBENCH.get());
