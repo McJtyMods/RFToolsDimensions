@@ -51,7 +51,7 @@ import static mcjty.lib.container.SlotDefinition.specific;
 public class DimensionBuilderTileEntity extends GenericTileEntity implements ITickableTileEntity {
 
     @GuiValue
-    private short errorMode = 0;
+    private int errorMode = 0;
 
     public static final int SLOT_DIMENSION_TAB = 0;
 
