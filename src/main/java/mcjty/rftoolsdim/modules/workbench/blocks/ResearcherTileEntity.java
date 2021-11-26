@@ -46,6 +46,7 @@ import javax.annotation.Nonnull;
 
 import static mcjty.lib.api.container.DefaultContainerProvider.container;
 import static mcjty.lib.builder.TooltipBuilder.*;
+import static mcjty.lib.container.GenericItemHandler.slot;
 import static mcjty.lib.container.SlotDefinition.generic;
 import static mcjty.lib.container.SlotDefinition.specific;
 
@@ -70,11 +71,19 @@ public class ResearcherTileEntity extends GenericTileEntity implements ITickable
             WorkbenchConfig.RESEARCHER_ENERGY_INPUT_PERTICK.get());
 
     @Cap(type = CapType.ITEMS_AUTOMATION)
-    private final GenericItemHandler items = createItemHandler();
+    private final GenericItemHandler items = GenericItemHandler.create(this, CONTAINER_FACTORY)
+            .itemValid((slot, stack) -> isResearchable(stack))
+            .insertable(slot(SLOT_IN))
+            .onUpdate((slot, stack) -> {
+                if (slot == SLOT_IN) {
+                    progress = getMaxProgress();
+                }
+            })
+            .build();
 
     @Cap(type = CapType.CONTAINER)
     private final LazyOptional<INamedContainerProvider> screenHandler = LazyOptional.of(() -> new DefaultContainerProvider<GenericContainer>("Knowledge Holder")
-            .containerSupplier(container(WorkbenchModule.CONTAINER_RESEARCHER, CONTAINER_FACTORY,this))
+            .containerSupplier(container(WorkbenchModule.CONTAINER_RESEARCHER, CONTAINER_FACTORY, this))
             .energyHandler(() -> energyStorage)
             .itemHandler(() -> items)
             .setupSync(this));
@@ -239,7 +248,7 @@ public class ResearcherTileEntity extends GenericTileEntity implements ITickable
 
     public int getProgressPercentage() {
         int max = getMaxProgress();
-        return (max-progress) * 100 / max;
+        return (max - progress) * 100 / max;
     }
 
     private int getMaxProgress() {
@@ -271,28 +280,4 @@ public class ResearcherTileEntity extends GenericTileEntity implements ITickable
         readItemHandlerCap(tagCompound);
     }
 
-    private GenericItemHandler createItemHandler() {
-        return new GenericItemHandler(this, CONTAINER_FACTORY.get()) {
-            @Override
-            public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
-                return isResearchable(stack);
-            }
-
-            @Override
-            public boolean isItemInsertable(int slot, @Nonnull ItemStack stack) {
-                if (slot == SLOT_OUT) {
-                    return false;
-                }
-                return isItemValid(slot, stack);
-            }
-
-            @Override
-            protected void onUpdate(int index, ItemStack stack) {
-                super.onUpdate(index, stack);
-                if (index == SLOT_IN) {
-                    progress = getMaxProgress();
-                }
-            }
-        };
-    }
 }

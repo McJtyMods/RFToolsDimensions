@@ -62,13 +62,15 @@ public class DimensionEditorTileEntity extends GenericTileEntity implements ITic
             .playerSlots(10, 70));
 
     @Cap(type = CapType.ITEMS_AUTOMATION)
-    private final GenericItemHandler items = GenericItemHandler.create(this, CONTAINER_FACTORY, (slot, stack) -> {
-        if (slot == SLOT_DIMENSIONTARGET) {
-            return DimensionBuilderTileEntity.isRealizedTab(stack);
-        } else {
-            return isValidInput(stack);
-        }
-    });
+    private final GenericItemHandler items = GenericItemHandler.create(this, CONTAINER_FACTORY)
+            .itemValid((slot, stack) -> {
+                if (slot == SLOT_DIMENSIONTARGET) {
+                    return DimensionBuilderTileEntity.isRealizedTab(stack);
+                } else {
+                    return isValidInput(stack);
+                }
+            })
+            .build();
 
     @Cap(type = CapType.ENERGY)
     private final GenericEnergyStorage energyStorage = new GenericEnergyStorage(this, true, DimensionEditorConfig.EDITOR_MAXENERGY.get(), DimensionEditorConfig.EDITOR_RECEIVEPERTICK.get());

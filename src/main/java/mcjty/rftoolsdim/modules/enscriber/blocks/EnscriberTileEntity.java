@@ -51,7 +51,7 @@ import static mcjty.lib.container.SlotDefinition.specific;
 public class EnscriberTileEntity extends GenericTileEntity {
 
     public static final int SLOT_DIMLETS = 0;
-    public static final int SIZE_DIMLETS = 13*7;
+    public static final int SIZE_DIMLETS = 13 * 7;
     public static final int SLOT_TAB = SLOT_DIMLETS + SIZE_DIMLETS;
 
     private DescriptorError error = DescriptorError.OK;
@@ -63,11 +63,21 @@ public class EnscriberTileEntity extends GenericTileEntity {
             .playerSlots(85, 142));
 
     @Cap(type = CapType.ITEMS_AUTOMATION)
-    private final GenericItemHandler items = createItemHandler();
+    private final GenericItemHandler items = GenericItemHandler.create(this, CONTAINER_FACTORY)
+            .slotLimit(1)
+            .itemValid((slot, stack) -> {
+                if (slot == SLOT_TAB) {
+                    return EnscriberTileEntity.isDimensionTab(stack);
+                }
+                return stack.getItem() instanceof DimletItem;
+            })
+            .onUpdate((slot, stack) -> validateDimlets())
+            .build();
+
 
     @Cap(type = CapType.CONTAINER)
     private final LazyOptional<INamedContainerProvider> screenHandler = LazyOptional.of(() -> new DefaultContainerProvider<GenericContainer>("Enscriber")
-            .containerSupplier(container(EnscriberModule.CONTAINER_ENSCRIBER, CONTAINER_FACTORY,this))
+            .containerSupplier(container(EnscriberModule.CONTAINER_ENSCRIBER, CONTAINER_FACTORY, this))
             .itemHandler(() -> items)
             .shortListener(Sync.integer(() -> error.getCode().ordinal(), v -> clientErrorCode = v))
             .setupSync(this));
@@ -107,7 +117,7 @@ public class EnscriberTileEntity extends GenericTileEntity {
     }
 
     private boolean checkOwnerDimlet() {
-        for (int i = 0 ; i < items.getSlots() ; i++) {
+        for (int i = 0; i < items.getSlots(); i++) {
             ItemStack stack = items.getStackInSlot(i);
             DimletKey dimletKey = DimletTools.getDimletKey(stack);
             if (DimletTools.isOwnerDimlet(dimletKey)) {
@@ -142,7 +152,7 @@ public class EnscriberTileEntity extends GenericTileEntity {
         }
 
         // Clear out the dimlets
-        for (int i = 0 ; i < SIZE_DIMLETS ; i++) {
+        for (int i = 0; i < SIZE_DIMLETS; i++) {
             items.setStackInSlot(i, ItemStack.EMPTY);
         }
 
@@ -195,7 +205,7 @@ public class EnscriberTileEntity extends GenericTileEntity {
 
         long forcedSeed = 0;
 
-        for (int i = 0 ; i < SIZE_DIMLETS ; i++) {
+        for (int i = 0; i < SIZE_DIMLETS; i++) {
             ItemStack stack = items.getStackInSlot(i + SLOT_DIMLETS);
             if (!stack.isEmpty()) {
                 DimletKey key = DimletTools.getDimletKey(stack);
@@ -271,26 +281,4 @@ public class EnscriberTileEntity extends GenericTileEntity {
             (te, player, params) -> te.extractDimlets());
 
 
-    private GenericItemHandler createItemHandler() {
-        return new GenericItemHandler(this, CONTAINER_FACTORY.get()) {
-            @Override
-            public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
-                if (slot == SLOT_TAB) {
-                    return EnscriberTileEntity.isDimensionTab(stack);
-                }
-                return stack.getItem() instanceof DimletItem;
-            }
-
-            @Override
-            protected void onUpdate(int index, ItemStack stack) {
-                super.onUpdate(index, stack);
-                validateDimlets();
-            }
-
-            @Override
-            public int getSlotLimit(int slot) {
-                return 1;
-            }
-        };
-    }
 }

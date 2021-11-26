@@ -45,7 +45,6 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fml.network.PacketDistributor;
 import net.minecraftforge.items.ItemHandlerHelper;
 
-import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -54,6 +53,7 @@ import java.util.function.Predicate;
 
 import static mcjty.lib.api.container.DefaultContainerProvider.container;
 import static mcjty.lib.builder.TooltipBuilder.*;
+import static mcjty.lib.container.GenericItemHandler.notslot;
 import static mcjty.lib.container.SlotDefinition.generic;
 import static mcjty.lib.container.SlotDefinition.specific;
 import static mcjty.rftoolsdim.modules.knowledge.data.DimletPattern.PATTERN_DIM;
@@ -78,7 +78,25 @@ public class WorkbenchTileEntity extends GenericTileEntity {
             .playerSlots(11, 158));
 
     @Cap(type = CapType.ITEMS_AUTOMATION)
-    private final GenericItemHandler items = createItemHandler();
+    private final GenericItemHandler items = GenericItemHandler.create(this, CONTAINER_FACTORY)
+            .itemValid((slot, stack) -> {
+                switch (slot) {
+                    case SLOT_EMPTY_DIMLET:
+                        return DimletItem.isEmptyDimlet(stack);
+                    case SLOT_MEMORY_PART:
+                        return stack.getItem() instanceof PartItem;
+                    case SLOT_ENERGY_PART:
+                        return stack.getItem() instanceof PartItem;
+                    case SLOT_ESSENCE:
+                        return true;
+                    case SLOT_OUTPUT:
+                        return DimletItem.isReadyDimlet(stack);
+                    default:
+                        return isValidPatternItem(stack);
+                }
+            })
+            .insertable(notslot(SLOT_OUTPUT))
+            .build();
 
     @Cap(type = CapType.CONTAINER)
     private final LazyOptional<INamedContainerProvider> screenHandler = LazyOptional.of(() -> new DefaultContainerProvider<GenericContainer>("Dimlet Workbench")
@@ -248,36 +266,6 @@ public class WorkbenchTileEntity extends GenericTileEntity {
     @ServerCommand
     public static final Command<?> CMD_CREATE_DIMLET = Command.<WorkbenchTileEntity>create("workbench.createDimlet",
         (te, player, params) -> te.cheatDimlet(player, new DimletKey(DimletType.byName(params.get(PARAM_TYPE)), params.get(PARAM_ID))));
-
-    private GenericItemHandler createItemHandler() {
-        return new GenericItemHandler(this, CONTAINER_FACTORY.get()) {
-            @Override
-            public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
-                switch (slot) {
-                    case SLOT_EMPTY_DIMLET:
-                        return DimletItem.isEmptyDimlet(stack);
-                    case SLOT_MEMORY_PART:
-                        return stack.getItem() instanceof PartItem;
-                    case SLOT_ENERGY_PART:
-                        return stack.getItem() instanceof PartItem;
-                    case SLOT_ESSENCE:
-                        return true;
-                    case SLOT_OUTPUT:
-                        return DimletItem.isReadyDimlet(stack);
-                    default:
-                        return isValidPatternItem(stack);
-                }
-            }
-
-            @Override
-            public boolean isItemInsertable(int slot, @Nonnull ItemStack stack) {
-                if (slot == SLOT_OUTPUT) {
-                    return false;
-                }
-                return isItemValid(slot, stack);
-            }
-        };
-    }
 
     private Set<KnowledgeKey> getSupportedKnowledgeKeys() {
         Set<KnowledgeKey> knownKeys = new HashSet<>();
