@@ -24,7 +24,6 @@ import mcjty.rftoolsdim.modules.dimensionbuilder.blocks.DimensionBuilderTileEnti
 import mcjty.rftoolsdim.modules.dimensioneditor.DimensionEditorConfig;
 import mcjty.rftoolsdim.modules.dimensioneditor.DimensionEditorModule;
 import mcjty.rftoolsdim.modules.dimlets.data.*;
-import mcjty.rftoolsdim.modules.dimlets.items.DimletItem;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -39,7 +38,6 @@ import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.ISeedReader;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.server.ServerWorld;
@@ -124,9 +122,13 @@ public class DimensionEditorTileEntity extends GenericTileEntity implements ITic
     }
 
     private static boolean isValidInput(net.minecraft.item.ItemStack s) {
-        return DimletItem.isReadyDimlet(s) ||
-                s.getItem() == Items.TNT ||
-                "rftoolsutility:matter_receiver".equals(s.getItem().getRegistryName().toString());
+        if ("rftoolsutility:matter_receiver".equals(s.getItem().getRegistryName().toString())) {
+            return true;
+        }
+        // @todo 1.16 the other items are currently not implemented yet
+        return false;
+//        return DimletItem.isReadyDimlet(s) ||
+//                s.getItem() == Items.TNT;
     }
 
 
