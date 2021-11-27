@@ -15,7 +15,9 @@ import mcjty.lib.tileentity.CapType;
 import mcjty.lib.tileentity.GenericEnergyStorage;
 import mcjty.lib.tileentity.GenericTileEntity;
 import mcjty.lib.varia.LevelTools;
+import mcjty.lib.varia.NBTTools;
 import mcjty.rftoolsbase.tools.ManualHelper;
+import mcjty.rftoolsdim.compat.RFToolsUtilityCompat;
 import mcjty.rftoolsdim.dimension.data.DimensionData;
 import mcjty.rftoolsdim.dimension.data.PersistantDimensionManager;
 import mcjty.rftoolsdim.modules.dimensionbuilder.blocks.DimensionBuilderTileEntity;
@@ -31,13 +33,16 @@ import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.state.EnumProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.Heightmap;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.common.util.LazyOptional;
@@ -194,7 +199,7 @@ public class DimensionEditorTileEntity extends GenericTileEntity implements ITic
                     DimensionData data = PersistantDimensionManager.get(level).getData(id);
 
                     if (isMatterReceiver(injectableItemStack)) {
-                        World dimWorld = LevelTools.getLevel(level, LevelTools.getId(id));
+                        ServerWorld dimWorld = LevelTools.getLevel(level, LevelTools.getId(id));
                         int y = findGoodReceiverLocation(dimWorld);
                         if (y == -1) {
                             y = dimWorld.getHeight() / 2;
@@ -207,7 +212,10 @@ public class DimensionEditorTileEntity extends GenericTileEntity implements ITic
                             dimWorld.setBlock(pos, state, BLOCK_UPDATE);
                             Block block = dimWorld.getBlockState(pos).getBlock();
                             // @@@@@@@@@@@@@@ check if right?
-                            block.setPlacedBy(dimWorld, pos, state, null, ItemStack.EMPTY);
+                            String name = NBTTools.getInfoNBT(injectableItemStack, CompoundNBT::getString, "tpName", "");
+                            long energy = NBTTools.getBlockEntityNBT(injectableItemStack, CompoundNBT::getLong, "Energy", 0L);
+                            RFToolsUtilityCompat.createTeleporter(dimWorld, pos, name, (int) energy);
+                            block.setPlacedBy(dimWorld, pos, state, null, injectableItemStack);
 //                            block.onBlockActivated(dimWorld, pos, state, FakePlayerFactory.getMinecraft((WorldServer) dimWorld), EnumHand.MAIN_HAND, EnumFacing.DOWN, 0.0F, 0.0F, 0.0F);
 //                            block.onBlockPlacedBy(dimWorld, pos, state, null, injectableItemStack);
                             dimWorld.setBlock(pos.above(), Blocks.AIR.defaultBlockState(), BLOCK_UPDATE);

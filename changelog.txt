@@ -1,5 +1,6 @@
 Upcoming:
 - Fixed a bug with the block absorber. It would only be able to absorb blocks that the player can break by hand
+- The Dimension Editor is back. For now only for sending over matter receivers
 
 1.16-7.0.15-beta:
 - Fixed the block and fluid absorbers so that they no longer destroy blocks they shouldn't (like bedrock)

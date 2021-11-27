@@ -34,6 +34,12 @@ public class RFToolsUtilityCompat {
         }
     }
 
+    public static void createTeleporter(ISeedReader reader, BlockPos pos, String name, int power) {
+        if (teleportationManager != null) {
+            teleportationManager.createReceiver(reader.getLevel(), pos, name, power);
+        }
+    }
+
     public static class GetTeleportationManager implements Function<ITeleportationManager, Void> {
 
         @Override
