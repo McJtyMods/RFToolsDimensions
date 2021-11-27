@@ -10,6 +10,7 @@ import mcjty.lib.gui.widgets.Label;
 import mcjty.lib.gui.widgets.Panel;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.modules.dimensionbuilder.DimensionBuilderModule;
+import mcjty.rftoolsdim.modules.dimensioneditor.DimensionEditorModule;
 import mcjty.rftoolsdim.modules.dimensioneditor.blocks.DimensionEditorTileEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Slot;
@@ -18,8 +19,7 @@ import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
 
-import static mcjty.lib.gui.widgets.Widgets.horizontal;
-import static mcjty.lib.gui.widgets.Widgets.label;
+import static mcjty.lib.gui.widgets.Widgets.*;
 
 public class GuiDimensionEditor extends GenericGuiContainer<DimensionEditorTileEntity, GenericContainer> {
     public static final int WIDTH = 180;
@@ -34,7 +34,7 @@ public class GuiDimensionEditor extends GenericGuiContainer<DimensionEditorTileE
     private static final ResourceLocation iconGuiElements = new ResourceLocation(RFToolsDim.MODID, "textures/gui/guielements.png");
 
     public GuiDimensionEditor(DimensionEditorTileEntity tileEntity, GenericContainer container, PlayerInventory inventory) {
-        super(tileEntity, container, inventory, DimensionBuilderModule.DIMENSION_BUILDER.get().getManualEntry());
+        super(tileEntity, container, inventory, DimensionEditorModule.DIMENSION_EDITOR.get().getManualEntry());
 
         imageWidth = WIDTH;
         imageHeight = HEIGHT;
@@ -53,7 +53,7 @@ public class GuiDimensionEditor extends GenericGuiContainer<DimensionEditorTileE
 
         percentage = label(80, 43, 40, 16, "0%");
 
-        Panel toplevel = horizontal().background(iconLocation).children(energyBar, arrow, percentage, destroy);
+        Panel toplevel = positional().background(iconLocation).children(energyBar, arrow, percentage, destroy);
         toplevel.bounds(leftPos, topPos, imageWidth, imageHeight);
 
         window = new Window(this, toplevel);

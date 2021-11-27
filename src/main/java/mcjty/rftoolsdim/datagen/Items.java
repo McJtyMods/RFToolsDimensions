@@ -26,7 +26,7 @@ public class Items extends BaseItemModelProvider {
     @Override
     protected void registerModels() {
         parentedBlock(DimensionBuilderModule.DIMENSION_BUILDER.get(), "block/dimension_builder");
-        parentedBlock(DimensionEditorModule.DIMENSION_EDITOR.get(), "block/dimension_editor");
+        parentedBlock(DimensionEditorModule.DIMENSION_EDITOR.get(), "block/dimensioneditor");
         parentedBlock(WorkbenchModule.WORKBENCH.get(), "block/dimlet_workbench");
         parentedBlock(WorkbenchModule.HOLDER.get(), "block/knowledge_holder");
         parentedBlock(WorkbenchModule.RESEARCHER.get(), "block/researcher");

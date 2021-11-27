@@ -297,6 +297,9 @@ public class DimensionEditorTileEntity extends GenericTileEntity implements ITic
         if (y == -1) {
             return -1;
         }
+        if (y == 0) {
+            y = 65;
+        }
 
         y--;            // y should now be at a solid or liquid block.
 

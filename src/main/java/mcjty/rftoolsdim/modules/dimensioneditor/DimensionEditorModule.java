@@ -4,7 +4,6 @@ import mcjty.lib.blocks.BaseBlock;
 import mcjty.lib.container.GenericContainer;
 import mcjty.lib.gui.GenericGuiContainer;
 import mcjty.lib.modules.IModule;
-import mcjty.rftoolsdim.modules.dimensionbuilder.client.DimensionBuilderRenderer;
 import mcjty.rftoolsdim.modules.dimensioneditor.blocks.DimensionEditorTileEntity;
 import mcjty.rftoolsdim.modules.dimensioneditor.client.GuiDimensionEditor;
 import mcjty.rftoolsdim.setup.Config;
@@ -39,7 +38,6 @@ public class DimensionEditorModule implements IModule {
         event.enqueueWork(() -> {
             GenericGuiContainer.register(CONTAINER_DIMENSION_EDITOR.get(), GuiDimensionEditor::new);
         });
-        DimensionBuilderRenderer.register();
     }
 
     @Override
