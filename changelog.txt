@@ -1,4 +1,4 @@
-Upcoming:
+1.16-7.0.16-beta:
 - Updated to latest version of McJtyLib
 - Fixed a bug with the block absorber. It would only be able to absorb blocks that the player can break by hand
 - The Dimension Editor is back. For now only for sending over matter receivers
