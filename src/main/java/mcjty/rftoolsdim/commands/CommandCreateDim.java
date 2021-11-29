@@ -23,8 +23,8 @@ public class CommandCreateDim implements Command<CommandSource> {
                 .requires(cs -> cs.hasPermission(1))
                 .then(Commands.argument("name", StringArgumentType.word())
                         .then(Commands.argument("descriptor", StringArgumentType.string())
-                                .then(Commands.argument("seed", LongArgumentType.longArg()))
-                                .executes(CMD)));
+                                .then(Commands.argument("seed", LongArgumentType.longArg())
+                                        .executes(CMD))));
     }
 
     @Override
