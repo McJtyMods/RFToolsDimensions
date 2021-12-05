@@ -259,13 +259,13 @@ public class WorkbenchTileEntity extends GenericTileEntity {
         (te, player, params) -> te.suggestParts(player, new DimletKey(DimletType.byName(params.get(PARAM_TYPE)), params.get(PARAM_ID))));
     @ServerCommand
     public static final Command<?> CMD_CHEATDIMLET = Command.<WorkbenchTileEntity>create("workbench.cheatDimlet",
-        (te, player, params) -> te.createDimlet());
+        (te, player, params) -> te.cheatDimlet(player, new DimletKey(DimletType.byName(params.get(PARAM_TYPE)), params.get(PARAM_ID))));
     @ServerCommand
     public static final Command<?> CMD_HILIGHT_PATTERN = Command.<WorkbenchTileEntity>create("workbench.hilightPattern",
         (te, player, params) -> te.hilightPattern(player, new DimletKey(DimletType.byName(params.get(PARAM_TYPE)), params.get(PARAM_ID))));
     @ServerCommand
     public static final Command<?> CMD_CREATE_DIMLET = Command.<WorkbenchTileEntity>create("workbench.createDimlet",
-        (te, player, params) -> te.cheatDimlet(player, new DimletKey(DimletType.byName(params.get(PARAM_TYPE)), params.get(PARAM_ID))));
+        (te, player, params) -> te.createDimlet());
 
     private Set<KnowledgeKey> getSupportedKnowledgeKeys() {
         Set<KnowledgeKey> knownKeys = new HashSet<>();
