@@ -68,12 +68,12 @@ public class WorkbenchTileEntity extends GenericTileEntity {
     public static final int SLOT_OUTPUT = 4;
     public static final int SLOT_PATTERN = 5;
 
-    public static final Lazy<ContainerFactory> CONTAINER_FACTORY = Lazy.of(() -> new ContainerFactory(4 + PATTERN_DIM* PATTERN_DIM + 1)
+    public static final Lazy<ContainerFactory> CONTAINER_FACTORY = Lazy.of(() -> new ContainerFactory(4 + PATTERN_DIM * PATTERN_DIM + 1)
             .slot(specific(DimletItem::isEmptyDimlet).in().out(), SLOT_EMPTY_DIMLET, 11, 7)
             .slot(specific(s -> s.getItem() instanceof PartItem).in().out(), SLOT_MEMORY_PART, 33, 7)
             .slot(specific(s -> s.getItem() instanceof PartItem).in().out(), SLOT_ENERGY_PART, 55, 7)
             .slot(generic().in().out(), SLOT_ESSENCE, 77, 7)
-            .slot(generic().out(), SLOT_OUTPUT, 232, 158+18+18+22)
+            .slot(generic().out(), SLOT_OUTPUT, 232, 158 + 18 + 18 + 22)
             .box(specific(WorkbenchTileEntity::isValidPatternItem).in().out(), SLOT_PATTERN, 11, 28, PATTERN_DIM, PATTERN_DIM)
             .playerSlots(11, 158));
 
@@ -100,7 +100,7 @@ public class WorkbenchTileEntity extends GenericTileEntity {
 
     @Cap(type = CapType.CONTAINER)
     private final LazyOptional<INamedContainerProvider> screenHandler = LazyOptional.of(() -> new DefaultContainerProvider<GenericContainer>("Dimlet Workbench")
-            .containerSupplier(container(WorkbenchModule.CONTAINER_WORKBENCH, CONTAINER_FACTORY,this))
+            .containerSupplier(container(WorkbenchModule.CONTAINER_WORKBENCH, CONTAINER_FACTORY, this))
             .itemHandler(() -> items)
             .setupSync(this));
 
@@ -147,9 +147,9 @@ public class WorkbenchTileEntity extends GenericTileEntity {
 
         String[] pattern = new String[PATTERN_DIM];
         int slot = SLOT_PATTERN;
-        for (int y = 0 ; y < PATTERN_DIM ; y++) {
+        for (int y = 0; y < PATTERN_DIM; y++) {
             String p = "";
-            for (int x = 0 ; x < PATTERN_DIM ; x++) {
+            for (int x = 0; x < PATTERN_DIM; x++) {
                 ItemStack stack = items.getStackInSlot(slot);
                 char c = KnowledgeManager.getPatternChar(stack);
                 p += c;
@@ -171,7 +171,7 @@ public class WorkbenchTileEntity extends GenericTileEntity {
         items.decrStackSize(SLOT_MEMORY_PART, 1);
         items.decrStackSize(SLOT_ENERGY_PART, 1);
         items.decrStackSize(SLOT_ESSENCE, 1);
-        for (int i = SLOT_PATTERN ; i <= SLOT_PATTERN + PATTERN_DIM * PATTERN_DIM ; i++) {
+        for (int i = SLOT_PATTERN; i <= SLOT_PATTERN + PATTERN_DIM * PATTERN_DIM; i++) {
             items.decrStackSize(i, 1);
         }
         items.setStackInSlot(SLOT_OUTPUT, dimletStack);
@@ -256,16 +256,16 @@ public class WorkbenchTileEntity extends GenericTileEntity {
 
     @ServerCommand
     public static final Command<?> CMD_SUGGESTPARTS = Command.<WorkbenchTileEntity>create("workbench.suggestParts",
-        (te, player, params) -> te.suggestParts(player, new DimletKey(DimletType.byName(params.get(PARAM_TYPE)), params.get(PARAM_ID))));
+            (te, player, params) -> te.suggestParts(player, new DimletKey(DimletType.byName(params.get(PARAM_TYPE)), params.get(PARAM_ID))));
     @ServerCommand
     public static final Command<?> CMD_CHEATDIMLET = Command.<WorkbenchTileEntity>create("workbench.cheatDimlet",
-        (te, player, params) -> te.createDimlet());
+            (te, player, params) -> te.cheatDimlet(player, new DimletKey(DimletType.byName(params.get(PARAM_TYPE)), params.get(PARAM_ID))));
     @ServerCommand
     public static final Command<?> CMD_HILIGHT_PATTERN = Command.<WorkbenchTileEntity>create("workbench.hilightPattern",
-        (te, player, params) -> te.hilightPattern(player, new DimletKey(DimletType.byName(params.get(PARAM_TYPE)), params.get(PARAM_ID))));
+            (te, player, params) -> te.hilightPattern(player, new DimletKey(DimletType.byName(params.get(PARAM_TYPE)), params.get(PARAM_ID))));
     @ServerCommand
     public static final Command<?> CMD_CREATE_DIMLET = Command.<WorkbenchTileEntity>create("workbench.createDimlet",
-        (te, player, params) -> te.cheatDimlet(player, new DimletKey(DimletType.byName(params.get(PARAM_TYPE)), params.get(PARAM_ID))));
+            (te, player, params) -> te.createDimlet());
 
     private Set<KnowledgeKey> getSupportedKnowledgeKeys() {
         Set<KnowledgeKey> knownKeys = new HashSet<>();

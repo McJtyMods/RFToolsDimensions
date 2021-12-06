@@ -1,3 +1,7 @@
+Upcoming:
+- Cheating dimlets (in creative mode) with the dimlet workbench didn't work
+- Creating dimlets with the dimlet workbench didn't work
+
 1.16-7.0.17-beta:
 - Fixed the rftoolsdim create command
 
