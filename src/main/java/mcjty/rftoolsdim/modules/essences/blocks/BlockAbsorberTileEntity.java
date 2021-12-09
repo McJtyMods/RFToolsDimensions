@@ -4,6 +4,7 @@ import mcjty.lib.blocks.BaseBlock;
 import mcjty.lib.blocks.RotationType;
 import mcjty.lib.builder.BlockBuilder;
 import mcjty.lib.tileentity.GenericTileEntity;
+import mcjty.lib.tileentity.TickingTileEntity;
 import mcjty.lib.varia.FakePlayerGetter;
 import mcjty.lib.varia.NBTTools;
 import mcjty.lib.varia.SoundTools;
@@ -47,7 +48,7 @@ import net.minecraft.block.AbstractBlock;
 
 import javax.annotation.Nonnull;
 
-public class BlockAbsorberTileEntity extends GenericTileEntity implements ITickableTileEntity {
+public class BlockAbsorberTileEntity extends TickingTileEntity {
 
     private static final int ABSORB_SPEED = 2;
 
@@ -120,17 +121,8 @@ public class BlockAbsorberTileEntity extends GenericTileEntity implements ITicka
         }
     }
 
-
     @Override
-    public void tick() {
-        if (level.isClientSide) {
-            tickClient();
-        } else {
-            tickServer();
-        }
-    }
-
-    private void tickServer() {
+    protected void tickServer() {
         if (absorbing > 0 || absorbingBlock == null) {
             timer--;
             if (timer <= 0) {
@@ -177,7 +169,8 @@ public class BlockAbsorberTileEntity extends GenericTileEntity implements ITicka
         }
     }
 
-    private void tickClient() {
+    @Override
+    protected void tickClient() {
         if (absorbing > 0) {
             Random rand = level.random;
 

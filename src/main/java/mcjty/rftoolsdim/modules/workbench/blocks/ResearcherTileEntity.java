@@ -10,10 +10,7 @@ import mcjty.lib.builder.BlockBuilder;
 import mcjty.lib.container.ContainerFactory;
 import mcjty.lib.container.GenericContainer;
 import mcjty.lib.container.GenericItemHandler;
-import mcjty.lib.tileentity.Cap;
-import mcjty.lib.tileentity.CapType;
-import mcjty.lib.tileentity.GenericEnergyStorage;
-import mcjty.lib.tileentity.GenericTileEntity;
+import mcjty.lib.tileentity.*;
 import mcjty.rftoolsbase.tools.ManualHelper;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletDictionary;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletKey;
@@ -50,7 +47,7 @@ import static mcjty.lib.container.GenericItemHandler.slot;
 import static mcjty.lib.container.SlotDefinition.generic;
 import static mcjty.lib.container.SlotDefinition.specific;
 
-public class ResearcherTileEntity extends GenericTileEntity implements ITickableTileEntity {
+public class ResearcherTileEntity extends TickingTileEntity {
 
     public static final int SLOT_IN = 0;
     public static final int SLOT_OUT = 1;
@@ -137,25 +134,23 @@ public class ResearcherTileEntity extends GenericTileEntity implements ITickable
     }
 
     @Override
-    public void tick() {
-        if (!level.isClientSide) {
-            if (!items.getStackInSlot(SLOT_OUT).isEmpty()) {
-                return; // Can't do anything
-            }
+    protected void tickServer() {
+        if (!items.getStackInSlot(SLOT_OUT).isEmpty()) {
+            return; // Can't do anything
+        }
 
-            long consume = (long) (WorkbenchConfig.RESEARCHER_USE_PER_TICK.get() / (1 + infusable.getInfusedFactor() / 3.0f));
-            if (energyStorage.getEnergy() >= consume) {
-                ItemStack stack = items.getStackInSlot(SLOT_IN);
-                if (!stack.isEmpty()) {
-                    progress--;
-                    if (progress <= 0) {
-                        progress = 0;
-                        research();
-                        markDirtyClient();
-                    }
-                    energyStorage.consumeEnergy(consume);
-                    markDirtyQuick();
+        long consume = (long) (WorkbenchConfig.RESEARCHER_USE_PER_TICK.get() / (1 + infusable.getInfusedFactor() / 3.0f));
+        if (energyStorage.getEnergy() >= consume) {
+            ItemStack stack = items.getStackInSlot(SLOT_IN);
+            if (!stack.isEmpty()) {
+                progress--;
+                if (progress <= 0) {
+                    progress = 0;
+                    research();
+                    markDirtyClient();
                 }
+                energyStorage.consumeEnergy(consume);
+                markDirtyQuick();
             }
         }
     }

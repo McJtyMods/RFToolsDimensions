@@ -4,6 +4,7 @@ import mcjty.lib.blocks.BaseBlock;
 import mcjty.lib.blocks.RotationType;
 import mcjty.lib.builder.BlockBuilder;
 import mcjty.lib.tileentity.GenericTileEntity;
+import mcjty.lib.tileentity.TickingTileEntity;
 import mcjty.lib.varia.NBTTools;
 import mcjty.rftoolsbase.tools.ManualHelper;
 import mcjty.rftoolsdim.compat.RFToolsDimensionsTOPDriver;
@@ -25,7 +26,7 @@ import static mcjty.lib.builder.TooltipBuilder.*;
 
 import net.minecraft.block.AbstractBlock;
 
-public class BiomeAbsorberTileEntity extends GenericTileEntity implements ITickableTileEntity {
+public class BiomeAbsorberTileEntity extends TickingTileEntity {
 
     public BiomeAbsorberTileEntity() {
         super(EssencesModule.TYPE_BIOME_ABSORBER.get());
@@ -90,14 +91,6 @@ public class BiomeAbsorberTileEntity extends GenericTileEntity implements ITicka
     }
 
     @Override
-    public void tick() {
-        if (level.isClientSide) {
-            tickClient();
-        } else {
-            tickServer();
-        }
-    }
-
     protected void tickClient() {
         if (absorbing > 0) {
             Random rand = level.random;
@@ -121,6 +114,7 @@ public class BiomeAbsorberTileEntity extends GenericTileEntity implements ITicka
         return biomeId;
     }
 
+    @Override
     protected void tickServer() {
         if (biomeId == null) {
             Biome biome = getLevel().getBiome(getBlockPos());

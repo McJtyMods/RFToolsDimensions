@@ -13,7 +13,7 @@ import mcjty.lib.container.GenericItemHandler;
 import mcjty.lib.tileentity.Cap;
 import mcjty.lib.tileentity.CapType;
 import mcjty.lib.tileentity.GenericEnergyStorage;
-import mcjty.lib.tileentity.GenericTileEntity;
+import mcjty.lib.tileentity.TickingTileEntity;
 import mcjty.lib.varia.Sync;
 import mcjty.rftoolsbase.tools.ManualHelper;
 import mcjty.rftoolsdim.RFToolsDim;
@@ -32,7 +32,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
-import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -48,7 +47,7 @@ import static mcjty.lib.api.container.DefaultContainerProvider.container;
 import static mcjty.lib.builder.TooltipBuilder.*;
 import static mcjty.lib.container.SlotDefinition.specific;
 
-public class DimensionBuilderTileEntity extends GenericTileEntity implements ITickableTileEntity {
+public class DimensionBuilderTileEntity extends TickingTileEntity {
 
     @GuiValue
     private int errorMode = 0;
@@ -137,29 +136,26 @@ public class DimensionBuilderTileEntity extends GenericTileEntity implements ITi
     }
 
     @Override
-    public void tick() {
-        if (!level.isClientSide) {
-            CompoundNBT tagCompound = hasTab();
-            if (tagCompound == null) {
-                setState(-1);
-                return;
-            }
-
-            if (!isMachineEnabled()) {
-                setState(-1);
-                return;
-            }
-
-            int ticksLeft = tagCompound.getInt("ticksLeft");
-            if (ticksLeft > 0) {
-                ticksLeft = createDimensionTick(tagCompound, ticksLeft);
-            } else {
-                maintainDimensionTick(tagCompound);
-            }
-
-            setState(ticksLeft);
-
+    public void tickServer() {
+        CompoundNBT tagCompound = hasTab();
+        if (tagCompound == null) {
+            setState(-1);
+            return;
         }
+
+        if (!isMachineEnabled()) {
+            setState(-1);
+            return;
+        }
+
+        int ticksLeft = tagCompound.getInt("ticksLeft");
+        if (ticksLeft > 0) {
+            ticksLeft = createDimensionTick(tagCompound, ticksLeft);
+        } else {
+            maintainDimensionTick(tagCompound);
+        }
+
+        setState(ticksLeft);
     }
 
     private void maintainDimensionTick(CompoundNBT tagCompound) {

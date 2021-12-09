@@ -13,7 +13,7 @@ import mcjty.lib.container.GenericItemHandler;
 import mcjty.lib.tileentity.Cap;
 import mcjty.lib.tileentity.CapType;
 import mcjty.lib.tileentity.GenericEnergyStorage;
-import mcjty.lib.tileentity.GenericTileEntity;
+import mcjty.lib.tileentity.TickingTileEntity;
 import mcjty.lib.varia.LevelTools;
 import mcjty.lib.varia.NBTTools;
 import mcjty.rftoolsbase.tools.ManualHelper;
@@ -35,7 +35,6 @@ import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.state.EnumProperty;
 import net.minecraft.state.StateContainer;
-import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -52,7 +51,7 @@ import static mcjty.lib.builder.TooltipBuilder.*;
 import static mcjty.lib.container.SlotDefinition.specific;
 import static net.minecraftforge.common.util.Constants.BlockFlags.BLOCK_UPDATE;
 
-public class DimensionEditorTileEntity extends GenericTileEntity implements ITickableTileEntity {
+public class DimensionEditorTileEntity extends TickingTileEntity {
 
     public static final EnumProperty<DimensionBuilderTileEntity.OperationType> OPERATIONTYPE = EnumProperty.create("operationtype", DimensionBuilderTileEntity.OperationType.class);
 
@@ -96,7 +95,6 @@ public class DimensionEditorTileEntity extends GenericTileEntity implements ITic
     private int rfPerTick = -1;
     private int state = 0;          // For front state
 
-
     public DimensionEditorTileEntity() {
         super(DimensionEditorModule.TYPE_DIMENSION_EDITOR.get());
     }
@@ -137,11 +135,7 @@ public class DimensionEditorTileEntity extends GenericTileEntity implements ITic
     }
 
     @Override
-    public void tick() {
-        if (level.isClientSide()) {
-            return;
-        }
-
+    public void tickServer() {
         if (ticksLeft == -1) {
             editPercentage = 0;
         } else {

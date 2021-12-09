@@ -4,6 +4,7 @@ import mcjty.lib.blocks.BaseBlock;
 import mcjty.lib.blocks.RotationType;
 import mcjty.lib.builder.BlockBuilder;
 import mcjty.lib.tileentity.GenericTileEntity;
+import mcjty.lib.tileentity.TickingTileEntity;
 import mcjty.lib.varia.FakePlayerGetter;
 import mcjty.lib.varia.FluidTools;
 import mcjty.lib.varia.NBTTools;
@@ -39,7 +40,7 @@ import java.util.Set;
 
 import static mcjty.lib.builder.TooltipBuilder.*;
 
-public class FluidAbsorberTileEntity extends GenericTileEntity implements ITickableTileEntity {
+public class FluidAbsorberTileEntity extends TickingTileEntity {
 
     private static final int ABSORB_SPEED = 2;
 
@@ -112,17 +113,8 @@ public class FluidAbsorberTileEntity extends GenericTileEntity implements ITicka
         }
     }
 
-
     @Override
-    public void tick() {
-        if (level.isClientSide) {
-            tickClient();
-        } else {
-            tickServer();
-        }
-    }
-
-    private void tickServer() {
+    protected void tickServer() {
         if (absorbing > 0 || absorbingBlock == null) {
             timer--;
             if (timer <= 0) {
@@ -172,7 +164,8 @@ public class FluidAbsorberTileEntity extends GenericTileEntity implements ITicka
         }
     }
 
-    private void tickClient() {
+    @Override
+    protected void tickClient() {
         if (absorbing > 0) {
             Random rand = level.random;
 
