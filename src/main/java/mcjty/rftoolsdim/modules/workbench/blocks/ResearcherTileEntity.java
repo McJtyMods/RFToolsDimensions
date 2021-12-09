@@ -264,13 +264,13 @@ public class ResearcherTileEntity extends TickingTileEntity {
     }
 
     @Override
-    public void writeClientDataToNBT(CompoundNBT tagCompound) {
+    public void saveClientDataToNBT(CompoundNBT tagCompound) {
         // Item is required at client side because it is rendered in world
         saveItemHandlerCap(tagCompound);
     }
 
     @Override
-    public void readClientDataFromNBT(CompoundNBT tagCompound) {
+    public void loadClientDataFromNBT(CompoundNBT tagCompound) {
         loadItemHandlerCap(tagCompound);
     }
 

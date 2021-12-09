@@ -111,7 +111,7 @@ public class DimensionBuilderTileEntity extends TickingTileEntity {
     @Override
     public SUpdateTileEntityPacket getUpdatePacket() {
         CompoundNBT nbtTag = new CompoundNBT();
-        this.writeClientDataToNBT(nbtTag);
+        this.saveClientDataToNBT(nbtTag);
         nbtTag.putInt("errorMode", errorMode);
         return new SUpdateTileEntityPacket(worldPosition, 1, nbtTag);
     }
@@ -320,12 +320,12 @@ public class DimensionBuilderTileEntity extends TickingTileEntity {
     }
 
     @Override
-    public void readClientDataFromNBT(CompoundNBT tagCompound) {
+    public void loadClientDataFromNBT(CompoundNBT tagCompound) {
         loadItemHandlerCap(tagCompound);
     }
 
     @Override
-    public void writeClientDataToNBT(CompoundNBT tagCompound) {
+    public void saveClientDataToNBT(CompoundNBT tagCompound) {
         saveItemHandlerCap(tagCompound);
     }
 
