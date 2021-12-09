@@ -243,8 +243,8 @@ public class BlockAbsorberTileEntity extends GenericTileEntity implements ITicka
     }
 
     @Override
-    public void read(CompoundNBT tagCompound) {
-        super.read(tagCompound);
+    public void load(CompoundNBT tagCompound) {
+        super.load(tagCompound);
         int[] x = tagCompound.getIntArray("toscanx");
         int[] y = tagCompound.getIntArray("toscany");
         int[] z = tagCompound.getIntArray("toscanz");
@@ -255,8 +255,8 @@ public class BlockAbsorberTileEntity extends GenericTileEntity implements ITicka
     }
 
     @Override
-    protected void readInfo(CompoundNBT tagCompound) {
-        super.readInfo(tagCompound);
+    protected void loadInfo(CompoundNBT tagCompound) {
+        super.loadInfo(tagCompound);
         if (tagCompound.contains("Info")) {
             CompoundNBT info = tagCompound.getCompound("Info");
             absorbing = info.getInt("absorbing");
@@ -269,10 +269,9 @@ public class BlockAbsorberTileEntity extends GenericTileEntity implements ITicka
         }
     }
 
-    @Nonnull
     @Override
-    public CompoundNBT save(@Nonnull CompoundNBT tagCompound) {
-        super.save(tagCompound);
+    public void saveAdditional(@Nonnull CompoundNBT tagCompound) {
+        super.saveAdditional(tagCompound);
         int[] x = new int[toscan.size()];
         int[] y = new int[toscan.size()];
         int[] z = new int[toscan.size()];
@@ -286,12 +285,11 @@ public class BlockAbsorberTileEntity extends GenericTileEntity implements ITicka
         tagCompound.putIntArray("toscanx", x);
         tagCompound.putIntArray("toscany", y);
         tagCompound.putIntArray("toscanz", z);
-        return tagCompound;
     }
 
     @Override
-    protected void writeInfo(CompoundNBT tagCompound) {
-        super.writeInfo(tagCompound);
+    protected void saveInfo(CompoundNBT tagCompound) {
+        super.saveInfo(tagCompound);
         CompoundNBT info = getOrCreateInfo(tagCompound);
         info.putInt("absorbing", absorbing);
         if (absorbingBlock != null) {

@@ -141,8 +141,8 @@ public class BiomeAbsorberTileEntity extends GenericTileEntity implements ITicka
     }
 
     @Override
-    public void writeInfo(CompoundNBT tagCompound) {
-        super.writeInfo(tagCompound);
+    public void saveInfo(CompoundNBT tagCompound) {
+        super.saveInfo(tagCompound);
         CompoundNBT info = getOrCreateInfo(tagCompound);
         info.putInt("absorbing", absorbing);
         if (biomeId != null) {
@@ -151,8 +151,8 @@ public class BiomeAbsorberTileEntity extends GenericTileEntity implements ITicka
     }
 
     @Override
-    public void readInfo(CompoundNBT tagCompound) {
-        super.readInfo(tagCompound);
+    public void loadInfo(CompoundNBT tagCompound) {
+        super.loadInfo(tagCompound);
         CompoundNBT info = tagCompound.getCompound("Info");
         absorbing = info.getInt("absorbing");
         if (info.contains("biome")) {

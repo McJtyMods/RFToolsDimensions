@@ -257,27 +257,26 @@ public class ResearcherTileEntity extends GenericTileEntity implements ITickable
     }
 
     @Override
-    public void read(CompoundNBT tagCompound) {
-        super.read(tagCompound);
+    public void load(CompoundNBT tagCompound) {
+        super.load(tagCompound);
         progress = tagCompound.getInt("progress");
     }
 
-    @Nonnull
     @Override
-    public CompoundNBT save(@Nonnull CompoundNBT tagCompound) {
+    public void saveAdditional(@Nonnull CompoundNBT tagCompound) {
         tagCompound.putInt("progress", progress);
-        return super.save(tagCompound);
+        super.saveAdditional(tagCompound);
     }
 
     @Override
     public void writeClientDataToNBT(CompoundNBT tagCompound) {
         // Item is required at client side because it is rendered in world
-        writeItemHandlerCap(tagCompound);
+        saveItemHandlerCap(tagCompound);
     }
 
     @Override
     public void readClientDataFromNBT(CompoundNBT tagCompound) {
-        readItemHandlerCap(tagCompound);
+        loadItemHandlerCap(tagCompound);
     }
 
 }

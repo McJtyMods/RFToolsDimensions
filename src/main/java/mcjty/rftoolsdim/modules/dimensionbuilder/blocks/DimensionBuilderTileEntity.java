@@ -325,12 +325,12 @@ public class DimensionBuilderTileEntity extends GenericTileEntity implements ITi
 
     @Override
     public void readClientDataFromNBT(CompoundNBT tagCompound) {
-        readItemHandlerCap(tagCompound);
+        loadItemHandlerCap(tagCompound);
     }
 
     @Override
     public void writeClientDataToNBT(CompoundNBT tagCompound) {
-        writeItemHandlerCap(tagCompound);
+        saveItemHandlerCap(tagCompound);
     }
 
     public CompoundNBT hasTab() {
