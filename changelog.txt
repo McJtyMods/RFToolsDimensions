@@ -1,4 +1,5 @@
 1.16-7.0.19-beta:
+- Updated to latest version of McJtyLib
 
 1.16-7.0.18-beta:
 - Cheating dimlets (in creative mode) with the dimlet workbench didn't work
