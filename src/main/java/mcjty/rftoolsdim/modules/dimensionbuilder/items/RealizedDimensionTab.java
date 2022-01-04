@@ -1,8 +1,8 @@
 package mcjty.rftoolsdim.modules.dimensionbuilder.items;
 
-import mcjty.lib.McJtyLib;
-import mcjty.lib.varia.Logging;
 import mcjty.lib.varia.LevelTools;
+import mcjty.lib.varia.Logging;
+import mcjty.lib.varia.SafeClientTools;
 import mcjty.rftoolsdim.dimension.data.ClientDimensionData;
 import mcjty.rftoolsdim.dimension.data.DimensionData;
 import mcjty.rftoolsdim.dimension.data.DimensionSettings;
@@ -84,7 +84,7 @@ public class RealizedDimensionTab extends Item {
                 list.add(new StringTextComponent("Name: " + name).withStyle(TextFormatting.BLUE));
             }
 
-            if (McJtyLib.proxy.isSneaking()) {
+            if (SafeClientTools.isSneaking()) {
                 String descriptionString = tagCompound.getString("descriptor");
                 String randomizedString = tagCompound.getString("randomized");
                 constructDescriptionHelp(list, descriptionString, randomizedString);

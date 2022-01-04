@@ -1,6 +1,6 @@
 package mcjty.rftoolsdim.modules.dimensionbuilder.client;
 
-import mcjty.lib.McJtyLib;
+import mcjty.lib.varia.SafeClientTools;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.dimension.data.ClientDimensionData;
 import mcjty.rftoolsdim.modules.dimensionbuilder.DimensionBuilderConfig;
@@ -14,7 +14,7 @@ import net.minecraft.world.World;
 public class ClientHelpers {
 
     public static String getDimensionName(ItemStack stack) {
-        World world = McJtyLib.proxy.getClientWorld();
+        World world = SafeClientTools.getClientWorld();
         if (world == null) {
             return "";
         }
@@ -22,7 +22,7 @@ public class ClientHelpers {
     }
 
     public static String getPowerString(ItemStack s) {
-        World world = McJtyLib.proxy.getClientWorld();
+        World world = SafeClientTools.getClientWorld();
         if (world == null) {
             return "";
         }
