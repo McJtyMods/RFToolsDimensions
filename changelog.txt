@@ -1,3 +1,6 @@
+Upcoming:
+- Updated to latest version of McJtyLib
+
 1.16-7.0.19-beta:
 - Updated to latest version of McJtyLib
 
