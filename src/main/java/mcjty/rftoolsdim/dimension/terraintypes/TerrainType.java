@@ -3,7 +3,7 @@ package mcjty.rftoolsdim.dimension.terraintypes;
 import mcjty.rftoolsdim.dimension.data.DimensionSettings;
 import mcjty.rftoolsdim.modules.knowledge.data.KnowledgeSet;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 
 import java.util.HashMap;
 import java.util.Map;

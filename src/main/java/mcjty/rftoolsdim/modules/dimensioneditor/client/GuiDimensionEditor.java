@@ -1,6 +1,6 @@
 package mcjty.rftoolsdim.modules.dimensioneditor.client;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import mcjty.lib.container.GenericContainer;
 import mcjty.lib.gui.GenericGuiContainer;
 import mcjty.lib.gui.Window;
@@ -12,10 +12,10 @@ import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.modules.dimensionbuilder.DimensionBuilderModule;
 import mcjty.rftoolsdim.modules.dimensioneditor.DimensionEditorModule;
 import mcjty.rftoolsdim.modules.dimensioneditor.blocks.DimensionEditorTileEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.Slot;
-import net.minecraft.item.Items;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.Items;
+import net.minecraft.resources.ResourceLocation;
 
 import javax.annotation.Nonnull;
 
@@ -33,7 +33,7 @@ public class GuiDimensionEditor extends GenericGuiContainer<DimensionEditorTileE
     private static final ResourceLocation iconLocation = new ResourceLocation(RFToolsDim.MODID, "textures/gui/dimensioneditor.png");
     private static final ResourceLocation iconGuiElements = new ResourceLocation(RFToolsDim.MODID, "textures/gui/guielements.png");
 
-    public GuiDimensionEditor(DimensionEditorTileEntity tileEntity, GenericContainer container, PlayerInventory inventory) {
+    public GuiDimensionEditor(DimensionEditorTileEntity tileEntity, GenericContainer container, Inventory inventory) {
         super(tileEntity, container, inventory, DimensionEditorModule.DIMENSION_EDITOR.get().getManualEntry());
 
         imageWidth = WIDTH;
@@ -60,7 +60,7 @@ public class GuiDimensionEditor extends GenericGuiContainer<DimensionEditorTileE
     }
 
     @Override
-    protected void renderBg(@Nonnull MatrixStack matrixStack, float partialTicks, int x, int y) {
+    protected void renderBg(@Nonnull PoseStack matrixStack, float partialTicks, int x, int y) {
         int pct = tileEntity.getEditPercentage();
         if (pct > 0) {
             arrow.image(iconGuiElements, 144, 0);

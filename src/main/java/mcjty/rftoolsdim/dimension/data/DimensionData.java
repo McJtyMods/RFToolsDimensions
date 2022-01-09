@@ -2,9 +2,9 @@ package mcjty.rftoolsdim.dimension.data;
 
 import mcjty.lib.varia.LevelTools;
 import mcjty.rftoolsdim.dimension.descriptor.DimensionDescriptor;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.Level;
 
 public class DimensionData {
 
@@ -19,7 +19,7 @@ public class DimensionData {
         this.randomizedDescriptor = randomizedDescriptor;
     }
 
-    public DimensionData(CompoundNBT tag) {
+    public DimensionData(CompoundTag tag) {
         id = new ResourceLocation(tag.getString("id"));
         descriptor = new DimensionDescriptor();
         descriptor.read(tag.getString("descriptor"));
@@ -32,7 +32,7 @@ public class DimensionData {
         }
     }
 
-    public void write(CompoundNBT tag) {
+    public void write(CompoundTag tag) {
         tag.putString("id", id.toString());
         tag.putString("descriptor", descriptor.compact());
         tag.putString("randomized", randomizedDescriptor.compact());
@@ -56,7 +56,7 @@ public class DimensionData {
     }
 
     /// 'world' should be a valid world (or overworld). Can be null in case in which case the low power freeze will not happen
-    public void setEnergy(World overworld, long energy) {
+    public void setEnergy(Level overworld, long energy) {
         if (energy != this.energy) {
             long old = this.energy;
             this.energy = energy;

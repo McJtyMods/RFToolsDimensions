@@ -12,12 +12,12 @@ import mcjty.rftoolsdim.modules.dimlets.recipes.DimletCycleRecipeSerializer;
 import mcjty.rftoolsdim.modules.dimlets.recipes.DimletRecipeSerializer;
 import mcjty.rftoolsdim.setup.Config;
 import mcjty.rftoolsdim.setup.Registration;
-import net.minecraft.item.Item;
-import net.minecraft.loot.LootConditionType;
-import net.minecraft.loot.LootPoolEntryType;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.registry.Registry;
-import net.minecraftforge.fml.RegistryObject;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
+import net.minecraft.world.level.storage.loot.entries.LootPoolEntryType;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.Registry;
+import net.minecraftforge.registries.RegistryObject;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 
@@ -64,7 +64,7 @@ public class DimletModule implements IModule {
     public static final RegistryObject<DimletRecipeSerializer> DIMLET_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register("dimlet_recipe", DimletRecipeSerializer::new);
     public static final RegistryObject<DimletCycleRecipeSerializer> DIMLET_CYCLE_SERIALIZER = RECIPE_SERIALIZERS.register("dimlet_cycle_recipe", DimletCycleRecipeSerializer::new);
 
-    public static LootConditionType LOOT_TABLE_CONDITION;
+    public static LootItemConditionType LOOT_TABLE_CONDITION;
     public static LootPoolEntryType DIMLET_LOOT_ENTRY;
 
     @Override
@@ -75,7 +75,7 @@ public class DimletModule implements IModule {
     }
 
     public static void registerLootHelpers() {
-        LOOT_TABLE_CONDITION = Registry.register(Registry.LOOT_CONDITION_TYPE, new ResourceLocation(RFToolsDim.MODID, "check_tables"), new LootConditionType(new LootTableCondition.Serializer()));
+        LOOT_TABLE_CONDITION = Registry.register(Registry.LOOT_CONDITION_TYPE, new ResourceLocation(RFToolsDim.MODID, "check_tables"), new LootItemConditionType(new LootTableCondition.Serializer()));
         DIMLET_LOOT_ENTRY = Registry.register(Registry.LOOT_POOL_ENTRY_TYPE, new ResourceLocation(RFToolsDim.MODID, "dimlet_loot"), new LootPoolEntryType(new DimletLootEntry.Serializer()));
     }
 

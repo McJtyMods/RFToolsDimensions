@@ -15,17 +15,17 @@ import mcjty.rftoolsdim.modules.dimlets.data.DimletDictionary;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletKey;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletSettings;
 import mcjty.rftoolsdim.modules.dimlets.network.PacketSendDimletPackages;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.world.World;
-import net.minecraft.world.gen.GenerationStage;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.levelgen.GenerationStep;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartedEvent;
-import net.minecraftforge.fml.network.PacketDistributor;
+import net.minecraftforge.network.PacketDistributor;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -35,7 +35,7 @@ public class ForgeEventHandlers {
 
     @SubscribeEvent(priority = EventPriority.HIGH)
     public void onBiomeLoad(BiomeLoadingEvent event) {
-        event.getGeneration().getFeatures(GenerationStage.Decoration.RAW_GENERATION).add(() -> RFTFeature.RFTFEATURE_CONFIGURED);
+        event.getGeneration().getFeatures(GenerationStep.Decoration.RAW_GENERATION).add(() -> RFTFeature.RFTFEATURE_CONFIGURED);
     }
 
     private final Random random = new Random();
@@ -47,7 +47,7 @@ public class ForgeEventHandlers {
             // This should be in PotentialSpawns but that doesn't appear to be working correctly
             handleSpawning(event);
 
-            if (event.world.dimension() == World.OVERWORLD) {
+            if (event.world.dimension() == Level.OVERWORLD) {
                 powerHandler.handlePower(event.world);
             }
         }
@@ -56,13 +56,13 @@ public class ForgeEventHandlers {
     private void handleSpawning(TickEvent.WorldTickEvent event) {
         if (RFToolsDim.MODID.equals(event.world.dimension().location().getNamespace())) {
             if (random.nextInt(20) == 10) {
-                ServerWorld serverWorld = (ServerWorld) event.world;
+                ServerLevel serverWorld = (ServerLevel) event.world;
                 CompiledDescriptor compiledDescriptor = DimensionManager.get().getCompiledDescriptor(serverWorld);
                 DimensionData data = PersistantDimensionManager.get(serverWorld).getData(serverWorld.dimension().location());
                 if (!compiledDescriptor.getAttributeTypes().contains(AttributeType.NOBLOBS)) {
                     long count = serverWorld.getEntities().filter(s -> s instanceof DimensionalBlobEntity).count();
                     if (count < 20) {
-                        for (ServerPlayerEntity player : serverWorld.players()) {
+                        for (ServerPlayer player : serverWorld.players()) {
                             for (int i = 0; i < 5; i++) {
                                 Spawner.spawnOne(serverWorld, player, compiledDescriptor, data, random);
                             }
@@ -91,13 +91,13 @@ public class ForgeEventHandlers {
         for (DimletKey key : dictionary.getDimlets()) {
             collected.put(key, dictionary.getSettings(key));
             if (collected.size() >= 100) {
-                RFToolsDimMessages.INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) event.getPlayer()),
+                RFToolsDimMessages.INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) event.getPlayer()),
                         new PacketSendDimletPackages(collected));
                 collected.clear();
             }
         }
         if (!collected.isEmpty()) {
-            RFToolsDimMessages.INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) event.getPlayer()),
+            RFToolsDimMessages.INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) event.getPlayer()),
                     new PacketSendDimletPackages(collected));
         }
     }

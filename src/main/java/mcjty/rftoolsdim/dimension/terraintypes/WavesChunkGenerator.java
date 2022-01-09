@@ -4,19 +4,19 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import mcjty.rftoolsdim.dimension.data.DimensionSettings;
 import mcjty.rftoolsdim.dimension.tools.OffsetBlockReader;
-import net.minecraft.block.BlockState;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryLookupCodec;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.chunk.IChunk;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.Heightmap;
-import net.minecraft.world.gen.feature.structure.StructureManager;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.RegistryLookupCodec;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.chunk.ChunkAccess;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.StructureFeatureManager;
 
 import javax.annotation.Nonnull;
 
@@ -49,13 +49,13 @@ public class WavesChunkGenerator extends BaseChunkGenerator {
     }
 
     @Override
-    public void fillFromNoise(@Nonnull IWorld iWorld, @Nonnull StructureManager structureManager, IChunk chunk) {
+    public void fillFromNoise(@Nonnull LevelAccessor iWorld, @Nonnull StructureFeatureManager structureManager, ChunkAccess chunk) {
         ChunkPos chunkpos = chunk.getPos();
 
-        BlockPos.Mutable mpos = new BlockPos.Mutable();
+        BlockPos.MutableBlockPos mpos = new BlockPos.MutableBlockPos();
 
-        Heightmap hmOcean = chunk.getOrCreateHeightmapUnprimed(Heightmap.Type.OCEAN_FLOOR_WG);
-        Heightmap hmWorld = chunk.getOrCreateHeightmapUnprimed(Heightmap.Type.WORLD_SURFACE_WG);
+        Heightmap hmOcean = chunk.getOrCreateHeightmapUnprimed(Heightmap.Types.OCEAN_FLOOR_WG);
+        Heightmap hmWorld = chunk.getOrCreateHeightmapUnprimed(Heightmap.Types.WORLD_SURFACE_WG);
 
         for (int x = 0; x < 16; x++) {
             for (int z = 0; z < 16; z++) {
@@ -73,7 +73,7 @@ public class WavesChunkGenerator extends BaseChunkGenerator {
     }
 
     @Override
-    public int getBaseHeight(int x, int z, @Nonnull Heightmap.Type type) {
+    public int getBaseHeight(int x, int z, @Nonnull Heightmap.Types type) {
         int realx = x;  // @todo 1.16 is this the actual x/z?
         int realz = z;
         int height = calculateWaveHeight(realx, realz);
@@ -88,7 +88,7 @@ public class WavesChunkGenerator extends BaseChunkGenerator {
 
     @Nonnull
     @Override
-    public IBlockReader getBaseColumn(int x, int z) {
+    public BlockGetter getBaseColumn(int x, int z) {
         int realx = x;  // @todo 1.16 is this the actual x/z?
         int realz = z;
         int height = calculateWaveHeight(realx, realz);

@@ -10,21 +10,21 @@ import mcjty.rftoolsbase.tools.ManualHelper;
 import mcjty.rftoolsdim.compat.RFToolsDimensionsTOPDriver;
 import mcjty.rftoolsdim.modules.essences.EssencesConfig;
 import mcjty.rftoolsdim.modules.essences.EssencesModule;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.particles.ParticleTypes;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.client.resources.language.I18n;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.tileentity.ITickableTileEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.biome.Biome;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.biome.Biome;
 
 import java.util.Random;
 
 import static mcjty.lib.builder.TooltipBuilder.*;
 
-import net.minecraft.block.AbstractBlock;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 
 public class BiomeAbsorberTileEntity extends TickingTileEntity {
 
@@ -37,7 +37,7 @@ public class BiomeAbsorberTileEntity extends TickingTileEntity {
 
     public static BaseBlock createBlock() {
         return new BaseBlock(new BlockBuilder()
-                .properties(AbstractBlock.Properties.of(Material.METAL)
+                .properties(BlockBehaviour.Properties.of(Material.METAL)
                         .strength(2.0f)
                         .sound(SoundType.METAL)
                         .noOcclusion())
@@ -57,7 +57,7 @@ public class BiomeAbsorberTileEntity extends TickingTileEntity {
     }
 
     private static String getBiomeName(ItemStack stack) {
-        String biome = NBTTools.getInfoNBT(stack, CompoundNBT::getString, "biome", null);
+        String biome = NBTTools.getInfoNBT(stack, CompoundTag::getString, "biome", null);
         if (biome == null) {
             return "<Not Set>";
         } else {
@@ -68,11 +68,11 @@ public class BiomeAbsorberTileEntity extends TickingTileEntity {
     }
 
     public static String getBiome(ItemStack stack) {
-        return NBTTools.getInfoNBT(stack, CompoundNBT::getString, "biome", null);
+        return NBTTools.getInfoNBT(stack, CompoundTag::getString, "biome", null);
     }
 
     private static String getProgressName(ItemStack stack) {
-        int absorbing = NBTTools.getInfoNBT(stack, CompoundNBT::getInt, "absorbing", -1);
+        int absorbing = NBTTools.getInfoNBT(stack, CompoundTag::getInt, "absorbing", -1);
         if (absorbing == -1) {
             return "n.a.";
         } else {
@@ -82,7 +82,7 @@ public class BiomeAbsorberTileEntity extends TickingTileEntity {
     }
 
     public static int getProgress(ItemStack stack) {
-        int absorbing = NBTTools.getInfoNBT(stack, CompoundNBT::getInt, "absorbing", -1);
+        int absorbing = NBTTools.getInfoNBT(stack, CompoundTag::getInt, "absorbing", -1);
         if (absorbing == -1) {
             return -1;
         } else {
@@ -135,9 +135,9 @@ public class BiomeAbsorberTileEntity extends TickingTileEntity {
     }
 
     @Override
-    public void saveInfo(CompoundNBT tagCompound) {
+    public void saveInfo(CompoundTag tagCompound) {
         super.saveInfo(tagCompound);
-        CompoundNBT info = getOrCreateInfo(tagCompound);
+        CompoundTag info = getOrCreateInfo(tagCompound);
         info.putInt("absorbing", absorbing);
         if (biomeId != null) {
             info.putString("biome", biomeId);
@@ -145,9 +145,9 @@ public class BiomeAbsorberTileEntity extends TickingTileEntity {
     }
 
     @Override
-    public void loadInfo(CompoundNBT tagCompound) {
+    public void loadInfo(CompoundTag tagCompound) {
         super.loadInfo(tagCompound);
-        CompoundNBT info = tagCompound.getCompound("Info");
+        CompoundTag info = tagCompound.getCompound("Info");
         absorbing = info.getInt("absorbing");
         if (info.contains("biome")) {
             biomeId = info.getString("biome");

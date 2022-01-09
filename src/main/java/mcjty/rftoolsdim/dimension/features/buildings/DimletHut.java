@@ -2,11 +2,11 @@ package mcjty.rftoolsdim.dimension.features.buildings;
 
 import mcjty.rftoolsdim.dimension.DimensionRegistry;
 import mcjty.rftoolsdim.modules.decorative.DecorativeModule;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.DoorBlock;
-import net.minecraft.state.properties.DoubleBlockHalf;
-import net.minecraft.tileentity.ChestTileEntity;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.DoorBlock;
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
+import net.minecraft.world.level.block.entity.ChestBlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.util.Lazy;
 
 public class DimletHut extends BuildingTemplate {
@@ -26,9 +26,9 @@ public class DimletHut extends BuildingTemplate {
         addPalette('_', Blocks.STONE_PRESSURE_PLATE.defaultBlockState());
         addPalette('C', (reader, pos) -> {
             reader.setBlock(pos, Blocks.CHEST.defaultBlockState(), 0);
-            TileEntity te = reader.getBlockEntity(pos);
-            if (te instanceof ChestTileEntity) {
-                ((ChestTileEntity) te).setLootTable(DimensionRegistry.HUT_LOOT, reader.getRandom().nextLong());
+            BlockEntity te = reader.getBlockEntity(pos);
+            if (te instanceof ChestBlockEntity) {
+                ((ChestBlockEntity) te).setLootTable(DimensionRegistry.HUT_LOOT, reader.getRandom().nextLong());
             }
 
         });

@@ -1,9 +1,9 @@
 package mcjty.rftoolsdim.dimension.features.buildings;
 
 import mcjty.rftoolsdim.dimension.features.IFeature;
-import net.minecraft.block.BlockState;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.ISeedReader;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.WorldGenLevel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,7 +14,7 @@ import java.util.function.BiConsumer;
 public class BuildingTemplate {
 
     private final Map<Character, BlockState> palette = new HashMap<>();
-    private final Map<Character, BiConsumer<ISeedReader, BlockPos>> paletteSpecial = new HashMap<>();
+    private final Map<Character, BiConsumer<WorldGenLevel, BlockPos>> paletteSpecial = new HashMap<>();
 
     private final List<Slice> slices = new ArrayList<>();
 
@@ -22,7 +22,7 @@ public class BuildingTemplate {
         palette.put(key, state);
     }
 
-    public void addPalette(Character key, BiConsumer<ISeedReader, BlockPos> consumer) {
+    public void addPalette(Character key, BiConsumer<WorldGenLevel, BlockPos> consumer) {
         paletteSpecial.put(key, consumer);
     }
 
@@ -32,7 +32,7 @@ public class BuildingTemplate {
         FILLDOWN_IFNOTVOID
     }
 
-    public void generate(ISeedReader reader, BlockPos pos, List<BlockState> states, GenerateFlag flag) {
+    public void generate(WorldGenLevel reader, BlockPos pos, List<BlockState> states, GenerateFlag flag) {
         switch (flag) {
             case PLAIN:
                 break;
@@ -45,7 +45,7 @@ public class BuildingTemplate {
         }
 
         int y = pos.getY();
-        BlockPos.Mutable mpos = new BlockPos.Mutable();
+        BlockPos.MutableBlockPos mpos = new BlockPos.MutableBlockPos();
         for (Slice slice : slices) {
             int z = pos.getZ();
             for (String row : slice.rows) {
@@ -64,9 +64,9 @@ public class BuildingTemplate {
         }
     }
 
-    private void fillDown(ISeedReader reader, BlockPos pos, List<BlockState> states) {
+    private void fillDown(WorldGenLevel reader, BlockPos pos, List<BlockState> states) {
         int y = pos.getY();
-        BlockPos.Mutable mpos = new BlockPos.Mutable();
+        BlockPos.MutableBlockPos mpos = new BlockPos.MutableBlockPos();
         Slice slice = slices.get(0);
         int z = pos.getZ();
         for (String row : slice.rows) {
@@ -86,9 +86,9 @@ public class BuildingTemplate {
         }
     }
 
-    private void fillDownIfNotVoid(ISeedReader reader, BlockPos pos, List<BlockState> states) {
+    private void fillDownIfNotVoid(WorldGenLevel reader, BlockPos pos, List<BlockState> states) {
         int y = pos.getY();
-        BlockPos.Mutable mpos = new BlockPos.Mutable();
+        BlockPos.MutableBlockPos mpos = new BlockPos.MutableBlockPos();
         Slice slice = slices.get(0);
         int z = pos.getZ();
         for (String row : slice.rows) {

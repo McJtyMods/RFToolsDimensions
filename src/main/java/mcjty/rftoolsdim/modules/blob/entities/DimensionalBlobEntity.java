@@ -4,44 +4,44 @@ import mcjty.rftoolsdim.dimension.data.DimensionData;
 import mcjty.rftoolsdim.dimension.data.PersistantDimensionManager;
 import mcjty.rftoolsdim.modules.blob.BlobConfig;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletRarity;
-import net.minecraft.entity.EntityPredicate;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ILivingEntityData;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
-import net.minecraft.entity.monster.MonsterEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.IPacket;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
-import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.world.entity.ai.targeting.TargetingConditions;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.IServerWorld;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.Level;
+import net.minecraftforge.network.NetworkHooks;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class DimensionalBlobEntity extends MonsterEntity {
+public class DimensionalBlobEntity extends Monster {
 
     private float squishAmount;
     public float squishFactor;
     public float prevSquishFactor;
 
     private final DimletRarity rarity;
-    private AxisAlignedBB targetBox = null;
+    private AABB targetBox = null;
 
     private int tickCounter = 5;
 
-    private static final EntityPredicate PREDICATE = new EntityPredicate()
+    private static final TargetingConditions PREDICATE = new TargetingConditions()
             .allowUnseeable();
 
-    public DimensionalBlobEntity(EntityType<? extends MonsterEntity> type, World worldIn, DimletRarity rarity) {
+    public DimensionalBlobEntity(EntityType<? extends Monster> type, Level worldIn, DimletRarity rarity) {
         super(type, worldIn);
         this.rarity = rarity;
         calculateTargetBox(getBoundingBox());
@@ -86,7 +86,7 @@ public class DimensionalBlobEntity extends MonsterEntity {
                     tickCounter--;
                     if (tickCounter <= 0) {
                         tickCounter = 5;
-                        addEffect(new EffectInstance(Effects.REGENERATION, 20, getRegenLevel()));
+                        addEffect(new MobEffectInstance(MobEffects.REGENERATION, 20, getRegenLevel()));
                     }
                 }
             }
@@ -95,8 +95,8 @@ public class DimensionalBlobEntity extends MonsterEntity {
 
     @Nullable
     @Override
-    public ILivingEntityData finalizeSpawn(@Nonnull IServerWorld worldIn, @Nonnull DifficultyInstance difficultyIn, @Nonnull SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
-        ModifiableAttributeInstance attr = getAttributes().getInstance(Attributes.MAX_HEALTH);
+    public SpawnGroupData finalizeSpawn(@Nonnull ServerLevelAccessor worldIn, @Nonnull DifficultyInstance difficultyIn, @Nonnull MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
+        AttributeInstance attr = getAttributes().getInstance(Attributes.MAX_HEALTH);
         if (attr != null) {
             attr.setBaseValue(getDefaultMaxHealth(rarity));
             setHealth(getDefaultMaxHealth(rarity));
@@ -104,10 +104,10 @@ public class DimensionalBlobEntity extends MonsterEntity {
         return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
     }
 
-    public static AttributeModifierMap.MutableAttribute registerAttributes(DimletRarity rarity) {
+    public static AttributeSupplier.Builder registerAttributes(DimletRarity rarity) {
         // Note, since this is called before config is init the default max health here will be
         // the default from the config. In onInitialSpawn() this is later corrected
-        return MonsterEntity.createMonsterAttributes()
+        return Monster.createMonsterAttributes()
                 .add(Attributes.MOVEMENT_SPEED, 0.25D)
                 .add(Attributes.MAX_HEALTH, getDefaultMaxHealth(rarity));
     }
@@ -127,12 +127,12 @@ public class DimensionalBlobEntity extends MonsterEntity {
     }
 
     @Override
-    public void setBoundingBox(@Nonnull AxisAlignedBB bb) {
+    public void setBoundingBox(@Nonnull AABB bb) {
         super.setBoundingBox(bb);
         calculateTargetBox(bb);
     }
 
-    private void calculateTargetBox(AxisAlignedBB bb) {
+    private void calculateTargetBox(AABB bb) {
         if (rarity != null) {
             double radius = 1.0;
             switch (rarity) {
@@ -152,19 +152,19 @@ public class DimensionalBlobEntity extends MonsterEntity {
     }
 
 
-    private void infectPlayer(PlayerEntity player) {
-        player.addEffect(new EffectInstance(Effects.HUNGER, 100));
-        player.addEffect(new EffectInstance(Effects.WEAKNESS, 100));
+    private void infectPlayer(Player player) {
+        player.addEffect(new MobEffectInstance(MobEffects.HUNGER, 100));
+        player.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 100));
         switch (rarity) {
             case COMMON:
             case UNCOMMON:
                 break;
             case RARE:
-                player.addEffect(new EffectInstance(Effects.POISON, 100));
+                player.addEffect(new MobEffectInstance(MobEffects.POISON, 100));
                 break;
             case LEGENDARY:
-                player.addEffect(new EffectInstance(Effects.POISON, 100));
-                player.addEffect(new EffectInstance(Effects.WITHER, 100));
+                player.addEffect(new MobEffectInstance(MobEffects.POISON, 100));
+                player.addEffect(new MobEffectInstance(MobEffects.WITHER, 100));
                 break;
         }
     }
@@ -185,8 +185,8 @@ public class DimensionalBlobEntity extends MonsterEntity {
             this.squishAmount *= 0.6F;
         } else {
             if (random.nextFloat() < .05) {
-                List<PlayerEntity> players = level.getNearbyPlayers(PREDICATE, this, targetBox);
-                for (PlayerEntity player : players) {
+                List<Player> players = level.getNearbyPlayers(PREDICATE, this, targetBox);
+                for (Player player : players) {
                     infectPlayer(player);
                 }
 
@@ -200,7 +200,7 @@ public class DimensionalBlobEntity extends MonsterEntity {
 
     @Nonnull
     @Override
-    public IPacket<?> getAddEntityPacket() {
+    public Packet<?> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 

@@ -1,6 +1,6 @@
 package mcjty.rftoolsdim.modules.workbench.client;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import mcjty.lib.base.StyleConfig;
@@ -23,10 +23,10 @@ import mcjty.rftoolsdim.modules.workbench.WorkbenchModule;
 import mcjty.rftoolsdim.modules.workbench.blocks.WorkbenchTileEntity;
 import mcjty.rftoolsdim.setup.RFToolsDimMessages;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.Slot;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.resources.ResourceLocation;
 
 import javax.annotation.Nonnull;
 
@@ -49,7 +49,7 @@ public class GuiWorkbench extends GenericGuiContainer<WorkbenchTileEntity, Gener
 
     private static String[] pattern = null;
 
-    public GuiWorkbench(WorkbenchTileEntity tileEntity, GenericContainer container, PlayerInventory inventory) {
+    public GuiWorkbench(WorkbenchTileEntity tileEntity, GenericContainer container, Inventory inventory) {
         super(tileEntity, container, inventory, WorkbenchModule.WORKBENCH.get().getManualEntry());
 
         imageWidth = WIDTH;
@@ -120,9 +120,9 @@ public class GuiWorkbench extends GenericGuiContainer<WorkbenchTileEntity, Gener
         GuiWorkbench.pattern = pattern;
     }
 
-    private void renderHilightedPattern(MatrixStack matrixStack) {
+    private void renderHilightedPattern(PoseStack matrixStack) {
         if (pattern != null) {
-            net.minecraft.client.renderer.RenderHelper.setupFor3DItems();
+            com.mojang.blaze3d.platform.Lighting.setupFor3DItems();
             matrixStack.pushPose();
             matrixStack.translate(leftPos, topPos, 0.0F);
             RenderSystem.color4f(1.0F, 0.0F, 0.0F, 1.0F);
@@ -158,7 +158,7 @@ public class GuiWorkbench extends GenericGuiContainer<WorkbenchTileEntity, Gener
             itemRenderer.blitOffset = 0.0F;
 
             matrixStack.popPose();
-            net.minecraft.client.renderer.RenderHelper.turnOff();
+            com.mojang.blaze3d.platform.Lighting.turnOff();
         }
     }
 
@@ -251,7 +251,7 @@ public class GuiWorkbench extends GenericGuiContainer<WorkbenchTileEntity, Gener
     }
 
     @Override
-    protected void renderBg(@Nonnull MatrixStack matrixStack, float partialTicks, int x, int y) {
+    protected void renderBg(@Nonnull PoseStack matrixStack, float partialTicks, int x, int y) {
         updateList();
         drawWindow(matrixStack);
         renderHilightedPattern(matrixStack);

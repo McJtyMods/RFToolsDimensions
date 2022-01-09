@@ -6,11 +6,11 @@ import mcjty.rftoolsdim.modules.dimlets.data.DimletKey;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletRarity;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletTools;
 import mcjty.rftoolsdim.modules.knowledge.items.LostKnowledgeItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.loot.LootContext;
-import net.minecraft.loot.conditions.ILootCondition;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
 import net.minecraftforge.common.loot.LootModifier;
 
@@ -29,7 +29,7 @@ public class EndermanLootModifier extends LootModifier {
     private final float rareDimletChance;
     private final float legendaryDimletChance;
 
-    public EndermanLootModifier(ILootCondition[] conditionsIn,
+    public EndermanLootModifier(LootItemCondition[] conditionsIn,
                                 float commonKnowledgeChance, float uncommonKnowledgeChance, float rareKnowledgeChance, float legendaryKnowledgeChance,
                                 float commonDimletChance, float uncommonDimletChance, float rareDimletChance, float legendaryDimletChance) {
         super(conditionsIn);
@@ -113,15 +113,15 @@ public class EndermanLootModifier extends LootModifier {
     public static class Serializer extends GlobalLootModifierSerializer<EndermanLootModifier> {
 
         @Override
-        public EndermanLootModifier read(ResourceLocation name, JsonObject object, ILootCondition[] conditionsIn) {
-            float commonKnowledgeChance = JSONUtils.getAsFloat(object, "commonKnowledgeChance");
-            float uncommonKnowledgeChance = JSONUtils.getAsFloat(object, "uncommonKnowledgeChance");
-            float rareKnowledgeChance = JSONUtils.getAsFloat(object, "rareKnowledgeChance");
-            float legendaryKnowledgeChance = JSONUtils.getAsFloat(object, "legendaryKnowledgeChance");
-            float commonDimletChance = JSONUtils.getAsFloat(object, "commonDimletChance");
-            float uncommonDimletChance = JSONUtils.getAsFloat(object, "uncommonDimletChance");
-            float rareDimletChance = JSONUtils.getAsFloat(object, "rareDimletChance");
-            float legendaryDimletChance = JSONUtils.getAsFloat(object, "legendaryDimletChance");
+        public EndermanLootModifier read(ResourceLocation name, JsonObject object, LootItemCondition[] conditionsIn) {
+            float commonKnowledgeChance = GsonHelper.getAsFloat(object, "commonKnowledgeChance");
+            float uncommonKnowledgeChance = GsonHelper.getAsFloat(object, "uncommonKnowledgeChance");
+            float rareKnowledgeChance = GsonHelper.getAsFloat(object, "rareKnowledgeChance");
+            float legendaryKnowledgeChance = GsonHelper.getAsFloat(object, "legendaryKnowledgeChance");
+            float commonDimletChance = GsonHelper.getAsFloat(object, "commonDimletChance");
+            float uncommonDimletChance = GsonHelper.getAsFloat(object, "uncommonDimletChance");
+            float rareDimletChance = GsonHelper.getAsFloat(object, "rareDimletChance");
+            float legendaryDimletChance = GsonHelper.getAsFloat(object, "legendaryDimletChance");
             return new EndermanLootModifier(conditionsIn,
                     commonKnowledgeChance, uncommonKnowledgeChance, rareKnowledgeChance, legendaryKnowledgeChance,
                     commonDimletChance, uncommonDimletChance, rareDimletChance, legendaryDimletChance);

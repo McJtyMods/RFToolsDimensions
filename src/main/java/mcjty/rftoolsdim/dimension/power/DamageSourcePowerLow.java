@@ -1,9 +1,9 @@
 package mcjty.rftoolsdim.dimension.power;
 
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 
 import javax.annotation.Nonnull;
 
@@ -16,8 +16,8 @@ public class DamageSourcePowerLow extends DamageSource {
 
     @Override
     @Nonnull
-    public ITextComponent getLocalizedDeathMessage(LivingEntity entity) {
+    public Component getLocalizedDeathMessage(LivingEntity entity) {
         String s = "death.dimension.powerfailure";
-        return new TranslationTextComponent(s, entity.getName());
+        return new TranslatableComponent(s, entity.getName());
     }
 }

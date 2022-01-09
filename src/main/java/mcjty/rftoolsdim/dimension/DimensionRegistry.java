@@ -1,7 +1,7 @@
 package mcjty.rftoolsdim.dimension;
 
 import mcjty.rftoolsdim.RFToolsDim;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 public class DimensionRegistry {
 

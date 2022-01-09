@@ -4,18 +4,18 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import mcjty.rftoolsdim.dimension.data.DimensionSettings;
 import mcjty.rftoolsdim.dimension.tools.OffsetBlockReader;
-import net.minecraft.block.BlockState;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryLookupCodec;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.chunk.IChunk;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.Heightmap;
-import net.minecraft.world.gen.feature.structure.StructureManager;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.RegistryLookupCodec;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.chunk.ChunkAccess;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.StructureFeatureManager;
 
 import javax.annotation.Nonnull;
 import java.util.Set;
@@ -51,10 +51,10 @@ public class FlatChunkGenerator extends BaseChunkGenerator {
     }
 
     @Override
-    public void fillFromNoise(@Nonnull IWorld iWorld, @Nonnull StructureManager structureManager, IChunk chunk) {
-        BlockPos.Mutable mpos = new BlockPos.Mutable();
-        Heightmap hmOcean = chunk.getOrCreateHeightmapUnprimed(Heightmap.Type.OCEAN_FLOOR_WG);
-        Heightmap hmWorld = chunk.getOrCreateHeightmapUnprimed(Heightmap.Type.WORLD_SURFACE_WG);
+    public void fillFromNoise(@Nonnull LevelAccessor iWorld, @Nonnull StructureFeatureManager structureManager, ChunkAccess chunk) {
+        BlockPos.MutableBlockPos mpos = new BlockPos.MutableBlockPos();
+        Heightmap hmOcean = chunk.getOrCreateHeightmapUnprimed(Heightmap.Types.OCEAN_FLOOR_WG);
+        Heightmap hmWorld = chunk.getOrCreateHeightmapUnprimed(Heightmap.Types.WORLD_SURFACE_WG);
 
         Set<AttributeType> attributeTypes = settings.getCompiledDescriptor().getAttributeTypes();
         boolean flatter = attributeTypes.contains(AttributeType.FLATTER);
@@ -80,7 +80,7 @@ public class FlatChunkGenerator extends BaseChunkGenerator {
     }
 
     @Override
-    public int getBaseHeight(int x, int z, @Nonnull Heightmap.Type type) {
+    public int getBaseHeight(int x, int z, @Nonnull Heightmap.Types type) {
         for (int i = FLAT_LEVEL; i >= 0; --i) {
             BlockState blockstate = defaultBlocks.get(0);
             if (type.isOpaque().test(blockstate)) {
@@ -92,7 +92,7 @@ public class FlatChunkGenerator extends BaseChunkGenerator {
 
     @Nonnull
     @Override
-    public IBlockReader getBaseColumn(int x, int z) {
+    public BlockGetter getBaseColumn(int x, int z) {
         return new OffsetBlockReader(defaultBlocks.get(0), FLAT_LEVEL);
     }
 }

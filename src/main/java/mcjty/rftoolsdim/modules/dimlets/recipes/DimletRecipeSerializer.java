@@ -3,14 +3,14 @@ package mcjty.rftoolsdim.modules.dimlets.recipes;
 import com.google.gson.JsonObject;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletKey;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletType;
-import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraft.item.crafting.ShapedRecipe;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.ShapedRecipe;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
 
 import javax.annotation.Nonnull;
 
-public class DimletRecipeSerializer extends net.minecraftforge.registries.ForgeRegistryEntry<IRecipeSerializer<?>> implements IRecipeSerializer<DimletRecipe> {
+public class DimletRecipeSerializer extends net.minecraftforge.registries.ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<DimletRecipe> {
 
     private final ShapedRecipe.Serializer serializer = new ShapedRecipe.Serializer();
 
@@ -25,7 +25,7 @@ public class DimletRecipeSerializer extends net.minecraftforge.registries.ForgeR
     }
 
     @Override
-    public DimletRecipe fromNetwork(@Nonnull ResourceLocation recipeId, @Nonnull PacketBuffer buffer) {
+    public DimletRecipe fromNetwork(@Nonnull ResourceLocation recipeId, @Nonnull FriendlyByteBuf buffer) {
         ShapedRecipe recipe = serializer.fromNetwork(recipeId, buffer);
         String typeString = buffer.readUtf(32767);
         DimletType type = DimletType.byName(typeString);
@@ -34,7 +34,7 @@ public class DimletRecipeSerializer extends net.minecraftforge.registries.ForgeR
     }
 
     @Override
-    public void toNetwork(@Nonnull PacketBuffer buffer, DimletRecipe recipe) {
+    public void toNetwork(@Nonnull FriendlyByteBuf buffer, DimletRecipe recipe) {
         serializer.toNetwork(buffer, recipe.getRecipe());
         buffer.writeUtf(recipe.getKey().getType().name());
         buffer.writeUtf(recipe.getKey().getKey());

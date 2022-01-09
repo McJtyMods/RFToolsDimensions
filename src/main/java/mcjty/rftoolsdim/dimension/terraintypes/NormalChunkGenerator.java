@@ -6,37 +6,50 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import it.unimi.dsi.fastutil.objects.ObjectList;
 import it.unimi.dsi.fastutil.objects.ObjectListIterator;
 import mcjty.rftoolsdim.dimension.data.DimensionSettings;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.SharedSeedRandom;
-import net.minecraft.util.Util;
+import net.minecraft.world.level.levelgen.WorldgenRandom;
+import net.minecraft.Util;
 import net.minecraft.util.math.*;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryLookupCodec;
-import net.minecraft.world.Blockreader;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.provider.EndBiomeProvider;
-import net.minecraft.world.chunk.ChunkPrimer;
-import net.minecraft.world.chunk.ChunkSection;
-import net.minecraft.world.chunk.IChunk;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.RegistryLookupCodec;
+import net.minecraft.world.level.NoiseColumn;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.TheEndBiomeSource;
+import net.minecraft.world.level.chunk.ProtoChunk;
+import net.minecraft.world.level.chunk.LevelChunkSection;
+import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.gen.*;
-import net.minecraft.world.gen.feature.jigsaw.JigsawJunction;
-import net.minecraft.world.gen.feature.jigsaw.JigsawPattern;
-import net.minecraft.world.gen.feature.structure.AbstractVillagePiece;
-import net.minecraft.world.gen.feature.structure.Structure;
-import net.minecraft.world.gen.feature.structure.StructureManager;
-import net.minecraft.world.gen.feature.structure.StructurePiece;
-import net.minecraft.world.gen.settings.NoiseSettings;
-import net.minecraft.world.gen.settings.ScalingSettings;
-import net.minecraft.world.gen.settings.SlideSettings;
+import net.minecraft.world.level.levelgen.feature.structures.JigsawJunction;
+import net.minecraft.world.level.levelgen.feature.structures.StructureTemplatePool;
+import net.minecraft.world.level.levelgen.structure.PoolElementStructurePiece;
+import net.minecraft.world.level.levelgen.feature.StructureFeature;
+import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.NoiseSettings;
+import net.minecraft.world.level.levelgen.NoiseSamplingSettings;
+import net.minecraft.world.level.levelgen.NoiseSlideSettings;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.function.Predicate;
 import java.util.stream.IntStream;
+
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.SectionPos;
+import net.minecraft.util.Mth;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.levelgen.synth.ImprovedNoise;
+import net.minecraft.world.level.levelgen.synth.PerlinNoise;
+import net.minecraft.world.level.levelgen.synth.PerlinSimplexNoise;
+import net.minecraft.world.level.levelgen.synth.SimplexNoise;
 
 public class NormalChunkGenerator extends BaseChunkGenerator {
 
@@ -59,7 +72,7 @@ public class NormalChunkGenerator extends BaseChunkGenerator {
     private static final float[] FLOAT25 = Util.make(new float[25], (floats) -> {
         for (int i = -2; i <= 2; ++i) {
             for (int j = -2; j <= 2; ++j) {
-                float f = 10.0F / MathHelper.sqrt((i * i + j * j) + 0.2F);
+                float f = 10.0F / Mth.sqrt((i * i + j * j) + 0.2F);
                 floats[i + 2 + (j + 2) * 5] = f;
             }
         }
@@ -130,43 +143,43 @@ public class NormalChunkGenerator extends BaseChunkGenerator {
 
     private static final NoiseSettings[] SETTINGS = new NoiseSettings[]{
             new NoiseSettings(256,
-                    new ScalingSettings(0.9999999814507745D, 0.9999999814507745D, 80.0D, 160.0D),
-                    new SlideSettings(-10, 3, 0),
-                    new SlideSettings(-30, 0, 0),
+                    new NoiseSamplingSettings(0.9999999814507745D, 0.9999999814507745D, 80.0D, 160.0D),
+                    new NoiseSlideSettings(-10, 3, 0),
+                    new NoiseSlideSettings(-30, 0, 0),
                     1, 2, 1.0D, -0.46875D, true, true, false, false),
             new NoiseSettings(128,
-                    new ScalingSettings(0.9999999814507745D, 0.9999999814507745D, 80.0D, 160.0D),
-                    new SlideSettings(-10, 3, 0),
-                    new SlideSettings(-30, 0, 0),
+                    new NoiseSamplingSettings(0.9999999814507745D, 0.9999999814507745D, 80.0D, 160.0D),
+                    new NoiseSlideSettings(-10, 3, 0),
+                    new NoiseSlideSettings(-30, 0, 0),
                     1, 2, 1.0D, -0.46875D, true, true, false, false),
             new NoiseSettings(256,
-                    new ScalingSettings(0.9999999814507745D, 0.9999999814507745D, 80.0D, 160.0D),
-                    new SlideSettings(-10, 3, 0),
-                    new SlideSettings(-30, 0, 0),
+                    new NoiseSamplingSettings(0.9999999814507745D, 0.9999999814507745D, 80.0D, 160.0D),
+                    new NoiseSlideSettings(-10, 3, 0),
+                    new NoiseSlideSettings(-30, 0, 0),
                     1, 2, 1.0D, -0.46875D, true, true, false, true),
             new NoiseSettings(128,
-                    new ScalingSettings(2.0D, 1.0D, 80.0D, 160.0D),
-                    new SlideSettings(-3000, 64, -46),
-                    new SlideSettings(-30, 7, 1),
+                    new NoiseSamplingSettings(2.0D, 1.0D, 80.0D, 160.0D),
+                    new NoiseSlideSettings(-3000, 64, -46),
+                    new NoiseSlideSettings(-30, 7, 1),
                     2, 1, 0.0D, 0.0D, true, false, false, false),
             new NoiseSettings(64,
-                    new ScalingSettings(2.0D, 1.0D, 80.0D, 160.0D),
-                    new SlideSettings(-3000, 64, -46),
-                    new SlideSettings(-30, 7, 1),
+                    new NoiseSamplingSettings(2.0D, 1.0D, 80.0D, 160.0D),
+                    new NoiseSlideSettings(-3000, 64, -46),
+                    new NoiseSlideSettings(-30, 7, 1),
                     2, 1, 0.0D, 0.0D, true, false, false, false),
             new NoiseSettings(128,
-                    new ScalingSettings(2.0D, 1.0D, 80.0D, 160.0D),
-                    new SlideSettings(-3000, 64, -46),
-                    new SlideSettings(-30, 7, 1),
+                    new NoiseSamplingSettings(2.0D, 1.0D, 80.0D, 160.0D),
+                    new NoiseSlideSettings(-3000, 64, -46),
+                    new NoiseSlideSettings(-30, 7, 1),
                     2, 1, 0.0D, 0.0D, true, false, false, true)
     };
     private final int noiseIndex;
 
-    private final OctavesNoiseGenerator oct1;
-    private final OctavesNoiseGenerator oct2;
-    private final OctavesNoiseGenerator oct3;
-    private final OctavesNoiseGenerator oct4;
-    private final SimplexNoiseGenerator simplexNoise;
+    private final PerlinNoise oct1;
+    private final PerlinNoise oct2;
+    private final PerlinNoise oct3;
+    private final PerlinNoise oct4;
+    private final SimplexNoise simplexNoise;
 
     private final int verticalNoiseGranularity;
     private final int horizontalNoiseGranularity;
@@ -186,7 +199,7 @@ public class NormalChunkGenerator extends BaseChunkGenerator {
         this(server.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY), settings, idx);
     }
 
-    protected NormalChunkGenerator(Registry<Biome> registry, DimensionSettings settings, int idx) {
+    protected NormalChunkGenerator(RegistryAccess registryAccess, Registry<Biome> registry, DimensionSettings settings, int idx) {
         super(registry, settings);
 
         if (settings.getCompiledDescriptor().getAttributeTypes().contains(AttributeType.FLATTER)) {
@@ -203,19 +216,19 @@ public class NormalChunkGenerator extends BaseChunkGenerator {
         this.noiseSizeY = ns.height() / this.verticalNoiseGranularity;
         this.noiseSizeZ = 16 / this.horizontalNoiseGranularity;
 
-        this.oct1 = new OctavesNoiseGenerator(this.randomSeed, IntStream.rangeClosed(-15, 0));
-        this.oct2 = new OctavesNoiseGenerator(this.randomSeed, IntStream.rangeClosed(-15, 0));
-        this.oct4 = new OctavesNoiseGenerator(this.randomSeed, IntStream.rangeClosed(-7, 0));
+        this.oct1 = new PerlinNoise(this.randomSeed, IntStream.rangeClosed(-15, 0));
+        this.oct2 = new PerlinNoise(this.randomSeed, IntStream.rangeClosed(-15, 0));
+        this.oct4 = new PerlinNoise(this.randomSeed, IntStream.rangeClosed(-7, 0));
 
-        this.surfaceDepthNoise = ns.useSimplexSurfaceNoise() ? new PerlinNoiseGenerator(this.randomSeed, IntStream.rangeClosed(-3, 0)) : new OctavesNoiseGenerator(this.randomSeed, IntStream.rangeClosed(-3, 0));
+        this.surfaceDepthNoise = ns.useSimplexSurfaceNoise() ? new PerlinSimplexNoise(this.randomSeed, IntStream.rangeClosed(-3, 0)) : new PerlinNoise(this.randomSeed, IntStream.rangeClosed(-3, 0));
         randomSeed.consumeCount(2620);
-        this.oct3 = new OctavesNoiseGenerator(this.randomSeed, IntStream.rangeClosed(-15, 0));
+        this.oct3 = new PerlinNoise(this.randomSeed, IntStream.rangeClosed(-15, 0));
 
         // @todo For end islands this might be useful
         if (ns.islandNoiseOverride()) {
-            SharedSeedRandom sharedseedrandom = new SharedSeedRandom(settings.getSeed());
+            WorldgenRandom sharedseedrandom = new WorldgenRandom(settings.getSeed());
             sharedseedrandom.consumeCount(17292);
-            this.simplexNoise = new SimplexNoiseGenerator(sharedseedrandom);
+            this.simplexNoise = new SimplexNoise(sharedseedrandom);
         } else {
             this.simplexNoise = null;
         }
@@ -234,7 +247,7 @@ public class NormalChunkGenerator extends BaseChunkGenerator {
     }
 
     @Override
-    public void fillFromNoise(@Nonnull IWorld world, @Nonnull StructureManager structureManager, IChunk chunk) {
+    public void fillFromNoise(@Nonnull LevelAccessor world, @Nonnull StructureFeatureManager structureManager, ChunkAccess chunk) {
         ObjectList<StructurePiece> objectlist = new ObjectArrayList<>(10);
         ObjectList<JigsawJunction> objectlist1 = new ObjectArrayList<>(32);
         ChunkPos chunkpos = chunk.getPos();
@@ -243,14 +256,14 @@ public class NormalChunkGenerator extends BaseChunkGenerator {
         int cx = chunkX << 4;
         int cz = chunkZ << 4;
 
-        for (Structure<?> structure : Structure.NOISE_AFFECTING_FEATURES) {
+        for (StructureFeature<?> structure : StructureFeature.NOISE_AFFECTING_FEATURES) {
             structureManager.startsForFeature(SectionPos.of(chunkpos, 0), structure).forEach((p_236089_5_) -> {
                 for (StructurePiece piece : p_236089_5_.getPieces()) {
                     if (piece.isCloseToChunk(chunkpos, 12)) {
-                        if (piece instanceof AbstractVillagePiece) {
-                            AbstractVillagePiece abstractvillagepiece = (AbstractVillagePiece) piece;
-                            JigsawPattern.PlacementBehaviour placementBehaviour = abstractvillagepiece.getElement().getProjection();
-                            if (placementBehaviour == JigsawPattern.PlacementBehaviour.RIGID) {
+                        if (piece instanceof PoolElementStructurePiece) {
+                            PoolElementStructurePiece abstractvillagepiece = (PoolElementStructurePiece) piece;
+                            StructureTemplatePool.Projection placementBehaviour = abstractvillagepiece.getElement().getProjection();
+                            if (placementBehaviour == StructureTemplatePool.Projection.RIGID) {
                                 objectlist.add(abstractvillagepiece);
                             }
 
@@ -278,10 +291,10 @@ public class NormalChunkGenerator extends BaseChunkGenerator {
             adouble[1][nz] = new double[this.noiseSizeY + 1];
         }
 
-        ChunkPrimer chunkprimer = (ChunkPrimer) chunk;
-        Heightmap heightmap = chunkprimer.getOrCreateHeightmapUnprimed(Heightmap.Type.OCEAN_FLOOR_WG);
-        Heightmap heightmap1 = chunkprimer.getOrCreateHeightmapUnprimed(Heightmap.Type.WORLD_SURFACE_WG);
-        BlockPos.Mutable mpos = new BlockPos.Mutable();
+        ProtoChunk chunkprimer = (ProtoChunk) chunk;
+        Heightmap heightmap = chunkprimer.getOrCreateHeightmapUnprimed(Heightmap.Types.OCEAN_FLOOR_WG);
+        Heightmap heightmap1 = chunkprimer.getOrCreateHeightmapUnprimed(Heightmap.Types.WORLD_SURFACE_WG);
+        BlockPos.MutableBlockPos mpos = new BlockPos.MutableBlockPos();
         ObjectListIterator<StructurePiece> iterator = objectlist.iterator();
         ObjectListIterator<JigsawJunction> iterator1 = objectlist1.iterator();
 
@@ -291,7 +304,7 @@ public class NormalChunkGenerator extends BaseChunkGenerator {
             }
 
             for (int nz = 0; nz < this.noiseSizeZ; ++nz) {
-                ChunkSection chunksection = chunkprimer.getOrCreateSection(15);
+                LevelChunkSection chunksection = chunkprimer.getOrCreateSection(15);
                 chunksection.acquire();
 
                 for (int ny = this.noiseSizeY - 1; ny >= 0; --ny) {
@@ -315,33 +328,33 @@ public class NormalChunkGenerator extends BaseChunkGenerator {
                         }
 
                         double d8 = (double) vertN / this.verticalNoiseGranularity;
-                        double d9 = MathHelper.lerp(d8, d0, d4);
-                        double d10 = MathHelper.lerp(d8, d2, d6);
-                        double d11 = MathHelper.lerp(d8, d1, d5);
-                        double d12 = MathHelper.lerp(d8, d3, d7);
+                        double d9 = Mth.lerp(d8, d0, d4);
+                        double d10 = Mth.lerp(d8, d2, d6);
+                        double d11 = Mth.lerp(d8, d1, d5);
+                        double d12 = Mth.lerp(d8, d3, d7);
 
                         for (int horN = 0; horN < this.horizontalNoiseGranularity; ++horN) {
                             int i3 = cx + nx * this.horizontalNoiseGranularity + horN;
                             int xx = i3 & 15;
                             double d13 = (double) horN / this.horizontalNoiseGranularity;
-                            double d14 = MathHelper.lerp(d13, d9, d10);
-                            double d15 = MathHelper.lerp(d13, d11, d12);
+                            double d14 = Mth.lerp(d13, d9, d10);
+                            double d15 = Mth.lerp(d13, d11, d12);
 
                             for (int horZ = 0; horZ < this.horizontalNoiseGranularity; ++horZ) {
                                 int l3 = cz + nz * this.horizontalNoiseGranularity + horZ;
                                 int zz = l3 & 15;
                                 double d16 = (double) horZ / this.horizontalNoiseGranularity;
-                                double d17 = MathHelper.lerp(d16, d14, d15);
-                                double d18 = MathHelper.clamp(d17 / 200.0D, -1.0D, 1.0D);
+                                double d17 = Mth.lerp(d16, d14, d15);
+                                double d18 = Mth.clamp(d17 / 200.0D, -1.0D, 1.0D);
 
                                 int j4;
                                 int k4;
                                 int l4;
                                 for (d18 = d18 / 2.0D - d18 * d18 * d18 / 24.0D; iterator.hasNext(); d18 += getContribution(j4, k4, l4) * 0.8D) {
                                     StructurePiece structurepiece = iterator.next();
-                                    MutableBoundingBox mbox = structurepiece.getBoundingBox();
+                                    BoundingBox mbox = structurepiece.getBoundingBox();
                                     j4 = Math.max(0, Math.max(mbox.x0 - i3, i3 - mbox.x1));
-                                    k4 = yy - (mbox.y0 + (structurepiece instanceof AbstractVillagePiece ? ((AbstractVillagePiece) structurepiece).getGroundLevelDelta() : 0));
+                                    k4 = yy - (mbox.y0 + (structurepiece instanceof PoolElementStructurePiece ? ((PoolElementStructurePiece) structurepiece).getGroundLevelDelta() : 0));
                                     l4 = Math.max(0, Math.max(mbox.z0 - l3, l3 - mbox.z1));
                                 }
 
@@ -382,16 +395,16 @@ public class NormalChunkGenerator extends BaseChunkGenerator {
     }
 
     @Override
-    public int getBaseHeight(int x, int z, Heightmap.Type type) {
+    public int getBaseHeight(int x, int z, Heightmap.Types type) {
         return this.iterateNoiseColumn(x, z, null, type.isOpaque());
     }
 
     @Nonnull
     @Override
-    public IBlockReader getBaseColumn(int x, int z) {
+    public BlockGetter getBaseColumn(int x, int z) {
         BlockState[] ablockstate = new BlockState[this.noiseSizeY * this.verticalNoiseGranularity];
         this.iterateNoiseColumn(x, z, ablockstate, null);
-        return new Blockreader(ablockstate);
+        return new NoiseColumn(ablockstate);
     }
 
     private static double computeContribution(int x, int y, int z) {
@@ -399,7 +412,7 @@ public class NormalChunkGenerator extends BaseChunkGenerator {
         double d1 = y + 0.5D;
         double d2 = d1 * d1;
         double d3 = Math.pow(Math.E, -(d2 / 16.0D + d0 / 16.0D));
-        double d4 = -d1 * MathHelper.fastInvSqrt(d2 / 2.0D + d0 / 2.0D) / 2.0D;
+        double d4 = -d1 * Mth.fastInvSqrt(d2 / 2.0D + d0 / 2.0D) / 2.0D;
         return d4 * d3;
     }
 
@@ -408,7 +421,7 @@ public class NormalChunkGenerator extends BaseChunkGenerator {
         double d0;
         double d1;
         if (this.simplexNoise != null) {
-            d0 = EndBiomeProvider.getHeightValue(this.simplexNoise, noiseX, noiseZ) - 8.0F;
+            d0 = TheEndBiomeSource.getHeightValue(this.simplexNoise, noiseX, noiseZ) - 8.0F;
             if (d0 > 0.0D) {
                 d1 = 0.25D;
             } else {
@@ -481,12 +494,12 @@ public class NormalChunkGenerator extends BaseChunkGenerator {
 
             if (d19 > 0.0D) {
                 double d11 = ((this.noiseSizeY - i1) - d20) / d19;
-                d7 = MathHelper.clampedLerp(d17, d7, d11);
+                d7 = Mth.clampedLerp(d17, d7, d11);
             }
 
             if (d2 > 0.0D) {
                 double d22 = (i1 - d3) / d2;
-                d7 = MathHelper.clampedLerp(d21, d7, d22);
+                d7 = Mth.clampedLerp(d21, d7, d22);
             }
 
             noiseColumn[i1] = d7;
@@ -515,31 +528,31 @@ public class NormalChunkGenerator extends BaseChunkGenerator {
         double d3 = 1.0D;
 
         for (int i = 0; i < 16; ++i) {
-            double d4 = OctavesNoiseGenerator.wrap(x * p_222552_4_ * d3);
-            double d5 = OctavesNoiseGenerator.wrap(y * p_222552_6_ * d3);
-            double d6 = OctavesNoiseGenerator.wrap(z * p_222552_4_ * d3);
+            double d4 = PerlinNoise.wrap(x * p_222552_4_ * d3);
+            double d5 = PerlinNoise.wrap(y * p_222552_6_ * d3);
+            double d6 = PerlinNoise.wrap(z * p_222552_4_ * d3);
             double d7 = p_222552_6_ * d3;
-            ImprovedNoiseGenerator improvednoisegenerator = this.oct1.getOctaveNoise(i);
+            ImprovedNoise improvednoisegenerator = this.oct1.getOctaveNoise(i);
             if (improvednoisegenerator != null) {
                 d0 += improvednoisegenerator.noise(d4, d5, d6, d7, y * d7) / d3;
             }
 
-            ImprovedNoiseGenerator improvednoisegenerator1 = this.oct2.getOctaveNoise(i);
+            ImprovedNoise improvednoisegenerator1 = this.oct2.getOctaveNoise(i);
             if (improvednoisegenerator1 != null) {
                 d1 += improvednoisegenerator1.noise(d4, d5, d6, d7, y * d7) / d3;
             }
 
             if (i < 8) {
-                ImprovedNoiseGenerator improvednoisegenerator2 = this.oct4.getOctaveNoise(i);
+                ImprovedNoise improvednoisegenerator2 = this.oct4.getOctaveNoise(i);
                 if (improvednoisegenerator2 != null) {
-                    d2 += improvednoisegenerator2.noise(OctavesNoiseGenerator.wrap(x * p_222552_8_ * d3), OctavesNoiseGenerator.wrap(y * p_222552_10_ * d3), OctavesNoiseGenerator.wrap(z * p_222552_8_ * d3), p_222552_10_ * d3, y * p_222552_10_ * d3) / d3;
+                    d2 += improvednoisegenerator2.noise(PerlinNoise.wrap(x * p_222552_8_ * d3), PerlinNoise.wrap(y * p_222552_10_ * d3), PerlinNoise.wrap(z * p_222552_8_ * d3), p_222552_10_ * d3, y * p_222552_10_ * d3) / d3;
                 }
             }
 
             d3 /= 2.0D;
         }
 
-        return MathHelper.clampedLerp(d0 / 512.0D, d1 / 512.0D, (d2 / 10.0D + 1.0D) / 2.0D);
+        return Mth.clampedLerp(d0 / 512.0D, d1 / 512.0D, (d2 / 10.0D + 1.0D) / 2.0D);
     }
 
     private double[] makeAndFillNoiseColumn(int x, int y) {
@@ -597,7 +610,7 @@ public class NormalChunkGenerator extends BaseChunkGenerator {
 
             for (int j1 = this.verticalNoiseGranularity - 1; j1 >= 0; --j1) {
                 double d10 = (double) j1 / this.verticalNoiseGranularity;
-                double d11 = MathHelper.lerp3(d10, d0, d1, d2, d6, d4, d8, d3, d7, d5, d9);
+                double d11 = Mth.lerp3(d10, d0, d1, d2, d6, d4, d8, d3, d7, d5, d9);
                 int k1 = i1 * this.verticalNoiseGranularity + j1;
                 BlockState blockstate = this.generateBaseState(d11, k1);
                 if (states != null) {

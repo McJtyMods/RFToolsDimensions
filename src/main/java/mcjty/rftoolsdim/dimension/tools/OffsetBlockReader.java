@@ -1,16 +1,16 @@
 package mcjty.rftoolsdim.dimension.tools;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.BlockGetter;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class OffsetBlockReader implements IBlockReader {
+public class OffsetBlockReader implements BlockGetter {
 
     private final BlockState belowState;
     private final int offset;
@@ -22,7 +22,7 @@ public class OffsetBlockReader implements IBlockReader {
 
     @Nullable
     @Override
-    public TileEntity getBlockEntity(@Nonnull BlockPos pos) {
+    public BlockEntity getBlockEntity(@Nonnull BlockPos pos) {
         return null;
     }
 

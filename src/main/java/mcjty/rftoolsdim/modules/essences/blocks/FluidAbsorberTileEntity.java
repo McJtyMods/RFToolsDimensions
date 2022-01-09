@@ -18,17 +18,17 @@ import mcjty.rftoolsdim.modules.dimlets.data.DimletType;
 import mcjty.rftoolsdim.modules.essences.EssencesConfig;
 import mcjty.rftoolsdim.modules.essences.EssencesModule;
 import net.minecraft.block.*;
-import net.minecraft.block.material.Material;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.particles.ParticleTypes;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.client.resources.language.I18n;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.tileentity.ITickableTileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.BlockPos;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -39,6 +39,12 @@ import java.util.Random;
 import java.util.Set;
 
 import static mcjty.lib.builder.TooltipBuilder.*;
+
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class FluidAbsorberTileEntity extends TickingTileEntity {
 
@@ -57,7 +63,7 @@ public class FluidAbsorberTileEntity extends TickingTileEntity {
 
     public static BaseBlock createBlock() {
         return new BaseBlock(new BlockBuilder()
-                .properties(AbstractBlock.Properties.of(Material.METAL)
+                .properties(BlockBehaviour.Properties.of(Material.METAL)
                         .strength(2.0f)
                         .sound(SoundType.METAL)
                         .noOcclusion())
@@ -77,7 +83,7 @@ public class FluidAbsorberTileEntity extends TickingTileEntity {
     }
 
     private static String getFluidName(ItemStack stack) {
-        String block = NBTTools.getInfoNBT(stack, CompoundNBT::getString, "fluid", null);
+        String block = NBTTools.getInfoNBT(stack, CompoundTag::getString, "fluid", null);
         if (block == null) {
             return "<Not Set>";
         } else {
@@ -91,11 +97,11 @@ public class FluidAbsorberTileEntity extends TickingTileEntity {
     }
 
     public static String getFluid(ItemStack stack) {
-        return NBTTools.getInfoNBT(stack, CompoundNBT::getString, "fluid", null);
+        return NBTTools.getInfoNBT(stack, CompoundTag::getString, "fluid", null);
     }
 
     private static String getProgressName(ItemStack stack) {
-        int absorbing = NBTTools.getInfoNBT(stack, CompoundNBT::getInt, "absorbing", -1);
+        int absorbing = NBTTools.getInfoNBT(stack, CompoundTag::getInt, "absorbing", -1);
         if (absorbing == -1) {
             return "n.a.";
         } else {
@@ -105,7 +111,7 @@ public class FluidAbsorberTileEntity extends TickingTileEntity {
     }
 
     public static int getProgress(ItemStack stack) {
-        int absorbing = NBTTools.getInfoNBT(stack, CompoundNBT::getInt, "absorbing", -1);
+        int absorbing = NBTTools.getInfoNBT(stack, CompoundTag::getInt, "absorbing", -1);
         if (absorbing == -1) {
             return -1;
         } else {
@@ -237,7 +243,7 @@ public class FluidAbsorberTileEntity extends TickingTileEntity {
     }
 
     @Override
-    public void load(CompoundNBT tagCompound) {
+    public void load(CompoundTag tagCompound) {
         super.load(tagCompound);
         int[] x = tagCompound.getIntArray("toscanx");
         int[] y = tagCompound.getIntArray("toscany");
@@ -249,10 +255,10 @@ public class FluidAbsorberTileEntity extends TickingTileEntity {
     }
 
     @Override
-    protected void loadInfo(CompoundNBT tagCompound) {
+    protected void loadInfo(CompoundTag tagCompound) {
         super.loadInfo(tagCompound);
         if (tagCompound.contains("Info")) {
-            CompoundNBT info = tagCompound.getCompound("Info");
+            CompoundTag info = tagCompound.getCompound("Info");
             absorbing = info.getInt("absorbing");
             if (info.contains("fluid")) {
                 Fluid fluid = ForgeRegistries.FLUIDS.getValue(new ResourceLocation(info.getString("fluid")));
@@ -264,7 +270,7 @@ public class FluidAbsorberTileEntity extends TickingTileEntity {
     }
 
     @Override
-    public void saveAdditional(@Nonnull CompoundNBT tagCompound) {
+    public void saveAdditional(@Nonnull CompoundTag tagCompound) {
         super.saveAdditional(tagCompound);
         int[] x = new int[toscan.size()];
         int[] y = new int[toscan.size()];
@@ -282,9 +288,9 @@ public class FluidAbsorberTileEntity extends TickingTileEntity {
     }
 
     @Override
-    protected void saveInfo(CompoundNBT tagCompound) {
+    protected void saveInfo(CompoundTag tagCompound) {
         super.saveInfo(tagCompound);
-        CompoundNBT info = getOrCreateInfo(tagCompound);
+        CompoundTag info = getOrCreateInfo(tagCompound);
         info.putInt("absorbing", absorbing);
         if (absorbingBlock != null) {
             info.putString("fluid", absorbingBlock.defaultBlockState().getFluidState().getType().getRegistryName().toString());

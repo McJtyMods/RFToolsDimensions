@@ -1,7 +1,7 @@
 package mcjty.rftoolsdim.dimension.descriptor;
 
 import mcjty.rftoolsdim.dimension.features.FeatureType;
-import net.minecraft.block.BlockState;
+import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.ArrayList;
 import java.util.List;

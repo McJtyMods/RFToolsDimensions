@@ -3,8 +3,8 @@ package mcjty.rftoolsdim.modules.dimlets.network;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletDictionary;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletKey;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletSettings;
-import net.minecraft.network.PacketBuffer;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraftforge.network.NetworkEvent;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,7 +19,7 @@ public class PacketSendDimletPackages {
         this.dimlets = new HashMap<>(dimlets);
     }
 
-    public PacketSendDimletPackages(PacketBuffer buf) {
+    public PacketSendDimletPackages(FriendlyByteBuf buf) {
         int size = buf.readInt();
         dimlets = new HashMap<>(size);
         for (int i = 0 ; i < size ; i++) {
@@ -29,7 +29,7 @@ public class PacketSendDimletPackages {
         }
     }
 
-    public void toBytes(PacketBuffer buf) {
+    public void toBytes(FriendlyByteBuf buf) {
         buf.writeInt(dimlets.size());
         for (Map.Entry<DimletKey, DimletSettings> entry : dimlets.entrySet()) {
             entry.getKey().toBytes(buf);

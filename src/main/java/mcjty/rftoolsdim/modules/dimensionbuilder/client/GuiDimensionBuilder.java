@@ -1,6 +1,6 @@
 package mcjty.rftoolsdim.modules.dimensionbuilder.client;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import mcjty.lib.container.GenericContainer;
 import mcjty.lib.gui.GenericGuiContainer;
 import mcjty.lib.gui.Window;
@@ -12,8 +12,8 @@ import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.modules.dimensionbuilder.DimensionBuilderModule;
 import mcjty.rftoolsdim.modules.dimensionbuilder.blocks.DimensionBuilderTileEntity;
 import mcjty.rftoolsdim.setup.RFToolsDimMessages;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.resources.ResourceLocation;
 
 import javax.annotation.Nonnull;
 
@@ -33,7 +33,7 @@ public class GuiDimensionBuilder extends GenericGuiContainer<DimensionBuilderTil
     private static final ResourceLocation iconStages = new ResourceLocation(RFToolsDim.MODID, "textures/gui/dimensionbuilderstages.png");
     private static final ResourceLocation iconGuiElements = new ResourceLocation(RFToolsBase.MODID, "textures/gui/guielements.png");
 
-    public GuiDimensionBuilder(DimensionBuilderTileEntity tileEntity, GenericContainer container, PlayerInventory inventory) {
+    public GuiDimensionBuilder(DimensionBuilderTileEntity tileEntity, GenericContainer container, Inventory inventory) {
         super(tileEntity, container, inventory, DimensionBuilderModule.DIMENSION_BUILDER.get().getManualEntry());
 
         imageWidth = BUILDER_WIDTH;
@@ -69,7 +69,7 @@ public class GuiDimensionBuilder extends GenericGuiContainer<DimensionBuilderTil
     }
 
     @Override
-    protected void renderBg(@Nonnull MatrixStack matrixStack, float partialTicks, int x, int y) {
+    protected void renderBg(@Nonnull PoseStack matrixStack, float partialTicks, int x, int y) {
         int pct = tileEntity.getBuildPercentage();
         int error = tileEntity.getErrorMode();
 

@@ -2,17 +2,17 @@ package mcjty.rftoolsdim.modules.dimlets.lootmodifier;
 
 import com.google.gson.*;
 import mcjty.rftoolsdim.modules.dimlets.DimletModule;
-import net.minecraft.loot.ILootSerializer;
-import net.minecraft.loot.LootConditionType;
-import net.minecraft.loot.LootContext;
-import net.minecraft.loot.conditions.ILootCondition;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.level.storage.loot.Serializer;
+import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
+import net.minecraft.resources.ResourceLocation;
 
 import javax.annotation.Nonnull;
 import java.util.HashSet;
 import java.util.Set;
 
-public class LootTableCondition implements ILootCondition {
+public class LootTableCondition implements LootItemCondition {
 
     private final Set<ResourceLocation> tables;
 
@@ -22,7 +22,7 @@ public class LootTableCondition implements ILootCondition {
 
     @Nonnull
     @Override
-    public LootConditionType getType() {
+    public LootItemConditionType getType() {
         return DimletModule.LOOT_TABLE_CONDITION;
     }
 
@@ -32,7 +32,7 @@ public class LootTableCondition implements ILootCondition {
         return tables.contains(table);
     }
 
-    public static class Serializer implements ILootSerializer<LootTableCondition> {
+    public static class Serializer implements Serializer<LootTableCondition> {
 
 
         @Override

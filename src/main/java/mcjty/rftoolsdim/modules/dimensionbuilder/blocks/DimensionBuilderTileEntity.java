@@ -26,16 +26,17 @@ import mcjty.rftoolsdim.dimension.descriptor.DimensionDescriptor;
 import mcjty.rftoolsdim.dimension.power.PowerHandler;
 import mcjty.rftoolsdim.modules.dimensionbuilder.DimensionBuilderConfig;
 import mcjty.rftoolsdim.modules.dimensionbuilder.DimensionBuilderModule;
-import net.minecraft.block.Blocks;
-import net.minecraft.inventory.container.INamedContainerProvider;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SUpdateTileEntityPacket;
-import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.Connection;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.util.StringRepresentable;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.common.util.LazyOptional;
 
@@ -68,7 +69,7 @@ public class DimensionBuilderTileEntity extends TickingTileEntity {
     private final GenericEnergyStorage energyStorage = new GenericEnergyStorage(this, true, DimensionBuilderConfig.BUILDER_MAXENERGY.get(), DimensionBuilderConfig.BUILDER_RECEIVEPERTICK.get());
 
     @Cap(type = CapType.CONTAINER)
-    private final LazyOptional<INamedContainerProvider> screenHandler = LazyOptional.of(() -> new DefaultContainerProvider<GenericContainer>("Dimension Builder")
+    private final LazyOptional<MenuProvider> screenHandler = LazyOptional.of(() -> new DefaultContainerProvider<GenericContainer>("Dimension Builder")
             .containerSupplier(container(DimensionBuilderModule.CONTAINER_DIMENSION_BUILDER, CONTAINER_FACTORY,this))
             .itemHandler(() -> items)
             .energyHandler(() -> energyStorage)
@@ -89,8 +90,8 @@ public class DimensionBuilderTileEntity extends TickingTileEntity {
     public static final short ERROR_COLLISION = -3;
 
 
-    public DimensionBuilderTileEntity() {
-        super(DimensionBuilderModule.TYPE_DIMENSION_BUILDER.get());
+    public DimensionBuilderTileEntity(BlockPos pos, BlockState state) {
+        super(DimensionBuilderModule.TYPE_DIMENSION_BUILDER.get(), pos, state);
     }
 
     public static BaseBlock createBlock() {
@@ -109,23 +110,23 @@ public class DimensionBuilderTileEntity extends TickingTileEntity {
 
     @Nullable
     @Override
-    public SUpdateTileEntityPacket getUpdatePacket() {
-        CompoundNBT nbtTag = new CompoundNBT();
+    public ClientboundBlockEntityDataPacket getUpdatePacket() {
+        CompoundTag nbtTag = new CompoundTag();
         this.saveClientDataToNBT(nbtTag);
         nbtTag.putInt("errorMode", errorMode);
-        return new SUpdateTileEntityPacket(worldPosition, 1, nbtTag);
+        return ClientboundBlockEntityDataPacket.create(this);
     }
 
     @Nonnull
     @Override
-    public CompoundNBT getUpdateTag() {
-        CompoundNBT updateTag = super.getUpdateTag();
+    public CompoundTag getUpdateTag() {
+        CompoundTag updateTag = super.getUpdateTag();
         updateTag.putInt("errorMode", errorMode);
         return updateTag;
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket packet) {
+    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket packet) {
         int oldstate = state;
         int oldError = errorMode;
         super.onDataPacket(net, packet);
@@ -137,7 +138,7 @@ public class DimensionBuilderTileEntity extends TickingTileEntity {
 
     @Override
     public void tickServer() {
-        CompoundNBT tagCompound = hasTab();
+        CompoundTag tagCompound = hasTab();
         if (tagCompound == null) {
             setState(-1);
             return;
@@ -158,7 +159,7 @@ public class DimensionBuilderTileEntity extends TickingTileEntity {
         setState(ticksLeft);
     }
 
-    private void maintainDimensionTick(CompoundNBT tagCompound) {
+    private void maintainDimensionTick(CompoundTag tagCompound) {
         if (tagCompound.contains("dimension")) {
             String dimension = tagCompound.getString("dimension");
             ResourceLocation id = new ResourceLocation(dimension);
@@ -189,7 +190,7 @@ public class DimensionBuilderTileEntity extends TickingTileEntity {
 
     private static final Random random = new Random();
 
-    private int createDimensionTick(CompoundNBT tagCompound, int ticksLeft) {
+    private int createDimensionTick(CompoundTag tagCompound, int ticksLeft) {
 
         // @todo 1.16
 //        if (GeneralConfiguration.dimensionBuilderNeedsOwner) {
@@ -264,7 +265,7 @@ public class DimensionBuilderTileEntity extends TickingTileEntity {
                 }
 
                 long seed = random.nextLong();
-                ServerWorld newworld = DimensionManager.get().createWorld(this.level, name, seed, descriptor, randomizedDescriptor);
+                ServerLevel newworld = DimensionManager.get().createWorld(this.level, name, seed, descriptor, randomizedDescriptor);
                 ResourceLocation id = new ResourceLocation(RFToolsDim.MODID, name);
                 tagCompound.putString("dimension", id.toString());
                 CompiledDescriptor compiledDescriptor = DimensionManager.get().getCompiledDescriptor(newworld);
@@ -277,7 +278,7 @@ public class DimensionBuilderTileEntity extends TickingTileEntity {
         return ticksLeft;
     }
 
-    private void placeMatterReceiver(ServerWorld newworld, String name) {
+    private void placeMatterReceiver(ServerLevel newworld, String name) {
         int y = 250;
         while (y >= 1) {
             if (newworld.getBlockState(new BlockPos(8, y, 8)).getBlock() == Blocks.COMMAND_BLOCK) {
@@ -294,7 +295,7 @@ public class DimensionBuilderTileEntity extends TickingTileEntity {
         newworld.setBlockAndUpdate(new BlockPos(8, platformHeight+2, 8), Blocks.AIR.defaultBlockState());
     }
 
-    private boolean isCheaterDimension(CompoundNBT tag) {
+    private boolean isCheaterDimension(CompoundTag tag) {
         // @todo 1.16
         return false;
     }
@@ -320,16 +321,16 @@ public class DimensionBuilderTileEntity extends TickingTileEntity {
     }
 
     @Override
-    public void loadClientDataFromNBT(CompoundNBT tagCompound) {
+    public void loadClientDataFromNBT(CompoundTag tagCompound) {
         loadItemHandlerCap(tagCompound);
     }
 
     @Override
-    public void saveClientDataToNBT(CompoundNBT tagCompound) {
+    public void saveClientDataToNBT(CompoundTag tagCompound) {
         saveItemHandlerCap(tagCompound);
     }
 
-    public CompoundNBT hasTab() {
+    public CompoundTag hasTab() {
         ItemStack itemStack = items.getStackInSlot(SLOT_DIMENSION_TAB);
         if (itemStack.isEmpty()) {
             return null;
@@ -342,7 +343,7 @@ public class DimensionBuilderTileEntity extends TickingTileEntity {
         if (level.isClientSide) {
             return clientBuildPercentage;
         } else {
-            CompoundNBT tag = hasTab();
+            CompoundTag tag = hasTab();
             if (tag != null) {
                 int ticksLeft = tag.getInt("ticksLeft");
                 int tickCost = tag.getInt("tickCost");
@@ -369,7 +370,7 @@ public class DimensionBuilderTileEntity extends TickingTileEntity {
         return true;
     }
 
-    public enum OperationType implements IStringSerializable {
+    public enum OperationType implements StringRepresentable {
         CHARGING("charging"),
         EMPTY("empty"),
         BUILDING1("building1"),

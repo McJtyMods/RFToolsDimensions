@@ -3,14 +3,12 @@ package mcjty.rftoolsdim.dimension.biomes;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import mcjty.rftoolsdim.dimension.data.DimensionSettings;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryLookupCodec;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.Biomes;
-import net.minecraft.world.biome.provider.BiomeProvider;
-import net.minecraft.world.gen.feature.structure.Structure;
-import net.minecraft.world.gen.layer.Layer;
-import net.minecraft.world.gen.layer.LayerUtil;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.RegistryLookupCodec;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.BiomeSource;
+import net.minecraft.world.level.biome.Biomes;
+import net.minecraft.world.level.biome.Climate;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -18,7 +16,7 @@ import java.util.stream.Collectors;
 
 import static mcjty.rftoolsdim.dimension.data.DimensionSettings.SETTINGS_CODEC;
 
-public class RFTBiomeProvider extends BiomeProvider {
+public class RFTBiomeProvider extends BiomeSource {
 
 //    public static final Codec<RFTBiomeProvider> CODEC = RegistryLookupCodec.getLookUpCodec(Registry.BIOME_KEY)
 //            .xmap(RFTBiomeProvider::new, RFTBiomeProvider::getBiomeRegistry).codec();
@@ -29,7 +27,7 @@ public class RFTBiomeProvider extends BiomeProvider {
                     SETTINGS_CODEC.fieldOf("settings").forGetter(RFTBiomeProvider::getSettings)
             ).apply(instance, RFTBiomeProvider::new));
 
-    private final Layer genBiomes;
+//    private final Layer genBiomes;
     private final List<Biome> biomes;
     private final Registry<Biome> biomeRegistry;
     private final DimensionSettings settings;
@@ -39,8 +37,10 @@ public class RFTBiomeProvider extends BiomeProvider {
         this.settings = settings;
         this.biomeRegistry = biomeRegistry;
         biomes = getBiomes(biomeRegistry, settings);
-        this.genBiomes = LayerUtil.getDefaultLayer(settings.getSeed(), false, 4, 4);
+//        this.genBiomes = Layers.getDefaultLayer(settings.getSeed(), false, 4, 4);
     }
+
+
 
     public DimensionSettings getSettings() {
         return settings;
@@ -60,29 +60,25 @@ public class RFTBiomeProvider extends BiomeProvider {
         return biomeRegistry;
     }
 
-    @Override
-    public boolean canGenerateStructure(@Nonnull Structure<?> structure) {
-        return false;
-    }
-
     @Nonnull
     @Override
-    protected Codec<? extends BiomeProvider> codec() {
+    protected Codec<? extends BiomeSource> codec() {
         return CODEC;
     }
 
     @Nonnull
     @Override
-    public BiomeProvider withSeed(long seed) {
+    public BiomeSource withSeed(long seed) {
         return new RFTBiomeProvider(getBiomeRegistry(), settings);
     }
 
-    @Nonnull
     @Override
-    public Biome getNoiseBiome(int x, int y, int z) {
+    public Biome getNoiseBiome(int x, int y, int z, Climate.Sampler climate) {
         switch (settings.getCompiledDescriptor().getBiomeControllerType()) {
             case DEFAULT:
-                return this.genBiomes.get(this.biomeRegistry, x, z);
+                // @todo 1.18
+//                return this.genBiomes.get(this.biomeRegistry, x, z);
+                return biomes.get(0);
             case CHECKER:
                 if ((x+y)%2 == 0 || biomes.size() <= 1) {
                     return biomes.get(0);

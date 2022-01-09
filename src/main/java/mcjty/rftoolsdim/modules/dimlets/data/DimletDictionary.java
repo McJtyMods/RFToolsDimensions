@@ -3,8 +3,8 @@ package mcjty.rftoolsdim.modules.dimlets.data;
 import mcjty.lib.varia.LevelTools;
 import mcjty.rftoolsdim.modules.knowledge.data.DimletPattern;
 import mcjty.rftoolsdim.modules.knowledge.data.KnowledgeManager;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nullable;
@@ -44,7 +44,7 @@ public class DimletDictionary {
         return dimlets.get(key);
     }
 
-    public DimletKey tryCraft(World world, DimletType type, ItemStack memoryPart, ItemStack energyPart, ItemStack essence,
+    public DimletKey tryCraft(Level world, DimletType type, ItemStack memoryPart, ItemStack energyPart, ItemStack essence,
                               DimletPattern pattern) {
         for (Map.Entry<DimletKey, DimletSettings> entry : dimlets.entrySet()) {
             DimletKey key = entry.getKey();

@@ -14,11 +14,11 @@ import mcjty.rftoolsdim.modules.essences.EssencesModule;
 import mcjty.rftoolsdim.modules.knowledge.KnowledgeModule;
 import mcjty.rftoolsdim.modules.workbench.WorkbenchModule;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.loot.ItemLootEntry;
-import net.minecraft.loot.LootPool;
-import net.minecraft.loot.LootTable;
-import net.minecraft.loot.RandomValueRange;
-import net.minecraft.loot.functions.SetCount;
+import net.minecraft.world.level.storage.loot.LootPool;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
+import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 
 import javax.annotation.Nonnull;
 
@@ -30,15 +30,15 @@ public class LootTables extends BaseLootTableProvider {
 
     @Override
     protected void addTables() {
-        addStandardTable(DimensionBuilderModule.DIMENSION_BUILDER.get());
-        addStandardTable(DimensionEditorModule.DIMENSION_EDITOR.get());
-        addStandardTable(WorkbenchModule.WORKBENCH.get());
-        addStandardTable(WorkbenchModule.HOLDER.get());
-        addStandardTable(WorkbenchModule.RESEARCHER.get());
-        addStandardTable(EnscriberModule.ENSCRIBER.get());
-        addStandardTable(EssencesModule.BLOCK_ABSORBER.get());
-        addStandardTable(EssencesModule.FLUID_ABSORBER.get());
-        addStandardTable(EssencesModule.BIOME_ABSORBER.get());
+        addStandardTable(DimensionBuilderModule.DIMENSION_BUILDER.get(), DimensionBuilderModule.TYPE_DIMENSION_BUILDER.get());
+        addStandardTable(DimensionEditorModule.DIMENSION_EDITOR.get(), DimensionEditorModule.TYPE_DIMENSION_EDITOR.get());
+        addStandardTable(WorkbenchModule.WORKBENCH.get(), WorkbenchModule.TYPE_WORKBENCH.get());
+        addStandardTable(WorkbenchModule.HOLDER.get(), WorkbenchModule.TYPE_HOLDER.get());
+        addStandardTable(WorkbenchModule.RESEARCHER.get(), WorkbenchModule.TYPE_RESEARCHER.get());
+        addStandardTable(EnscriberModule.ENSCRIBER.get(), EnscriberModule.TYPE_ENSCRIBER.get());
+        addStandardTable(EssencesModule.BLOCK_ABSORBER.get(), EssencesModule.TYPE_BLOCK_ABSORBER.get());
+        addStandardTable(EssencesModule.FLUID_ABSORBER.get(), EssencesModule.TYPE_FLUID_ABSORBER.get());
+        addStandardTable(EssencesModule.BIOME_ABSORBER.get(), EssencesModule.TYPE_BIOME_ABSORBER.get());
 
         addSimpleTable(DecorativeModule.DIMENSIONAL_SMALL_BLOCK.get());
         addSimpleTable(DecorativeModule.DIMENSIONAL_BLANK.get());
@@ -54,39 +54,39 @@ public class LootTables extends BaseLootTableProvider {
 
         LootPool.Builder builder = LootPool.lootPool()
                 .name(DimensionRegistry.HUT_LOOT.getPath())
-                .setRolls(RandomValueRange.between(1, 5))
+                .setRolls(UniformGenerator.between(1, 5))
                 .add(DimletLootEntry.builder(DimletRarity.COMMON)
                         .setWeight(14)
-                        .apply(SetCount
-                                .setCount(RandomValueRange.between(0, 2))))
+                        .apply(SetItemCountFunction
+                                .setCount(UniformGenerator.between(0, 2))))
                 .add(DimletLootEntry.builder(DimletRarity.UNCOMMON)
                         .setWeight(4)
-                        .apply(SetCount
-                                .setCount(RandomValueRange.between(0, 2))))
+                        .apply(SetItemCountFunction
+                                .setCount(UniformGenerator.between(0, 2))))
                 .add(DimletLootEntry.builder(DimletRarity.RARE)
                         .setWeight(2)
-                        .apply(SetCount
-                                .setCount(RandomValueRange.between(0, 1))))
+                        .apply(SetItemCountFunction
+                                .setCount(UniformGenerator.between(0, 1))))
                 .add(DimletLootEntry.builder(DimletRarity.LEGENDARY)
                         .setWeight(1)
-                        .apply(SetCount
-                                .setCount(RandomValueRange.between(0, 1))))
-                .add(ItemLootEntry.lootTableItem(KnowledgeModule.COMMON_LOST_KNOWLEDGE.get())
+                        .apply(SetItemCountFunction
+                                .setCount(UniformGenerator.between(0, 1))))
+                .add(LootItem.lootTableItem(KnowledgeModule.COMMON_LOST_KNOWLEDGE.get())
                         .setWeight(14)
-                        .apply(SetCount
-                                .setCount(RandomValueRange.between(0, 3))))
-                .add(ItemLootEntry.lootTableItem(KnowledgeModule.UNCOMMON_LOST_KNOWLEDGE.get())
+                        .apply(SetItemCountFunction
+                                .setCount(UniformGenerator.between(0, 3))))
+                .add(LootItem.lootTableItem(KnowledgeModule.UNCOMMON_LOST_KNOWLEDGE.get())
                         .setWeight(4)
-                        .apply(SetCount
-                                .setCount(RandomValueRange.between(0, 3))))
-                .add(ItemLootEntry.lootTableItem(KnowledgeModule.RARE_LOST_KNOWLEDGE.get())
+                        .apply(SetItemCountFunction
+                                .setCount(UniformGenerator.between(0, 3))))
+                .add(LootItem.lootTableItem(KnowledgeModule.RARE_LOST_KNOWLEDGE.get())
                         .setWeight(2)
-                        .apply(SetCount
-                                .setCount(RandomValueRange.between(0, 2))))
-                .add(ItemLootEntry.lootTableItem(KnowledgeModule.LEGENDARY_LOST_KNOWLEDGE.get())
+                        .apply(SetItemCountFunction
+                                .setCount(UniformGenerator.between(0, 2))))
+                .add(LootItem.lootTableItem(KnowledgeModule.LEGENDARY_LOST_KNOWLEDGE.get())
                         .setWeight(1)
-                        .apply(SetCount
-                                .setCount(RandomValueRange.between(0, 1))))
+                        .apply(SetItemCountFunction
+                                .setCount(UniformGenerator.between(0, 1))))
                 ;
 
         addChestLootTable(DimensionRegistry.HUT_LOOT, LootTable.lootTable().withPool(builder));

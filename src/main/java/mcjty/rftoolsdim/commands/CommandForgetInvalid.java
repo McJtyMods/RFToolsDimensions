@@ -9,39 +9,39 @@ import mcjty.rftoolsdim.dimension.data.DimensionData;
 import mcjty.rftoolsdim.dimension.data.DimensionManager;
 import mcjty.rftoolsdim.dimension.data.PersistantDimensionManager;
 import mcjty.rftoolsdim.dimension.descriptor.CompiledDescriptor;
-import net.minecraft.command.CommandSource;
-import net.minecraft.command.Commands;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SharedConstants;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.Commands;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.SharedConstants;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.ChatFormatting;
+import net.minecraft.server.level.ServerLevel;
 
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class CommandForgetInvalid implements Command<CommandSource> {
+public class CommandForgetInvalid implements Command<CommandSourceStack> {
 
     private static final CommandForgetInvalid CMD = new CommandForgetInvalid();
 
-    public static ArgumentBuilder<CommandSource, ?> register(CommandDispatcher<CommandSource> dispatcher) {
+    public static ArgumentBuilder<CommandSourceStack, ?> register(CommandDispatcher<CommandSourceStack> dispatcher) {
         return Commands.literal("forgetinvalid")
                 .requires(cs -> cs.hasPermission(1))
                 .executes(CMD);
     }
 
     @Override
-    public int run(CommandContext<CommandSource> context) throws CommandSyntaxException {
+    public int run(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         SharedConstants.IS_RUNNING_IN_IDE = true;
-        ServerWorld world = context.getSource().getLevel();
+        ServerLevel world = context.getSource().getLevel();
         PersistantDimensionManager mgr = PersistantDimensionManager.get(world);
         Set<Map.Entry<ResourceLocation, DimensionData>> entries = new HashSet<>(mgr.getData().entrySet());
         for (Map.Entry<ResourceLocation, DimensionData> entry : entries) {
             CompiledDescriptor descriptor = DimensionManager.get().getCompiledDescriptor(world, entry.getKey());
             if (descriptor == null) {
                 mgr.forget(entry.getKey());
-                context.getSource().sendSuccess(new StringTextComponent(TextFormatting.YELLOW + "Removed '" + entry.getKey() + "'"), false);
+                context.getSource().sendSuccess(new TextComponent(ChatFormatting.YELLOW + "Removed '" + entry.getKey() + "'"), false);
             }
         }
         return 0;

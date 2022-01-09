@@ -1,6 +1,6 @@
 package mcjty.rftoolsdim.modules.enscriber.client;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import mcjty.lib.container.GenericContainer;
 import mcjty.lib.gui.GenericGuiContainer;
 import mcjty.lib.gui.Window;
@@ -17,11 +17,11 @@ import mcjty.rftoolsdim.modules.enscriber.EnscriberModule;
 import mcjty.rftoolsdim.modules.enscriber.blocks.EnscriberTileEntity;
 import mcjty.rftoolsdim.setup.RFToolsDimMessages;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.Slot;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.chat.TextComponent;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -43,7 +43,7 @@ public class GuiEnscriber extends GenericGuiContainer<EnscriberTileEntity, Gener
 
     private static final ResourceLocation iconLocation = new ResourceLocation(RFToolsDim.MODID, "textures/gui/dimensionenscriber.png");
 
-    public GuiEnscriber(EnscriberTileEntity te, GenericContainer container, PlayerInventory inventory) {
+    public GuiEnscriber(EnscriberTileEntity te, GenericContainer container, Inventory inventory) {
         super(te, container, inventory, EnscriberModule.ENSCRIBER.get().getManualEntry());
 
         imageWidth = ENSCRIBER_WIDTH;
@@ -89,7 +89,7 @@ public class GuiEnscriber extends GenericGuiContainer<EnscriberTileEntity, Gener
     private void storeDimlets() {
         String name = nameField.getText();
         if (name == null || name.trim().isEmpty()) {
-            Minecraft.getInstance().player.displayClientMessage(new StringTextComponent("Name is required!"), false);
+            Minecraft.getInstance().player.displayClientMessage(new TextComponent("Name is required!"), false);
             return;
         }
         sendServerCommandTyped(RFToolsDimMessages.INSTANCE, EnscriberTileEntity.CMD_STORE,
@@ -137,7 +137,7 @@ public class GuiEnscriber extends GenericGuiContainer<EnscriberTileEntity, Gener
     }
 
     @Override
-    protected void renderBg(@Nonnull MatrixStack matrixStack, float partialTicks, int x, int y) {
+    protected void renderBg(@Nonnull PoseStack matrixStack, float partialTicks, int x, int y) {
         enableButtons();
         validateDimlets();
 

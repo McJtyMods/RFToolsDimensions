@@ -32,17 +32,17 @@ import mcjty.rftoolsdim.modules.knowledge.data.KnowledgeManager;
 import mcjty.rftoolsdim.modules.workbench.WorkbenchModule;
 import mcjty.rftoolsdim.modules.workbench.network.PacketPatternToClient;
 import mcjty.rftoolsdim.setup.RFToolsDimMessages;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.container.INamedContainerProvider;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.NonNullList;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.Direction;
+import net.minecraft.core.NonNullList;
 import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fml.network.PacketDistributor;
+import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import java.util.ArrayList;
@@ -99,7 +99,7 @@ public class WorkbenchTileEntity extends GenericTileEntity {
             .build();
 
     @Cap(type = CapType.CONTAINER)
-    private final LazyOptional<INamedContainerProvider> screenHandler = LazyOptional.of(() -> new DefaultContainerProvider<GenericContainer>("Dimlet Workbench")
+    private final LazyOptional<MenuProvider> screenHandler = LazyOptional.of(() -> new DefaultContainerProvider<GenericContainer>("Dimlet Workbench")
             .containerSupplier(container(WorkbenchModule.CONTAINER_WORKBENCH, CONTAINER_FACTORY, this))
             .itemHandler(() -> items)
             .setupSync(this));
@@ -178,21 +178,21 @@ public class WorkbenchTileEntity extends GenericTileEntity {
         return true;
     }
 
-    private void cheatDimlet(PlayerEntity player, DimletKey key) {
+    private void cheatDimlet(Player player, DimletKey key) {
         ItemStack dimlet = DimletTools.getDimletStack(key);
         ItemHandlerHelper.giveItemToPlayer(player, dimlet);
     }
 
-    private void hilightPattern(PlayerEntity player, DimletKey key) {
+    private void hilightPattern(Player player, DimletKey key) {
         DimletPattern pattern = KnowledgeManager.get().getPattern(LevelTools.getOverworld(player.level).getSeed(), key);
         if (pattern != null) {
             String[] p = pattern.getPattern();
-            RFToolsDimMessages.INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player),
+            RFToolsDimMessages.INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player),
                     new PacketPatternToClient(p));
         }
     }
 
-    private void suggestParts(PlayerEntity player, DimletKey key) {
+    private void suggestParts(Player player, DimletKey key) {
         if (!key.getType().usesKnowledgeSystem()) {
             return;
         }
@@ -227,7 +227,7 @@ public class WorkbenchTileEntity extends GenericTileEntity {
         player.inventoryMenu.broadcastChanges();
     }
 
-    private void tryFindAndFitItem(PlayerEntity player, Predicate<ItemStack> desired, int slotNumber) {
+    private void tryFindAndFitItem(Player player, Predicate<ItemStack> desired, int slotNumber) {
         if (desired.test(items.getStackInSlot(slotNumber))) {
             // Already ok
             return;
@@ -270,7 +270,7 @@ public class WorkbenchTileEntity extends GenericTileEntity {
     private Set<KnowledgeKey> getSupportedKnowledgeKeys() {
         Set<KnowledgeKey> knownKeys = new HashSet<>();
         for (Direction direction : OrientationTools.DIRECTION_VALUES) {
-            TileEntity tileEntity = level.getBlockEntity(worldPosition.relative(direction));
+            BlockEntity tileEntity = level.getBlockEntity(worldPosition.relative(direction));
             if (tileEntity instanceof KnowledgeHolderTileEntity) {
                 ((KnowledgeHolderTileEntity) tileEntity).addKnownKnowledgeKeys(knownKeys);
             }

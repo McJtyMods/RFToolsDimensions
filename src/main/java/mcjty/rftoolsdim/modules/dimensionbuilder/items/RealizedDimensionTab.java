@@ -12,22 +12,22 @@ import mcjty.rftoolsdim.dimension.descriptor.CompiledFeature;
 import mcjty.rftoolsdim.dimension.descriptor.DescriptorError;
 import mcjty.rftoolsdim.dimension.descriptor.DimensionDescriptor;
 import mcjty.rftoolsdim.dimension.terraintypes.BaseChunkGenerator;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.RegistryKey;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.world.World;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.fml.server.ServerLifecycleHooks;
+import net.minecraft.ChatFormatting;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraftforge.server.ServerLifecycleHooks;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -41,47 +41,47 @@ public class RealizedDimensionTab extends Item {
 
     @Nonnull
     @Override
-    public ActionResult<ItemStack> use(World world, PlayerEntity player, @Nonnull Hand hand) {
+    public InteractionResultHolder<ItemStack> use(Level world, Player player, @Nonnull InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         if ((!world.isClientSide) && player.isShiftKeyDown()) {
-            CompoundNBT tagCompound = stack.getTag();
+            CompoundTag tagCompound = stack.getTag();
             Logging.message(player, tagCompound.getString("descriptor"));
             if (tagCompound.contains("dimension")) {
                 String dimension = tagCompound.getString("dimension");
                 DimensionData data = PersistantDimensionManager.get(world).getData(new ResourceLocation(dimension));
                 if (data != null) {
-                    player.displayClientMessage(new StringTextComponent(TextFormatting.BLUE + "Energy: " + TextFormatting.WHITE + data.getEnergy()), false);
+                    player.displayClientMessage(new TextComponent(ChatFormatting.BLUE + "Energy: " + ChatFormatting.WHITE + data.getEnergy()), false);
                     DimensionDescriptor descriptor = data.getDescriptor();
                     descriptor.dump(player);
-                    player.displayClientMessage(new StringTextComponent("-----------------------------"), false);
+                    player.displayClientMessage(new TextComponent("-----------------------------"), false);
                     DimensionDescriptor randomized = data.getRandomizedDescriptor();
                     randomized.dump(player);
                 }
 
-                RegistryKey<World> id = LevelTools.getId(dimension);
-                ServerWorld serverWorld = ServerLifecycleHooks.getCurrentServer().getLevel(id);
-                ChunkGenerator generator = serverWorld.getChunkSource().generator;
+                ResourceKey<Level> id = LevelTools.getId(dimension);
+                ServerLevel serverWorld = ServerLifecycleHooks.getCurrentServer().getLevel(id);
+                ChunkGenerator generator = serverWorld.getChunkSource().getGenerator();
                 if (generator instanceof BaseChunkGenerator) {
                     DimensionSettings settings = ((BaseChunkGenerator) generator).getDimensionSettings();
-                    player.displayClientMessage(new StringTextComponent(TextFormatting.BLUE + "Seed: " + TextFormatting.WHITE + settings.getSeed()), false);
+                    player.displayClientMessage(new TextComponent(ChatFormatting.BLUE + "Seed: " + ChatFormatting.WHITE + settings.getSeed()), false);
                 }
             }
         }
-        return ActionResult.success(stack);
+        return InteractionResultHolder.success(stack);
     }
 
     @Override
-    public void appendHoverText(@Nonnull ItemStack stack, @Nullable World worldIn, @Nonnull List<ITextComponent> list, @Nonnull ITooltipFlag flagIn) {
+    public void appendHoverText(@Nonnull ItemStack stack, @Nullable Level worldIn, @Nonnull List<Component> list, @Nonnull TooltipFlag flagIn) {
         super.appendHoverText(stack, worldIn, list, flagIn);
         // @todo 1.16 tooltip system
-        CompoundNBT tagCompound = stack.getTag();
+        CompoundTag tagCompound = stack.getTag();
         if (tagCompound != null) {
             ResourceLocation dimension = tagCompound.contains("dimension") ? new ResourceLocation(tagCompound.getString("dimension")) : null;
             if (dimension != null) {
-                list.add(new StringTextComponent("Name: " + dimension.getPath()).withStyle(TextFormatting.BLUE));
+                list.add(new TextComponent("Name: " + dimension.getPath()).withStyle(ChatFormatting.BLUE));
             } else if (tagCompound.contains("name")) {
                 String name = tagCompound.getString("name");
-                list.add(new StringTextComponent("Name: " + name).withStyle(TextFormatting.BLUE));
+                list.add(new TextComponent("Name: " + name).withStyle(ChatFormatting.BLUE));
             }
 
             if (SafeClientTools.isSneaking()) {
@@ -89,17 +89,17 @@ public class RealizedDimensionTab extends Item {
                 String randomizedString = tagCompound.getString("randomized");
                 constructDescriptionHelp(list, descriptionString, randomizedString);
             } else {
-                list.add(new StringTextComponent(TextFormatting.GREEN + "    <Press Shift>"));
+                list.add(new TextComponent(ChatFormatting.GREEN + "    <Press Shift>"));
             }
 
             int ticksLeft = tagCompound.getInt("ticksLeft");
             if (ticksLeft == 0) {
                 long power = ClientDimensionData.get().getPower(dimension);
                 long max = ClientDimensionData.get().getMaxPower(dimension);
-                list.add(new StringTextComponent("Dimension ready!").withStyle(TextFormatting.BLUE));
+                list.add(new TextComponent("Dimension ready!").withStyle(ChatFormatting.BLUE));
                 int maintainCost = tagCompound.getInt("rfMaintainCost");
-                list.add(new StringTextComponent(TextFormatting.YELLOW + "    Maintenance cost: " + maintainCost + " RF/tick"));
-                list.add(new StringTextComponent(TextFormatting.YELLOW + "    Current power: " + power + " (" + max +")"));
+                list.add(new TextComponent(ChatFormatting.YELLOW + "    Maintenance cost: " + maintainCost + " RF/tick"));
+                list.add(new TextComponent(ChatFormatting.YELLOW + "    Current power: " + power + " (" + max +")"));
             } else {
                 int createCost = tagCompound.getInt("rfCreateCost");
                 int maintainCost = tagCompound.getInt("rfMaintainCost");
@@ -108,15 +108,15 @@ public class RealizedDimensionTab extends Item {
                 if (tickCost != 0) {
                     percentage = (tickCost - ticksLeft) * 100 / tickCost;
                 }
-                list.add(new StringTextComponent(TextFormatting.BLUE + "Dimension progress: " + percentage + "%"));
-                list.add(new StringTextComponent(TextFormatting.YELLOW + "    Creation cost: " + createCost + " RF/tick"));
-                list.add(new StringTextComponent(TextFormatting.YELLOW + "    Maintenance cost: " + maintainCost + " RF/tick"));
-                list.add(new StringTextComponent(TextFormatting.YELLOW + "    Tick cost: " + tickCost + " ticks"));
+                list.add(new TextComponent(ChatFormatting.BLUE + "Dimension progress: " + percentage + "%"));
+                list.add(new TextComponent(ChatFormatting.YELLOW + "    Creation cost: " + createCost + " RF/tick"));
+                list.add(new TextComponent(ChatFormatting.YELLOW + "    Maintenance cost: " + maintainCost + " RF/tick"));
+                list.add(new TextComponent(ChatFormatting.YELLOW + "    Tick cost: " + tickCost + " ticks"));
             }
         }
     }
 
-    private void constructDescriptionHelp(List<ITextComponent> list, String descriptionString, String randomizedString) {
+    private void constructDescriptionHelp(List<Component> list, String descriptionString, String randomizedString) {
         DimensionDescriptor descriptor = new DimensionDescriptor();
         descriptor.read(descriptionString);
         DimensionDescriptor randomizedDescriptor = new DimensionDescriptor();
@@ -127,19 +127,19 @@ public class RealizedDimensionTab extends Item {
         DescriptorError error = compiledDescriptor.compile(descriptor, randomizedDescriptor);
         if (error.isOk()) {
             if (compiledDescriptor.getTerrainType() != null) {
-                list.add(new StringTextComponent(TextFormatting.GREEN + "    Terrain: " + TextFormatting.WHITE + compiledDescriptor.getTerrainType().getName()));
+                list.add(new TextComponent(ChatFormatting.GREEN + "    Terrain: " + ChatFormatting.WHITE + compiledDescriptor.getTerrainType().getName()));
             }
             if (compiledDescriptor.getBiomeControllerType() != null) {
-                list.add(new StringTextComponent(TextFormatting.GREEN + "    Biome Controller: " + TextFormatting.WHITE + compiledDescriptor.getBiomeControllerType().getName()));
+                list.add(new TextComponent(ChatFormatting.GREEN + "    Biome Controller: " + ChatFormatting.WHITE + compiledDescriptor.getBiomeControllerType().getName()));
             }
             if (compiledDescriptor.getTimeType() != null) {
-                list.add(new StringTextComponent(TextFormatting.GREEN + "    Time: " + TextFormatting.WHITE + compiledDescriptor.getTimeType().getName()));
+                list.add(new TextComponent(ChatFormatting.GREEN + "    Time: " + ChatFormatting.WHITE + compiledDescriptor.getTimeType().getName()));
             }
             for (CompiledFeature feature : compiledDescriptor.getFeatures()) {
-                list.add(new StringTextComponent(TextFormatting.GREEN + "    Feature: " + TextFormatting.WHITE + feature.getFeatureType().getName()));
+                list.add(new TextComponent(ChatFormatting.GREEN + "    Feature: " + ChatFormatting.WHITE + feature.getFeatureType().getName()));
             }
         } else {
-            list.add(new StringTextComponent(TextFormatting.RED + "Parse error: " + error.getMessage()));
+            list.add(new TextComponent(ChatFormatting.RED + "Parse error: " + error.getMessage()));
         }
     }
 }

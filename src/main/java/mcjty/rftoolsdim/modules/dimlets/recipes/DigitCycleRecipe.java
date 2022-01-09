@@ -5,11 +5,11 @@ import mcjty.rftoolsdim.modules.dimlets.DimletModule;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletKey;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletTools;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletType;
-import net.minecraft.inventory.CraftingInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraft.item.crafting.ShapedRecipe;
-import net.minecraft.world.World;
+import net.minecraft.world.inventory.CraftingContainer;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.ShapedRecipe;
+import net.minecraft.world.level.Level;
 
 import javax.annotation.Nonnull;
 
@@ -33,7 +33,7 @@ public class DigitCycleRecipe extends AbstractRecipeAdaptor {
     }
 
     @Override
-    public boolean matches(@Nonnull CraftingInventory inv, @Nonnull World worldIn) {
+    public boolean matches(@Nonnull CraftingContainer inv, @Nonnull Level worldIn) {
         boolean matches = super.matches(inv, worldIn);
         if (matches) {
             for (int i = 0 ; i < inv.getContainerSize() ; i++) {
@@ -56,13 +56,13 @@ public class DigitCycleRecipe extends AbstractRecipeAdaptor {
 
     @Nonnull
     @Override
-    public ItemStack assemble(@Nonnull CraftingInventory inv) {
+    public ItemStack assemble(@Nonnull CraftingContainer inv) {
         return DimletTools.getDimletStack(new DimletKey(DimletType.DIGIT, output));
     }
 
     @Override
     @Nonnull
-    public IRecipeSerializer<?> getSerializer() {
+    public RecipeSerializer<?> getSerializer() {
         return DimletModule.DIMLET_CYCLE_SERIALIZER.get();
     }
 }

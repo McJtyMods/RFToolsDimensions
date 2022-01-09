@@ -7,18 +7,18 @@ import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletPackages;
-import net.minecraft.command.CommandSource;
-import net.minecraft.command.Commands;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.Commands;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.ChatFormatting;
 
 import java.io.IOException;
 
-public class CommandCreateConfig implements Command<CommandSource> {
+public class CommandCreateConfig implements Command<CommandSourceStack> {
 
     private static final CommandCreateConfig CMD = new CommandCreateConfig();
 
-    public static ArgumentBuilder<CommandSource, ?> register(CommandDispatcher<CommandSource> dispatcher) {
+    public static ArgumentBuilder<CommandSourceStack, ?> register(CommandDispatcher<CommandSourceStack> dispatcher) {
         return Commands.literal("config")
                 .requires(cs -> cs.hasPermission(0))
                 .then(Commands.argument("filename", StringArgumentType.word())
@@ -28,13 +28,13 @@ public class CommandCreateConfig implements Command<CommandSource> {
 
 
     @Override
-    public int run(CommandContext<CommandSource> context) throws CommandSyntaxException {
+    public int run(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         String filename = context.getArgument("filename", String.class);
         String modid = context.getArgument("modid", String.class);
         try {
             DimletPackages.writePackage(filename, modid);
         } catch (IOException e) {
-            context.getSource().sendSuccess(new StringTextComponent(TextFormatting.RED + e.getMessage()), true);
+            context.getSource().sendSuccess(new TextComponent(ChatFormatting.RED + e.getMessage()), true);
         }
         return 0;
     }

@@ -1,8 +1,8 @@
 package mcjty.rftoolsdim.modules.workbench.network;
 
 import mcjty.rftoolsdim.modules.workbench.client.GuiWorkbench;
-import net.minecraft.network.PacketBuffer;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
@@ -14,7 +14,7 @@ public class PacketPatternToClient {
         this.pattern = pattern;
     }
 
-    public PacketPatternToClient(PacketBuffer buf) {
+    public PacketPatternToClient(FriendlyByteBuf buf) {
         int size = buf.readInt();
         pattern = new String[size];
         for (int i = 0 ; i < size ; i++) {
@@ -22,7 +22,7 @@ public class PacketPatternToClient {
         }
     }
 
-    public void toBytes(PacketBuffer buf) {
+    public void toBytes(FriendlyByteBuf buf) {
         buf.writeInt(pattern.length);
         for (String p : pattern) {
             buf.writeUtf(p);

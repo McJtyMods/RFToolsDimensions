@@ -2,12 +2,11 @@ package mcjty.rftoolsdim.dimension.data;
 
 import mcjty.lib.worlddata.AbstractWorldData;
 import mcjty.rftoolsdim.dimension.descriptor.DimensionDescriptor;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.INBT;
-import net.minecraft.nbt.ListNBT;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.Constants;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.Level;
 
 import javax.annotation.Nonnull;
 import java.util.HashMap;
@@ -23,13 +22,24 @@ public class PersistantDimensionManager extends AbstractWorldData<PersistantDime
     private final Map<ResourceLocation, DimensionData> data = new HashMap<>();
     private final Map<DimensionDescriptor, DimensionData> dataByDescriptor = new HashMap<>();
 
-    public PersistantDimensionManager(String name) {
-        super(name);
+    public PersistantDimensionManager() {
+    }
+
+    public PersistantDimensionManager(CompoundTag tag) {
+        ListTag dimensions = tag.getList("dimensions", Tag.TAG_COMPOUND);
+        data.clear();
+        dataByDescriptor.clear();
+        for (Tag inbt : dimensions) {
+            CompoundTag dtag = (CompoundTag) inbt;
+            DimensionData dd = new DimensionData(dtag);
+            data.put(dd.getId(), dd);
+            dataByDescriptor.put(dd.getDescriptor(), dd);
+        }
     }
 
     @Nonnull
-    public static PersistantDimensionManager get(World world) {
-        return getData(world, () -> new PersistantDimensionManager(NAME), NAME);
+    public static PersistantDimensionManager get(Level world) {
+        return getData(world, PersistantDimensionManager::new, PersistantDimensionManager::new, NAME);
     }
 
     public DimensionData getData(ResourceLocation id) {
@@ -60,27 +70,14 @@ public class PersistantDimensionManager extends AbstractWorldData<PersistantDime
         setDirty();
     }
 
-    @Override
-    public void load(CompoundNBT tag) {
-        ListNBT dimensions = tag.getList("dimensions", Constants.NBT.TAG_COMPOUND);
-        data.clear();
-        dataByDescriptor.clear();
-        for (INBT inbt : dimensions) {
-            CompoundNBT dtag = (CompoundNBT) inbt;
-            DimensionData dd = new DimensionData(dtag);
-            data.put(dd.getId(), dd);
-            dataByDescriptor.put(dd.getDescriptor(), dd);
-        }
-    }
-
     @Nonnull
     @Override
-    public CompoundNBT save(@Nonnull CompoundNBT compound) {
-        CompoundNBT tag = new CompoundNBT();
+    public CompoundTag save(@Nonnull CompoundTag compound) {
+        CompoundTag tag = new CompoundTag();
 
-        ListNBT list = new ListNBT();
+        ListTag list = new ListTag();
         for (Map.Entry<ResourceLocation, DimensionData> entry : data.entrySet()) {
-            CompoundNBT dtag = new CompoundNBT();
+            CompoundTag dtag = new CompoundTag();
             entry.getValue().write(dtag);
             list.add(dtag);
         }

@@ -6,15 +6,15 @@ import mcjty.rftoolsdim.dimension.data.ClientDimensionData;
 import mcjty.rftoolsdim.modules.dimensionbuilder.DimensionBuilderConfig;
 import mcjty.rftoolsdim.modules.dimensionbuilder.items.DimensionMonitorItem;
 import mcjty.rftoolsdim.modules.dimensionbuilder.items.PhasedFieldGenerator;
-import net.minecraft.item.ItemModelsProperties;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
+import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.Level;
 
 public class ClientHelpers {
 
     public static String getDimensionName(ItemStack stack) {
-        World world = SafeClientTools.getClientWorld();
+        Level world = SafeClientTools.getClientWorld();
         if (world == null) {
             return "";
         }
@@ -22,7 +22,7 @@ public class ClientHelpers {
     }
 
     public static String getPowerString(ItemStack s) {
-        World world = SafeClientTools.getClientWorld();
+        Level world = SafeClientTools.getClientWorld();
         if (world == null) {
             return "";
         }
@@ -33,8 +33,8 @@ public class ClientHelpers {
     }
 
     public static void initOverrides(DimensionMonitorItem item) {
-        ItemModelsProperties.register(item, new ResourceLocation(RFToolsDim.MODID, "power"), (stack, world, livingEntity) -> {
-            World w = world;
+        ItemProperties.register(item, new ResourceLocation(RFToolsDim.MODID, "power"), (stack, world, livingEntity) -> {
+            Level w = world;
             if (w == null) {
                 if (livingEntity == null) {
                     return 0;
@@ -58,7 +58,7 @@ public class ClientHelpers {
     }
 
     public static void initOverrides(PhasedFieldGenerator item) {
-        ItemModelsProperties.register(item, new ResourceLocation(RFToolsDim.MODID, "power"), (stack, world, livingEntity) -> {
+        ItemProperties.register(item, new ResourceLocation(RFToolsDim.MODID, "power"), (stack, world, livingEntity) -> {
             long power = 0;
             if (stack.hasTag()) {
                 power = stack.getTag().getLong("Energy");

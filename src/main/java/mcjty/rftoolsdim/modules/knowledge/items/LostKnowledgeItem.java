@@ -11,12 +11,12 @@ import mcjty.rftoolsdim.modules.knowledge.KnowledgeModule;
 import mcjty.rftoolsdim.modules.knowledge.data.KnowledgeKey;
 import mcjty.rftoolsdim.modules.knowledge.data.KnowledgeManager;
 import mcjty.rftoolsdim.setup.Registration;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.world.World;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.util.Lazy;
 
 import javax.annotation.Nonnull;
@@ -37,7 +37,7 @@ public class LostKnowledgeItem extends Item implements ITooltipSettings {
     private final DimletRarity rarity;
 
     private String getReasonString(ItemStack stack) {
-        CompoundNBT tag = stack.getTag();
+        CompoundTag tag = stack.getTag();
         if (tag != null && tag.contains("reason")) {
             return tag.getString("reason");
         }
@@ -45,7 +45,7 @@ public class LostKnowledgeItem extends Item implements ITooltipSettings {
     }
 
     private String getPatternString(ItemStack stack) {
-        CompoundNBT tag = stack.getTag();
+        CompoundTag tag = stack.getTag();
         if (tag != null && tag.contains("pattern")) {
             String pattern = tag.getString("pattern");
             KnowledgeKey kkey = new KnowledgeKey(pattern);
@@ -65,7 +65,7 @@ public class LostKnowledgeItem extends Item implements ITooltipSettings {
 
     @Nullable
     public static KnowledgeKey getKnowledgeKey(ItemStack stack) {
-        CompoundNBT tag = stack.getTag();
+        CompoundTag tag = stack.getTag();
         if (tag != null && tag.contains("pattern")) {
             String pattern = tag.getString("pattern");
             return new KnowledgeKey(pattern);
@@ -74,7 +74,7 @@ public class LostKnowledgeItem extends Item implements ITooltipSettings {
     }
 
     @Override
-    public void appendHoverText(@Nonnull ItemStack itemStack, World world, @Nonnull List<ITextComponent> list, @Nonnull ITooltipFlag flags) {
+    public void appendHoverText(@Nonnull ItemStack itemStack, Level world, @Nonnull List<Component> list, @Nonnull TooltipFlag flags) {
         super.appendHoverText(itemStack, world, list, flags);
         tooltipBuilder.get().makeTooltip(getRegistryName(), itemStack, list, flags);
     }
@@ -93,7 +93,7 @@ public class LostKnowledgeItem extends Item implements ITooltipSettings {
         return ItemStack.EMPTY;
     }
 
-    public static ItemStack createLostKnowledge(World world, DimletKey key) {
+    public static ItemStack createLostKnowledge(Level world, DimletKey key) {
         DimletSettings settings = DimletDictionary.get().getSettings(key);
         if (settings != null) {
             KnowledgeKey kkey = KnowledgeManager.get().getKnowledgeKey(LevelTools.getOverworld(world).getSeed(), key);
@@ -105,7 +105,7 @@ public class LostKnowledgeItem extends Item implements ITooltipSettings {
         return ItemStack.EMPTY;
     }
 
-    public static ItemStack createRandomLostKnowledge(World world, DimletRarity rarity, Random random) {
+    public static ItemStack createRandomLostKnowledge(Level world, DimletRarity rarity, Random random) {
         List<KnowledgeKey> patterns = KnowledgeManager.get().getKnownPatterns(world, rarity);
         if (patterns.isEmpty()) {
             return ItemStack.EMPTY;
@@ -114,7 +114,7 @@ public class LostKnowledgeItem extends Item implements ITooltipSettings {
         return createLostKnowledgeStack(world, rarity, kkey);
     }
 
-    private static ItemStack createLostKnowledgeStack(World world, DimletRarity rarity, KnowledgeKey kkey) {
+    private static ItemStack createLostKnowledgeStack(Level world, DimletRarity rarity, KnowledgeKey kkey) {
         LostKnowledgeItem item = getKnowledgeItem(rarity);
         ItemStack result = new ItemStack(item);
         result.getOrCreateTag().putString("pattern", kkey.serialize());

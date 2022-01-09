@@ -16,22 +16,22 @@ import mcjty.rftoolsdim.modules.dimlets.data.DimletSettings;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletType;
 import mcjty.rftoolsdim.modules.essences.EssencesConfig;
 import mcjty.rftoolsdim.modules.essences.EssencesModule;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.particles.ParticleTypes;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.client.resources.language.I18n;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.tileentity.ITickableTileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.event.world.BlockEvent;
@@ -44,7 +44,7 @@ import java.util.Set;
 
 import static mcjty.lib.builder.TooltipBuilder.*;
 
-import net.minecraft.block.AbstractBlock;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 
 import javax.annotation.Nonnull;
 
@@ -65,7 +65,7 @@ public class BlockAbsorberTileEntity extends TickingTileEntity {
 
     public static BaseBlock createBlock() {
         return new BaseBlock(new BlockBuilder()
-                .properties(AbstractBlock.Properties.of(Material.METAL)
+                .properties(BlockBehaviour.Properties.of(Material.METAL)
                         .strength(2.0f)
                         .sound(SoundType.METAL)
                         .noOcclusion())
@@ -85,7 +85,7 @@ public class BlockAbsorberTileEntity extends TickingTileEntity {
     }
 
     private static String getBlockName(ItemStack stack) {
-        String block = NBTTools.getInfoNBT(stack, CompoundNBT::getString, "block", null);
+        String block = NBTTools.getInfoNBT(stack, CompoundTag::getString, "block", null);
         if (block == null) {
             return "<Not Set>";
         } else {
@@ -99,11 +99,11 @@ public class BlockAbsorberTileEntity extends TickingTileEntity {
     }
 
     public static String getBlock(ItemStack stack) {
-        return NBTTools.getInfoNBT(stack, CompoundNBT::getString, "block", null);
+        return NBTTools.getInfoNBT(stack, CompoundTag::getString, "block", null);
     }
 
     private static String getProgressName(ItemStack stack) {
-        int absorbing = NBTTools.getInfoNBT(stack, CompoundNBT::getInt, "absorbing", -1);
+        int absorbing = NBTTools.getInfoNBT(stack, CompoundTag::getInt, "absorbing", -1);
         if (absorbing == -1) {
             return "n.a.";
         } else {
@@ -113,7 +113,7 @@ public class BlockAbsorberTileEntity extends TickingTileEntity {
     }
 
     public static int getProgress(ItemStack stack) {
-        int absorbing = NBTTools.getInfoNBT(stack, CompoundNBT::getInt, "absorbing", -1);
+        int absorbing = NBTTools.getInfoNBT(stack, CompoundTag::getInt, "absorbing", -1);
         if (absorbing == -1) {
             return -1;
         } else {
@@ -204,7 +204,7 @@ public class BlockAbsorberTileEntity extends TickingTileEntity {
         return absorbingBlock;
     }
 
-    public static boolean allowedToBreak(BlockState state, World world, BlockPos pos, PlayerEntity player) {
+    public static boolean allowedToBreak(BlockState state, Level world, BlockPos pos, Player player) {
         float speed = state.getDestroySpeed(world, pos);
         if (speed < 0) {
             return false;
@@ -236,7 +236,7 @@ public class BlockAbsorberTileEntity extends TickingTileEntity {
     }
 
     @Override
-    public void load(CompoundNBT tagCompound) {
+    public void load(CompoundTag tagCompound) {
         super.load(tagCompound);
         int[] x = tagCompound.getIntArray("toscanx");
         int[] y = tagCompound.getIntArray("toscany");
@@ -248,10 +248,10 @@ public class BlockAbsorberTileEntity extends TickingTileEntity {
     }
 
     @Override
-    protected void loadInfo(CompoundNBT tagCompound) {
+    protected void loadInfo(CompoundTag tagCompound) {
         super.loadInfo(tagCompound);
         if (tagCompound.contains("Info")) {
-            CompoundNBT info = tagCompound.getCompound("Info");
+            CompoundTag info = tagCompound.getCompound("Info");
             absorbing = info.getInt("absorbing");
             if (info.contains("block")) {
                 Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(info.getString("block")));
@@ -263,7 +263,7 @@ public class BlockAbsorberTileEntity extends TickingTileEntity {
     }
 
     @Override
-    public void saveAdditional(@Nonnull CompoundNBT tagCompound) {
+    public void saveAdditional(@Nonnull CompoundTag tagCompound) {
         super.saveAdditional(tagCompound);
         int[] x = new int[toscan.size()];
         int[] y = new int[toscan.size()];
@@ -281,9 +281,9 @@ public class BlockAbsorberTileEntity extends TickingTileEntity {
     }
 
     @Override
-    protected void saveInfo(CompoundNBT tagCompound) {
+    protected void saveInfo(CompoundTag tagCompound) {
         super.saveInfo(tagCompound);
-        CompoundNBT info = getOrCreateInfo(tagCompound);
+        CompoundTag info = getOrCreateInfo(tagCompound);
         info.putInt("absorbing", absorbing);
         if (absorbingBlock != null) {
             info.putString("block", absorbingBlock.getRegistryName().toString());

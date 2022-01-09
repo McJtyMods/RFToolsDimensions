@@ -24,23 +24,22 @@ import mcjty.rftoolsdim.modules.dimensionbuilder.blocks.DimensionBuilderTileEnti
 import mcjty.rftoolsdim.modules.dimensioneditor.DimensionEditorConfig;
 import mcjty.rftoolsdim.modules.dimensioneditor.DimensionEditorModule;
 import mcjty.rftoolsdim.modules.dimlets.data.*;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.inventory.container.INamedContainerProvider;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.state.EnumProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraft.world.gen.Heightmap;
-import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.common.util.Constants;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.common.util.LazyOptional;
 
@@ -49,7 +48,6 @@ import javax.annotation.Nonnull;
 import static mcjty.lib.api.container.DefaultContainerProvider.container;
 import static mcjty.lib.builder.TooltipBuilder.*;
 import static mcjty.lib.container.SlotDefinition.specific;
-import static net.minecraftforge.common.util.Constants.BlockFlags.BLOCK_UPDATE;
 
 public class DimensionEditorTileEntity extends TickingTileEntity {
 
@@ -78,7 +76,7 @@ public class DimensionEditorTileEntity extends TickingTileEntity {
     private final GenericEnergyStorage energyStorage = new GenericEnergyStorage(this, true, DimensionEditorConfig.EDITOR_MAXENERGY.get(), DimensionEditorConfig.EDITOR_RECEIVEPERTICK.get());
 
     @Cap(type = CapType.CONTAINER)
-    private final LazyOptional<INamedContainerProvider> screenHandler = LazyOptional.of(() -> new DefaultContainerProvider<GenericContainer>("Dimension Editor")
+    private final LazyOptional<MenuProvider> screenHandler = LazyOptional.of(() -> new DefaultContainerProvider<GenericContainer>("Dimension Editor")
             .containerSupplier(container(DimensionEditorModule.CONTAINER_DIMENSION_EDITOR, CONTAINER_FACTORY, this))
             .itemHandler(() -> items)
             .energyHandler(() -> energyStorage)
@@ -95,8 +93,8 @@ public class DimensionEditorTileEntity extends TickingTileEntity {
     private int rfPerTick = -1;
     private int state = 0;          // For front state
 
-    public DimensionEditorTileEntity() {
-        super(DimensionEditorModule.TYPE_DIMENSION_EDITOR.get());
+    public DimensionEditorTileEntity(BlockPos pos, BlockState state) {
+        super(DimensionEditorModule.TYPE_DIMENSION_EDITOR.get(), pos, state);
     }
 
     public static BaseBlock createBlock() {
@@ -112,14 +110,14 @@ public class DimensionEditorTileEntity extends TickingTileEntity {
             }
 
             @Override
-            protected void createBlockStateDefinition(@Nonnull StateContainer.Builder<Block, BlockState> builder) {
+            protected void createBlockStateDefinition(@Nonnull StateDefinition.Builder<Block, BlockState> builder) {
                 super.createBlockStateDefinition(builder);
                 builder.add(OPERATIONTYPE);
             }
         };
     }
 
-    private static boolean isValidInput(net.minecraft.item.ItemStack s) {
+    private static boolean isValidInput(net.minecraft.world.item.ItemStack s) {
         if ("rftoolsutility:matter_receiver".equals(s.getItem().getRegistryName().toString())) {
             return true;
         }
@@ -195,7 +193,7 @@ public class DimensionEditorTileEntity extends TickingTileEntity {
                     DimensionData data = PersistantDimensionManager.get(level).getData(id);
 
                     if (isMatterReceiver(injectableItemStack)) {
-                        ServerWorld dimWorld = LevelTools.getLevel(level, LevelTools.getId(id));
+                        ServerLevel dimWorld = LevelTools.getLevel(level, LevelTools.getId(id));
                         int y = findGoodReceiverLocation(dimWorld);
                         if (y == -1) {
                             y = dimWorld.getHeight() / 2;
@@ -205,17 +203,17 @@ public class DimensionEditorTileEntity extends TickingTileEntity {
                             BlockItem itemBlock = (BlockItem) item;
                             BlockState state = itemBlock.getBlock().defaultBlockState();
                             BlockPos pos = new BlockPos(8, y, 8);
-                            dimWorld.setBlock(pos, state, BLOCK_UPDATE);
+                            dimWorld.setBlock(pos, state, Block.UPDATE_NEIGHBORS);
                             Block block = dimWorld.getBlockState(pos).getBlock();
                             // @@@@@@@@@@@@@@ check if right?
-                            String name = NBTTools.getInfoNBT(injectableItemStack, CompoundNBT::getString, "tpName", "");
-                            long energy = NBTTools.getBlockEntityNBT(injectableItemStack, CompoundNBT::getLong, "Energy", 0L);
+                            String name = NBTTools.getInfoNBT(injectableItemStack, CompoundTag::getString, "tpName", "");
+                            long energy = NBTTools.getBlockEntityNBT(injectableItemStack, CompoundTag::getLong, "Energy", 0L);
                             RFToolsUtilityCompat.createTeleporter(dimWorld, pos, name, (int) energy);
                             block.setPlacedBy(dimWorld, pos, state, null, injectableItemStack);
 //                            block.onBlockActivated(dimWorld, pos, state, FakePlayerFactory.getMinecraft((WorldServer) dimWorld), EnumHand.MAIN_HAND, EnumFacing.DOWN, 0.0F, 0.0F, 0.0F);
 //                            block.onBlockPlacedBy(dimWorld, pos, state, null, injectableItemStack);
-                            dimWorld.setBlock(pos.above(), Blocks.AIR.defaultBlockState(), BLOCK_UPDATE);
-                            dimWorld.setBlock(pos.above(2), Blocks.AIR.defaultBlockState(), BLOCK_UPDATE);
+                            dimWorld.setBlock(pos.above(), Blocks.AIR.defaultBlockState(), Block.UPDATE_NEIGHBORS);
+                            dimWorld.setBlock(pos.above(2), Blocks.AIR.defaultBlockState(), Block.UPDATE_NEIGHBORS);
 
                         }
                     } else if (isTNT(injectableItemStack)) {
@@ -290,14 +288,14 @@ public class DimensionEditorTileEntity extends TickingTileEntity {
 //        dimensionTab.getTagCompound().setInteger("ticksLeft", tickCost);
     }
 
-    private int findGoodReceiverLocation(World dimWorld) {
+    private int findGoodReceiverLocation(Level dimWorld) {
         int y = findSuitableEmptySpot(dimWorld, 8, 8);
         y++;
         return y;
     }
 
-    public static int findSuitableEmptySpot(World world, int x, int z) {
-        int y = world.getHeight(Heightmap.Type.WORLD_SURFACE_WG, x, z);
+    public static int findSuitableEmptySpot(Level world, int x, int z) {
+        int y = world.getHeight(Heightmap.Types.WORLD_SURFACE_WG, x, z);
         if (y == -1) {
             return -1;
         }
@@ -431,7 +429,7 @@ public class DimensionEditorTileEntity extends TickingTileEntity {
             state = 3;
         }
         if (oldstate != state) {
-            level.setBlock(worldPosition, getBlockState().setValue(OPERATIONTYPE, DimensionBuilderTileEntity.OperationType.values()[state]), Constants.BlockFlags.DEFAULT_AND_RERENDER);
+            level.setBlock(worldPosition, getBlockState().setValue(OPERATIONTYPE, DimensionBuilderTileEntity.OperationType.values()[state]), Block.UPDATE_ALL);
             setChanged();
         }
     }

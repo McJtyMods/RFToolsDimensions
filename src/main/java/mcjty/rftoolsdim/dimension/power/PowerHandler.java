@@ -10,14 +10,14 @@ import mcjty.rftoolsdim.dimension.descriptor.CompiledDescriptor;
 import mcjty.rftoolsdim.dimension.network.PackagePropageDataToClients;
 import mcjty.rftoolsdim.modules.dimensionbuilder.items.PhasedFieldGenerator;
 import mcjty.rftoolsdim.setup.RFToolsDimMessages;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.fml.network.PacketDistributor;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraftforge.network.PacketDistributor;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,7 +32,7 @@ public class PowerHandler {
     private static final int EFFECTS_MAX = 18;
     private int counterEffects = EFFECTS_MAX;
 
-    public static long calculateMaxDimensionPower(ResourceLocation id, World overworld) {
+    public static long calculateMaxDimensionPower(ResourceLocation id, Level overworld) {
         CompiledDescriptor descriptor = DimensionManager.get().getCompiledDescriptor(overworld, id);
         if (descriptor != null) {
             return calculateMaxDimensionPower(descriptor);
@@ -58,7 +58,7 @@ public class PowerHandler {
     }
 
 
-    public void handlePower(World overworld) {
+    public void handlePower(Level overworld) {
         counter--;
         if (counter <= 0) {
             counter = MAXTICKS;
@@ -75,7 +75,7 @@ public class PowerHandler {
         }
     }
 
-    private void sendOutPower(World overworld) {
+    private void sendOutPower(Level overworld) {
         PersistantDimensionManager mgr = PersistantDimensionManager.get(overworld);
         Map<ResourceLocation, ClientDimensionData.Power> powerMap = new HashMap<>();
         for (Map.Entry<ResourceLocation, DimensionData> entry : mgr.getData().entrySet()) {
@@ -83,15 +83,15 @@ public class PowerHandler {
             powerMap.put(entry.getKey(), new ClientDimensionData.Power(energy, PowerHandler.calculateMaxDimensionPower(entry.getKey(), overworld)));
         }
         RFToolsDimMessages.INSTANCE.send(PacketDistributor.ALL.noArg(), new PackagePropageDataToClients(powerMap,
-                ((ServerWorld) overworld).getSeed()));
+                ((ServerLevel) overworld).getSeed()));
     }
 
-    private void handlePower(World overworld, boolean doEffects) {
+    private void handlePower(Level overworld, boolean doEffects) {
         PersistantDimensionManager mgr = PersistantDimensionManager.get(overworld);
         for (Map.Entry<ResourceLocation, DimensionData> entry : mgr.getData().entrySet()) {
             // Power handling.
             long power;
-            ServerWorld world = LevelTools.getLevel(overworld, entry.getKey());
+            ServerLevel world = LevelTools.getLevel(overworld, entry.getKey());
             CompiledDescriptor compiledDescriptor = DimensionManager.get().getCompiledDescriptor(world);
 
             if (compiledDescriptor != null) {
@@ -116,7 +116,7 @@ public class PowerHandler {
         mgr.save();
     }
 
-    private long handlePowerDimension(boolean doEffects, ServerWorld world, DimensionData data, CompiledDescriptor compiledDescriptor) {
+    private long handlePowerDimension(boolean doEffects, ServerLevel world, DimensionData data, CompiledDescriptor compiledDescriptor) {
         int cost = compiledDescriptor.getActualPowerCost();
 //        if (PowerConfiguration.dimensionDifficulty != -1) {   // @todo 1.16 config
 //        }
@@ -134,12 +134,12 @@ public class PowerHandler {
         return power;
     }
 
-    private void handleEffectsForDimension(long power, ServerWorld world, CompiledDescriptor compiledDescriptor) {
+    private void handleEffectsForDimension(long power, ServerLevel world, CompiledDescriptor compiledDescriptor) {
         if (world != null) {
             // @todo 1.16 handle dimension specific effects
 //            Set<EffectType> effects = information.getEffectTypes();
-            List<ServerPlayerEntity> players = new ArrayList<>(world.players());
-            for (ServerPlayerEntity player : players) {
+            List<ServerPlayer> players = new ArrayList<>(world.players());
+            for (ServerPlayer player : players) {
                 // @todo 1.16
 //                for (EffectType effect : effects) {
 //                    Potion potionEffect = effectsMap.get(effect);
@@ -159,17 +159,17 @@ public class PowerHandler {
 
                 if (percentage < DimensionConfig.DIMPOWER_WARN3.get()) {
                     // We are VERY low on power. Start bad effects.
-                    player.addEffect(new EffectInstance(Effects.MOVEMENT_SLOWDOWN, EFFECTS_MAX*MAXTICKS*2, 4, true, true));
-                    player.addEffect(new EffectInstance(Effects.DIG_SLOWDOWN, EFFECTS_MAX*MAXTICKS*2, 4, true, true));
-                    player.addEffect(new EffectInstance(Effects.POISON, EFFECTS_MAX*MAXTICKS*2, 2, true, true));
-                    player.addEffect(new EffectInstance(Effects.HUNGER, EFFECTS_MAX*MAXTICKS*2, 2, true, true));
+                    player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, EFFECTS_MAX*MAXTICKS*2, 4, true, true));
+                    player.addEffect(new MobEffectInstance(MobEffects.DIG_SLOWDOWN, EFFECTS_MAX*MAXTICKS*2, 4, true, true));
+                    player.addEffect(new MobEffectInstance(MobEffects.POISON, EFFECTS_MAX*MAXTICKS*2, 2, true, true));
+                    player.addEffect(new MobEffectInstance(MobEffects.HUNGER, EFFECTS_MAX*MAXTICKS*2, 2, true, true));
                 } else if (percentage < DimensionConfig.DIMPOWER_WARN2.get()) {
-                    player.addEffect(new EffectInstance(Effects.MOVEMENT_SLOWDOWN, EFFECTS_MAX*MAXTICKS*2, 2, true, true));
-                    player.addEffect(new EffectInstance(Effects.DIG_SLOWDOWN, EFFECTS_MAX*MAXTICKS*2, 2, true, true));
-                    player.addEffect(new EffectInstance(Effects.HUNGER, EFFECTS_MAX*MAXTICKS*2, 1, true, true));
+                    player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, EFFECTS_MAX*MAXTICKS*2, 2, true, true));
+                    player.addEffect(new MobEffectInstance(MobEffects.DIG_SLOWDOWN, EFFECTS_MAX*MAXTICKS*2, 2, true, true));
+                    player.addEffect(new MobEffectInstance(MobEffects.HUNGER, EFFECTS_MAX*MAXTICKS*2, 1, true, true));
                 } else if (percentage < DimensionConfig.DIMPOWER_WARN1.get()) {
-                    player.addEffect(new EffectInstance(Effects.MOVEMENT_SLOWDOWN, EFFECTS_MAX*MAXTICKS*2, 0, true, true));
-                    player.addEffect(new EffectInstance(Effects.DIG_SLOWDOWN, EFFECTS_MAX*MAXTICKS*2, 0, true, true));
+                    player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, EFFECTS_MAX*MAXTICKS*2, 0, true, true));
+                    player.addEffect(new MobEffectInstance(MobEffects.DIG_SLOWDOWN, EFFECTS_MAX*MAXTICKS*2, 0, true, true));
                 }
             }
 
@@ -178,22 +178,22 @@ public class PowerHandler {
 
 
 
-    private void handleLowPower(ServerWorld world, long power, boolean doEffects, int phasedCost) {
+    private void handleLowPower(ServerLevel world, long power, boolean doEffects, int phasedCost) {
 
         if (power <= 0) {
             // We ran out of power!
             if (world != null) {
-                List<PlayerEntity> players = new ArrayList<>(world.players());
+                List<Player> players = new ArrayList<>(world.players());
                 // @todo 1.16
 //                if (PowerConfiguration.dimensionDifficulty >= 1) {
-                for (PlayerEntity player : players) {
+                for (Player player : players) {
                     if (!PhasedFieldGenerator.checkValidPhasedFieldGenerator(player, true, phasedCost)) {
                         player.hurt(new DamageSourcePowerLow("powerLow"), 1000000.0f);
                     } else {
                         if (doEffects && DimensionConfig.PHASED_FIELD_GENERATOR_DEBUF.get()) {
-                            player.addEffect(new EffectInstance(Effects.MOVEMENT_SLOWDOWN, EFFECTS_MAX * MAXTICKS, 2, true, true));
-                            player.addEffect(new EffectInstance(Effects.DIG_SLOWDOWN, EFFECTS_MAX * MAXTICKS, 2, true, true));
-                            player.addEffect(new EffectInstance(Effects.HUNGER, EFFECTS_MAX * MAXTICKS, 2, true, true));
+                            player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, EFFECTS_MAX * MAXTICKS, 2, true, true));
+                            player.addEffect(new MobEffectInstance(MobEffects.DIG_SLOWDOWN, EFFECTS_MAX * MAXTICKS, 2, true, true));
+                            player.addEffect(new MobEffectInstance(MobEffects.HUNGER, EFFECTS_MAX * MAXTICKS, 2, true, true));
                         }
                     }
                 }
@@ -223,7 +223,7 @@ public class PowerHandler {
         }
     }
 
-    private void handleRandomEffects(ServerWorld world, DimensionData information) {
+    private void handleRandomEffects(ServerLevel world, DimensionData information) {
         // The world is loaded and there are players there.
         // @todo 1.16
 //        if (information.isPatreonBitSet(PatreonType.PATREON_FIREWORKS)) {

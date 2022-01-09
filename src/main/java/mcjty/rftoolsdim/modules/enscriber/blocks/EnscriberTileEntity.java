@@ -31,12 +31,14 @@ import mcjty.rftoolsdim.modules.dimlets.data.DimletSettings;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletTools;
 import mcjty.rftoolsdim.modules.dimlets.items.DimletItem;
 import mcjty.rftoolsdim.modules.enscriber.EnscriberModule;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.container.INamedContainerProvider;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.ChatFormatting;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.common.util.LazyOptional;
 
@@ -76,14 +78,14 @@ public class EnscriberTileEntity extends GenericTileEntity {
 
 
     @Cap(type = CapType.CONTAINER)
-    private final LazyOptional<INamedContainerProvider> screenHandler = LazyOptional.of(() -> new DefaultContainerProvider<GenericContainer>("Enscriber")
+    private final LazyOptional<MenuProvider> screenHandler = LazyOptional.of(() -> new DefaultContainerProvider<GenericContainer>("Enscriber")
             .containerSupplier(container(EnscriberModule.CONTAINER_ENSCRIBER, CONTAINER_FACTORY, this))
             .itemHandler(() -> items)
             .shortListener(Sync.integer(() -> error.getCode().ordinal(), v -> clientErrorCode = v))
             .setupSync(this));
 
-    public EnscriberTileEntity() {
-        super(EnscriberModule.TYPE_ENSCRIBER.get());
+    public EnscriberTileEntity(BlockPos pos, BlockState state) {
+        super(EnscriberModule.TYPE_ENSCRIBER.get(), pos, state);
     }
 
     private static boolean isDimensionTab(ItemStack s) {
@@ -108,7 +110,7 @@ public class EnscriberTileEntity extends GenericTileEntity {
     public String getDimensionName() {
         ItemStack stack = items.getStackInSlot(SLOT_TAB);
         if (!stack.isEmpty() && stack.getItem() == DimensionBuilderModule.REALIZED_DIMENSION_TAB.get()) {
-            CompoundNBT tagCompound = stack.getTag();
+            CompoundTag tagCompound = stack.getTag();
             if (tagCompound != null) {
                 return tagCompound.getString("name");
             }
@@ -127,7 +129,7 @@ public class EnscriberTileEntity extends GenericTileEntity {
         return false;
     }
 
-    private void storeDimlets(PlayerEntity player, String name) {
+    private void storeDimlets(Player player, String name) {
         if (DimensionConfig.OWNER_DIMLET_REQUIRED.get()) {
             if (checkOwnerDimlet()) {
                 Logging.warn(player, "You need an owner dimlet to make a dimension!");
@@ -141,12 +143,12 @@ public class EnscriberTileEntity extends GenericTileEntity {
         DimensionData data = PersistantDimensionManager.get(level).getData(descriptor);
         if (data != null) {
             name = data.getId().getPath();
-            player.displayClientMessage(new StringTextComponent("This dimension already existed! If this is what you wanted then that's fine. Otherwise you need digit dimlets to make new unique dimensions. The dimlet sequence uniquely identifies a dimension. Names can't be changed")
-                    .withStyle(TextFormatting.YELLOW), false);
+            player.displayClientMessage(new TextComponent("This dimension already existed! If this is what you wanted then that's fine. Otherwise you need digit dimlets to make new unique dimensions. The dimlet sequence uniquely identifies a dimension. Names can't be changed")
+                    .withStyle(ChatFormatting.YELLOW), false);
         } else {
             if (!DimensionManager.get().isNameAvailable(level, null, name)) {
-                player.displayClientMessage(new StringTextComponent("This name is already used by another dimension!")
-                        .withStyle(TextFormatting.YELLOW), false);
+                player.displayClientMessage(new TextComponent("This name is already used by another dimension!")
+                        .withStyle(ChatFormatting.YELLOW), false);
                 return;
             }
         }
@@ -169,7 +171,7 @@ public class EnscriberTileEntity extends GenericTileEntity {
      */
     private ItemStack createRealizedTab(DimensionDescriptor descriptor) {
         ItemStack realizedTab = new ItemStack(DimensionBuilderModule.REALIZED_DIMENSION_TAB.get(), 1);
-        CompoundNBT tagCompound = realizedTab.getOrCreateTag();
+        CompoundTag tagCompound = realizedTab.getOrCreateTag();
         String compact = descriptor.compact();
         tagCompound.putString("descriptor", compact);
 
@@ -199,7 +201,7 @@ public class EnscriberTileEntity extends GenericTileEntity {
     /**
      * Convert the dimlets in the inventory to a dimension descriptor.
      */
-    private DimensionDescriptor convertToDimensionDescriptor(@Nullable PlayerEntity player) {
+    private DimensionDescriptor convertToDimensionDescriptor(@Nullable Player player) {
         DimensionDescriptor descriptor = new DimensionDescriptor();
         List<DimletKey> dimlets = descriptor.getDimlets();
 
@@ -213,7 +215,7 @@ public class EnscriberTileEntity extends GenericTileEntity {
                 if (settings != null) {
                     // Make sure the dimlet is not blacklisted.
                     dimlets.add(key);
-                    CompoundNBT tagCompound = stack.getTag();
+                    CompoundTag tagCompound = stack.getTag();
                     // @todo 1.16 is this the way?
                     if (tagCompound != null && tagCompound.getLong("forcedSeed") != 0) {
                         forcedSeed = tagCompound.getLong("forcedSeed");
@@ -240,7 +242,7 @@ public class EnscriberTileEntity extends GenericTileEntity {
 
     private void extractDimlets() {
         ItemStack realizedTab = items.getStackInSlot(SLOT_TAB);
-        CompoundNBT tagCompound = realizedTab.getTag();
+        CompoundTag tagCompound = realizedTab.getTag();
         if (tagCompound != null) {
             long forcedSeed = tagCompound.getLong("forcedSeed");
             String descString = tagCompound.getString("descriptor");

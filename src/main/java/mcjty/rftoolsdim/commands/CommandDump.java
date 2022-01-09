@@ -13,60 +13,60 @@ import mcjty.rftoolsdim.dimension.data.PersistantDimensionManager;
 import mcjty.rftoolsdim.dimension.descriptor.DimensionDescriptor;
 import mcjty.rftoolsdim.dimension.terraintypes.BaseChunkGenerator;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletKey;
-import net.minecraft.command.CommandSource;
-import net.minecraft.command.Commands;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.Commands;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.ChatFormatting;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.server.level.ServerLevel;
 
-public class CommandDump implements Command<CommandSource> {
+public class CommandDump implements Command<CommandSourceStack> {
 
     private static final CommandDump CMD = new CommandDump();
 
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
 
-    public static ArgumentBuilder<CommandSource, ?> register(CommandDispatcher<CommandSource> dispatcher) {
+    public static ArgumentBuilder<CommandSourceStack, ?> register(CommandDispatcher<CommandSourceStack> dispatcher) {
         return Commands.literal("dump")
                 .requires(cs -> cs.hasPermission(0))
                 .executes(CMD);
     }
 
     @Override
-    public int run(CommandContext<CommandSource> context) throws CommandSyntaxException {
-        ServerWorld world = context.getSource().getLevel();
+    public int run(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+        ServerLevel world = context.getSource().getLevel();
         ResourceLocation location = world.dimension().location();
-        feedback(context, TextFormatting.BLUE + "Dimension: " + TextFormatting.WHITE + location.toString());
+        feedback(context, ChatFormatting.BLUE + "Dimension: " + ChatFormatting.WHITE + location.toString());
         DimensionData data = PersistantDimensionManager.get(world).getData(location);
         if (data == null) {
-            feedback(context, TextFormatting.RED + "Not an RFTools Dimensions!");
+            feedback(context, ChatFormatting.RED + "Not an RFTools Dimensions!");
             return 0;
         }
-        feedback(context, TextFormatting.BLUE + "Energy: " + TextFormatting.WHITE + data.getEnergy());
+        feedback(context, ChatFormatting.BLUE + "Energy: " + ChatFormatting.WHITE + data.getEnergy());
 
-        ChunkGenerator generator = world.getChunkSource().generator;
+        ChunkGenerator generator = world.getChunkSource().getGenerator();
         if (generator instanceof BaseChunkGenerator) {
             DimensionSettings settings = ((BaseChunkGenerator) generator).getDimensionSettings();
-            feedback(context, TextFormatting.BLUE + "Seed: " + TextFormatting.WHITE + settings.getSeed());
+            feedback(context, ChatFormatting.BLUE + "Seed: " + ChatFormatting.WHITE + settings.getSeed());
         }
 
         DimensionDescriptor descriptor = data.getDescriptor();
-        feedback(context, TextFormatting.GREEN + "Standard dimlets:");
+        feedback(context, ChatFormatting.GREEN + "Standard dimlets:");
         for (DimletKey dimlet : descriptor.getDimlets()) {
-            feedback(context, TextFormatting.BLUE + "    " + dimlet.getType().name() + ": " + TextFormatting.WHITE + dimlet.getKey());
+            feedback(context, ChatFormatting.BLUE + "    " + dimlet.getType().name() + ": " + ChatFormatting.WHITE + dimlet.getKey());
         }
 
         DimensionDescriptor randomizedDescriptor = data.getRandomizedDescriptor();
-        feedback(context, TextFormatting.GREEN + "Randomized dimlets:");
+        feedback(context, ChatFormatting.GREEN + "Randomized dimlets:");
         for (DimletKey dimlet : randomizedDescriptor.getDimlets()) {
-            feedback(context, TextFormatting.BLUE + "    " + dimlet.getType().name() + ": " + TextFormatting.WHITE + dimlet.getKey());
+            feedback(context, ChatFormatting.BLUE + "    " + dimlet.getType().name() + ": " + ChatFormatting.WHITE + dimlet.getKey());
         }
 
         return 0;
     }
 
-    private void feedback(CommandContext<CommandSource> context, String message) {
-        context.getSource().sendSuccess(new StringTextComponent(message), false);
+    private void feedback(CommandContext<CommandSourceStack> context, String message) {
+        context.getSource().sendSuccess(new TextComponent(message), false);
     }
 }

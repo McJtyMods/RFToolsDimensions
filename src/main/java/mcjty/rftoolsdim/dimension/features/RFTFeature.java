@@ -11,51 +11,56 @@ import mcjty.rftoolsdim.dimension.features.buildings.DimletHut;
 import mcjty.rftoolsdim.dimension.features.buildings.SpawnPlatform;
 import mcjty.rftoolsdim.dimension.terraintypes.BaseChunkGenerator;
 import mcjty.rftoolsdim.setup.Registration;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.WorldGenRegistries;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.Heightmap;
-import net.minecraft.world.gen.feature.ConfiguredFeature;
-import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.IFeatureConfig;
-import net.minecraft.world.gen.feature.NoFeatureConfig;
-import net.minecraft.world.gen.placement.Placement;
-import net.minecraft.world.gen.placement.TopSolidRangeConfig;
+import net.minecraft.core.BlockPos;
+import net.minecraft.data.BuiltinRegistries;
+import net.minecraft.data.worldgen.placement.PlacementUtils;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
+import net.minecraft.world.level.levelgen.placement.CountPlacement;
+import net.minecraft.world.level.levelgen.placement.PlacedFeature;
+import net.minecraft.world.level.levelgen.placement.PlacementModifier;
 
-import javax.annotation.Nonnull;
 import java.util.Random;
 import java.util.Set;
 
-public class RFTFeature extends Feature<NoFeatureConfig> {
+public class RFTFeature extends Feature<NoneFeatureConfiguration> {
 
     public static final ResourceLocation RFTFEATURE_ID = new ResourceLocation(RFToolsDim.MODID, "rftfeature");
     public static final ResourceLocation CONFIGURED_RFTFEATURE_ID = new ResourceLocation(RFToolsDim.MODID, "configured_rftfeature");
 
-    public static ConfiguredFeature<?, ?> RFTFEATURE_CONFIGURED;
+    public static PlacedFeature RFTFEATURE_CONFIGURED;
 
     private static final long[] PRIMES = new long[] { 900157, 981961, 50001527, 32667413, 1111114993, 65548559, 320741, 100002509,
             35567897, 218021, 2900001163L, 3399018867L };
 
     public static void registerConfiguredFeatures() {
-        Registry<ConfiguredFeature<?, ?>> registry = WorldGenRegistries.CONFIGURED_FEATURE;
-
-        RFTFEATURE_CONFIGURED = Registration.RFTFEATURE.get()
-                .configured(IFeatureConfig.NONE)
-                .decorated(Placement.RANGE.configured(new TopSolidRangeConfig(1, 0, 1)));
-
-        Registry.register(registry, CONFIGURED_RFTFEATURE_ID, RFTFEATURE_CONFIGURED);
+        RFTFEATURE_CONFIGURED = registerPlacedFeature("rftfeature", Registration.RFTFEATURE.get().configured(NoneFeatureConfiguration.INSTANCE),
+                CountPlacement.of(1));
     }
 
-    public RFTFeature(Codec<NoFeatureConfig> codec) {
+    private static <C extends FeatureConfiguration, F extends Feature<C>> PlacedFeature registerPlacedFeature(String registryName, ConfiguredFeature<C, F> feature, PlacementModifier... placementModifiers) {
+        PlacedFeature placed = BuiltinRegistries.register(BuiltinRegistries.CONFIGURED_FEATURE, new ResourceLocation(registryName), feature).placed(placementModifiers);
+        return PlacementUtils.register(registryName, placed);
+    }
+
+    public RFTFeature(Codec<NoneFeatureConfiguration> codec) {
         super(codec);
     }
 
     @Override
-    public boolean place(@Nonnull ISeedReader reader, @Nonnull ChunkGenerator generator, @Nonnull Random rand, @Nonnull BlockPos pos, @Nonnull NoFeatureConfig config) {
+    public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context) {
+        ChunkGenerator generator = context.chunkGenerator();
+        BlockPos pos = context.origin();
+        Random rand = context.random();
+        WorldGenLevel reader = context.level();
         if (generator instanceof BaseChunkGenerator) {
             CompiledDescriptor compiledDescriptor = ((BaseChunkGenerator) generator).getDimensionSettings().getCompiledDescriptor();
             Set<CompiledFeature> features = compiledDescriptor.getFeatures();
@@ -92,7 +97,7 @@ public class RFTFeature extends Feature<NoFeatureConfig> {
         return false;
     }
 
-    private int getFloorHeight(ISeedReader reader, ChunkPos cp) {
+    private int getFloorHeight(WorldGenLevel reader, ChunkPos cp) {
         int height0 = getHeightAt(reader, cp, 8, 8);
         int height1 = getHeightAt(reader, cp, 4, 4);
         int height2 = getHeightAt(reader, cp, 12, 4);
@@ -101,8 +106,8 @@ public class RFTFeature extends Feature<NoFeatureConfig> {
         return (height0 + height1 + height2 + height3 + height4) / 5;
     }
 
-    private int getHeightAt(ISeedReader reader, ChunkPos cp, int dx, int dz) {
-        int height = reader.getHeight(Heightmap.Type.WORLD_SURFACE, cp.getMinBlockX() + dx, cp.getMinBlockZ() + dz);
+    private int getHeightAt(WorldGenLevel reader, ChunkPos cp, int dx, int dz) {
+        int height = reader.getHeight(Heightmap.Types.WORLD_SURFACE, cp.getMinBlockX() + dx, cp.getMinBlockZ() + dz);
         if (height <= 1 || height > 250) {
             height = 65;
         }

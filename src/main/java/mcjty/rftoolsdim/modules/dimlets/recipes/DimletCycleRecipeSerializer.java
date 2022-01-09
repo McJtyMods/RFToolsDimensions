@@ -1,14 +1,14 @@
 package mcjty.rftoolsdim.modules.dimlets.recipes;
 
 import com.google.gson.JsonObject;
-import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraft.item.crafting.ShapedRecipe;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.ShapedRecipe;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
 
 import javax.annotation.Nonnull;
 
-public class DimletCycleRecipeSerializer extends net.minecraftforge.registries.ForgeRegistryEntry<IRecipeSerializer<?>> implements IRecipeSerializer<DigitCycleRecipe> {
+public class DimletCycleRecipeSerializer extends net.minecraftforge.registries.ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<DigitCycleRecipe> {
 
     private final ShapedRecipe.Serializer serializer = new ShapedRecipe.Serializer();
 
@@ -22,7 +22,7 @@ public class DimletCycleRecipeSerializer extends net.minecraftforge.registries.F
     }
 
     @Override
-    public DigitCycleRecipe fromNetwork(@Nonnull ResourceLocation recipeId, @Nonnull PacketBuffer buffer) {
+    public DigitCycleRecipe fromNetwork(@Nonnull ResourceLocation recipeId, @Nonnull FriendlyByteBuf buffer) {
         ShapedRecipe recipe = serializer.fromNetwork(recipeId, buffer);
         String inputString = buffer.readUtf(32767);
         String outputString = buffer.readUtf(32767);
@@ -30,7 +30,7 @@ public class DimletCycleRecipeSerializer extends net.minecraftforge.registries.F
     }
 
     @Override
-    public void toNetwork(@Nonnull PacketBuffer buffer, DigitCycleRecipe recipe) {
+    public void toNetwork(@Nonnull FriendlyByteBuf buffer, DigitCycleRecipe recipe) {
         serializer.toNetwork(buffer, recipe.getRecipe());
         buffer.writeUtf(recipe.getInput());
         buffer.writeUtf(recipe.getOutput());

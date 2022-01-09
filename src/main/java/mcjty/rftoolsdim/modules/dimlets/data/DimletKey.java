@@ -1,6 +1,6 @@
 package mcjty.rftoolsdim.modules.dimlets.data;
 
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.network.FriendlyByteBuf;
 
 import java.util.Objects;
 
@@ -14,7 +14,7 @@ public class DimletKey implements Comparable<DimletKey> {
         this.key = key;
     }
 
-    public DimletKey(PacketBuffer buf) {
+    public DimletKey(FriendlyByteBuf buf) {
         type = DimletType.values()[buf.readInt()];
         key = buf.readUtf(32767);
     }
@@ -37,7 +37,7 @@ public class DimletKey implements Comparable<DimletKey> {
         return type.getShortName() + "#" + key;
     }
 
-    public void toBytes(PacketBuffer buf) {
+    public void toBytes(FriendlyByteBuf buf) {
         buf.writeInt(type.ordinal());
         buf.writeUtf(key);
     }

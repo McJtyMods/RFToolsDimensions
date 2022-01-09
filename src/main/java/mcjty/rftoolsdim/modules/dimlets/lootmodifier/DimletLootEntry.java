@@ -8,23 +8,23 @@ import mcjty.rftoolsdim.modules.dimlets.data.DimletDictionary;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletKey;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletRarity;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletTools;
-import net.minecraft.item.ItemStack;
-import net.minecraft.loot.LootContext;
-import net.minecraft.loot.LootPoolEntryType;
-import net.minecraft.loot.StandaloneLootEntry;
-import net.minecraft.loot.conditions.ILootCondition;
-import net.minecraft.loot.functions.ILootFunction;
-import net.minecraft.util.JSONUtils;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.entries.LootPoolEntryType;
+import net.minecraft.world.level.storage.loot.entries.LootPoolSingletonContainer;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
+import net.minecraft.world.level.storage.loot.functions.LootItemFunction;
+import net.minecraft.util.GsonHelper;
 
 import javax.annotation.Nonnull;
 import java.util.Random;
 import java.util.function.Consumer;
 
-public class DimletLootEntry extends StandaloneLootEntry {
+public class DimletLootEntry extends LootPoolSingletonContainer {
 
     private final DimletRarity rarity;
 
-    public DimletLootEntry(int weightIn, int qualityIn, ILootCondition[] conditionsIn, ILootFunction[] functionsIn, DimletRarity rarity) {
+    public DimletLootEntry(int weightIn, int qualityIn, LootItemCondition[] conditionsIn, LootItemFunction[] functionsIn, DimletRarity rarity) {
         super(weightIn, qualityIn, conditionsIn, functionsIn);
         this.rarity = rarity;
     }
@@ -49,11 +49,11 @@ public class DimletLootEntry extends StandaloneLootEntry {
         return DimletModule.DIMLET_LOOT_ENTRY;
     }
 
-    public static StandaloneLootEntry.Builder<?> builder(DimletRarity rarity) {
+    public static LootPoolSingletonContainer.Builder<?> builder(DimletRarity rarity) {
         return simpleBuilder((weight, quality, conditions, functions) -> new DimletLootEntry(weight, quality, conditions, functions, rarity));
     }
 
-    public static class Serializer extends StandaloneLootEntry.Serializer<DimletLootEntry> {
+    public static class Serializer extends LootPoolSingletonContainer.Serializer<DimletLootEntry> {
 
         @Override
         public void serializeCustom(@Nonnull JsonObject object, @Nonnull DimletLootEntry entry, @Nonnull JsonSerializationContext conditions) {
@@ -63,8 +63,8 @@ public class DimletLootEntry extends StandaloneLootEntry {
 
         @Override
         @Nonnull
-        protected DimletLootEntry deserialize(@Nonnull JsonObject object, @Nonnull JsonDeserializationContext context, int weight, int quality, @Nonnull ILootCondition[] conditions, @Nonnull ILootFunction[] functions) {
-            String rarityString = JSONUtils.getAsString(object, "rarity");
+        protected DimletLootEntry deserialize(@Nonnull JsonObject object, @Nonnull JsonDeserializationContext context, int weight, int quality, @Nonnull LootItemCondition[] conditions, @Nonnull LootItemFunction[] functions) {
+            String rarityString = GsonHelper.getAsString(object, "rarity");
             DimletRarity rarity = DimletRarity.byName(rarityString);
             return new DimletLootEntry(weight, quality, conditions, functions, rarity);
         }

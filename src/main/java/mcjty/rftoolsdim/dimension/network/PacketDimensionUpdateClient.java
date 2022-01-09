@@ -1,21 +1,21 @@
 package mcjty.rftoolsdim.dimension.network;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.player.ClientPlayerEntity;
-import net.minecraft.util.RegistryKey;
-import net.minecraft.world.World;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.Level;
 
 import java.util.Set;
 
 public class PacketDimensionUpdateClient {
 
     public static void handleUpdateDimensionsPacket(PacketDimensionUpdate packet) {
-        ClientPlayerEntity player = Minecraft.getInstance().player;
-        RegistryKey<World> key = packet.getId();
+        LocalPlayer player = Minecraft.getInstance().player;
+        ResourceKey<Level> key = packet.getId();
         if (player == null || key == null)
             return;
 
-        Set<RegistryKey<World>> worlds = player.connection.levels();
+        Set<ResourceKey<Level>> worlds = player.connection.levels();
 
         if (packet.getAdd()) {
             worlds.add(key);

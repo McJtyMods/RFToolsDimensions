@@ -4,21 +4,21 @@ import mcjty.rftoolsdim.dimension.data.DimensionData;
 import mcjty.rftoolsdim.dimension.descriptor.CompiledDescriptor;
 import mcjty.rftoolsdim.modules.blob.BlobModule;
 import mcjty.rftoolsdim.modules.blob.entities.DimensionalBlobEntity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.pathfinding.PathType;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.gen.Heightmap;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.pathfinder.PathComputationType;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.server.level.ServerLevel;
 
 import javax.annotation.Nullable;
 import java.util.Random;
 
 public class Spawner {
 
-    public static void spawnOne(ServerWorld world, PlayerEntity player, CompiledDescriptor compiledDescriptor, DimensionData data, Random random) {
+    public static void spawnOne(ServerLevel world, Player player, CompiledDescriptor compiledDescriptor, DimensionData data, Random random) {
         double distanceX;
         double distanceZ;
         distanceX = random.nextDouble() * 100 - 50;
@@ -41,11 +41,11 @@ public class Spawner {
         }
         DimensionalBlobEntity entity = type.create(world);
         entity.moveTo(x, pos.getY(), z, random.nextFloat() * 360.0F, 0.0F);
-        if (net.minecraftforge.common.ForgeHooks.canEntitySpawn(entity, world, x, pos.getY(), z, null, SpawnReason.NATURAL) == -1) {
+        if (net.minecraftforge.common.ForgeHooks.canEntitySpawn(entity, world, x, pos.getY(), z, null, MobSpawnType.NATURAL) == -1) {
             return;
         }
-        if (entity.checkSpawnRules(world, SpawnReason.NATURAL) && entity.checkSpawnObstruction(world)) {
-            entity.finalizeSpawn(world, world.getCurrentDifficultyAt(entity.blockPosition()), SpawnReason.NATURAL, null, null);
+        if (entity.checkSpawnRules(world, MobSpawnType.NATURAL) && entity.checkSpawnObstruction(world)) {
+            entity.finalizeSpawn(world, world.getCurrentDifficultyAt(entity.blockPosition()), MobSpawnType.NATURAL, null, null);
             world.addFreshEntityWithPassengers(entity);
         }
     }
@@ -65,8 +65,8 @@ public class Spawner {
     }
 
     @Nullable
-    private static BlockPos getValidSpawnablePosition(Random random, IWorldReader worldIn, int x, int z) {
-        int height = worldIn.getHeight(Heightmap.Type.WORLD_SURFACE, x, z);
+    private static BlockPos getValidSpawnablePosition(Random random, LevelReader worldIn, int x, int z) {
+        int height = worldIn.getHeight(Heightmap.Types.WORLD_SURFACE, x, z);
         if (height <= 3) {
             return null;
         }
@@ -81,8 +81,8 @@ public class Spawner {
         return blockPos;
     }
 
-    private static boolean isValidSpawnPos(IWorldReader world, BlockPos pos) {
-        if (!world.getBlockState(pos).isPathfindable(world, pos, PathType.LAND)) {
+    private static boolean isValidSpawnPos(LevelReader world, BlockPos pos) {
+        if (!world.getBlockState(pos).isPathfindable(world, pos, PathComputationType.LAND)) {
             return false;
         }
         return world.getBlockState(pos.below()).canOcclude();

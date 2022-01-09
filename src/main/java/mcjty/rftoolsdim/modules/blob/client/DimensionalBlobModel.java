@@ -2,23 +2,23 @@ package mcjty.rftoolsdim.modules.blob.client;
 
 import com.google.common.collect.ImmutableList;
 import mcjty.rftoolsdim.modules.blob.entities.DimensionalBlobEntity;
-import net.minecraft.client.renderer.entity.model.SegmentedModel;
-import net.minecraft.client.renderer.model.ModelRenderer;
+import net.minecraft.client.model.ListModel;
+import net.minecraft.client.model.geom.ModelPart;
 
 import javax.annotation.Nonnull;
 
-public class DimensionalBlobModel<T extends DimensionalBlobEntity> extends SegmentedModel<T> {
-    private final ModelRenderer bodies;
-    private final ModelRenderer rightEye;
-    private final ModelRenderer leftEye;
-    private final ModelRenderer mouth;
+public class DimensionalBlobModel<T extends DimensionalBlobEntity> extends ListModel<T> {
+    private final ModelPart bodies;
+    private final ModelPart rightEye;
+    private final ModelPart leftEye;
+    private final ModelPart mouth;
 
     public DimensionalBlobModel() {
         int slimeBodyTexOffY = 16;
-        this.bodies = new ModelRenderer(this, 0, slimeBodyTexOffY);
-        this.rightEye = new ModelRenderer(this, 32, 0);
-        this.leftEye = new ModelRenderer(this, 32, 4);
-        this.mouth = new ModelRenderer(this, 32, 8);
+        this.bodies = new ModelPart(this, 0, slimeBodyTexOffY);
+        this.rightEye = new ModelPart(this, 32, 0);
+        this.leftEye = new ModelPart(this, 32, 4);
+        this.mouth = new ModelPart(this, 32, 8);
         float offset = 0;
         this.bodies.addBox(-3.0F, 17.0F + offset, -3.0F, 6.0F, 6.0F, 6.0F);
         this.rightEye.addBox(-3.25F, 18.0F + offset, -3.5F, 2.0F, 2.0F, 2.0F);
@@ -32,7 +32,7 @@ public class DimensionalBlobModel<T extends DimensionalBlobEntity> extends Segme
 
     @Override
     @Nonnull
-    public Iterable<ModelRenderer> parts() {
+    public Iterable<ModelPart> parts() {
         return ImmutableList.of(this.bodies, this.rightEye, this.leftEye, this.mouth);
     }
 }

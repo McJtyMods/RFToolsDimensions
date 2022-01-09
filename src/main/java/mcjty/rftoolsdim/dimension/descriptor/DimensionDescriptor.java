@@ -4,9 +4,9 @@ import com.google.gson.*;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletDictionary;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletKey;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletType;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.ChatFormatting;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -105,12 +105,12 @@ public class DimensionDescriptor {
         return Objects.hash(dimlets);
     }
 
-    public void dump(PlayerEntity player) {
+    public void dump(Player player) {
         for (DimletKey dimlet : dimlets) {
             player.displayClientMessage(
-                    new StringTextComponent(dimlet.getType().name() + ": ")
-                    .withStyle(TextFormatting.AQUA)
-                    .append(new StringTextComponent(dimlet.getKey()).withStyle(TextFormatting.WHITE))
+                    new TextComponent(dimlet.getType().name() + ": ")
+                    .withStyle(ChatFormatting.AQUA)
+                    .append(new TextComponent(dimlet.getKey()).withStyle(ChatFormatting.WHITE))
                     , false);
         }
     }

@@ -1,9 +1,9 @@
 package mcjty.rftoolsdim.dimension.network;
 
 import mcjty.rftoolsdim.dimension.data.ClientDimensionData;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.network.NetworkEvent;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,7 +14,7 @@ public class PackagePropageDataToClients {
     private final Map<ResourceLocation, ClientDimensionData.Power> powerMap;
     private final long seed;
 
-    public PackagePropageDataToClients(PacketBuffer buf) {
+    public PackagePropageDataToClients(FriendlyByteBuf buf) {
         int size = buf.readInt();
         powerMap = new HashMap<>(size);
         for (int i = 0 ; i < size ; i++) {
@@ -31,7 +31,7 @@ public class PackagePropageDataToClients {
         this.seed = seed;
     }
 
-    public void toBytes(PacketBuffer buf) {
+    public void toBytes(FriendlyByteBuf buf) {
         buf.writeInt(powerMap.size());
         for (Map.Entry<ResourceLocation, ClientDimensionData.Power> entry : powerMap.entrySet()) {
             buf.writeResourceLocation(entry.getKey());

@@ -2,13 +2,13 @@ package mcjty.rftoolsdim.dimension.features.instances;
 
 import mcjty.lib.varia.MathTools;
 import mcjty.rftoolsdim.dimension.features.IFeature;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.util.Mth;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 
 import java.util.List;
 import java.util.Random;
@@ -22,7 +22,7 @@ public class TendrilsFeature implements IFeature {
 
     }
 
-    private void generateTendril(long seed, int chunkX, int chunkZ, ISeedReader primer, double dx, double dy, double dz, float p_151541_12_, float p_151541_13_, float p_151541_14_, int p_151541_15_, int p_151541_16_, double p_151541_17_,
+    private void generateTendril(long seed, int chunkX, int chunkZ, WorldGenLevel primer, double dx, double dy, double dz, float p_151541_12_, float p_151541_13_, float p_151541_14_, int p_151541_15_, int p_151541_16_, double p_151541_17_,
                                  List<BlockState> states) {
         double centerX = (chunkX * 16 + 8);
         double centerZ = (chunkZ * 16 + 8);
@@ -45,17 +45,17 @@ public class TendrilsFeature implements IFeature {
         int k1 = random.nextInt(p_151541_16_ / 2) + p_151541_16_ / 4;
 
         BlockState air = Blocks.AIR.defaultBlockState();
-        BlockPos.Mutable mpos = new BlockPos.Mutable();
+        BlockPos.MutableBlockPos mpos = new BlockPos.MutableBlockPos();
 
         boolean flag = random.nextInt(6) == 0;
         while (p_151541_15_ < p_151541_16_) {
-            double d6 = 1.5D + (MathHelper.sin(p_151541_15_ * (float) Math.PI / p_151541_16_) * p_151541_12_ * 1.0F);
+            double d6 = 1.5D + (Mth.sin(p_151541_15_ * (float) Math.PI / p_151541_16_) * p_151541_12_ * 1.0F);
             double d7 = d6 * p_151541_17_;
-            float f5 = MathHelper.cos(p_151541_14_);
-            float f6 = MathHelper.sin(p_151541_14_);
-            dx += (MathHelper.cos(p_151541_13_) * f5);
+            float f5 = Mth.cos(p_151541_14_);
+            float f6 = Mth.sin(p_151541_14_);
+            dx += (Mth.cos(p_151541_13_) * f5);
             dy += f6;
-            dz += (MathHelper.sin(p_151541_13_) * f5);
+            dz += (Mth.sin(p_151541_13_) * f5);
 
             if (flag) {
                 p_151541_14_ *= 0.92F;
@@ -159,7 +159,7 @@ public class TendrilsFeature implements IFeature {
 
 
     @Override
-    public boolean generate(ISeedReader reader, ChunkGenerator generator, Random rand, BlockPos pos,
+    public boolean generate(WorldGenLevel reader, ChunkGenerator generator, Random rand, BlockPos pos,
                             List<BlockState> states, List<BlockState> liquids, long prime) {
 
         ChunkPos cp = new ChunkPos(pos);
@@ -182,7 +182,7 @@ public class TendrilsFeature implements IFeature {
         return true;
     }
 
-    private void fillChunk(int cx, int cz, int chunkX, int chunkZ, ISeedReader reader, List<BlockState> states) {
+    private void fillChunk(int cx, int cz, int chunkX, int chunkZ, WorldGenLevel reader, List<BlockState> states) {
         int i1 = this.rand.nextInt(this.rand.nextInt(this.rand.nextInt(15) + 1) + 1);
 
         if (this.rand.nextInt(7) != 0) {

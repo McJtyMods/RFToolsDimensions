@@ -1,31 +1,30 @@
 package mcjty.rftoolsdim.modules.dimensionbuilder.client;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import mcjty.lib.client.CustomRenderTypes;
 import mcjty.lib.client.RenderHelper;
 import mcjty.lib.client.RenderSettings;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.modules.dimensionbuilder.DimensionBuilderModule;
 import mcjty.rftoolsdim.modules.dimensionbuilder.blocks.DimensionBuilderTileEntity;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
-import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import javax.annotation.Nonnull;
 
-public class DimensionBuilderRenderer extends TileEntityRenderer<DimensionBuilderTileEntity> {
+public class DimensionBuilderRenderer implements BlockEntityRenderer<DimensionBuilderTileEntity> {
 
     public static final ResourceLocation STAGES = new ResourceLocation(RFToolsDim.MODID, "block/dimensionstages");
 
-    public DimensionBuilderRenderer(TileEntityRendererDispatcher dispatcher) {
-        super(dispatcher);
+    public DimensionBuilderRenderer(BlockEntityRendererProvider.Context context) {
     }
 
     @Override
-    public void render(DimensionBuilderTileEntity te, float v, @Nonnull MatrixStack matrixStack, @Nonnull IRenderTypeBuffer buffer, int combinedLight, int combinedOverlay) {
+    public void render(DimensionBuilderTileEntity te, float v, @Nonnull PoseStack matrixStack, @Nonnull MultiBufferSource buffer, int combinedLight, int combinedOverlay) {
 
         int errorMode = te.getErrorMode();
         int r;
@@ -55,7 +54,7 @@ public class DimensionBuilderRenderer extends TileEntityRenderer<DimensionBuilde
     }
 
     public static void register() {
-        ClientRegistry.bindTileEntityRenderer(DimensionBuilderModule.TYPE_DIMENSION_BUILDER.get(), DimensionBuilderRenderer::new);
+        BlockEntityRenderers.register(DimensionBuilderModule.TYPE_DIMENSION_BUILDER.get(), DimensionBuilderRenderer::new);
     }
 
 }

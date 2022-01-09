@@ -8,16 +8,16 @@ import mcjty.rftoolsdim.modules.essences.EssencesModule;
 import mcjty.rftoolsdim.modules.essences.blocks.BiomeAbsorberTileEntity;
 import mcjty.rftoolsdim.modules.essences.blocks.BlockAbsorberTileEntity;
 import mcjty.rftoolsdim.modules.essences.blocks.FluidAbsorberTileEntity;
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.client.resources.language.I18n;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nonnull;
@@ -127,7 +127,7 @@ public class DimletTools {
         if (stack.getItem() instanceof DimletItem) {
             DimletType type = ((DimletItem) stack.getItem()).getType();
             if (type != null) {
-                CompoundNBT tag = stack.getTag();
+                CompoundTag tag = stack.getTag();
                 if (tag != null) {
                     String name = tag.getString("name");
                     return new DimletKey(type, name);
@@ -252,34 +252,34 @@ public class DimletTools {
         return null;
     }
 
-    public static ITextComponent getReadable(DimletKey dimletKey) {
+    public static Component getReadable(DimletKey dimletKey) {
         switch (dimletKey.getType()) {
             case TERRAIN:
-                return new StringTextComponent(dimletKey.getKey().toLowerCase());
+                return new TextComponent(dimletKey.getKey().toLowerCase());
             case ATTRIBUTE:
-                return new StringTextComponent(dimletKey.getKey().toLowerCase());
+                return new TextComponent(dimletKey.getKey().toLowerCase());
             case BIOME_CONTROLLER:
-                return new StringTextComponent(dimletKey.getKey().toLowerCase());
+                return new TextComponent(dimletKey.getKey().toLowerCase());
             case BIOME:
                 ResourceLocation id = new ResourceLocation(dimletKey.getKey());
                 String trans = "biome." + id.getNamespace() + "." + id.getPath();
-                return new TranslationTextComponent(trans);
+                return new TranslatableComponent(trans);
             case FEATURE:
-                return new StringTextComponent(dimletKey.getKey().toLowerCase());
+                return new TextComponent(dimletKey.getKey().toLowerCase());
             case TIME:
-                return new StringTextComponent(dimletKey.getKey().toLowerCase());
+                return new TextComponent(dimletKey.getKey().toLowerCase());
             case BLOCK:
                 Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(dimletKey.getKey()));
-                return new TranslationTextComponent(block.getDescriptionId());
+                return new TranslatableComponent(block.getDescriptionId());
             case FLUID:
                 Fluid fluid = ForgeRegistries.FLUIDS.getValue(new ResourceLocation(dimletKey.getKey()));
-                return new TranslationTextComponent(fluid.defaultFluidState().createLegacyBlock().getBlock().getDescriptionId());
+                return new TranslatableComponent(fluid.defaultFluidState().createLegacyBlock().getBlock().getDescriptionId());
             case DIGIT:
-                return new StringTextComponent(dimletKey.getKey());
+                return new TextComponent(dimletKey.getKey());
             case ADMIN:
-                return new StringTextComponent(dimletKey.getKey());
+                return new TextComponent(dimletKey.getKey());
         }
-        return new StringTextComponent("<unknown>");
+        return new TextComponent("<unknown>");
     }
 
     // Use client side!

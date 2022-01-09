@@ -3,19 +3,19 @@ package mcjty.rftoolsdim.dimension.terraintypes;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import mcjty.rftoolsdim.dimension.data.DimensionSettings;
-import net.minecraft.block.BlockState;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryLookupCodec;
-import net.minecraft.world.Blockreader;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.chunk.IChunk;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.Heightmap;
-import net.minecraft.world.gen.WorldGenRegion;
-import net.minecraft.world.gen.feature.structure.StructureManager;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.RegistryLookupCodec;
+import net.minecraft.world.level.NoiseColumn;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.chunk.ChunkAccess;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.server.level.WorldGenRegion;
+import net.minecraft.world.level.StructureFeatureManager;
 
 import javax.annotation.Nonnull;
 
@@ -48,28 +48,28 @@ public class VoidChunkGenerator extends BaseChunkGenerator {
     }
 
     @Override
-    public void buildSurfaceAndBedrock(@Nonnull WorldGenRegion worldGenRegion, @Nonnull IChunk iChunk) {
+    public void buildSurfaceAndBedrock(@Nonnull WorldGenRegion worldGenRegion, @Nonnull ChunkAccess iChunk) {
         // No surface
     }
 
     @Override
-    protected void makeBedrock(IChunk chunk) {
+    protected void makeBedrock(ChunkAccess chunk) {
         // No bedrock
     }
 
     @Override
-    public void fillFromNoise(@Nonnull IWorld iWorld, @Nonnull StructureManager structureManager, @Nonnull IChunk iChunk) {
+    public void fillFromNoise(@Nonnull LevelAccessor iWorld, @Nonnull StructureFeatureManager structureManager, @Nonnull ChunkAccess iChunk) {
 
     }
 
     @Override
-    public int getBaseHeight(int x, int z, @Nonnull Heightmap.Type type) {
+    public int getBaseHeight(int x, int z, @Nonnull Heightmap.Types type) {
         return 0;
     }
 
     @Nonnull
     @Override
-    public IBlockReader getBaseColumn(int x, int z) {
-        return new Blockreader(new BlockState[0]);
+    public BlockGetter getBaseColumn(int x, int z) {
+        return new NoiseColumn(new BlockState[0]);
     }
 }

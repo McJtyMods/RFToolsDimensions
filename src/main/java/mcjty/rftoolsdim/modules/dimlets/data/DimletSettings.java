@@ -3,8 +3,8 @@ package mcjty.rftoolsdim.modules.dimlets.data;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import mcjty.lib.varia.JSonTools;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.network.FriendlyByteBuf;
 
 public class DimletSettings {
 
@@ -29,7 +29,7 @@ public class DimletSettings {
         }
     }
 
-    public DimletSettings(PacketBuffer buf) {
+    public DimletSettings(FriendlyByteBuf buf) {
         rarity = DimletRarity.values()[buf.readInt()];
         createCost = buf.readInt();
         maintainCost = buf.readInt();
@@ -39,7 +39,7 @@ public class DimletSettings {
         essence = buf.readItem();
     }
 
-    public void toBytes(PacketBuffer buf) {
+    public void toBytes(FriendlyByteBuf buf) {
         buf.writeInt(rarity.ordinal());
         buf.writeInt(createCost);
         buf.writeInt(maintainCost);

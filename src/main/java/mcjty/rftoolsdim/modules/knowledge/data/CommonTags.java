@@ -1,7 +1,7 @@
 package mcjty.rftoolsdim.modules.knowledge.data;
 
 import net.minecraft.tags.BlockTags;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.Tags;
 
 import java.util.HashSet;

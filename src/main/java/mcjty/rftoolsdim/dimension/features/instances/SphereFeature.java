@@ -1,12 +1,12 @@
 package mcjty.rftoolsdim.dimension.features.instances;
 
 import mcjty.rftoolsdim.dimension.features.IFeature;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 
 import java.util.List;
 import java.util.Random;
@@ -22,7 +22,7 @@ public class SphereFeature implements IFeature {
     }
 
     @Override
-    public boolean generate(ISeedReader reader, ChunkGenerator generator, Random rand, BlockPos pos,
+    public boolean generate(WorldGenLevel reader, ChunkGenerator generator, Random rand, BlockPos pos,
                             List<BlockState> states, List<BlockState> liquids, long prime) {
         ChunkPos cp = new ChunkPos(pos);
         int chunkX = cp.x;
@@ -49,7 +49,7 @@ public class SphereFeature implements IFeature {
         return generated;
     }
 
-    private void generate(ISeedReader world, int chunkX, int chunkZ, int dx, int dz,
+    private void generate(WorldGenLevel world, int chunkX, int chunkZ, int dx, int dz,
                           List<BlockState> states, BlockState filler, long prime) {
         long seeder = world.getSeed() + (chunkZ + dz) * 256203221L + (chunkX + dx) * prime;
         Random random = new Random(seeder);
@@ -61,7 +61,7 @@ public class SphereFeature implements IFeature {
         int centerz = 8 + (dz) * 16;
         double sqradius = radius * radius;
 
-        BlockPos.Mutable pos = new BlockPos.Mutable();
+        BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
         for (int x = 0 ; x < 16 ; x++) {
             double dxdx = (x-centerx) * (x-centerx);
             for (int z = 0 ; z < 16 ; z++) {
@@ -82,7 +82,7 @@ public class SphereFeature implements IFeature {
         }
     }
 
-    private static int getCenteredIndex(ISeedReader world, int chunkX, int chunkZ, long prime, int max) {
+    private static int getCenteredIndex(WorldGenLevel world, int chunkX, int chunkZ, long prime, int max) {
         if (max == 1) {
             return 0;
         }
@@ -91,7 +91,7 @@ public class SphereFeature implements IFeature {
         return random.nextInt(max);
     }
 
-    private static boolean isFeatureCenter(ISeedReader world, int chunkX, int chunkZ, long prime) {
+    private static boolean isFeatureCenter(WorldGenLevel world, int chunkX, int chunkZ, long prime) {
         double factor = 0.05f;
         Random random = new Random((chunkX * prime + chunkZ * 3399018867L) ^ world.getSeed());
         random.nextFloat();

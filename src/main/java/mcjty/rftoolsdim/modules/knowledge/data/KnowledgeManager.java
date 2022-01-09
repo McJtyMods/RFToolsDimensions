@@ -13,13 +13,13 @@ import mcjty.rftoolsdim.modules.dimlets.data.DimletKey;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletRarity;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletSettings;
 import mcjty.rftoolsdim.setup.Registration;
-import net.minecraft.block.Block;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
-import net.minecraft.world.biome.Biome;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nullable;
@@ -221,12 +221,12 @@ public class KnowledgeManager {
         return patterns.get(kkey);
     }
 
-    public String getReason(World world, KnowledgeKey key) {
+    public String getReason(Level world, KnowledgeKey key) {
         getKnownPatterns(world, key.getRarity());   // Make sure to refresh known patterns (and keyReasons)
         return keyReasons.get(key);
     }
 
-    public List<KnowledgeKey> getKnownPatterns(World world, DimletRarity rarity) {
+    public List<KnowledgeKey> getKnownPatterns(Level world, DimletRarity rarity) {
         if (!knownPatterns.containsKey(rarity)) {
             List<KnowledgeKey> set = new ArrayList<>();
             for (DimletKey key : DimletDictionary.get().getDimlets()) {

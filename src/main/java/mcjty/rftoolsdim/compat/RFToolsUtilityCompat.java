@@ -1,8 +1,8 @@
 package mcjty.rftoolsdim.compat;
 
 import mcjty.rftoolsbase.api.teleportation.ITeleportationManager;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.ISeedReader;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.WorldGenLevel;
 import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.ModList;
 
@@ -28,13 +28,13 @@ public class RFToolsUtilityCompat {
     }
 
 
-    public static void createTeleporter(ISeedReader reader, BlockPos pos, String name) {
+    public static void createTeleporter(WorldGenLevel reader, BlockPos pos, String name) {
         if (teleportationManager != null) {
             teleportationManager.createReceiver(reader.getLevel(), pos, name, -1);
         }
     }
 
-    public static void createTeleporter(ISeedReader reader, BlockPos pos, String name, int power) {
+    public static void createTeleporter(WorldGenLevel reader, BlockPos pos, String name, int power) {
         if (teleportationManager != null) {
             teleportationManager.createReceiver(reader.getLevel(), pos, name, power);
         }

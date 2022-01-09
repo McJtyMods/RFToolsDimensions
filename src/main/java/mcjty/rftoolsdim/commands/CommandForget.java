@@ -8,18 +8,18 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.dimension.data.PersistantDimensionManager;
-import net.minecraft.command.CommandSource;
-import net.minecraft.command.Commands;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SharedConstants;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.Commands;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.SharedConstants;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.ChatFormatting;
 
-public class CommandForget implements Command<CommandSource> {
+public class CommandForget implements Command<CommandSourceStack> {
 
     private static final CommandForget CMD = new CommandForget();
 
-    public static ArgumentBuilder<CommandSource, ?> register(CommandDispatcher<CommandSource> dispatcher) {
+    public static ArgumentBuilder<CommandSourceStack, ?> register(CommandDispatcher<CommandSourceStack> dispatcher) {
         return Commands.literal("forget")
                 .requires(cs -> cs.hasPermission(1))
                 .then(Commands.argument("name", StringArgumentType.string())
@@ -27,12 +27,12 @@ public class CommandForget implements Command<CommandSource> {
     }
 
     @Override
-    public int run(CommandContext<CommandSource> context) throws CommandSyntaxException {
+    public int run(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         SharedConstants.IS_RUNNING_IN_IDE = true;
         String name = context.getArgument("name", String.class);
         PersistantDimensionManager mgr = PersistantDimensionManager.get(context.getSource().getLevel());
         mgr.forget(new ResourceLocation(RFToolsDim.MODID, name));
-        context.getSource().sendSuccess(new StringTextComponent(TextFormatting.YELLOW + "Removed '" + name + "'"), false);
+        context.getSource().sendSuccess(new TextComponent(ChatFormatting.YELLOW + "Removed '" + name + "'"), false);
         return 0;
     }
 }

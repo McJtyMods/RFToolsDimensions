@@ -1,6 +1,6 @@
 package mcjty.rftoolsdim.modules.workbench.client;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import mcjty.lib.container.GenericContainer;
 import mcjty.lib.gui.GenericGuiContainer;
 import mcjty.lib.gui.Window;
@@ -8,8 +8,8 @@ import mcjty.lib.gui.widgets.Panel;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.modules.workbench.WorkbenchModule;
 import mcjty.rftoolsdim.modules.workbench.blocks.KnowledgeHolderTileEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.resources.ResourceLocation;
 
 import javax.annotation.Nonnull;
 
@@ -22,7 +22,7 @@ public class GuiHolder extends GenericGuiContainer<KnowledgeHolderTileEntity, Ge
 
     private static final ResourceLocation iconLocation = new ResourceLocation(RFToolsDim.MODID, "textures/gui/knowledgeholder.png");
 
-    public GuiHolder(KnowledgeHolderTileEntity tileEntity, GenericContainer container, PlayerInventory inventory) {
+    public GuiHolder(KnowledgeHolderTileEntity tileEntity, GenericContainer container, Inventory inventory) {
         super(tileEntity, container, inventory, WorkbenchModule.HOLDER.get().getManualEntry());
 
         imageWidth = WIDTH;
@@ -40,7 +40,7 @@ public class GuiHolder extends GenericGuiContainer<KnowledgeHolderTileEntity, Ge
     }
 
     @Override
-    protected void renderBg(@Nonnull MatrixStack matrixStack, float partialTicks, int x, int y) {
+    protected void renderBg(@Nonnull PoseStack matrixStack, float partialTicks, int x, int y) {
         drawWindow(matrixStack);
     }
 }

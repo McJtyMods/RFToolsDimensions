@@ -1,7 +1,7 @@
 package mcjty.rftoolsdim.dimension.features.buildings;
 
 import mcjty.rftoolsdim.modules.decorative.DecorativeModule;
-import net.minecraft.block.Blocks;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.util.Lazy;
 
 public class SpawnPlatform extends BuildingTemplate {

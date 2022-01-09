@@ -1,19 +1,19 @@
 package mcjty.rftoolsdim.dimension.network;
 
 import mcjty.lib.varia.LevelTools;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.RegistryKey;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.Level;
+import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
 public class PacketDimensionUpdate {
 
-    private final RegistryKey<World> id;
+    private final ResourceKey<Level> id;
     private final boolean add;
 
-    public RegistryKey<World> getId() {
+    public ResourceKey<Level> getId() {
         return this.id;
     }
 
@@ -21,17 +21,17 @@ public class PacketDimensionUpdate {
         return this.add;
     }
 
-    public PacketDimensionUpdate(PacketBuffer buf) {
+    public PacketDimensionUpdate(FriendlyByteBuf buf) {
         id = LevelTools.getId(buf.readResourceLocation());
         add = buf.readBoolean();
     }
 
-    public PacketDimensionUpdate(RegistryKey<World> id, boolean add) {
+    public PacketDimensionUpdate(ResourceKey<Level> id, boolean add) {
         this.id = id;
         this.add = add;
     }
 
-    public void toBytes(PacketBuffer buf) {
+    public void toBytes(FriendlyByteBuf buf) {
         buf.writeResourceLocation(id.location());
         buf.writeBoolean(add);
     }

@@ -1,13 +1,13 @@
 package mcjty.rftoolsdim.modules.dimensionbuilder.items;
 
 import mcjty.rftoolsdim.RFToolsDim;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.world.World;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.ChatFormatting;
+import net.minecraft.world.level.Level;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -20,10 +20,10 @@ public class EmptyDimensionTab extends Item {
     }
 
     @Override
-    public void appendHoverText(@Nonnull ItemStack stack, @Nullable World worldIn, @Nonnull List<ITextComponent> list, @Nonnull ITooltipFlag flagIn) {
+    public void appendHoverText(@Nonnull ItemStack stack, @Nullable Level worldIn, @Nonnull List<Component> list, @Nonnull TooltipFlag flagIn) {
         super.appendHoverText(stack, worldIn, list, flagIn);
         // @todo 1.16 better tooltips
-        list.add(new StringTextComponent(TextFormatting.YELLOW + "Put this empty dimension tab in a 'Dimension Enscriber'"));
-        list.add(new StringTextComponent(TextFormatting.YELLOW + "where you can construct a dimension using dimlets"));
+        list.add(new TextComponent(ChatFormatting.YELLOW + "Put this empty dimension tab in a 'Dimension Enscriber'"));
+        list.add(new TextComponent(ChatFormatting.YELLOW + "where you can construct a dimension using dimlets"));
     }
 }
