@@ -3,33 +3,32 @@ package mcjty.rftoolsdim.modules.essences.blocks;
 import mcjty.lib.blocks.BaseBlock;
 import mcjty.lib.blocks.RotationType;
 import mcjty.lib.builder.BlockBuilder;
-import mcjty.lib.tileentity.GenericTileEntity;
 import mcjty.lib.tileentity.TickingTileEntity;
 import mcjty.lib.varia.NBTTools;
 import mcjty.rftoolsbase.tools.ManualHelper;
 import mcjty.rftoolsdim.compat.RFToolsDimensionsTOPDriver;
 import mcjty.rftoolsdim.modules.essences.EssencesConfig;
 import mcjty.rftoolsdim.modules.essences.EssencesModule;
-import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.client.resources.language.I18n;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.tileentity.ITickableTileEntity;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Material;
 
 import java.util.Random;
 
 import static mcjty.lib.builder.TooltipBuilder.*;
 
-import net.minecraft.world.level.block.state.BlockBehaviour;
-
 public class BiomeAbsorberTileEntity extends TickingTileEntity {
 
-    public BiomeAbsorberTileEntity() {
-        super(EssencesModule.TYPE_BIOME_ABSORBER.get());
+    public BiomeAbsorberTileEntity(BlockPos pos, BlockState state) {
+        super(EssencesModule.TYPE_BIOME_ABSORBER.get(), pos, state);
     }
 
     private int absorbing = 0;
@@ -155,7 +154,4 @@ public class BiomeAbsorberTileEntity extends TickingTileEntity {
             biomeId = null;
         }
     }
-
-
-
 }

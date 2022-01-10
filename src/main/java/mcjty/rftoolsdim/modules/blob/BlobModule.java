@@ -24,7 +24,6 @@ import net.minecraftforge.registries.RegistryObject;
 
 import static mcjty.rftoolsdim.setup.Registration.ENTITIES;
 
-@Mod.EventBusSubscriber(modid = RFToolsDim.MODID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class BlobModule implements IModule {
 
     public static final RegistryObject<EntityType<DimensionalBlobEntity>> DIMENSIONAL_BLOB_COMMON = ENTITIES.register("dimensional_blob_common",
@@ -67,12 +66,6 @@ public class BlobModule implements IModule {
     public void initClient(FMLClientSetupEvent event) {
     }
 
-    @SubscribeEvent
-    public static void onRegisterRenderer(EntityRenderersEvent.RegisterRenderers event) {
-        event.registerEntityRenderer(DIMENSIONAL_BLOB_COMMON.get(), DimensionalBlobRender.FACTORY);
-        event.registerEntityRenderer(DIMENSIONAL_BLOB_RARE.get(), DimensionalBlobRender.FACTORY);
-        event.registerEntityRenderer(DIMENSIONAL_BLOB_LEGENDARY.get(), DimensionalBlobRender.FACTORY);
-    }
 
     @Override
     public void initConfig() {

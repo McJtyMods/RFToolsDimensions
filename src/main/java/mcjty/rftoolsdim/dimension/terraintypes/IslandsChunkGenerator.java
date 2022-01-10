@@ -25,13 +25,14 @@ public class IslandsChunkGenerator extends NormalChunkGenerator {
 
     private final BlockState air;
 
-    public IslandsChunkGenerator(MinecraftServer server, DimensionSettings settings) {
-        super(server, settings, SETTING_DEFAULT_ISLANDS);
-        air = Blocks.AIR.defaultBlockState();
-    }
-
+    // @todo 1.18
+//    public IslandsChunkGenerator(MinecraftServer server, DimensionSettings settings) {
+//        super(server, settings, SETTING_DEFAULT_ISLANDS);
+//        air = Blocks.AIR.defaultBlockState();
+//    }
+//
     public IslandsChunkGenerator(Registry<Biome> registry, DimensionSettings settings) {
-        super(registry, settings, SETTING_DEFAULT_ISLANDS);
+        super(registry, settings);
         air = Blocks.AIR.defaultBlockState();
     }
 

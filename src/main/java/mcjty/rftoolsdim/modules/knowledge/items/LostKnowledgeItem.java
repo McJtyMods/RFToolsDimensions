@@ -80,17 +80,12 @@ public class LostKnowledgeItem extends Item implements ITooltipSettings {
     }
 
     public static ItemStack createUnresearchedLostKnowledge(DimletRarity rarity) {
-        switch (rarity) {
-            case COMMON:
-                return new ItemStack(KnowledgeModule.COMMON_LOST_KNOWLEDGE.get());
-            case UNCOMMON:
-                return new ItemStack(KnowledgeModule.UNCOMMON_LOST_KNOWLEDGE.get());
-            case RARE:
-                return new ItemStack(KnowledgeModule.RARE_LOST_KNOWLEDGE.get());
-            case LEGENDARY:
-                return new ItemStack(KnowledgeModule.LEGENDARY_LOST_KNOWLEDGE.get());
-        }
-        return ItemStack.EMPTY;
+        return switch (rarity) {
+            case COMMON -> new ItemStack(KnowledgeModule.COMMON_LOST_KNOWLEDGE.get());
+            case UNCOMMON -> new ItemStack(KnowledgeModule.UNCOMMON_LOST_KNOWLEDGE.get());
+            case RARE -> new ItemStack(KnowledgeModule.RARE_LOST_KNOWLEDGE.get());
+            case LEGENDARY -> new ItemStack(KnowledgeModule.LEGENDARY_LOST_KNOWLEDGE.get());
+        };
     }
 
     public static ItemStack createLostKnowledge(Level world, DimletKey key) {
@@ -126,21 +121,12 @@ public class LostKnowledgeItem extends Item implements ITooltipSettings {
     }
 
     private static LostKnowledgeItem getKnowledgeItem(DimletRarity rarity) {
-        LostKnowledgeItem item = KnowledgeModule.COMMON_LOST_KNOWLEDGE.get();
-        switch (rarity) {
-            case COMMON:
-                item = KnowledgeModule.COMMON_LOST_KNOWLEDGE.get();
-                break;
-            case UNCOMMON:
-                item = KnowledgeModule.UNCOMMON_LOST_KNOWLEDGE.get();
-                break;
-            case RARE:
-                item = KnowledgeModule.RARE_LOST_KNOWLEDGE.get();
-                break;
-            case LEGENDARY:
-                item = KnowledgeModule.LEGENDARY_LOST_KNOWLEDGE.get();
-                break;
-        }
-        return item;
+        KnowledgeModule.COMMON_LOST_KNOWLEDGE.get();
+        return switch (rarity) {
+            case COMMON -> KnowledgeModule.COMMON_LOST_KNOWLEDGE.get();
+            case UNCOMMON -> KnowledgeModule.UNCOMMON_LOST_KNOWLEDGE.get();
+            case RARE -> KnowledgeModule.RARE_LOST_KNOWLEDGE.get();
+            case LEGENDARY -> KnowledgeModule.LEGENDARY_LOST_KNOWLEDGE.get();
+        };
     }
 }

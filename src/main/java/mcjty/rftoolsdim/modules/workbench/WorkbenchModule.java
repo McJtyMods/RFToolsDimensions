@@ -43,7 +43,7 @@ public class WorkbenchModule implements IModule {
     public static final RegistryObject<MenuType<GenericContainer>> CONTAINER_RESEARCHER = CONTAINERS.register("researcher", GenericContainer::createContainerType);
 
     public static void onTextureStitch(TextureStitchEvent.Pre event) {
-        if (!event.getMap().location().equals(TextureAtlas.LOCATION_BLOCKS)) {
+        if (!event.getAtlas().location().equals(TextureAtlas.LOCATION_BLOCKS)) {
             return;
         }
         event.addSprite(ResearcherRenderer.LIGHT);

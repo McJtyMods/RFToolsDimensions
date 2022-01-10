@@ -14,9 +14,11 @@ import mcjty.rftoolsbase.tools.ManualHelper;
 import mcjty.rftoolsdim.modules.knowledge.data.KnowledgeKey;
 import mcjty.rftoolsdim.modules.knowledge.items.LostKnowledgeItem;
 import mcjty.rftoolsdim.modules.workbench.WorkbenchModule;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.common.util.LazyOptional;
 
@@ -43,8 +45,8 @@ public class KnowledgeHolderTileEntity extends GenericTileEntity {
             .itemHandler(() -> items)
             .setupSync(this));
 
-    public KnowledgeHolderTileEntity() {
-        super(WorkbenchModule.TYPE_HOLDER.get());
+    public KnowledgeHolderTileEntity(BlockPos pos, BlockState state) {
+        super(WorkbenchModule.TYPE_HOLDER.get(), pos, state);
     }
 
     private static boolean isValidKnowledgeItem(ItemStack stack) {

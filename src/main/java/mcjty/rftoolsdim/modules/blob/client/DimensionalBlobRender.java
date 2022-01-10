@@ -4,12 +4,10 @@ package mcjty.rftoolsdim.modules.blob.client;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.modules.blob.entities.DimensionalBlobEntity;
-import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import net.minecraft.client.renderer.entity.EntityRendererProvider;
 
 import javax.annotation.Nonnull;
 
@@ -20,8 +18,8 @@ public class DimensionalBlobRender extends LivingEntityRenderer<DimensionalBlobE
     private static final ResourceLocation TEXTURE_RARE = new ResourceLocation(RFToolsDim.MODID, "textures/entity/dimensional_blob_rare.png");
     private static final ResourceLocation TEXTURE_LEGENDARY = new ResourceLocation(RFToolsDim.MODID, "textures/entity/dimensional_blob_legendary.png");
 
-    public DimensionalBlobRender(EntityRenderDispatcher renderManagerIn) {
-        super(renderManagerIn, new DimensionalBlobModel(), 0.8F);
+    public DimensionalBlobRender(EntityRendererProvider.Context context) {
+        super(context, new DimensionalBlobModel<>(context.getModelSet().bakeLayer(DimensionalBlobModel.BLOB_LAYER)), 0.8f);
     }
 
     /**
@@ -30,17 +28,12 @@ public class DimensionalBlobRender extends LivingEntityRenderer<DimensionalBlobE
     @Override
     @Nonnull
     public ResourceLocation getTextureLocation(DimensionalBlobEntity entity) {
-        switch (entity.getRarity()) {
-            case COMMON:
-                return TEXTURE_COMMON;
-            case UNCOMMON:
-                return TEXTURE_COMMON;  // Cannot happen
-            case RARE:
-                return TEXTURE_RARE;
-            case LEGENDARY:
-                return TEXTURE_LEGENDARY;
-        }
-        return TEXTURE_COMMON;
+        return switch (entity.getRarity()) {
+            case COMMON -> TEXTURE_COMMON;
+            case UNCOMMON -> TEXTURE_COMMON;  // Cannot happen
+            case RARE -> TEXTURE_RARE;
+            case LEGENDARY -> TEXTURE_LEGENDARY;
+        };
     }
 
 
@@ -48,8 +41,6 @@ public class DimensionalBlobRender extends LivingEntityRenderer<DimensionalBlobE
     protected boolean shouldShowName(DimensionalBlobEntity entity) {
         return entity.hasCustomName() && super.shouldShowName(entity);
     }
-
-    public static final DimensionalBlobRender.Factory FACTORY = new DimensionalBlobRender.Factory();
 
     @Override
     protected void scale(DimensionalBlobEntity entitylivingbaseIn, PoseStack matrixStackIn, float partialTickTime) {
@@ -61,14 +52,4 @@ public class DimensionalBlobRender extends LivingEntityRenderer<DimensionalBlobE
         float f3 = 1.0F / (f2 + 1.0F);
         matrixStackIn.scale(f3 * f1, 1.0F / f3 * f1, f3 * f1);
     }
-
-    public static class Factory implements EntityRendererProvider<DimensionalBlobEntity> {
-
-        @Override
-        public EntityRenderer<? super DimensionalBlobEntity> createRenderFor(EntityRenderDispatcher manager) {
-            return new DimensionalBlobRender(manager);
-        }
-
-    }
-
 }

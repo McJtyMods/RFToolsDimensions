@@ -4,21 +4,21 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import mcjty.rftoolsdim.dimension.data.DimensionSettings;
 import mcjty.rftoolsdim.dimension.tools.OffsetBlockReader;
+import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.ChunkPos;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.RegistryLookupCodec;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.levelgen.blending.Blender;
 
 import javax.annotation.Nonnull;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
 
 public class WavesChunkGenerator extends BaseChunkGenerator {
 
@@ -33,7 +33,7 @@ public class WavesChunkGenerator extends BaseChunkGenerator {
     }
 
     public WavesChunkGenerator(Registry<Biome> registry, DimensionSettings settings) {
-        super(registry, settings);
+        super(null, settings);  // @todo 1.18
     }
 
     @Nonnull
@@ -49,7 +49,7 @@ public class WavesChunkGenerator extends BaseChunkGenerator {
     }
 
     @Override
-    public void fillFromNoise(@Nonnull LevelAccessor iWorld, @Nonnull StructureFeatureManager structureManager, ChunkAccess chunk) {
+    public CompletableFuture<ChunkAccess> fillFromNoise(Executor executor, Blender blender, StructureFeatureManager structureFeatureManager, ChunkAccess chunk) {
         ChunkPos chunkpos = chunk.getPos();
 
         BlockPos.MutableBlockPos mpos = new BlockPos.MutableBlockPos();
@@ -70,10 +70,11 @@ public class WavesChunkGenerator extends BaseChunkGenerator {
                 }
             }
         }
+        return null;    // @todo 1.18
     }
 
     @Override
-    public int getBaseHeight(int x, int z, @Nonnull Heightmap.Types type) {
+    public int getBaseHeight(int x, int z, @Nonnull Heightmap.Types type, LevelHeightAccessor level) {
         int realx = x;  // @todo 1.16 is this the actual x/z?
         int realz = z;
         int height = calculateWaveHeight(realx, realz);
@@ -88,11 +89,12 @@ public class WavesChunkGenerator extends BaseChunkGenerator {
 
     @Nonnull
     @Override
-    public BlockGetter getBaseColumn(int x, int z) {
+    public NoiseColumn getBaseColumn(int x, int z, LevelHeightAccessor level) {
         int realx = x;  // @todo 1.16 is this the actual x/z?
         int realz = z;
         int height = calculateWaveHeight(realx, realz);
-        return new OffsetBlockReader(defaultBlocks.get(0), height);
+//        return new OffsetBlockReader(defaultBlocks.get(0), height);
+        return null;
     }
 
     private int calculateWaveHeight(int realx, int realz) {

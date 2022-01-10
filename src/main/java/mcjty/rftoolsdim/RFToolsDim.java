@@ -18,6 +18,7 @@ import mcjty.rftoolsdim.setup.Registration;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -38,14 +39,15 @@ public class RFToolsDim {
 
         Registration.register();
 
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(setup::init);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(modules::init);
+        IEventBus modbus = FMLJavaModLoadingContext.get().getModEventBus();
+        modbus.addListener(setup::init);
+        modbus.addListener(modules::init);
         MinecraftForge.EVENT_BUS.addListener(this::onJoinWorld);
 
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
             MinecraftForge.EVENT_BUS.addListener(ClientEventHandlers::onPlayerLogin);
-            FMLJavaModLoadingContext.get().getModEventBus().addListener(modules::initClient);
-            FMLJavaModLoadingContext.get().getModEventBus().addListener(WorkbenchModule::onTextureStitch);
+            modbus.addListener(modules::initClient);
+            modbus.addListener(WorkbenchModule::onTextureStitch);
 //            FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientEventHandlers::onClientTick);
         });
     }

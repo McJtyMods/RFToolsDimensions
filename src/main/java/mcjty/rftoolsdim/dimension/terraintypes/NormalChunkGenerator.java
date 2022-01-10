@@ -6,50 +6,43 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import it.unimi.dsi.fastutil.objects.ObjectList;
 import it.unimi.dsi.fastutil.objects.ObjectListIterator;
 import mcjty.rftoolsdim.dimension.data.DimensionSettings;
-import net.minecraft.core.RegistryAccess;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.Util;
-import net.minecraft.util.math.*;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.SectionPos;
 import net.minecraft.resources.RegistryLookupCodec;
+import net.minecraft.util.Mth;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.LevelHeightAccessor;
 import net.minecraft.world.level.NoiseColumn;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.TheEndBiomeSource;
-import net.minecraft.world.level.chunk.ProtoChunk;
-import net.minecraft.world.level.chunk.LevelChunkSection;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
-import net.minecraft.world.gen.*;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.chunk.LevelChunkSection;
+import net.minecraft.world.level.chunk.ProtoChunk;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.levelgen.NoiseSettings;
+import net.minecraft.world.level.levelgen.blending.Blender;
+import net.minecraft.world.level.levelgen.feature.StructureFeature;
 import net.minecraft.world.level.levelgen.feature.structures.JigsawJunction;
 import net.minecraft.world.level.levelgen.feature.structures.StructureTemplatePool;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.PoolElementStructurePiece;
-import net.minecraft.world.level.levelgen.feature.StructureFeature;
-import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
-import net.minecraft.world.level.levelgen.NoiseSettings;
-import net.minecraft.world.level.levelgen.NoiseSamplingSettings;
-import net.minecraft.world.level.levelgen.NoiseSlideSettings;
+import net.minecraft.world.level.levelgen.synth.ImprovedNoise;
+import net.minecraft.world.level.levelgen.synth.PerlinNoise;
+import net.minecraft.world.level.levelgen.synth.SimplexNoise;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
 import java.util.function.Predicate;
-import java.util.stream.IntStream;
-
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.SectionPos;
-import net.minecraft.util.Mth;
-import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.chunk.ChunkGenerator;
-import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import net.minecraft.world.level.levelgen.synth.ImprovedNoise;
-import net.minecraft.world.level.levelgen.synth.PerlinNoise;
-import net.minecraft.world.level.levelgen.synth.PerlinSimplexNoise;
-import net.minecraft.world.level.levelgen.synth.SimplexNoise;
 
 public class NormalChunkGenerator extends BaseChunkGenerator {
 
@@ -142,66 +135,70 @@ public class NormalChunkGenerator extends BaseChunkGenerator {
 
 
     private static final NoiseSettings[] SETTINGS = new NoiseSettings[]{
-            new NoiseSettings(256,
-                    new NoiseSamplingSettings(0.9999999814507745D, 0.9999999814507745D, 80.0D, 160.0D),
-                    new NoiseSlideSettings(-10, 3, 0),
-                    new NoiseSlideSettings(-30, 0, 0),
-                    1, 2, 1.0D, -0.46875D, true, true, false, false),
-            new NoiseSettings(128,
-                    new NoiseSamplingSettings(0.9999999814507745D, 0.9999999814507745D, 80.0D, 160.0D),
-                    new NoiseSlideSettings(-10, 3, 0),
-                    new NoiseSlideSettings(-30, 0, 0),
-                    1, 2, 1.0D, -0.46875D, true, true, false, false),
-            new NoiseSettings(256,
-                    new NoiseSamplingSettings(0.9999999814507745D, 0.9999999814507745D, 80.0D, 160.0D),
-                    new NoiseSlideSettings(-10, 3, 0),
-                    new NoiseSlideSettings(-30, 0, 0),
-                    1, 2, 1.0D, -0.46875D, true, true, false, true),
-            new NoiseSettings(128,
-                    new NoiseSamplingSettings(2.0D, 1.0D, 80.0D, 160.0D),
-                    new NoiseSlideSettings(-3000, 64, -46),
-                    new NoiseSlideSettings(-30, 7, 1),
-                    2, 1, 0.0D, 0.0D, true, false, false, false),
-            new NoiseSettings(64,
-                    new NoiseSamplingSettings(2.0D, 1.0D, 80.0D, 160.0D),
-                    new NoiseSlideSettings(-3000, 64, -46),
-                    new NoiseSlideSettings(-30, 7, 1),
-                    2, 1, 0.0D, 0.0D, true, false, false, false),
-            new NoiseSettings(128,
-                    new NoiseSamplingSettings(2.0D, 1.0D, 80.0D, 160.0D),
-                    new NoiseSlideSettings(-3000, 64, -46),
-                    new NoiseSlideSettings(-30, 7, 1),
-                    2, 1, 0.0D, 0.0D, true, false, false, true)
+            // @todo 1.18
+//            new NoiseSettings(256,
+//                    new NoiseSamplingSettings(0.9999999814507745D, 0.9999999814507745D, 80.0D, 160.0D),
+//                    new NoiseSlideSettings(-10, 3, 0),
+//                    new NoiseSlideSettings(-30, 0, 0),
+//                    1, 2, 1.0D, -0.46875D, true, true, false, false),
+//            new NoiseSettings(128,
+//                    new NoiseSamplingSettings(0.9999999814507745D, 0.9999999814507745D, 80.0D, 160.0D),
+//                    new NoiseSlideSettings(-10, 3, 0),
+//                    new NoiseSlideSettings(-30, 0, 0),
+//                    1, 2, 1.0D, -0.46875D, true, true, false, false),
+//            new NoiseSettings(256,
+//                    new NoiseSamplingSettings(0.9999999814507745D, 0.9999999814507745D, 80.0D, 160.0D),
+//                    new NoiseSlideSettings(-10, 3, 0),
+//                    new NoiseSlideSettings(-30, 0, 0),
+//                    1, 2, 1.0D, -0.46875D, true, true, false, true),
+//            new NoiseSettings(128,
+//                    new NoiseSamplingSettings(2.0D, 1.0D, 80.0D, 160.0D),
+//                    new NoiseSlideSettings(-3000, 64, -46),
+//                    new NoiseSlideSettings(-30, 7, 1),
+//                    2, 1, 0.0D, 0.0D, true, false, false, false),
+//            new NoiseSettings(64,
+//                    new NoiseSamplingSettings(2.0D, 1.0D, 80.0D, 160.0D),
+//                    new NoiseSlideSettings(-3000, 64, -46),
+//                    new NoiseSlideSettings(-30, 7, 1),
+//                    2, 1, 0.0D, 0.0D, true, false, false, false),
+//            new NoiseSettings(128,
+//                    new NoiseSamplingSettings(2.0D, 1.0D, 80.0D, 160.0D),
+//                    new NoiseSlideSettings(-3000, 64, -46),
+//                    new NoiseSlideSettings(-30, 7, 1),
+//                    2, 1, 0.0D, 0.0D, true, false, false, true)
     };
-    private final int noiseIndex;
+    private int noiseIndex;
 
-    private final PerlinNoise oct1;
-    private final PerlinNoise oct2;
-    private final PerlinNoise oct3;
-    private final PerlinNoise oct4;
-    private final SimplexNoise simplexNoise;
+    private PerlinNoise oct1;
+    private PerlinNoise oct2;
+    private PerlinNoise oct3;
+    private PerlinNoise oct4;
+    private SimplexNoise simplexNoise;
 
-    private final int verticalNoiseGranularity;
-    private final int horizontalNoiseGranularity;
-    private final int noiseSizeX;
-    private final int noiseSizeY;
-    private final int noiseSizeZ;
+    private int verticalNoiseGranularity;
+    private int horizontalNoiseGranularity;
+    private int noiseSizeX;
+    private int noiseSizeY;
+    private int noiseSizeZ;
 
-    public NormalChunkGenerator(MinecraftServer server, DimensionSettings settings) {
-        this(server.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY), settings, SETTING_DEFAULT_OVERWORLD);
-    }
+    // @todo 1.18
+//    public NormalChunkGenerator(MinecraftServer server, DimensionSettings settings) {
+//        this(server.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY), settings, SETTING_DEFAULT_OVERWORLD);
+//    }
+//
+//    public NormalChunkGenerator(Registry<Biome> registry, DimensionSettings settings) {
+//        this(registry, settings, SETTING_DEFAULT_OVERWORLD);
+//    }
+//
+//    protected NormalChunkGenerator(MinecraftServer server, DimensionSettings settings, int idx) {
+//        this(server.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY), settings, idx);
+//    }
 
-    public NormalChunkGenerator(Registry<Biome> registry, DimensionSettings settings) {
-        this(registry, settings, SETTING_DEFAULT_OVERWORLD);
-    }
+    protected NormalChunkGenerator(Registry<Biome> registry, DimensionSettings settings) {
+//        super(registry, settings);
+        super(null, settings);
 
-    protected NormalChunkGenerator(MinecraftServer server, DimensionSettings settings, int idx) {
-        this(server.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY), settings, idx);
-    }
-
-    protected NormalChunkGenerator(RegistryAccess registryAccess, Registry<Biome> registry, DimensionSettings settings, int idx) {
-        super(registry, settings);
-
+        int idx = 0;
         if (settings.getCompiledDescriptor().getAttributeTypes().contains(AttributeType.FLATTER)) {
             idx++;
         } else if (settings.getCompiledDescriptor().getAttributeTypes().contains(AttributeType.ELEVATED)) {
@@ -216,19 +213,21 @@ public class NormalChunkGenerator extends BaseChunkGenerator {
         this.noiseSizeY = ns.height() / this.verticalNoiseGranularity;
         this.noiseSizeZ = 16 / this.horizontalNoiseGranularity;
 
-        this.oct1 = new PerlinNoise(this.randomSeed, IntStream.rangeClosed(-15, 0));
-        this.oct2 = new PerlinNoise(this.randomSeed, IntStream.rangeClosed(-15, 0));
-        this.oct4 = new PerlinNoise(this.randomSeed, IntStream.rangeClosed(-7, 0));
-
-        this.surfaceDepthNoise = ns.useSimplexSurfaceNoise() ? new PerlinSimplexNoise(this.randomSeed, IntStream.rangeClosed(-3, 0)) : new PerlinNoise(this.randomSeed, IntStream.rangeClosed(-3, 0));
-        randomSeed.consumeCount(2620);
-        this.oct3 = new PerlinNoise(this.randomSeed, IntStream.rangeClosed(-15, 0));
+        // @todo 1.18
+//        this.oct1 = new PerlinNoise(this.randomSeed, IntStream.rangeClosed(-15, 0));
+//        this.oct2 = new PerlinNoise(this.randomSeed, IntStream.rangeClosed(-15, 0));
+//        this.oct4 = new PerlinNoise(this.randomSeed, IntStream.rangeClosed(-7, 0));
+//
+//        this.surfaceDepthNoise = ns.useSimplexSurfaceNoise() ? new PerlinSimplexNoise(this.randomSeed, IntStream.rangeClosed(-3, 0)) : new PerlinNoise(this.randomSeed, IntStream.rangeClosed(-3, 0));
+//        randomSeed.consumeCount(2620);
+//        this.oct3 = new PerlinNoise(this.randomSeed, IntStream.rangeClosed(-15, 0));
 
         // @todo For end islands this might be useful
         if (ns.islandNoiseOverride()) {
-            WorldgenRandom sharedseedrandom = new WorldgenRandom(settings.getSeed());
-            sharedseedrandom.consumeCount(17292);
-            this.simplexNoise = new SimplexNoise(sharedseedrandom);
+            // @todo 1.18
+//            WorldgenRandom sharedseedrandom = new WorldgenRandom(settings.getSeed());
+//            sharedseedrandom.consumeCount(17292);
+//            this.simplexNoise = new SimplexNoise(sharedseedrandom);
         } else {
             this.simplexNoise = null;
         }
@@ -243,11 +242,11 @@ public class NormalChunkGenerator extends BaseChunkGenerator {
     @Nonnull
     @Override
     public ChunkGenerator withSeed(long l) {
-        return new NormalChunkGenerator(getBiomeRegistry(), getDimensionSettings());
+        return null;//@todo 1.18 new NormalChunkGenerator(getBiomeRegistry(), getDimensionSettings());
     }
 
     @Override
-    public void fillFromNoise(@Nonnull LevelAccessor world, @Nonnull StructureFeatureManager structureManager, ChunkAccess chunk) {
+    public CompletableFuture<ChunkAccess> fillFromNoise(Executor executor, Blender blender, StructureFeatureManager structureManager, ChunkAccess chunk) {
         ObjectList<StructurePiece> objectlist = new ObjectArrayList<>(10);
         ObjectList<JigsawJunction> objectlist1 = new ObjectArrayList<>(32);
         ChunkPos chunkpos = chunk.getPos();
@@ -304,7 +303,7 @@ public class NormalChunkGenerator extends BaseChunkGenerator {
             }
 
             for (int nz = 0; nz < this.noiseSizeZ; ++nz) {
-                LevelChunkSection chunksection = chunkprimer.getOrCreateSection(15);
+                LevelChunkSection chunksection = chunkprimer.getSection(15);    // @todo 1.18
                 chunksection.acquire();
 
                 for (int ny = this.noiseSizeY - 1; ny >= 0; --ny) {
@@ -323,7 +322,7 @@ public class NormalChunkGenerator extends BaseChunkGenerator {
                         int k2 = yy >> 4;
                         if (chunksection.bottomBlockY() >> 4 != k2) {
                             chunksection.release();
-                            chunksection = chunkprimer.getOrCreateSection(k2);
+                            chunksection = chunkprimer.getSection(k2);  // @todo 1.18
                             chunksection.acquire();
                         }
 
@@ -353,9 +352,9 @@ public class NormalChunkGenerator extends BaseChunkGenerator {
                                 for (d18 = d18 / 2.0D - d18 * d18 * d18 / 24.0D; iterator.hasNext(); d18 += getContribution(j4, k4, l4) * 0.8D) {
                                     StructurePiece structurepiece = iterator.next();
                                     BoundingBox mbox = structurepiece.getBoundingBox();
-                                    j4 = Math.max(0, Math.max(mbox.x0 - i3, i3 - mbox.x1));
-                                    k4 = yy - (mbox.y0 + (structurepiece instanceof PoolElementStructurePiece ? ((PoolElementStructurePiece) structurepiece).getGroundLevelDelta() : 0));
-                                    l4 = Math.max(0, Math.max(mbox.z0 - l3, l3 - mbox.z1));
+                                    j4 = Math.max(0, Math.max(mbox.minX() - i3, i3 - mbox.maxX()));
+                                    k4 = yy - (mbox.minY() + (structurepiece instanceof PoolElementStructurePiece ? ((PoolElementStructurePiece) structurepiece).getGroundLevelDelta() : 0));
+                                    l4 = Math.max(0, Math.max(mbox.minZ() - l3, l3 - mbox.maxZ()));
                                 }
 
                                 iterator.back(objectlist.size());
@@ -372,9 +371,10 @@ public class NormalChunkGenerator extends BaseChunkGenerator {
                                 BlockState blockstate = this.generateBaseState(d18, yy);
                                 if (blockstate != Blocks.AIR.defaultBlockState()) {
                                     mpos.set(i3, yy, l3);
-                                    if (blockstate.getLightValue(chunkprimer, mpos) != 0) {
-                                        chunkprimer.addLight(mpos);
-                                    }
+                                    // @todo 1.18
+//                                    if (blockstate.get(chunkprimer, mpos) != 0) {
+//                                        chunkprimer.addLight(mpos);
+//                                    }
 
                                     chunksection.setBlockState(xx, j2, zz, blockstate, false);
                                     heightmap.update(xx, yy, zz, blockstate);
@@ -392,19 +392,19 @@ public class NormalChunkGenerator extends BaseChunkGenerator {
             adouble[0] = adouble[1];
             adouble[1] = adouble1;
         }
+        return null;// @todo 1.18
     }
 
     @Override
-    public int getBaseHeight(int x, int z, Heightmap.Types type) {
+    public int getBaseHeight(int x, int z, Heightmap.Types type, LevelHeightAccessor level) {
         return this.iterateNoiseColumn(x, z, null, type.isOpaque());
     }
 
-    @Nonnull
     @Override
-    public BlockGetter getBaseColumn(int x, int z) {
+    public NoiseColumn getBaseColumn(int x, int z, LevelHeightAccessor level) {
         BlockState[] ablockstate = new BlockState[this.noiseSizeY * this.verticalNoiseGranularity];
         this.iterateNoiseColumn(x, z, ablockstate, null);
-        return new NoiseColumn(ablockstate);
+        return new NoiseColumn(getMinY(), ablockstate);
     }
 
     private static double computeContribution(int x, int y, int z) {
@@ -433,13 +433,13 @@ public class NormalChunkGenerator extends BaseChunkGenerator {
             float f2 = 0.0F;
             int i = 2;
             int j = this.getSeaLevel();
-            float f3 = this.biomeSource.getNoiseBiome(noiseX, j, noiseZ).getDepth();
+            float f3 = 0; // @todo 1.18 this.biomeSource.getNoiseBiome(noiseX, j, noiseZ, sampler).getDepth();
 
             for (int k = -2; k <= 2; ++k) {
                 for (int l = -2; l <= 2; ++l) {
-                    Biome biome = this.biomeSource.getNoiseBiome(noiseX + k, j, noiseZ + l);
-                    float f4 = biome.getDepth();
-                    float f5 = biome.getScale();
+                    Biome biome = this.biomeSource.getNoiseBiome(noiseX + k, j, noiseZ + l, sampler);
+                    float f4 = 0;// @todo 1.18 biome.getDepth();
+                    float f5 = 0;// @todo 1.18 biome.getScale();
                     float f6;
                     float f7;
                     if (SETTINGS[noiseIndex].isAmplified() && f4 > 0.0F) {
@@ -471,40 +471,41 @@ public class NormalChunkGenerator extends BaseChunkGenerator {
         double d13 = 684.412D * ns.noiseSamplingSettings().yScale();
         double d14 = d12 / ns.noiseSamplingSettings().xzFactor();
         double d15 = d13 / ns.noiseSamplingSettings().yFactor();
-        double d17 = ns.topSlideSettings().target();
-        double d19 = ns.topSlideSettings().size();
-        double d20 = ns.topSlideSettings().offset();
-        double d21 = ns.bottomSlideSettings().target();
-        double d2 = ns.bottomSlideSettings().size();
-        double d3 = ns.bottomSlideSettings().offset();
-        double d4 = ns.randomDensityOffset() ? this.getRandomDensity(noiseX, noiseZ) : 0.0D;
-        double d5 = ns.densityFactor();
-        double d6 = ns.densityOffset();
-
-        for (int i1 = 0; i1 <= this.noiseSizeY; ++i1) {
-            double d7 = this.sampleAndClampNoise(noiseX, i1, noiseZ, d12, d13, d14, d15);
-            double d8 = 1.0D - i1 * 2.0D / this.noiseSizeY + d4;
-            double d9 = d8 * d5 + d6;
-            double d10 = (d9 + d0) * d1;
-            if (d10 > 0.0D) {
-                d7 = d7 + d10 * 4.0D;
-            } else {
-                d7 = d7 + d10;
-            }
-
-            if (d19 > 0.0D) {
-                double d11 = ((this.noiseSizeY - i1) - d20) / d19;
-                d7 = Mth.clampedLerp(d17, d7, d11);
-            }
-
-            if (d2 > 0.0D) {
-                double d22 = (i1 - d3) / d2;
-                d7 = Mth.clampedLerp(d21, d7, d22);
-            }
-
-            noiseColumn[i1] = d7;
-        }
-
+        // @todo 1.18
+//        double d17 = ns.topSlideSettings().target();
+//        double d19 = ns.topSlideSettings().size();
+//        double d20 = ns.topSlideSettings().offset();
+//        double d21 = ns.bottomSlideSettings().target();
+//        double d2 = ns.bottomSlideSettings().size();
+//        double d3 = ns.bottomSlideSettings().offset();
+//        double d4 = ns.randomDensityOffset() ? this.getRandomDensity(noiseX, noiseZ) : 0.0D;
+//        double d5 = ns.densityFactor();
+//        double d6 = ns.densityOffset();
+//
+//        for (int i1 = 0; i1 <= this.noiseSizeY; ++i1) {
+//            double d7 = this.sampleAndClampNoise(noiseX, i1, noiseZ, d12, d13, d14, d15);
+//            double d8 = 1.0D - i1 * 2.0D / this.noiseSizeY + d4;
+//            double d9 = d8 * d5 + d6;
+//            double d10 = (d9 + d0) * d1;
+//            if (d10 > 0.0D) {
+//                d7 = d7 + d10 * 4.0D;
+//            } else {
+//                d7 = d7 + d10;
+//            }
+//
+//            if (d19 > 0.0D) {
+//                double d11 = ((this.noiseSizeY - i1) - d20) / d19;
+//                d7 = Mth.clampedLerp(d17, d7, d11);
+//            }
+//
+//            if (d2 > 0.0D) {
+//                double d22 = (i1 - d3) / d2;
+//                d7 = Mth.clampedLerp(d21, d7, d22);
+//            }
+//
+//            noiseColumn[i1] = d7;
+//        }
+//
     }
 
     private double getRandomDensity(int x, int z) {

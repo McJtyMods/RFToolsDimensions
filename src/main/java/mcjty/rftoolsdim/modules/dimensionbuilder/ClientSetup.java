@@ -7,7 +7,7 @@ import net.minecraftforge.client.event.TextureStitchEvent;
 public class ClientSetup {
 
     public static void onTextureStitch(TextureStitchEvent.Pre event) {
-        if (!event.getMap().location().equals(TextureAtlas.LOCATION_BLOCKS)) {
+        if (!event.getAtlas().location().equals(TextureAtlas.LOCATION_BLOCKS)) {
             return;
         }
         event.addSprite(DimensionBuilderRenderer.STAGES);

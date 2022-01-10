@@ -33,7 +33,7 @@ public class ClientHelpers {
     }
 
     public static void initOverrides(DimensionMonitorItem item) {
-        ItemProperties.register(item, new ResourceLocation(RFToolsDim.MODID, "power"), (stack, world, livingEntity) -> {
+        ItemProperties.register(item, new ResourceLocation(RFToolsDim.MODID, "power"), (stack, world, livingEntity, seed) -> {
             Level w = world;
             if (w == null) {
                 if (livingEntity == null) {
@@ -58,7 +58,7 @@ public class ClientHelpers {
     }
 
     public static void initOverrides(PhasedFieldGenerator item) {
-        ItemProperties.register(item, new ResourceLocation(RFToolsDim.MODID, "power"), (stack, world, livingEntity) -> {
+        ItemProperties.register(item, new ResourceLocation(RFToolsDim.MODID, "power"), (stack, world, livingEntity, seed) -> {
             long power = 0;
             if (stack.hasTag()) {
                 power = stack.getTag().getLong("Energy");

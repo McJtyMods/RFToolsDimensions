@@ -99,7 +99,7 @@ public class CompiledDescriptor {
 
     public void complete() {
         if (terrainType == null) {
-            terrainType = TerrainType.NORMAL;
+//            terrainType = TerrainType.NORMAL; // @todo 1.18
         }
         if (timeType == null) {
             timeType = TimeType.NORMAL;

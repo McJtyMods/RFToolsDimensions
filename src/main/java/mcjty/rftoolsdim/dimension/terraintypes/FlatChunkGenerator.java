@@ -3,22 +3,24 @@ package mcjty.rftoolsdim.dimension.terraintypes;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import mcjty.rftoolsdim.dimension.data.DimensionSettings;
-import mcjty.rftoolsdim.dimension.tools.OffsetBlockReader;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.RegistryLookupCodec;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.world.level.LevelHeightAccessor;
+import net.minecraft.world.level.NoiseColumn;
+import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.levelgen.blending.Blender;
 
 import javax.annotation.Nonnull;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
 
 public class FlatChunkGenerator extends BaseChunkGenerator {
 
@@ -35,7 +37,7 @@ public class FlatChunkGenerator extends BaseChunkGenerator {
     public static final int FLAT_LEVEL = 64;
 
     public FlatChunkGenerator(Registry<Biome> registry, DimensionSettings settings) {
-        super(registry, settings);
+        super(null, settings);
     }
 
     @Nonnull
@@ -51,7 +53,7 @@ public class FlatChunkGenerator extends BaseChunkGenerator {
     }
 
     @Override
-    public void fillFromNoise(@Nonnull LevelAccessor iWorld, @Nonnull StructureFeatureManager structureManager, ChunkAccess chunk) {
+    public CompletableFuture<ChunkAccess> fillFromNoise(Executor executor, Blender blender, StructureFeatureManager structureManager, ChunkAccess chunk) {
         BlockPos.MutableBlockPos mpos = new BlockPos.MutableBlockPos();
         Heightmap hmOcean = chunk.getOrCreateHeightmapUnprimed(Heightmap.Types.OCEAN_FLOOR_WG);
         Heightmap hmWorld = chunk.getOrCreateHeightmapUnprimed(Heightmap.Types.WORLD_SURFACE_WG);
@@ -77,10 +79,11 @@ public class FlatChunkGenerator extends BaseChunkGenerator {
                 }
             }
         }
+        return null; // @todo 1.18
     }
 
     @Override
-    public int getBaseHeight(int x, int z, @Nonnull Heightmap.Types type) {
+    public int getBaseHeight(int x, int z, @Nonnull Heightmap.Types type, LevelHeightAccessor level) {
         for (int i = FLAT_LEVEL; i >= 0; --i) {
             BlockState blockstate = defaultBlocks.get(0);
             if (type.isOpaque().test(blockstate)) {
@@ -92,7 +95,7 @@ public class FlatChunkGenerator extends BaseChunkGenerator {
 
     @Nonnull
     @Override
-    public BlockGetter getBaseColumn(int x, int z) {
-        return new OffsetBlockReader(defaultBlocks.get(0), FLAT_LEVEL);
+    public NoiseColumn getBaseColumn(int x, int z, LevelHeightAccessor level) {
+        return null; // @todo 1.18 new OffsetBlockReader(defaultBlocks.get(0), FLAT_LEVEL);
     }
 }

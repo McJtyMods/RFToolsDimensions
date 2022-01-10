@@ -4,6 +4,7 @@ import com.google.gson.*;
 import mcjty.rftoolsdim.RFToolsDim;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -80,7 +81,7 @@ public class DimletPackages {
             ResourceLocation id = entry.getKey().location();
             if (modid.toLowerCase().equals(id.getNamespace())) {
                 Block block = entry.getValue();
-                boolean hasTileEntity = block.hasTileEntity(block.defaultBlockState());
+                boolean hasTileEntity = block.defaultBlockState().hasBlockEntity();
                 // Skip blocks with tile entities
                 if (!hasTileEntity) {
                     boolean isOre = block.getTags().contains(Tags.Blocks.ORES.getName());

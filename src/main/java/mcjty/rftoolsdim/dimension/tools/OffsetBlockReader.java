@@ -26,6 +26,16 @@ public class OffsetBlockReader implements BlockGetter {
         return null;
     }
 
+    @Override
+    public int getHeight() {
+        return 0;   // @todo 1.18
+    }
+
+    @Override
+    public int getMinBuildHeight() {
+        return 0;   // @todo 1.18
+    }
+
     @Nonnull
     @Override
     public BlockState getBlockState(BlockPos pos) {

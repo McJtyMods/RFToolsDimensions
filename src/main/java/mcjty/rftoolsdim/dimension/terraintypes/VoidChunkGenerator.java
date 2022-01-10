@@ -3,21 +3,22 @@ package mcjty.rftoolsdim.dimension.terraintypes;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import mcjty.rftoolsdim.dimension.data.DimensionSettings;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.RegistryLookupCodec;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.WorldGenRegion;
+import net.minecraft.world.level.LevelHeightAccessor;
 import net.minecraft.world.level.NoiseColumn;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraft.server.level.WorldGenRegion;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.levelgen.blending.Blender;
 
 import javax.annotation.Nonnull;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
 
 public class VoidChunkGenerator extends BaseChunkGenerator {
 
@@ -32,7 +33,7 @@ public class VoidChunkGenerator extends BaseChunkGenerator {
     }
 
     public VoidChunkGenerator(Registry<Biome> registry, DimensionSettings settings) {
-        super(registry, settings);
+        super(null, settings);  // @todo 1.18
     }
 
     @Nonnull
@@ -48,7 +49,7 @@ public class VoidChunkGenerator extends BaseChunkGenerator {
     }
 
     @Override
-    public void buildSurfaceAndBedrock(@Nonnull WorldGenRegion worldGenRegion, @Nonnull ChunkAccess iChunk) {
+    public void buildSurface(WorldGenRegion region, StructureFeatureManager structureFeatureManager, ChunkAccess chunk) {
         // No surface
     }
 
@@ -58,18 +59,19 @@ public class VoidChunkGenerator extends BaseChunkGenerator {
     }
 
     @Override
-    public void fillFromNoise(@Nonnull LevelAccessor iWorld, @Nonnull StructureFeatureManager structureManager, @Nonnull ChunkAccess iChunk) {
-
+    public CompletableFuture<ChunkAccess> fillFromNoise(Executor executor, Blender blender, StructureFeatureManager structureFeatureManager, ChunkAccess chunk) {
+        return null;
     }
 
     @Override
-    public int getBaseHeight(int x, int z, @Nonnull Heightmap.Types type) {
+    public int getBaseHeight(int x, int z, @Nonnull Heightmap.Types type, LevelHeightAccessor level) {
         return 0;
     }
 
     @Nonnull
     @Override
-    public BlockGetter getBaseColumn(int x, int z) {
-        return new NoiseColumn(new BlockState[0]);
+    public NoiseColumn getBaseColumn(int x, int z, LevelHeightAccessor level) {
+//        return new NoiseColumn(new BlockState[0]);
+        return null;
     }
 }

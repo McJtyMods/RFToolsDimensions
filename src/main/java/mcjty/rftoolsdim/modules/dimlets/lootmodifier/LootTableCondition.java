@@ -2,11 +2,10 @@ package mcjty.rftoolsdim.modules.dimlets.lootmodifier;
 
 import com.google.gson.*;
 import mcjty.rftoolsdim.modules.dimlets.DimletModule;
-import net.minecraft.world.level.storage.loot.Serializer;
-import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
 
 import javax.annotation.Nonnull;
 import java.util.HashSet;
@@ -32,7 +31,7 @@ public class LootTableCondition implements LootItemCondition {
         return tables.contains(table);
     }
 
-    public static class Serializer implements Serializer<LootTableCondition> {
+    public static class Serializer implements net.minecraft.world.level.storage.loot.Serializer<LootTableCondition> {
 
 
         @Override
@@ -49,7 +48,6 @@ public class LootTableCondition implements LootItemCondition {
         public LootTableCondition deserialize(JsonObject object, @Nonnull JsonDeserializationContext context) {
             Set<ResourceLocation> tables = new HashSet<>();
             JsonArray tablesArray = object.getAsJsonArray("tables");
-            tables.clear();
             for (JsonElement element : tablesArray) {
                 tables.add(new ResourceLocation(element.getAsString()));
             }

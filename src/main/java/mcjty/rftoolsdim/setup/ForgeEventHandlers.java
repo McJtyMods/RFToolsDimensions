@@ -15,16 +15,17 @@ import mcjty.rftoolsdim.modules.dimlets.data.DimletDictionary;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletKey;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletSettings;
 import mcjty.rftoolsdim.modules.dimlets.network.PacketSendDimletPackages;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.GenerationStep;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.server.ServerStartedEvent;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.event.server.FMLServerStartedEvent;
 import net.minecraftforge.network.PacketDistributor;
 
 import java.util.HashMap;
@@ -60,7 +61,13 @@ public class ForgeEventHandlers {
                 CompiledDescriptor compiledDescriptor = DimensionManager.get().getCompiledDescriptor(serverWorld);
                 DimensionData data = PersistantDimensionManager.get(serverWorld).getData(serverWorld.dimension().location());
                 if (!compiledDescriptor.getAttributeTypes().contains(AttributeType.NOBLOBS)) {
-                    long count = serverWorld.getEntities().filter(s -> s instanceof DimensionalBlobEntity).count();
+                    int count = 0;
+                    for (Entity entity : serverWorld.getEntities().getAll()) {
+                        if (entity instanceof DimensionalBlobEntity) {
+                            count++;
+                        }
+                    }
+
                     if (count < 20) {
                         for (ServerPlayer player : serverWorld.players()) {
                             for (int i = 0; i < 5; i++) {
@@ -74,7 +81,7 @@ public class ForgeEventHandlers {
     }
 
     @SubscribeEvent
-    public void onWorldLoad(FMLServerStartedEvent event) {
+    public void onWorldLoad(ServerStartedEvent event) {
         RFToolsDim.setup.getLogger().info("Reading dimlet packages: ");
         DimletDictionary.get().reset();
         for (String file : DimletConfig.DIMLET_PACKAGES.get()) {

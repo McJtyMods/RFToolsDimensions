@@ -1,9 +1,9 @@
 package mcjty.rftoolsdim.dimension.features.buildings;
 
 import mcjty.rftoolsdim.dimension.features.IFeature;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -74,7 +74,7 @@ public class BuildingTemplate {
                 for (int yy = y - 1; yy > 1; yy--) {
                     mpos.set(pos.getX() + x, yy, z);
                     BlockState state = reader.getBlockState(mpos);
-                    if (state.getBlock().isAir(state, reader, mpos)) {
+                    if (state.isAir()) {
                         BlockState blockState = IFeature.select(states, reader.getRandom());
                         reader.setBlock(mpos, blockState, 0);
                     } else {
@@ -97,7 +97,7 @@ public class BuildingTemplate {
                 for (int yy = y - 1; yy > 1; yy--) {
                     mpos.set(pos.getX() + x, yy, z);
                     BlockState state = reader.getBlockState(mpos);
-                    if (!state.getBlock().isAir(state, reader, mpos)) {
+                    if (!state.isAir()) {
                         isVoid = false;
                         break;
                     }
@@ -106,7 +106,7 @@ public class BuildingTemplate {
                     for (int yy = y - 1; yy > 1; yy--) {
                         mpos.set(pos.getX() + x, yy, z);
                         BlockState state = reader.getBlockState(mpos);
-                        if (state.getBlock().isAir(state, reader, mpos)) {
+                        if (state.isAir()) {
                             BlockState blockState = IFeature.select(states, reader.getRandom());
                             reader.setBlock(mpos, blockState, 0);
                         } else {

@@ -71,55 +71,33 @@ public class DimletTools {
     }
 
     private static DimletItem getDimletItem(DimletType type) {
-        switch (type) {
-            case TERRAIN:
-                return DimletModule.TERRAIN_DIMLET.get();
-            case ATTRIBUTE:
-                return DimletModule.ATTRIBUTE_DIMLET.get();
-            case BIOME_CONTROLLER:
-                return DimletModule.BIOME_CONTROLLER_DIMLET.get();
-            case BIOME:
-                return DimletModule.BIOME_DIMLET.get();
-            case FEATURE:
-                return DimletModule.FEATURE_DIMLET.get();
-            case TIME:
-                return DimletModule.TIME_DIMLET.get();
-            case BLOCK:
-                return DimletModule.BLOCK_DIMLET.get();
-            case FLUID:
-                return DimletModule.FLUID_DIMLET.get();
-            case DIGIT:
-                return DimletModule.DIGIT_DIMLET.get();
-            case ADMIN:
-                return DimletModule.ADMIN_DIMLET.get();
-        }
-        return null;
+        return switch (type) {
+            case TERRAIN -> DimletModule.TERRAIN_DIMLET.get();
+            case ATTRIBUTE -> DimletModule.ATTRIBUTE_DIMLET.get();
+            case BIOME_CONTROLLER -> DimletModule.BIOME_CONTROLLER_DIMLET.get();
+            case BIOME -> DimletModule.BIOME_DIMLET.get();
+            case FEATURE -> DimletModule.FEATURE_DIMLET.get();
+            case TIME -> DimletModule.TIME_DIMLET.get();
+            case BLOCK -> DimletModule.BLOCK_DIMLET.get();
+            case FLUID -> DimletModule.FLUID_DIMLET.get();
+            case DIGIT -> DimletModule.DIGIT_DIMLET.get();
+            case ADMIN -> DimletModule.ADMIN_DIMLET.get();
+        };
     }
 
     private static DimletItem getEmptyDimletItem(DimletType type) {
-        switch (type) {
-            case TERRAIN:
-                return DimletModule.EMPTY_TERRAIN_DIMLET.get();
-            case ATTRIBUTE:
-                return DimletModule.EMPTY_ATTRIBUTE_DIMLET.get();
-            case BIOME_CONTROLLER:
-                return DimletModule.EMPTY_BIOME_CONTROLLER_DIMLET.get();
-            case BIOME:
-                return DimletModule.EMPTY_BIOME_DIMLET.get();
-            case FEATURE:
-                return DimletModule.EMPTY_FEATURE_DIMLET.get();
-            case TIME:
-                return DimletModule.EMPTY_TIME_DIMLET.get();
-            case BLOCK:
-                return DimletModule.EMPTY_BLOCK_DIMLET.get();
-            case FLUID:
-                return DimletModule.EMPTY_FLUID_DIMLET.get();
-            case DIGIT:
-                return null;
-            case ADMIN:
-                return null;
-        }
-        return null;
+        return switch (type) {
+            case TERRAIN -> DimletModule.EMPTY_TERRAIN_DIMLET.get();
+            case ATTRIBUTE -> DimletModule.EMPTY_ATTRIBUTE_DIMLET.get();
+            case BIOME_CONTROLLER -> DimletModule.EMPTY_BIOME_CONTROLLER_DIMLET.get();
+            case BIOME -> DimletModule.EMPTY_BIOME_DIMLET.get();
+            case FEATURE -> DimletModule.EMPTY_FEATURE_DIMLET.get();
+            case TIME -> DimletModule.EMPTY_TIME_DIMLET.get();
+            case BLOCK -> DimletModule.EMPTY_BLOCK_DIMLET.get();
+            case FLUID -> DimletModule.EMPTY_FLUID_DIMLET.get();
+            case DIGIT -> null;
+            case ADMIN -> null;
+        };
     }
 
     @Nullable
@@ -160,17 +138,12 @@ public class DimletTools {
         if (rarity == null) {
             return ItemStack.EMPTY;
         }
-        switch (rarity) {
-            case COMMON:
-                return new ItemStack(DimletModule.PART_MEMORY_0.get());
-            case UNCOMMON:
-                return new ItemStack(DimletModule.PART_MEMORY_1.get());
-            case RARE:
-                return new ItemStack(DimletModule.PART_MEMORY_2.get());
-            case LEGENDARY:
-                return new ItemStack(DimletModule.PART_MEMORY_3.get());
-        }
-        return ItemStack.EMPTY;
+        return switch (rarity) {
+            case COMMON -> new ItemStack(DimletModule.PART_MEMORY_0.get());
+            case UNCOMMON -> new ItemStack(DimletModule.PART_MEMORY_1.get());
+            case RARE -> new ItemStack(DimletModule.PART_MEMORY_2.get());
+            case LEGENDARY -> new ItemStack(DimletModule.PART_MEMORY_3.get());
+        };
     }
 
     public static ItemStack getNeededEnergyPart(DimletKey key) {
@@ -182,74 +155,47 @@ public class DimletTools {
         if (rarity == null) {
             return ItemStack.EMPTY;
         }
-        switch (rarity) {
-            case COMMON:
-                return new ItemStack(DimletModule.PART_ENERGY_0.get());
-            case UNCOMMON:
-                return new ItemStack(DimletModule.PART_ENERGY_1.get());
-            case RARE:
-                return new ItemStack(DimletModule.PART_ENERGY_2.get());
-            case LEGENDARY:
-                return new ItemStack(DimletModule.PART_ENERGY_3.get());
-        }
-        return ItemStack.EMPTY;
+        return switch (rarity) {
+            case COMMON -> new ItemStack(DimletModule.PART_ENERGY_0.get());
+            case UNCOMMON -> new ItemStack(DimletModule.PART_ENERGY_1.get());
+            case RARE -> new ItemStack(DimletModule.PART_ENERGY_2.get());
+            case LEGENDARY -> new ItemStack(DimletModule.PART_ENERGY_3.get());
+        };
     }
 
     public static ItemStack getNeededEssence(DimletKey key, @Nonnull DimletSettings settings) {
         if (!settings.getEssence().isEmpty()) {
             return settings.getEssence();
         }
-        switch (key.getType()) {
-            case TERRAIN:
-                return ItemStack.EMPTY;
-            case ATTRIBUTE:
-                return ItemStack.EMPTY;
-            case BIOME_CONTROLLER:
-                return ItemStack.EMPTY;
-            case BIOME:
-                return new ItemStack(EssencesModule.BIOME_ABSORBER_ITEM.get());
-            case FEATURE:
-                return ItemStack.EMPTY;
-            case TIME:
-                return ItemStack.EMPTY;
-            case BLOCK:
-                return new ItemStack(EssencesModule.BLOCK_ABSORBER_ITEM.get());
-            case FLUID:
-                return new ItemStack(EssencesModule.FLUID_ABSORBER_ITEM.get());
-            case DIGIT:
-                return ItemStack.EMPTY;
-            case ADMIN:
-                return ItemStack.EMPTY;
-        }
-        return ItemStack.EMPTY;
+        return switch (key.getType()) {
+            case TERRAIN -> ItemStack.EMPTY;
+            case ATTRIBUTE -> ItemStack.EMPTY;
+            case BIOME_CONTROLLER -> ItemStack.EMPTY;
+            case BIOME -> new ItemStack(EssencesModule.BIOME_ABSORBER_ITEM.get());
+            case FEATURE -> ItemStack.EMPTY;
+            case TIME -> ItemStack.EMPTY;
+            case BLOCK -> new ItemStack(EssencesModule.BLOCK_ABSORBER_ITEM.get());
+            case FLUID -> new ItemStack(EssencesModule.FLUID_ABSORBER_ITEM.get());
+            case DIGIT -> ItemStack.EMPTY;
+            case ADMIN -> ItemStack.EMPTY;
+        };
     }
 
 
     @Nullable
     public static ResourceLocation getResourceLocation(DimletKey dimletKey) {
-        switch (dimletKey.getType()) {
-            case TERRAIN:
-                return null;
-            case ATTRIBUTE:
-                return null;
-            case BIOME_CONTROLLER:
-                return null;
-            case BIOME:
-                return new ResourceLocation(dimletKey.getKey());
-            case FEATURE:
-                return null;
-            case TIME:
-                return null;
-            case BLOCK:
-                return new ResourceLocation(dimletKey.getKey());
-            case FLUID:
-                return new ResourceLocation(dimletKey.getKey());
-            case DIGIT:
-                return null;
-            case ADMIN:
-                return null;
-        }
-        return null;
+        return switch (dimletKey.getType()) {
+            case TERRAIN -> null;
+            case ATTRIBUTE -> null;
+            case BIOME_CONTROLLER -> null;
+            case BIOME -> new ResourceLocation(dimletKey.getKey());
+            case FEATURE -> null;
+            case TIME -> null;
+            case BLOCK -> new ResourceLocation(dimletKey.getKey());
+            case FLUID -> new ResourceLocation(dimletKey.getKey());
+            case DIGIT -> null;
+            case ADMIN -> null;
+        };
     }
 
     public static Component getReadable(DimletKey dimletKey) {
@@ -278,8 +224,9 @@ public class DimletTools {
                 return new TextComponent(dimletKey.getKey());
             case ADMIN:
                 return new TextComponent(dimletKey.getKey());
+            default:
+                return new TextComponent("<unknown>");
         }
-        return new TextComponent("<unknown>");
     }
 
     // Use client side!

@@ -3,7 +3,6 @@ package mcjty.rftoolsdim.modules.essences.blocks;
 import mcjty.lib.blocks.BaseBlock;
 import mcjty.lib.blocks.RotationType;
 import mcjty.lib.builder.BlockBuilder;
-import mcjty.lib.tileentity.GenericTileEntity;
 import mcjty.lib.tileentity.TickingTileEntity;
 import mcjty.lib.varia.FakePlayerGetter;
 import mcjty.lib.varia.FluidTools;
@@ -17,19 +16,21 @@ import mcjty.rftoolsdim.modules.dimlets.data.DimletSettings;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletType;
 import mcjty.rftoolsdim.modules.essences.EssencesConfig;
 import mcjty.rftoolsdim.modules.essences.EssencesModule;
-import net.minecraft.block.*;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.client.resources.language.I18n;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.tileentity.ITickableTileEntity;
-import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.core.BlockPos;
-import net.minecraftforge.common.util.Constants;
+import net.minecraft.world.level.material.Material;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nonnull;
@@ -39,12 +40,6 @@ import java.util.Random;
 import java.util.Set;
 
 import static mcjty.lib.builder.TooltipBuilder.*;
-
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.block.state.BlockState;
 
 public class FluidAbsorberTileEntity extends TickingTileEntity {
 
@@ -57,8 +52,8 @@ public class FluidAbsorberTileEntity extends TickingTileEntity {
 
     private final FakePlayerGetter harvester = new FakePlayerGetter(this, "rftools_fluid_absorber");
 
-    public FluidAbsorberTileEntity() {
-        super(EssencesModule.TYPE_FLUID_ABSORBER.get());
+    public FluidAbsorberTileEntity(BlockPos pos, BlockState state) {
+        super(EssencesModule.TYPE_FLUID_ABSORBER.get(), pos, state);
     }
 
     public static BaseBlock createBlock() {
@@ -162,7 +157,7 @@ public class FluidAbsorberTileEntity extends TickingTileEntity {
                         absorbing--;
 
                         BlockState newState = level.getBlockState(c);
-                        level.sendBlockUpdated(c, oldState, newState, Constants.BlockFlags.DEFAULT);
+                        level.sendBlockUpdated(c, oldState, newState, Block.UPDATE_ALL);
                     }
                 }
             }

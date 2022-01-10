@@ -32,6 +32,7 @@ import mcjty.rftoolsdim.modules.knowledge.data.KnowledgeManager;
 import mcjty.rftoolsdim.modules.workbench.WorkbenchModule;
 import mcjty.rftoolsdim.modules.workbench.network.PacketPatternToClient;
 import mcjty.rftoolsdim.setup.RFToolsDimMessages;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.MenuProvider;
@@ -40,6 +41,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.network.PacketDistributor;
@@ -80,20 +82,14 @@ public class WorkbenchTileEntity extends GenericTileEntity {
     @Cap(type = CapType.ITEMS_AUTOMATION)
     private final GenericItemHandler items = GenericItemHandler.create(this, CONTAINER_FACTORY)
             .itemValid((slot, stack) -> {
-                switch (slot) {
-                    case SLOT_EMPTY_DIMLET:
-                        return DimletItem.isEmptyDimlet(stack);
-                    case SLOT_MEMORY_PART:
-                        return stack.getItem() instanceof PartItem;
-                    case SLOT_ENERGY_PART:
-                        return stack.getItem() instanceof PartItem;
-                    case SLOT_ESSENCE:
-                        return true;
-                    case SLOT_OUTPUT:
-                        return DimletItem.isReadyDimlet(stack);
-                    default:
-                        return isValidPatternItem(stack);
-                }
+                return switch (slot) {
+                    case SLOT_EMPTY_DIMLET -> DimletItem.isEmptyDimlet(stack);
+                    case SLOT_MEMORY_PART -> stack.getItem() instanceof PartItem;
+                    case SLOT_ENERGY_PART -> stack.getItem() instanceof PartItem;
+                    case SLOT_ESSENCE -> true;
+                    case SLOT_OUTPUT -> DimletItem.isReadyDimlet(stack);
+                    default -> isValidPatternItem(stack);
+                };
             })
             .insertable(notslot(SLOT_OUTPUT))
             .build();
@@ -104,8 +100,8 @@ public class WorkbenchTileEntity extends GenericTileEntity {
             .itemHandler(() -> items)
             .setupSync(this));
 
-    public WorkbenchTileEntity() {
-        super(WorkbenchModule.TYPE_WORKBENCH.get());
+    public WorkbenchTileEntity(BlockPos pos, BlockState state) {
+        super(WorkbenchModule.TYPE_WORKBENCH.get(), pos, state);
     }
 
     private static boolean isValidPatternItem(ItemStack stack) {
@@ -186,7 +182,7 @@ public class WorkbenchTileEntity extends GenericTileEntity {
     private void hilightPattern(Player player, DimletKey key) {
         DimletPattern pattern = KnowledgeManager.get().getPattern(LevelTools.getOverworld(player.level).getSeed(), key);
         if (pattern != null) {
-            String[] p = pattern.getPattern();
+            String[] p = pattern.pattern();
             RFToolsDimMessages.INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player),
                     new PacketPatternToClient(p));
         }
@@ -209,7 +205,7 @@ public class WorkbenchTileEntity extends GenericTileEntity {
 
         DimletPattern pattern = KnowledgeManager.get().getPattern(LevelTools.getOverworld(level).getSeed(), key);
         if (pattern != null) {
-            String[] p = pattern.getPattern();
+            String[] p = pattern.pattern();
             int slotNumber = SLOT_PATTERN;
             for (String value : p) {
                 for (int x = 0; x < value.length(); x++) {
@@ -239,7 +235,7 @@ public class WorkbenchTileEntity extends GenericTileEntity {
             items.setStackInSlot(slotNumber, ItemStack.EMPTY);
         }
 
-        NonNullList<ItemStack> inventory = player.inventory.items;
+        NonNullList<ItemStack> inventory = player.getInventory().items;
         for (ItemStack itemStack : inventory) {
             if (desired.test(itemStack)) {
                 ItemStack copy = itemStack.copy();

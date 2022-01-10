@@ -103,7 +103,7 @@ public class PhasedFieldGenerator extends Item implements IEnergyItem, ITooltipS
     }
 
     public static boolean checkValidPhasedFieldGenerator(Player player, boolean consume, int tickCost) {
-        Inventory inventory = player.inventory;
+        Inventory inventory = player.getInventory();
         for (int i = 0 ; i < Inventory.getSelectionSize() ; i++) {
             ItemStack slot = inventory.getItem(i);
             if (!slot.isEmpty() && slot.getItem() == DimensionBuilderModule.PHASED_FIELD_GENERATOR.get()) {

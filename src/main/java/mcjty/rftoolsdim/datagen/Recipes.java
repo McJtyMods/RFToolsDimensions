@@ -39,7 +39,7 @@ public class Recipes extends BaseRecipeProvider {
     }
 
     @Override
-    protected void buildShapelessRecipes(@Nonnull Consumer<FinishedRecipe> consumer) {
+    protected void buildCraftingRecipes(@Nonnull Consumer<FinishedRecipe> consumer) {
         build(consumer, ShapedRecipeBuilder.shaped(DimletModule.EMPTY_DIMLET.get())
                         .unlockedBy("shard", has(VariousModule.DIMENSIONALSHARD.get())),
                 " p ", "psp", " p ");

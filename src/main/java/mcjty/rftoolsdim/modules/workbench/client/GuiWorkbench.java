@@ -1,8 +1,8 @@
 package mcjty.rftoolsdim.modules.workbench.client;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
 import mcjty.lib.base.StyleConfig;
 import mcjty.lib.client.RenderHelper;
 import mcjty.lib.container.GenericContainer;
@@ -23,10 +23,10 @@ import mcjty.rftoolsdim.modules.workbench.WorkbenchModule;
 import mcjty.rftoolsdim.modules.workbench.blocks.WorkbenchTileEntity;
 import mcjty.rftoolsdim.setup.RFToolsDimMessages;
 import net.minecraft.client.Minecraft;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.resources.ResourceLocation;
 
 import javax.annotation.Nonnull;
 
@@ -70,7 +70,7 @@ public class GuiWorkbench extends GenericGuiContainer<WorkbenchTileEntity, Gener
 
             @Override
             public void doubleClick(int index) {
-                if (Minecraft.getInstance().player.abilities.instabuild && hasShiftDown()) {
+                if (Minecraft.getInstance().player.getAbilities().instabuild && hasShiftDown()) {
                     cheatDimlet();
                 } else {
                     suggestParts();
@@ -88,7 +88,7 @@ public class GuiWorkbench extends GenericGuiContainer<WorkbenchTileEntity, Gener
         window = new Window(this, toplevel);
         dimletListAge = -1;
 
-        RFToolsDimMessages.INSTANCE.sendToServer(new PacketGetListFromServer(tileEntity.getBlockPos(), WorkbenchTileEntity.CMD_GETDIMLETS.getName()));
+        RFToolsDimMessages.INSTANCE.sendToServer(new PacketGetListFromServer(tileEntity.getBlockPos(), WorkbenchTileEntity.CMD_GETDIMLETS.name()));
     }
 
     private void createDimlet() {
@@ -103,8 +103,7 @@ public class GuiWorkbench extends GenericGuiContainer<WorkbenchTileEntity, Gener
         }
         Panel widget = itemList.getChild(selected);
         Object userObject = widget.getUserObject();
-        if (userObject instanceof DimletClientHelper.DimletWithInfo) {
-            DimletClientHelper.DimletWithInfo key = (DimletClientHelper.DimletWithInfo) userObject;
+        if (userObject instanceof DimletClientHelper.DimletWithInfo key) {
             if (key.isCraftable()) {
                 DimletKey dimlet = key.getDimlet();
                 sendServerCommandTyped(RFToolsDimMessages.INSTANCE, WorkbenchTileEntity.CMD_HILIGHT_PATTERN,
@@ -125,13 +124,13 @@ public class GuiWorkbench extends GenericGuiContainer<WorkbenchTileEntity, Gener
             com.mojang.blaze3d.platform.Lighting.setupFor3DItems();
             matrixStack.pushPose();
             matrixStack.translate(leftPos, topPos, 0.0F);
-            RenderSystem.color4f(1.0F, 0.0F, 0.0F, 1.0F);
-            RenderSystem.enableRescaleNormal();
+            RenderSystem.setShaderColor(1.0F, 0.0F, 0.0F, 1.0F);
+//            RenderSystem.enableRescaleNormal();   // @todo 1.18
 
             itemRenderer.blitOffset = 100.0F;
             GlStateManager._enableDepthTest();
             GlStateManager._disableBlend();
-            RenderSystem.enableLighting();
+//            RenderSystem.enableLighting();    // @todo 1.18
 
             for (int y = 0 ; y < pattern.length ; y++) {
                 String p = pattern[y];
@@ -143,14 +142,14 @@ public class GuiWorkbench extends GenericGuiContainer<WorkbenchTileEntity, Gener
                         if (!slot.hasItem()) {
                             itemRenderer.renderAndDecorateItem(stack, leftPos + slot.x, topPos + slot.y);
 
-                            RenderSystem.disableLighting();
+//                            RenderSystem.disableLighting();   // @todo 1.18
                             GlStateManager._enableBlend();
                             GlStateManager._disableDepthTest();
-                            this.minecraft.getTextureManager().bind(iconGuiElements);
+                            RenderSystem.setShaderTexture(0, iconGuiElements);
                             RenderHelper.drawTexturedModalRect(matrixStack.last().pose(), slot.x, slot.y, 14 * 16, 3 * 16, 16, 16);
                             GlStateManager._enableDepthTest();
                             GlStateManager._disableBlend();
-                            RenderSystem.enableLighting();
+//                            RenderSystem.enableLighting();    // @todo 1.18
                         }
                     }
                 }
@@ -158,7 +157,7 @@ public class GuiWorkbench extends GenericGuiContainer<WorkbenchTileEntity, Gener
             itemRenderer.blitOffset = 0.0F;
 
             matrixStack.popPose();
-            com.mojang.blaze3d.platform.Lighting.turnOff();
+//            com.mojang.blaze3d.platform.Lighting.turnOff();   // @todo 1.18
         }
     }
 

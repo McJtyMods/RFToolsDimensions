@@ -62,14 +62,14 @@ public class KnowledgeManager {
     }
 
     public static ItemStack getPatternItem(char p) {
-        switch (p) {
-            case EMPTY: return ItemStack.EMPTY;
-            case SHARD: return new ItemStack(Registration.DIMENSIONAL_SHARD);
-            case LEV0: return new ItemStack(DimletModule.COMMON_ESSENCE.get());
-            case LEV1: return new ItemStack(DimletModule.RARE_ESSENCE.get());
-            case LEV2: return new ItemStack(DimletModule.LEGENDARY_ESSENCE.get());
-        }
-        return ItemStack.EMPTY;
+        return switch (p) {
+            case EMPTY -> ItemStack.EMPTY;
+            case SHARD -> new ItemStack(Registration.DIMENSIONAL_SHARD);
+            case LEV0 -> new ItemStack(DimletModule.COMMON_ESSENCE.get());
+            case LEV1 -> new ItemStack(DimletModule.RARE_ESSENCE.get());
+            case LEV2 -> new ItemStack(DimletModule.LEGENDARY_ESSENCE.get());
+            default -> ItemStack.EMPTY;
+        };
     }
 
     public static char getPatternChar(ItemStack stack) {

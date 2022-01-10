@@ -1,6 +1,7 @@
 package mcjty.rftoolsdim.modules.workbench.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Vector3f;
 import mcjty.lib.client.CustomRenderTypes;
 import mcjty.lib.client.RenderHelper;
 import mcjty.lib.client.RenderSettings;
@@ -9,24 +10,22 @@ import mcjty.rftoolsdim.modules.workbench.WorkbenchModule;
 import mcjty.rftoolsdim.modules.workbench.blocks.ResearcherTileEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
+import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.resources.ResourceLocation;
-import com.mojang.math.Vector3f;
-import net.minecraftforge.client.ClientRegistry;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import javax.annotation.Nonnull;
 
-public class ResearcherRenderer extends BlockEntityRenderer<ResearcherTileEntity> {
+public class ResearcherRenderer implements BlockEntityRenderer<ResearcherTileEntity> {
 
     public static final ResourceLocation LIGHT = new ResourceLocation(RFToolsDim.MODID, "block/light");
 
-    public ResearcherRenderer(BlockEntityRenderDispatcher dispatcher) {
-        super(dispatcher);
+    public ResearcherRenderer(BlockEntityRendererProvider.Context context) {
     }
 
     @Override
@@ -45,7 +44,7 @@ public class ResearcherRenderer extends BlockEntityRenderer<ResearcherTileEntity
                 matrixStack.translate(1f, 2.1f, 1f);
                 float angle = ((millis / 45) % 360);
                 matrixStack.mulPose(Vector3f.YP.rotationDegrees(angle));
-                itemRenderer.renderStatic(stack, ItemTransforms.TransformType.FIXED, RenderHelper.MAX_BRIGHTNESS, combinedOverlay, matrixStack, buffer);
+                itemRenderer.renderStatic(stack, ItemTransforms.TransformType.FIXED, RenderHelper.MAX_BRIGHTNESS, combinedOverlay, matrixStack, buffer, 0);  // @todo 1.18 last parameter?
                 matrixStack.popPose();
 
                 matrixStack.translate(0, 0.5f, 0);
@@ -61,7 +60,7 @@ public class ResearcherRenderer extends BlockEntityRenderer<ResearcherTileEntity
     }
 
     public static void register() {
-        ClientRegistry.bindTileEntityRenderer(WorkbenchModule.TYPE_RESEARCHER.get(), ResearcherRenderer::new);
+        BlockEntityRenderers.register(WorkbenchModule.TYPE_RESEARCHER.get(), ResearcherRenderer::new);
     }
 
 }

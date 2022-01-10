@@ -38,8 +38,8 @@ public class DimensionalBlobEntity extends Monster {
 
     private int tickCounter = 5;
 
-    private static final TargetingConditions PREDICATE = new TargetingConditions()
-            .allowUnseeable();
+    private static final TargetingConditions PREDICATE = TargetingConditions.forCombat();
+//            .allowUnseeable();
 
     public DimensionalBlobEntity(EntityType<? extends Monster> type, Level worldIn, DimletRarity rarity) {
         super(type, worldIn);
@@ -49,31 +49,21 @@ public class DimensionalBlobEntity extends Monster {
 
     private static int getDefaultMaxHealth(DimletRarity rarity) {
         // There is no UNCOMMON mob
-        switch (rarity) {
-            case COMMON:
-                return BlobConfig.BLOB_COMMON_HEALTH.get();
-            case RARE:
-                return BlobConfig.BLOB_RARE_HEALTH.get();
-            case LEGENDARY:
-                return BlobConfig.BLOB_LEGENDARY_HEALTH.get();
-            case UNCOMMON:
-                throw new IllegalStateException("There is no uncommon blob!");
-        }
-        throw new IllegalStateException("Unknown blob type!");
+        return switch (rarity) {
+            case COMMON -> BlobConfig.BLOB_COMMON_HEALTH.get();
+            case RARE -> BlobConfig.BLOB_RARE_HEALTH.get();
+            case LEGENDARY -> BlobConfig.BLOB_LEGENDARY_HEALTH.get();
+            case UNCOMMON -> throw new IllegalStateException("There is no uncommon blob!");
+        };
     }
 
     private int getRegenLevel() {
-        switch (rarity) {
-            case COMMON:
-                return BlobConfig.BLOB_COMMON_REGEN.get();
-            case UNCOMMON:
-                throw new IllegalStateException("There is no uncommon blob!");
-            case RARE:
-                return BlobConfig.BLOB_RARE_REGEN.get();
-            case LEGENDARY:
-                return BlobConfig.BLOB_LEGENDARY_REGEN.get();
-        }
-        throw new IllegalStateException("Unknown blob type!");
+        return switch (rarity) {
+            case COMMON -> BlobConfig.BLOB_COMMON_REGEN.get();
+            case UNCOMMON -> throw new IllegalStateException("There is no uncommon blob!");
+            case RARE -> BlobConfig.BLOB_RARE_REGEN.get();
+            case LEGENDARY -> BlobConfig.BLOB_LEGENDARY_REGEN.get();
+        };
     }
 
     @Override
@@ -114,39 +104,27 @@ public class DimensionalBlobEntity extends Monster {
 
     @Override
     public float getScale() {
-        switch (rarity) {
-            case COMMON:
-            case UNCOMMON:
-                return 1.5f;
-            case RARE:
-                return 2.2f;
-            case LEGENDARY:
-                return 4.7f;
-        }
-        return 1.0f;
+        return switch (rarity) {
+            case COMMON, UNCOMMON -> 1.5f;
+            case RARE -> 2.2f;
+            case LEGENDARY -> 4.7f;
+        };
     }
 
-    @Override
-    public void setBoundingBox(@Nonnull AABB bb) {
-        super.setBoundingBox(bb);
-        calculateTargetBox(bb);
-    }
+    // @todo 1.18
+//    @Override
+//    public void setBoundingBox(@Nonnull AABB bb) {
+//        super.setBoundingBox(bb);
+//        calculateTargetBox(bb);
+//    }
 
     private void calculateTargetBox(AABB bb) {
         if (rarity != null) {
-            double radius = 1.0;
-            switch (rarity) {
-                case COMMON:
-                case UNCOMMON:
-                    radius = 5.0;
-                    break;
-                case RARE:
-                    radius = 9.0;
-                    break;
-                case LEGENDARY:
-                    radius = 15.0;
-                    break;
-            }
+            double radius = switch (rarity) {
+                case COMMON, UNCOMMON -> 5.0;
+                case RARE -> 9.0;
+                case LEGENDARY -> 15.0;
+            };
             targetBox = bb.inflate(radius);
         }
     }
