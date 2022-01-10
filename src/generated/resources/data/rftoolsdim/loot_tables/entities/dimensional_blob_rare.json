@@ -3,7 +3,8 @@
   "pools": [
     {
       "name": "dimensional_blob_rare",
-      "rolls": 1,
+      "rolls": 1.0,
+      "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",
@@ -11,14 +12,16 @@
             {
               "function": "minecraft:set_count",
               "count": {
+                "type": "minecraft:uniform",
                 "min": 3.0,
-                "max": 5.0,
-                "type": "minecraft:uniform"
-              }
+                "max": 5.0
+              },
+              "add": false
             },
             {
               "function": "minecraft:looting_enchant",
               "count": {
+                "type": "minecraft:uniform",
                 "min": 0.0,
                 "max": 1.0
               }

@@ -3,7 +3,8 @@
   "pools": [
     {
       "name": "dimension_builder",
-      "rolls": 1,
+      "rolls": 1.0,
+      "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",
@@ -35,6 +36,7 @@
             },
             {
               "function": "minecraft:set_contents",
+              "type": "rftoolsdim:dimension_builder",
               "entries": [
                 {
                   "type": "minecraft:dynamic",

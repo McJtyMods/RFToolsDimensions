@@ -3,7 +3,8 @@
   "pools": [
     {
       "name": "biome_absorber",
-      "rolls": 1,
+      "rolls": 1.0,
+      "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",
@@ -35,6 +36,7 @@
             },
             {
               "function": "minecraft:set_contents",
+              "type": "rftoolsdim:biome_absorber",
               "entries": [
                 {
                   "type": "minecraft:dynamic",

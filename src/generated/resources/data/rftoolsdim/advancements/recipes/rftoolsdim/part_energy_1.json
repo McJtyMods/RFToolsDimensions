@@ -11,7 +11,9 @@
       "conditions": {
         "items": [
           {
-            "item": "rftoolsdim:part_energy_0"
+            "items": [
+              "rftoolsdim:part_energy_0"
+            ]
           }
         ]
       }

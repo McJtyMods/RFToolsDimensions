@@ -4,10 +4,11 @@
     {
       "name": "chests/hut_loot",
       "rolls": {
+        "type": "minecraft:uniform",
         "min": 1.0,
-        "max": 5.0,
-        "type": "minecraft:uniform"
+        "max": 5.0
       },
+      "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "rftoolsdim:dimlet_loot",
@@ -16,10 +17,11 @@
             {
               "function": "minecraft:set_count",
               "count": {
+                "type": "minecraft:uniform",
                 "min": 0.0,
-                "max": 2.0,
-                "type": "minecraft:uniform"
-              }
+                "max": 2.0
+              },
+              "add": false
             }
           ],
           "rarity": "COMMON"
@@ -31,10 +33,11 @@
             {
               "function": "minecraft:set_count",
               "count": {
+                "type": "minecraft:uniform",
                 "min": 0.0,
-                "max": 2.0,
-                "type": "minecraft:uniform"
-              }
+                "max": 2.0
+              },
+              "add": false
             }
           ],
           "rarity": "UNCOMMON"
@@ -46,10 +49,11 @@
             {
               "function": "minecraft:set_count",
               "count": {
+                "type": "minecraft:uniform",
                 "min": 0.0,
-                "max": 1.0,
-                "type": "minecraft:uniform"
-              }
+                "max": 1.0
+              },
+              "add": false
             }
           ],
           "rarity": "RARE"
@@ -60,10 +64,11 @@
             {
               "function": "minecraft:set_count",
               "count": {
+                "type": "minecraft:uniform",
                 "min": 0.0,
-                "max": 1.0,
-                "type": "minecraft:uniform"
-              }
+                "max": 1.0
+              },
+              "add": false
             }
           ],
           "rarity": "LEGENDARY"
@@ -75,10 +80,11 @@
             {
               "function": "minecraft:set_count",
               "count": {
+                "type": "minecraft:uniform",
                 "min": 0.0,
-                "max": 3.0,
-                "type": "minecraft:uniform"
-              }
+                "max": 3.0
+              },
+              "add": false
             }
           ],
           "name": "rftoolsdim:common_lost_knowledge"
@@ -90,10 +96,11 @@
             {
               "function": "minecraft:set_count",
               "count": {
+                "type": "minecraft:uniform",
                 "min": 0.0,
-                "max": 3.0,
-                "type": "minecraft:uniform"
-              }
+                "max": 3.0
+              },
+              "add": false
             }
           ],
           "name": "rftoolsdim:uncommon_lost_knowledge"
@@ -105,10 +112,11 @@
             {
               "function": "minecraft:set_count",
               "count": {
+                "type": "minecraft:uniform",
                 "min": 0.0,
-                "max": 2.0,
-                "type": "minecraft:uniform"
-              }
+                "max": 2.0
+              },
+              "add": false
             }
           ],
           "name": "rftoolsdim:rare_lost_knowledge"
@@ -119,10 +127,11 @@
             {
               "function": "minecraft:set_count",
               "count": {
+                "type": "minecraft:uniform",
                 "min": 0.0,
-                "max": 1.0,
-                "type": "minecraft:uniform"
-              }
+                "max": 1.0
+              },
+              "add": false
             }
           ],
           "name": "rftoolsdim:legendary_lost_knowledge"
