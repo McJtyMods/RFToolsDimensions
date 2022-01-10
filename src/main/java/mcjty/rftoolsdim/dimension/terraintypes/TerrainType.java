@@ -1,24 +1,19 @@
 package mcjty.rftoolsdim.dimension.terraintypes;
 
-import mcjty.rftoolsdim.dimension.data.DimensionSettings;
 import mcjty.rftoolsdim.modules.knowledge.data.KnowledgeSet;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.world.level.chunk.ChunkGenerator;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.BiFunction;
 
 public enum TerrainType {
-    FLAT("flat", KnowledgeSet.SET1, FlatChunkGenerator::new),
-    WAVES("waves", KnowledgeSet.SET1, WavesChunkGenerator::new),
-    VOID("void", KnowledgeSet.SET2, VoidChunkGenerator::new),
-//    NORMAL("normal", KnowledgeSet.SET3, NormalChunkGenerator::new),   // @todo 1.18
-//    ISLANDS("islands", KnowledgeSet.SET4, IslandsChunkGenerator::new);//@todo 1.18
-;
+    FLAT("flat", KnowledgeSet.SET1),
+    WAVES("waves", KnowledgeSet.SET1),
+    VOID("void", KnowledgeSet.SET2),
+    NORMAL("normal", KnowledgeSet.SET3),
+    ISLANDS("islands", KnowledgeSet.SET4);
+
     private final String name;
     private final KnowledgeSet set;
-    private final BiFunction<MinecraftServer, DimensionSettings, ChunkGenerator> generatorSupplier;
 
     private static final Map<String, TerrainType> TERRAIN_BY_NAME = new HashMap<>();
 
@@ -28,10 +23,9 @@ public enum TerrainType {
         }
     }
 
-    TerrainType(String name, KnowledgeSet set, BiFunction<MinecraftServer, DimensionSettings, ChunkGenerator> generatorSupplier) {
+    TerrainType(String name, KnowledgeSet set) {
         this.name = name;
         this.set = set;
-        this.generatorSupplier = generatorSupplier;
     }
 
     public String getName() {
@@ -40,10 +34,6 @@ public enum TerrainType {
 
     public KnowledgeSet getSet() {
         return set;
-    }
-
-    public BiFunction<MinecraftServer, DimensionSettings, ChunkGenerator> getGeneratorSupplier() {
-        return generatorSupplier;
     }
 
     public static TerrainType byName(String name) {
