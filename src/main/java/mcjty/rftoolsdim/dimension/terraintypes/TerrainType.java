@@ -10,7 +10,9 @@ public enum TerrainType {
     WAVES("waves", KnowledgeSet.SET1),
     VOID("void", KnowledgeSet.SET2),
     NORMAL("normal", KnowledgeSet.SET3),
-    ISLANDS("islands", KnowledgeSet.SET4);
+    ISLANDS("islands", KnowledgeSet.SET4),
+    CAVERN("cavern", KnowledgeSet.SET5)
+    ;
 
     private final String name;
     private final KnowledgeSet set;

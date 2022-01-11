@@ -9,6 +9,7 @@ import mcjty.rftoolsdim.dimension.DimensionRegistry;
 import mcjty.rftoolsdim.dimension.biomes.RFTBiomeProvider;
 import mcjty.rftoolsdim.dimension.features.RFTFeature;
 import mcjty.rftoolsdim.dimension.terraintypes.RFToolsChunkGenerator;
+import mcjty.rftoolsdim.dimension.noisesettings.TerrainPresets;
 import mcjty.rftoolsdim.modules.dimlets.DimletModule;
 import net.minecraft.core.Registry;
 import net.minecraft.world.item.ItemStack;
@@ -35,6 +36,7 @@ public class ModSetup extends DefaultModSetup {
 
         e.enqueueWork(() -> {
             RFTFeature.registerConfiguredFeatures();
+            TerrainPresets.init();
         });
         MinecraftForge.EVENT_BUS.register(new ForgeEventHandlers());
 
