@@ -24,7 +24,7 @@
                 },
                 {
                   "source": "Items",
-                  "target": "BlockEntityTag.Items",
+                  "target": "BlockEntityTag.McItems",
                   "op": "replace"
                 },
                 {
