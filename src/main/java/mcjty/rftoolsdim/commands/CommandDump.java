@@ -11,15 +11,15 @@ import mcjty.rftoolsdim.dimension.data.DimensionData;
 import mcjty.rftoolsdim.dimension.data.DimensionSettings;
 import mcjty.rftoolsdim.dimension.data.PersistantDimensionManager;
 import mcjty.rftoolsdim.dimension.descriptor.DimensionDescriptor;
-import mcjty.rftoolsdim.dimension.terraintypes.BaseChunkGenerator;
+import mcjty.rftoolsdim.dimension.terraintypes.RFToolsChunkGenerator;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletKey;
+import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.network.chat.TextComponent;
-import net.minecraft.ChatFormatting;
-import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 
 public class CommandDump implements Command<CommandSourceStack> {
 
@@ -46,8 +46,8 @@ public class CommandDump implements Command<CommandSourceStack> {
         feedback(context, ChatFormatting.BLUE + "Energy: " + ChatFormatting.WHITE + data.getEnergy());
 
         ChunkGenerator generator = world.getChunkSource().getGenerator();
-        if (generator instanceof BaseChunkGenerator) {
-            DimensionSettings settings = ((BaseChunkGenerator) generator).getDimensionSettings();
+        if (generator instanceof RFToolsChunkGenerator) {
+            DimensionSettings settings = ((RFToolsChunkGenerator) generator).getDimensionSettings();
             feedback(context, ChatFormatting.BLUE + "Seed: " + ChatFormatting.WHITE + settings.getSeed());
         }
 

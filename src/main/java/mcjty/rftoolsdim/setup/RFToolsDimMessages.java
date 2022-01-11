@@ -4,6 +4,7 @@ import mcjty.lib.network.PacketHandler;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.dimension.network.PackagePropageDataToClients;
 import mcjty.rftoolsdim.dimension.network.PacketDimensionUpdate;
+import mcjty.rftoolsdim.dimension.tools.PacketSyncDimensionListChanges;
 import mcjty.rftoolsdim.modules.dimlets.network.PacketSendDimletPackages;
 import mcjty.rftoolsdim.modules.workbench.network.PacketPatternToClient;
 import net.minecraft.resources.ResourceLocation;
@@ -32,6 +33,7 @@ public class RFToolsDimMessages {
         net.registerMessage(id(), PacketSendDimletPackages.class, PacketSendDimletPackages::toBytes, PacketSendDimletPackages::new, PacketSendDimletPackages::handle);
         net.registerMessage(id(), PacketPatternToClient.class, PacketPatternToClient::toBytes, PacketPatternToClient::new, PacketPatternToClient::handle);
         net.registerMessage(id(), PackagePropageDataToClients.class, PackagePropageDataToClients::toBytes, PackagePropageDataToClients::new, PackagePropageDataToClients::handle);
+        net.registerMessage(id(), PacketSyncDimensionListChanges.class, PacketSyncDimensionListChanges::toBytes, PacketSyncDimensionListChanges::new, PacketSyncDimensionListChanges::handle);
 
         PacketHandler.registerStandardMessages(id(), net);
     }

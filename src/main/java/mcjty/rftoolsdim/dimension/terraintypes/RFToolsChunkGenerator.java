@@ -2,6 +2,7 @@ package mcjty.rftoolsdim.dimension.terraintypes;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import mcjty.rftoolsdim.dimension.data.DimensionSettings;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.RegistryLookupCodec;
 import net.minecraft.world.level.biome.BiomeSource;
@@ -19,16 +20,23 @@ public class RFToolsChunkGenerator extends NoiseBasedChunkGenerator {
                     Registry.NOISE_REGISTRY).forGetter((ins) -> ins.noises),
                     BiomeSource.CODEC.fieldOf("biome_source").forGetter((ins) -> ins.biomeSource),
                     Codec.LONG.fieldOf("seed").stable().forGetter((ins) -> ins.seed),
-                    NoiseGeneratorSettings.CODEC.fieldOf("settings").forGetter((ins) -> ins.settings))
+                    NoiseGeneratorSettings.CODEC.fieldOf("settings").forGetter((ins) -> ins.settings),
+                    DimensionSettings.SETTINGS_CODEC.fieldOf("settings").forGetter(RFToolsChunkGenerator::getDimensionSettings))
             .apply(instance, instance.stable(RFToolsChunkGenerator::new)));
 
     // Mirror because the one in NoiseBasedChunkGenerator is private
     private final Registry<NormalNoise.NoiseParameters> noises;
+    protected final DimensionSettings dimensionSettings;
 
     public RFToolsChunkGenerator(Registry<NormalNoise.NoiseParameters> noiseRegistry, BiomeSource biomeSource, long seed,
-                                 Supplier<NoiseGeneratorSettings> settingsSupplier) {
+                                 Supplier<NoiseGeneratorSettings> settingsSupplier, DimensionSettings dimensionSettings) {
         super(noiseRegistry, biomeSource, seed, settingsSupplier);
         this.noises = noiseRegistry;
+        this.dimensionSettings = dimensionSettings;
+    }
+
+    public DimensionSettings getDimensionSettings() {
+        return dimensionSettings;
     }
 
     @Override

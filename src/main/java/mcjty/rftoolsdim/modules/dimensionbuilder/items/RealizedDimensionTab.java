@@ -11,7 +11,7 @@ import mcjty.rftoolsdim.dimension.descriptor.CompiledDescriptor;
 import mcjty.rftoolsdim.dimension.descriptor.CompiledFeature;
 import mcjty.rftoolsdim.dimension.descriptor.DescriptorError;
 import mcjty.rftoolsdim.dimension.descriptor.DimensionDescriptor;
-import mcjty.rftoolsdim.dimension.terraintypes.BaseChunkGenerator;
+import mcjty.rftoolsdim.dimension.terraintypes.RFToolsChunkGenerator;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -61,8 +61,8 @@ public class RealizedDimensionTab extends Item {
                 ResourceKey<Level> id = LevelTools.getId(dimension);
                 ServerLevel serverWorld = ServerLifecycleHooks.getCurrentServer().getLevel(id);
                 ChunkGenerator generator = serverWorld.getChunkSource().getGenerator();
-                if (generator instanceof BaseChunkGenerator) {
-                    DimensionSettings settings = ((BaseChunkGenerator) generator).getDimensionSettings();
+                if (generator instanceof RFToolsChunkGenerator) {
+                    DimensionSettings settings = ((RFToolsChunkGenerator) generator).getDimensionSettings();
                     player.displayClientMessage(new TextComponent(ChatFormatting.BLUE + "Seed: " + ChatFormatting.WHITE + settings.getSeed()), false);
                 }
             }

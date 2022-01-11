@@ -9,7 +9,7 @@ import mcjty.rftoolsdim.dimension.descriptor.CompiledFeature;
 import mcjty.rftoolsdim.dimension.features.buildings.BuildingTemplate;
 import mcjty.rftoolsdim.dimension.features.buildings.DimletHut;
 import mcjty.rftoolsdim.dimension.features.buildings.SpawnPlatform;
-import mcjty.rftoolsdim.dimension.terraintypes.BaseChunkGenerator;
+import mcjty.rftoolsdim.dimension.terraintypes.RFToolsChunkGenerator;
 import mcjty.rftoolsdim.setup.Registration;
 import net.minecraft.core.BlockPos;
 import net.minecraft.data.BuiltinRegistries;
@@ -61,8 +61,8 @@ public class RFTFeature extends Feature<NoneFeatureConfiguration> {
         BlockPos pos = context.origin();
         Random rand = context.random();
         WorldGenLevel reader = context.level();
-        if (generator instanceof BaseChunkGenerator) {
-            CompiledDescriptor compiledDescriptor = ((BaseChunkGenerator) generator).getDimensionSettings().getCompiledDescriptor();
+        if (generator instanceof RFToolsChunkGenerator) {
+            CompiledDescriptor compiledDescriptor = ((RFToolsChunkGenerator) generator).getDimensionSettings().getCompiledDescriptor();
             Set<CompiledFeature> features = compiledDescriptor.getFeatures();
             if (features.stream().anyMatch(f -> f.getFeatureType().equals(FeatureType.NONE))) {
                 // Inhibit all other features

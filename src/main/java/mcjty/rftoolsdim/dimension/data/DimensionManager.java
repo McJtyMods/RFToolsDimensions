@@ -8,10 +8,9 @@ import mcjty.rftoolsdim.dimension.TimeType;
 import mcjty.rftoolsdim.dimension.descriptor.CompiledDescriptor;
 import mcjty.rftoolsdim.dimension.descriptor.DescriptorError;
 import mcjty.rftoolsdim.dimension.descriptor.DimensionDescriptor;
-import mcjty.rftoolsdim.dimension.terraintypes.BaseChunkGenerator;
 import mcjty.rftoolsdim.dimension.terraintypes.RFToolsChunkGenerator;
 import mcjty.rftoolsdim.dimension.terraintypes.TerrainType;
-import mcjty.rftoolsdim.dimension.tools.DimensionHelper;
+import mcjty.rftoolsdim.dimension.tools.DynamicDimensionManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
@@ -89,8 +88,8 @@ public class DimensionManager {
                 return null;
             }
             ChunkGenerator generator = world.getChunkSource().getGenerator();
-            if (generator instanceof BaseChunkGenerator) {
-                CompiledDescriptor compiledDescriptor = ((BaseChunkGenerator) generator).getDimensionSettings().getCompiledDescriptor();
+            if (generator instanceof RFToolsChunkGenerator) {
+                CompiledDescriptor compiledDescriptor = ((RFToolsChunkGenerator) generator).getDimensionSettings().getCompiledDescriptor();
                 compiledDescriptorMap.put(id, compiledDescriptor);
             } else {
                 RFToolsDim.setup.getLogger().error(id.toString() + " is not a dimension managed by us!");
@@ -181,14 +180,14 @@ public class DimensionManager {
         ResourceKey<Level> key = LevelTools.getId(id);
         RegistryAccess registryAccess = world.getServer().registryAccess();
         DimensionType type = registryAccess.registryOrThrow(Registry.DIMENSION_TYPE_REGISTRY).get(timeType.getDimensionType());
-        ServerLevel result = DimensionHelper.getOrCreateWorld(world.getServer(), key,
+        ServerLevel result = DynamicDimensionManager.getOrCreateLevel(world.getServer(), key,
                 (server, registryKey) -> {
 //                    ChunkGenerator generator = terrainType.getGeneratorSupplier().apply(server, settings);
                     // @todo 1.18
                     NoiseGeneratorSettings noiseSettings = registryAccess.registryOrThrow(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY).getOrThrow(NoiseGeneratorSettings.OVERWORLD);
                     ChunkGenerator generator = new RFToolsChunkGenerator(registryAccess.registryOrThrow(Registry.NOISE_REGISTRY),
                             MultiNoiseBiomeSource.Preset.OVERWORLD.biomeSource(registryAccess.registryOrThrow(Registry.BIOME_REGISTRY)), seed,
-                            () -> noiseSettings);
+                            () -> noiseSettings, settings);
                     return new LevelStem(() -> type, generator);
                 });
 
