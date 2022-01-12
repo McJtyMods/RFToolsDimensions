@@ -9,9 +9,11 @@ import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
 
 public class TerrainPresets {
 
+    public static final ResourceKey<NoiseGeneratorSettings> RFTOOLSDIM_CHAOTIC = ResourceKey.create(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY, new ResourceLocation("rftoolsdim_chaotic"));
     public static final ResourceKey<NoiseGeneratorSettings> RFTOOLSDIM_ISLANDS = ResourceKey.create(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY, new ResourceLocation("rftoolsdim_islands"));
 
     public static void init() {
+        NoiseGeneratorSettings.register(RFTOOLSDIM_CHAOTIC, chaotic());
         NoiseGeneratorSettings.register(RFTOOLSDIM_ISLANDS, test());
     }
 
@@ -149,13 +151,13 @@ public class TerrainPresets {
                                 .xzFactor(30.0d)
                                 .yFactor(40.0d))
                         .topSlider(NoiseSliderBuilder.create()
-                                .top(-10.4375D)
+                                .top(-5.4375D)
                                 .size(20)
                                 .offset(-80))
                         .bottomSlider(NoiseSliderBuilder.create()
                                 .top(-0.234375D)
                                 .size(7)
-                                .offset(40))
+                                .offset(5))
                         .noiseSizeHorizontal(2)
                         .noiseSizeVertical(1)
                         .islandNoiseOverride(false)

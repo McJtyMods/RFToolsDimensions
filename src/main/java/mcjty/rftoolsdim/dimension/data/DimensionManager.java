@@ -8,7 +8,6 @@ import mcjty.rftoolsdim.dimension.TimeType;
 import mcjty.rftoolsdim.dimension.descriptor.CompiledDescriptor;
 import mcjty.rftoolsdim.dimension.descriptor.DescriptorError;
 import mcjty.rftoolsdim.dimension.descriptor.DimensionDescriptor;
-import mcjty.rftoolsdim.dimension.noisesettings.TerrainPresets;
 import mcjty.rftoolsdim.dimension.terraintypes.RFToolsChunkGenerator;
 import mcjty.rftoolsdim.dimension.terraintypes.TerrainType;
 import mcjty.rftoolsdim.dimension.tools.DynamicDimensionManager;
@@ -183,15 +182,8 @@ public class DimensionManager {
         DimensionType type = registryAccess.registryOrThrow(Registry.DIMENSION_TYPE_REGISTRY).get(timeType.getDimensionType());
         ServerLevel result = DynamicDimensionManager.getOrCreateLevel(world.getServer(), key,
                 (server, registryKey) -> {
-                    final Registry<NoiseGeneratorSettings> noiseGeneratorSettings = registryAccess.registryOrThrow(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY);
-                    NoiseGeneratorSettings noiseSettings = switch (terrainType) {
-                        case FLAT -> noiseGeneratorSettings.getOrThrow(NoiseGeneratorSettings.OVERWORLD);
-                        case WAVES -> noiseGeneratorSettings.getOrThrow(NoiseGeneratorSettings.OVERWORLD);
-                        case VOID -> noiseGeneratorSettings.getOrThrow(NoiseGeneratorSettings.OVERWORLD);
-                        case NORMAL -> noiseGeneratorSettings.getOrThrow(NoiseGeneratorSettings.OVERWORLD);
-                        case ISLANDS -> noiseGeneratorSettings.getOrThrow(TerrainPresets.RFTOOLSDIM_ISLANDS);
-                        case CAVERN -> noiseGeneratorSettings.getOrThrow(NoiseGeneratorSettings.NETHER);
-                    };
+                    var noiseGeneratorSettings = registryAccess.registryOrThrow(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY);
+                    var noiseSettings = noiseGeneratorSettings.getOrThrow(terrainType.getNoiseSettings());
                     ChunkGenerator generator = new RFToolsChunkGenerator(registryAccess.registryOrThrow(Registry.NOISE_REGISTRY),
                             MultiNoiseBiomeSource.Preset.OVERWORLD.biomeSource(registryAccess.registryOrThrow(Registry.BIOME_REGISTRY)), seed,
                             () -> noiseSettings, settings);

@@ -21,7 +21,7 @@ public class RFToolsChunkGenerator extends NoiseBasedChunkGenerator {
                     BiomeSource.CODEC.fieldOf("biome_source").forGetter((ins) -> ins.biomeSource),
                     Codec.LONG.fieldOf("seed").stable().forGetter((ins) -> ins.seed),
                     NoiseGeneratorSettings.CODEC.fieldOf("settings").forGetter((ins) -> ins.settings),
-                    DimensionSettings.SETTINGS_CODEC.fieldOf("settings").forGetter(RFToolsChunkGenerator::getDimensionSettings))
+                    DimensionSettings.SETTINGS_CODEC.fieldOf("dimsettings").forGetter(RFToolsChunkGenerator::getDimensionSettings))
             .apply(instance, instance.stable(RFToolsChunkGenerator::new)));
 
     // Mirror because the one in NoiseBasedChunkGenerator is private
