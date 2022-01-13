@@ -26,11 +26,11 @@ public class CommonTags {
             commonTags.add(BlockTags.CROPS.getName());
             commonTags.add(BlockTags.PLANKS.getName());
             commonTags.add(BlockTags.STAIRS.getName());
+            commonTags.add(BlockTags.DIRT.getName());
             commonTags.add(Tags.Blocks.GLASS.getName());
             commonTags.add(Tags.Blocks.GLASS_PANES.getName());
             commonTags.add(Tags.Blocks.CHESTS.getName());
             commonTags.add(Tags.Blocks.COBBLESTONE.getName());
-            commonTags.add(Tags.Blocks.DIRT.getName());
             commonTags.add(Tags.Blocks.NETHERRACK.getName());
             commonTags.add(Tags.Blocks.OBSIDIAN.getName());
             commonTags.add(Tags.Blocks.GRAVEL.getName());
