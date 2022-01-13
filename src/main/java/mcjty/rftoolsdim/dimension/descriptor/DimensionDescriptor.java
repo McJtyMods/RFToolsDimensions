@@ -1,12 +1,13 @@
 package mcjty.rftoolsdim.dimension.descriptor;
 
 import com.google.gson.*;
+import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletDictionary;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletKey;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletType;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.world.entity.player.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -109,10 +110,19 @@ public class DimensionDescriptor {
         for (DimletKey dimlet : dimlets) {
             player.displayClientMessage(
                     new TextComponent(dimlet.getType().name() + ": ")
-                    .withStyle(ChatFormatting.AQUA)
-                    .append(new TextComponent(dimlet.getKey()).withStyle(ChatFormatting.WHITE))
+                            .withStyle(ChatFormatting.AQUA)
+                            .append(new TextComponent(dimlet.getKey()).withStyle(ChatFormatting.WHITE))
                     , false);
         }
+    }
+
+    public void log(String header) {
+        header = "--------------------------------------------------\n" + header;
+        for (DimletKey dimlet : dimlets) {
+            header += "\n    " + dimlet.getType().name() + ": " + dimlet.getKey();
+        }
+        header += "\n--------------------------------------------------";
+        RFToolsDim.setup.getLogger().info(header);
     }
 
     /// Create a randomized descriptor based on this one (i.e. completing the things that are missing randomly)

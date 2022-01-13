@@ -164,6 +164,8 @@ public class DimensionManager {
             throw new RuntimeException("There is already a dimension with this descriptor: " + name);
         }
 
+        randomizedDescriptor.log("Attempting to create dimension:");
+
         CompiledDescriptor compiledDescriptor = new CompiledDescriptor();
         DescriptorError error = compiledDescriptor.compile(descriptor, randomizedDescriptor);
         if (!error.isOk()) {
@@ -171,10 +173,10 @@ public class DimensionManager {
             throw new RuntimeException("Error compiling dimension descriptor: " + error.getMessage());
         }
         compiledDescriptor.complete();
+        compiledDescriptor.log("Compiled Descriptor:");
         TerrainType terrainType = compiledDescriptor.getTerrainType();
 
         DimensionSettings settings = new DimensionSettings(seed, descriptor.compact(), randomizedDescriptor.compact());
-
         TimeType timeType = compiledDescriptor.getTimeType();
 
         ResourceKey<Level> key = LevelTools.getId(id);

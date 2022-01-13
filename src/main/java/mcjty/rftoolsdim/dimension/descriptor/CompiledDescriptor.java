@@ -1,5 +1,6 @@
 package mcjty.rftoolsdim.dimension.descriptor;
 
+import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.dimension.DimensionConfig;
 import mcjty.rftoolsdim.dimension.AdminDimletType;
 import mcjty.rftoolsdim.dimension.TimeType;
@@ -234,6 +235,38 @@ public class CompiledDescriptor {
             }
         }
         return null;
+    }
+
+    public void log(String header) {
+        header = "--------------------------------------------------\n" + header;
+        header += "\n    TERRAIN: " + terrainType.getName();
+        header += "\n    TIME: " + timeType.getName();
+        header += "\n    LIQUID: " + baseLiquid.getBlock().getRegistryName().toString();
+        for (BlockState block : baseBlocks) {
+            header += "\n    BLOCK: " + block.getBlock().getRegistryName().toString();
+        }
+        for (AdminDimletType type : adminDimletTypes) {
+            header += "\n    ADMIN: " + type.getName();
+        }
+        for (AttributeType type : attributeTypes) {
+            header += "\n    ATTR: " + type.getName();
+        }
+        header += "\n    BIOME CTRL: " + biomeControllerType.getName();
+        for (ResourceLocation biome : biomes) {
+            header += "\n        BIOME: " + biome.toString();
+        }
+        for (CompiledFeature feature : features) {
+            header += "\n    FEATURE: " + feature.getFeatureType().getName();
+            for (BlockState block : feature.getBlocks()) {
+                header += "\n        BLOCK: " + block.getBlock().getRegistryName().toString();
+            }
+            for (BlockState fluid : feature.getFluids()) {
+                header += "\n        LIQUID: " + fluid.getBlock().getRegistryName().toString();
+            }
+        }
+
+        header += "\n--------------------------------------------------";
+        RFToolsDim.setup.getLogger().info(header);
     }
 
     public TimeType getTimeType() {
