@@ -5,7 +5,10 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import mcjty.rftoolsdim.dimension.data.DimensionSettings;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.RegistryLookupCodec;
+import net.minecraft.server.level.WorldGenRegion;
+import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.biome.BiomeSource;
+import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator;
 import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
@@ -33,6 +36,14 @@ public class RFToolsChunkGenerator extends NoiseBasedChunkGenerator {
         super(noiseRegistry, biomeSource, seed, settingsSupplier);
         this.noises = noiseRegistry;
         this.dimensionSettings = dimensionSettings;
+    }
+
+    @Override
+    public void buildSurface(WorldGenRegion level, StructureFeatureManager structureFeatureManager, ChunkAccess chunkAccess) {
+        TerrainType terrainType = dimensionSettings.getCompiledDescriptor().getTerrainType();
+        if (terrainType != TerrainType.VOID) {
+            super.buildSurface(level, structureFeatureManager, chunkAccess);
+        }
     }
 
     public DimensionSettings getDimensionSettings() {
