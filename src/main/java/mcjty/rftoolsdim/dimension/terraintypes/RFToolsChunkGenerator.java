@@ -6,6 +6,7 @@ import mcjty.rftoolsdim.dimension.data.DimensionSettings;
 import mcjty.rftoolsdim.dimension.noisesettings.NoiseGeneratorSettingsBuilder;
 import mcjty.rftoolsdim.dimension.noisesettings.NoiseSamplingSettingsBuilder;
 import mcjty.rftoolsdim.dimension.noisesettings.NoiseSettingsBuilder;
+import mcjty.rftoolsdim.dimension.noisesettings.NoiseSliderBuilder;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.RegistryLookupCodec;
 import net.minecraft.server.level.WorldGenRegion;
@@ -44,13 +45,29 @@ public class RFToolsChunkGenerator extends NoiseBasedChunkGenerator {
     }
 
     // Refresh after changing settings
-    public void refresh(Consumer<NoiseSamplingSettingsBuilder> samplingSettingsBuilderConsumer) {
+    public void changeSettings(Consumer<NoiseSettingsBuilder> noiseBuilderConsumer,
+                               Consumer<NoiseSamplingSettingsBuilder> samplingSettingsBuilderConsumer,
+                               Consumer<NoiseSliderBuilder> topSliderBuilderConsumer,
+                               Consumer<NoiseSliderBuilder> bottomSliderBuilderConsumer) {
         NoiseGeneratorSettings settings = this.settings.get();
+
         NoiseSamplingSettingsBuilder samplingSettingsBuilder = NoiseSamplingSettingsBuilder.create(settings.noiseSettings().noiseSamplingSettings());
         samplingSettingsBuilderConsumer.accept(samplingSettingsBuilder);
+
+        NoiseSliderBuilder topSliderBuilder = NoiseSliderBuilder.create(settings.noiseSettings().topSlideSettings());
+        topSliderBuilderConsumer.accept(topSliderBuilder);
+
+        NoiseSliderBuilder bottomSliderBuilder = NoiseSliderBuilder.create(settings.noiseSettings().bottomSlideSettings());
+        bottomSliderBuilderConsumer.accept(bottomSliderBuilder);
+
+        NoiseSettingsBuilder noiseSettingsBuilder = NoiseSettingsBuilder.create(settings.noiseSettings())
+                .samplingSettings(samplingSettingsBuilder)
+                .topSlider(topSliderBuilder)
+                .bottomSlider(bottomSliderBuilder);
+        noiseBuilderConsumer.accept(noiseSettingsBuilder);
+
         NoiseGeneratorSettings newsettings = NoiseGeneratorSettingsBuilder.create(settings)
-                .noiseSettings(NoiseSettingsBuilder.create(settings.noiseSettings())
-                        .samplingSettings(samplingSettingsBuilder))
+                .noiseSettings(noiseSettingsBuilder)
                 .build();
         this.settings = () -> newsettings;
         this.sampler = new NoiseSampler(newsettings.noiseSettings(), newsettings.isNoiseCavesEnabled(), seed, noises, newsettings.getRandomSource());
@@ -66,6 +83,7 @@ public class RFToolsChunkGenerator extends NoiseBasedChunkGenerator {
         if (terrainType != TerrainType.VOID) {
             super.buildSurface(level, structureFeatureManager, chunkAccess);
         }
+//        level.getLevel().isDebug = true;
     }
 
     public DimensionSettings getDimensionSettings() {
