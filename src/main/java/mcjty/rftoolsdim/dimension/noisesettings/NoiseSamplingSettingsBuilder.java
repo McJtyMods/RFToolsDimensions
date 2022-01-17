@@ -32,6 +32,14 @@ public class NoiseSamplingSettingsBuilder {
         return new NoiseSamplingSettingsBuilder();
     }
 
+    public static NoiseSamplingSettingsBuilder create(NoiseSamplingSettings settings) {
+        return new NoiseSamplingSettingsBuilder()
+                .xzScale(settings.xzScale())
+                .xzFactor(settings.xzFactor())
+                .yScale(settings.yScale())
+                .yFactor(settings.yFactor());
+    }
+
     public NoiseSamplingSettings build() {
         return new NoiseSamplingSettings(xzScale, yScale, xzFactor, yFactor);
     }

@@ -75,8 +75,29 @@ public class NoiseGeneratorSettingsBuilder {
         return this;
     }
 
+    public NoiseGeneratorSettingsBuilder ruleSource(SurfaceRules.RuleSource ruleSource) {
+        this.ruleSource = ruleSource;
+        return this;
+    }
+
     public static NoiseGeneratorSettingsBuilder create() {
         return new NoiseGeneratorSettingsBuilder();
+    }
+
+    public static NoiseGeneratorSettingsBuilder create(NoiseGeneratorSettings settings) {
+        return new NoiseGeneratorSettingsBuilder()
+                .noiseSettings(NoiseSettingsBuilder.create(settings.noiseSettings()))
+                .ruleSource(settings.surfaceRule())
+                .aquifersEnabled(settings.isAquifersEnabled())
+                .disableMobGeneration(settings.disableMobGeneration())
+                .legacyRandomSource(settings.useLegacyRandomSource())
+                .liquidBlock(settings.getDefaultFluid())
+                .baseBlock(settings.getDefaultBlock())
+                .noiseCavesEnabled(settings.isNoiseCavesEnabled())
+                .noodleCavesEnabled(settings.isNoodleCavesEnabled())
+                .oreVeinsEnabled(settings.isOreVeinsEnabled())
+                .seaLevel(settings.seaLevel())
+                ;
     }
 
     public NoiseGeneratorSettings build() {

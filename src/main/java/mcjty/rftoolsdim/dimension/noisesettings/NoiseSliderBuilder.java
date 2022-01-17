@@ -26,6 +26,13 @@ public class NoiseSliderBuilder {
         return new NoiseSliderBuilder();
     }
 
+    public static NoiseSliderBuilder create(NoiseSlider slider) {
+        return new NoiseSliderBuilder()
+                .top(slider.target)
+                .offset(slider.offset)
+                .size(slider.size);
+    }
+
     public NoiseSlider build() {
         return new NoiseSlider(top, size, offset);
     }

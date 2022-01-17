@@ -78,6 +78,22 @@ public class NoiseSettingsBuilder {
         return new NoiseSettingsBuilder();
     }
 
+    public static NoiseSettingsBuilder create(NoiseSettings settings) {
+        return new NoiseSettingsBuilder()
+                .minY(settings.minY())
+                .height(settings.height())
+                .noiseSizeHorizontal(settings.noiseSizeHorizontal())
+                .noiseSizeVertical(settings.noiseSizeVertical())
+                .islandNoiseOverride(settings.islandNoiseOverride())
+                .amplified(settings.isAmplified())
+                .largeBiomes(settings.largeBiomes())
+                .bottomSlider(NoiseSliderBuilder.create(settings.bottomSlideSettings()))
+                .topSlider(NoiseSliderBuilder.create(settings.topSlideSettings()))
+                .samplingSettings(NoiseSamplingSettingsBuilder.create(settings.noiseSamplingSettings()))
+                .terrainShaper(settings.terrainShaper())
+                ;
+    }
+
     public NoiseSettings build() {
         return NoiseSettings.create(minY, height,
                 samplingSettings,

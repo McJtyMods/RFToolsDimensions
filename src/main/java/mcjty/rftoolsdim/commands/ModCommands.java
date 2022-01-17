@@ -5,6 +5,7 @@ import com.mojang.brigadier.tree.LiteralCommandNode;
 import mcjty.rftoolsdim.RFToolsDim;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
+import net.minecraft.server.commands.ResetChunksCommand;
 
 public class ModCommands {
 
@@ -13,6 +14,7 @@ public class ModCommands {
                 Commands.literal(RFToolsDim.MODID)
                         .then(CommandCreateDim.register(dispatcher))
                         .then(CommandListDim.register(dispatcher))
+                        .then(CommandRefreshChunks.register(dispatcher))
                         .then(CommandForget.register(dispatcher))
                         .then(CommandForgetInvalid.register(dispatcher))
                         .then(CommandTpDim.register(dispatcher))
@@ -21,6 +23,7 @@ public class ModCommands {
         );
 
         dispatcher.register(Commands.literal("dim").redirect(commands));
+        ResetChunksCommand.register(dispatcher);
     }
 
 }

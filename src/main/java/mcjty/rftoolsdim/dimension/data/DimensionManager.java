@@ -22,7 +22,6 @@ import net.minecraft.world.level.biome.MultiNoiseBiomeSource;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.dimension.LevelStem;
-import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
 import net.minecraftforge.server.ServerLifecycleHooks;
 
 import javax.annotation.Nullable;
@@ -175,7 +174,6 @@ public class DimensionManager {
         compiledDescriptor.complete();
         compiledDescriptor.log("Compiled Descriptor:");
         TerrainType terrainType = compiledDescriptor.getTerrainType();
-
         DimensionSettings settings = new DimensionSettings(seed, descriptor.compact(), randomizedDescriptor.compact());
         TimeType timeType = compiledDescriptor.getTimeType();
 
