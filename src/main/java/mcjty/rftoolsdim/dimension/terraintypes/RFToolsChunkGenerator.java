@@ -17,8 +17,11 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator;
 import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
 import net.minecraft.world.level.levelgen.NoiseSampler;
+import net.minecraft.world.level.levelgen.blending.Blender;
 import net.minecraft.world.level.levelgen.synth.NormalNoise;
 
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -84,6 +87,16 @@ public class RFToolsChunkGenerator extends NoiseBasedChunkGenerator {
             super.buildSurface(level, structureFeatureManager, chunkAccess);
         }
 //        level.getLevel().isDebug = true;
+    }
+
+    @Override
+    public CompletableFuture<ChunkAccess> fillFromNoise(Executor executor, Blender blender, StructureFeatureManager structureFeatureManager, ChunkAccess chunkAccess) {
+        TerrainType terrainType = dimensionSettings.getCompiledDescriptor().getTerrainType();
+        if (terrainType != TerrainType.VOID) {
+            return super.fillFromNoise(executor, blender, structureFeatureManager, chunkAccess);
+        } else {
+            return CompletableFuture.completedFuture(chunkAccess);
+        }
     }
 
     public DimensionSettings getDimensionSettings() {
