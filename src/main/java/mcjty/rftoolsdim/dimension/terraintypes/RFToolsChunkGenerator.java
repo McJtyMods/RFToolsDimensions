@@ -7,13 +7,16 @@ import mcjty.rftoolsdim.dimension.noisesettings.NoiseGeneratorSettingsBuilder;
 import mcjty.rftoolsdim.dimension.noisesettings.NoiseSamplingSettingsBuilder;
 import mcjty.rftoolsdim.dimension.noisesettings.NoiseSettingsBuilder;
 import mcjty.rftoolsdim.dimension.noisesettings.NoiseSliderBuilder;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.RegistryLookupCodec;
 import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.biome.BiomeSource;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator;
 import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
 import net.minecraft.world.level.levelgen.NoiseSampler;
@@ -83,7 +86,7 @@ public class RFToolsChunkGenerator extends NoiseBasedChunkGenerator {
     @Override
     public void buildSurface(WorldGenRegion level, StructureFeatureManager structureFeatureManager, ChunkAccess chunkAccess) {
         TerrainType terrainType = dimensionSettings.getCompiledDescriptor().getTerrainType();
-        if (terrainType != TerrainType.VOID) {
+        if (terrainType != TerrainType.VOID && terrainType != TerrainType.FLAT) {
             super.buildSurface(level, structureFeatureManager, chunkAccess);
         }
 //        level.getLevel().isDebug = true;
@@ -92,10 +95,29 @@ public class RFToolsChunkGenerator extends NoiseBasedChunkGenerator {
     @Override
     public CompletableFuture<ChunkAccess> fillFromNoise(Executor executor, Blender blender, StructureFeatureManager structureFeatureManager, ChunkAccess chunkAccess) {
         TerrainType terrainType = dimensionSettings.getCompiledDescriptor().getTerrainType();
-        if (terrainType != TerrainType.VOID) {
-            return super.fillFromNoise(executor, blender, structureFeatureManager, chunkAccess);
-        } else {
+        if (terrainType == TerrainType.FLAT) {
+            BlockPos.MutableBlockPos mpos = new BlockPos.MutableBlockPos();
+            Heightmap heightmap = chunkAccess.getOrCreateHeightmapUnprimed(Heightmap.Types.OCEAN_FLOOR_WG);
+            Heightmap heightmap1 = chunkAccess.getOrCreateHeightmapUnprimed(Heightmap.Types.WORLD_SURFACE_WG);
+
+            // @todo hardcoded terrain height
+            for(int i = 0; i < Math.min(chunkAccess.getHeight(), 64); ++i) {
+                BlockState blockstate = defaultBlock;
+                int y = chunkAccess.getMinBuildHeight() + i;
+
+                for(int x = 0; x < 16; ++x) {
+                    for(int z = 0; z < 16; ++z) {
+                        chunkAccess.setBlockState(mpos.set(x, y, z), blockstate, false);
+                        heightmap.update(x, y, z, blockstate);
+                        heightmap1.update(x, y, z, blockstate);
+                    }
+                }
+            }
             return CompletableFuture.completedFuture(chunkAccess);
+        } else if (terrainType == TerrainType.VOID) {
+            return CompletableFuture.completedFuture(chunkAccess);
+        } else {
+            return super.fillFromNoise(executor, blender, structureFeatureManager, chunkAccess);
         }
     }
 
