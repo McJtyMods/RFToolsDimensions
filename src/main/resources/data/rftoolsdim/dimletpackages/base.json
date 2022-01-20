@@ -367,6 +367,253 @@
     }
   },
   {
+    "type": "biome_category",
+    "key": "none",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true,
+    "essence": {
+      "item": "minecraft:obsidian"
+    }
+  },
+  {
+    "type": "biome_category",
+    "key": "taiga",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true,
+    "essence": {
+      "item": "minecraft:white_terracotta"
+    }
+  },
+  {
+    "type": "biome_category",
+    "key": "extreme_hills",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true,
+    "essence": {
+      "item": "minecraft:dripstone_block"
+    }
+  },
+  {
+    "type": "biome_category",
+    "key": "jungle",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true,
+    "essence": {
+      "item": "minecraft:jungle_sapling"
+    }
+  },
+  {
+    "type": "biome_category",
+    "key": "mesa",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true,
+    "essence": {
+      "item": "minecraft:orange_terracotta"
+    }
+  },
+  {
+    "type": "biome_category",
+    "key": "plains",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true,
+    "essence": {
+      "item": "minecraft:dirt"
+    }
+  },
+  {
+    "type": "biome_category",
+    "key": "savanna",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true,
+    "essence": {
+      "item": "minecraft:red_sandstone"
+    }
+  },
+  {
+    "type": "biome_category",
+    "key": "icy",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true,
+    "essence": {
+      "item": "minecraft:ice"
+    }
+  },
+  {
+    "type": "biome_category",
+    "key": "the_end",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true,
+    "essence": {
+      "item": "minecraft:end_stone"
+    }
+  },
+  {
+    "type": "biome_category",
+    "key": "beach",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true,
+    "essence": {
+      "item": "minecraft:dead_tube_coral_block"
+    }
+  },
+  {
+    "type": "biome_category",
+    "key": "forest",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true,
+    "essence": {
+      "item": "minecraft:spruce_sapling"
+    }
+  },
+  {
+    "type": "biome_category",
+    "key": "ocean",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true,
+    "essence": {
+      "item": "minecraft:water_bucket"
+    }
+  },
+  {
+    "type": "biome_category",
+    "key": "desert",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true,
+    "essence": {
+      "item": "minecraft:sand"
+    }
+  },
+  {
+    "type": "biome_category",
+    "key": "river",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true,
+    "essence": {
+      "item": "minecraft:bucket"
+    }
+  },
+  {
+    "type": "biome_category",
+    "key": "swamp",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true,
+    "essence": {
+      "item": "minecraft:slime_ball"
+    }
+  },
+  {
+    "type": "biome_category",
+    "key": "mushroom",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true,
+    "essence": {
+      "item": "minecraft:brown_mushroom"
+    }
+  },
+  {
+    "type": "biome_category",
+    "key": "nether",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true,
+    "essence": {
+      "item": "minecraft:netherrack"
+    }
+  },
+  {
+    "type": "biome_category",
+    "key": "underground",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true,
+    "essence": {
+      "item": "minecraft:deepslate"
+    }
+  },
+  {
+    "type": "biome_category",
+    "key": "mountain",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true,
+    "essence": {
+      "item": "minecraft:cobblestone"
+    }
+  },
+  {
     "type": "biome_controller",
     "key": "default",
     "rarity": "common",

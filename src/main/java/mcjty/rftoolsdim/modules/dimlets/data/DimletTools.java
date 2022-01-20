@@ -22,6 +22,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Locale;
 import java.util.Objects;
 
 public class DimletTools {
@@ -75,6 +76,7 @@ public class DimletTools {
             case TERRAIN -> DimletModule.TERRAIN_DIMLET.get();
             case ATTRIBUTE -> DimletModule.ATTRIBUTE_DIMLET.get();
             case BIOME_CONTROLLER -> DimletModule.BIOME_CONTROLLER_DIMLET.get();
+            case BIOME_CATEGORY -> DimletModule.BIOME_CATEGORY_DIMLET.get();
             case BIOME -> DimletModule.BIOME_DIMLET.get();
             case FEATURE -> DimletModule.FEATURE_DIMLET.get();
             case TIME -> DimletModule.TIME_DIMLET.get();
@@ -90,6 +92,7 @@ public class DimletTools {
             case TERRAIN -> DimletModule.EMPTY_TERRAIN_DIMLET.get();
             case ATTRIBUTE -> DimletModule.EMPTY_ATTRIBUTE_DIMLET.get();
             case BIOME_CONTROLLER -> DimletModule.EMPTY_BIOME_CONTROLLER_DIMLET.get();
+            case BIOME_CATEGORY -> DimletModule.EMPTY_BIOME_CATEGORY_DIMLET.get();
             case BIOME -> DimletModule.EMPTY_BIOME_DIMLET.get();
             case FEATURE -> DimletModule.EMPTY_FEATURE_DIMLET.get();
             case TIME -> DimletModule.EMPTY_TIME_DIMLET.get();
@@ -171,6 +174,7 @@ public class DimletTools {
             case TERRAIN -> ItemStack.EMPTY;
             case ATTRIBUTE -> ItemStack.EMPTY;
             case BIOME_CONTROLLER -> ItemStack.EMPTY;
+            case BIOME_CATEGORY -> ItemStack.EMPTY;
             case BIOME -> new ItemStack(EssencesModule.BIOME_ABSORBER_ITEM.get());
             case FEATURE -> ItemStack.EMPTY;
             case TIME -> ItemStack.EMPTY;
@@ -188,6 +192,7 @@ public class DimletTools {
             case TERRAIN -> null;
             case ATTRIBUTE -> null;
             case BIOME_CONTROLLER -> null;
+            case BIOME_CATEGORY -> null;
             case BIOME -> new ResourceLocation(dimletKey.getKey());
             case FEATURE -> null;
             case TIME -> null;
@@ -205,6 +210,8 @@ public class DimletTools {
             case ATTRIBUTE:
                 return new TextComponent(dimletKey.getKey().toLowerCase());
             case BIOME_CONTROLLER:
+                return new TextComponent(dimletKey.getKey().toLowerCase());
+            case BIOME_CATEGORY:
                 return new TextComponent(dimletKey.getKey().toLowerCase());
             case BIOME:
                 ResourceLocation id = new ResourceLocation(dimletKey.getKey());
@@ -237,6 +244,8 @@ public class DimletTools {
             case ATTRIBUTE:
                 return dimletKey.getKey().toLowerCase();
             case BIOME_CONTROLLER:
+                return dimletKey.getKey().toLowerCase();
+            case BIOME_CATEGORY:
                 return dimletKey.getKey().toLowerCase();
             case BIOME:
                 ResourceLocation id = new ResourceLocation(dimletKey.getKey());

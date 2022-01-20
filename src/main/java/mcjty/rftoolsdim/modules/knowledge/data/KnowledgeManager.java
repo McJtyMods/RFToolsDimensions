@@ -13,13 +13,13 @@ import mcjty.rftoolsdim.modules.dimlets.data.DimletKey;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletRarity;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletSettings;
 import mcjty.rftoolsdim.setup.Registration;
-import net.minecraft.world.level.block.Block;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nullable;
@@ -101,6 +101,8 @@ public class KnowledgeManager {
                 return null;
             case BIOME_CONTROLLER:
                 return null;
+            case BIOME_CATEGORY:
+                return null;
             case BIOME:
                 Biome biome = ForgeRegistries.BIOMES.getValue(new ResourceLocation(key.getKey()));
                 if (biome != null) {
@@ -133,6 +135,8 @@ public class KnowledgeManager {
                 return AttributeType.byName(key.getKey()).getSet();
             case BIOME_CONTROLLER:
                 return BiomeControllerType.byName(key.getKey()).getSet();
+            case BIOME_CATEGORY:
+                return getBiomeCategoryKnowledgeSet(key);
             case BIOME:
                 return getBiomeKnowledgeSet(key);
             case FEATURE:
@@ -155,6 +159,11 @@ public class KnowledgeManager {
     private KnowledgeSet getFluidKnowledgeSet(DimletKey key) {
         int i = Math.abs(new ResourceLocation(key.getKey()).getNamespace().hashCode());
         return KnowledgeSet.values()[i%(KnowledgeSet.values().length)];
+    }
+
+    private KnowledgeSet getBiomeCategoryKnowledgeSet(DimletKey key) {
+        Biome.BiomeCategory category = Biome.BiomeCategory.byName(key.getKey());
+        return KnowledgeSet.values()[category.ordinal() % KnowledgeSet.values().length];
     }
 
     /// Create a knowledge set based on the most important tag for a given block

@@ -7,6 +7,7 @@ public enum DimletType {
     TERRAIN("t"),
     ATTRIBUTE("a"),
     BIOME_CONTROLLER("bc"),
+    BIOME_CATEGORY("bt"),
     BIOME("bi"),
     FEATURE("f"),
     TIME("ti"),

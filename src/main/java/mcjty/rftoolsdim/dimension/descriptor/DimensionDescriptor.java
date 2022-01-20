@@ -142,8 +142,8 @@ public class DimensionDescriptor {
             }
         }
         if (!hasFeatures(dimlets)) {
-            int cnt = random.nextInt(3);
-            for (int i = 0 ; i < cnt ; i++) {
+            int cnt = random.nextInt(4);
+            for (int i = 0 ; i < cnt-1 ; i++) {
                 DimletKey featureDimlet = DimletDictionary.get().getRandomDimlet(DimletType.FEATURE, random);
                 if (featureDimlet != null) {
                     addBlockDimlets(randomized, random);
@@ -151,10 +151,23 @@ public class DimensionDescriptor {
                 }
             }
         }
+        boolean addedBiomeCategories = false;
+        if (!hasBiomeCategories(dimlets) && !hasBiomeDimlets(dimlets)) {
+            int cnt = random.nextInt(4);
+            for (int i = 0 ; i < cnt-2 ; i++) {
+                DimletKey categoryDimlet = DimletDictionary.get().getRandomDimlet(DimletType.BIOME_CATEGORY, random);
+                if (categoryDimlet != null) {
+                    randomized.add(categoryDimlet);
+                    addedBiomeCategories = true;
+                }
+            }
+        }
         if (!hasBiomeController(dimlets)) {
             DimletKey controllerDimlet = DimletDictionary.get().getRandomDimlet(DimletType.BIOME_CONTROLLER, random);
             if (controllerDimlet != null) {
-                addBiomeDimlets(randomized, random);
+                if (!addedBiomeCategories) {
+                    addBiomeDimlets(randomized, random);
+                }
                 randomized.add(controllerDimlet);
             }
         }
@@ -218,6 +231,14 @@ public class DimensionDescriptor {
 
     private boolean hasBiomeController(List<DimletKey> dimlets) {
         return dimlets.stream().anyMatch(key -> key.getType() == DimletType.BIOME_CONTROLLER);
+    }
+
+    private boolean hasBiomeCategories(List<DimletKey> dimlets) {
+        return dimlets.stream().anyMatch(key -> key.getType() == DimletType.BIOME_CATEGORY);
+    }
+
+    private boolean hasBiomeDimlets(List<DimletKey> dimlets) {
+        return dimlets.stream().anyMatch(key -> key.getType() == DimletType.BIOME);
     }
 
     private boolean hasTimeDimlet(List<DimletKey> dimlets) {

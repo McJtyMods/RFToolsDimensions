@@ -29,6 +29,7 @@ public class RFTBiomeProvider extends BiomeSource {
             ).apply(instance, RFTBiomeProvider::new));
 
     private final List<Biome> biomes;
+    private final Set<Biome.BiomeCategory> biomeCategories;
     private final Map<ResourceLocation, Biome> biomeMapping = new HashMap<>();
     private final Registry<Biome> biomeRegistry;
     private final DimensionSettings settings;
@@ -41,7 +42,9 @@ public class RFTBiomeProvider extends BiomeSource {
         this.biomeRegistry = biomeRegistry;
         multiNoiseBiomeSource = MultiNoiseBiomeSource.Preset.OVERWORLD.biomeSource(biomeRegistry, true);
         biomes = getBiomes(biomeRegistry, settings);
-        defaultBiomes = biomes.isEmpty();
+        biomeCategories = getBiomeCategories(settings);
+
+        defaultBiomes = biomes.isEmpty() && biomeCategories.isEmpty();
     }
 
     public DimensionSettings getSettings() {
@@ -54,16 +57,34 @@ public class RFTBiomeProvider extends BiomeSource {
         }
         return biomeMapping.computeIfAbsent(biome.getRegistryName(), resourceLocation -> {
             List<Biome> biomes = getBiomes(biomeRegistry, settings);
-            float minDist = 1000000000;
-            Biome desired = biome;
-            for (Biome b : biomes) {
-                float dist = distance(b, biome);
-                if (dist < minDist) {
-                    desired = b;
-                    minDist = dist;
+            final float[] minDist = {1000000000};
+            final Biome[] desired = {biome};
+            if (biomes.isEmpty()) {
+                // Biomes was empty. Try to get one with the correct category
+                if (!biomeCategories.contains(desired[0].getBiomeCategory())) {
+                    biomeRegistry.stream().forEach(b -> {
+                        if (biomeCategories.contains(b.getBiomeCategory())) {
+                            float dist = distance(b, biome);
+                            if (dist < minDist[0]) {
+                                desired[0] = b;
+                                minDist[0] = dist;
+                            }
+                        }
+                    });
+                }
+            } else {
+                // If there are biomes we try to find one while also keeping category in mind
+                for (Biome b : biomes) {
+                    if (biomeCategories.isEmpty() || biomeCategories.contains(b.getBiomeCategory())) {
+                        float dist = distance(b, biome);
+                        if (dist < minDist[0]) {
+                            desired[0] = b;
+                            minDist[0] = dist;
+                        }
+                    }
                 }
             }
-            return desired;
+            return desired[0];
         });
     }
 
@@ -76,11 +97,17 @@ public class RFTBiomeProvider extends BiomeSource {
     }
 
     private List<Biome> getBiomes(Registry<Biome> biomeRegistry, DimensionSettings settings) {
-        if (defaultBiomes) {
-            return Collections.emptyList();
-        }
         List<ResourceLocation> biomes = settings.getCompiledDescriptor().getBiomes();
         return biomes.stream().map(biomeRegistry::get).collect(Collectors.toList());
+    }
+
+    private Set<Biome.BiomeCategory> getBiomeCategories(DimensionSettings settings) {
+        Set<Biome.BiomeCategory> categories = settings.getCompiledDescriptor().getBiomeCategories();
+        if (categories.size() == 1 && categories.iterator().next().equals(Biome.BiomeCategory.NONE)) {
+            return Collections.emptySet();
+        } else {
+            return categories;
+        }
     }
 
     public Registry<Biome> getBiomeRegistry() {

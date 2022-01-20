@@ -1,8 +1,8 @@
 package mcjty.rftoolsdim.dimension.descriptor;
 
 import mcjty.rftoolsdim.RFToolsDim;
-import mcjty.rftoolsdim.dimension.DimensionConfig;
 import mcjty.rftoolsdim.dimension.AdminDimletType;
+import mcjty.rftoolsdim.dimension.DimensionConfig;
 import mcjty.rftoolsdim.dimension.TimeType;
 import mcjty.rftoolsdim.dimension.biomes.BiomeControllerType;
 import mcjty.rftoolsdim.dimension.features.FeatureType;
@@ -11,11 +11,12 @@ import mcjty.rftoolsdim.dimension.terraintypes.TerrainType;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletDictionary;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletKey;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletSettings;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.material.Fluid;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nonnull;
@@ -37,6 +38,7 @@ public class CompiledDescriptor {
     private final Set<AdminDimletType> adminDimletTypes = EnumSet.noneOf(AdminDimletType.class);
     private final Set<CompiledFeature> features = new HashSet<>();
     private BiomeControllerType biomeControllerType = null;
+    private final Set<Biome.BiomeCategory> biomeCategories = new HashSet<>();
     private final List<ResourceLocation> biomes = new ArrayList<>();
     private TimeType timeType = null;
 
@@ -176,6 +178,9 @@ public class CompiledDescriptor {
                     return ERROR(BAD_BIOME_CONTROLLER, name);
                 }
                 break;
+            case BIOME_CATEGORY:
+                biomeCategories.add(Biome.BiomeCategory.byName(name));
+                break;
             case BIOME:
                 biomes.add(new ResourceLocation(name));
                 break;
@@ -255,6 +260,9 @@ public class CompiledDescriptor {
         for (ResourceLocation biome : biomes) {
             header += "\n        BIOME: " + biome.toString();
         }
+        for (Biome.BiomeCategory category : biomeCategories) {
+            header += "\n        CATEGORY: " + category.getName();
+        }
         for (CompiledFeature feature : features) {
             header += "\n    FEATURE: " + feature.getFeatureType().getName();
             for (BlockState block : feature.getBlocks()) {
@@ -322,5 +330,9 @@ public class CompiledDescriptor {
 
     public List<ResourceLocation> getBiomes() {
         return biomes;
+    }
+
+    public Set<Biome.BiomeCategory> getBiomeCategories() {
+        return biomeCategories;
     }
 }
