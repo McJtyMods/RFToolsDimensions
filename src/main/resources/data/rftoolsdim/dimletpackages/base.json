@@ -290,6 +290,32 @@
   },
   {
     "type": "terrain",
+    "key": "grid",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 10,
+    "worldgen": true,
+    "dimlet": true,
+    "essence": {
+      "item": "minecraft:iron_bars"
+    }
+  },
+  {
+    "type": "terrain",
+    "key": "platforms",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 10,
+    "worldgen": true,
+    "dimlet": true,
+    "essence": {
+      "item": "minecraft:stone_pressure_plate"
+    }
+  },
+  {
+    "type": "terrain",
     "key": "islands",
     "rarity": "common",
     "create": 10,

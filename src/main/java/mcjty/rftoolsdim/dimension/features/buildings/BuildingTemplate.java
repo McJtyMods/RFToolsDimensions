@@ -94,7 +94,7 @@ public class BuildingTemplate {
         for (String row : slice.rows) {
             for (int x = 0; x < row.length(); x++) {
                 boolean isVoid = true;
-                for (int yy = y - 1; yy > 1; yy--) {
+                for (int yy = y - 1; yy > reader.getMinBuildHeight()+1; yy--) {
                     mpos.set(pos.getX() + x, yy, z);
                     BlockState state = reader.getBlockState(mpos);
                     if (!state.isAir()) {
@@ -103,7 +103,7 @@ public class BuildingTemplate {
                     }
                 }
                 if (!isVoid) {
-                    for (int yy = y - 1; yy > 1; yy--) {
+                    for (int yy = y - 1; yy > reader.getMinBuildHeight()+1; yy--) {
                         mpos.set(pos.getX() + x, yy, z);
                         BlockState state = reader.getBlockState(mpos);
                         if (state.isAir()) {

@@ -7,11 +7,13 @@ import mcjty.rftoolsdim.dimension.noisesettings.NoiseGeneratorSettingsBuilder;
 import mcjty.rftoolsdim.dimension.noisesettings.NoiseSamplingSettingsBuilder;
 import mcjty.rftoolsdim.dimension.noisesettings.NoiseSettingsBuilder;
 import mcjty.rftoolsdim.dimension.noisesettings.NoiseSliderBuilder;
-import net.minecraft.core.BlockPos;
+import mcjty.rftoolsdim.dimension.terraintypes.generators.FlatGenerator;
+import mcjty.rftoolsdim.dimension.terraintypes.generators.GridGenerator;
+import mcjty.rftoolsdim.dimension.terraintypes.generators.PlatformsGenerator;
+import mcjty.rftoolsdim.dimension.terraintypes.generators.WavesGenerator;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.RegistryLookupCodec;
 import net.minecraft.server.level.WorldGenRegion;
-import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.LevelHeightAccessor;
 import net.minecraft.world.level.NoiseColumn;
 import net.minecraft.world.level.StructureFeatureManager;
@@ -27,16 +29,12 @@ import net.minecraft.world.level.levelgen.blending.Blender;
 import net.minecraft.world.level.levelgen.synth.NormalNoise;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public class RFToolsChunkGenerator extends NoiseBasedChunkGenerator {
-
-    public static final int FLATHEIGHT = 120;
-    public static final int WAVE_BASE = 80;
 
     public static final Codec<RFToolsChunkGenerator> CODEC = RecordCodecBuilder.create((instance) -> instance
             .group(RegistryLookupCodec.create(
@@ -91,6 +89,14 @@ public class RFToolsChunkGenerator extends NoiseBasedChunkGenerator {
         return settings.get();
     }
 
+    public long getSeed() {
+        return seed;
+    }
+
+    public BlockState getDefaultBlock() {
+        return defaultBlock;
+    }
+
     @Override
     public void buildSurface(WorldGenRegion level, StructureFeatureManager structureFeatureManager, ChunkAccess chunkAccess) {
         TerrainType terrainType = dimensionSettings.getCompiledDescriptor().getTerrainType();
@@ -103,92 +109,39 @@ public class RFToolsChunkGenerator extends NoiseBasedChunkGenerator {
     public CompletableFuture<ChunkAccess> fillFromNoise(Executor executor, Blender blender, StructureFeatureManager structureFeatureManager, ChunkAccess chunkAccess) {
         TerrainType terrainType = dimensionSettings.getCompiledDescriptor().getTerrainType();
         return switch (terrainType) {
-            case FLAT -> fillFromNoiseFlat(chunkAccess);
+            case FLAT -> FlatGenerator.fillFromNoiseFlat(chunkAccess, this);
             case VOID -> CompletableFuture.completedFuture(chunkAccess);
-            case WAVES -> fillFromNoiseWaves(chunkAccess);
+            case WAVES -> WavesGenerator.fillFromNoiseWaves(chunkAccess, this);
+            case GRID -> GridGenerator.fillFromNoiseGrid(chunkAccess, this);
+            case PLATFORMS -> PlatformsGenerator.fillFromNoisePlatforms(chunkAccess, this);
             default -> super.fillFromNoise(executor, blender, structureFeatureManager, chunkAccess);
         };
-    }
-
-    @NotNull
-    private CompletableFuture<ChunkAccess> fillFromNoiseWaves(ChunkAccess chunkAccess) {
-        ChunkPos chunkpos = chunkAccess.getPos();
-
-        BlockPos.MutableBlockPos mpos = new BlockPos.MutableBlockPos();
-
-        Heightmap hmOcean = chunkAccess.getOrCreateHeightmapUnprimed(Heightmap.Types.OCEAN_FLOOR_WG);
-        Heightmap hmWorld = chunkAccess.getOrCreateHeightmapUnprimed(Heightmap.Types.WORLD_SURFACE_WG);
-
-        for (int x = 0; x < 16; x++) {
-            for (int z = 0; z < 16; z++) {
-                int realx = chunkpos.x * 16 + x;
-                int realz = chunkpos.z * 16 + z;
-                int height = calculateWaveHeight(realx, realz);
-                for (int y = chunkAccess.getMinBuildHeight() ; y < height ; y++) {
-                    BlockState state = defaultBlock;
-                    chunkAccess.setBlockState(mpos.set(x, y, z), state, false);
-                    hmOcean.update(x, y, z, state);
-                    hmWorld.update(x, y, z, state);
-                }
-            }
-        }
-        return CompletableFuture.completedFuture(chunkAccess);
-    }
-
-    private int calculateWaveHeight(int realx, int realz) {
-        return (int) (WAVE_BASE + Math.sin(realx / 20.0f) * 10 + Math.cos(realz / 20.0f) * 10);
-    }
-
-    @NotNull
-    private CompletableFuture<ChunkAccess> fillFromNoiseFlat(ChunkAccess chunkAccess) {
-        BlockPos.MutableBlockPos mpos = new BlockPos.MutableBlockPos();
-        Heightmap heightmap = chunkAccess.getOrCreateHeightmapUnprimed(Heightmap.Types.OCEAN_FLOOR_WG);
-        Heightmap heightmap1 = chunkAccess.getOrCreateHeightmapUnprimed(Heightmap.Types.WORLD_SURFACE_WG);
-
-        for (int y = chunkAccess.getMinBuildHeight(); y < FLATHEIGHT; ++y) {
-            BlockState blockstate = defaultBlock;
-            for (int x = 0; x < 16; ++x) {
-                for (int z = 0; z < 16; ++z) {
-                    chunkAccess.setBlockState(mpos.set(x, y, z), blockstate, false);
-                    heightmap.update(x, y, z, blockstate);
-                    heightmap1.update(x, y, z, blockstate);
-                }
-            }
-        }
-        return CompletableFuture.completedFuture(chunkAccess);
     }
 
     @Override
     public int getBaseHeight(int pX, int pZ, Heightmap.Types type, LevelHeightAccessor level) {
         TerrainType terrainType = dimensionSettings.getCompiledDescriptor().getTerrainType();
         return switch (terrainType) {
-            case FLAT -> FLATHEIGHT-1;
+            case FLAT -> FlatGenerator.FLATHEIGHT-1;
             case VOID -> level.getMinBuildHeight();
-            case WAVES -> calculateWaveHeight(pX, pZ);
+            case WAVES -> WavesGenerator.calculateWaveHeight(pX, pZ);
+            case GRID -> GridGenerator.getBaseHeightGrid(pX, pZ, level);
+            case PLATFORMS -> PlatformsGenerator.getBaseHeightPlatforms(pX, pZ, level, this);
             default -> super.getBaseHeight(pX, pZ, type, level);
         };
     }
 
-    public @NotNull NoiseColumn getBaseColumn(int pX, int pZ, LevelHeightAccessor level) {
+    @NotNull
+    public NoiseColumn getBaseColumn(int pX, int pZ, LevelHeightAccessor level) {
         TerrainType terrainType = dimensionSettings.getCompiledDescriptor().getTerrainType();
         return switch (terrainType) {
-            case FLAT -> getBaseColumnFlat(pX, pZ, level);
+            case FLAT -> FlatGenerator.getBaseColumnFlat(pX, pZ, level, this);
             case VOID -> new NoiseColumn(level.getMinBuildHeight(), new BlockState[0]);
-            case WAVES -> getBaseColumnWaves(pX, pZ, level);
+            case WAVES -> WavesGenerator.getBaseColumnWaves(pX, pZ, level, this);
+            case GRID -> GridGenerator.getBaseColumnGrid(pX, pZ, level, this);
+            case PLATFORMS -> PlatformsGenerator.getBaseColumnPlatforms(pX, pZ, level, this);
             default -> super.getBaseColumn(pX, pZ, level);
         };
-    }
-
-    private NoiseColumn getBaseColumnFlat(int pX, int pZ, LevelHeightAccessor level) {
-        BlockState[] states = new BlockState[FLATHEIGHT-1];
-        Arrays.fill(states, defaultBlock);
-        return new NoiseColumn(level.getMinBuildHeight(), states);
-    }
-
-    private NoiseColumn getBaseColumnWaves(int pX, int pZ, LevelHeightAccessor level) {
-        BlockState[] states = new BlockState[calculateWaveHeight(pX, pZ)];
-        Arrays.fill(states, defaultBlock);
-        return new NoiseColumn(level.getMinBuildHeight(), states);
     }
 
     public DimensionSettings getDimensionSettings() {
