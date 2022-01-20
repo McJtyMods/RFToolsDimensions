@@ -8,8 +8,8 @@ import mcjty.rftoolsdim.compat.RFToolsUtilityCompat;
 import mcjty.rftoolsdim.dimension.DimensionRegistry;
 import mcjty.rftoolsdim.dimension.biomes.RFTBiomeProvider;
 import mcjty.rftoolsdim.dimension.features.RFTFeature;
-import mcjty.rftoolsdim.dimension.terraintypes.RFToolsChunkGenerator;
 import mcjty.rftoolsdim.dimension.noisesettings.TerrainPresets;
+import mcjty.rftoolsdim.dimension.terraintypes.RFToolsChunkGenerator;
 import mcjty.rftoolsdim.modules.dimlets.DimletModule;
 import net.minecraft.core.Registry;
 import net.minecraft.world.item.ItemStack;
@@ -42,12 +42,6 @@ public class ModSetup extends DefaultModSetup {
 
         e.enqueueWork(() -> {
             Registry.register(Registry.CHUNK_GENERATOR, RFTOOLS_ID, RFToolsChunkGenerator.CODEC);
-
-//            Registry.register(Registry.CHUNK_GENERATOR, VOID_ID, VoidChunkGenerator.CODEC);
-//            Registry.register(Registry.CHUNK_GENERATOR, WAVES_ID, WavesChunkGenerator.CODEC);
-//            Registry.register(Registry.CHUNK_GENERATOR, FLAT_ID, FlatChunkGenerator.CODEC);
-//            Registry.register(Registry.CHUNK_GENERATOR, NORMAL_ID, NormalChunkGenerator.CODEC);
-//            Registry.register(Registry.CHUNK_GENERATOR, ISLANDS_ID, IslandsChunkGenerator.CODEC);
             Registry.register(Registry.BIOME_SOURCE, DimensionRegistry.BIOMES_ID, RFTBiomeProvider.CODEC);
         });
     }

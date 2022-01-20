@@ -5,6 +5,7 @@ import com.google.gson.JsonParser;
 import mcjty.lib.varia.LevelTools;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.dimension.TimeType;
+import mcjty.rftoolsdim.dimension.biomes.RFTBiomeProvider;
 import mcjty.rftoolsdim.dimension.descriptor.CompiledDescriptor;
 import mcjty.rftoolsdim.dimension.descriptor.DescriptorError;
 import mcjty.rftoolsdim.dimension.descriptor.DimensionDescriptor;
@@ -20,7 +21,6 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.biome.MultiNoiseBiomeSource;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.dimension.LevelStem;
@@ -189,7 +189,9 @@ public class DimensionManager {
                     var noiseSettingsIn = noiseGeneratorSettings.getOrThrow(terrainType.getNoiseSettings());
                     var noiseSettings = adapt(noiseSettingsIn, settings);
                     ChunkGenerator generator = new RFToolsChunkGenerator(registryAccess.registryOrThrow(Registry.NOISE_REGISTRY),
-                            MultiNoiseBiomeSource.Preset.OVERWORLD.biomeSource(registryAccess.registryOrThrow(Registry.BIOME_REGISTRY)), seed,
+                            new RFTBiomeProvider(registryAccess.registryOrThrow(Registry.BIOME_REGISTRY), settings),
+//                            MultiNoiseBiomeSource.Preset.OVERWORLD.biomeSource(registryAccess.registryOrThrow(Registry.BIOME_REGISTRY)),
+                            seed,
                             () -> noiseSettings, settings);
                     return new LevelStem(() -> type, generator);
                 });
