@@ -14,7 +14,7 @@ public enum TerrainType {
     VOID("void", KnowledgeSet.SET2, NoiseGeneratorSettings.OVERWORLD),
     NORMAL("normal", KnowledgeSet.SET3, NoiseGeneratorSettings.OVERWORLD),
     ISLANDS("islands", KnowledgeSet.SET4, TerrainPresets.RFTOOLSDIM_ISLANDS),
-    CAVERN("cavern", KnowledgeSet.SET5, NoiseGeneratorSettings.NETHER),
+    CAVERN("cavern", KnowledgeSet.SET5, TerrainPresets.RFTOOLSDIM_CAVERN),
     CHAOTIC("chaotic", KnowledgeSet.SET4, TerrainPresets.RFTOOLSDIM_CHAOTIC)
     ;
 

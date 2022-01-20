@@ -8,6 +8,8 @@ import mcjty.rftoolsdim.dimension.TimeType;
 import mcjty.rftoolsdim.dimension.descriptor.CompiledDescriptor;
 import mcjty.rftoolsdim.dimension.descriptor.DescriptorError;
 import mcjty.rftoolsdim.dimension.descriptor.DimensionDescriptor;
+import mcjty.rftoolsdim.dimension.noisesettings.NoiseGeneratorSettingsBuilder;
+import mcjty.rftoolsdim.dimension.terraintypes.AttributeType;
 import mcjty.rftoolsdim.dimension.terraintypes.RFToolsChunkGenerator;
 import mcjty.rftoolsdim.dimension.terraintypes.TerrainType;
 import mcjty.rftoolsdim.dimension.tools.DynamicDimensionManager;
@@ -22,6 +24,7 @@ import net.minecraft.world.level.biome.MultiNoiseBiomeSource;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.dimension.LevelStem;
+import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
 import net.minecraftforge.server.ServerLifecycleHooks;
 
 import javax.annotation.Nullable;
@@ -183,7 +186,8 @@ public class DimensionManager {
         ServerLevel result = DynamicDimensionManager.getOrCreateLevel(world.getServer(), key,
                 (server, registryKey) -> {
                     var noiseGeneratorSettings = registryAccess.registryOrThrow(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY);
-                    var noiseSettings = noiseGeneratorSettings.getOrThrow(terrainType.getNoiseSettings());
+                    var noiseSettingsIn = noiseGeneratorSettings.getOrThrow(terrainType.getNoiseSettings());
+                    var noiseSettings = adapt(noiseSettingsIn, settings);
                     ChunkGenerator generator = new RFToolsChunkGenerator(registryAccess.registryOrThrow(Registry.NOISE_REGISTRY),
                             MultiNoiseBiomeSource.Preset.OVERWORLD.biomeSource(registryAccess.registryOrThrow(Registry.BIOME_REGISTRY)), seed,
                             () -> noiseSettings, settings);
@@ -194,6 +198,19 @@ public class DimensionManager {
         mgr.register(data);
         return result;
 
+    }
+
+    private NoiseGeneratorSettings adapt(NoiseGeneratorSettings in, DimensionSettings settings) {
+        NoiseGeneratorSettingsBuilder builder = NoiseGeneratorSettingsBuilder.create(in);
+        CompiledDescriptor compiledDescriptor = settings.getCompiledDescriptor();
+        if (compiledDescriptor.getAttributeTypes().contains(AttributeType.NOOCEANS)) {
+            builder.seaLevel(-64);
+        }
+        if (!compiledDescriptor.getBaseBlocks().isEmpty()) {
+            builder.baseBlock(compiledDescriptor.getBaseBlocks().get(0));
+        }
+        builder.liquidBlock(compiledDescriptor.getBaseLiquid());
+        return builder.build();
     }
 
     // Returns null on success, otherwise an error string

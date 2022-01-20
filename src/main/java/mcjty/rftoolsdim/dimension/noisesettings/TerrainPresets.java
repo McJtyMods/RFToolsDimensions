@@ -1,11 +1,18 @@
 package mcjty.rftoolsdim.dimension.noisesettings;
 
+import com.google.common.collect.Maps;
 import net.minecraft.core.Registry;
+import net.minecraft.data.worldgen.SurfaceRuleData;
 import net.minecraft.data.worldgen.TerrainProvider;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
+import net.minecraft.world.level.levelgen.*;
+import net.minecraft.world.level.levelgen.feature.StructureFeature;
+import net.minecraft.world.level.levelgen.feature.configurations.StructureFeatureConfiguration;
+
+import java.util.Map;
+import java.util.Optional;
 
 /*
 Sampling:
@@ -65,10 +72,25 @@ public class TerrainPresets {
 
     public static final ResourceKey<NoiseGeneratorSettings> RFTOOLSDIM_CHAOTIC = ResourceKey.create(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY, new ResourceLocation("rftoolsdim_chaotic"));
     public static final ResourceKey<NoiseGeneratorSettings> RFTOOLSDIM_ISLANDS = ResourceKey.create(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY, new ResourceLocation("rftoolsdim_islands"));
+    public static final ResourceKey<NoiseGeneratorSettings> RFTOOLSDIM_CAVERN = ResourceKey.create(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY, new ResourceLocation("rftoolsdim_cavern"));
 
     public static void init() {
         NoiseGeneratorSettings.register(RFTOOLSDIM_CHAOTIC, chaotic());
         NoiseGeneratorSettings.register(RFTOOLSDIM_ISLANDS, test());
+        NoiseGeneratorSettings.register(RFTOOLSDIM_CAVERN, cavern());
+    }
+
+    private static NoiseGeneratorSettings cavern() {
+        Map<StructureFeature<?>, StructureFeatureConfiguration> map = Maps.newHashMap(StructureSettings.DEFAULTS);
+        map.put(StructureFeature.RUINED_PORTAL, new StructureFeatureConfiguration(25, 10, 34222645));
+        return new NoiseGeneratorSettings(new StructureSettings(Optional.empty(), map),
+                NoiseSettings.create(-64, 256+128,
+                        new NoiseSamplingSettings(1.0D, 3.0D, 80.0D, 60.0D),
+                        new NoiseSlider(0.9375D, 3, 0),
+                        new NoiseSlider(2.5D, 4, -1),
+                        1, 2, false, false, false, TerrainProvider.nether()),
+                Blocks.STONE.defaultBlockState(), Blocks.WATER.defaultBlockState(),
+                SurfaceRuleData.overworld(), 32, false, false, false, false, false, true);
     }
 
     private static NoiseGeneratorSettings islands() {

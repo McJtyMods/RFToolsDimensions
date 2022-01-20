@@ -10,13 +10,16 @@ import mcjty.rftoolsdim.dimension.features.buildings.BuildingTemplate;
 import mcjty.rftoolsdim.dimension.features.buildings.DimletHut;
 import mcjty.rftoolsdim.dimension.features.buildings.SpawnPlatform;
 import mcjty.rftoolsdim.dimension.terraintypes.RFToolsChunkGenerator;
+import mcjty.rftoolsdim.dimension.terraintypes.TerrainType;
 import mcjty.rftoolsdim.setup.Registration;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.SectionPos;
 import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
@@ -79,15 +82,16 @@ public class RFTFeature extends Feature<NoneFeatureConfiguration> {
             }
 
             ChunkPos cp = new ChunkPos(pos);
+            TerrainType terrainType = compiledDescriptor.getTerrainType();
             if (cp.x == 0 && cp.z == 0) {
                 // Spawn platform
-                int floorHeight = getFloorHeight(reader, cp);
+                int floorHeight = getFloorHeight(terrainType, reader, cp);
                 DimensionManager.get().registerPlatformHeight(reader.getLevel().dimension().location(), floorHeight);
                 SpawnPlatform.SPAWN_PLATFORM.get().generate(reader, new BlockPos(3, floorHeight, 3),
                         compiledDescriptor.getBaseBlocks(), BuildingTemplate.GenerateFlag.PLAIN);
                 generatedSomething = true;
             } else if (rand.nextFloat() < DimensionConfig.DIMLET_HUT_CHANCE.get()) {
-                DimletHut.DIMLET_HUT.get().generate(reader, new BlockPos(cp.getMinBlockX() + 4, getFloorHeight(reader, cp),cp.getMinBlockZ() + 4),
+                DimletHut.DIMLET_HUT.get().generate(reader, new BlockPos(cp.getMinBlockX() + 4, getFloorHeight(terrainType, reader, cp),cp.getMinBlockZ() + 4),
                         compiledDescriptor.getBaseBlocks(), BuildingTemplate.GenerateFlag.FILLDOWN_IFNOTVOID);
                 generatedSomething = true;
             }
@@ -97,18 +101,28 @@ public class RFTFeature extends Feature<NoneFeatureConfiguration> {
         return false;
     }
 
-    private int getFloorHeight(WorldGenLevel reader, ChunkPos cp) {
-        int height0 = getHeightAt(reader, cp, 8, 8);
-        int height1 = getHeightAt(reader, cp, 4, 4);
-        int height2 = getHeightAt(reader, cp, 12, 4);
-        int height3 = getHeightAt(reader, cp, 4, 12);
-        int height4 = getHeightAt(reader, cp, 12, 12);
+    private int getFloorHeight(TerrainType type, WorldGenLevel reader, ChunkPos cp) {
+        int height0 = getHeightAt(type, reader, cp, 8, 8);
+        int height1 = getHeightAt(type, reader, cp, 4, 4);
+        int height2 = getHeightAt(type, reader, cp, 12, 4);
+        int height3 = getHeightAt(type, reader, cp, 4, 12);
+        int height4 = getHeightAt(type, reader, cp, 12, 12);
         return (height0 + height1 + height2 + height3 + height4) / 5;
     }
 
-    private int getHeightAt(WorldGenLevel reader, ChunkPos cp, int dx, int dz) {
-        int height = reader.getHeight(Heightmap.Types.WORLD_SURFACE, cp.getMinBlockX() + dx, cp.getMinBlockZ() + dz);
-        if (height <= 1 || height > 250) {
+    private int getHeightAt(TerrainType type, WorldGenLevel reader, ChunkPos cp, int dx, int dz) {
+        int height;
+        if (type == TerrainType.CAVERN) {
+            height = (reader.getMinBuildHeight() + reader.getMaxBuildHeight())/2;
+            ChunkAccess chunk = reader.getChunk(cp.x, cp.z);
+            BlockPos.MutableBlockPos mpos = new BlockPos.MutableBlockPos(dx, 0, dz);
+            while (height > reader.getMinBuildHeight() && chunk.getBlockState(mpos.setY(height)).isAir()) {
+                height--;
+            }
+        } else {
+            height = reader.getHeight(Heightmap.Types.WORLD_SURFACE, cp.getMinBlockX() + dx, cp.getMinBlockZ() + dz);
+        }
+        if (height <= reader.getMinBuildHeight()+2 || height > reader.getMaxBuildHeight()-10) {
             height = 65;
         }
         return height;
