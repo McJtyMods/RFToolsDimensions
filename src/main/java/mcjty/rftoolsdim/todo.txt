@@ -1,2 +1,7 @@
-- Biome category dimlets
 - Biome dictionary dimlets
+- Fix dimension builder renderer
+- Terrain types:
+    - Maze
+    - Rooms
+- Improve placement of dimlet huts
+

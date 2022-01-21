@@ -47,7 +47,7 @@ public class GridGenerator {
         return CompletableFuture.completedFuture(chunkAccess);
     }
 
-    public static int getBaseHeightGrid(int pX, int pZ, LevelHeightAccessor level) {
+    public static int getBaseHeight(int pX, int pZ, LevelHeightAccessor level) {
         if (pX % 32 == 0 && pZ % 32 == 0) {
             return level.getMaxBuildHeight()-1;
         } else if (pX % 32 == 0 || pZ % 32 == 0) {
@@ -58,9 +58,9 @@ public class GridGenerator {
     }
 
     @NotNull
-    public static NoiseColumn getBaseColumnGrid(int pX, int pZ, LevelHeightAccessor level, RFToolsChunkGenerator generator) {
+    public static NoiseColumn getBaseColumn(int pX, int pZ, LevelHeightAccessor level, RFToolsChunkGenerator generator) {
         // @todo not entirely correct
-        BlockState[] states = new BlockState[getBaseHeightGrid(pX, pZ, level)];
+        BlockState[] states = new BlockState[getBaseHeight(pX, pZ, level)];
         Arrays.fill(states, generator.getDefaultBlock());
         return new NoiseColumn(level.getMinBuildHeight(), states);
     }

@@ -7,10 +7,7 @@ import mcjty.rftoolsdim.dimension.noisesettings.NoiseGeneratorSettingsBuilder;
 import mcjty.rftoolsdim.dimension.noisesettings.NoiseSamplingSettingsBuilder;
 import mcjty.rftoolsdim.dimension.noisesettings.NoiseSettingsBuilder;
 import mcjty.rftoolsdim.dimension.noisesettings.NoiseSliderBuilder;
-import mcjty.rftoolsdim.dimension.terraintypes.generators.FlatGenerator;
-import mcjty.rftoolsdim.dimension.terraintypes.generators.GridGenerator;
-import mcjty.rftoolsdim.dimension.terraintypes.generators.PlatformsGenerator;
-import mcjty.rftoolsdim.dimension.terraintypes.generators.WavesGenerator;
+import mcjty.rftoolsdim.dimension.terraintypes.generators.*;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.RegistryLookupCodec;
 import net.minecraft.server.level.WorldGenRegion;
@@ -109,11 +106,12 @@ public class RFToolsChunkGenerator extends NoiseBasedChunkGenerator {
     public CompletableFuture<ChunkAccess> fillFromNoise(Executor executor, Blender blender, StructureFeatureManager structureFeatureManager, ChunkAccess chunkAccess) {
         TerrainType terrainType = dimensionSettings.getCompiledDescriptor().getTerrainType();
         return switch (terrainType) {
-            case FLAT -> FlatGenerator.fillFromNoiseFlat(chunkAccess, this);
+            case FLAT -> FlatGenerator.fillFromNoise(chunkAccess, this);
             case VOID -> CompletableFuture.completedFuture(chunkAccess);
-            case WAVES -> WavesGenerator.fillFromNoiseWaves(chunkAccess, this);
+            case WAVES -> WavesGenerator.fillFromNoise(chunkAccess, this);
+            case SPIKES -> SpikesGenerator.fillFromNoise(chunkAccess, this);
             case GRID -> GridGenerator.fillFromNoiseGrid(chunkAccess, this);
-            case PLATFORMS -> PlatformsGenerator.fillFromNoisePlatforms(chunkAccess, this);
+            case PLATFORMS -> PlatformsGenerator.fillFromNoise(chunkAccess, this);
             default -> super.fillFromNoise(executor, blender, structureFeatureManager, chunkAccess);
         };
     }
@@ -125,8 +123,9 @@ public class RFToolsChunkGenerator extends NoiseBasedChunkGenerator {
             case FLAT -> FlatGenerator.FLATHEIGHT-1;
             case VOID -> level.getMinBuildHeight();
             case WAVES -> WavesGenerator.calculateWaveHeight(pX, pZ);
-            case GRID -> GridGenerator.getBaseHeightGrid(pX, pZ, level);
-            case PLATFORMS -> PlatformsGenerator.getBaseHeightPlatforms(pX, pZ, level, this);
+            case SPIKES -> SpikesGenerator.calculateSpikeHeight(pX, pZ, seed);
+            case GRID -> GridGenerator.getBaseHeight(pX, pZ, level);
+            case PLATFORMS -> PlatformsGenerator.getBaseHeight(pX, pZ, level, this);
             default -> super.getBaseHeight(pX, pZ, type, level);
         };
     }
@@ -135,11 +134,12 @@ public class RFToolsChunkGenerator extends NoiseBasedChunkGenerator {
     public NoiseColumn getBaseColumn(int pX, int pZ, LevelHeightAccessor level) {
         TerrainType terrainType = dimensionSettings.getCompiledDescriptor().getTerrainType();
         return switch (terrainType) {
-            case FLAT -> FlatGenerator.getBaseColumnFlat(pX, pZ, level, this);
+            case FLAT -> FlatGenerator.getBaseColumn(pX, pZ, level, this);
             case VOID -> new NoiseColumn(level.getMinBuildHeight(), new BlockState[0]);
-            case WAVES -> WavesGenerator.getBaseColumnWaves(pX, pZ, level, this);
-            case GRID -> GridGenerator.getBaseColumnGrid(pX, pZ, level, this);
-            case PLATFORMS -> PlatformsGenerator.getBaseColumnPlatforms(pX, pZ, level, this);
+            case WAVES -> WavesGenerator.getBaseColumn(pX, pZ, level, this);
+            case SPIKES -> SpikesGenerator.getBaseColumn(pX, pZ, level, this);
+            case GRID -> GridGenerator.getBaseColumn(pX, pZ, level, this);
+            case PLATFORMS -> PlatformsGenerator.getBaseColumn(pX, pZ, level, this);
             default -> super.getBaseColumn(pX, pZ, level);
         };
     }

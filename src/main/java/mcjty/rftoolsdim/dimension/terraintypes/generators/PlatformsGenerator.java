@@ -16,7 +16,7 @@ import java.util.Random;
 import java.util.concurrent.CompletableFuture;
 
 public class PlatformsGenerator {
-    public static CompletableFuture<ChunkAccess> fillFromNoisePlatforms(ChunkAccess chunkAccess, RFToolsChunkGenerator generator) {
+    public static CompletableFuture<ChunkAccess> fillFromNoise(ChunkAccess chunkAccess, RFToolsChunkGenerator generator) {
         ChunkPos chunkpos = chunkAccess.getPos();
 
         BlockPos.MutableBlockPos mpos = new BlockPos.MutableBlockPos();
@@ -62,7 +62,7 @@ public class PlatformsGenerator {
         return random.nextInt(accessor.getMaxBuildHeight() - accessor.getMinBuildHeight() - 100) + accessor.getMinBuildHeight() + 40;
     }
 
-    public static int getBaseHeightPlatforms(int pX, int pZ, LevelHeightAccessor level, RFToolsChunkGenerator generator) {
+    public static int getBaseHeight(int pX, int pZ, LevelHeightAccessor level, RFToolsChunkGenerator generator) {
         int cx = SectionPos.blockToSectionCoord(pX);
         int cz = SectionPos.blockToSectionCoord(pZ);
         int curheight = 0;
@@ -97,9 +97,9 @@ public class PlatformsGenerator {
     }
 
     @NotNull
-    public static NoiseColumn getBaseColumnPlatforms(int pX, int pZ, LevelHeightAccessor level, RFToolsChunkGenerator generator) {
+    public static NoiseColumn getBaseColumn(int pX, int pZ, LevelHeightAccessor level, RFToolsChunkGenerator generator) {
         // @todo not entirely correct
-        BlockState[] states = new BlockState[getBaseHeightPlatforms(pX, pZ, level, generator)];
+        BlockState[] states = new BlockState[getBaseHeight(pX, pZ, level, generator)];
         Arrays.fill(states, generator.getDefaultBlock());
         return new NoiseColumn(level.getMinBuildHeight(), states);
     }

@@ -367,6 +367,19 @@
     }
   },
   {
+    "type": "terrain",
+    "key": "spikes",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 10,
+    "worldgen": true,
+    "dimlet": true,
+    "essence": {
+      "item": "minecraft:dripstone_block"
+    }
+  },
+  {
     "type": "biome_category",
     "key": "none",
     "rarity": "common",

@@ -17,7 +17,7 @@ public class FlatGenerator {
     public static final int FLATHEIGHT = 120;
 
     @NotNull
-    public static CompletableFuture<ChunkAccess> fillFromNoiseFlat(ChunkAccess chunkAccess, RFToolsChunkGenerator generator) {
+    public static CompletableFuture<ChunkAccess> fillFromNoise(ChunkAccess chunkAccess, RFToolsChunkGenerator generator) {
         BlockPos.MutableBlockPos mpos = new BlockPos.MutableBlockPos();
         Heightmap heightmap = chunkAccess.getOrCreateHeightmapUnprimed(Heightmap.Types.OCEAN_FLOOR_WG);
         Heightmap heightmap1 = chunkAccess.getOrCreateHeightmapUnprimed(Heightmap.Types.WORLD_SURFACE_WG);
@@ -36,7 +36,7 @@ public class FlatGenerator {
     }
 
     @NotNull
-    public static NoiseColumn getBaseColumnFlat(int pX, int pZ, LevelHeightAccessor level, RFToolsChunkGenerator generator) {
+    public static NoiseColumn getBaseColumn(int pX, int pZ, LevelHeightAccessor level, RFToolsChunkGenerator generator) {
         BlockState[] states = new BlockState[FLATHEIGHT -1];
         Arrays.fill(states, generator.getDefaultBlock());
         return new NoiseColumn(level.getMinBuildHeight(), states);
