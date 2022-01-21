@@ -26,6 +26,8 @@
   "item.rftoolsdim.empty_time_dimlet": "Empty Time Dimlet",
   "item.rftoolsdim.biome_controller_dimlet": "Biome Controller Dimlet",
   "item.rftoolsdim.empty_biome_controller_dimlet": "Empty Biome Controller Dimlet",
+  "item.rftoolsdim.biome_category_dimlet": "Biome Category Dimlet",
+  "item.rftoolsdim.empty_biome_category_dimlet": "Empty Biome Category Dimlet",
   "item.rftoolsdim.biome_dimlet": "Biome Dimlet",
   "item.rftoolsdim.empty_biome_dimlet": "Empty Biome Dimlet",
   "item.rftoolsdim.feature_dimlet": "Feature Dimlet",

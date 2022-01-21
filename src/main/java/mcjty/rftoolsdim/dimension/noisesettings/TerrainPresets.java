@@ -76,7 +76,7 @@ public class TerrainPresets {
 
     public static void init() {
         NoiseGeneratorSettings.register(RFTOOLSDIM_CHAOTIC, chaotic());
-        NoiseGeneratorSettings.register(RFTOOLSDIM_ISLANDS, test());
+        NoiseGeneratorSettings.register(RFTOOLSDIM_ISLANDS, islands());
         NoiseGeneratorSettings.register(RFTOOLSDIM_CAVERN, cavern());
     }
 
@@ -95,24 +95,30 @@ public class TerrainPresets {
 
     private static NoiseGeneratorSettings islands() {
 
+        /*
+    SamplingSettings:   xzfactor=80.0  yfactor=160.0  xzscale=2.0  yscale=0.5
+    TopSlider:  toptarget=-23.0  topsize=64  topoffset=-30
+    BottomSlider:  bottomtarget=-5.0  bottomsize=7  bottomoffset=20
+    horizontal=2  vertical=1
+         */
         return NoiseGeneratorSettingsBuilder.create()
                 .seaLevel(-64)
                 .noiseSettings(NoiseSettingsBuilder.create()
                         .minY(0)
                         .height(256)
                         .samplingSettings(NoiseSamplingSettingsBuilder.create()
-                                .xzScale(2.0d)
-                                .yScale(1.0d)
-                                .xzFactor(80.0d)
+                                .xzScale(3d)
+                                .yScale(3d)
+                                .xzFactor(50.0d)
                                 .yFactor(160.0d))
                         .topSlider(NoiseSliderBuilder.create()
-                                .top(-23.4375D)
+                                .top(-20D)
                                 .size(64)
-                                .offset(-46))
+                                .offset(-30))
                         .bottomSlider(NoiseSliderBuilder.create()
-                                .top(-0.234375D)
+                                .top(-1)
                                 .size(7)
-                                .offset(1))
+                                .offset(20))
                         .noiseSizeHorizontal(2)
                         .noiseSizeVertical(1)
                         .islandNoiseOverride(false)
