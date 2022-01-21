@@ -8,6 +8,7 @@ import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.modules.dimensionbuilder.DimensionBuilderModule;
 import mcjty.rftoolsdim.modules.dimensionbuilder.blocks.DimensionBuilderTileEntity;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
@@ -45,7 +46,7 @@ public class DimensionBuilderRenderer implements BlockEntityRenderer<DimensionBu
                 RenderHelper.renderBillboardQuadBright(matrixStack, buffer, 0.5f, STAGES, RenderSettings.builder()
                         .color(r, g, b)
                         .renderType(CustomRenderTypes.TRANSLUCENT_LIGHTNING_NOLIGHTMAPS)
-//                        .renderType(RenderType.getTranslucent())
+                        .renderType(RenderType.translucent())
                         .alpha(128)
                         .build());
                 matrixStack.popPose();
