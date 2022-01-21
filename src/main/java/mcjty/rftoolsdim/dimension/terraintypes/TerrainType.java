@@ -24,7 +24,7 @@ public enum TerrainType {
     private final String name;
     private final KnowledgeSet set;
     private final ResourceKey<NoiseGeneratorSettings> noiseSettings;
-    private final boolean voidLike;
+    private final boolean voidLike;         // World without bedrock layer
 
     private static final Map<String, TerrainType> TERRAIN_BY_NAME = new HashMap<>();
 

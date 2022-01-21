@@ -45,6 +45,7 @@ public class RFTBiomeProvider extends BiomeSource {
         biomeCategories = getBiomeCategories(settings);
 
         defaultBiomes = biomes.isEmpty() && biomeCategories.isEmpty();
+        biomeRegistry.stream().forEach(this::getMappedBiome);
     }
 
     public DimensionSettings getSettings() {

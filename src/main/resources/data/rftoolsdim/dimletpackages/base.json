@@ -186,15 +186,15 @@
   },
   {
     "type": "attribute",
-    "key": "nobedrock",
-    "rarity": "uncommon",
+    "key": "waterworld",
+    "rarity": "common",
     "create": 10,
     "maintain": 10,
     "ticks": 10,
     "worldgen": true,
     "dimlet": true,
     "essence": {
-      "item": "minecraft:obsidian"
+      "item": "minecraft:water_bucket"
     }
   },
   {
@@ -208,45 +208,6 @@
     "dimlet": true,
     "essence": {
       "item": "rftoolsdim:common_essence"
-    }
-  },
-  {
-    "type": "attribute",
-    "key": "nobiomesurface",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true,
-    "essence": {
-      "item": "minecraft:dirt"
-    }
-  },
-  {
-    "type": "attribute",
-    "key": "flatter",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true,
-    "essence": {
-      "item": "minecraft:stone_pressure_plate"
-    }
-  },
-  {
-    "type": "attribute",
-    "key": "elevated",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true,
-    "essence": {
-      "item": "minecraft:white_wool"
     }
   },
   {

@@ -1,0 +1,54 @@
+[
+  {
+    "type": "attribute",
+    "key": "flatter",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 10,
+    "worldgen": false,
+    "dimlet": false,
+    "essence": {
+      "item": "minecraft:stone_pressure_plate"
+    }
+  },
+  {
+    "type": "attribute",
+    "key": "elevated",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 10,
+    "worldgen": false,
+    "dimlet": false,
+    "essence": {
+      "item": "minecraft:white_wool"
+    }
+  },
+  {
+    "type": "attribute",
+    "key": "nobedrock",
+    "rarity": "uncommon",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 10,
+    "worldgen": false,
+    "dimlet": false,
+    "essence": {
+      "item": "minecraft:obsidian"
+    }
+  },
+  {
+    "type": "attribute",
+    "key": "nobiomesurface",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 10,
+    "worldgen": false,
+    "dimlet": false,
+    "essence": {
+      "item": "minecraft:dirt"
+    }
+  }
+]

@@ -90,8 +90,8 @@ public class DimensionManager {
                 return null;
             }
             ChunkGenerator generator = world.getChunkSource().getGenerator();
-            if (generator instanceof RFToolsChunkGenerator rfToolsChunkGenerator) {
-                CompiledDescriptor compiledDescriptor = rfToolsChunkGenerator.getDimensionSettings().getCompiledDescriptor();
+            if (generator instanceof RFToolsChunkGenerator rftoolsGenerator) {
+                CompiledDescriptor compiledDescriptor = rftoolsGenerator.getDimensionSettings().getCompiledDescriptor();
                 compiledDescriptorMap.put(id, compiledDescriptor);
             } else {
                 RFToolsDim.setup.getLogger().error(id.toString() + " is not a dimension managed by us!");
@@ -190,9 +190,7 @@ public class DimensionManager {
                     var noiseSettings = adapt(noiseSettingsIn, settings);
                     ChunkGenerator generator = new RFToolsChunkGenerator(registryAccess.registryOrThrow(Registry.NOISE_REGISTRY),
                             new RFTBiomeProvider(registryAccess.registryOrThrow(Registry.BIOME_REGISTRY), settings),
-//                            MultiNoiseBiomeSource.Preset.OVERWORLD.biomeSource(registryAccess.registryOrThrow(Registry.BIOME_REGISTRY)),
-                            seed,
-                            () -> noiseSettings, settings);
+                            seed, () -> noiseSettings, settings);
                     return new LevelStem(() -> type, generator);
                 });
 
@@ -205,9 +203,18 @@ public class DimensionManager {
     private NoiseGeneratorSettings adapt(NoiseGeneratorSettings in, DimensionSettings settings) {
         NoiseGeneratorSettingsBuilder builder = NoiseGeneratorSettingsBuilder.create(in);
         CompiledDescriptor compiledDescriptor = settings.getCompiledDescriptor();
+
         if (compiledDescriptor.getAttributeTypes().contains(AttributeType.NOOCEANS)) {
             builder.seaLevel(-64);
         }
+        if (compiledDescriptor.getAttributeTypes().contains(AttributeType.WATERWORLD)) {
+            builder.seaLevel(200);
+        }
+        if (compiledDescriptor.getTerrainType().isVoidLike()) {
+            // No oceans on void style levels
+            builder.seaLevel(-64);
+        }
+
         if (!compiledDescriptor.getBaseBlocks().isEmpty()) {
             builder.baseBlock(compiledDescriptor.getBaseBlocks().get(0));
         }

@@ -7,11 +7,12 @@ import java.util.Map;
 
 public enum AttributeType {
     DEFAULT("default", KnowledgeSet.SET1),
-    FLATTER("flatter", KnowledgeSet.SET1),
-    ELEVATED("elevated", KnowledgeSet.SET1),
-    NOBIOMESURFACE("nobiomesurface", KnowledgeSet.SET1),
+//    FLATTER("flatter", KnowledgeSet.SET1),
+//    ELEVATED("elevated", KnowledgeSet.SET1),
+//    NOBIOMESURFACE("nobiomesurface", KnowledgeSet.SET1),
     NOOCEANS("nooceans", KnowledgeSet.SET1),
-    NOBEDROCK("nobedrock", KnowledgeSet.SET1),
+    WATERWORLD("waterworld", KnowledgeSet.SET1),
+//    NOBEDROCK("nobedrock", KnowledgeSet.SET1),
     NOBLOBS("noblobs", KnowledgeSet.SET1);
 
     private final String name;
