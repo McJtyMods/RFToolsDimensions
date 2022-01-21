@@ -9,21 +9,22 @@ import java.util.HashMap;
 import java.util.Map;
 
 public enum TerrainType {
-    FLAT("flat", KnowledgeSet.SET1, NoiseGeneratorSettings.OVERWORLD),
-    WAVES("waves", KnowledgeSet.SET1, NoiseGeneratorSettings.OVERWORLD),
-    VOID("void", KnowledgeSet.SET2, NoiseGeneratorSettings.OVERWORLD),
-    NORMAL("normal", KnowledgeSet.SET3, NoiseGeneratorSettings.OVERWORLD),
-    ISLANDS("islands", KnowledgeSet.SET4, TerrainPresets.RFTOOLSDIM_ISLANDS),
-    CAVERN("cavern", KnowledgeSet.SET5, TerrainPresets.RFTOOLSDIM_CAVERN),
-    CHAOTIC("chaotic", KnowledgeSet.SET4, TerrainPresets.RFTOOLSDIM_CHAOTIC),
-    GRID("grid", KnowledgeSet.SET2, NoiseGeneratorSettings.OVERWORLD),
-    PLATFORMS("platforms", KnowledgeSet.SET2, NoiseGeneratorSettings.OVERWORLD),
-    SPIKES("spikes", KnowledgeSet.SET4, NoiseGeneratorSettings.OVERWORLD)
+    FLAT("flat", KnowledgeSet.SET1, NoiseGeneratorSettings.OVERWORLD, false),
+    WAVES("waves", KnowledgeSet.SET1, NoiseGeneratorSettings.OVERWORLD, false),
+    VOID("void", KnowledgeSet.SET2, NoiseGeneratorSettings.OVERWORLD, true),
+    NORMAL("normal", KnowledgeSet.SET3, NoiseGeneratorSettings.OVERWORLD, false),
+    ISLANDS("islands", KnowledgeSet.SET4, TerrainPresets.RFTOOLSDIM_ISLANDS, true),
+    CAVERN("cavern", KnowledgeSet.SET5, TerrainPresets.RFTOOLSDIM_CAVERN, false),
+    CHAOTIC("chaotic", KnowledgeSet.SET4, TerrainPresets.RFTOOLSDIM_CHAOTIC, false),
+    GRID("grid", KnowledgeSet.SET2, NoiseGeneratorSettings.OVERWORLD, true),
+    PLATFORMS("platforms", KnowledgeSet.SET2, NoiseGeneratorSettings.OVERWORLD, false),
+    SPIKES("spikes", KnowledgeSet.SET4, NoiseGeneratorSettings.OVERWORLD, false)
     ;
 
     private final String name;
     private final KnowledgeSet set;
     private final ResourceKey<NoiseGeneratorSettings> noiseSettings;
+    private final boolean voidLike;
 
     private static final Map<String, TerrainType> TERRAIN_BY_NAME = new HashMap<>();
 
@@ -33,14 +34,19 @@ public enum TerrainType {
         }
     }
 
-    TerrainType(String name, KnowledgeSet set, ResourceKey<NoiseGeneratorSettings> noiseSettings) {
+    TerrainType(String name, KnowledgeSet set, ResourceKey<NoiseGeneratorSettings> noiseSettings, boolean voidLike) {
         this.name = name;
         this.set = set;
         this.noiseSettings = noiseSettings;
+        this.voidLike = voidLike;
     }
 
     public String getName() {
         return name;
+    }
+
+    public boolean isVoidLike() {
+        return voidLike;
     }
 
     public KnowledgeSet getSet() {

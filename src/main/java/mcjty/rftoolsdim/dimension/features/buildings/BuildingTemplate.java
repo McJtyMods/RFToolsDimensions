@@ -1,6 +1,7 @@
 package mcjty.rftoolsdim.dimension.features.buildings;
 
 import mcjty.rftoolsdim.dimension.features.IFeature;
+import mcjty.rftoolsdim.dimension.terraintypes.TerrainType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockState;
@@ -32,7 +33,7 @@ public class BuildingTemplate {
         FILLDOWN_IFNOTVOID
     }
 
-    public void generate(WorldGenLevel reader, BlockPos pos, List<BlockState> states, GenerateFlag flag) {
+    public void generate(TerrainType type, WorldGenLevel reader, BlockPos pos, List<BlockState> states, GenerateFlag flag) {
         switch (flag) {
             case PLAIN:
                 break;
@@ -40,7 +41,9 @@ public class BuildingTemplate {
                 fillDown(reader, pos, states);
                 break;
             case FILLDOWN_IFNOTVOID:
-                fillDownIfNotVoid(reader, pos, states);
+                if (!type.isVoidLike()) {
+                    fillDownIfNotVoid(reader, pos, states);
+                }
                 break;
         }
 

@@ -13,7 +13,6 @@ import mcjty.rftoolsdim.dimension.terraintypes.RFToolsChunkGenerator;
 import mcjty.rftoolsdim.dimension.terraintypes.TerrainType;
 import mcjty.rftoolsdim.setup.Registration;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.SectionPos;
 import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.resources.ResourceLocation;
@@ -37,7 +36,6 @@ import java.util.Set;
 public class RFTFeature extends Feature<NoneFeatureConfiguration> {
 
     public static final ResourceLocation RFTFEATURE_ID = new ResourceLocation(RFToolsDim.MODID, "rftfeature");
-    public static final ResourceLocation CONFIGURED_RFTFEATURE_ID = new ResourceLocation(RFToolsDim.MODID, "configured_rftfeature");
 
     public static PlacedFeature RFTFEATURE_CONFIGURED;
 
@@ -64,8 +62,8 @@ public class RFTFeature extends Feature<NoneFeatureConfiguration> {
         BlockPos pos = context.origin();
         Random rand = context.random();
         WorldGenLevel reader = context.level();
-        if (generator instanceof RFToolsChunkGenerator) {
-            CompiledDescriptor compiledDescriptor = ((RFToolsChunkGenerator) generator).getDimensionSettings().getCompiledDescriptor();
+        if (generator instanceof RFToolsChunkGenerator chunkGenerator) {
+            CompiledDescriptor compiledDescriptor = chunkGenerator.getDimensionSettings().getCompiledDescriptor();
             Set<CompiledFeature> features = compiledDescriptor.getFeatures();
             if (features.stream().anyMatch(f -> f.getFeatureType().equals(FeatureType.NONE))) {
                 // Inhibit all other features
@@ -87,11 +85,11 @@ public class RFTFeature extends Feature<NoneFeatureConfiguration> {
                 // Spawn platform
                 int floorHeight = getFloorHeight(terrainType, reader, cp);
                 DimensionManager.get().registerPlatformHeight(reader.getLevel().dimension().location(), floorHeight);
-                SpawnPlatform.SPAWN_PLATFORM.get().generate(reader, new BlockPos(3, floorHeight, 3),
+                SpawnPlatform.SPAWN_PLATFORM.get().generate(terrainType, reader, new BlockPos(3, floorHeight, 3),
                         compiledDescriptor.getBaseBlocks(), BuildingTemplate.GenerateFlag.PLAIN);
                 generatedSomething = true;
             } else if (rand.nextFloat() < DimensionConfig.DIMLET_HUT_CHANCE.get()) {
-                DimletHut.DIMLET_HUT.get().generate(reader, new BlockPos(cp.getMinBlockX() + 4, getFloorHeight(terrainType, reader, cp),cp.getMinBlockZ() + 4),
+                DimletHut.DIMLET_HUT.get().generate(terrainType, reader, new BlockPos(cp.getMinBlockX() + 4, getFloorHeight(terrainType, reader, cp),cp.getMinBlockZ() + 4),
                         compiledDescriptor.getBaseBlocks(), BuildingTemplate.GenerateFlag.FILLDOWN_IFNOTVOID);
                 generatedSomething = true;
             }
