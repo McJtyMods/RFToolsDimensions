@@ -2,12 +2,12 @@ package mcjty.rftoolsdim.setup;
 
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.dimension.data.DimensionData;
-import mcjty.rftoolsdim.dimension.data.DimensionManager;
 import mcjty.rftoolsdim.dimension.data.PersistantDimensionManager;
 import mcjty.rftoolsdim.dimension.descriptor.CompiledDescriptor;
 import mcjty.rftoolsdim.dimension.features.RFTFeature;
 import mcjty.rftoolsdim.dimension.power.PowerHandler;
 import mcjty.rftoolsdim.dimension.terraintypes.AttributeType;
+import mcjty.rftoolsdim.dimension.terraintypes.RFToolsChunkGenerator;
 import mcjty.rftoolsdim.modules.blob.entities.DimensionalBlobEntity;
 import mcjty.rftoolsdim.modules.blob.tools.Spawner;
 import mcjty.rftoolsdim.modules.dimlets.DimletConfig;
@@ -55,10 +55,16 @@ public class ForgeEventHandlers {
     }
 
     private void handleSpawning(TickEvent.WorldTickEvent event) {
-        if (RFToolsDim.MODID.equals(event.world.dimension().location().getNamespace())) {
+        if (event.world.isClientSide) {
+            return;
+        }
+        ServerLevel serverWorld = (ServerLevel) event.world;
+        if (serverWorld.players().isEmpty()) {
+            return;
+        }
+        if (serverWorld.getChunkSource().getGenerator() instanceof RFToolsChunkGenerator chunkGenerator) {
             if (random.nextInt(20) == 10) {
-                ServerLevel serverWorld = (ServerLevel) event.world;
-                CompiledDescriptor compiledDescriptor = DimensionManager.get().getCompiledDescriptor(serverWorld);
+                CompiledDescriptor compiledDescriptor = chunkGenerator.getDimensionSettings().getCompiledDescriptor();
                 DimensionData data = PersistantDimensionManager.get(serverWorld).getData(serverWorld.dimension().location());
                 if (!compiledDescriptor.getAttributeTypes().contains(AttributeType.NOBLOBS)) {
                     int count = 0;
@@ -81,7 +87,7 @@ public class ForgeEventHandlers {
     }
 
     @SubscribeEvent
-    public void onWorldLoad(ServerStartedEvent event) {
+    public void onServerStarted(ServerStartedEvent event) {
         RFToolsDim.setup.getLogger().info("Reading dimlet packages: ");
         DimletDictionary.get().reset();
         for (String file : DimletConfig.DIMLET_PACKAGES.get()) {

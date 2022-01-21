@@ -74,7 +74,7 @@ public class Spawner {
         BlockPos blockPos = new BlockPos(x, height-1, z);
         while (!isValidSpawnPos(worldIn, blockPos)) {
             blockPos = blockPos.below();
-            if (blockPos.getY() <= 1) {
+            if (blockPos.getY() <= worldIn.getMinBuildHeight()+1) {
                 return null;
             }
         }

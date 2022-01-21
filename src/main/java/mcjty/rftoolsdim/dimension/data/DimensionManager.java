@@ -90,8 +90,8 @@ public class DimensionManager {
                 return null;
             }
             ChunkGenerator generator = world.getChunkSource().getGenerator();
-            if (generator instanceof RFToolsChunkGenerator) {
-                CompiledDescriptor compiledDescriptor = ((RFToolsChunkGenerator) generator).getDimensionSettings().getCompiledDescriptor();
+            if (generator instanceof RFToolsChunkGenerator rfToolsChunkGenerator) {
+                CompiledDescriptor compiledDescriptor = rfToolsChunkGenerator.getDimensionSettings().getCompiledDescriptor();
                 compiledDescriptorMap.put(id, compiledDescriptor);
             } else {
                 RFToolsDim.setup.getLogger().error(id.toString() + " is not a dimension managed by us!");
