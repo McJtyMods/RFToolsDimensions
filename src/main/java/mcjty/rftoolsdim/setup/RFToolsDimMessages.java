@@ -3,7 +3,6 @@ package mcjty.rftoolsdim.setup;
 import mcjty.lib.network.PacketHandler;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.dimension.network.PackagePropageDataToClients;
-import mcjty.rftoolsdim.dimension.network.PacketDimensionUpdate;
 import mcjty.rftoolsdim.dimension.tools.PacketSyncDimensionListChanges;
 import mcjty.rftoolsdim.modules.dimlets.network.PacketSendDimletPackages;
 import mcjty.rftoolsdim.modules.workbench.network.PacketPatternToClient;
@@ -29,7 +28,6 @@ public class RFToolsDimMessages {
 
         INSTANCE = net;
 
-        net.registerMessage(id(), PacketDimensionUpdate.class, PacketDimensionUpdate::toBytes, PacketDimensionUpdate::new, PacketDimensionUpdate::handle);
         net.registerMessage(id(), PacketSendDimletPackages.class, PacketSendDimletPackages::toBytes, PacketSendDimletPackages::new, PacketSendDimletPackages::handle);
         net.registerMessage(id(), PacketPatternToClient.class, PacketPatternToClient::toBytes, PacketPatternToClient::new, PacketPatternToClient::handle);
         net.registerMessage(id(), PackagePropageDataToClients.class, PackagePropageDataToClients::toBytes, PackagePropageDataToClients::new, PackagePropageDataToClients::handle);

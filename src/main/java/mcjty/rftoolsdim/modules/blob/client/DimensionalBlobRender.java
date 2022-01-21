@@ -44,7 +44,6 @@ public class DimensionalBlobRender extends LivingEntityRenderer<DimensionalBlobE
 
     @Override
     protected void scale(DimensionalBlobEntity entitylivingbaseIn, PoseStack matrixStackIn, float partialTickTime) {
-        float f = 0.999F;
         matrixStackIn.scale(0.999F, 0.999F, 0.999F);
         matrixStackIn.translate(0.0D, 0.301F, 0.0D);
         float f1 = 2.0f * entitylivingbaseIn.getScale();

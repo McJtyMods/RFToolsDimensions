@@ -11,15 +11,7 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import java.util.List;
 import java.util.Random;
 
-public class SphereFeature implements IFeature {
-
-    private final boolean hollow;
-    private final boolean liquid;
-
-    public SphereFeature(boolean hollow, boolean liquid) {
-        this.hollow = hollow;
-        this.liquid = liquid;
-    }
+public record SphereFeature(boolean hollow, boolean liquid) implements IFeature {
 
     @Override
     public boolean generate(WorldGenLevel reader, ChunkGenerator generator, Random rand, BlockPos pos,
@@ -62,16 +54,16 @@ public class SphereFeature implements IFeature {
         double sqradius = radius * radius;
 
         BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
-        for (int x = 0 ; x < 16 ; x++) {
-            double dxdx = (x-centerx) * (x-centerx);
-            for (int z = 0 ; z < 16 ; z++) {
-                double dzdz = (z-centerz) * (z-centerz);
-                for (int y = centery-radius ; y <= centery+radius ; y++) {
-                    double dydy = (y-centery) * (y-centery);
+        for (int x = 0; x < 16; x++) {
+            double dxdx = (x - centerx) * (x - centerx);
+            for (int z = 0; z < 16; z++) {
+                double dzdz = (z - centerz) * (z - centerz);
+                for (int y = centery - radius; y <= centery + radius; y++) {
+                    double dydy = (y - centery) * (y - centery);
                     double sqdist = dxdx + dydy + dzdz;
                     if (sqdist <= sqradius) {
                         pos.set(chunkX * 16 + x, y, chunkZ * 16 + z);
-                        if ((!hollow) || Math.sqrt(sqdist) >= radius-2) {
+                        if ((!hollow) || Math.sqrt(sqdist) >= radius - 2) {
                             world.setBlock(pos, IFeature.select(states, random), 0);
                         } else {
                             world.setBlock(pos, filler, 0);

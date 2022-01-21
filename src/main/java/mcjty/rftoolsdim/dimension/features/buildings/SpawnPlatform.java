@@ -9,11 +9,11 @@ public class SpawnPlatform extends BuildingTemplate {
     public static final Lazy<SpawnPlatform> SPAWN_PLATFORM = Lazy.of(SpawnPlatform::new);
 
     public SpawnPlatform() {
-        addPalette('_', Blocks.COMMAND_BLOCK.defaultBlockState());
-        addPalette('#', DecorativeModule.DIMENSIONAL_SMALL_BLOCK.get().defaultBlockState());
-        addPalette('.', DecorativeModule.DIMENSIONAL_BLANK.get().defaultBlockState());
-        addPalette('*', Blocks.GLOWSTONE.defaultBlockState());
-        addPalette(' ', Blocks.AIR.defaultBlockState());
+        palette('_', Blocks.COMMAND_BLOCK);
+        palette('#', DecorativeModule.DIMENSIONAL_SMALL_BLOCK);
+        palette('.', DecorativeModule.DIMENSIONAL_BLANK);
+        palette('*', Blocks.GLOWSTONE);
+        palette(' ', Blocks.AIR);
 
         slice()
                 .row("###########")

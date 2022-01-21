@@ -14,17 +14,17 @@ public class DimletHut extends BuildingTemplate {
     public static final Lazy<DimletHut> DIMLET_HUT = Lazy.of(DimletHut::new);
 
     public DimletHut() {
-        addPalette('#', DecorativeModule.DIMENSIONAL_SMALL_BLOCK.get().defaultBlockState());
-        addPalette('+', DecorativeModule.DIMENSIONAL_BLOCK.get().defaultBlockState());
-        addPalette('X', DecorativeModule.DIMENSIONAL_PATTERN2_BLOCK.get().defaultBlockState());
-        addPalette('.', DecorativeModule.DIMENSIONAL_BLANK.get().defaultBlockState());
-        addPalette('*', Blocks.GLOWSTONE.defaultBlockState());
-        addPalette('1', Blocks.LIGHT_BLUE_STAINED_GLASS.defaultBlockState());
-        addPalette(' ', Blocks.AIR.defaultBlockState());
-        addPalette('D', Blocks.IRON_DOOR.defaultBlockState().setValue(DoorBlock.HALF, DoubleBlockHalf.LOWER));
-        addPalette('d', Blocks.IRON_DOOR.defaultBlockState().setValue(DoorBlock.HALF, DoubleBlockHalf.UPPER));
-        addPalette('_', Blocks.STONE_PRESSURE_PLATE.defaultBlockState());
-        addPalette('C', (reader, pos) -> {
+        palette('#', DecorativeModule.DIMENSIONAL_SMALL_BLOCK);
+        palette('+', DecorativeModule.DIMENSIONAL_BLOCK);
+        palette('X', DecorativeModule.DIMENSIONAL_PATTERN2_BLOCK);
+        palette('.', DecorativeModule.DIMENSIONAL_BLANK);
+        palette('*', Blocks.GLOWSTONE);
+        palette('1', Blocks.LIGHT_BLUE_STAINED_GLASS);
+        palette(' ', Blocks.AIR);
+        palette('D', Blocks.IRON_DOOR.defaultBlockState().setValue(DoorBlock.HALF, DoubleBlockHalf.LOWER));
+        palette('d', Blocks.IRON_DOOR.defaultBlockState().setValue(DoorBlock.HALF, DoubleBlockHalf.UPPER));
+        palette('_', Blocks.STONE_PRESSURE_PLATE);
+        palette('C', (reader, pos) -> {
             reader.setBlock(pos, Blocks.CHEST.defaultBlockState(), 0);
             BlockEntity te = reader.getBlockEntity(pos);
             if (te instanceof ChestBlockEntity) {

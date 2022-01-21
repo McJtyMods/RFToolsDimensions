@@ -2,12 +2,12 @@ package mcjty.rftoolsdim.dimension.features.instances;
 
 import mcjty.lib.varia.MathTools;
 import mcjty.rftoolsdim.dimension.features.IFeature;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.ChunkPos;
 import net.minecraft.util.Mth;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 
 import java.util.List;
@@ -17,10 +17,6 @@ public class TendrilsFeature implements IFeature {
 
     private final int range = 8;
     private final Random rand = new Random();
-
-    public TendrilsFeature() {
-
-    }
 
     private void generateTendril(long seed, int chunkX, int chunkZ, WorldGenLevel primer, double dx, double dy, double dz, float p_151541_12_, float p_151541_13_, float p_151541_14_, int p_151541_15_, int p_151541_16_, double p_151541_17_,
                                  List<BlockState> states) {
@@ -213,6 +209,4 @@ public class TendrilsFeature implements IFeature {
             }
         }
     }
-
-
 }

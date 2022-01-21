@@ -11,15 +11,7 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import java.util.List;
 import java.util.Random;
 
-public class CubeFeature implements IFeature {
-
-    private final boolean hollow;
-    private final boolean liquid;
-
-    public CubeFeature(boolean hollow, boolean liquid) {
-        this.hollow = hollow;
-        this.liquid = liquid;
-    }
+public record CubeFeature(boolean hollow, boolean liquid) implements IFeature {
 
     @Override
     public boolean generate(WorldGenLevel reader, ChunkGenerator generator, Random rand, BlockPos pos,
@@ -51,7 +43,7 @@ public class CubeFeature implements IFeature {
 
     private void generate(WorldGenLevel world, int chunkX, int chunkZ, int dx, int dz,
                           List<BlockState> states, BlockState filler, long prime) {
-        Random random = new Random(world.getSeed() + (chunkZ+dz) * prime + (chunkX+dx) * 899809363L);
+        Random random = new Random(world.getSeed() + (chunkZ + dz) * prime + (chunkX + dx) * 899809363L);
         random.nextFloat();
         int radius = random.nextInt(12) + 9;
         int centery = random.nextInt(60) + 40;
@@ -60,7 +52,7 @@ public class CubeFeature implements IFeature {
         int centerz = 8 + (dz) * 16;
 
         BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
-        for (int x = 0 ; x < 16 ; x++) {
+        for (int x = 0; x < 16; x++) {
             int xdist = Math.abs(x - centerx);
             if (xdist <= radius) {
                 for (int z = 0; z < 16; z++) {

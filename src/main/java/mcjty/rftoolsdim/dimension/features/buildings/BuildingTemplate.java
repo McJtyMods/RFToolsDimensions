@@ -4,6 +4,7 @@ import mcjty.rftoolsdim.dimension.features.IFeature;
 import mcjty.rftoolsdim.dimension.terraintypes.TerrainType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
+import java.util.function.Supplier;
 
 public class BuildingTemplate {
 
@@ -19,12 +21,24 @@ public class BuildingTemplate {
 
     private final List<Slice> slices = new ArrayList<>();
 
-    public void addPalette(Character key, BlockState state) {
+    public BuildingTemplate palette(Character key, BlockState state) {
         palette.put(key, state);
+        return this;
     }
 
-    public void addPalette(Character key, BiConsumer<WorldGenLevel, BlockPos> consumer) {
+    public BuildingTemplate palette(Character key, Block block) {
+        palette.put(key, block.defaultBlockState());
+        return this;
+    }
+
+    public BuildingTemplate palette(Character key, Supplier<Block> block) {
+        palette.put(key, block.get().defaultBlockState());
+        return this;
+    }
+
+    public BuildingTemplate palette(Character key, BiConsumer<WorldGenLevel, BlockPos> consumer) {
         paletteSpecial.put(key, consumer);
+        return this;
     }
 
     public enum GenerateFlag {
