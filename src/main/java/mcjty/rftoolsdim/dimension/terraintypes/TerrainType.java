@@ -17,7 +17,7 @@ public enum TerrainType {
     CAVERN("cavern", KnowledgeSet.SET5, TerrainPresets.RFTOOLSDIM_CAVERN, false),
     CHAOTIC("chaotic", KnowledgeSet.SET4, TerrainPresets.RFTOOLSDIM_CHAOTIC, false),
     GRID("grid", KnowledgeSet.SET2, NoiseGeneratorSettings.OVERWORLD, true),
-    PLATFORMS("platforms", KnowledgeSet.SET2, NoiseGeneratorSettings.OVERWORLD, false),
+    PLATFORMS("platforms", KnowledgeSet.SET2, NoiseGeneratorSettings.OVERWORLD, true),
     SPIKES("spikes", KnowledgeSet.SET4, NoiseGeneratorSettings.OVERWORLD, false)
     ;
 
