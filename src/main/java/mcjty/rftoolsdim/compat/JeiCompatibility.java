@@ -45,7 +45,7 @@ public class JeiCompatibility implements IModPlugin {
         @Override
         public String apply(ItemStack ingredient, UidContext context) {
             DimletKey key = DimletTools.getDimletKey(ingredient);
-            return key == null ? "null" : key.getKey();
+            return key == null ? "null" : key.key();
         }
     }
 }

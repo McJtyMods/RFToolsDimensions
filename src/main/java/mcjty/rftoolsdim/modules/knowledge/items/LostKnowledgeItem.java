@@ -48,8 +48,8 @@ public class LostKnowledgeItem extends Item implements ITooltipSettings {
         CompoundTag tag = stack.getTag();
         if (tag != null && tag.contains("pattern")) {
             String pattern = tag.getString("pattern");
-            KnowledgeKey kkey = new KnowledgeKey(pattern);
-            return kkey.getRarity().name().toLowerCase() + " " + kkey.getType().name().toLowerCase();
+            KnowledgeKey kkey = KnowledgeKey.create(pattern);
+            return kkey.rarity().name().toLowerCase() + " " + kkey.type().name().toLowerCase();
         }
         return "<Unknown>";
     }
@@ -68,7 +68,7 @@ public class LostKnowledgeItem extends Item implements ITooltipSettings {
         CompoundTag tag = stack.getTag();
         if (tag != null && tag.contains("pattern")) {
             String pattern = tag.getString("pattern");
-            return new KnowledgeKey(pattern);
+            return KnowledgeKey.create(pattern);
         }
         return null;
     }

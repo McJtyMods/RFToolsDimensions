@@ -36,7 +36,7 @@ public class DimletRecipeSerializer extends net.minecraftforge.registries.ForgeR
     @Override
     public void toNetwork(@Nonnull FriendlyByteBuf buffer, DimletRecipe recipe) {
         serializer.toNetwork(buffer, recipe.getRecipe());
-        buffer.writeUtf(recipe.getKey().getType().name());
-        buffer.writeUtf(recipe.getKey().getKey());
+        buffer.writeUtf(recipe.getKey().type().name());
+        buffer.writeUtf(recipe.getKey().key());
     }
 }

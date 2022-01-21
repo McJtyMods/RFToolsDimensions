@@ -2,13 +2,10 @@ package mcjty.rftoolsdim.modules.dimlets.data;
 
 import com.google.gson.*;
 import mcjty.rftoolsdim.RFToolsDim;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.biome.Biome;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.fml.loading.FMLPaths;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -16,7 +13,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
-import java.util.Map;
 import java.util.function.BiFunction;
 
 public class DimletPackages {
@@ -40,7 +36,7 @@ public class DimletPackages {
     }
 
     private static void writeBiomes(JsonArray root, String modid) {
-        for (Map.Entry<ResourceKey<Biome>, Biome> entry : ForgeRegistries.BIOMES.getEntries()) {
+        for (var entry : ForgeRegistries.BIOMES.getEntries()) {
             ResourceLocation id = entry.getKey().location();
             if (modid.toLowerCase().equals(id.getNamespace())) {
                 JsonObject object = new JsonObject();
@@ -57,7 +53,7 @@ public class DimletPackages {
     }
 
     private static void writeFluids(JsonArray root, String modid) {
-        for (Map.Entry<ResourceKey<Fluid>, Fluid> entry : ForgeRegistries.FLUIDS.getEntries()) {
+        for (var entry : ForgeRegistries.FLUIDS.getEntries()) {
             ResourceLocation id = entry.getKey().location();
             if (modid.toLowerCase().equals(id.getNamespace())) {
                 Fluid fluid = entry.getValue();
@@ -77,7 +73,7 @@ public class DimletPackages {
     }
 
     private static void writeBlocks(JsonArray root, String modid) {
-        for (Map.Entry<ResourceKey<Block>, Block> entry : ForgeRegistries.BLOCKS.getEntries()) {
+        for (var entry : ForgeRegistries.BLOCKS.getEntries()) {
             ResourceLocation id = entry.getKey().location();
             if (modid.toLowerCase().equals(id.getNamespace())) {
                 Block block = entry.getValue();

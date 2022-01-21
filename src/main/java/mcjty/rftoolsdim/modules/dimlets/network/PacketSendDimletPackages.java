@@ -23,7 +23,7 @@ public class PacketSendDimletPackages {
         int size = buf.readInt();
         dimlets = new HashMap<>(size);
         for (int i = 0 ; i < size ; i++) {
-            DimletKey key = new DimletKey(buf);
+            DimletKey key = DimletKey.create(buf);
             DimletSettings settings = new DimletSettings(buf);
             dimlets.put(key, settings);
         }

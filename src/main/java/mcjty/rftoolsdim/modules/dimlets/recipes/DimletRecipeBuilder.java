@@ -206,8 +206,8 @@ public class DimletRecipeBuilder implements IRecipeBuilder<DimletRecipeBuilder> 
             }
 
             json.add("result", jsonobject1);
-            json.addProperty("dimlettype", dimletKey.getType().name());
-            json.addProperty("dimletkey", dimletKey.getKey());
+            json.addProperty("dimlettype", dimletKey.type().name());
+            json.addProperty("dimletkey", dimletKey.key());
         }
 
         @Nonnull

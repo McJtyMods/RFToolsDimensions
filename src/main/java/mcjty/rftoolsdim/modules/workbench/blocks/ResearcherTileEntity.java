@@ -109,7 +109,7 @@ public class ResearcherTileEntity extends TickingTileEntity {
             if (dimletKey == null) {
                 return false;
             }
-            return dimletKey.getType().usesKnowledgeSystem();
+            return dimletKey.type().usesKnowledgeSystem();
         }
         return false;
     }

@@ -125,8 +125,8 @@ public class CompiledDescriptor {
             actualTickCost += settings.getTickCost();
             maintainCostPerTick += settings.getMaintainCost();
         }
-        String name = dimlet.getKey();
-        switch (dimlet.getType()) {
+        String name = dimlet.key();
+        switch (dimlet.type()) {
             case TERRAIN:
                 if (terrainType != null) {
                     return ERROR(ONLY_ONE_TERRAIN);
@@ -152,7 +152,7 @@ public class CompiledDescriptor {
 
                 break;
             case ATTRIBUTE: {
-                AttributeType type = AttributeType.byName(dimlet.getKey());
+                AttributeType type = AttributeType.byName(dimlet.key());
                 if (type == null) {
                     return ERROR(BAD_ATTRIBUTE, name);
                 }
@@ -162,7 +162,7 @@ public class CompiledDescriptor {
             case DIGIT:
                 break;
             case ADMIN: {
-                AdminDimletType type = AdminDimletType.byName(dimlet.getKey());
+                AdminDimletType type = AdminDimletType.byName(dimlet.key());
                 if (type == null) {
                     return ERROR(BAD_ADMIN_TYPE, name);
                 }

@@ -48,11 +48,11 @@ public class DimletDictionary {
                               DimletPattern pattern) {
         for (Map.Entry<DimletKey, DimletSettings> entry : dimlets.entrySet()) {
             DimletKey key = entry.getKey();
-            if (type.equals(key.getType())) {
+            if (type.equals(key.type())) {
                 if (memoryPart.sameItem(DimletTools.getNeededMemoryPart(key))) {
                     if (energyPart.sameItem(DimletTools.getNeededEnergyPart(key))) {
                         ItemStack neededEssence = DimletTools.getNeededEssence(key, entry.getValue());
-                        if (DimletTools.isFullEssence(essence, neededEssence, key.getKey())) {
+                        if (DimletTools.isFullEssence(essence, neededEssence, key.key())) {
                             DimletPattern neededPattern = KnowledgeManager.get().getPattern(LevelTools.getOverworld(world).getSeed(), key);
                             if (Objects.equals(neededPattern, pattern)) {
                                 return key;
@@ -80,7 +80,7 @@ public class DimletDictionary {
             DimletKey dimletKey = null;
             for (int i = 0 ; i < Math.max(2, Math.min(10, keys.size() / 20)) ; i++) {
                 dimletKey = keys.get(random.nextInt(keys.size()));
-                if (dimletKey.getType() != DimletType.BLOCK) {
+                if (dimletKey.type() != DimletType.BLOCK) {
                     return dimletKey;
                 }
             }
@@ -164,7 +164,7 @@ public class DimletDictionary {
             List<DimletKey> dimletKeys = new ArrayList<>();
             List<DimletKey> dimletsByRarity = getDimletsByRarity(rarity);
             for (DimletKey key : dimletsByRarity) {
-                if (key.getType() == type) {
+                if (key.type() == type) {
                     dimletKeys.add(key);
                 }
             }
@@ -182,8 +182,8 @@ public class DimletDictionary {
     public DimletKey getBlockDimlet(String block) {
         for (Map.Entry<DimletKey, DimletSettings> entry : dimlets.entrySet()) {
             DimletKey key = entry.getKey();
-            if (key.getType().equals(DimletType.BLOCK)) {
-                if (Objects.equals(key.getKey(), block)) {
+            if (key.type().equals(DimletType.BLOCK)) {
+                if (Objects.equals(key.key(), block)) {
                     return key;
                 }
             }
@@ -195,8 +195,8 @@ public class DimletDictionary {
     public DimletKey getFluidDimlet(String fluid) {
         for (Map.Entry<DimletKey, DimletSettings> entry : dimlets.entrySet()) {
             DimletKey key = entry.getKey();
-            if (key.getType().equals(DimletType.FLUID)) {
-                if (Objects.equals(key.getKey(), fluid)) {
+            if (key.type().equals(DimletType.FLUID)) {
+                if (Objects.equals(key.key(), fluid)) {
                     return key;
                 }
             }
@@ -208,8 +208,8 @@ public class DimletDictionary {
     public DimletKey getBiomeDimlet(String biomeId) {
         for (Map.Entry<DimletKey, DimletSettings> entry : dimlets.entrySet()) {
             DimletKey key = entry.getKey();
-            if (key.getType().equals(DimletType.BIOME)) {
-                if (Objects.equals(key.getKey(), biomeId)) {
+            if (key.type().equals(DimletType.BIOME)) {
+                if (Objects.equals(key.key(), biomeId)) {
                     return key;
                 }
             }

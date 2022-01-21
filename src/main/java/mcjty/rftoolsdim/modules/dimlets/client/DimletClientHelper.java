@@ -42,8 +42,8 @@ public class DimletClientHelper {
             public BiConsumer<FriendlyByteBuf, DimletWithInfo> getSerializer() {
                 return (buf, info) -> {
                     DimletKey dimlet1 = info.getDimlet();
-                    buf.writeShort(dimlet1.getType().ordinal());
-                    buf.writeUtf(dimlet1.getKey());
+                    buf.writeShort(dimlet1.type().ordinal());
+                    buf.writeUtf(dimlet1.key());
                     buf.writeBoolean(info.isCraftable());
                 };
             }

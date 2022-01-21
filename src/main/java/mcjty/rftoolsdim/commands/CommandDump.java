@@ -54,13 +54,13 @@ public class CommandDump implements Command<CommandSourceStack> {
         DimensionDescriptor descriptor = data.getDescriptor();
         feedback(context, ChatFormatting.GREEN + "Standard dimlets:");
         for (DimletKey dimlet : descriptor.getDimlets()) {
-            feedback(context, ChatFormatting.BLUE + "    " + dimlet.getType().name() + ": " + ChatFormatting.WHITE + dimlet.getKey());
+            feedback(context, ChatFormatting.BLUE + "    " + dimlet.type().name() + ": " + ChatFormatting.WHITE + dimlet.key());
         }
 
         DimensionDescriptor randomizedDescriptor = data.getRandomizedDescriptor();
         feedback(context, ChatFormatting.GREEN + "Randomized dimlets:");
         for (DimletKey dimlet : randomizedDescriptor.getDimlets()) {
-            feedback(context, ChatFormatting.BLUE + "    " + dimlet.getType().name() + ": " + ChatFormatting.WHITE + dimlet.getKey());
+            feedback(context, ChatFormatting.BLUE + "    " + dimlet.type().name() + ": " + ChatFormatting.WHITE + dimlet.key());
         }
 
         return 0;

@@ -337,7 +337,7 @@ public class DimensionEditorTileEntity extends TickingTileEntity {
         }
 
         DimletKey key = DimletTools.getDimletKey(itemStack);
-        DimletType type = key.getType();
+        DimletType type = key.type();
         // @todo 1.16
 //        if (itype.isInjectable(key)) {
 //            return itemStack;

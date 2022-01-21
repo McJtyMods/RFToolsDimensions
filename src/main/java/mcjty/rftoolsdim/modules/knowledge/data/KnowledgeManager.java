@@ -94,7 +94,7 @@ public class KnowledgeManager {
 
     @Nullable
     private String getKnowledgeSetReason(DimletKey key) {
-        switch (key.getType()) {
+        switch (key.type()) {
             case TERRAIN:
                 return null;
             case ATTRIBUTE:
@@ -104,7 +104,7 @@ public class KnowledgeManager {
             case BIOME_CATEGORY:
                 return null;
             case BIOME:
-                Biome biome = ForgeRegistries.BIOMES.getValue(new ResourceLocation(key.getKey()));
+                Biome biome = ForgeRegistries.BIOMES.getValue(new ResourceLocation(key.key()));
                 if (biome != null) {
                     return biome.getBiomeCategory().getName() + " biomes";
                 }
@@ -122,27 +122,27 @@ public class KnowledgeManager {
                 }
                 return null;
             case FLUID:
-                return new ResourceLocation(key.getKey()).getNamespace();
+                return new ResourceLocation(key.key()).getNamespace();
         }
         return null;
     }
 
     private KnowledgeSet getKnowledgeSet(DimletKey key) {
-        switch (key.getType()) {
+        switch (key.type()) {
             case TERRAIN:
-                return TerrainType.byName(key.getKey()).getSet();
+                return TerrainType.byName(key.key()).getSet();
             case ATTRIBUTE:
-                return AttributeType.byName(key.getKey()).getSet();
+                return AttributeType.byName(key.key()).getSet();
             case BIOME_CONTROLLER:
-                return BiomeControllerType.byName(key.getKey()).getSet();
+                return BiomeControllerType.byName(key.key()).getSet();
             case BIOME_CATEGORY:
                 return getBiomeCategoryKnowledgeSet(key);
             case BIOME:
                 return getBiomeKnowledgeSet(key);
             case FEATURE:
-                return FeatureType.byName(key.getKey()).getSet();
+                return FeatureType.byName(key.key()).getSet();
             case TIME:
-                return TimeType.byName(key.getKey()).getSet();
+                return TimeType.byName(key.key()).getSet();
             case BLOCK:
                 return getBlockKnowledgeSet(key);
             case FLUID:
@@ -157,12 +157,12 @@ public class KnowledgeManager {
     }
 
     private KnowledgeSet getFluidKnowledgeSet(DimletKey key) {
-        int i = Math.abs(new ResourceLocation(key.getKey()).getNamespace().hashCode());
+        int i = Math.abs(new ResourceLocation(key.key()).getNamespace().hashCode());
         return KnowledgeSet.values()[i%(KnowledgeSet.values().length)];
     }
 
     private KnowledgeSet getBiomeCategoryKnowledgeSet(DimletKey key) {
-        Biome.BiomeCategory category = Biome.BiomeCategory.byName(key.getKey());
+        Biome.BiomeCategory category = Biome.BiomeCategory.byName(key.key());
         return KnowledgeSet.values()[category.ordinal() % KnowledgeSet.values().length];
     }
 
@@ -179,9 +179,9 @@ public class KnowledgeManager {
 
     private ResourceLocation getMostCommonTagForBlock(DimletKey key) {
         ResourceLocation mostImportant = null;
-        Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(key.getKey()));
+        Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(key.key()));
         if (block == null) {
-            RFToolsDim.setup.getLogger().error("Block '" + key.getKey() + "' is missing!");
+            RFToolsDim.setup.getLogger().error("Block '" + key.key() + "' is missing!");
         } else {
             Set<ResourceLocation> tags = block.getTags();
             int maxAmount = -1;
@@ -202,9 +202,9 @@ public class KnowledgeManager {
 
     /// Create a knowledge set based on the category of a biome
     private KnowledgeSet getBiomeKnowledgeSet(DimletKey key) {
-        Biome biome = ForgeRegistries.BIOMES.getValue(new ResourceLocation(key.getKey()));
+        Biome biome = ForgeRegistries.BIOMES.getValue(new ResourceLocation(key.key()));
         if (biome == null) {
-            RFToolsDim.setup.getLogger().error("Biome '" + key.getKey() + "' is missing!");
+            RFToolsDim.setup.getLogger().error("Biome '" + key.key() + "' is missing!");
             return KnowledgeSet.SET1;
         }
         return KnowledgeSet.values()[biome.getBiomeCategory().ordinal() % KnowledgeSet.values().length];
@@ -218,7 +218,7 @@ public class KnowledgeManager {
             return null;
         }
         KnowledgeSet set = getKnowledgeSet(key);
-        return new KnowledgeKey(key.getType(), settings.getRarity(), set);
+        return new KnowledgeKey(key.type(), settings.getRarity(), set);
     }
 
     @Nullable
@@ -231,7 +231,7 @@ public class KnowledgeManager {
     }
 
     public String getReason(Level world, KnowledgeKey key) {
-        getKnownPatterns(world, key.getRarity());   // Make sure to refresh known patterns (and keyReasons)
+        getKnownPatterns(world, key.rarity());   // Make sure to refresh known patterns (and keyReasons)
         return keyReasons.get(key);
     }
 

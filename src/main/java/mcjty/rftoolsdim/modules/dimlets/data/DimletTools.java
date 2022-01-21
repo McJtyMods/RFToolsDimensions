@@ -22,7 +22,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.Locale;
 import java.util.Objects;
 
 public class DimletTools {
@@ -120,9 +119,9 @@ public class DimletTools {
 
     @Nonnull
     public static ItemStack getDimletStack(DimletKey key) {
-        DimletItem item = getDimletItem(key.getType());
+        DimletItem item = getDimletItem(key.type());
         ItemStack stack = new ItemStack(item);
-        stack.getOrCreateTag().putString("name", key.getKey());
+        stack.getOrCreateTag().putString("name", key.key());
         return stack;
     }
 
@@ -170,7 +169,7 @@ public class DimletTools {
         if (!settings.getEssence().isEmpty()) {
             return settings.getEssence();
         }
-        return switch (key.getType()) {
+        return switch (key.type()) {
             case TERRAIN -> ItemStack.EMPTY;
             case ATTRIBUTE -> ItemStack.EMPTY;
             case BIOME_CONTROLLER -> ItemStack.EMPTY;
@@ -188,49 +187,49 @@ public class DimletTools {
 
     @Nullable
     public static ResourceLocation getResourceLocation(DimletKey dimletKey) {
-        return switch (dimletKey.getType()) {
+        return switch (dimletKey.type()) {
             case TERRAIN -> null;
             case ATTRIBUTE -> null;
             case BIOME_CONTROLLER -> null;
             case BIOME_CATEGORY -> null;
-            case BIOME -> new ResourceLocation(dimletKey.getKey());
+            case BIOME -> new ResourceLocation(dimletKey.key());
             case FEATURE -> null;
             case TIME -> null;
-            case BLOCK -> new ResourceLocation(dimletKey.getKey());
-            case FLUID -> new ResourceLocation(dimletKey.getKey());
+            case BLOCK -> new ResourceLocation(dimletKey.key());
+            case FLUID -> new ResourceLocation(dimletKey.key());
             case DIGIT -> null;
             case ADMIN -> null;
         };
     }
 
     public static Component getReadable(DimletKey dimletKey) {
-        switch (dimletKey.getType()) {
+        switch (dimletKey.type()) {
             case TERRAIN:
-                return new TextComponent(dimletKey.getKey().toLowerCase());
+                return new TextComponent(dimletKey.key().toLowerCase());
             case ATTRIBUTE:
-                return new TextComponent(dimletKey.getKey().toLowerCase());
+                return new TextComponent(dimletKey.key().toLowerCase());
             case BIOME_CONTROLLER:
-                return new TextComponent(dimletKey.getKey().toLowerCase());
+                return new TextComponent(dimletKey.key().toLowerCase());
             case BIOME_CATEGORY:
-                return new TextComponent(dimletKey.getKey().toLowerCase());
+                return new TextComponent(dimletKey.key().toLowerCase());
             case BIOME:
-                ResourceLocation id = new ResourceLocation(dimletKey.getKey());
+                ResourceLocation id = new ResourceLocation(dimletKey.key());
                 String trans = "biome." + id.getNamespace() + "." + id.getPath();
                 return new TranslatableComponent(trans);
             case FEATURE:
-                return new TextComponent(dimletKey.getKey().toLowerCase());
+                return new TextComponent(dimletKey.key().toLowerCase());
             case TIME:
-                return new TextComponent(dimletKey.getKey().toLowerCase());
+                return new TextComponent(dimletKey.key().toLowerCase());
             case BLOCK:
-                Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(dimletKey.getKey()));
+                Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(dimletKey.key()));
                 return new TranslatableComponent(block.getDescriptionId());
             case FLUID:
-                Fluid fluid = ForgeRegistries.FLUIDS.getValue(new ResourceLocation(dimletKey.getKey()));
+                Fluid fluid = ForgeRegistries.FLUIDS.getValue(new ResourceLocation(dimletKey.key()));
                 return new TranslatableComponent(fluid.defaultFluidState().createLegacyBlock().getBlock().getDescriptionId());
             case DIGIT:
-                return new TextComponent(dimletKey.getKey());
+                return new TextComponent(dimletKey.key());
             case ADMIN:
-                return new TextComponent(dimletKey.getKey());
+                return new TextComponent(dimletKey.key());
             default:
                 return new TextComponent("<unknown>");
         }
@@ -238,25 +237,25 @@ public class DimletTools {
 
     // Use client side!
     public static String getReadableName(DimletKey dimletKey) {
-        switch (dimletKey.getType()) {
+        switch (dimletKey.type()) {
             case TERRAIN:
-                return dimletKey.getKey().toLowerCase();
+                return dimletKey.key().toLowerCase();
             case ATTRIBUTE:
-                return dimletKey.getKey().toLowerCase();
+                return dimletKey.key().toLowerCase();
             case BIOME_CONTROLLER:
-                return dimletKey.getKey().toLowerCase();
+                return dimletKey.key().toLowerCase();
             case BIOME_CATEGORY:
-                return dimletKey.getKey().toLowerCase();
+                return dimletKey.key().toLowerCase();
             case BIOME:
-                ResourceLocation id = new ResourceLocation(dimletKey.getKey());
+                ResourceLocation id = new ResourceLocation(dimletKey.key());
                 String trans = "biome." + id.getNamespace() + "." + id.getPath();
                 return I18n.get(trans);
             case FEATURE:
-                return dimletKey.getKey().toLowerCase();
+                return dimletKey.key().toLowerCase();
             case TIME:
-                return dimletKey.getKey().toLowerCase();
+                return dimletKey.key().toLowerCase();
             case BLOCK:
-                Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(dimletKey.getKey()));
+                Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(dimletKey.key()));
                 if (block != null) {
                     String modName = Tools.getModName(block);
                     if ("minecraft".equalsIgnoreCase(modName)) {
@@ -265,9 +264,9 @@ public class DimletTools {
                         return I18n.get(block.getDescriptionId()) + " (" + modName + ")";
                     }
                 }
-                return "<Invalid " + dimletKey.getKey() + ">";
+                return "<Invalid " + dimletKey.key() + ">";
             case FLUID:
-                Fluid fluid = ForgeRegistries.FLUIDS.getValue(new ResourceLocation(dimletKey.getKey()));
+                Fluid fluid = ForgeRegistries.FLUIDS.getValue(new ResourceLocation(dimletKey.key()));
                 if (fluid != null) {
                     String modName = Tools.getModName(fluid);
                     if ("minecraft".equalsIgnoreCase(modName)) {
@@ -277,11 +276,11 @@ public class DimletTools {
                                 + " (" + modName + ")";
                     }
                 }
-                return "<Invalid " + dimletKey.getKey() + ">";
+                return "<Invalid " + dimletKey.key() + ">";
             case DIGIT:
-                return dimletKey.getKey();
+                return dimletKey.key();
             case ADMIN:
-                return dimletKey.getKey();
+                return dimletKey.key();
         }
         return "<unknown>";
     }
@@ -311,19 +310,19 @@ public class DimletTools {
     }
 
     public static boolean isOwnerDimlet(DimletKey dimletKey) {
-        return dimletKey != null && dimletKey.getType() == DimletType.ADMIN && dimletKey.getKey().equals(AdminDimletType.OWNER.name().toLowerCase());
+        return dimletKey != null && dimletKey.type() == DimletType.ADMIN && dimletKey.key().equals(AdminDimletType.OWNER.name().toLowerCase());
     }
 
     /// Return true if this dimlet can exist (refers to an existing block/biome/...)
     public static boolean isValidDimlet(DimletKey key) {
-        switch (key.getType()) {
+        switch (key.type()) {
             case BIOME:
-                return ForgeRegistries.BIOMES.getValue(new ResourceLocation(key.getKey())) != null;
+                return ForgeRegistries.BIOMES.getValue(new ResourceLocation(key.key())) != null;
             case BLOCK:
-                Block value = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(key.getKey()));
+                Block value = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(key.key()));
                 return value != null && value != Blocks.AIR;
             case FLUID:
-                Fluid fluid = ForgeRegistries.FLUIDS.getValue(new ResourceLocation(key.getKey()));
+                Fluid fluid = ForgeRegistries.FLUIDS.getValue(new ResourceLocation(key.key()));
                 return fluid != null && fluid.defaultFluidState().createLegacyBlock().getBlock() != Blocks.AIR;
             default:
                 return true;

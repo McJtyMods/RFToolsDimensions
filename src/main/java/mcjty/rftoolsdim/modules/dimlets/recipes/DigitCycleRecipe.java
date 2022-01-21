@@ -40,7 +40,7 @@ public class DigitCycleRecipe extends AbstractRecipeAdaptor {
                 if (!inv.getItem(i).isEmpty()) {
                     DimletKey key = DimletTools.getDimletKey(inv.getItem(i));
                     if (key != null) {
-                        return key.getKey().equals(input);
+                        return key.key().equals(input);
                     }
                 }
             }

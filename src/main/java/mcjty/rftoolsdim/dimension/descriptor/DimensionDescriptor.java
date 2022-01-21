@@ -74,8 +74,8 @@ public class DimensionDescriptor {
         JsonArray root = new JsonArray();
         for (DimletKey dimletDescriptor : dimlets) {
             JsonObject dimletJson = new JsonObject();
-            dimletJson.addProperty("type", dimletDescriptor.getType().name());
-            dimletJson.addProperty("name", dimletDescriptor.getKey());
+            dimletJson.addProperty("type", dimletDescriptor.type().name());
+            dimletJson.addProperty("name", dimletDescriptor.key());
             root.add(dimletJson);
         }
         return GSON.toJson(root);
@@ -86,8 +86,8 @@ public class DimensionDescriptor {
         JsonArray root = new JsonArray();
         for (DimletKey dimletDescriptor : dimlets) {
             JsonObject dimletJson = new JsonObject();
-            dimletJson.addProperty("t", dimletDescriptor.getType().getShortName());
-            dimletJson.addProperty("n", dimletDescriptor.getKey());
+            dimletJson.addProperty("t", dimletDescriptor.type().getShortName());
+            dimletJson.addProperty("n", dimletDescriptor.key());
             root.add(dimletJson);
         }
         return GSON_COMPACT.toJson(root);
@@ -109,9 +109,9 @@ public class DimensionDescriptor {
     public void dump(Player player) {
         for (DimletKey dimlet : dimlets) {
             player.displayClientMessage(
-                    new TextComponent(dimlet.getType().name() + ": ")
+                    new TextComponent(dimlet.type().name() + ": ")
                             .withStyle(ChatFormatting.AQUA)
-                            .append(new TextComponent(dimlet.getKey()).withStyle(ChatFormatting.WHITE))
+                            .append(new TextComponent(dimlet.key()).withStyle(ChatFormatting.WHITE))
                     , false);
         }
     }
@@ -119,7 +119,7 @@ public class DimensionDescriptor {
     public void log(String header) {
         header = "--------------------------------------------------\n" + header;
         for (DimletKey dimlet : dimlets) {
-            header += "\n    " + dimlet.getType().name() + ": " + dimlet.getKey();
+            header += "\n    " + dimlet.type().name() + ": " + dimlet.key();
         }
         header += "\n--------------------------------------------------";
         RFToolsDim.setup.getLogger().info(header);
@@ -222,27 +222,27 @@ public class DimensionDescriptor {
     }
 
     private boolean hasTerrain(List<DimletKey> dimlets) {
-        return dimlets.stream().anyMatch(key -> key.getType() == DimletType.TERRAIN);
+        return dimlets.stream().anyMatch(key -> key.type() == DimletType.TERRAIN);
     }
 
     private boolean hasFeatures(List<DimletKey> dimlets) {
-        return dimlets.stream().anyMatch(key -> key.getType() == DimletType.FEATURE);
+        return dimlets.stream().anyMatch(key -> key.type() == DimletType.FEATURE);
     }
 
     private boolean hasBiomeController(List<DimletKey> dimlets) {
-        return dimlets.stream().anyMatch(key -> key.getType() == DimletType.BIOME_CONTROLLER);
+        return dimlets.stream().anyMatch(key -> key.type() == DimletType.BIOME_CONTROLLER);
     }
 
     private boolean hasBiomeCategories(List<DimletKey> dimlets) {
-        return dimlets.stream().anyMatch(key -> key.getType() == DimletType.BIOME_CATEGORY);
+        return dimlets.stream().anyMatch(key -> key.type() == DimletType.BIOME_CATEGORY);
     }
 
     private boolean hasBiomeDimlets(List<DimletKey> dimlets) {
-        return dimlets.stream().anyMatch(key -> key.getType() == DimletType.BIOME);
+        return dimlets.stream().anyMatch(key -> key.type() == DimletType.BIOME);
     }
 
     private boolean hasTimeDimlet(List<DimletKey> dimlets) {
-        return dimlets.stream().anyMatch(key -> key.getType() == DimletType.TIME);
+        return dimlets.stream().anyMatch(key -> key.type() == DimletType.TIME);
     }
 
 }

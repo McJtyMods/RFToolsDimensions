@@ -42,7 +42,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.common.util.LazyOptional;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
@@ -222,7 +221,7 @@ public class EnscriberTileEntity extends GenericTileEntity {
                     }
                 } else {
                     if (player != null) {
-                        Logging.warn(player, "Dimlet " + key.getType().name() + "." + key.getKey() + " was not included in the tab because it is blacklisted");
+                        Logging.warn(player, "Dimlet " + key.type().name() + "." + key.key() + " was not included in the tab because it is blacklisted");
                     }
                 }
             }

@@ -108,8 +108,8 @@ public class GuiWorkbench extends GenericGuiContainer<WorkbenchTileEntity, Gener
                 DimletKey dimlet = key.getDimlet();
                 sendServerCommandTyped(RFToolsDimMessages.INSTANCE, WorkbenchTileEntity.CMD_HILIGHT_PATTERN,
                         TypedMap.builder()
-                                .put(PARAM_TYPE, dimlet.getType().name())
-                                .put(PARAM_ID, dimlet.getKey())
+                                .put(PARAM_TYPE, dimlet.type().name())
+                                .put(PARAM_ID, dimlet.key())
                                 .build());
             }
         }
@@ -173,8 +173,8 @@ public class GuiWorkbench extends GenericGuiContainer<WorkbenchTileEntity, Gener
             DimletKey dimlet = key.getDimlet();
             sendServerCommandTyped(RFToolsDimMessages.INSTANCE, WorkbenchTileEntity.CMD_CHEATDIMLET,
                     TypedMap.builder()
-                            .put(PARAM_TYPE, dimlet.getType().name())
-                            .put(PARAM_ID, dimlet.getKey())
+                            .put(PARAM_TYPE, dimlet.type().name())
+                            .put(PARAM_ID, dimlet.key())
                             .build());
         }
     }
@@ -192,8 +192,8 @@ public class GuiWorkbench extends GenericGuiContainer<WorkbenchTileEntity, Gener
                 DimletKey dimlet = key.getDimlet();
                 sendServerCommandTyped(RFToolsDimMessages.INSTANCE, WorkbenchTileEntity.CMD_SUGGESTPARTS,
                         TypedMap.builder()
-                                .put(PARAM_TYPE, dimlet.getType().name())
-                                .put(PARAM_ID, dimlet.getKey())
+                                .put(PARAM_TYPE, dimlet.type().name())
+                                .put(PARAM_ID, dimlet.key())
                                 .build());
             }
         }
@@ -232,7 +232,7 @@ public class GuiWorkbench extends GenericGuiContainer<WorkbenchTileEntity, Gener
             DimletKey dimlet = key.getDimlet();
             String readableName = DimletTools.getReadableName(dimlet);
             return readableName.toLowerCase().contains(filter)
-                    || dimlet.getType().name().toLowerCase().contains(filter);
+                    || dimlet.type().name().toLowerCase().contains(filter);
         }
         return false;
     }
