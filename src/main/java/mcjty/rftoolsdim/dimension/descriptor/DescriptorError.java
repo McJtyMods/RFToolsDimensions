@@ -51,6 +51,7 @@ public class DescriptorError {
         ONLY_ONE_TERRAIN("You can only have one terrain type!"),
         ONLY_ONE_TIME("You can only have one time dimlet!"),
         ONLY_ONE_BLOCK("Terrain dimlet only supports one block!"),
+        NO_TAGS("Terrain dimlet doesn't support tags! Only features"),
         BAD_BLOCK("Bad block!"),
         BAD_FLUID("Bad fluid!"),
         ONLY_ONE_FLUID("Terrain supports only one fluid!"),
@@ -63,7 +64,8 @@ public class DescriptorError {
         BAD_BIOME_CONTROLLER("Bad biome controller!"),
         DANGLING_BLOCKS("Dangling blocks! Blocks should come before either a terrain or a feature!"),
         DANGLING_FLUIDS("Dangling fluids! Fluids should come before either a terrain or a feature!"),
-        DANGLING_ATTRIBUTES("Dangling attributes! Attributes should come before a terrain!");
+        DANGLING_ATTRIBUTES("Dangling attributes! Attributes should come before a terrain!"),
+        DANGLING_TAGS("Dangling tags! Tags should come before a feature!");
 
         private final String message;
 

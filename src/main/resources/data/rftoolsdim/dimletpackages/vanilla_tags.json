@@ -1,0 +1,72 @@
+[
+  {
+    "type": "tag",
+    "key": "forge:ores",
+    "rarity": "legendary",
+    "create": 1000,
+    "maintain": 1000,
+    "ticks": 100,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "tag",
+    "key": "minecraft:planks",
+    "rarity": "uncommon",
+    "create": 100,
+    "maintain": 100,
+    "ticks": 40,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "tag",
+    "key": "minecraft:wool",
+    "rarity": "uncommon",
+    "create": 100,
+    "maintain": 100,
+    "ticks": 40,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "tag",
+    "key": "minecraft:logs",
+    "rarity": "uncommon",
+    "create": 100,
+    "maintain": 100,
+    "ticks": 40,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "tag",
+    "key": "minecraft:ice",
+    "rarity": "uncommon",
+    "create": 100,
+    "maintain": 100,
+    "ticks": 40,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "tag",
+    "key": "minecraft:glass",
+    "rarity": "uncommon",
+    "create": 100,
+    "maintain": 100,
+    "ticks": 40,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "tag",
+    "key": "minecraft:dirt",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 10,
+    "worldgen": true,
+    "dimlet": true
+  }
+]

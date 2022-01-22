@@ -121,6 +121,8 @@ public class KnowledgeManager {
                     return tagId.getPath();
                 }
                 return null;
+            case TAG:
+                return new ResourceLocation(key.key()).getPath();
             case FLUID:
                 return new ResourceLocation(key.key()).getNamespace();
         }
@@ -145,6 +147,8 @@ public class KnowledgeManager {
                 return TimeType.byName(key.key()).getSet();
             case BLOCK:
                 return getBlockKnowledgeSet(key);
+            case TAG:
+                return getTagKnowledgeSet(key);
             case FLUID:
                 return getFluidKnowledgeSet(key);
             case DIGIT:
@@ -164,6 +168,13 @@ public class KnowledgeManager {
     private KnowledgeSet getBiomeCategoryKnowledgeSet(DimletKey key) {
         Biome.BiomeCategory category = Biome.BiomeCategory.byName(key.key());
         return KnowledgeSet.values()[category.ordinal() % KnowledgeSet.values().length];
+    }
+
+    /// Create a knowledge set based on the most important tag for a given block
+    private KnowledgeSet getTagKnowledgeSet(DimletKey key) {
+        ResourceLocation tagId = new ResourceLocation(key.key());
+        int i = Math.abs(tagId.hashCode());
+        return KnowledgeSet.values()[i%(KnowledgeSet.values().length)];
     }
 
     /// Create a knowledge set based on the most important tag for a given block

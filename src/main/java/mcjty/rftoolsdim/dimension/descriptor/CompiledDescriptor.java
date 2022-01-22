@@ -12,6 +12,8 @@ import mcjty.rftoolsdim.modules.dimlets.data.DimletDictionary;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletKey;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletSettings;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.Tag;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -21,6 +23,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nonnull;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static mcjty.rftoolsdim.dimension.descriptor.DescriptorError.Code.*;
 import static mcjty.rftoolsdim.dimension.descriptor.DescriptorError.ERROR;
@@ -57,12 +60,13 @@ public class CompiledDescriptor {
         randomizedCostPerTick = 0;
         actualTickCost = 100;       // @todo make configurable
 
+        List<ResourceLocation> collectedTags = new ArrayList<>();
         List<BlockState> collectedBlocks = new ArrayList<>();
         List<BlockState> collectedFluids = new ArrayList<>();
         Set<AttributeType> collectedAttributes = EnumSet.noneOf(AttributeType.class);
 
         for (DimletKey dimlet : descriptor.getDimlets()) {
-            DescriptorError error = handleDimlet(collectedBlocks, collectedFluids, collectedAttributes, dimlet);
+            DescriptorError error = handleDimlet(collectedTags, collectedBlocks, collectedFluids, collectedAttributes, dimlet);
             if (error != null) {
                 return error;
             }
@@ -70,7 +74,7 @@ public class CompiledDescriptor {
         int originalMaintainCost = maintainCostPerTick;
         maintainCostPerTick = 0;
         for (DimletKey dimlet : randomizedDescriptor.getDimlets()) {
-            DescriptorError error = handleDimlet(collectedBlocks, collectedFluids, collectedAttributes, dimlet);
+            DescriptorError error = handleDimlet(collectedTags, collectedBlocks, collectedFluids, collectedAttributes, dimlet);
             if (error != null) {
                 return error;
             }
@@ -88,13 +92,14 @@ public class CompiledDescriptor {
         if (!collectedBlocks.isEmpty()) {
             return ERROR(DANGLING_BLOCKS);
         }
-
         if (!collectedFluids.isEmpty()) {
             return ERROR(DANGLING_FLUIDS);
         }
-
         if (!collectedAttributes.isEmpty()) {
             return ERROR(DANGLING_ATTRIBUTES);
+        }
+        if (!collectedTags.isEmpty()) {
+            return ERROR(DANGLING_TAGS);
         }
 
         return DescriptorError.OK;
@@ -118,7 +123,7 @@ public class CompiledDescriptor {
         }
     }
 
-    private DescriptorError handleDimlet(List<BlockState> collectedBlocks, List<BlockState> collectedFluids, Set<AttributeType> collectedAttributes, DimletKey dimlet) {
+    private DescriptorError handleDimlet(List<ResourceLocation> collectedTags, List<BlockState> collectedBlocks, List<BlockState> collectedFluids, Set<AttributeType> collectedAttributes, DimletKey dimlet) {
         DimletSettings settings = DimletDictionary.get().getSettings(dimlet);
         if (settings != null) {
             createCostPerTick += settings.getCreateCost();
@@ -136,6 +141,9 @@ public class CompiledDescriptor {
                     return ERROR(BAD_TERRAIN_TYPE, name);
                 }
 
+                if (!collectedTags.isEmpty()) {
+                    return ERROR(NO_TAGS);
+                }
                 if (collectedBlocks.size() > 1) {
                     return ERROR(ONLY_ONE_BLOCK);
                 }
@@ -207,6 +215,14 @@ public class CompiledDescriptor {
                 }
                 CompiledFeature compiledFeature = new CompiledFeature(feature);
 
+                for (ResourceLocation rl : collectedTags) {
+                    Tag<Block> tag = BlockTags.getAllTags().getTag(rl);
+                    if (tag != null) {
+                        collectedBlocks.addAll(tag.getValues().stream().map(Block::defaultBlockState).collect(Collectors.toList()));
+                    }
+                }
+                collectedTags.clear();
+
                 compiledFeature.getBlocks().addAll(collectedBlocks);
                 collectedBlocks.clear();
                 if (compiledFeature.getBlocks().isEmpty()) {
@@ -220,6 +236,10 @@ public class CompiledDescriptor {
                 }
 
                 features.add(compiledFeature);
+                break;
+            }
+            case TAG: {
+                collectedTags.add(new ResourceLocation(name));
                 break;
             }
             case BLOCK: {

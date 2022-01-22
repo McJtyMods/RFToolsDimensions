@@ -22,6 +22,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Locale;
 import java.util.Objects;
 
 public class DimletTools {
@@ -80,6 +81,7 @@ public class DimletTools {
             case FEATURE -> DimletModule.FEATURE_DIMLET.get();
             case TIME -> DimletModule.TIME_DIMLET.get();
             case BLOCK -> DimletModule.BLOCK_DIMLET.get();
+            case TAG -> DimletModule.TAG_DIMLET.get();
             case FLUID -> DimletModule.FLUID_DIMLET.get();
             case DIGIT -> DimletModule.DIGIT_DIMLET.get();
             case ADMIN -> DimletModule.ADMIN_DIMLET.get();
@@ -96,6 +98,7 @@ public class DimletTools {
             case FEATURE -> DimletModule.EMPTY_FEATURE_DIMLET.get();
             case TIME -> DimletModule.EMPTY_TIME_DIMLET.get();
             case BLOCK -> DimletModule.EMPTY_BLOCK_DIMLET.get();
+            case TAG -> DimletModule.EMPTY_TAG_DIMLET.get();
             case FLUID -> DimletModule.EMPTY_FLUID_DIMLET.get();
             case DIGIT -> null;
             case ADMIN -> null;
@@ -178,62 +181,13 @@ public class DimletTools {
             case FEATURE -> ItemStack.EMPTY;
             case TIME -> ItemStack.EMPTY;
             case BLOCK -> new ItemStack(EssencesModule.BLOCK_ABSORBER_ITEM.get());
+            case TAG -> ItemStack.EMPTY;
             case FLUID -> new ItemStack(EssencesModule.FLUID_ABSORBER_ITEM.get());
             case DIGIT -> ItemStack.EMPTY;
             case ADMIN -> ItemStack.EMPTY;
         };
     }
 
-
-    @Nullable
-    public static ResourceLocation getResourceLocation(DimletKey dimletKey) {
-        return switch (dimletKey.type()) {
-            case TERRAIN -> null;
-            case ATTRIBUTE -> null;
-            case BIOME_CONTROLLER -> null;
-            case BIOME_CATEGORY -> null;
-            case BIOME -> new ResourceLocation(dimletKey.key());
-            case FEATURE -> null;
-            case TIME -> null;
-            case BLOCK -> new ResourceLocation(dimletKey.key());
-            case FLUID -> new ResourceLocation(dimletKey.key());
-            case DIGIT -> null;
-            case ADMIN -> null;
-        };
-    }
-
-    public static Component getReadable(DimletKey dimletKey) {
-        switch (dimletKey.type()) {
-            case TERRAIN:
-                return new TextComponent(dimletKey.key().toLowerCase());
-            case ATTRIBUTE:
-                return new TextComponent(dimletKey.key().toLowerCase());
-            case BIOME_CONTROLLER:
-                return new TextComponent(dimletKey.key().toLowerCase());
-            case BIOME_CATEGORY:
-                return new TextComponent(dimletKey.key().toLowerCase());
-            case BIOME:
-                ResourceLocation id = new ResourceLocation(dimletKey.key());
-                String trans = "biome." + id.getNamespace() + "." + id.getPath();
-                return new TranslatableComponent(trans);
-            case FEATURE:
-                return new TextComponent(dimletKey.key().toLowerCase());
-            case TIME:
-                return new TextComponent(dimletKey.key().toLowerCase());
-            case BLOCK:
-                Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(dimletKey.key()));
-                return new TranslatableComponent(block.getDescriptionId());
-            case FLUID:
-                Fluid fluid = ForgeRegistries.FLUIDS.getValue(new ResourceLocation(dimletKey.key()));
-                return new TranslatableComponent(fluid.defaultFluidState().createLegacyBlock().getBlock().getDescriptionId());
-            case DIGIT:
-                return new TextComponent(dimletKey.key());
-            case ADMIN:
-                return new TextComponent(dimletKey.key());
-            default:
-                return new TextComponent("<unknown>");
-        }
-    }
 
     // Use client side!
     public static String getReadableName(DimletKey dimletKey) {
@@ -265,6 +219,8 @@ public class DimletTools {
                     }
                 }
                 return "<Invalid " + dimletKey.key() + ">";
+            case TAG:
+                return dimletKey.key().toLowerCase();
             case FLUID:
                 Fluid fluid = ForgeRegistries.FLUIDS.getValue(new ResourceLocation(dimletKey.key()));
                 if (fluid != null) {

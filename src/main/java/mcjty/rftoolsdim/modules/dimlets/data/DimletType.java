@@ -11,6 +11,7 @@ public enum DimletType {
     BIOME("bi"),
     FEATURE("f"),
     TIME("ti"),
+    TAG("ta"),
     BLOCK("b"),
     DIGIT("d"),
     ADMIN("ad"),

@@ -146,7 +146,11 @@ public class DimensionDescriptor {
             for (int i = 0 ; i < cnt-1 ; i++) {
                 DimletKey featureDimlet = DimletDictionary.get().getRandomDimlet(DimletType.FEATURE, random);
                 if (featureDimlet != null) {
-                    addBlockDimlets(randomized, random);
+                    if (random.nextFloat() < .2f) {
+                        addTagDimlets(randomized, random);
+                    } else {
+                        addBlockDimlets(randomized, random);
+                    }
                     randomized.add(featureDimlet);
                 }
             }
@@ -182,39 +186,28 @@ public class DimensionDescriptor {
     }
 
     private void addAttributeDimlets(List<DimletKey> randomized, Random random) {
-        int cnt = random.nextInt(3);
-        for (int i = 0 ; i < cnt ; i++) {
-            DimletKey dimlet = DimletDictionary.get().getRandomDimlet(DimletType.ATTRIBUTE, random);
-            if (dimlet != null) {
-                randomized.add(dimlet);
-            }
-        }
+        addRandomDimlets(DimletType.ATTRIBUTE, randomized, random, random.nextInt(3));
     }
 
     private void addBiomeDimlets(List<DimletKey> randomized, Random random) {
-        int cnt = random.nextInt(8)+1;
-        for (int i = 0 ; i < cnt ; i++) {
-            DimletKey dimlet = DimletDictionary.get().getRandomDimlet(DimletType.BIOME, random);
-            if (dimlet != null) {
-                randomized.add(dimlet);
-            }
-        }
+        addRandomDimlets(DimletType.BIOME, randomized, random, random.nextInt(8)+1);
     }
 
     private void addFluidDimlets(List<DimletKey> randomized, Random random, int max) {
-        int cnt = random.nextInt(Math.min(3, max+1));
-        for (int i = 0 ; i < cnt ; i++) {
-            DimletKey dimlet = DimletDictionary.get().getRandomDimlet(DimletType.FLUID, random);
-            if (dimlet != null) {
-                randomized.add(dimlet);
-            }
-        }
+        addRandomDimlets(DimletType.FLUID, randomized, random, random.nextInt(Math.min(3, max+1)));
+    }
+
+    private void addTagDimlets(List<DimletKey> randomized, Random random) {
+        addRandomDimlets(DimletType.TAG, randomized, random, Math.max(1, random.nextInt(4)-2));
     }
 
     private void addBlockDimlets(List<DimletKey> randomized, Random random) {
-        int cnt = Math.max(1, random.nextInt(6)-2);
+        addRandomDimlets(DimletType.BLOCK, randomized, random, Math.max(1, random.nextInt(6)-2));
+    }
+
+    private void addRandomDimlets(DimletType type, List<DimletKey> randomized, Random random, int cnt) {
         for (int i = 0 ; i < cnt ; i++) {
-            DimletKey dimlet = DimletDictionary.get().getRandomDimlet(DimletType.BLOCK, random);
+            DimletKey dimlet = DimletDictionary.get().getRandomDimlet(type, random);
             if (dimlet != null) {
                 randomized.add(dimlet);
             }

@@ -36,6 +36,7 @@ public class DimletModule implements IModule {
     public static final RegistryObject<DimletItem> EMPTY_BLOCK_DIMLET = ITEMS.register("empty_block_dimlet", () -> new DimletItem(DimletType.BLOCK, false));
     public static final RegistryObject<DimletItem> EMPTY_FLUID_DIMLET = ITEMS.register("empty_fluid_dimlet", () -> new DimletItem(DimletType.FLUID, false));
     public static final RegistryObject<DimletItem> EMPTY_TIME_DIMLET = ITEMS.register("empty_time_dimlet", () -> new DimletItem(DimletType.TIME, false));
+    public static final RegistryObject<DimletItem> EMPTY_TAG_DIMLET = ITEMS.register("empty_tag_dimlet", () -> new DimletItem(DimletType.TAG, false));
 
     public static final RegistryObject<DimletItem> TERRAIN_DIMLET = ITEMS.register("terrain_dimlet", () -> new DimletItem(DimletType.TERRAIN, true));
     public static final RegistryObject<DimletItem> ATTRIBUTE_DIMLET = ITEMS.register("attribute_dimlet", () -> new DimletItem(DimletType.ATTRIBUTE, true));
@@ -47,6 +48,7 @@ public class DimletModule implements IModule {
     public static final RegistryObject<DimletItem> FLUID_DIMLET = ITEMS.register("fluid_dimlet", () -> new DimletItem(DimletType.FLUID, true));
     public static final RegistryObject<DimletItem> TIME_DIMLET = ITEMS.register("time_dimlet", () -> new DimletItem(DimletType.TIME, true));
     public static final RegistryObject<DimletItem> DIGIT_DIMLET = ITEMS.register("digit_dimlet", () -> new DimletItem(DimletType.DIGIT, true));
+    public static final RegistryObject<DimletItem> TAG_DIMLET = ITEMS.register("tag_dimlet", () -> new DimletItem(DimletType.TAG, true));
     public static final RegistryObject<DimletItem> ADMIN_DIMLET = ITEMS.register("admin_dimlet", () -> new DimletItem(DimletType.ADMIN, true));
 
     public static final RegistryObject<PartItem> PART_ENERGY_0 = ITEMS.register("part_energy_0", PartItem::new);

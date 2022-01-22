@@ -17,6 +17,7 @@ public class DimletConfig {
         List<String> defValues = new ArrayList<>();
         defValues.add("base.json");
         defValues.add("vanilla_blocks.json");
+        defValues.add("vanilla_tags.json");
         defValues.add("vanilla_fluids.json");
         defValues.add("vanilla_biomes.json");
         defValues.add("rftools.json");
