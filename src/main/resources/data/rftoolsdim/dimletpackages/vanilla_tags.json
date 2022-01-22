@@ -51,7 +51,7 @@
   },
   {
     "type": "tag",
-    "key": "minecraft:glass",
+    "key": "forge:glass",
     "rarity": "uncommon",
     "create": 100,
     "maintain": 100,
