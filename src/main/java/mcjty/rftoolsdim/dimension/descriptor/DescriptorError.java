@@ -50,6 +50,7 @@ public class DescriptorError {
         ONLY_ONE_BIOME_CONTROLLER("You can only have one biome controller!"),
         ONLY_ONE_TERRAIN("You can only have one terrain type!"),
         ONLY_ONE_TIME("You can only have one time dimlet!"),
+        ONLY_ONE_BLOCK("Terrain dimlet only supports one block!"),
         BAD_BLOCK("Bad block!"),
         BAD_FLUID("Bad fluid!"),
         ONLY_ONE_FLUID("Terrain supports only one fluid!"),

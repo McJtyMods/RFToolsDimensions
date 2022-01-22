@@ -18,6 +18,7 @@ import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -30,6 +31,8 @@ import net.minecraft.world.level.levelgen.placement.CountPlacement;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.level.levelgen.placement.PlacementModifier;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
@@ -81,16 +84,17 @@ public class RFTFeature extends Feature<NoneFeatureConfiguration> {
 
             ChunkPos cp = new ChunkPos(pos);
             TerrainType terrainType = compiledDescriptor.getTerrainType();
+            List<BlockState> baseBlocks = Collections.singletonList(compiledDescriptor.getBaseBlock());
             if (cp.x == 0 && cp.z == 0) {
                 // Spawn platform
                 int floorHeight = getFloorHeight(terrainType, reader, cp);
                 DimensionManager.get().registerPlatformHeight(reader.getLevel().dimension().location(), floorHeight);
                 SpawnPlatform.SPAWN_PLATFORM.get().generate(terrainType, reader, new BlockPos(3, floorHeight, 3),
-                        compiledDescriptor.getBaseBlocks(), BuildingTemplate.GenerateFlag.PLAIN);
+                        baseBlocks, BuildingTemplate.GenerateFlag.PLAIN);
                 generatedSomething = true;
             } else if (rand.nextFloat() < DimensionConfig.DIMLET_HUT_CHANCE.get()) {
                 DimletHut.DIMLET_HUT.get().generate(terrainType, reader, new BlockPos(cp.getMinBlockX() + 4, getFloorHeight(terrainType, reader, cp),cp.getMinBlockZ() + 4),
-                        compiledDescriptor.getBaseBlocks(), BuildingTemplate.GenerateFlag.FILLDOWN_IFNOTVOID);
+                        baseBlocks, BuildingTemplate.GenerateFlag.FILLDOWN_IFNOTVOID);
                 generatedSomething = true;
             }
 

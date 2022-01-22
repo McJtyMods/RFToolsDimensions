@@ -215,8 +215,8 @@ public class DimensionManager {
             builder.seaLevel(-64);
         }
 
-        if (!compiledDescriptor.getBaseBlocks().isEmpty()) {
-            builder.baseBlock(compiledDescriptor.getBaseBlocks().get(0));
+        if (compiledDescriptor.getBaseBlock() != null) {
+            builder.baseBlock(compiledDescriptor.getBaseBlock());
         }
         builder.liquidBlock(compiledDescriptor.getBaseLiquid());
         return builder.build();

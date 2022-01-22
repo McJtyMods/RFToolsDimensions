@@ -32,7 +32,7 @@ public class CompiledDescriptor {
 
     private TerrainType terrainType = null;
     private final Set<AttributeType> attributeTypes = EnumSet.noneOf(AttributeType.class);
-    private final List<BlockState> baseBlocks = new ArrayList<>();
+    private BlockState baseBlock = null;
     private BlockState baseLiquid = null;
 
     private final Set<AdminDimletType> adminDimletTypes = EnumSet.noneOf(AdminDimletType.class);
@@ -110,8 +110,8 @@ public class CompiledDescriptor {
         if (biomeControllerType == null) {
             biomeControllerType = BiomeControllerType.SINGLE;
         }
-        if (baseBlocks.isEmpty()) {
-            baseBlocks.add(Blocks.STONE.defaultBlockState());
+        if (baseBlock == null) {
+            baseBlock = Blocks.STONE.defaultBlockState();
         }
         if (baseLiquid == null) {
             baseLiquid = Blocks.WATER.defaultBlockState();
@@ -135,11 +135,17 @@ public class CompiledDescriptor {
                 if (terrainType == null) {
                     return ERROR(BAD_TERRAIN_TYPE, name);
                 }
-                baseBlocks.addAll(collectedBlocks);
-                collectedBlocks.clear();
-                if (baseBlocks.isEmpty()) {
-                    baseBlocks.add(Blocks.STONE.defaultBlockState());
+
+                if (collectedBlocks.size() > 1) {
+                    return ERROR(ONLY_ONE_BLOCK);
                 }
+                if (collectedBlocks.isEmpty()) {
+                    baseBlock = Blocks.STONE.defaultBlockState();
+                } else {
+                    baseBlock = collectedBlocks.iterator().next();
+                }
+                collectedBlocks.clear();
+
                 attributeTypes.addAll(collectedAttributes);
                 collectedAttributes.clear();
 
@@ -247,8 +253,8 @@ public class CompiledDescriptor {
         header += "\n    TERRAIN: " + terrainType.getName();
         header += "\n    TIME: " + timeType.getName();
         header += "\n    LIQUID: " + baseLiquid.getBlock().getRegistryName().toString();
-        for (BlockState block : baseBlocks) {
-            header += "\n    BLOCK: " + block.getBlock().getRegistryName().toString();
+        if (baseBlock != null) {
+            header += "\n    BLOCK: " + baseBlock.getBlock().getRegistryName().toString();
         }
         for (AdminDimletType type : adminDimletTypes) {
             header += "\n    ADMIN: " + type.getName();
@@ -316,8 +322,8 @@ public class CompiledDescriptor {
         return maintainCostPerTick;
     }
 
-    public List<BlockState> getBaseBlocks() {
-        return baseBlocks;
+    public BlockState getBaseBlock() {
+        return baseBlock;
     }
 
     public Set<CompiledFeature> getFeatures() {
