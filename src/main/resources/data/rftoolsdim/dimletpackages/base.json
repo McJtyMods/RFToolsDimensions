@@ -316,6 +316,19 @@
   },
   {
     "type": "terrain",
+    "key": "maze",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 20,
+    "worldgen": true,
+    "dimlet": true,
+    "essence": {
+      "item": "minecraft:redstone_wire"
+    }
+  },
+  {
+    "type": "terrain",
     "key": "normal",
     "rarity": "common",
     "create": 10,

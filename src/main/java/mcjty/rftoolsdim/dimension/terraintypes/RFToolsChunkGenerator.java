@@ -110,8 +110,9 @@ public class RFToolsChunkGenerator extends NoiseBasedChunkGenerator {
             case VOID -> CompletableFuture.completedFuture(chunkAccess);
             case WAVES -> WavesGenerator.fillFromNoise(chunkAccess, this);
             case SPIKES -> SpikesGenerator.fillFromNoise(chunkAccess, this);
-            case GRID -> GridGenerator.fillFromNoiseGrid(chunkAccess, this);
+            case GRID -> GridGenerator.fillFromNoise(chunkAccess, this);
             case PLATFORMS -> PlatformsGenerator.fillFromNoise(chunkAccess, this);
+            case MAZE -> MazeGenerator.fillFromNoise(chunkAccess, this);
             default -> super.fillFromNoise(executor, blender, structureFeatureManager, chunkAccess);
         };
     }
@@ -126,6 +127,7 @@ public class RFToolsChunkGenerator extends NoiseBasedChunkGenerator {
             case SPIKES -> SpikesGenerator.calculateSpikeHeight(pX, pZ, seed);
             case GRID -> GridGenerator.getBaseHeight(pX, pZ, level);
             case PLATFORMS -> PlatformsGenerator.getBaseHeight(pX, pZ, level, this);
+            case MAZE -> MazeGenerator.getBaseHeight(pX, pZ, level);
             default -> super.getBaseHeight(pX, pZ, type, level);
         };
     }
@@ -140,6 +142,7 @@ public class RFToolsChunkGenerator extends NoiseBasedChunkGenerator {
             case SPIKES -> SpikesGenerator.getBaseColumn(pX, pZ, level, this);
             case GRID -> GridGenerator.getBaseColumn(pX, pZ, level, this);
             case PLATFORMS -> PlatformsGenerator.getBaseColumn(pX, pZ, level, this);
+            case MAZE -> MazeGenerator.getBaseColumn(pX, pZ, level, this);
             default -> super.getBaseColumn(pX, pZ, level);
         };
     }

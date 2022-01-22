@@ -1,7 +1,6 @@
 - Biome dictionary dimlets
-- Fix dimension builder renderer
 - Feature dimlets
 - Terrain types:
     - Maze
     - Rooms
-
+- Check if getBaseHeight in all generators is actually correct (and getNoiseColumn)

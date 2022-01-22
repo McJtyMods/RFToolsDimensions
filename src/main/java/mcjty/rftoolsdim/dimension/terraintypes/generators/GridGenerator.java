@@ -15,7 +15,7 @@ import java.util.concurrent.CompletableFuture;
 
 public class GridGenerator {
 
-    public static CompletableFuture<ChunkAccess> fillFromNoiseGrid(ChunkAccess chunkAccess, RFToolsChunkGenerator generator) {
+    public static CompletableFuture<ChunkAccess> fillFromNoise(ChunkAccess chunkAccess, RFToolsChunkGenerator generator) {
         ChunkPos chunkpos = chunkAccess.getPos();
 
         BlockPos.MutableBlockPos mpos = new BlockPos.MutableBlockPos();

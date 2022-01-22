@@ -18,7 +18,8 @@ public enum TerrainType {
     CHAOTIC("chaotic", KnowledgeSet.SET4, TerrainPresets.RFTOOLSDIM_CHAOTIC, false),
     GRID("grid", KnowledgeSet.SET2, NoiseGeneratorSettings.OVERWORLD, true),
     PLATFORMS("platforms", KnowledgeSet.SET2, NoiseGeneratorSettings.OVERWORLD, true),
-    SPIKES("spikes", KnowledgeSet.SET4, NoiseGeneratorSettings.OVERWORLD, false)
+    SPIKES("spikes", KnowledgeSet.SET4, NoiseGeneratorSettings.OVERWORLD, false),
+    MAZE("maze", KnowledgeSet.SET1, NoiseGeneratorSettings.OVERWORLD, false)
     ;
 
     private final String name;
