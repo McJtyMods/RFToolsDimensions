@@ -2,5 +2,9 @@
 - Feature dimlets
 - Terrain types:
     - Rooms
-- Check if getBaseHeight in all generators is actually correct (and getNoiseColumn)
 - Add bedrock layer at the bottom of maze and ravine terrain
+- Check checker + category
+- Check low power
+- Weather dimlet
+- Destroy dimensions
+- Check dimlet loot
