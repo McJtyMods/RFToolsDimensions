@@ -173,6 +173,19 @@
   },
   {
     "type": "attribute",
+    "key": "cities",
+    "rarity": "uncommon",
+    "create": 50,
+    "maintain": 50,
+    "ticks": 50,
+    "worldgen": true,
+    "dimlet": true,
+    "essence": {
+      "item": "minecraft:bricks"
+    }
+  },
+  {
+    "type": "attribute",
     "key": "nooceans",
     "rarity": "common",
     "create": 10,

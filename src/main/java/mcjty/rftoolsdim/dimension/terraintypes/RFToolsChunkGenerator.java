@@ -2,6 +2,7 @@ package mcjty.rftoolsdim.dimension.terraintypes;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import mcjty.rftoolsdim.compat.LostCityCompat;
 import mcjty.rftoolsdim.dimension.data.DimensionSettings;
 import mcjty.rftoolsdim.dimension.noisesettings.NoiseGeneratorSettingsBuilder;
 import mcjty.rftoolsdim.dimension.noisesettings.NoiseSamplingSettingsBuilder;
@@ -104,9 +105,16 @@ public class RFToolsChunkGenerator extends NoiseBasedChunkGenerator {
         return perlinNoise;
     }
 
+    private void checkForCities(WorldGenRegion region, TerrainType terrainType) {
+        if (dimensionSettings.getCompiledDescriptor().getAttributeTypes().contains(AttributeType.CITIES)) {
+            LostCityCompat.registerDimension(region.getLevel().dimension(), LostCityCompat.getProfile(terrainType));
+        }
+    }
+
     @Override
     public void buildSurface(WorldGenRegion level, StructureFeatureManager structureFeatureManager, ChunkAccess chunkAccess) {
         TerrainType terrainType = dimensionSettings.getCompiledDescriptor().getTerrainType();
+        checkForCities(level, terrainType);
         if (terrainType != TerrainType.VOID && terrainType != TerrainType.FLAT) {
             super.buildSurface(level, structureFeatureManager, chunkAccess);
         }

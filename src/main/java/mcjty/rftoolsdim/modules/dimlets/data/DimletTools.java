@@ -1,6 +1,7 @@
 package mcjty.rftoolsdim.modules.dimlets.data;
 
 import mcjty.lib.varia.Tools;
+import mcjty.rftoolsdim.compat.LostCityCompat;
 import mcjty.rftoolsdim.dimension.AdminDimletType;
 import mcjty.rftoolsdim.modules.dimlets.DimletModule;
 import mcjty.rftoolsdim.modules.dimlets.items.DimletItem;
@@ -8,21 +9,17 @@ import mcjty.rftoolsdim.modules.essences.EssencesModule;
 import mcjty.rftoolsdim.modules.essences.blocks.BiomeAbsorberTileEntity;
 import mcjty.rftoolsdim.modules.essences.blocks.BlockAbsorberTileEntity;
 import mcjty.rftoolsdim.modules.essences.blocks.FluidAbsorberTileEntity;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.client.resources.language.I18n;
-import net.minecraft.world.level.material.Fluid;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.Locale;
 import java.util.Objects;
 
 public class DimletTools {
@@ -271,17 +268,33 @@ public class DimletTools {
 
     /// Return true if this dimlet can exist (refers to an existing block/biome/...)
     public static boolean isValidDimlet(DimletKey key) {
-        switch (key.type()) {
-            case BIOME:
-                return ForgeRegistries.BIOMES.getValue(new ResourceLocation(key.key())) != null;
-            case BLOCK:
-                Block value = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(key.key()));
-                return value != null && value != Blocks.AIR;
-            case FLUID:
-                Fluid fluid = ForgeRegistries.FLUIDS.getValue(new ResourceLocation(key.key()));
-                return fluid != null && fluid.defaultFluidState().createLegacyBlock().getBlock() != Blocks.AIR;
-            default:
-                return true;
+        return switch (key.type()) {
+            case BIOME -> isValidBiome(key);
+            case BLOCK -> isValidBlock(key);
+            case FLUID -> isValidFluid(key);
+            case ADMIN -> isValidAttribute(key);
+            default -> true;
+        };
+    }
+
+    private static boolean isValidAttribute(DimletKey key) {
+        if ("cities".equals(key.key())) {
+            return LostCityCompat.hasLostCities();
         }
+        return true;
+    }
+
+    private static boolean isValidBiome(DimletKey key) {
+        return ForgeRegistries.BIOMES.getValue(new ResourceLocation(key.key())) != null;
+    }
+
+    private static boolean isValidBlock(DimletKey key) {
+        Block value = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(key.key()));
+        return value != null && value != Blocks.AIR;
+    }
+
+    private static boolean isValidFluid(DimletKey key) {
+        Fluid fluid = ForgeRegistries.FLUIDS.getValue(new ResourceLocation(key.key()));
+        return fluid != null && fluid.defaultFluidState().createLegacyBlock().getBlock() != Blocks.AIR;
     }
 }

@@ -4,6 +4,7 @@ import mcjty.lib.compat.MainCompatHandler;
 import mcjty.lib.setup.DefaultModSetup;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.commands.ModCommands;
+import mcjty.rftoolsdim.compat.LostCityCompat;
 import mcjty.rftoolsdim.compat.RFToolsUtilityCompat;
 import mcjty.rftoolsdim.dimension.DimensionRegistry;
 import mcjty.rftoolsdim.dimension.biomes.RFTBiomeProvider;
@@ -56,5 +57,6 @@ public class ModSetup extends DefaultModSetup {
         MainCompatHandler.registerWaila();
         MainCompatHandler.registerTOP();
         RFToolsUtilityCompat.register();
+        LostCityCompat.register();
     }
 }

@@ -35,6 +35,8 @@ public class RFTBiomeProvider extends BiomeSource {
     private final DimensionSettings settings;
     private final MultiNoiseBiomeSource multiNoiseBiomeSource;
     private final boolean defaultBiomes;
+    private Biome biome1 = null;   // For single and checker
+    private Biome biome2 = null;   // For checker
 
     public RFTBiomeProvider(Registry<Biome> biomeRegistry, DimensionSettings settings) {
         super(Collections.emptyList());
@@ -171,26 +173,44 @@ public class RFTBiomeProvider extends BiomeSource {
         }
     }
 
+    private void getBiome1And2() {
+        if (biome1 == null) {
+            if (biomes.isEmpty()) {
+                // Try to get from categories
+                List<Biome> list = biomeRegistry.stream().filter(b -> biomeCategories.contains(b.getBiomeCategory())).collect(Collectors.toList());
+                biome1 = list.get(0);
+                if (list.size() > 1) {
+                    biome2 = list.get(1);
+                } else {
+                    biome2 = biome1;
+                }
+            } else {
+                biome1 = biomes.get(0);
+                if (biomes.size() > 1) {
+                    biome2 = biomes.get(1);
+                } else {
+                    biome2 = biome1;
+                }
+            }
+            biome1 = getMappedBiome(biome1);
+            biome2 = getMappedBiome(biome2);
+        }
+    }
+
     @Override
     public Biome getNoiseBiome(int x, int y, int z, Climate.Sampler climate) {
         switch (settings.getCompiledDescriptor().getBiomeControllerType()) {
             case CHECKER -> {
-                if ((x+y)%2 == 0 || biomes.size() <= 1) {
-                    return getMappedBiome(biomes.get(0));
+                getBiome1And2();
+                if ((x+y)%2 == 0) {
+                    return biome1;
                 } else {
-                    return getMappedBiome(biomes.get(1));
+                    return biome2;
                 }
             }
             case SINGLE -> {
-                if (biomes.isEmpty()) {
-                    if (defaultBiomes) {
-                        return multiNoiseBiomeSource.getNoiseBiome(x, y, z, climate);
-                    } else {
-                        return getMappedBiome(multiNoiseBiomeSource.getNoiseBiome(x, y, z, climate));
-                    }
-                } else {
-                    return getMappedBiome(biomes.get(0));
-                }
+                getBiome1And2();
+                return biome1;
             }
             default -> {
                 if (defaultBiomes) {

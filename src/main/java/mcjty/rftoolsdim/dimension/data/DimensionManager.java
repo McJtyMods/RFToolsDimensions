@@ -4,6 +4,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import mcjty.lib.varia.LevelTools;
 import mcjty.rftoolsdim.RFToolsDim;
+import mcjty.rftoolsdim.compat.LostCityCompat;
 import mcjty.rftoolsdim.dimension.TimeType;
 import mcjty.rftoolsdim.dimension.biomes.RFTBiomeProvider;
 import mcjty.rftoolsdim.dimension.descriptor.CompiledDescriptor;
@@ -181,6 +182,11 @@ public class DimensionManager {
         TimeType timeType = compiledDescriptor.getTimeType();
 
         ResourceKey<Level> key = LevelTools.getId(id);
+
+        if (settings.getCompiledDescriptor().getAttributeTypes().contains(AttributeType.CITIES) && LostCityCompat.hasLostCities()) {
+            LostCityCompat.registerDimension(key, LostCityCompat.getProfile(terrainType));
+        }
+
         RegistryAccess registryAccess = world.getServer().registryAccess();
         DimensionType type = registryAccess.registryOrThrow(Registry.DIMENSION_TYPE_REGISTRY).get(timeType.getDimensionType());
         ServerLevel result = DynamicDimensionManager.getOrCreateLevel(world.getServer(), key,

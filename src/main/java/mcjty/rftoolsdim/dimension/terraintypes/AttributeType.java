@@ -12,6 +12,7 @@ public enum AttributeType {
 //    NOBIOMESURFACE("nobiomesurface", KnowledgeSet.SET1),
     NOOCEANS("nooceans", KnowledgeSet.SET1),
     WATERWORLD("waterworld", KnowledgeSet.SET1),
+    CITIES("cities", KnowledgeSet.SET1),
 //    NOBEDROCK("nobedrock", KnowledgeSet.SET1),
     NOBLOBS("noblobs", KnowledgeSet.SET1);
 
