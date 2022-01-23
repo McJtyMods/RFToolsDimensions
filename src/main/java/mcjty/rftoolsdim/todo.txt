@@ -1,6 +1,6 @@
 - Biome dictionary dimlets
 - Feature dimlets
 - Terrain types:
-    - Maze
     - Rooms
 - Check if getBaseHeight in all generators is actually correct (and getNoiseColumn)
+- Add bedrock layer at the bottom of maze and ravine terrain

@@ -329,6 +329,19 @@
   },
   {
     "type": "terrain",
+    "key": "ravine",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 20,
+    "worldgen": true,
+    "dimlet": true,
+    "essence": {
+      "item": "minecraft:gravel"
+    }
+  },
+  {
+    "type": "terrain",
     "key": "normal",
     "rarity": "common",
     "create": 10,

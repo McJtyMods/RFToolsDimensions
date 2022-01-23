@@ -8,6 +8,7 @@ import mcjty.rftoolsdim.dimension.noisesettings.NoiseSamplingSettingsBuilder;
 import mcjty.rftoolsdim.dimension.noisesettings.NoiseSettingsBuilder;
 import mcjty.rftoolsdim.dimension.noisesettings.NoiseSliderBuilder;
 import mcjty.rftoolsdim.dimension.terraintypes.generators.*;
+import mcjty.rftoolsdim.tools.PerlinNoiseGenerator14;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.RegistryLookupCodec;
 import net.minecraft.server.level.WorldGenRegion;
@@ -45,6 +46,8 @@ public class RFToolsChunkGenerator extends NoiseBasedChunkGenerator {
     // Mirror because the one in NoiseBasedChunkGenerator is private
     private final Registry<NormalNoise.NoiseParameters> noises;
     protected final DimensionSettings dimensionSettings;
+
+    private PerlinNoiseGenerator14 perlinNoise = null;
 
     public RFToolsChunkGenerator(Registry<NormalNoise.NoiseParameters> noiseRegistry, BiomeSource biomeSource, long seed,
                                  Supplier<NoiseGeneratorSettings> settingsSupplier, DimensionSettings dimensionSettings) {
@@ -94,6 +97,13 @@ public class RFToolsChunkGenerator extends NoiseBasedChunkGenerator {
         return defaultBlock;
     }
 
+    public PerlinNoiseGenerator14 getPerlinNoise() {
+        if (perlinNoise == null) {
+            perlinNoise = new PerlinNoiseGenerator14(seed, 4);
+        }
+        return perlinNoise;
+    }
+
     @Override
     public void buildSurface(WorldGenRegion level, StructureFeatureManager structureFeatureManager, ChunkAccess chunkAccess) {
         TerrainType terrainType = dimensionSettings.getCompiledDescriptor().getTerrainType();
@@ -113,6 +123,7 @@ public class RFToolsChunkGenerator extends NoiseBasedChunkGenerator {
             case GRID -> GridGenerator.fillFromNoise(chunkAccess, this);
             case PLATFORMS -> PlatformsGenerator.fillFromNoise(chunkAccess, this);
             case MAZE -> MazeGenerator.fillFromNoise(chunkAccess, this);
+            case RAVINE -> RavineGenerator.fillFromNoise(chunkAccess, this);
             default -> super.fillFromNoise(executor, blender, structureFeatureManager, chunkAccess);
         };
     }
@@ -128,6 +139,7 @@ public class RFToolsChunkGenerator extends NoiseBasedChunkGenerator {
             case GRID -> GridGenerator.getBaseHeight(pX, pZ, level);
             case PLATFORMS -> PlatformsGenerator.getBaseHeight(pX, pZ, level, this);
             case MAZE -> MazeGenerator.getBaseHeight(pX, pZ, level);
+            case RAVINE -> RavineGenerator.getBaseHeight(pX, pZ, this);
             default -> super.getBaseHeight(pX, pZ, type, level);
         };
     }
@@ -143,6 +155,7 @@ public class RFToolsChunkGenerator extends NoiseBasedChunkGenerator {
             case GRID -> GridGenerator.getBaseColumn(pX, pZ, level, this);
             case PLATFORMS -> PlatformsGenerator.getBaseColumn(pX, pZ, level, this);
             case MAZE -> MazeGenerator.getBaseColumn(pX, pZ, level, this);
+            case RAVINE -> RavineGenerator.getBaseColumn(pX, pZ, level, this);
             default -> super.getBaseColumn(pX, pZ, level);
         };
     }

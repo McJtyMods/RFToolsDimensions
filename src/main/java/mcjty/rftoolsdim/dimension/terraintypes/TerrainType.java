@@ -19,7 +19,8 @@ public enum TerrainType {
     GRID("grid", KnowledgeSet.SET2, NoiseGeneratorSettings.OVERWORLD, true),
     PLATFORMS("platforms", KnowledgeSet.SET2, NoiseGeneratorSettings.OVERWORLD, true),
     SPIKES("spikes", KnowledgeSet.SET4, NoiseGeneratorSettings.OVERWORLD, false),
-    MAZE("maze", KnowledgeSet.SET1, NoiseGeneratorSettings.OVERWORLD, false)
+    MAZE("maze", KnowledgeSet.SET1, NoiseGeneratorSettings.OVERWORLD, false),
+    RAVINE("ravine", KnowledgeSet.SET3, NoiseGeneratorSettings.OVERWORLD, false)
     ;
 
     private final String name;
