@@ -73,11 +73,15 @@ public class TerrainPresets {
     public static final ResourceKey<NoiseGeneratorSettings> RFTOOLSDIM_CHAOTIC = ResourceKey.create(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY, new ResourceLocation("rftoolsdim_chaotic"));
     public static final ResourceKey<NoiseGeneratorSettings> RFTOOLSDIM_ISLANDS = ResourceKey.create(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY, new ResourceLocation("rftoolsdim_islands"));
     public static final ResourceKey<NoiseGeneratorSettings> RFTOOLSDIM_CAVERN = ResourceKey.create(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY, new ResourceLocation("rftoolsdim_cavern"));
+    public static final ResourceKey<NoiseGeneratorSettings> RFTOOLSDIM_FLAT = ResourceKey.create(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY, new ResourceLocation("rftoolsdim_flat"));
+    public static final ResourceKey<NoiseGeneratorSettings> RFTOOLSDIM_OVERWORLD = ResourceKey.create(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY, new ResourceLocation("rftoolsdim_overworld"));
 
     public static void init() {
         NoiseGeneratorSettings.register(RFTOOLSDIM_CHAOTIC, chaotic());
         NoiseGeneratorSettings.register(RFTOOLSDIM_ISLANDS, islands());
         NoiseGeneratorSettings.register(RFTOOLSDIM_CAVERN, cavern());
+        NoiseGeneratorSettings.register(RFTOOLSDIM_FLAT, flat());
+        NoiseGeneratorSettings.register(RFTOOLSDIM_OVERWORLD, overworld());
     }
 
     private static NoiseGeneratorSettings cavern() {
@@ -91,6 +95,11 @@ public class TerrainPresets {
                         1, 2, false, false, false, TerrainProvider.nether()),
                 Blocks.STONE.defaultBlockState(), Blocks.WATER.defaultBlockState(),
                 SurfaceRuleData.overworld(), 32, false, false, false, false, false, true);
+    }
+
+    private static NoiseGeneratorSettings overworld() {
+        return NoiseGeneratorSettingsBuilder.create(NoiseGeneratorSettings.overworld(false, false))
+                .build();
     }
 
     private static NoiseGeneratorSettings islands() {
@@ -221,28 +230,28 @@ public class TerrainPresets {
                 .build();
     }
 
-    private static NoiseGeneratorSettings test() {
+    private static NoiseGeneratorSettings flat() {
         return NoiseGeneratorSettingsBuilder.create()
-                .seaLevel(-64)
+                .seaLevel(63)
                 .noiseSettings(NoiseSettingsBuilder.create()
                         .minY(0)
                         .height(256)
                         .samplingSettings(NoiseSamplingSettingsBuilder.create()
-                                .xzScale(2.0d)
+                                .xzScale(1.0d)
                                 .yScale(1.0d)
                                 .xzFactor(80.0d)
                                 .yFactor(160.0d))
                         .topSlider(NoiseSliderBuilder.create()
-                                .top(-23.4375D)
-                                .size(64)
-                                .offset(-46))
+                                .top(-0.078)
+                                .size(2)
+                                .offset(8))
                         .bottomSlider(NoiseSliderBuilder.create()
-                                .top(-0.234375D)
-                                .size(7)
-                                .offset(1))
+                                .top(0.117)
+                                .size(3)
+                                .offset(0))
                         .noiseSizeHorizontal(2)
                         .noiseSizeVertical(1)
-                        .islandNoiseOverride(true)
+                        .islandNoiseOverride(false)
                         .amplified(false)
                         .largeBiomes(false)
                         .terrainShaper(TerrainProvider.floatingIslands()))
@@ -253,12 +262,11 @@ public class TerrainPresets {
                         .bedrockRoof(false)
                         .bedrockFloor(false))
                 .disableMobGeneration(false)
-                .aquifersEnabled(false)
-                .noiseCavesEnabled(false)
-                .oreVeinsEnabled(false)
-                .noodleCavesEnabled(false)
+                .aquifersEnabled(true)
+                .noiseCavesEnabled(true)
+                .oreVeinsEnabled(true)
+                .noodleCavesEnabled(true)
                 .legacyRandomSource(true)
                 .build();
     }
-
 }

@@ -5,6 +5,7 @@ import mcjty.rftoolsdim.RFToolsDim;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.levelgen.feature.StructureFeature;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.fml.loading.FMLPaths;
@@ -22,6 +23,7 @@ public class DimletPackages {
         new File(configPath + File.separator + "rftoolsdim").mkdirs();
 
         JsonArray root = new JsonArray();
+        writeStructures(root, modid);
         writeBlocks(root, modid);
         writeFluids(root, modid);
         writeBiomes(root, modid);
@@ -85,13 +87,31 @@ public class DimletPackages {
                     object.addProperty("type", DimletType.BLOCK.name().toLowerCase());
                     object.addProperty("key", id.toString());
                     DimletSettings settings = DimletSettings.create(isOre ? DimletRarity.UNCOMMON : DimletRarity.COMMON,
-                            isOre ? 100 : 10, isOre ? 100 : 10, isOre ? 100 : 10)
+                                    isOre ? 100 : 10, isOre ? 100 : 10, isOre ? 100 : 10)
                             .dimlet(true)
                             .worldgen(true)
                             .build();
                     settings.buildElement(object);
                     root.add(object);
                 }
+            }
+        }
+    }
+
+    private static void writeStructures(JsonArray root, String modid) {
+        for (var entry : ForgeRegistries.STRUCTURE_FEATURES.getEntries()) {
+            ResourceLocation id = entry.getKey().location();
+            if (modid.toLowerCase().equals(id.getNamespace())) {
+                StructureFeature<?> feature = entry.getValue();
+                JsonObject object = new JsonObject();
+                object.addProperty("type", DimletType.STRUCTURE.name().toLowerCase());
+                object.addProperty("key", id.toString());
+                DimletSettings settings = DimletSettings.create(DimletRarity.UNCOMMON, 100, 100, 100)
+                        .dimlet(true)
+                        .worldgen(true)
+                        .build();
+                settings.buildElement(object);
+                root.add(object);
             }
         }
     }

@@ -20,6 +20,7 @@ public class DimletConfig {
         defValues.add("vanilla_tags.json");
         defValues.add("vanilla_fluids.json");
         defValues.add("vanilla_biomes.json");
+        defValues.add("vanilla_structures.json");
         defValues.add("rftools.json");
         defValues.add("appliedenergistics2.json");
         defValues.add("biggerreactors.json");

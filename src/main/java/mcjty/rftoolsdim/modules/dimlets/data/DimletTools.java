@@ -76,6 +76,7 @@ public class DimletTools {
             case BIOME_CATEGORY -> DimletModule.BIOME_CATEGORY_DIMLET.get();
             case BIOME -> DimletModule.BIOME_DIMLET.get();
             case FEATURE -> DimletModule.FEATURE_DIMLET.get();
+            case STRUCTURE -> DimletModule.STRUCTURE_DIMLET.get();
             case TIME -> DimletModule.TIME_DIMLET.get();
             case BLOCK -> DimletModule.BLOCK_DIMLET.get();
             case TAG -> DimletModule.TAG_DIMLET.get();
@@ -93,6 +94,7 @@ public class DimletTools {
             case BIOME_CATEGORY -> DimletModule.EMPTY_BIOME_CATEGORY_DIMLET.get();
             case BIOME -> DimletModule.EMPTY_BIOME_DIMLET.get();
             case FEATURE -> DimletModule.EMPTY_FEATURE_DIMLET.get();
+            case STRUCTURE -> DimletModule.EMPTY_STRUCTURE_DIMLET.get();
             case TIME -> DimletModule.EMPTY_TIME_DIMLET.get();
             case BLOCK -> DimletModule.EMPTY_BLOCK_DIMLET.get();
             case TAG -> DimletModule.EMPTY_TAG_DIMLET.get();
@@ -176,6 +178,7 @@ public class DimletTools {
             case BIOME_CATEGORY -> ItemStack.EMPTY;
             case BIOME -> new ItemStack(EssencesModule.BIOME_ABSORBER_ITEM.get());
             case FEATURE -> ItemStack.EMPTY;
+            case STRUCTURE -> ItemStack.EMPTY;
             case TIME -> ItemStack.EMPTY;
             case BLOCK -> new ItemStack(EssencesModule.BLOCK_ABSORBER_ITEM.get());
             case TAG -> ItemStack.EMPTY;
@@ -202,6 +205,8 @@ public class DimletTools {
                 String trans = "biome." + id.getNamespace() + "." + id.getPath();
                 return I18n.get(trans);
             case FEATURE:
+                return dimletKey.key().toLowerCase();
+            case STRUCTURE:
                 return dimletKey.key().toLowerCase();
             case TIME:
                 return dimletKey.key().toLowerCase();

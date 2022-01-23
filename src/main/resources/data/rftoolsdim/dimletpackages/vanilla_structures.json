@@ -1,0 +1,262 @@
+[
+  {
+    "type": "structure",
+    "key": "none",
+    "rarity": "common",
+    "create": 5,
+    "maintain": 5,
+    "ticks": 5,
+    "worldgen": true,
+    "dimlet": true,
+    "essence": {
+      "item": "minecraft:wool"
+    }
+  },
+  {
+    "type": "structure",
+    "key": "default",
+    "rarity": "common",
+    "create": 5,
+    "maintain": 5,
+    "ticks": 5,
+    "worldgen": true,
+    "dimlet": true,
+    "essence": {
+      "item": "minecraft:stone"
+    }
+  },
+  {
+    "type": "structure",
+    "key": "minecraft:pillager_outpost",
+    "rarity": "uncommon",
+    "create": 100,
+    "maintain": 100,
+    "ticks": 100,
+    "worldgen": true,
+    "dimlet": true,
+    "essence": {
+      "item": "minecraft:white_banner"
+    }
+  },
+  {
+    "type": "structure",
+    "key": "minecraft:mineshaft",
+    "rarity": "uncommon",
+    "create": 200,
+    "maintain": 200,
+    "ticks": 100,
+    "worldgen": true,
+    "dimlet": true,
+    "essence": {
+      "item": "minecraft:powered_rail"
+    }
+  },
+  {
+    "type": "structure",
+    "key": "minecraft:mansion",
+    "rarity": "rare",
+    "create": 300,
+    "maintain": 300,
+    "ticks": 200,
+    "worldgen": true,
+    "dimlet": true,
+    "essence": {
+      "item": "minecraft:totem_of_undying"
+    }
+  },
+  {
+    "type": "structure",
+    "key": "minecraft:jungle_pyramid",
+    "rarity": "uncommon",
+    "create": 100,
+    "maintain": 100,
+    "ticks": 100,
+    "worldgen": true,
+    "dimlet": true,
+    "essence": {
+      "item": "minecraft:jungle_sapling"
+    }
+  },
+  {
+    "type": "structure",
+    "key": "minecraft:desert_pyramid",
+    "rarity": "uncommon",
+    "create": 100,
+    "maintain": 100,
+    "ticks": 100,
+    "worldgen": true,
+    "dimlet": true,
+    "essence": {
+      "item": "minecraft:sandstone"
+    }
+  },
+  {
+    "type": "structure",
+    "key": "minecraft:igloo",
+    "rarity": "uncommon",
+    "create": 100,
+    "maintain": 100,
+    "ticks": 100,
+    "worldgen": true,
+    "dimlet": true,
+    "essence": {
+      "item": "minecraft:snow_block"
+    }
+  },
+  {
+    "type": "structure",
+    "key": "minecraft:ruined_portal",
+    "rarity": "uncommon",
+    "create": 100,
+    "maintain": 100,
+    "ticks": 100,
+    "worldgen": true,
+    "dimlet": true,
+    "essence": {
+      "item": "minecraft:obsidian"
+    }
+  },
+  {
+    "type": "structure",
+    "key": "minecraft:shipwreck",
+    "rarity": "uncommon",
+    "create": 100,
+    "maintain": 100,
+    "ticks": 100,
+    "worldgen": true,
+    "dimlet": true,
+    "essence": {
+      "item": "minecraft:water_bucket"
+    }
+  },
+  {
+    "type": "structure",
+    "key": "minecraft:swamp_hut",
+    "rarity": "uncommon",
+    "create": 100,
+    "maintain": 100,
+    "ticks": 100,
+    "worldgen": true,
+    "dimlet": true,
+    "essence": {
+      "item": "minecraft:slime_ball"
+    }
+  },
+  {
+    "type": "structure",
+    "key": "minecraft:stronghold",
+    "rarity": "uncommon",
+    "create": 100,
+    "maintain": 100,
+    "ticks": 100,
+    "worldgen": true,
+    "dimlet": true,
+    "essence": {
+      "item": "minecraft:stone_bricks"
+    }
+  },
+  {
+    "type": "structure",
+    "key": "minecraft:monument",
+    "rarity": "uncommon",
+    "create": 100,
+    "maintain": 100,
+    "ticks": 100,
+    "worldgen": true,
+    "dimlet": true,
+    "essence": {
+      "item": "minecraft:sponge"
+    }
+  },
+  {
+    "type": "structure",
+    "key": "minecraft:ocean_ruin",
+    "rarity": "uncommon",
+    "create": 100,
+    "maintain": 100,
+    "ticks": 100,
+    "worldgen": true,
+    "dimlet": true,
+    "essence": {
+      "item": "minecraft:bricks"
+    }
+  },
+  {
+    "type": "structure",
+    "key": "minecraft:fortress",
+    "rarity": "uncommon",
+    "create": 100,
+    "maintain": 100,
+    "ticks": 100,
+    "worldgen": true,
+    "dimlet": true,
+    "essence": {
+      "item": "minecraft:nether_bricks"
+    }
+  },
+  {
+    "type": "structure",
+    "key": "minecraft:endcity",
+    "rarity": "uncommon",
+    "create": 100,
+    "maintain": 100,
+    "ticks": 100,
+    "worldgen": true,
+    "dimlet": true,
+    "essence": {
+      "item": "minecraft:end_stone"
+    }
+  },
+  {
+    "type": "structure",
+    "key": "minecraft:buried_treasure",
+    "rarity": "uncommon",
+    "create": 100,
+    "maintain": 100,
+    "ticks": 100,
+    "worldgen": true,
+    "dimlet": true,
+    "essence": {
+      "item": "minecraft:diamond"
+    }
+  },
+  {
+    "type": "structure",
+    "key": "minecraft:village",
+    "rarity": "rare",
+    "create": 1000,
+    "maintain": 1000,
+    "ticks": 500,
+    "worldgen": true,
+    "dimlet": true,
+    "essence": {
+      "item": "minecraft:nether_star"
+    }
+  },
+  {
+    "type": "structure",
+    "key": "minecraft:nether_fossil",
+    "rarity": "uncommon",
+    "create": 100,
+    "maintain": 100,
+    "ticks": 100,
+    "worldgen": true,
+    "dimlet": true,
+    "essence": {
+      "item": "minecraft:bone_block"
+    }
+  },
+  {
+    "type": "structure",
+    "key": "minecraft:bastion_remnant",
+    "rarity": "uncommon",
+    "create": 100,
+    "maintain": 100,
+    "ticks": 100,
+    "worldgen": true,
+    "dimlet": true,
+    "essence": {
+      "item": "minecraft:smooth_basalt"
+    }
+  }
+]

@@ -9,18 +9,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 public enum TerrainType {
-    FLAT("flat", KnowledgeSet.SET1, NoiseGeneratorSettings.OVERWORLD, false),
-    WAVES("waves", KnowledgeSet.SET1, NoiseGeneratorSettings.OVERWORLD, false),
-    VOID("void", KnowledgeSet.SET2, NoiseGeneratorSettings.OVERWORLD, true),
-    NORMAL("normal", KnowledgeSet.SET3, NoiseGeneratorSettings.OVERWORLD, false),
+    FLAT("flat", KnowledgeSet.SET1, TerrainPresets.RFTOOLSDIM_FLAT, false),
+    WAVES("waves", KnowledgeSet.SET1, TerrainPresets.RFTOOLSDIM_OVERWORLD, false),
+    VOID("void", KnowledgeSet.SET2, TerrainPresets.RFTOOLSDIM_OVERWORLD, true),
+    NORMAL("normal", KnowledgeSet.SET3, TerrainPresets.RFTOOLSDIM_OVERWORLD, false),
     ISLANDS("islands", KnowledgeSet.SET4, TerrainPresets.RFTOOLSDIM_ISLANDS, true),
     CAVERN("cavern", KnowledgeSet.SET5, TerrainPresets.RFTOOLSDIM_CAVERN, false),
     CHAOTIC("chaotic", KnowledgeSet.SET4, TerrainPresets.RFTOOLSDIM_CHAOTIC, false),
-    GRID("grid", KnowledgeSet.SET2, NoiseGeneratorSettings.OVERWORLD, true),
-    PLATFORMS("platforms", KnowledgeSet.SET2, NoiseGeneratorSettings.OVERWORLD, true),
-    SPIKES("spikes", KnowledgeSet.SET4, NoiseGeneratorSettings.OVERWORLD, false),
-    MAZE("maze", KnowledgeSet.SET1, NoiseGeneratorSettings.OVERWORLD, false),
-    RAVINE("ravine", KnowledgeSet.SET3, NoiseGeneratorSettings.OVERWORLD, false)
+    GRID("grid", KnowledgeSet.SET2, TerrainPresets.RFTOOLSDIM_OVERWORLD, true),
+    PLATFORMS("platforms", KnowledgeSet.SET2, TerrainPresets.RFTOOLSDIM_OVERWORLD, true),
+    SPIKES("spikes", KnowledgeSet.SET4, TerrainPresets.RFTOOLSDIM_OVERWORLD, false),
+    MAZE("maze", KnowledgeSet.SET1, TerrainPresets.RFTOOLSDIM_OVERWORLD, false),
+    RAVINE("ravine", KnowledgeSet.SET3, TerrainPresets.RFTOOLSDIM_OVERWORLD, false)
     ;
 
     private final String name;

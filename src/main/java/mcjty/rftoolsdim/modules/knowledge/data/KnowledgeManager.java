@@ -20,6 +20,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.levelgen.feature.StructureFeature;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nullable;
@@ -109,6 +110,12 @@ public class KnowledgeManager {
                     return biome.getBiomeCategory().getName() + " biomes";
                 }
                 return null;
+            case STRUCTURE:
+                StructureFeature<?> structure = ForgeRegistries.STRUCTURE_FEATURES.getValue(new ResourceLocation(key.key()));
+                if (structure != null) {
+                    return structure.getFeatureName();
+                }
+                return null;
             case FEATURE:
                 return null;
             case TIME:
@@ -141,6 +148,8 @@ public class KnowledgeManager {
                 return getBiomeCategoryKnowledgeSet(key);
             case BIOME:
                 return getBiomeKnowledgeSet(key);
+            case STRUCTURE:
+                return getStructureKnowledgeSet(key);
             case FEATURE:
                 return FeatureType.byName(key.key()).getSet();
             case TIME:
@@ -209,6 +218,16 @@ public class KnowledgeManager {
             }
         }
         return mostImportant;
+    }
+
+    private KnowledgeSet getStructureKnowledgeSet(DimletKey key) {
+        StructureFeature<?> structure = ForgeRegistries.STRUCTURE_FEATURES.getValue(new ResourceLocation(key.key()));
+        if (structure == null) {
+            RFToolsDim.setup.getLogger().error("Structure '" + key.key() + "' is missing!");
+            return KnowledgeSet.SET1;
+        }
+        // @todo is this good?
+        return KnowledgeSet.values()[(Math.abs(structure.getFeatureName().hashCode())) % KnowledgeSet.values().length];
     }
 
     /// Create a knowledge set based on the category of a biome

@@ -202,7 +202,7 @@ public class RFTBiomeProvider extends BiomeSource {
         switch (settings.getCompiledDescriptor().getBiomeControllerType()) {
             case CHECKER -> {
                 getBiome1And2();
-                if (((x>>3)+(y>>3))%2 == 0) {
+                if (((x>>3)+(z>>3))%2 == 0) {
                     return biome1;
                 } else {
                     return biome2;

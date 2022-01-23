@@ -30,6 +30,7 @@ public class DimletModule implements IModule {
     public static final RegistryObject<DimletItem> EMPTY_TERRAIN_DIMLET = ITEMS.register("empty_terrain_dimlet", () -> new DimletItem(DimletType.TERRAIN, false));
     public static final RegistryObject<DimletItem> EMPTY_ATTRIBUTE_DIMLET = ITEMS.register("empty_attribute_dimlet", () -> new DimletItem(DimletType.ATTRIBUTE, false));
     public static final RegistryObject<DimletItem> EMPTY_FEATURE_DIMLET = ITEMS.register("empty_feature_dimlet", () -> new DimletItem(DimletType.FEATURE, false));
+    public static final RegistryObject<DimletItem> EMPTY_STRUCTURE_DIMLET = ITEMS.register("empty_structure_dimlet", () -> new DimletItem(DimletType.STRUCTURE, false));
     public static final RegistryObject<DimletItem> EMPTY_BIOME_DIMLET = ITEMS.register("empty_biome_dimlet", () -> new DimletItem(DimletType.BIOME, false));
     public static final RegistryObject<DimletItem> EMPTY_BIOME_CONTROLLER_DIMLET = ITEMS.register("empty_biome_controller_dimlet", () -> new DimletItem(DimletType.BIOME_CONTROLLER, false));
     public static final RegistryObject<DimletItem> EMPTY_BIOME_CATEGORY_DIMLET = ITEMS.register("empty_biome_category_dimlet", () -> new DimletItem(DimletType.BIOME_CATEGORY, false));
@@ -41,6 +42,7 @@ public class DimletModule implements IModule {
     public static final RegistryObject<DimletItem> TERRAIN_DIMLET = ITEMS.register("terrain_dimlet", () -> new DimletItem(DimletType.TERRAIN, true));
     public static final RegistryObject<DimletItem> ATTRIBUTE_DIMLET = ITEMS.register("attribute_dimlet", () -> new DimletItem(DimletType.ATTRIBUTE, true));
     public static final RegistryObject<DimletItem> FEATURE_DIMLET = ITEMS.register("feature_dimlet", () -> new DimletItem(DimletType.FEATURE, true));
+    public static final RegistryObject<DimletItem> STRUCTURE_DIMLET = ITEMS.register("structure_dimlet", () -> new DimletItem(DimletType.STRUCTURE, true));
     public static final RegistryObject<DimletItem> BIOME_DIMLET = ITEMS.register("biome_dimlet", () -> new DimletItem(DimletType.BIOME, true));
     public static final RegistryObject<DimletItem> BIOME_CONTROLLER_DIMLET = ITEMS.register("biome_controller_dimlet", () -> new DimletItem(DimletType.BIOME_CONTROLLER, true));
     public static final RegistryObject<DimletItem> BIOME_CATEGORY_DIMLET = ITEMS.register("biome_category_dimlet", () -> new DimletItem(DimletType.BIOME_CATEGORY, true));

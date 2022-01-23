@@ -10,6 +10,7 @@ public enum DimletType {
     BIOME_CATEGORY("bt"),
     BIOME("bi"),
     FEATURE("f"),
+    STRUCTURE("s"),
     TIME("ti"),
     TAG("ta"),
     BLOCK("b"),

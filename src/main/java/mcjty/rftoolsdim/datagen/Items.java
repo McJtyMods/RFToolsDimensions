@@ -47,6 +47,7 @@ public class Items extends BaseItemModelProvider {
         itemGenerated(DimletModule.EMPTY_TERRAIN_DIMLET.get(), "item/dimlets/empty_terrain_dimlet");
         itemGenerated(DimletModule.EMPTY_ATTRIBUTE_DIMLET.get(), "item/dimlets/empty_attribute_dimlet");
         itemGenerated(DimletModule.EMPTY_FEATURE_DIMLET.get(), "item/dimlets/empty_feature_dimlet");
+        itemGenerated(DimletModule.EMPTY_STRUCTURE_DIMLET.get(), "item/dimlets/empty_structure_dimlet");
         itemGenerated(DimletModule.EMPTY_BIOME_DIMLET.get(), "item/dimlets/empty_biome_dimlet");
         itemGenerated(DimletModule.EMPTY_BIOME_CONTROLLER_DIMLET.get(), "item/dimlets/empty_biome_controller_dimlet");
         itemGenerated(DimletModule.EMPTY_BIOME_CATEGORY_DIMLET.get(), "item/dimlets/empty_biome_category_dimlet");
@@ -58,6 +59,7 @@ public class Items extends BaseItemModelProvider {
         itemGenerated(DimletModule.TERRAIN_DIMLET.get(), "item/dimlets/terrain_dimlet");
         itemGenerated(DimletModule.ATTRIBUTE_DIMLET.get(), "item/dimlets/attribute_dimlet");
         itemGenerated(DimletModule.FEATURE_DIMLET.get(), "item/dimlets/feature_dimlet");
+        itemGenerated(DimletModule.STRUCTURE_DIMLET.get(), "item/dimlets/structure_dimlet");
         itemGenerated(DimletModule.BIOME_DIMLET.get(), "item/dimlets/biome_dimlet");
         itemGenerated(DimletModule.BIOME_CONTROLLER_DIMLET.get(), "item/dimlets/biome_controller_dimlet");
         itemGenerated(DimletModule.BIOME_CATEGORY_DIMLET.get(), "item/dimlets/biome_category_dimlet");

@@ -43,6 +43,7 @@ public class CompiledDescriptor {
     private BiomeControllerType biomeControllerType = null;
     private final Set<Biome.BiomeCategory> biomeCategories = new HashSet<>();
     private final List<ResourceLocation> biomes = new ArrayList<>();
+    private final List<ResourceLocation> structures = new ArrayList<>();
     private TimeType timeType = null;
 
     private int createCostPerTick = 0;
@@ -198,6 +199,9 @@ public class CompiledDescriptor {
             case BIOME:
                 biomes.add(new ResourceLocation(name));
                 break;
+            case STRUCTURE:
+                structures.add(new ResourceLocation(name));
+                break;
             case TIME: {
                 if (timeType != null) {
                     return ERROR(ONLY_ONE_TIME);
@@ -289,6 +293,9 @@ public class CompiledDescriptor {
         for (Biome.BiomeCategory category : biomeCategories) {
             header += "\n        CATEGORY: " + category.getName();
         }
+        for (ResourceLocation structure : structures) {
+            header += "\n    STRUCTURE: " + structure.toString();
+        }
         for (CompiledFeature feature : features) {
             header += "\n    FEATURE: " + feature.getFeatureType().getName();
             for (BlockState block : feature.getBlocks()) {
@@ -313,6 +320,10 @@ public class CompiledDescriptor {
 
     public Set<AttributeType> getAttributeTypes() {
         return attributeTypes;
+    }
+
+    public List<ResourceLocation> getStructures() {
+        return structures;
     }
 
     public Set<AdminDimletType> getAdminDimletTypes() {

@@ -141,6 +141,15 @@ public class DimensionDescriptor {
                 randomized.add(terrainDimlet);
             }
         }
+        if (!hasStructures(dimlets)) {
+            if (random.nextFloat() < .05) {
+                randomized.add(new DimletKey(DimletType.STRUCTURE, "none"));
+            } if (random.nextFloat() < .6) {
+                randomized.add(new DimletKey(DimletType.STRUCTURE, "default"));
+            } else {
+                addRandomDimlets(DimletType.STRUCTURE, randomized, random, random.nextInt(4) + 1);
+            }
+        }
         if (!hasFeatures(dimlets)) {
             int cnt = random.nextInt(4);
             for (int i = 0 ; i < cnt-1 ; i++) {
@@ -216,6 +225,10 @@ public class DimensionDescriptor {
 
     private boolean hasTerrain(List<DimletKey> dimlets) {
         return dimlets.stream().anyMatch(key -> key.type() == DimletType.TERRAIN);
+    }
+
+    private boolean hasStructures(List<DimletKey> dimlets) {
+        return dimlets.stream().anyMatch(key -> key.type() == DimletType.STRUCTURE);
     }
 
     private boolean hasFeatures(List<DimletKey> dimlets) {

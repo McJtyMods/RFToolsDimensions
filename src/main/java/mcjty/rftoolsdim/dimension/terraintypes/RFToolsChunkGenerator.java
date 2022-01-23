@@ -81,7 +81,7 @@ public class RFToolsChunkGenerator extends NoiseBasedChunkGenerator {
 
         NoiseGeneratorSettings newsettings = NoiseGeneratorSettingsBuilder.create(settings)
                 .noiseSettings(noiseSettingsBuilder)
-                .build();
+                .build(dimensionSettings);
         this.settings = () -> newsettings;
         this.sampler = new NoiseSampler(newsettings.noiseSettings(), newsettings.isNoiseCavesEnabled(), seed, noises, newsettings.getRandomSource());
     }
