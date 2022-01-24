@@ -12,7 +12,7 @@ public class ClientEventHandlers {
         if (event.phase == TickEvent.Phase.START) {
             ClientLevel world = Minecraft.getInstance().level;
 
-            world.effects().setSkyRenderHandler((ticks, partialTicks, matrixStack, world1, mc) -> {
+            world.effects().setSkyRenderHandler((ticks, partialTicks, matrixStack, level, mc) -> {
 
             });
         }

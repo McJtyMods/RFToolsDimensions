@@ -8,6 +8,4 @@
 - Check dimlet loot
 - Dark sky/distance in cavern world
 - Test researcher/knowledge system
-- Structure researcher
-- Automatically generate random knowledge patterns
 - Client side effects
