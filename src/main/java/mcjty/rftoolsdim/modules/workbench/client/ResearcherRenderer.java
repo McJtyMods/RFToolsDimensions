@@ -1,5 +1,6 @@
 package mcjty.rftoolsdim.modules.workbench.client;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import mcjty.lib.client.CustomRenderTypes;
@@ -9,7 +10,9 @@ import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.modules.workbench.WorkbenchModule;
 import mcjty.rftoolsdim.modules.workbench.blocks.ResearcherTileEntity;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -50,7 +53,7 @@ public class ResearcherRenderer implements BlockEntityRenderer<ResearcherTileEnt
                 matrixStack.translate(0, 0.5f, 0);
                 RenderHelper.renderBillboardQuadBright(matrixStack, buffer, 0.5f, LIGHT, RenderSettings.builder()
                         .color(255, 255, 255)
-                        .renderType(CustomRenderTypes.TRANSLUCENT_LIGHTNING_NOLIGHTMAPS)
+                        .renderType(CustomRenderTypes.TRANSLUCENT_ADD)
                         .alpha(128)
                         .build());
             }

@@ -7,6 +7,7 @@
   "block.rftoolsdim.block_absorber": "Block Absorber",
   "block.rftoolsdim.fluid_absorber": "Fluid Absorber",
   "block.rftoolsdim.biome_absorber": "Biome Absorber",
+  "block.rftoolsdim.structure_absorber": "Structure Absorber",
   "block.rftoolsdim.researcher": "Researcher",
 
   "block.rftoolsdim.dimensional_blank_block": "Dimensional Blank Block",
@@ -154,10 +155,14 @@
   "message.rftoolsdim.empty_time_dimlet.gold": "Use the Dimlet Workbench to convert this to a full dimlet",
   "message.rftoolsdim.empty_biome_controller_dimlet.header": "Biome modifier dimlets allow you to control what biomes there are in a dimension and how they are lay out",
   "message.rftoolsdim.empty_biome_controller_dimlet.gold": "Use the Dimlet Workbench to convert this to a full dimlet",
+  "message.rftoolsdim.empty_biome_category_dimlet.header": "Biome category dimlets allow you to control what biomes there are in a dimension",
+  "message.rftoolsdim.empty_biome_category_dimlet.gold": "Use the Dimlet Workbench to convert this to a full dimlet",
   "message.rftoolsdim.empty_biome_dimlet.header": "Biome dimlets allow you to control what biomes there are in a dimension",
   "message.rftoolsdim.empty_biome_dimlet.gold": "Use the Dimlet Workbench to convert this to a full dimlet",
   "message.rftoolsdim.empty_feature_dimlet.header": "With feature dimlets you can add various features to a dimension",
   "message.rftoolsdim.empty_feature_dimlet.gold": "Use the Dimlet Workbench to convert this to a full dimlet",
+  "message.rftoolsdim.empty_structure_dimlet.header": "With structure dimlets you can add various structures to a dimension",
+  "message.rftoolsdim.empty_structure_dimlet.gold": "Use the Dimlet Workbench to convert this to a full dimlet",
   "message.rftoolsdim.empty_block_dimlet.header": "Block dimlets are modifiers to change what blocks are used with the terrain or features. Place them in front of the terrain or feature dimlet",
   "message.rftoolsdim.empty_block_dimlet.gold": "Use the Dimlet Workbench to convert this to a full dimlet",
   "message.rftoolsdim.empty_fluid_dimlet.header": "Fluid dimlets are modifiers to change what fluids are used with the terrain or features. Place them in front of the terrain or feature dimlet",
@@ -216,6 +221,10 @@
   "message.rftoolsdim.biome_absorber.block": "Biome: ",
   "message.rftoolsdim.biome_absorber.progress": "Progress: ",
 
+  "message.rftoolsdim.structure_absorber.header": "This block will absorb one of the current structures it is in. It can be used to create dimlets of that structure",
+  "message.rftoolsdim.structure_absorber.block": "Structure: ",
+  "message.rftoolsdim.structure_absorber.progress": "Progress: ",
+
   "message.rftoolsdim.common_lost_knowledge.header": "A common knowledge pattern",
   "message.rftoolsdim.common_lost_knowledge.gold": "This can be used in a Knowledge Holder to help with creating dimlets",
   "message.rftoolsdim.common_lost_knowledge.pattern": "Pattern: ",
@@ -243,5 +252,4 @@
   "message.rftoolsdim.phased_field_generator.header": "This RF/charged module gives a temporary protection while visiting an unpowered dimension",
   "message.rftoolsdim.phased_field_generator.gold": "Always keep on your hotbar and don't let the power run out!!",
   "message.rftoolsdim.phased_field_generator.power": "Power: "
-
 }

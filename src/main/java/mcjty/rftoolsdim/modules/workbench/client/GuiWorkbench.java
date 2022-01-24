@@ -2,7 +2,8 @@ package mcjty.rftoolsdim.modules.workbench.client;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.*;
+import com.mojang.math.Matrix4f;
 import mcjty.lib.base.StyleConfig;
 import mcjty.lib.client.RenderHelper;
 import mcjty.lib.container.GenericContainer;
@@ -23,8 +24,10 @@ import mcjty.rftoolsdim.modules.workbench.WorkbenchModule;
 import mcjty.rftoolsdim.modules.workbench.blocks.WorkbenchTileEntity;
 import mcjty.rftoolsdim.setup.RFToolsDimMessages;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 
@@ -125,12 +128,10 @@ public class GuiWorkbench extends GenericGuiContainer<WorkbenchTileEntity, Gener
             matrixStack.pushPose();
             matrixStack.translate(leftPos, topPos, 0.0F);
             RenderSystem.setShaderColor(1.0F, 0.0F, 0.0F, 1.0F);
-//            RenderSystem.enableRescaleNormal();   // @todo 1.18
 
             itemRenderer.blitOffset = 100.0F;
             GlStateManager._enableDepthTest();
             GlStateManager._disableBlend();
-//            RenderSystem.enableLighting();    // @todo 1.18
 
             for (int y = 0 ; y < pattern.length ; y++) {
                 String p = pattern[y];
@@ -140,16 +141,16 @@ public class GuiWorkbench extends GenericGuiContainer<WorkbenchTileEntity, Gener
                         int slotIdx = WorkbenchTileEntity.SLOT_PATTERN + y * pattern.length + x;
                         Slot slot = menu.getSlot(slotIdx);
                         if (!slot.hasItem()) {
+                            RenderSystem.setShaderTexture(0, InventoryMenu.BLOCK_ATLAS);
                             itemRenderer.renderAndDecorateItem(stack, leftPos + slot.x, topPos + slot.y);
 
-//                            RenderSystem.disableLighting();   // @todo 1.18
-                            GlStateManager._enableBlend();
-                            GlStateManager._disableDepthTest();
+                            RenderSystem.enableBlend();
+                            RenderSystem.disableDepthTest();
+                            RenderSystem.setShader(GameRenderer::getPositionTexShader);
                             RenderSystem.setShaderTexture(0, iconGuiElements);
                             RenderHelper.drawTexturedModalRect(matrixStack.last().pose(), slot.x, slot.y, 14 * 16, 3 * 16, 16, 16);
-                            GlStateManager._enableDepthTest();
-                            GlStateManager._disableBlend();
-//                            RenderSystem.enableLighting();    // @todo 1.18
+                            RenderSystem.enableDepthTest();
+                            RenderSystem.disableBlend();
                         }
                     }
                 }

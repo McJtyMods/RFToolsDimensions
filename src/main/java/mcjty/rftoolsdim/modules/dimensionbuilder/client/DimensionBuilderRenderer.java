@@ -45,7 +45,6 @@ public class DimensionBuilderRenderer implements BlockEntityRenderer<DimensionBu
                 matrixStack.scale(0.8f, 0.8f, 0.8f);
                 RenderHelper.renderBillboardQuadBright(matrixStack, buffer, 0.5f, STAGES, RenderSettings.builder()
                         .color(r, g, b)
-                        .renderType(CustomRenderTypes.TRANSLUCENT_LIGHTNING_NOLIGHTMAPS)
                         .renderType(RenderType.translucent())
                         .alpha(128)
                         .build());

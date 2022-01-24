@@ -8,911 +8,252 @@ import java.util.function.Supplier;
 
 public class RandomPatternCreator {
 
-    private static final String[][] PATTERNS = {
+    private static final List<String[]> PATTERNS = new ArrayList<>();
 
-            {
+    private static List<String[]> getPatterns() {
+        if (PATTERNS.isEmpty()) {
+            generatePattern(PATTERNS,
+                    "##",
+                    "##");
+            generatePattern(PATTERNS,
+                    "# ",
+                    " #");
+            generatePattern(PATTERNS,
+                    " #",
+                    "# ");
+            generatePattern(PATTERNS,
+                    "##",
+                    " #");
+            generatePattern(PATTERNS,
+                    "##",
+                    "# ");
+            generatePattern(PATTERNS,
+                    " #",
+                    "##");
+            generatePattern(PATTERNS,
+                    "# ",
+                    "##");
+            generatePattern(PATTERNS,
+                    "###",
+                    "###");
+            generatePattern(PATTERNS,
+                    "##",
+                    "##",
+                    "##");
+            generatePattern(PATTERNS,
+                    "####",
+                    "####");
+            generatePattern(PATTERNS,
+                    "##",
+                    "##",
+                    "##",
+                    "##");
+            generatePattern(PATTERNS,
+                    "# #",
+                    "   ",
+                    "# #");
+            generatePattern(PATTERNS,
+                    "###",
+                    "   ",
+                    "###");
+            generatePattern(PATTERNS,
+                    "# #",
+                    "# #",
+                    "# #");
+            generatePattern(PATTERNS,
+                    "###",
+                    "#  ",
+                    "###");
+            generatePattern(PATTERNS,
+                    "###",
+                    "# #",
+                    "# #");
+            generatePattern(PATTERNS,
+                    "###",
+                    "  #",
+                    "###");
+            generatePattern(PATTERNS,
+                    "# #",
+                    "# #",
+                    "###");
+            generatePattern(PATTERNS,
+                    "###",
+                    "# #",
+                    "###");
+            generatePattern(PATTERNS,
+                    "###",
+                    " # ",
+                    "###");
+            generatePattern(PATTERNS,
+                    "#  ",
+                    " # ",
+                    "  #");
+            generatePattern(PATTERNS,
+                    "  #",
+                    " # ",
+                    "#  ");
+            generatePattern(PATTERNS,
+                    "###",
+                    "#  ",
+                    "#  ");
+            generatePattern(PATTERNS,
+                    "###",
+                    "  #",
+                    "  #");
+            generatePattern(PATTERNS,
+                    "#  ",
+                    "#  ",
+                    "###");
+            generatePattern(PATTERNS,
+                    "  #",
+                    "  #",
+                    "###");
+            generatePattern(PATTERNS,
+                    "# #",
+                    " # ",
+                    "# #");
+            generatePattern(PATTERNS,
+                    " # ",
+                    "###",
+                    " # ");
+            generatePattern(PATTERNS,
+                    "###",
+                    "###",
+                    "###");
+            generatePattern(PATTERNS,
+                    "#  #",
+                    "    ",
+                    "    ",
+                    "#  #");
+            generatePattern(PATTERNS,
+                    "####",
+                    "#   ",
+                    "#   ",
+                    "#   ");
+            generatePattern(PATTERNS,
+                    "####",
+                    "   #",
+                    "   #",
+                    "   #");
+            generatePattern(PATTERNS,
+                    "#   ",
+                    "#   ",
+                    "#   ",
+                    "####");
+            generatePattern(PATTERNS,
+                    "   #",
+                    "   #",
+                    "   #",
+                    "####");
+            generatePattern(PATTERNS,
+                    "####",
+                    "#  #",
+                    "#  #",
+                    "####");
+            generatePattern(PATTERNS,
+                    " ## ",
+                    "#  #",
+                    "#  #",
+                    " ## ");
+            generatePattern(PATTERNS,
+                    "#  #",
+                    " ## ",
+                    " ## ",
+                    "#  #");
+            generatePattern(PATTERNS,
+                    "#   #",
+                    "     ",
+                    "     ",
+                    "     ",
+                    "#   #");
+            generatePattern(PATTERNS,
+                    "#   #",
+                    " # # ",
+                    "  #  ",
+                    " # # ",
+                    "#   #");
+            generatePattern(PATTERNS,
+                    "#   #",
+                    " ### ",
+                    " ### ",
+                    " ### ",
+                    "#   #");
+            generatePattern(PATTERNS,
+                    "## ##",
+                    "#   #",
+                    "     ",
+                    "#   #",
+                    "## ##");
+            generatePattern(PATTERNS,
+                    "#####",
+                    "#   #",
+                    "#   #",
+                    "#   #",
+                    "#####");
+            generatePattern(PATTERNS,
+                    "#    #",
                     "      ",
                     "      ",
-                    "  #   ",
                     "      ",
                     "      ",
-                    "      "
-            },
-
-            {
-                    "      ",
-                    "      ",
-                    "   #  ",
-                    "      ",
-                    "      ",
-                    "      "
-            },
-
-            {
-                    "      ",
-                    "      ",
-                    "      ",
-                    "  #   ",
-                    "      ",
-                    "      "
-            },
-
-            {
-                    "      ",
-                    "      ",
-                    "      ",
-                    "   #  ",
-                    "      ",
-                    "      "
-            },
-
-            {
-                    "      ",
-                    "  #   ",
-                    " ###  ",
-                    "  #   ",
-                    "      ",
-                    "      "
-            },
-
-            {
-                    "      ",
-                    "      ",
-                    "  #   ",
-                    " ###  ",
-                    "  #   ",
-                    "      "
-            },
-
-            {
-                    "      ",
-                    "   #  ",
-                    "  ### ",
-                    "   #  ",
-                    "      ",
-                    "      "
-            },
-
-            {
-                    "      ",
-                    "      ",
-                    "   #  ",
-                    "  ### ",
-                    "   #  ",
-                    "      "
-            },
-
-            {
-                    "      ",
-                    " # #  ",
-                    "  #   ",
-                    " # #  ",
-                    "      ",
-                    "      "
-            },
-
-            {
-                    "       ",
-                    "  # #  ",
-                    "   #   ",
-                    "  # #  ",
-                    "       ",
-                    "       "
-            },
-
-            {
-                    "      ",
-                    "      ",
-                    " # #  ",
-                    "  #   ",
-                    " # #  ",
-                    "      "
-            },
-
-            {
-                    "       ",
-                    "       ",
-                    "  # #  ",
-                    "   #   ",
-                    "  # #  ",
-                    "       "
-            },
-
-            {
-                    "  #   ",
-                    "  #   ",
-                    "##### ",
-                    "  #   ",
-                    "  #   ",
-                    "      "
-            },
-
-            {
-                    "   #  ",
-                    "   #  ",
-                    " #####",
-                    "   #  ",
-                    "   #  ",
-                    "      "
-            },
-
-            {
-                    "      ",
-                    "  #   ",
-                    "  #   ",
-                    "##### ",
-                    "  #   ",
-                    "  #   "
-            },
-
-            {
-                    "      ",
-                    "   #  ",
-                    "   #  ",
-                    " #####",
-                    "   #  ",
-                    "   #  "
-            },
-
-            {
-                    "      ",
-                    " #### ",
-                    "    # ",
-                    "    # ",
-                    " #### ",
-                    "      "
-            },
-
-            {
-                    "      ",
-                    " #### ",
-                    " #    ",
-                    " #    ",
-                    " #### ",
-                    "      "
-            },
-
-            {
-                    "      ",
-                    " #  # ",
-                    " #  # ",
-                    " #  # ",
-                    " #### ",
-                    "      "
-            },
-
-            {
-                    "      ",
-                    " #### ",
-                    " #  # ",
-                    " #  # ",
-                    " #  # ",
-                    "      "
-            },
-
-            {
-                    "#   # ",
-                    " # #  ",
-                    "  #   ",
-                    " # #  ",
-                    "#   # ",
-                    "      "
-            },
-
-            {
+                    "#    #");
+            generatePattern(PATTERNS,
                     "#    #",
                     " #  # ",
                     "  ##  ",
                     "  ##  ",
                     " #  # ",
-                    "#    #"
-            },
-
-            {
-                    "      ",
-                    " ###  ",
-                    " # #  ",
-                    " ###  ",
-                    "      ",
-                    "      "
-            },
-
-            {
+                    "#    #");
+            generatePattern(PATTERNS,
+                    "##  ##",
+                    "#    #",
                     "      ",
                     "      ",
-                    " ###  ",
-                    " # #  ",
-                    " ###  ",
-                    "      "
-            },
-
-            {
-                    "      ",
-                    "  ### ",
-                    "  # # ",
-                    "  ### ",
-                    "      ",
-                    "      "
-            },
-
-            {
-                    "      ",
-                    "      ",
-                    "  ### ",
-                    "  # # ",
-                    "  ### ",
-                    "      "
-            },
-
-            {
-                    "##### ",
-                    "#   # ",
-                    "#   # ",
-                    "#   # ",
-                    "##### ",
-                    "      "
-            },
-
-            {
-                    " #####",
-                    " #   #",
-                    " #   #",
-                    " #   #",
-                    " #####",
-                    "      "
-            },
-
-            {
-                    "      ",
-                    "##### ",
-                    "#   # ",
-                    "#   # ",
-                    "#   # ",
-                    "##### "
-            },
-
-            {
-                    "      ",
-                    " #####",
-                    " #   #",
-                    " #   #",
-                    " #   #",
-                    " #####"
-            },
-
-            {
-                    "##### ",
-                    "##### ",
-                    "## ## ",
-                    "##### ",
-                    "##### ",
-                    "      "
-            },
-
-            {
-                    "# # # ",
-                    " # # #",
-                    "# # # ",
-                    " # # #",
-                    "# # # ",
-                    " # # #"
-            },
-
-            {
-                    " # # #",
-                    "# # # ",
-                    " # # #",
-                    "# # # ",
-                    " # # #",
-                    "# # # "
-            },
-
-            {
-                    "#   # ",
-                    "      ",
-                    "      ",
-                    "      ",
-                    "#   # ",
-                    "      "
-            },
-
-            {
-                    "      ",
-                    " # #  ",
-                    "      ",
-                    " # #  ",
-                    "      ",
-                    "      "
-            },
-
-            {
+                    "#    #",
+                    "##  ##");
+            generatePattern(PATTERNS,
                     "##  ##",
                     "##  ##",
                     "      ",
                     "      ",
                     "##  ##",
-                    "##  ##"
-            },
-
-            {
-                    "#     ",
-                    " #    ",
-                    "  #   ",
-                    "   #  ",
-                    "    # ",
-                    "     #"
-            },
-
-            {
-                    "     #",
-                    "    # ",
-                    "   #  ",
-                    "  #   ",
-                    " #    ",
-                    "#     "
-            },
-
-            {
-                    "      ",
-                    " ##   ",
-                    " ##   ",
-                    "      ",
-                    "      ",
-                    "      "
-            },
-
-            {
-                    "      ",
-                    "   ## ",
-                    "   ## ",
-                    "      ",
-                    "      ",
-                    "      "
-            },
-
-            {
-                    "      ",
-                    "      ",
-                    "      ",
-                    " ##   ",
-                    " ##   ",
-                    "      "
-            },
-
-            {
-                    "      ",
-                    "      ",
-                    "      ",
-                    "   ## ",
-                    "   ## ",
-                    "      "
-            },
-
-            {
-                    "      ",
-                    " ###  ",
-                    " # #  ",
-                    " ###  ",
-                    "      ",
-                    "      "
-            },
-
-            {
-                    "      ",
-                    "  ### ",
-                    "  # # ",
-                    "  ### ",
-                    "      ",
-                    "      "
-            },
-
-            {
-                    "      ",
-                    "      ",
-                    " ###  ",
-                    " # #  ",
-                    " ###  ",
-                    "      "
-            },
-
-            {
-                    "      ",
-                    "      ",
-                    "  ### ",
-                    "  # # ",
-                    "  ### ",
-                    "      "
-            },
-
-            {
-                    "###   ",
-                    "###   ",
-                    "###   ",
-                    "      ",
-                    "      ",
-                    "      "
-            },
-
-            {
-                    "   ###",
-                    "   ###",
-                    "   ###",
-                    "      ",
-                    "      ",
-                    "      "
-            },
-
-            {
-                    "      ",
-                    "      ",
-                    "      ",
-                    "###   ",
-                    "###   ",
-                    "###   "
-            },
-
-            {
-                    "      ",
-                    "      ",
-                    "      ",
-                    "   ###",
-                    "   ###",
-                    "   ###"
-            },
-
-            {
-                    "      ",
-                    "   ## ",
-                    "  #   ",
-                    "   ## ",
-                    "      ",
-                    "      "
-            },
-
-            {
-                    "      ",
-                    "  ##  ",
-                    "    # ",
-                    "  ##  ",
-                    "      ",
-                    "      "
-            },
-
-            {
-                    "  #   ",
-                    " #    ",
-                    "#     ",
-                    " #    ",
-                    "  #   ",
-                    "      "
-            },
-
-            {
-                    "   #  ",
-                    "  #   ",
-                    " #    ",
-                    "  #   ",
-                    "   #  ",
-                    "      "
-            },
-
-            {
-                    "    # ",
-                    "   #  ",
-                    "  #   ",
-                    "   #  ",
-                    "    # ",
-                    "      "
-            },
-
-            {
-                    "     #",
-                    "    # ",
-                    "   #  ",
-                    "    # ",
-                    "     #",
-                    "      "
-            },
-
-            {
-                    "   #  ",
-                    "    # ",
-                    "     #",
-                    "    # ",
-                    "   #  ",
-                    "      "
-            },
-
-            {
-                    "  #   ",
-                    "   #  ",
-                    "    # ",
-                    "   #  ",
-                    "  #   ",
-                    "      "
-            },
-
-            {
-                    " #    ",
-                    "  #   ",
-                    "   #  ",
-                    "  #   ",
-                    " #    ",
-                    "      "
-            },
-
-            {
-                    "#     ",
-                    " #    ",
-                    "  #   ",
-                    " #    ",
-                    "#     ",
-                    "      "
-            },
-
-            {
-                    "  #   ",
-                    " # #  ",
-                    "#   # ",
-                    "      ",
-                    "      ",
-                    "      "
-            },
-
-            {
-                    "      ",
-                    "  #   ",
-                    " # #  ",
-                    "#   # ",
-                    "      ",
-                    "      "
-            },
-
-            {
-                    "      ",
-                    "      ",
-                    "  #   ",
-                    " # #  ",
-                    "#   # ",
-                    "      "
-            },
-
-            {
-                    "      ",
-                    "      ",
-                    "      ",
-                    "  #   ",
-                    " # #  ",
-                    "#   # "
-            },
-
-            {
-                    "      ",
-                    "      ",
-                    "      ",
-                    "#   # ",
-                    " # #  ",
-                    "  #   "
-            },
-
-            {
-                    "      ",
-                    "      ",
-                    "#   # ",
-                    " # #  ",
-                    "  #   ",
-                    "      "
-            },
-
-            {
-                    "      ",
-                    "#   # ",
-                    " # #  ",
-                    "  #   ",
-                    "      ",
-                    "      "
-            },
-
-            {
-                    "#   # ",
-                    " # #  ",
-                    "  #   ",
-                    "      ",
-                    "      ",
-                    "      "
-            },
-
-            {
-                    "  #   ",
-                    " # #  ",
-                    "#   # ",
-                    " # #  ",
-                    "  #   ",
-                    "      "
-            },
-
-            {
-                    "   #  ",
-                    "  # # ",
-                    " #   #",
-                    "  # # ",
-                    "   #  ",
-                    "      "
-            },
-
-            {
-                    "      ",
-                    "  #   ",
-                    " # #  ",
-                    "#   # ",
-                    " # #  ",
-                    "  #   "
-            },
-
-            {
-                    "      ",
-                    "   #  ",
-                    "  # # ",
-                    " #   #",
-                    "  # # ",
-                    "   #  "
-            },
-
-            {
-                    "##    ",
-                    "#     ",
-                    "      ",
-                    "      ",
-                    "      ",
-                    "      "
-            },
-
-            {
-                    " #    ",
-                    "##    ",
-                    "      ",
-                    "      ",
-                    "      ",
-                    "      "
-            },
-
-            {
-                    "  ##  ",
-                    "  #   ",
-                    "      ",
-                    "      ",
-                    "      ",
-                    "      "
-            },
-
-            {
-                    "   #  ",
-                    "  ##  ",
-                    "      ",
-                    "      ",
-                    "      ",
-                    "      "
-            },
-
-            {
-                    "    ##",
-                    "    # ",
-                    "      ",
-                    "      ",
-                    "      ",
-                    "      "
-            },
-
-            {
-                    "     #",
-                    "    ##",
-                    "      ",
-                    "      ",
-                    "      ",
-                    "      "
-            },
-
-            {
-                    "      ",
-                    "      ",
-                    "      ",
-                    "      ",
-                    "##    ",
-                    "#     "
-            },
-
-            {
-                    "      ",
-                    "      ",
-                    "      ",
-                    "      ",
-                    " #    ",
-                    "##    "
-            },
-
-            {
-                    "      ",
-                    "      ",
-                    "      ",
-                    "      ",
-                    "  ##  ",
-                    "  #   "
-            },
-
-            {
-                    "      ",
-                    "      ",
-                    "      ",
-                    "      ",
-                    "   #  ",
-                    "  ##  "
-            },
-
-            {
-                    "      ",
-                    "      ",
-                    "      ",
-                    "      ",
-                    "    ##",
-                    "    # "
-            },
-
-            {
-                    "      ",
-                    "      ",
-                    "      ",
-                    "      ",
-                    "     #",
-                    "    ##"
-            },
-
-            {
+                    "##  ##");
+            generatePattern(PATTERNS,
                     "######",
-                    "      ",
-                    "      ",
-                    "      ",
-                    "      ",
-                    "      "
-            },
+                    "#    #",
+                    "#    #",
+                    "#    #",
+                    "#    #",
+                    "######");
 
-            {
-                    "      ",
-                    "######",
-                    "      ",
-                    "      ",
-                    "      ",
-                    "      "
-            },
-
-            {
-                    "      ",
-                    "      ",
-                    "######",
-                    "      ",
-                    "      ",
-                    "      "
-            },
-
-            {
-                    "      ",
-                    "      ",
-                    "      ",
-                    "######",
-                    "      ",
-                    "      "
-            },
-
-            {
-                    "      ",
-                    "      ",
-                    "      ",
-                    "      ",
-                    "######",
-                    "      "
-            },
-
-            {
-                    "      ",
-                    "      ",
-                    "      ",
-                    "      ",
-                    "      ",
-                    "######"
-            },
-
-
-
-            {
-                    "######",
-                    "######",
-                    "      ",
-                    "      ",
-                    "      ",
-                    "      "
-            },
-
-            {
-                    "      ",
-                    "######",
-                    "######",
-                    "      ",
-                    "      ",
-                    "      "
-            },
-
-            {
-                    "      ",
-                    "      ",
-                    "######",
-                    "######",
-                    "      ",
-                    "      "
-            },
-
-            {
-                    "      ",
-                    "      ",
-                    "      ",
-                    "######",
-                    "######",
-                    "      "
-            },
-
-            {
-                    "      ",
-                    "      ",
-                    "      ",
-                    "      ",
-                    "######",
-                    "######"
-            },
-
-    };
-
-
-    private static class SelectedPattern {
-        private final int i1;
-        private final int i2;
-        private final int i3;
-        private final int i4;
-
-        public SelectedPattern(int i1, int i2, int i3, int i4) {
-            this.i1 = i1;
-            this.i2 = i2;
-            this.i3 = i3;
-            this.i4 = i4;
+            System.out.println("Generated patterns: " + PATTERNS.size());
         }
+        return PATTERNS;
+    }
 
-        public int getI1() {
-            return i1;
-        }
-
-        public int getI2() {
-            return i2;
-        }
-
-        public int getI3() {
-            return i3;
-        }
-
-        public int getI4() {
-            return i4;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            SelectedPattern that = (SelectedPattern) o;
-            return i1 == that.i1 &&
-                    i2 == that.i2 &&
-                    i3 == that.i3 &&
-                    i4 == that.i4;
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(i1, i2, i3, i4);
+    private static void generatePattern(List<String[]> patternList, String... pattern) {
+        for (int y = 0; y <= 6 - pattern.length; y++) {
+            for (int x = 0; x <= 6 - pattern[0].length(); x++) {
+                String[] ppp = new String[6];
+                for (int py = 0; py < 6; py++) {
+                    String pat = "";
+                    if (py < y) {
+                        pat = "      ";
+                    } else if (py >= y + pattern.length) {
+                        pat = "      ";
+                    } else for (int px = 0; px < 6; px++) {
+                        if (px < x) {
+                            pat += " ";
+                        } else if (px >= x + pattern[0].length()) {
+                            pat += " ";
+                        } else {
+                            pat += pattern[py-y].charAt(px - x);
+                        }
+                    }
+                    ppp[py] = pat;
+                }
+                patternList.add(ppp);
+            }
         }
     }
 
@@ -927,8 +268,8 @@ public class RandomPatternCreator {
     }
 
     private static void applyPattern(PatternBuilder builder, String[] pattern, char c) {
-        for (int y = 0 ; y < pattern.length ; y++) {
-            for (int x = 0 ; x < pattern[y].length() ; x++) {
+        for (int y = 0; y < pattern.length; y++) {
+            for (int x = 0; x < pattern[y].length(); x++) {
                 char p = pattern[y].charAt(x);
                 if (p == '#') {
                     builder.set(x, y, c);
@@ -939,19 +280,20 @@ public class RandomPatternCreator {
 
     private static DimletPattern buildPattern(SelectedPattern selectedPattern) {
         PatternBuilder builder = new PatternBuilder();
-        int i1 = selectedPattern.getI1();
-        applyPattern(builder, PATTERNS[i1], PatternBuilder.SHARD);
-        int i2 = selectedPattern.getI2();
+        List<String[]> patterns = getPatterns();
+        int i1 = selectedPattern.i1();
+        applyPattern(builder, patterns.get(i1), PatternBuilder.SHARD);
+        int i2 = selectedPattern.i2();
         if (i2 != -1) {
-            applyPattern(builder, PATTERNS[i2], PatternBuilder.LEV0);
+            applyPattern(builder, patterns.get(i2), PatternBuilder.LEV0);
         }
-        int i3 = selectedPattern.getI3();
+        int i3 = selectedPattern.i3();
         if (i3 != -1) {
-            applyPattern(builder, PATTERNS[i3], PatternBuilder.LEV1);
+            applyPattern(builder, patterns.get(i3), PatternBuilder.LEV1);
         }
-        int i4 = selectedPattern.getI4();
+        int i4 = selectedPattern.i4();
         if (i4 != -1) {
-            applyPattern(builder, PATTERNS[i4], PatternBuilder.LEV2);
+            applyPattern(builder, patterns.get(i4), PatternBuilder.LEV2);
         }
 
         return builder.build();
@@ -990,7 +332,21 @@ public class RandomPatternCreator {
     }
 
     private static int r(Random random) {
-        return random.nextInt(PATTERNS.length);
+        return random.nextInt(getPatterns().size());
     }
 
+    private record SelectedPattern(int i1, int i2, int i3, int i4) {
+    }
+
+    public static void main(String[] args) {
+        int idx = 1;
+        for (String[] pattern : getPatterns()) {
+            System.out.println("Pattern " + idx);
+            for (String s : pattern) {
+                System.out.println("    " + s.replace(' ', '.'));
+            }
+
+            idx++;
+        }
+    }
 }

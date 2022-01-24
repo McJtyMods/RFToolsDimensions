@@ -95,78 +95,66 @@ public class KnowledgeManager {
 
     @Nullable
     private String getKnowledgeSetReason(DimletKey key) {
-        switch (key.type()) {
-            case TERRAIN:
-                return null;
-            case ATTRIBUTE:
-                return null;
-            case BIOME_CONTROLLER:
-                return null;
-            case BIOME_CATEGORY:
-                return null;
-            case BIOME:
-                Biome biome = ForgeRegistries.BIOMES.getValue(new ResourceLocation(key.key()));
-                if (biome != null) {
-                    return biome.getBiomeCategory().getName() + " biomes";
-                }
-                return null;
-            case STRUCTURE:
-                StructureFeature<?> structure = ForgeRegistries.STRUCTURE_FEATURES.getValue(new ResourceLocation(key.key()));
-                if (structure != null) {
-                    return structure.getFeatureName();
-                }
-                return null;
-            case FEATURE:
-                return null;
-            case TIME:
-                return null;
-            case ADMIN:
-                return null;
-            case BLOCK:
-                ResourceLocation tagId = getMostCommonTagForBlock(key);
-                if (tagId != null) {
-                    return tagId.getPath();
-                }
-                return null;
-            case TAG:
-                return new ResourceLocation(key.key()).getPath();
-            case FLUID:
-                return new ResourceLocation(key.key()).getNamespace();
+        return switch (key.type()) {
+            case TERRAIN -> null;
+            case ATTRIBUTE -> null;
+            case BIOME_CONTROLLER -> null;
+            case BIOME_CATEGORY -> null;
+            case BIOME -> getReasonBiome(key);
+            case STRUCTURE -> getReasonStructure(key);
+            case FEATURE -> null;
+            case TIME -> null;
+            case ADMIN -> null;
+            case BLOCK -> getReasonBlock(key);
+            case TAG -> new ResourceLocation(key.key()).getPath();
+            case FLUID -> new ResourceLocation(key.key()).getNamespace();
+            default -> null;
+        };
+    }
+
+    @Nullable
+    private String getReasonBiome(DimletKey key) {
+        Biome biome = ForgeRegistries.BIOMES.getValue(new ResourceLocation(key.key()));
+        if (biome != null) {
+            return biome.getBiomeCategory().getName() + " biomes";
+        }
+        return null;
+    }
+
+    @Nullable
+    private String getReasonStructure(DimletKey key) {
+        StructureFeature<?> structure = ForgeRegistries.STRUCTURE_FEATURES.getValue(new ResourceLocation(key.key()));
+        if (structure != null) {
+            return structure.getFeatureName();
+        }
+        return null;
+    }
+
+    @Nullable
+    private String getReasonBlock(DimletKey key) {
+        ResourceLocation tagId = getMostCommonTagForBlock(key);
+        if (tagId != null) {
+            return tagId.getPath();
         }
         return null;
     }
 
     private KnowledgeSet getKnowledgeSet(DimletKey key) {
-        switch (key.type()) {
-            case TERRAIN:
-                return TerrainType.byName(key.key()).getSet();
-            case ATTRIBUTE:
-                return AttributeType.byName(key.key()).getSet();
-            case BIOME_CONTROLLER:
-                return BiomeControllerType.byName(key.key()).getSet();
-            case BIOME_CATEGORY:
-                return getBiomeCategoryKnowledgeSet(key);
-            case BIOME:
-                return getBiomeKnowledgeSet(key);
-            case STRUCTURE:
-                return getStructureKnowledgeSet(key);
-            case FEATURE:
-                return FeatureType.byName(key.key()).getSet();
-            case TIME:
-                return TimeType.byName(key.key()).getSet();
-            case BLOCK:
-                return getBlockKnowledgeSet(key);
-            case TAG:
-                return getTagKnowledgeSet(key);
-            case FLUID:
-                return getFluidKnowledgeSet(key);
-            case DIGIT:
-                break;
-            case ADMIN:
-                break;
-        }
-
-        return KnowledgeSet.SET1;
+        return switch (key.type()) {
+            case TERRAIN -> TerrainType.byName(key.key()).getSet();
+            case ATTRIBUTE -> AttributeType.byName(key.key()).getSet();
+            case BIOME_CONTROLLER -> BiomeControllerType.byName(key.key()).getSet();
+            case BIOME_CATEGORY -> getBiomeCategoryKnowledgeSet(key);
+            case BIOME -> getBiomeKnowledgeSet(key);
+            case STRUCTURE -> getStructureKnowledgeSet(key);
+            case FEATURE -> FeatureType.byName(key.key()).getSet();
+            case TIME -> TimeType.byName(key.key()).getSet();
+            case BLOCK -> getBlockKnowledgeSet(key);
+            case TAG -> getTagKnowledgeSet(key);
+            case FLUID -> getFluidKnowledgeSet(key);
+            case DIGIT -> KnowledgeSet.SET1;
+            case ADMIN -> KnowledgeSet.SET1;
+        };
     }
 
     private KnowledgeSet getFluidKnowledgeSet(DimletKey key) {
