@@ -1,0 +1,19 @@
+{
+  "name": "Cavern Dimension",
+  "ultrawarm": false,
+  "natural": true,
+  "coordinate_scale": 1,
+  "height": 384,
+  "min_y": -64,
+  "shrunk": false,
+  "has_skylight": false,
+  "has_ceiling": false,
+  "ambient_light": 0.05,
+  "piglin_safe": false,
+  "bed_works": true,
+  "respawn_anchor_works": true,
+  "has_raids": false,
+  "logical_height": 256,
+  "infiniburn": "minecraft:infiniburn_overworld",
+  "effects": "minecraft:overworld"
+}

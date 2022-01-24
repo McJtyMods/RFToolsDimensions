@@ -10,3 +10,4 @@
 - Test researcher/knowledge system
 - Structure researcher
 - Automatically generate random knowledge patterns
+- Client side effects

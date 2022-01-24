@@ -5,6 +5,7 @@ import com.google.gson.JsonParser;
 import mcjty.lib.varia.LevelTools;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.compat.LostCityCompat;
+import mcjty.rftoolsdim.dimension.DimensionRegistry;
 import mcjty.rftoolsdim.dimension.TimeType;
 import mcjty.rftoolsdim.dimension.biomes.RFTBiomeProvider;
 import mcjty.rftoolsdim.dimension.descriptor.CompiledDescriptor;
@@ -188,7 +189,11 @@ public class DimensionManager {
         }
 
         RegistryAccess registryAccess = world.getServer().registryAccess();
-        DimensionType type = registryAccess.registryOrThrow(Registry.DIMENSION_TYPE_REGISTRY).get(timeType.getDimensionType());
+        ResourceLocation dimensionType = timeType.getDimensionType();
+        if (terrainType == TerrainType.CAVERN) {
+            dimensionType = DimensionRegistry.CAVERN_ID;
+        }
+        DimensionType type = registryAccess.registryOrThrow(Registry.DIMENSION_TYPE_REGISTRY).get(dimensionType);
         ServerLevel result = DynamicDimensionManager.getOrCreateLevel(world.getServer(), key,
                 (server, registryKey) -> {
                     var noiseGeneratorSettings = registryAccess.registryOrThrow(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY);
