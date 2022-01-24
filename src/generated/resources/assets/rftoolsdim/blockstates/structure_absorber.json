@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "rftoolsdim:block/structure_absorber"
+    }
+  }
+}

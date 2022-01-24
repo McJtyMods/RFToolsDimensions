@@ -29,7 +29,8 @@ public class BlockTags extends BaseBlockTagsProvider {
                 DimensionBuilderModule.DIMENSION_BUILDER,
                 DimensionEditorModule.DIMENSION_EDITOR,
                 EnscriberModule.ENSCRIBER,
-                EssencesModule.BIOME_ABSORBER, EssencesModule.BLOCK_ABSORBER, EssencesModule.FLUID_ABSORBER,
+                EssencesModule.BIOME_ABSORBER, EssencesModule.BLOCK_ABSORBER,
+                EssencesModule.FLUID_ABSORBER, EssencesModule.STRUCTURE_ABSORBER,
                 WorkbenchModule.WORKBENCH, WorkbenchModule.HOLDER
         );
     }

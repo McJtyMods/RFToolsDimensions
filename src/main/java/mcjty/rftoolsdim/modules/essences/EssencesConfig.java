@@ -9,6 +9,7 @@ public class EssencesConfig {
     public static ForgeConfigSpec.IntValue maxBlockAbsorption;
     public static ForgeConfigSpec.IntValue maxFluidAbsorption;
     public static ForgeConfigSpec.IntValue maxBiomeAbsorption;
+    public static ForgeConfigSpec.IntValue maxStructureAbsorption;
 
     public static void init(ForgeConfigSpec.Builder SERVER_BUILDER, ForgeConfigSpec.Builder CLIENT_BUILDER) {
         SERVER_BUILDER.comment("Essence settings").push(SUB_CATEGORY_ESSENCES);
@@ -22,6 +23,9 @@ public class EssencesConfig {
         maxBiomeAbsorption = SERVER_BUILDER
                 .comment("Amount of ticks needed for a single biome dimlet (for the biome absorber)")
                 .defineInRange("maxBiomeAbsorption", 5000, 1, Integer.MAX_VALUE);
+        maxStructureAbsorption = SERVER_BUILDER
+                .comment("Amount of ticks needed for a single structure dimlet (for the structure absorber)")
+                .defineInRange("maxStructureAbsorption", 5000, 1, Integer.MAX_VALUE);
 
         SERVER_BUILDER.pop();
     }

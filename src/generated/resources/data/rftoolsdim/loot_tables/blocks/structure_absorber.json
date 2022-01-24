@@ -1,0 +1,53 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "name": "structure_absorber",
+      "rolls": 1.0,
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:copy_name",
+              "source": "block_entity"
+            },
+            {
+              "function": "minecraft:copy_nbt",
+              "source": "block_entity",
+              "ops": [
+                {
+                  "source": "Info",
+                  "target": "BlockEntityTag.Info",
+                  "op": "replace"
+                },
+                {
+                  "source": "Items",
+                  "target": "BlockEntityTag.McItems",
+                  "op": "replace"
+                },
+                {
+                  "source": "Energy",
+                  "target": "BlockEntityTag.Energy",
+                  "op": "replace"
+                }
+              ]
+            },
+            {
+              "function": "minecraft:set_contents",
+              "type": "rftoolsdim:structure_absorber",
+              "entries": [
+                {
+                  "type": "minecraft:dynamic",
+                  "name": "minecraft:contents"
+                }
+              ]
+            }
+          ],
+          "name": "rftoolsdim:structure_absorber"
+        }
+      ]
+    }
+  ]
+}

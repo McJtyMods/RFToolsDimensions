@@ -34,6 +34,7 @@ public class Items extends BaseItemModelProvider {
         parentedBlock(EssencesModule.BLOCK_ABSORBER.get(), "block/block_absorber");
         parentedBlock(EssencesModule.FLUID_ABSORBER.get(), "block/fluid_absorber");
         parentedBlock(EssencesModule.BIOME_ABSORBER.get(), "block/biome_absorber");
+        parentedBlock(EssencesModule.STRUCTURE_ABSORBER.get(), "block/structure_absorber");
 
         parentedBlock(DecorativeModule.DIMENSIONAL_BLOCK.get(), "block/dimensional_block");
         parentedBlock(DecorativeModule.DIMENSIONAL_BLANK.get(), "block/dimensional_blank_block");

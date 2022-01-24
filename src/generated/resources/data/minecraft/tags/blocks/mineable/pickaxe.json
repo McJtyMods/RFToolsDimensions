@@ -14,6 +14,7 @@
     "rftoolsdim:biome_absorber",
     "rftoolsdim:block_absorber",
     "rftoolsdim:fluid_absorber",
+    "rftoolsdim:structure_absorber",
     "rftoolsdim:dimlet_workbench",
     "rftoolsdim:knowledge_holder"
   ]

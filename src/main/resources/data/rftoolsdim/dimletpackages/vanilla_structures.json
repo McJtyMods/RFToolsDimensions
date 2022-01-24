@@ -33,10 +33,7 @@
     "maintain": 100,
     "ticks": 100,
     "worldgen": true,
-    "dimlet": true,
-    "essence": {
-      "item": "minecraft:white_banner"
-    }
+    "dimlet": true
   },
   {
     "type": "structure",
@@ -46,10 +43,7 @@
     "maintain": 200,
     "ticks": 100,
     "worldgen": true,
-    "dimlet": true,
-    "essence": {
-      "item": "minecraft:powered_rail"
-    }
+    "dimlet": true
   },
   {
     "type": "structure",
@@ -59,10 +53,7 @@
     "maintain": 300,
     "ticks": 200,
     "worldgen": true,
-    "dimlet": true,
-    "essence": {
-      "item": "minecraft:totem_of_undying"
-    }
+    "dimlet": true
   },
   {
     "type": "structure",
@@ -72,10 +63,7 @@
     "maintain": 100,
     "ticks": 100,
     "worldgen": true,
-    "dimlet": true,
-    "essence": {
-      "item": "minecraft:jungle_sapling"
-    }
+    "dimlet": true
   },
   {
     "type": "structure",
@@ -85,10 +73,7 @@
     "maintain": 100,
     "ticks": 100,
     "worldgen": true,
-    "dimlet": true,
-    "essence": {
-      "item": "minecraft:sandstone"
-    }
+    "dimlet": true
   },
   {
     "type": "structure",
@@ -98,10 +83,7 @@
     "maintain": 100,
     "ticks": 100,
     "worldgen": true,
-    "dimlet": true,
-    "essence": {
-      "item": "minecraft:snow_block"
-    }
+    "dimlet": true
   },
   {
     "type": "structure",
@@ -111,10 +93,7 @@
     "maintain": 100,
     "ticks": 100,
     "worldgen": true,
-    "dimlet": true,
-    "essence": {
-      "item": "minecraft:obsidian"
-    }
+    "dimlet": true
   },
   {
     "type": "structure",
@@ -124,10 +103,7 @@
     "maintain": 100,
     "ticks": 100,
     "worldgen": true,
-    "dimlet": true,
-    "essence": {
-      "item": "minecraft:water_bucket"
-    }
+    "dimlet": true
   },
   {
     "type": "structure",
@@ -137,10 +113,7 @@
     "maintain": 100,
     "ticks": 100,
     "worldgen": true,
-    "dimlet": true,
-    "essence": {
-      "item": "minecraft:slime_ball"
-    }
+    "dimlet": true
   },
   {
     "type": "structure",
@@ -150,10 +123,7 @@
     "maintain": 100,
     "ticks": 100,
     "worldgen": true,
-    "dimlet": true,
-    "essence": {
-      "item": "minecraft:stone_bricks"
-    }
+    "dimlet": true
   },
   {
     "type": "structure",
@@ -163,10 +133,7 @@
     "maintain": 100,
     "ticks": 100,
     "worldgen": true,
-    "dimlet": true,
-    "essence": {
-      "item": "minecraft:sponge"
-    }
+    "dimlet": true
   },
   {
     "type": "structure",
@@ -176,10 +143,7 @@
     "maintain": 100,
     "ticks": 100,
     "worldgen": true,
-    "dimlet": true,
-    "essence": {
-      "item": "minecraft:bricks"
-    }
+    "dimlet": true
   },
   {
     "type": "structure",
@@ -189,10 +153,7 @@
     "maintain": 100,
     "ticks": 100,
     "worldgen": true,
-    "dimlet": true,
-    "essence": {
-      "item": "minecraft:nether_bricks"
-    }
+    "dimlet": true
   },
   {
     "type": "structure",
@@ -202,10 +163,7 @@
     "maintain": 100,
     "ticks": 100,
     "worldgen": true,
-    "dimlet": true,
-    "essence": {
-      "item": "minecraft:end_stone"
-    }
+    "dimlet": true
   },
   {
     "type": "structure",
@@ -215,10 +173,7 @@
     "maintain": 100,
     "ticks": 100,
     "worldgen": true,
-    "dimlet": true,
-    "essence": {
-      "item": "minecraft:diamond"
-    }
+    "dimlet": true
   },
   {
     "type": "structure",
@@ -228,10 +183,7 @@
     "maintain": 1000,
     "ticks": 500,
     "worldgen": true,
-    "dimlet": true,
-    "essence": {
-      "item": "minecraft:nether_star"
-    }
+    "dimlet": true
   },
   {
     "type": "structure",
@@ -241,10 +193,7 @@
     "maintain": 100,
     "ticks": 100,
     "worldgen": true,
-    "dimlet": true,
-    "essence": {
-      "item": "minecraft:bone_block"
-    }
+    "dimlet": true
   },
   {
     "type": "structure",
@@ -254,9 +203,6 @@
     "maintain": 100,
     "ticks": 100,
     "worldgen": true,
-    "dimlet": true,
-    "essence": {
-      "item": "minecraft:smooth_basalt"
-    }
+    "dimlet": true
   }
 ]

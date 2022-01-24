@@ -36,6 +36,7 @@ public class BlockStates extends BaseBlockStateProvider {
         singleTextureBlock(EssencesModule.BLOCK_ABSORBER.get(), BLOCK_FOLDER + "/block_absorber", "block/blockabsorber");
         singleTextureBlock(EssencesModule.FLUID_ABSORBER.get(), BLOCK_FOLDER + "/fluid_absorber", "block/fluidabsorber");
         singleTextureBlock(EssencesModule.BIOME_ABSORBER.get(), BLOCK_FOLDER + "/biome_absorber", "block/biomeabsorber");
+        singleTextureBlock(EssencesModule.STRUCTURE_ABSORBER.get(), BLOCK_FOLDER + "/structure_absorber", "block/structureabsorber");
 
         registerDimensionEditor();
 

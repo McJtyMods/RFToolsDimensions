@@ -178,7 +178,7 @@ public class DimletTools {
             case BIOME_CATEGORY -> ItemStack.EMPTY;
             case BIOME -> new ItemStack(EssencesModule.BIOME_ABSORBER_ITEM.get());
             case FEATURE -> ItemStack.EMPTY;
-            case STRUCTURE -> ItemStack.EMPTY;
+            case STRUCTURE -> new ItemStack(EssencesModule.STRUCTURE_ABSORBER_ITEM.get());
             case TIME -> ItemStack.EMPTY;
             case BLOCK -> new ItemStack(EssencesModule.BLOCK_ABSORBER_ITEM.get());
             case TAG -> ItemStack.EMPTY;

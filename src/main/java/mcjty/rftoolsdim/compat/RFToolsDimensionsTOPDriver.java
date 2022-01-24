@@ -8,18 +8,19 @@ import mcjty.rftoolsdim.modules.essences.EssencesModule;
 import mcjty.rftoolsdim.modules.essences.blocks.BiomeAbsorberTileEntity;
 import mcjty.rftoolsdim.modules.essences.blocks.BlockAbsorberTileEntity;
 import mcjty.rftoolsdim.modules.essences.blocks.FluidAbsorberTileEntity;
+import mcjty.rftoolsdim.modules.essences.blocks.StructureAbsorberTileEntity;
 import mcjty.theoneprobe.api.IProbeHitData;
 import mcjty.theoneprobe.api.IProbeInfo;
 import mcjty.theoneprobe.api.ProbeMode;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -40,6 +41,8 @@ public class RFToolsDimensionsTOPDriver implements TOPDriver {
                 drivers.put(id, new FluidAbsorberDriver());
             } else if (blockState.getBlock() == EssencesModule.BIOME_ABSORBER.get()) {
                 drivers.put(id, new BiomeAbsorberDriver());
+            } else if (blockState.getBlock() == EssencesModule.STRUCTURE_ABSORBER.get()) {
+                drivers.put(id, new StructureAbsorberDriver());
             } else {
                 drivers.put(id, new DefaultDriver());
             }
@@ -107,6 +110,25 @@ public class RFToolsDimensionsTOPDriver implements TOPDriver {
                 probeInfo.text((new TextComponent("Biome: ").append(new TranslatableComponent(trans)).withStyle(ChatFormatting.GREEN)))
                         .horizontal()
                         .progress(pct, 100, probeInfo.defaultProgressStyle().suffix("%"));
+            }, "Bad tile entity!");
+        }
+    }
+
+    private static class StructureAbsorberDriver implements TOPDriver {
+        @Override
+        public void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, Player player, Level world, BlockState blockState, IProbeHitData data) {
+            McJtyLibTOPDriver.DRIVER.addStandardProbeInfo(mode, probeInfo, player, world, blockState, data);
+            Tools.safeConsume(world.getBlockEntity(data.getPos()), (StructureAbsorberTileEntity te) -> {
+                int absorbing = te.getAbsorbing();
+                String structure = te.getAbsorbingStructure();
+                if (structure != null) {
+                    int pct = ((EssencesConfig.maxStructureAbsorption.get() - absorbing) * 100) / EssencesConfig.maxStructureAbsorption.get();
+                    ResourceLocation id = new ResourceLocation(structure);
+
+                    probeInfo.text((new TextComponent("Structure: ").append(new TextComponent(id.getPath())).withStyle(ChatFormatting.GREEN)))
+                            .horizontal()
+                            .progress(pct, 100, probeInfo.defaultProgressStyle().suffix("%"));
+                }
             }, "Bad tile entity!");
         }
     }

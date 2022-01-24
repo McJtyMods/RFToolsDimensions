@@ -39,6 +39,7 @@ public class LootTables extends BaseLootTableProvider {
         addStandardTable(EssencesModule.BLOCK_ABSORBER.get(), EssencesModule.TYPE_BLOCK_ABSORBER.get());
         addStandardTable(EssencesModule.FLUID_ABSORBER.get(), EssencesModule.TYPE_FLUID_ABSORBER.get());
         addStandardTable(EssencesModule.BIOME_ABSORBER.get(), EssencesModule.TYPE_BIOME_ABSORBER.get());
+        addStandardTable(EssencesModule.STRUCTURE_ABSORBER.get(), EssencesModule.TYPE_STRUCTURE_ABSORBER.get());
 
         addSimpleTable(DecorativeModule.DIMENSIONAL_SMALL_BLOCK.get());
         addSimpleTable(DecorativeModule.DIMENSIONAL_BLANK.get());

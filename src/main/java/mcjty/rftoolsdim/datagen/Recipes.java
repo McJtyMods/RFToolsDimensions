@@ -200,6 +200,11 @@ public class Recipes extends BaseRecipeProvider {
                         .define('u', ItemTags.LEAVES)
                         .unlockedBy("sponge", has(Blocks.SPONGE)),
                 "usu", "sCs", "usu");
+        build(consumer, ShapedRecipeBuilder.shaped(EssencesModule.STRUCTURE_ABSORBER.get())
+                        .define('C', Blocks.SPONGE)
+                        .define('u', ItemTags.STONE_BRICKS)
+                        .unlockedBy("sponge", has(Blocks.SPONGE)),
+                "usu", "sCs", "usu");
 
         build(consumer, ShapedRecipeBuilder.shaped(DimensionBuilderModule.EMPTY_DIMENSION_TAB.get())
                         .unlockedBy("redstone", has(Items.REDSTONE)),

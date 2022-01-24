@@ -9,5 +9,6 @@ public class ClientSetup {
         ItemBlockRenderTypes.setRenderLayer(EssencesModule.BLOCK_ABSORBER.get(), RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(EssencesModule.FLUID_ABSORBER.get(), RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(EssencesModule.BIOME_ABSORBER.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(EssencesModule.STRUCTURE_ABSORBER.get(), RenderType.cutout());
     }
 }
