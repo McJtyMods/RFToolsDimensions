@@ -223,8 +223,11 @@ public class KnowledgeManager {
     private KnowledgeSet getStructureKnowledgeSet(DimletKey key) {
         StructureFeature<?> structure = ForgeRegistries.STRUCTURE_FEATURES.getValue(new ResourceLocation(key.key()));
         if (structure == null) {
+            if (key.key().equals("default") || key.key().equals("none")) {
+                return KnowledgeSet.SET1;
+            }
             RFToolsDim.setup.getLogger().error("Structure '" + key.key() + "' is missing!");
-            return KnowledgeSet.SET1;
+            return KnowledgeSet.SET2;
         }
         // @todo is this good?
         return KnowledgeSet.values()[(Math.abs(structure.getFeatureName().hashCode())) % KnowledgeSet.values().length];

@@ -207,7 +207,7 @@ public class DimletTools {
             case FEATURE:
                 return dimletKey.key().toLowerCase();
             case STRUCTURE:
-                return dimletKey.key().toLowerCase();
+                return new ResourceLocation(dimletKey.key()).getPath();
             case TIME:
                 return dimletKey.key().toLowerCase();
             case BLOCK:

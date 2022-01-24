@@ -225,7 +225,7 @@ public class DimensionManager {
             builder.baseBlock(compiledDescriptor.getBaseBlock());
         }
         builder.liquidBlock(compiledDescriptor.getBaseLiquid());
-        return builder.build();
+        return builder.build(settings);
     }
 
     // Returns null on success, otherwise an error string
