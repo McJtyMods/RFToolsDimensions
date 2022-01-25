@@ -12,11 +12,14 @@ public class BlackSkyRenderer implements ISkyRenderHandler {
 
     @Override
     public void render(int ticks, float partialTicks, PoseStack matrixStack, ClientLevel world, Minecraft mc) {
-        float red = 0f;
-        float green = 0;
-        float blue = 0;
         FogRenderer.levelFogColor();
         RenderSystem.depthMask(false);
+        renderColor(0f, 0f, 0f);
+
+        RenderSystem.depthMask(true);
+    }
+
+    public static void renderColor(float red, float green, float blue) {
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
         RenderSystem.disableTexture();
         RenderSystem.setShaderColor(red, green, blue, 1.0F);
@@ -32,7 +35,5 @@ public class BlackSkyRenderer implements ISkyRenderHandler {
 
         bufferbuilder.end();
         BufferUploader.end(bufferbuilder);
-
-        RenderSystem.depthMask(true);
     }
 }

@@ -1,8 +1,10 @@
 package mcjty.rftoolsdim.dimension.client;
 
+import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.dimension.data.ClientDimensionData;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.DimensionSpecialEffects;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.ISkyRenderHandler;
 import org.jetbrains.annotations.NotNull;
@@ -11,6 +13,7 @@ import org.jetbrains.annotations.Nullable;
 public class RFToolsDimensionSpecialEffects extends DimensionSpecialEffects {
 
     private final ISkyRenderHandler blackSky = new BlackSkyRenderer();
+    private final ISkyRenderHandler plasmaSky = new TexturedSkyRenderer(new ResourceLocation(RFToolsDim.MODID, "textures/sky/redlines.png"));
 
     public RFToolsDimensionSpecialEffects() {
         super(192.0f, true, SkyType.NORMAL, false, false);
@@ -23,7 +26,7 @@ public class RFToolsDimensionSpecialEffects extends DimensionSpecialEffects {
         if (clientData.skyType() == mcjty.rftoolsdim.dimension.additional.SkyType.BLACK) {
             return blackSky;
         } else {
-            return null;
+            return plasmaSky;
         }
     }
 
