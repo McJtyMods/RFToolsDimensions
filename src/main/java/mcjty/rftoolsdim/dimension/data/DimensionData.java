@@ -1,7 +1,6 @@
 package mcjty.rftoolsdim.dimension.data;
 
 import mcjty.lib.varia.LevelTools;
-import mcjty.rftoolsdim.dimension.additional.SkyType;
 import mcjty.rftoolsdim.dimension.descriptor.DimensionDescriptor;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -12,14 +11,14 @@ public class DimensionData {
     private final ResourceLocation id;
     private final DimensionDescriptor descriptor;
     private final DimensionDescriptor randomizedDescriptor;
-    private final SkyType skyType;
+    private final long skyDimletTypes;
     private long energy;
 
-    public DimensionData(ResourceLocation id, DimensionDescriptor descriptor, DimensionDescriptor randomizedDescriptor, SkyType skyType) {
+    public DimensionData(ResourceLocation id, DimensionDescriptor descriptor, DimensionDescriptor randomizedDescriptor, long skyDimletTypes) {
         this.id = id;
         this.descriptor = descriptor;
         this.randomizedDescriptor = randomizedDescriptor;
-        this.skyType = skyType;
+        this.skyDimletTypes = skyDimletTypes;
     }
 
     public DimensionData(CompoundTag tag) {
@@ -33,10 +32,10 @@ public class DimensionData {
         } else {
             randomizedDescriptor = DimensionDescriptor.EMPTY;
         }
-        if (tag.contains("skytype")) {
-            skyType = SkyType.valueOf(tag.getString("skytype"));
+        if (tag.contains("skytypes")) {
+            skyDimletTypes = tag.getLong("skytypes");
         } else {
-            skyType = SkyType.NORMAL;
+            skyDimletTypes = 0;
         }
     }
 
@@ -45,7 +44,7 @@ public class DimensionData {
         tag.putString("descriptor", descriptor.compact());
         tag.putString("randomized", randomizedDescriptor.compact());
         tag.putLong("energy", energy);
-        tag.putString("skytype", skyType.name());
+        tag.putLong("skytypes", skyDimletTypes);
     }
 
     public ResourceLocation getId() {
@@ -60,8 +59,8 @@ public class DimensionData {
         return randomizedDescriptor;
     }
 
-    public SkyType getSkyType() {
-        return skyType;
+    public long getSkyTypes() {
+        return skyDimletTypes;
     }
 
     public long getEnergy() {

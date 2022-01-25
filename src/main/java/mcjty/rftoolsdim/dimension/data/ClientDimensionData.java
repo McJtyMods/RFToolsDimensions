@@ -1,6 +1,5 @@
 package mcjty.rftoolsdim.dimension.data;
 
-import mcjty.rftoolsdim.dimension.additional.SkyType;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 
@@ -46,20 +45,20 @@ public class ClientDimensionData {
         clientDataMap.clear();
     }
 
-    public record ClientData(long power, long max, SkyType skyType) {
-        public static final ClientData NONE = new ClientData(-1, -1, SkyType.NORMAL);
+    public record ClientData(long power, long max, long skyDimletTypes) {
+        public static final ClientData NONE = new ClientData(-1, -1, 0L);
 
         public static ClientData create(FriendlyByteBuf buf) {
             long power = buf.readLong();
             long max = buf.readLong();
-            SkyType type = SkyType.values()[buf.readShort()];
-            return new ClientData(power, max, type);
+            long skyDimletTypes = buf.readLong();
+            return new ClientData(power, max, skyDimletTypes);
         }
 
         public void writeToBuf(FriendlyByteBuf buf) {
             buf.writeLong(power);
             buf.writeLong(max);
-            buf.writeShort(skyType.ordinal());
+            buf.writeLong(skyDimletTypes);
         }
     }
 }

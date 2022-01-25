@@ -3,6 +3,7 @@
     - Rooms
 - Add bedrock layer at the bottom of maze and ravine terrain
 - Check low power
+- Darken sky in case of low power and probably other effects?
 - Weather dimlet
 - Destroy dimensions
 - Check dimlet loot

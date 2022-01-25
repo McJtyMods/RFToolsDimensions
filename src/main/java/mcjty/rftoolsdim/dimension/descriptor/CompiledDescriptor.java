@@ -4,6 +4,7 @@ import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.dimension.AdminDimletType;
 import mcjty.rftoolsdim.dimension.DimensionConfig;
 import mcjty.rftoolsdim.dimension.TimeType;
+import mcjty.rftoolsdim.dimension.additional.SkyDimletType;
 import mcjty.rftoolsdim.dimension.biomes.BiomeControllerType;
 import mcjty.rftoolsdim.dimension.features.FeatureType;
 import mcjty.rftoolsdim.dimension.terraintypes.AttributeType;
@@ -44,6 +45,7 @@ public class CompiledDescriptor {
     private final Set<Biome.BiomeCategory> biomeCategories = new HashSet<>();
     private final List<ResourceLocation> biomes = new ArrayList<>();
     private final List<ResourceLocation> structures = new ArrayList<>();
+    private long skyDimletTypes = 0;
     private TimeType timeType = null;
 
     private int createCostPerTick = 0;
@@ -107,9 +109,6 @@ public class CompiledDescriptor {
     }
 
     public void complete() {
-        if (terrainType == null) {
-//            terrainType = TerrainType.NORMAL; // @todo 1.18
-        }
         if (timeType == null) {
             timeType = TimeType.NORMAL;
         }
@@ -202,6 +201,13 @@ public class CompiledDescriptor {
             case STRUCTURE:
                 structures.add(new ResourceLocation(name));
                 break;
+            case SKY: {
+                SkyDimletType skyDimletType = SkyDimletType.byName(name);
+                if (skyDimletType != null) {
+                    skyDimletTypes |= skyDimletType.getMask();
+                }
+                break;
+            }
             case TIME: {
                 if (timeType != null) {
                     return ERROR(ONLY_ONE_TIME);
@@ -276,6 +282,7 @@ public class CompiledDescriptor {
         header = "--------------------------------------------------\n" + header;
         header += "\n    TERRAIN: " + terrainType.getName();
         header += "\n    TIME: " + timeType.getName();
+        header += "\n    SKY: " + SkyDimletType.getDescription(skyDimletTypes);
         header += "\n    LIQUID: " + baseLiquid.getBlock().getRegistryName().toString();
         if (baseBlock != null) {
             header += "\n    BLOCK: " + baseBlock.getBlock().getRegistryName().toString();
@@ -308,6 +315,10 @@ public class CompiledDescriptor {
 
         header += "\n--------------------------------------------------";
         RFToolsDim.setup.getLogger().info(header);
+    }
+
+    public long getSkyDimletTypes() {
+        return skyDimletTypes;
     }
 
     public TimeType getTimeType() {

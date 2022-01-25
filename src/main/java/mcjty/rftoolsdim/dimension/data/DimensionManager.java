@@ -7,7 +7,7 @@ import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.compat.LostCityCompat;
 import mcjty.rftoolsdim.dimension.DimensionRegistry;
 import mcjty.rftoolsdim.dimension.TimeType;
-import mcjty.rftoolsdim.dimension.additional.SkyType;
+import mcjty.rftoolsdim.dimension.additional.SkyDimletType;
 import mcjty.rftoolsdim.dimension.biomes.RFTBiomeProvider;
 import mcjty.rftoolsdim.dimension.descriptor.CompiledDescriptor;
 import mcjty.rftoolsdim.dimension.descriptor.DescriptorError;
@@ -206,12 +206,11 @@ public class DimensionManager {
                     return new LevelStem(() -> type, generator);
                 });
 
-        // @todo move to a better place, use dimlets
-        SkyType skyType = SkyType.NORMAL;
-        if (terrainType == TerrainType.CAVERN) {
-            skyType = SkyType.BLACK;
+        long skyDimletTypes = compiledDescriptor.getSkyDimletTypes();
+        if (skyDimletTypes == 0 && terrainType == TerrainType.CAVERN) {
+            skyDimletTypes = SkyDimletType.BLACK.getMask(); // Use black as default in case of cavern world
         }
-        data = new DimensionData(id, descriptor, randomizedDescriptor, skyType);
+        data = new DimensionData(id, descriptor, randomizedDescriptor, skyDimletTypes);
         mgr.register(data);
         return result;
 

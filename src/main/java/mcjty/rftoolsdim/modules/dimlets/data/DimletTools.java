@@ -83,6 +83,7 @@ public class DimletTools {
             case FLUID -> DimletModule.FLUID_DIMLET.get();
             case DIGIT -> DimletModule.DIGIT_DIMLET.get();
             case ADMIN -> DimletModule.ADMIN_DIMLET.get();
+            case SKY -> DimletModule.SKY_DIMLET.get();
         };
     }
 
@@ -98,6 +99,7 @@ public class DimletTools {
             case TIME -> DimletModule.EMPTY_TIME_DIMLET.get();
             case BLOCK -> DimletModule.EMPTY_BLOCK_DIMLET.get();
             case TAG -> DimletModule.EMPTY_TAG_DIMLET.get();
+            case SKY -> DimletModule.EMPTY_SKY_DIMLET.get();
             case FLUID -> DimletModule.EMPTY_FLUID_DIMLET.get();
             case DIGIT -> null;
             case ADMIN -> null;
@@ -185,6 +187,7 @@ public class DimletTools {
             case FLUID -> new ItemStack(EssencesModule.FLUID_ABSORBER_ITEM.get());
             case DIGIT -> ItemStack.EMPTY;
             case ADMIN -> ItemStack.EMPTY;
+            case SKY -> ItemStack.EMPTY;
         };
     }
 
@@ -204,6 +207,8 @@ public class DimletTools {
                 ResourceLocation id = new ResourceLocation(dimletKey.key());
                 String trans = "biome." + id.getNamespace() + "." + id.getPath();
                 return I18n.get(trans);
+            case SKY:
+                return dimletKey.key().toLowerCase();
             case FEATURE:
                 return dimletKey.key().toLowerCase();
             case STRUCTURE:

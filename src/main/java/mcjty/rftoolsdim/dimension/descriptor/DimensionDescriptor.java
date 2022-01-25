@@ -150,6 +150,11 @@ public class DimensionDescriptor {
                 addRandomDimlets(DimletType.STRUCTURE, randomized, random, random.nextInt(4) + 1);
             }
         }
+
+        if (!hasSkyDimlets(dimlets)) {
+            addRandomDimlets(DimletType.SKY, randomized, random, Math.max(0, random.nextInt(9) - 5));
+        }
+
         if (!hasFeatures(dimlets)) {
             int cnt = random.nextInt(4);
             for (int i = 0 ; i < cnt-1 ; i++) {
@@ -233,6 +238,10 @@ public class DimensionDescriptor {
 
     private boolean hasFeatures(List<DimletKey> dimlets) {
         return dimlets.stream().anyMatch(key -> key.type() == DimletType.FEATURE);
+    }
+
+    private boolean hasSkyDimlets(List<DimletKey> dimlets) {
+        return dimlets.stream().anyMatch(key -> key.type() == DimletType.SKY);
     }
 
     private boolean hasBiomeController(List<DimletKey> dimlets) {

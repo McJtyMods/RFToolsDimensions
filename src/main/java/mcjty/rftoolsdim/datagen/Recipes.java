@@ -72,6 +72,22 @@ public class Recipes extends BaseRecipeProvider {
                         .define('C', Items.CLOCK)
                         .unlockedBy("empty_dimlet", has(DimletModule.EMPTY_DIMLET.get())),
                 "rCr", "CEC", "rCr");
+        build(consumer, ShapedRecipeBuilder.shaped(DimletModule.EMPTY_TAG_DIMLET.get())
+                        .define('C', Items.PAPER)
+                        .unlockedBy("empty_dimlet", has(DimletModule.EMPTY_DIMLET.get())),
+                "rCr", "CEC", "rCr");
+        build(consumer, ShapedRecipeBuilder.shaped(DimletModule.EMPTY_BIOME_CATEGORY_DIMLET.get())
+                        .define('C', ItemTags.SAPLINGS)
+                        .unlockedBy("empty_dimlet", has(DimletModule.EMPTY_DIMLET.get())),
+                "rCr", "CEC", "rCr");
+        build(consumer, ShapedRecipeBuilder.shaped(DimletModule.EMPTY_STRUCTURE_DIMLET.get())
+                        .define('C', ItemTags.STONE_BRICKS)
+                        .unlockedBy("empty_dimlet", has(DimletModule.EMPTY_DIMLET.get())),
+                "rCr", "CEC", "rCr");
+        build(consumer, ShapedRecipeBuilder.shaped(DimletModule.EMPTY_SKY_DIMLET.get())
+                        .define('C', Items.BLUE_WOOL)
+                        .unlockedBy("empty_dimlet", has(DimletModule.EMPTY_DIMLET.get())),
+                "rCr", "CEC", "rCr");
         build(consumer, DimletRecipeBuilder.shapedRecipe(DimletModule.DIGIT_DIMLET.get())
                         .define('C', Items.REDSTONE_TORCH)
                         .dimletKey(new DimletKey(DimletType.DIGIT, "0"))

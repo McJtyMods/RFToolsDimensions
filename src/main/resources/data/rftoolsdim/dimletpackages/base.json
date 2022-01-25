@@ -120,6 +120,71 @@
     "dimlet": true
   },
   {
+    "type": "sky",
+    "key": "default",
+    "rarity": "common",
+    "create": 5,
+    "maintain": 5,
+    "ticks": 5,
+    "worldgen": true,
+    "dimlet": true,
+    "essence": {
+      "item": "minecraft:stone"
+    }
+  },
+  {
+    "type": "sky",
+    "key": "end",
+    "rarity": "common",
+    "create": 5,
+    "maintain": 5,
+    "ticks": 5,
+    "worldgen": true,
+    "dimlet": true,
+    "essence": {
+      "item": "minecraft:end_stone"
+    }
+  },
+  {
+    "type": "sky",
+    "key": "infernal",
+    "rarity": "common",
+    "create": 5,
+    "maintain": 5,
+    "ticks": 5,
+    "worldgen": true,
+    "dimlet": true,
+    "essence": {
+      "item": "minecraft:netherrack"
+    }
+  },
+  {
+    "type": "sky",
+    "key": "black",
+    "rarity": "common",
+    "create": 5,
+    "maintain": 5,
+    "ticks": 5,
+    "worldgen": true,
+    "dimlet": true,
+    "essence": {
+      "item": "minecraft:ink_sac"
+    }
+  },
+  {
+    "type": "sky",
+    "key": "noclouds",
+    "rarity": "common",
+    "create": 5,
+    "maintain": 5,
+    "ticks": 5,
+    "worldgen": true,
+    "dimlet": true,
+    "essence": {
+      "item": "minecraft:white_wool"
+    }
+  },
+  {
     "type": "time",
     "key": "normal",
     "rarity": "uncommon",

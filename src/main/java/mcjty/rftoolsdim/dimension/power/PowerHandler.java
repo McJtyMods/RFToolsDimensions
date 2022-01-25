@@ -10,13 +10,13 @@ import mcjty.rftoolsdim.dimension.descriptor.CompiledDescriptor;
 import mcjty.rftoolsdim.dimension.network.PackagePropageDataToClients;
 import mcjty.rftoolsdim.modules.dimensionbuilder.items.PhasedFieldGenerator;
 import mcjty.rftoolsdim.setup.RFToolsDimMessages;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.network.PacketDistributor;
 
 import java.util.ArrayList;
@@ -81,7 +81,7 @@ public class PowerHandler {
         for (Map.Entry<ResourceLocation, DimensionData> entry : mgr.getData().entrySet()) {
             long energy = entry.getValue().getEnergy();
             powerMap.put(entry.getKey(), new ClientDimensionData.ClientData(energy, PowerHandler.calculateMaxDimensionPower(entry.getKey(), overworld),
-                    entry.getValue().getSkyType()));
+                    entry.getValue().getSkyTypes()));
         }
         RFToolsDimMessages.INSTANCE.send(PacketDistributor.ALL.noArg(), new PackagePropageDataToClients(powerMap,
                 ((ServerLevel) overworld).getSeed()));

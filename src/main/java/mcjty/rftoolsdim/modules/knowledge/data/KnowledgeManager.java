@@ -3,6 +3,7 @@ package mcjty.rftoolsdim.modules.knowledge.data;
 import mcjty.lib.varia.LevelTools;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.dimension.TimeType;
+import mcjty.rftoolsdim.dimension.additional.SkyDimletType;
 import mcjty.rftoolsdim.dimension.biomes.BiomeControllerType;
 import mcjty.rftoolsdim.dimension.features.FeatureType;
 import mcjty.rftoolsdim.dimension.terraintypes.AttributeType;
@@ -103,12 +104,13 @@ public class KnowledgeManager {
             case BIOME -> getReasonBiome(key);
             case STRUCTURE -> getReasonStructure(key);
             case FEATURE -> null;
+            case SKY -> null;
             case TIME -> null;
+            case DIGIT -> null;
             case ADMIN -> null;
             case BLOCK -> getReasonBlock(key);
             case TAG -> new ResourceLocation(key.key()).getPath();
             case FLUID -> new ResourceLocation(key.key()).getNamespace();
-            default -> null;
         };
     }
 
@@ -151,10 +153,19 @@ public class KnowledgeManager {
             case TIME -> TimeType.byName(key.key()).getSet();
             case BLOCK -> getBlockKnowledgeSet(key);
             case TAG -> getTagKnowledgeSet(key);
+            case SKY -> getSkyKnowledgeSet(key);
             case FLUID -> getFluidKnowledgeSet(key);
             case DIGIT -> KnowledgeSet.SET1;
             case ADMIN -> KnowledgeSet.SET1;
         };
+    }
+
+    private KnowledgeSet getSkyKnowledgeSet(DimletKey key) {
+        SkyDimletType skyType = SkyDimletType.byName(key.key());
+        if (skyType == null) {
+            return KnowledgeSet.SET1;
+        }
+        return skyType.getKnowledgeSet();
     }
 
     private KnowledgeSet getFluidKnowledgeSet(DimletKey key) {

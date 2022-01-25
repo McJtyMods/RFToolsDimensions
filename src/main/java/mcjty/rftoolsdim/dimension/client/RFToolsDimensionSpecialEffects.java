@@ -1,13 +1,13 @@
 package mcjty.rftoolsdim.dimension.client;
 
 import mcjty.rftoolsdim.RFToolsDim;
+import mcjty.rftoolsdim.dimension.additional.SkyDimletType;
 import mcjty.rftoolsdim.dimension.data.ClientDimensionData;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.DimensionSpecialEffects;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.ISkyRenderHandler;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class RFToolsDimensionSpecialEffects extends DimensionSpecialEffects {
@@ -22,8 +22,8 @@ public class RFToolsDimensionSpecialEffects extends DimensionSpecialEffects {
     @Nullable
     @Override
     public ISkyRenderHandler getSkyRenderHandler() {
-        ClientDimensionData.ClientData clientData = getClientData();
-        if (clientData.skyType() == mcjty.rftoolsdim.dimension.additional.SkyType.BLACK) {
+        long skyMask = getSkyMask();
+        if (SkyDimletType.BLACK.match(skyMask)) {
             return blackSky;
         } else {
             return plasmaSky;
@@ -32,17 +32,26 @@ public class RFToolsDimensionSpecialEffects extends DimensionSpecialEffects {
 
     @Override
     public SkyType skyType() {
-        ClientDimensionData.ClientData clientData = getClientData();
-        return switch (clientData.skyType()) {
-            case NORMAL -> SkyType.NORMAL;
-            case END -> SkyType.END;
-            case BLACK -> SkyType.NONE;
-        };
+        long skyMask = getSkyMask();
+        if (SkyDimletType.END.match(skyMask)) {
+            return SkyType.END;
+        }
+        return SkyType.NORMAL;
     }
 
-    @NotNull
-    private ClientDimensionData.ClientData getClientData() {
-        return ClientDimensionData.get().getClientData(Minecraft.getInstance().level.dimension().location());
+    @Override
+    public float getCloudHeight() {
+        long skyMask = getSkyMask();
+        if (SkyDimletType.NOCLOUDS.match(skyMask)) {
+            return Float.NaN;
+        } else {
+            return super.getCloudHeight();
+        }
+    }
+
+    private long getSkyMask() {
+        ClientDimensionData.ClientData clientData = ClientDimensionData.get().getClientData(Minecraft.getInstance().level.dimension().location());
+        return clientData.skyDimletTypes();
     }
 
     @Override

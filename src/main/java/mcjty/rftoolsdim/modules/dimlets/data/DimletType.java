@@ -16,7 +16,8 @@ public enum DimletType {
     BLOCK("b"),
     DIGIT("d"),
     ADMIN("ad"),
-    FLUID("fl");
+    FLUID("fl"),
+    SKY("sk");
 
     private final String shortName;
 
