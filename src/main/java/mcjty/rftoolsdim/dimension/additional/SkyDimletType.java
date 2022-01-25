@@ -10,7 +10,8 @@ public enum SkyDimletType {
     END(1L, KnowledgeSet.SET1),
     INFERNAL(1L<<1, KnowledgeSet.SET2),
     BLACK(1L<<2, KnowledgeSet.SET3),
-    NOCLOUDS(1L<<3, KnowledgeSet.SET4),
+    STARS(1L<<3, KnowledgeSet.SET5),
+    NOCLOUDS(1L<<4, KnowledgeSet.SET4),
     ;
 
     private final long mask;
@@ -20,7 +21,7 @@ public enum SkyDimletType {
 
     static {
         for (SkyDimletType type : values()) {
-            BY_NAME.put(type.name(), type);
+            BY_NAME.put(type.name().toLowerCase(), type);
         }
     }
 

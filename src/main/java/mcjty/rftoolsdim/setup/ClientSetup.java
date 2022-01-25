@@ -9,16 +9,6 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
 public class ClientSetup {
 
-//    public static void onClientTick(TickEvent.ClientTickEvent event) {
-//        if (event.phase == TickEvent.Phase.START) {
-//            ClientLevel world = Minecraft.getInstance().level;
-//
-//            world.effects().setSkyRenderHandler((ticks, partialTicks, matrixStack, level, mc) -> {
-//
-//            });
-//        }
-//    }
-
     public static void init(FMLClientSetupEvent event) {
         RFToolsDimensionSpecialEffects effects = new RFToolsDimensionSpecialEffects();
         DimensionSpecialEffects.EFFECTS.put(DimensionRegistry.RFTOOLS_EFFECTS_ID, effects);
@@ -28,4 +18,8 @@ public class ClientSetup {
         ClientDimensionData.get().clear();
     }
 
+    public static void onDimensionChange(ClientPlayerNetworkEvent.RespawnEvent event) {
+        System.out.println("Respawn");
+        RFToolsDimensionSpecialEffects.clearCache();
+    }
 }

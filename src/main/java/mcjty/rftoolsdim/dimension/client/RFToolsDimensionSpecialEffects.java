@@ -13,10 +13,19 @@ import org.jetbrains.annotations.Nullable;
 public class RFToolsDimensionSpecialEffects extends DimensionSpecialEffects {
 
     private final ISkyRenderHandler blackSky = new BlackSkyRenderer();
-    private final ISkyRenderHandler plasmaSky = new TexturedSkyRenderer(new ResourceLocation(RFToolsDim.MODID, "textures/sky/redlines.png"));
+    private final ISkyRenderHandler infernalSky = new TexturedSkyRenderer(new ResourceLocation(RFToolsDim.MODID, "textures/sky/redlines.png"));
+    private final ISkyRenderHandler starsSky = new SkyboxRenderer(
+            new ResourceLocation(RFToolsDim.MODID, "textures/sky/stars1.png"),
+            new ResourceLocation(RFToolsDim.MODID, "textures/sky/stars1a.png"));
 
     public RFToolsDimensionSpecialEffects() {
         super(192.0f, true, SkyType.NORMAL, false, false);
+    }
+
+    private static long cachedSkyMask = -1L;
+
+    public static void clearCache() {
+        cachedSkyMask = -1L;
     }
 
     @Nullable
@@ -25,8 +34,12 @@ public class RFToolsDimensionSpecialEffects extends DimensionSpecialEffects {
         long skyMask = getSkyMask();
         if (SkyDimletType.BLACK.match(skyMask)) {
             return blackSky;
+        } else if (SkyDimletType.INFERNAL.match(skyMask)) {
+            return infernalSky;
+        } else if (SkyDimletType.STARS.match(skyMask)) {
+            return starsSky;
         } else {
-            return plasmaSky;
+            return null;
         }
     }
 
@@ -50,8 +63,11 @@ public class RFToolsDimensionSpecialEffects extends DimensionSpecialEffects {
     }
 
     private long getSkyMask() {
-        ClientDimensionData.ClientData clientData = ClientDimensionData.get().getClientData(Minecraft.getInstance().level.dimension().location());
-        return clientData.skyDimletTypes();
+        if (cachedSkyMask == -1L) {
+            ClientDimensionData.ClientData clientData = ClientDimensionData.get().getClientData(Minecraft.getInstance().level.dimension().location());
+            cachedSkyMask = clientData.skyDimletTypes();
+        }
+        return cachedSkyMask;
     }
 
     @Override

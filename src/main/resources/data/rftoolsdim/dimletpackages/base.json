@@ -173,6 +173,19 @@
   },
   {
     "type": "sky",
+    "key": "stars",
+    "rarity": "common",
+    "create": 5,
+    "maintain": 5,
+    "ticks": 5,
+    "worldgen": true,
+    "dimlet": true,
+    "essence": {
+      "item": "minecraft:quartz"
+    }
+  },
+  {
+    "type": "sky",
     "key": "noclouds",
     "rarity": "common",
     "create": 5,

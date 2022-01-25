@@ -46,6 +46,7 @@ public class RFToolsDim {
 
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
             MinecraftForge.EVENT_BUS.addListener(ClientSetup::onPlayerLogin);
+            MinecraftForge.EVENT_BUS.addListener(ClientSetup::onDimensionChange);
             modbus.addListener(ClientSetup::init);
             modbus.addListener(modules::initClient);
             modbus.addListener(WorkbenchModule::onTextureStitch);

@@ -32,11 +32,7 @@ public class DimensionData {
         } else {
             randomizedDescriptor = DimensionDescriptor.EMPTY;
         }
-        if (tag.contains("skytypes")) {
-            skyDimletTypes = tag.getLong("skytypes");
-        } else {
-            skyDimletTypes = 0;
-        }
+        skyDimletTypes = tag.getLong("skytypes");
     }
 
     public void write(CompoundTag tag) {
