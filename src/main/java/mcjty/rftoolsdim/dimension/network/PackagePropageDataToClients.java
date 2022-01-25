@@ -11,32 +11,29 @@ import java.util.function.Supplier;
 
 public class PackagePropageDataToClients {
 
-    private final Map<ResourceLocation, ClientDimensionData.Power> powerMap;
+    private final Map<ResourceLocation, ClientDimensionData.ClientData> clientDataMap;
     private final long seed;
 
     public PackagePropageDataToClients(FriendlyByteBuf buf) {
         int size = buf.readInt();
-        powerMap = new HashMap<>(size);
+        clientDataMap = new HashMap<>(size);
         for (int i = 0 ; i < size ; i++) {
             ResourceLocation id = buf.readResourceLocation();
-            long power = buf.readLong();
-            long max = buf.readLong();
-            powerMap.put(id, new ClientDimensionData.Power(power, max));
+            clientDataMap.put(id, ClientDimensionData.ClientData.create(buf));
         }
         seed = buf.readLong();
     }
 
-    public PackagePropageDataToClients(Map<ResourceLocation, ClientDimensionData.Power> powerMap, long seed) {
-        this.powerMap = powerMap;
+    public PackagePropageDataToClients(Map<ResourceLocation, ClientDimensionData.ClientData> clientDataMap, long seed) {
+        this.clientDataMap = clientDataMap;
         this.seed = seed;
     }
 
     public void toBytes(FriendlyByteBuf buf) {
-        buf.writeInt(powerMap.size());
-        for (Map.Entry<ResourceLocation, ClientDimensionData.Power> entry : powerMap.entrySet()) {
+        buf.writeInt(clientDataMap.size());
+        for (Map.Entry<ResourceLocation, ClientDimensionData.ClientData> entry : clientDataMap.entrySet()) {
             buf.writeResourceLocation(entry.getKey());
-            buf.writeLong(entry.getValue().getPower());
-            buf.writeLong(entry.getValue().getMax());
+            entry.getValue().writeToBuf(buf);
         }
         buf.writeLong(seed);
     }
@@ -44,7 +41,7 @@ public class PackagePropageDataToClients {
 
     public void handle(Supplier<NetworkEvent.Context> supplier) {
         NetworkEvent.Context ctx = supplier.get();
-        ctx.enqueueWork(() -> ClientDimensionData.get().updateDataFromServer(powerMap, seed));
+        ctx.enqueueWork(() -> ClientDimensionData.get().updateDataFromServer(clientDataMap, seed));
         ctx.setPacketHandled(true);
     }
 

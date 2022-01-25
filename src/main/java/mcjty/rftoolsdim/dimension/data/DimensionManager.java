@@ -7,6 +7,7 @@ import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.compat.LostCityCompat;
 import mcjty.rftoolsdim.dimension.DimensionRegistry;
 import mcjty.rftoolsdim.dimension.TimeType;
+import mcjty.rftoolsdim.dimension.additional.SkyType;
 import mcjty.rftoolsdim.dimension.biomes.RFTBiomeProvider;
 import mcjty.rftoolsdim.dimension.descriptor.CompiledDescriptor;
 import mcjty.rftoolsdim.dimension.descriptor.DescriptorError;
@@ -205,7 +206,12 @@ public class DimensionManager {
                     return new LevelStem(() -> type, generator);
                 });
 
-        data = new DimensionData(id, descriptor, randomizedDescriptor);
+        // @todo move to a better place, use dimlets
+        SkyType skyType = SkyType.NORMAL;
+        if (terrainType == TerrainType.CAVERN) {
+            skyType = SkyType.BLACK;
+        }
+        data = new DimensionData(id, descriptor, randomizedDescriptor, skyType);
         mgr.register(data);
         return result;
 

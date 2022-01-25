@@ -77,10 +77,11 @@ public class PowerHandler {
 
     private void sendOutPower(Level overworld) {
         PersistantDimensionManager mgr = PersistantDimensionManager.get(overworld);
-        Map<ResourceLocation, ClientDimensionData.Power> powerMap = new HashMap<>();
+        Map<ResourceLocation, ClientDimensionData.ClientData> powerMap = new HashMap<>();
         for (Map.Entry<ResourceLocation, DimensionData> entry : mgr.getData().entrySet()) {
             long energy = entry.getValue().getEnergy();
-            powerMap.put(entry.getKey(), new ClientDimensionData.Power(energy, PowerHandler.calculateMaxDimensionPower(entry.getKey(), overworld)));
+            powerMap.put(entry.getKey(), new ClientDimensionData.ClientData(energy, PowerHandler.calculateMaxDimensionPower(entry.getKey(), overworld),
+                    entry.getValue().getSkyType()));
         }
         RFToolsDimMessages.INSTANCE.send(PacketDistributor.ALL.noArg(), new PackagePropageDataToClients(powerMap,
                 ((ServerLevel) overworld).getSeed()));

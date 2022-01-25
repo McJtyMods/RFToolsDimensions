@@ -5,9 +5,9 @@ import net.minecraft.resources.ResourceLocation;
 
 public class DimensionRegistry {
 
-    public static final ResourceLocation BIOMES_ID = new ResourceLocation(RFToolsDim.MODID, "biomes");
-
-    public static final ResourceLocation RFTOOLS_ID = new ResourceLocation(RFToolsDim.MODID, "rftools");
+    public static final ResourceLocation RFTOOLS_BIOMES_ID = new ResourceLocation(RFToolsDim.MODID, "biomes");
+    public static final ResourceLocation RFTOOLS_CHUNKGEN_ID = new ResourceLocation(RFToolsDim.MODID, "rftools");
+    public static final ResourceLocation RFTOOLS_EFFECTS_ID = new ResourceLocation(RFToolsDim.MODID, "effects");
 
     public static final ResourceLocation FIXED_DAY_ID = new ResourceLocation(RFToolsDim.MODID, "fixed_day");
     public static final ResourceLocation FIXED_NIGHT_ID = new ResourceLocation(RFToolsDim.MODID, "fixed_night");

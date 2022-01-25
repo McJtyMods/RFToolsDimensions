@@ -11,7 +11,7 @@ import mcjty.rftoolsdim.modules.enscriber.EnscriberModule;
 import mcjty.rftoolsdim.modules.essences.EssencesModule;
 import mcjty.rftoolsdim.modules.knowledge.KnowledgeModule;
 import mcjty.rftoolsdim.modules.workbench.WorkbenchModule;
-import mcjty.rftoolsdim.setup.ClientEventHandlers;
+import mcjty.rftoolsdim.setup.ClientSetup;
 import mcjty.rftoolsdim.setup.Config;
 import mcjty.rftoolsdim.setup.ModSetup;
 import mcjty.rftoolsdim.setup.Registration;
@@ -45,7 +45,8 @@ public class RFToolsDim {
         MinecraftForge.EVENT_BUS.addListener(this::onJoinWorld);
 
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
-            MinecraftForge.EVENT_BUS.addListener(ClientEventHandlers::onPlayerLogin);
+            MinecraftForge.EVENT_BUS.addListener(ClientSetup::onPlayerLogin);
+            modbus.addListener(ClientSetup::init);
             modbus.addListener(modules::initClient);
             modbus.addListener(WorkbenchModule::onTextureStitch);
 //            FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientEventHandlers::onClientTick);

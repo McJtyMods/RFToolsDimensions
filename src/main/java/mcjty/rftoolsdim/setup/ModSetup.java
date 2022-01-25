@@ -20,7 +20,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 
-import static mcjty.rftoolsdim.dimension.DimensionRegistry.RFTOOLS_ID;
+import static mcjty.rftoolsdim.dimension.DimensionRegistry.RFTOOLS_CHUNKGEN_ID;
 
 @Mod.EventBusSubscriber(modid = RFToolsDim.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ModSetup extends DefaultModSetup {
@@ -42,8 +42,8 @@ public class ModSetup extends DefaultModSetup {
         MinecraftForge.EVENT_BUS.register(new ForgeEventHandlers());
 
         e.enqueueWork(() -> {
-            Registry.register(Registry.CHUNK_GENERATOR, RFTOOLS_ID, RFToolsChunkGenerator.CODEC);
-            Registry.register(Registry.BIOME_SOURCE, DimensionRegistry.BIOMES_ID, RFTBiomeProvider.CODEC);
+            Registry.register(Registry.CHUNK_GENERATOR, RFTOOLS_CHUNKGEN_ID, RFToolsChunkGenerator.CODEC);
+            Registry.register(Registry.BIOME_SOURCE, DimensionRegistry.RFTOOLS_BIOMES_ID, RFTBiomeProvider.CODEC);
         });
     }
 
