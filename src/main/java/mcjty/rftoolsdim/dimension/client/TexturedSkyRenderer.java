@@ -20,18 +20,18 @@ public class TexturedSkyRenderer implements ISkyRenderHandler {
 
     @Override
     public void render(int ticks, float partialTicks, PoseStack matrixStack, ClientLevel world, Minecraft mc) {
-        float red = 1f;
-        float green = 1;
-        float blue = 1;
+        float red = FogRenderer.fogRed;
+        float green = FogRenderer.fogGreen;
+        float blue =FogRenderer.fogBlue;
         FogRenderer.levelFogColor();
 
         RenderSystem.depthMask(false);
 
         BlackSkyRenderer.renderColor(0f, 0f, 0f);
 
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
         RenderSystem.enableTexture();
-        RenderSystem.setShaderColor(red, green, blue, 1.0F);
+        RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0F);
         RenderSystem.setShaderTexture(0, texture);
 
         BufferBuilder bufferbuilder = Tesselator.getInstance().getBuilder();
@@ -40,10 +40,10 @@ public class TexturedSkyRenderer implements ISkyRenderHandler {
         Matrix4f pose = matrixStack.last().pose();
 
         float v = 800.0F;
-        bufferbuilder.vertex(pose, -v, 200, -v).uv(0, 0).endVertex();
-        bufferbuilder.vertex(pose, v,  200, -v).uv(1, 0).endVertex();
-        bufferbuilder.vertex(pose, v,  200, v).uv(1, 1).endVertex();
-        bufferbuilder.vertex(pose, -v, 200, v).uv(0, 1).endVertex();
+        bufferbuilder.vertex(pose, -v, 200, -v).uv(0, 0).color(red, green, blue, 1).endVertex();
+        bufferbuilder.vertex(pose, v,  200, -v).uv(1, 0).color(red, green, blue, 1).endVertex();
+        bufferbuilder.vertex(pose, v,  200, v).uv(1, 1).color(red, green, blue, 1).endVertex();
+        bufferbuilder.vertex(pose, -v, 200, v).uv(0, 1).color(red, green, blue, 1).endVertex();
 
 
         bufferbuilder.end();

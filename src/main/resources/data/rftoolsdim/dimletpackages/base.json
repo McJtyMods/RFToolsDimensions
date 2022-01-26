@@ -186,7 +186,59 @@
   },
   {
     "type": "sky",
+    "key": "nebula",
+    "rarity": "common",
+    "create": 5,
+    "maintain": 5,
+    "ticks": 5,
+    "worldgen": true,
+    "dimlet": true,
+    "essence": {
+      "item": "minecraft:redstone"
+    }
+  },
+  {
+    "type": "sky",
     "key": "noclouds",
+    "rarity": "common",
+    "create": 5,
+    "maintain": 5,
+    "ticks": 5,
+    "worldgen": true,
+    "dimlet": true,
+    "essence": {
+      "item": "minecraft:gray_wool"
+    }
+  },
+  {
+    "type": "sky",
+    "key": "blackfog",
+    "rarity": "common",
+    "create": 5,
+    "maintain": 5,
+    "ticks": 5,
+    "worldgen": true,
+    "dimlet": true,
+    "essence": {
+      "item": "minecraft:black_wool"
+    }
+  },
+  {
+    "type": "sky",
+    "key": "redfog",
+    "rarity": "common",
+    "create": 5,
+    "maintain": 5,
+    "ticks": 5,
+    "worldgen": true,
+    "dimlet": true,
+    "essence": {
+      "item": "minecraft:red_wool"
+    }
+  },
+  {
+    "type": "sky",
+    "key": "whitefog",
     "rarity": "common",
     "create": 5,
     "maintain": 5,

@@ -8,10 +8,17 @@ import java.util.Map;
 public enum SkyDimletType {
     DEFAULT(0L, KnowledgeSet.SET1),
     END(1L, KnowledgeSet.SET1),
-    INFERNAL(1L<<1, KnowledgeSet.SET2),
-    BLACK(1L<<2, KnowledgeSet.SET3),
-    STARS(1L<<3, KnowledgeSet.SET5),
-    NOCLOUDS(1L<<4, KnowledgeSet.SET4),
+
+    INFERNAL(1L<<10, KnowledgeSet.SET2),
+    BLACK(1L<<11, KnowledgeSet.SET3),
+    STARS(1L<<12, KnowledgeSet.SET5),
+    NEBULA(1L<<13, KnowledgeSet.SET5),
+
+    NOCLOUDS(1L<<30, KnowledgeSet.SET4),
+
+    BLACKFOG(1L<<40, KnowledgeSet.SET3),
+    REDFOG(1L<<41, KnowledgeSet.SET3),
+    WHITEFOG(1L<<42, KnowledgeSet.SET3),
     ;
 
     private final long mask;

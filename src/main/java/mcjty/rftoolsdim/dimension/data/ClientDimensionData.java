@@ -1,5 +1,6 @@
 package mcjty.rftoolsdim.dimension.data;
 
+import mcjty.rftoolsdim.dimension.client.RFToolsDimensionSpecialEffects;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 
@@ -38,6 +39,7 @@ public class ClientDimensionData {
     public void updateDataFromServer(Map<ResourceLocation, ClientData> clientDataMap, long seed) {
         this.clientDataMap = clientDataMap;
         this.worldSeed = seed;
+        RFToolsDimensionSpecialEffects.clearCache();
     }
 
     public void clear() {

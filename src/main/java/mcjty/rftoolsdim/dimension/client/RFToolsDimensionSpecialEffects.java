@@ -17,6 +17,13 @@ public class RFToolsDimensionSpecialEffects extends DimensionSpecialEffects {
     private final ISkyRenderHandler starsSky = new SkyboxRenderer(
             new ResourceLocation(RFToolsDim.MODID, "textures/sky/stars1.png"),
             new ResourceLocation(RFToolsDim.MODID, "textures/sky/stars1a.png"));
+    private final ISkyRenderHandler nebulaSky = new SkyboxRenderer(
+            new ResourceLocation(RFToolsDim.MODID, "textures/sky/stars3.png"),
+            new ResourceLocation(RFToolsDim.MODID, "textures/sky/stars3a.png"));
+
+    private static final Vec3 RED_FOG = new Vec3(1, 0, 0);
+    private static final Vec3 BLACK_FOG = new Vec3(0, 0, 0);
+    private static final Vec3 WHITE_FOG = new Vec3(1, 1, 1);
 
     public RFToolsDimensionSpecialEffects() {
         super(192.0f, true, SkyType.NORMAL, false, false);
@@ -38,6 +45,8 @@ public class RFToolsDimensionSpecialEffects extends DimensionSpecialEffects {
             return infernalSky;
         } else if (SkyDimletType.STARS.match(skyMask)) {
             return starsSky;
+        } else if (SkyDimletType.NEBULA.match(skyMask)) {
+            return nebulaSky;
         } else {
             return null;
         }
@@ -72,19 +81,27 @@ public class RFToolsDimensionSpecialEffects extends DimensionSpecialEffects {
 
     @Override
     public Vec3 getBrightnessDependentFogColor(Vec3 vec, float bright) {
-        ClientDimensionData.ClientData clientData = ClientDimensionData.get().getClientData(Minecraft.getInstance().level.dimension().location());
-        float factor = (float) clientData.power() / clientData.max();
-        Vec3 result = vec.multiply(bright * 0.94F + 0.06F, bright * 0.94F + 0.06F, bright * 0.91F + 0.09F);
-        if (factor < .1) {
-            return result.multiply(factor*10, factor*10, factor*10);
+//        ClientDimensionData.ClientData clientData = ClientDimensionData.get().getClientData(Minecraft.getInstance().level.dimension().location());
+//        float factor = (float) clientData.power() / clientData.max();
+//        Vec3 result = vec.multiply(bright * 0.94F + 0.06F, bright * 0.94F + 0.06F, bright * 0.91F + 0.09F);
+//        if (factor < .1) {
+//            return result.multiply(factor*10, factor*10, factor*10);
+//        }
+        long skyMask = getSkyMask();
+        if (SkyDimletType.REDFOG.match(skyMask)) {
+            return RED_FOG;
+        } else if (SkyDimletType.BLACKFOG.match(skyMask)) {
+            return BLACK_FOG;
+        } else if (SkyDimletType.WHITEFOG.match(skyMask)) {
+            return WHITE_FOG;
+        } else {
+            return vec.multiply(bright * 0.94F + 0.06F, bright * 0.94F + 0.06F, bright * 0.91F + 0.09F);
         }
-        return result;
     }
 
     @Override
     public boolean isFoggyAt(int x, int z) {
-        ClientDimensionData.ClientData clientData = ClientDimensionData.get().getClientData(Minecraft.getInstance().level.dimension().location());
-        float factor = (float) clientData.power() / clientData.max();
-        return factor < .1;
+        long skyMask = getSkyMask();
+        return SkyDimletType.REDFOG.match(skyMask) || SkyDimletType.BLACKFOG.match(skyMask) || SkyDimletType.WHITEFOG.match(skyMask);
     }
 }
