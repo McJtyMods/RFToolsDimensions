@@ -24,6 +24,7 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.server.ServerStartedEvent;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
+import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.network.PacketDistributor;
@@ -41,6 +42,27 @@ public class ForgeEventHandlers {
 
     private final Random random = new Random();
     private final PowerHandler powerHandler = new PowerHandler();
+
+    private static int counter = 50;
+
+    @SubscribeEvent
+    public void onNeighborNotify(BlockEvent.NeighborNotifyEvent event) {
+        // UGLY HACK to prevent stack overflow in rftools dimensions with block updates
+        if (event.getWorld() instanceof ServerLevel serverLevel) {
+            if (serverLevel.getChunkSource().getGenerator() instanceof RFToolsChunkGenerator) {
+                counter--;
+                if (counter < 0) {
+                    counter = 50;
+                    StackTraceElement[] stacktrace = Thread.currentThread().getStackTrace();
+                    if (stacktrace.length > 400) {
+                        RFToolsDim.setup.getLogger().warn("Canceled a possible stackoverflow: " + stacktrace.length);
+                        event.setCanceled(true);
+                        counter = 1;    // Force to check sooner
+                    }
+                }
+            }
+        }
+    }
 
     @SubscribeEvent
     public void onWorldTick(TickEvent.WorldTickEvent event) {
