@@ -72,11 +72,19 @@ public class RFToolsDimensionSpecialEffects extends DimensionSpecialEffects {
 
     @Override
     public Vec3 getBrightnessDependentFogColor(Vec3 vec, float bright) {
-        return vec.multiply(bright * 0.94F + 0.06F, bright * 0.94F + 0.06F, bright * 0.91F + 0.09F);
+        ClientDimensionData.ClientData clientData = ClientDimensionData.get().getClientData(Minecraft.getInstance().level.dimension().location());
+        float factor = (float) clientData.power() / clientData.max();
+        Vec3 result = vec.multiply(bright * 0.94F + 0.06F, bright * 0.94F + 0.06F, bright * 0.91F + 0.09F);
+        if (factor < .1) {
+            return result.multiply(factor*10, factor*10, factor*10);
+        }
+        return result;
     }
 
     @Override
     public boolean isFoggyAt(int x, int z) {
-        return false;
+        ClientDimensionData.ClientData clientData = ClientDimensionData.get().getClientData(Minecraft.getInstance().level.dimension().location());
+        float factor = (float) clientData.power() / clientData.max();
+        return factor < .1;
     }
 }
