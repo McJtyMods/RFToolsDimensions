@@ -1,6 +1,6 @@
 package mcjty.rftoolsdim.dimension.descriptor;
 
-public class DescriptorError {
+public class DescriptorError extends Exception {
 
     public static DescriptorError ERROR(Code code) {
         return new DescriptorError(code);
@@ -23,10 +23,6 @@ public class DescriptorError {
     public DescriptorError(Code code) {
         this.code = code;
         this.data = null;
-    }
-
-    public boolean isOk() {
-        return this == OK;
     }
 
     public Code getCode() {

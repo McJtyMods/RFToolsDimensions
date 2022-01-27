@@ -204,8 +204,8 @@
     "key": "minecraft:ancient_debris",
     "rarity": "legendary",
     "create": 1000,
-    "maintain": 300,
-    "ticks": 200,
+    "maintain": 800,
+    "ticks": 300,
     "worldgen": true,
     "dimlet": true
   },
@@ -321,6 +321,46 @@
   },
   {
     "type": "block",
+    "key": "minecraft:cracked_deepslate_tiles",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 10,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "block",
+    "key": "minecraft:amethyst_block",
+    "rarity": "uncommon",
+    "create": 60,
+    "maintain": 60,
+    "ticks": 60,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "block",
+    "key": "minecraft:amethyst_cluster",
+    "rarity": "uncommon",
+    "create": 60,
+    "maintain": 60,
+    "ticks": 60,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "block",
+    "key": "minecraft:budding_amethyst",
+    "rarity": "uncommon",
+    "create": 300,
+    "maintain": 200,
+    "ticks": 100,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "block",
     "key": "minecraft:blackstone",
     "rarity": "common",
     "create": 10,
@@ -393,9 +433,9 @@
     "type": "block",
     "key": "minecraft:bone_block",
     "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
+    "create": 50,
+    "maintain": 50,
+    "ticks": 50,
     "worldgen": true,
     "dimlet": true
   },
@@ -403,9 +443,9 @@
     "type": "block",
     "key": "minecraft:bookshelf",
     "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
+    "create": 50,
+    "maintain": 50,
+    "ticks": 50,
     "worldgen": true,
     "dimlet": true
   },
@@ -501,6 +541,16 @@
   },
   {
     "type": "block",
+    "key": "minecraft:calcite",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 10,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "block",
     "key": "minecraft:carved_pumpkin",
     "rarity": "common",
     "create": 10,
@@ -582,10 +632,10 @@
   {
     "type": "block",
     "key": "minecraft:coal_block",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
+    "rarity": "uncommon",
+    "create": 200,
+    "maintain": 200,
+    "ticks": 200,
     "worldgen": true,
     "dimlet": true
   },
@@ -596,6 +646,36 @@
     "create": 100,
     "maintain": 100,
     "ticks": 100,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "block",
+    "key": "minecraft:rooted_dirt",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 10,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "block",
+    "key": "minecraft:slime_block",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 10,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "block",
+    "key": "minecraft:smooth_basalt",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 10,
     "worldgen": true,
     "dimlet": true
   },
@@ -612,6 +692,16 @@
   {
     "type": "block",
     "key": "minecraft:cobblestone",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 10,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "block",
+    "key": "minecraft:cobbled_deepslate",
     "rarity": "common",
     "create": 10,
     "maintain": 10,
@@ -693,9 +783,9 @@
     "type": "block",
     "key": "minecraft:crying_obsidian",
     "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
+    "create": 100,
+    "maintain": 60,
+    "ticks": 60,
     "worldgen": true,
     "dimlet": true
   },
@@ -871,6 +961,16 @@
   },
   {
     "type": "block",
+    "key": "minecraft:deepslate_copper_ore",
+    "rarity": "rare",
+    "create": 500,
+    "maintain": 500,
+    "ticks": 100,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "block",
     "key": "minecraft:diamond_ore",
     "rarity": "rare",
     "create": 500,
@@ -912,6 +1012,16 @@
   {
     "type": "block",
     "key": "minecraft:emerald_block",
+    "rarity": "rare",
+    "create": 1000,
+    "maintain": 1000,
+    "ticks": 100,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "block",
+    "key": "minecraft:deepslate_emerald_ore",
     "rarity": "rare",
     "create": 1000,
     "maintain": 1000,
@@ -971,16 +1081,6 @@
   },
   {
     "type": "block",
-    "key": "minecraft:fletching_table",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
     "key": "minecraft:gilded_blackstone",
     "rarity": "common",
     "create": 10,
@@ -1001,11 +1101,31 @@
   },
   {
     "type": "block",
+    "key": "minecraft:raw_gold_block",
+    "rarity": "rare",
+    "create": 200,
+    "maintain": 200,
+    "ticks": 150,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "block",
     "key": "minecraft:gold_block",
     "rarity": "rare",
     "create": 200,
     "maintain": 200,
     "ticks": 150,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "block",
+    "key": "minecraft:deepslate_gold_ore",
+    "rarity": "uncommon",
+    "create": 100,
+    "maintain": 100,
+    "ticks": 100,
     "worldgen": true,
     "dimlet": true
   },
@@ -1171,11 +1291,21 @@
   },
   {
     "type": "block",
+    "key": "minecraft:honey_block",
+    "rarity": "common",
+    "create": 50,
+    "maintain": 50,
+    "ticks": 50,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "block",
     "key": "minecraft:honeycomb_block",
     "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
+    "create": 50,
+    "maintain": 50,
+    "ticks": 50,
     "worldgen": true,
     "dimlet": true
   },
@@ -1251,7 +1381,267 @@
   },
   {
     "type": "block",
+    "key": "minecraft:raw_copper_block",
+    "rarity": "uncommon",
+    "create": 150,
+    "maintain": 150,
+    "ticks": 150,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "block",
+    "key": "minecraft:waxed_copper_block",
+    "rarity": "uncommon",
+    "create": 150,
+    "maintain": 150,
+    "ticks": 150,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "block",
+    "key": "minecraft:waxed_cut_copper",
+    "rarity": "uncommon",
+    "create": 150,
+    "maintain": 150,
+    "ticks": 150,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "block",
+    "key": "minecraft:waxed_exposed_copper",
+    "rarity": "uncommon",
+    "create": 150,
+    "maintain": 150,
+    "ticks": 150,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "block",
+    "key": "minecraft:waxed_exposed_cut_copper",
+    "rarity": "uncommon",
+    "create": 150,
+    "maintain": 150,
+    "ticks": 150,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "block",
+    "key": "minecraft:waxed_oxidized_copper",
+    "rarity": "uncommon",
+    "create": 150,
+    "maintain": 150,
+    "ticks": 150,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "block",
+    "key": "minecraft:waxed_oxidized_cut_copper",
+    "rarity": "uncommon",
+    "create": 150,
+    "maintain": 150,
+    "ticks": 150,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "block",
+    "key": "minecraft:waxed_weathered_copper",
+    "rarity": "uncommon",
+    "create": 150,
+    "maintain": 150,
+    "ticks": 150,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "block",
+    "key": "minecraft:waxed_weathered_cut_copper",
+    "rarity": "uncommon",
+    "create": 150,
+    "maintain": 150,
+    "ticks": 150,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "block",
+    "key": "minecraft:weathered_copper",
+    "rarity": "uncommon",
+    "create": 150,
+    "maintain": 150,
+    "ticks": 150,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "block",
+    "key": "minecraft:weathered_cut_copper",
+    "rarity": "uncommon",
+    "create": 150,
+    "maintain": 150,
+    "ticks": 150,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "block",
+    "key": "minecraft:exposed_copper",
+    "rarity": "uncommon",
+    "create": 150,
+    "maintain": 150,
+    "ticks": 150,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "block",
+    "key": "minecraft:exposed_cut_copper",
+    "rarity": "uncommon",
+    "create": 150,
+    "maintain": 150,
+    "ticks": 150,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "block",
+    "key": "minecraft:ice",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 10,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "block",
+    "key": "minecraft:polished_deepslate",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 10,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "block",
+    "key": "minecraft:powder_snow",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 10,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "block",
+    "key": "minecraft:moss_block",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 10,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "block",
+    "key": "minecraft:frosted_ice",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 10,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "block",
+    "key": "minecraft:oxidized_copper",
+    "rarity": "uncommon",
+    "create": 150,
+    "maintain": 150,
+    "ticks": 150,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "block",
+    "key": "minecraft:oxidized_cut_copper",
+    "rarity": "uncommon",
+    "create": 150,
+    "maintain": 150,
+    "ticks": 150,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "block",
+    "key": "minecraft:cut_copper",
+    "rarity": "uncommon",
+    "create": 150,
+    "maintain": 150,
+    "ticks": 150,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "block",
+    "key": "minecraft:copper_block",
+    "rarity": "uncommon",
+    "create": 150,
+    "maintain": 150,
+    "ticks": 150,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "block",
+    "key": "minecraft:deepslate_copper_ore",
+    "rarity": "uncommon",
+    "create": 100,
+    "maintain": 100,
+    "ticks": 100,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "block",
+    "key": "minecraft:copper_ore",
+    "rarity": "uncommon",
+    "create": 100,
+    "maintain": 100,
+    "ticks": 100,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "block",
+    "key": "minecraft:raw_iron_block",
+    "rarity": "uncommon",
+    "create": 400,
+    "maintain": 400,
+    "ticks": 400,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "block",
     "key": "minecraft:iron_block",
+    "rarity": "uncommon",
+    "create": 400,
+    "maintain": 400,
+    "ticks": 400,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "block",
+    "key": "minecraft:deepslate_iron_ore",
     "rarity": "uncommon",
     "create": 200,
     "maintain": 200,
@@ -1263,9 +1653,19 @@
     "type": "block",
     "key": "minecraft:iron_ore",
     "rarity": "uncommon",
-    "create": 100,
-    "maintain": 100,
-    "ticks": 100,
+    "create": 200,
+    "maintain": 200,
+    "ticks": 200,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "block",
+    "key": "minecraft:cracked_deepslate_bricks",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 10,
     "worldgen": true,
     "dimlet": true
   },
@@ -1312,10 +1712,20 @@
   {
     "type": "block",
     "key": "minecraft:lapis_block",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
+    "rarity": "uncommon",
+    "create": 200,
+    "maintain": 200,
+    "ticks": 100,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "block",
+    "key": "minecraft:deepslate_lapis_ore",
+    "rarity": "uncommon",
+    "create": 100,
+    "maintain": 100,
+    "ticks": 100,
     "worldgen": true,
     "dimlet": true
   },
@@ -1483,9 +1893,9 @@
     "type": "block",
     "key": "minecraft:lodestone",
     "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
+    "create": 100,
+    "maintain": 100,
+    "ticks": 100,
     "worldgen": true,
     "dimlet": true
   },
@@ -1643,9 +2053,9 @@
     "type": "block",
     "key": "minecraft:netherite_block",
     "rarity": "legendary",
-    "create": 1900,
-    "maintain": 900,
-    "ticks": 300,
+    "create": 2500,
+    "maintain": 1500,
+    "ticks": 500,
     "worldgen": true,
     "dimlet": true
   },
@@ -1703,8 +2113,8 @@
     "type": "block",
     "key": "minecraft:obsidian",
     "rarity": "uncommon",
-    "create": 30,
-    "maintain": 30,
+    "create": 60,
+    "maintain": 60,
     "ticks": 30,
     "worldgen": true,
     "dimlet": true
@@ -2112,10 +2522,20 @@
   {
     "type": "block",
     "key": "minecraft:redstone_block",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
+    "rarity": "uncommon",
+    "create": 200,
+    "maintain": 200,
+    "ticks": 150,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "block",
+    "key": "minecraft:deepslate_redstone_ore",
+    "rarity": "uncommon",
+    "create": 100,
+    "maintain": 100,
+    "ticks": 100,
     "worldgen": true,
     "dimlet": true
   },
@@ -2151,7 +2571,7 @@
   },
   {
     "type": "block",
-    "key": "minecraft:sea_lantern",
+    "key": "minecraft:deepslate_tiles",
     "rarity": "common",
     "create": 10,
     "maintain": 10,
@@ -2161,11 +2581,31 @@
   },
   {
     "type": "block",
-    "key": "minecraft:shroomlight",
+    "key": "minecraft:dripstone_block",
     "rarity": "common",
     "create": 10,
     "maintain": 10,
     "ticks": 10,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "block",
+    "key": "minecraft:sea_lantern",
+    "rarity": "uncommon",
+    "create": 200,
+    "maintain": 200,
+    "ticks": 100,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "block",
+    "key": "minecraft:shroomlight",
+    "rarity": "uncommon",
+    "create": 100,
+    "maintain": 100,
+    "ticks": 100,
     "worldgen": true,
     "dimlet": true
   },
@@ -2262,10 +2702,10 @@
   {
     "type": "block",
     "key": "minecraft:sponge",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
+    "rarity": "rare",
+    "create": 400,
+    "maintain": 250,
+    "ticks": 150,
     "worldgen": true,
     "dimlet": true
   },
@@ -2292,16 +2732,6 @@
   {
     "type": "block",
     "key": "minecraft:spruce_wood",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:sticky_piston",
     "rarity": "common",
     "create": 10,
     "maintain": 10,

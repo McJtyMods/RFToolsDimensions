@@ -3,7 +3,6 @@ package mcjty.rftoolsdim.modules.workbench.client;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
-import com.mojang.math.Matrix4f;
 import mcjty.lib.base.StyleConfig;
 import mcjty.lib.client.RenderHelper;
 import mcjty.lib.container.GenericContainer;
@@ -107,8 +106,8 @@ public class GuiWorkbench extends GenericGuiContainer<WorkbenchTileEntity, Gener
         Panel widget = itemList.getChild(selected);
         Object userObject = widget.getUserObject();
         if (userObject instanceof DimletClientHelper.DimletWithInfo key) {
-            if (key.isCraftable()) {
-                DimletKey dimlet = key.getDimlet();
+            if (key.craftable()) {
+                DimletKey dimlet = key.dimlet();
                 sendServerCommandTyped(RFToolsDimMessages.INSTANCE, WorkbenchTileEntity.CMD_HILIGHT_PATTERN,
                         TypedMap.builder()
                                 .put(PARAM_TYPE, dimlet.type().name())
@@ -171,7 +170,7 @@ public class GuiWorkbench extends GenericGuiContainer<WorkbenchTileEntity, Gener
         Object userObject = widget.getUserObject();
         if (userObject instanceof DimletClientHelper.DimletWithInfo) {
             DimletClientHelper.DimletWithInfo key = (DimletClientHelper.DimletWithInfo) userObject;
-            DimletKey dimlet = key.getDimlet();
+            DimletKey dimlet = key.dimlet();
             sendServerCommandTyped(RFToolsDimMessages.INSTANCE, WorkbenchTileEntity.CMD_CHEATDIMLET,
                     TypedMap.builder()
                             .put(PARAM_TYPE, dimlet.type().name())
@@ -189,8 +188,8 @@ public class GuiWorkbench extends GenericGuiContainer<WorkbenchTileEntity, Gener
         Object userObject = widget.getUserObject();
         if (userObject instanceof DimletClientHelper.DimletWithInfo) {
             DimletClientHelper.DimletWithInfo key = (DimletClientHelper.DimletWithInfo) userObject;
-            if (key.isCraftable()) {
-                DimletKey dimlet = key.getDimlet();
+            if (key.craftable()) {
+                DimletKey dimlet = key.dimlet();
                 sendServerCommandTyped(RFToolsDimMessages.INSTANCE, WorkbenchTileEntity.CMD_SUGGESTPARTS,
                         TypedMap.builder()
                                 .put(PARAM_TYPE, dimlet.type().name())
@@ -229,8 +228,8 @@ public class GuiWorkbench extends GenericGuiContainer<WorkbenchTileEntity, Gener
     }
 
     private boolean dimletMatches(String filter, DimletClientHelper.DimletWithInfo key) {
-        if (allFilter.isPressed() || key.isCraftable()) {
-            DimletKey dimlet = key.getDimlet();
+        if (allFilter.isPressed() || key.craftable()) {
+            DimletKey dimlet = key.dimlet();
             String readableName = DimletTools.getReadableName(dimlet);
             return readableName.toLowerCase().contains(filter)
                     || dimlet.type().name().toLowerCase().contains(filter);
@@ -241,11 +240,11 @@ public class GuiWorkbench extends GenericGuiContainer<WorkbenchTileEntity, Gener
     private void addItemToList(DimletClientHelper.DimletWithInfo key) {
         Panel panel = positional().desiredWidth(113).desiredHeight(16).userObject(key);
         itemList.children(panel);
-        BlockRender blockRender = new BlockRender().renderItem(DimletTools.getDimletStack(key.getDimlet())).hint(1, 0, 16, 16)
+        BlockRender blockRender = new BlockRender().renderItem(DimletTools.getDimletStack(key.dimlet())).hint(1, 0, 16, 16)
                 .userObject(key);
         panel.children(blockRender);
-        String displayName = DimletTools.getReadableName(key.getDimlet());
-        AbstractWidget label = label(displayName).color(key.isCraftable() ? StyleConfig.colorTextInListNormal : StyleConfig.colorTextDisabled).horizontalAlignment(HorizontalAlignment.ALIGN_LEFT)
+        String displayName = DimletTools.getReadableName(key.dimlet());
+        AbstractWidget label = label(displayName).color(key.craftable() ? StyleConfig.colorTextInListNormal : StyleConfig.colorTextDisabled).horizontalAlignment(HorizontalAlignment.ALIGN_LEFT)
                 .hint(20, 0, 95, 16).userObject(key);
         panel.children(label);
     }

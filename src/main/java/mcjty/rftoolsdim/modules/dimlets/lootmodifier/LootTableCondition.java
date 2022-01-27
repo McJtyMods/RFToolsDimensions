@@ -11,13 +11,7 @@ import javax.annotation.Nonnull;
 import java.util.HashSet;
 import java.util.Set;
 
-public class LootTableCondition implements LootItemCondition {
-
-    private final Set<ResourceLocation> tables;
-
-    public LootTableCondition(Set<ResourceLocation> tables) {
-        this.tables = tables;
-    }
+public record LootTableCondition(Set<ResourceLocation> tables) implements LootItemCondition {
 
     @Nonnull
     @Override
@@ -32,7 +26,6 @@ public class LootTableCondition implements LootItemCondition {
     }
 
     public static class Serializer implements net.minecraft.world.level.storage.loot.Serializer<LootTableCondition> {
-
 
         @Override
         public void serialize(@Nonnull JsonObject object, LootTableCondition condition, @Nonnull JsonSerializationContext context) {

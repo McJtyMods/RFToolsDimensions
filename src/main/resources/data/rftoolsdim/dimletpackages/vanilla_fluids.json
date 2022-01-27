@@ -13,9 +13,9 @@
     "type": "fluid",
     "key": "minecraft:lava",
     "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
+    "create": 100,
+    "maintain": 100,
+    "ticks": 100,
     "worldgen": true,
     "dimlet": true
   }

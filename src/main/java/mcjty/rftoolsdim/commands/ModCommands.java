@@ -19,6 +19,7 @@ public class ModCommands {
                         .then(CommandForgetInvalid.register(dispatcher))
                         .then(CommandTpDim.register(dispatcher))
                         .then(CommandDump.register(dispatcher))
+                        .then(CommandSetPower.register(dispatcher))
                         .then(CommandWeather.register(dispatcher))
                         .then(CommandCreateConfig.register(dispatcher))
         );

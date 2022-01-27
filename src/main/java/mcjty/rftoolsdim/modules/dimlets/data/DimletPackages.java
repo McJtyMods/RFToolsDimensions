@@ -5,7 +5,6 @@ import mcjty.rftoolsdim.RFToolsDim;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.levelgen.feature.StructureFeature;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.fml.loading.FMLPaths;
@@ -14,6 +13,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
+import java.util.Set;
 import java.util.function.BiFunction;
 
 public class DimletPackages {
@@ -38,32 +38,15 @@ public class DimletPackages {
     }
 
     private static void writeBiomes(JsonArray root, String modid) {
+        Set<DimletKey> dimlets = DimletDictionary.get().getDimlets();
         for (var entry : ForgeRegistries.BIOMES.getEntries()) {
             ResourceLocation id = entry.getKey().location();
             if (modid.toLowerCase().equals(id.getNamespace())) {
-                JsonObject object = new JsonObject();
-                object.addProperty("type", DimletType.BIOME.name().toLowerCase());
-                object.addProperty("key", id.toString());
-                DimletSettings settings = DimletSettings.create(DimletRarity.COMMON, 10, 10, 1)
-                        .dimlet(true)
-                        .worldgen(true)
-                        .build();
-                settings.buildElement(object);
-                root.add(object);
-            }
-        }
-    }
-
-    private static void writeFluids(JsonArray root, String modid) {
-        for (var entry : ForgeRegistries.FLUIDS.getEntries()) {
-            ResourceLocation id = entry.getKey().location();
-            if (modid.toLowerCase().equals(id.getNamespace())) {
-                Fluid fluid = entry.getValue();
-                if (fluid.defaultFluidState().createLegacyBlock().getBlock() != Blocks.AIR) {
+                if (!dimlets.contains(new DimletKey(DimletType.BIOME, id.toString()))) {
                     JsonObject object = new JsonObject();
-                    object.addProperty("type", DimletType.FLUID.name().toLowerCase());
+                    object.addProperty("type", DimletType.BIOME.name().toLowerCase());
                     object.addProperty("key", id.toString());
-                    DimletSettings settings = DimletSettings.create(DimletRarity.COMMON, 10, 10, 10)
+                    DimletSettings settings = DimletSettings.create(DimletRarity.COMMON, 10, 10, 1)
                             .dimlet(true)
                             .worldgen(true)
                             .build();
@@ -74,7 +57,31 @@ public class DimletPackages {
         }
     }
 
+    private static void writeFluids(JsonArray root, String modid) {
+        Set<DimletKey> dimlets = DimletDictionary.get().getDimlets();
+        for (var entry : ForgeRegistries.FLUIDS.getEntries()) {
+            ResourceLocation id = entry.getKey().location();
+            if (modid.toLowerCase().equals(id.getNamespace())) {
+                Fluid fluid = entry.getValue();
+                if (fluid.defaultFluidState().createLegacyBlock().getBlock() != Blocks.AIR) {
+                    if (!dimlets.contains(new DimletKey(DimletType.FLUID, id.toString()))) {
+                        JsonObject object = new JsonObject();
+                        object.addProperty("type", DimletType.FLUID.name().toLowerCase());
+                        object.addProperty("key", id.toString());
+                        DimletSettings settings = DimletSettings.create(DimletRarity.COMMON, 10, 10, 10)
+                                .dimlet(true)
+                                .worldgen(true)
+                                .build();
+                        settings.buildElement(object);
+                        root.add(object);
+                    }
+                }
+            }
+        }
+    }
+
     private static void writeBlocks(JsonArray root, String modid) {
+        Set<DimletKey> dimlets = DimletDictionary.get().getDimlets();
         for (var entry : ForgeRegistries.BLOCKS.getEntries()) {
             ResourceLocation id = entry.getKey().location();
             if (modid.toLowerCase().equals(id.getNamespace())) {
@@ -82,36 +89,40 @@ public class DimletPackages {
                 boolean hasTileEntity = block.defaultBlockState().hasBlockEntity();
                 // Skip blocks with tile entities
                 if (!hasTileEntity) {
-                    boolean isOre = block.getTags().contains(Tags.Blocks.ORES.getName());
-                    JsonObject object = new JsonObject();
-                    object.addProperty("type", DimletType.BLOCK.name().toLowerCase());
-                    object.addProperty("key", id.toString());
-                    DimletSettings settings = DimletSettings.create(isOre ? DimletRarity.UNCOMMON : DimletRarity.COMMON,
-                                    isOre ? 100 : 10, isOre ? 100 : 10, isOre ? 100 : 10)
-                            .dimlet(true)
-                            .worldgen(true)
-                            .build();
-                    settings.buildElement(object);
-                    root.add(object);
+                    if (!dimlets.contains(new DimletKey(DimletType.BLOCK, id.toString()))) {
+                        boolean isOre = block.getTags().contains(Tags.Blocks.ORES.getName());
+                        JsonObject object = new JsonObject();
+                        object.addProperty("type", DimletType.BLOCK.name().toLowerCase());
+                        object.addProperty("key", id.toString());
+                        DimletSettings settings = DimletSettings.create(isOre ? DimletRarity.UNCOMMON : DimletRarity.COMMON,
+                                        isOre ? 100 : 10, isOre ? 100 : 10, isOre ? 100 : 10)
+                                .dimlet(true)
+                                .worldgen(true)
+                                .build();
+                        settings.buildElement(object);
+                        root.add(object);
+                    }
                 }
             }
         }
     }
 
     private static void writeStructures(JsonArray root, String modid) {
+        Set<DimletKey> dimlets = DimletDictionary.get().getDimlets();
         for (var entry : ForgeRegistries.STRUCTURE_FEATURES.getEntries()) {
             ResourceLocation id = entry.getKey().location();
             if (modid.toLowerCase().equals(id.getNamespace())) {
-                StructureFeature<?> feature = entry.getValue();
-                JsonObject object = new JsonObject();
-                object.addProperty("type", DimletType.STRUCTURE.name().toLowerCase());
-                object.addProperty("key", id.toString());
-                DimletSettings settings = DimletSettings.create(DimletRarity.UNCOMMON, 100, 100, 100)
-                        .dimlet(true)
-                        .worldgen(true)
-                        .build();
-                settings.buildElement(object);
-                root.add(object);
+                if (!dimlets.contains(new DimletKey(DimletType.STRUCTURE, id.toString()))) {
+                    JsonObject object = new JsonObject();
+                    object.addProperty("type", DimletType.STRUCTURE.name().toLowerCase());
+                    object.addProperty("key", id.toString());
+                    DimletSettings settings = DimletSettings.create(DimletRarity.UNCOMMON, 100, 100, 100)
+                            .dimlet(true)
+                            .worldgen(true)
+                            .build();
+                    settings.buildElement(object);
+                    root.add(object);
+                }
             }
         }
     }
@@ -140,8 +151,7 @@ public class DimletPackages {
 
         int cnt = 0;
         try(BufferedReader br = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
-            JsonParser parser = new JsonParser();
-            JsonElement root = parser.parse(br);
+            JsonElement root = JsonParser.parseReader(br);
             JsonArray array = root.getAsJsonArray();
             for (JsonElement element : array) {
                 JsonObject object = element.getAsJsonObject();

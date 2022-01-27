@@ -418,7 +418,6 @@ public class DimensionEditorTileEntity extends TickingTileEntity {
 
     private void setState() {
         int oldstate = state;
-        state = 0;
         if (ticksLeft == 0) {
             state = 0;
         } else if (ticksLeft == -1) {

@@ -124,8 +124,8 @@ public class RealizedDimensionTab extends Item {
             randomizedDescriptor.read(randomizedString);
         }
         CompiledDescriptor compiledDescriptor = new CompiledDescriptor();
-        DescriptorError error = compiledDescriptor.compile(descriptor, randomizedDescriptor);
-        if (error.isOk()) {
+        try {
+            compiledDescriptor.compile(descriptor, randomizedDescriptor);
             if (compiledDescriptor.getTerrainType() != null) {
                 list.add(new TextComponent(ChatFormatting.GREEN + "    Terrain: " + ChatFormatting.WHITE + compiledDescriptor.getTerrainType().getName()));
             }
@@ -138,7 +138,7 @@ public class RealizedDimensionTab extends Item {
             for (CompiledFeature feature : compiledDescriptor.getFeatures()) {
                 list.add(new TextComponent(ChatFormatting.GREEN + "    Feature: " + ChatFormatting.WHITE + feature.getFeatureType().getName()));
             }
-        } else {
+        } catch (DescriptorError error) {
             list.add(new TextComponent(ChatFormatting.RED + "Parse error: " + error.getMessage()));
         }
     }

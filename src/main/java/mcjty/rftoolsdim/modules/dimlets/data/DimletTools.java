@@ -17,6 +17,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -194,58 +195,58 @@ public class DimletTools {
 
     // Use client side!
     public static String getReadableName(DimletKey dimletKey) {
-        switch (dimletKey.type()) {
-            case TERRAIN:
-                return dimletKey.key().toLowerCase();
-            case ATTRIBUTE:
-                return dimletKey.key().toLowerCase();
-            case BIOME_CONTROLLER:
-                return dimletKey.key().toLowerCase();
-            case BIOME_CATEGORY:
-                return dimletKey.key().toLowerCase();
-            case BIOME:
-                ResourceLocation id = new ResourceLocation(dimletKey.key());
-                String trans = "biome." + id.getNamespace() + "." + id.getPath();
-                return I18n.get(trans);
-            case SKY:
-                return dimletKey.key().toLowerCase();
-            case FEATURE:
-                return dimletKey.key().toLowerCase();
-            case STRUCTURE:
-                return new ResourceLocation(dimletKey.key()).getPath();
-            case TIME:
-                return dimletKey.key().toLowerCase();
-            case BLOCK:
-                Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(dimletKey.key()));
-                if (block != null) {
-                    String modName = Tools.getModName(block);
-                    if ("minecraft".equalsIgnoreCase(modName)) {
-                        return I18n.get(block.getDescriptionId());
-                    } else {
-                        return I18n.get(block.getDescriptionId()) + " (" + modName + ")";
-                    }
-                }
-                return "<Invalid " + dimletKey.key() + ">";
-            case TAG:
-                return dimletKey.key().toLowerCase();
-            case FLUID:
-                Fluid fluid = ForgeRegistries.FLUIDS.getValue(new ResourceLocation(dimletKey.key()));
-                if (fluid != null) {
-                    String modName = Tools.getModName(fluid);
-                    if ("minecraft".equalsIgnoreCase(modName)) {
-                        return I18n.get(fluid.defaultFluidState().createLegacyBlock().getBlock().getDescriptionId());
-                    } else {
-                        return I18n.get(fluid.defaultFluidState().createLegacyBlock().getBlock().getDescriptionId())
-                                + " (" + modName + ")";
-                    }
-                }
-                return "<Invalid " + dimletKey.key() + ">";
-            case DIGIT:
-                return dimletKey.key();
-            case ADMIN:
-                return dimletKey.key();
+        return switch (dimletKey.type()) {
+            case TERRAIN -> dimletKey.key().toLowerCase();
+            case ATTRIBUTE -> dimletKey.key().toLowerCase();
+            case BIOME_CONTROLLER -> dimletKey.key().toLowerCase();
+            case BIOME_CATEGORY -> dimletKey.key().toLowerCase();
+            case BIOME -> getReadableNameBiome(dimletKey);
+            case SKY -> dimletKey.key().toLowerCase();
+            case FEATURE -> dimletKey.key().toLowerCase();
+            case STRUCTURE -> new ResourceLocation(dimletKey.key()).getPath();
+            case TIME -> dimletKey.key().toLowerCase();
+            case BLOCK -> getReadableNameBlock(dimletKey);
+            case TAG -> dimletKey.key().toLowerCase();
+            case FLUID -> getReadableNameFluid(dimletKey);
+            case DIGIT -> dimletKey.key();
+            case ADMIN -> dimletKey.key();
+        };
+    }
+
+    @NotNull
+    private static String getReadableNameFluid(DimletKey dimletKey) {
+        Fluid fluid = ForgeRegistries.FLUIDS.getValue(new ResourceLocation(dimletKey.key()));
+        if (fluid != null) {
+            String modName = Tools.getModName(fluid);
+            if ("minecraft".equalsIgnoreCase(modName)) {
+                return I18n.get(fluid.defaultFluidState().createLegacyBlock().getBlock().getDescriptionId());
+            } else {
+                return I18n.get(fluid.defaultFluidState().createLegacyBlock().getBlock().getDescriptionId())
+                        + " (" + modName + ")";
+            }
         }
-        return "<unknown>";
+        return "<Invalid " + dimletKey.key() + ">";
+    }
+
+    @NotNull
+    private static String getReadableNameBlock(DimletKey dimletKey) {
+        Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(dimletKey.key()));
+        if (block != null) {
+            String modName = Tools.getModName(block);
+            if ("minecraft".equalsIgnoreCase(modName)) {
+                return I18n.get(block.getDescriptionId());
+            } else {
+                return I18n.get(block.getDescriptionId()) + " (" + modName + ")";
+            }
+        }
+        return "<Invalid " + dimletKey.key() + ">";
+    }
+
+    @NotNull
+    private static String getReadableNameBiome(DimletKey dimletKey) {
+        ResourceLocation id = new ResourceLocation(dimletKey.key());
+        String trans = "biome." + id.getNamespace() + "." + id.getPath();
+        return I18n.get(trans);
     }
 
     public static boolean isFullEssence(ItemStack stack, ItemStack desired, String desiredKey) {

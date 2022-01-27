@@ -7,6 +7,7 @@ import mcjty.rftoolsdim.modules.dimensionbuilder.DimensionBuilderModule;
 import mcjty.rftoolsdim.modules.dimensioneditor.DimensionEditorModule;
 import mcjty.rftoolsdim.modules.enscriber.EnscriberModule;
 import mcjty.rftoolsdim.modules.essences.EssencesModule;
+import mcjty.rftoolsdim.modules.various.VariousModule;
 import mcjty.rftoolsdim.modules.workbench.WorkbenchModule;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.common.data.ExistingFileHelper;
@@ -31,7 +32,8 @@ public class BlockTags extends BaseBlockTagsProvider {
                 EnscriberModule.ENSCRIBER,
                 EssencesModule.BIOME_ABSORBER, EssencesModule.BLOCK_ABSORBER,
                 EssencesModule.FLUID_ABSORBER, EssencesModule.STRUCTURE_ABSORBER,
-                WorkbenchModule.WORKBENCH, WorkbenchModule.HOLDER
+                WorkbenchModule.WORKBENCH, WorkbenchModule.HOLDER,
+                VariousModule.ACTIVITY_PROBE
         );
     }
 

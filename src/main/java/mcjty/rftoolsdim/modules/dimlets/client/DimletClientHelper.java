@@ -7,7 +7,6 @@ import net.minecraft.network.FriendlyByteBuf;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
@@ -21,9 +20,7 @@ public class DimletClientHelper {
         dimletListAge++;
     }
 
-    public static class DimletWithInfo implements Comparable<DimletWithInfo> {
-        private final DimletKey dimlet;
-        private final boolean craftable;
+    public record DimletWithInfo(DimletKey dimlet, boolean craftable) implements Comparable<DimletWithInfo> {
 
         public static class Serializer implements ISerializer<DimletWithInfo> {
             @Override
@@ -41,43 +38,17 @@ public class DimletClientHelper {
             @Override
             public BiConsumer<FriendlyByteBuf, DimletWithInfo> getSerializer() {
                 return (buf, info) -> {
-                    DimletKey dimlet1 = info.getDimlet();
+                    DimletKey dimlet1 = info.dimlet();
                     buf.writeShort(dimlet1.type().ordinal());
                     buf.writeUtf(dimlet1.key());
-                    buf.writeBoolean(info.isCraftable());
+                    buf.writeBoolean(info.craftable());
                 };
             }
         }
 
-        public DimletWithInfo(DimletKey dimlet, boolean craftable) {
-            this.dimlet = dimlet;
-            this.craftable = craftable;
-        }
-
-        public DimletKey getDimlet() {
-            return dimlet;
-        }
-
-        public boolean isCraftable() {
-            return craftable;
-        }
-
         @Override
         public int compareTo(DimletWithInfo o) {
-            return getDimlet().compareTo(o.getDimlet());
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            DimletWithInfo that = (DimletWithInfo) o;
-            return craftable == that.craftable && Objects.equals(dimlet, that.dimlet);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(dimlet, craftable);
+            return dimlet().compareTo(o.dimlet());
         }
     }
 }

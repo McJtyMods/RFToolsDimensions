@@ -144,14 +144,14 @@ public class WorkbenchTileEntity extends GenericTileEntity {
         String[] pattern = new String[PATTERN_DIM];
         int slot = SLOT_PATTERN;
         for (int y = 0; y < PATTERN_DIM; y++) {
-            String p = "";
+            StringBuilder p = new StringBuilder();
             for (int x = 0; x < PATTERN_DIM; x++) {
                 ItemStack stack = items.getStackInSlot(slot);
                 char c = KnowledgeManager.getPatternChar(stack);
-                p += c;
+                p.append(c);
                 slot++;
             }
-            pattern[y] = p;
+            pattern[y] = p.toString();
         }
 
         DimletKey key = DimletDictionary.get().tryCraft(level, type, memoryPart, energyPart, essenceStack, new DimletPattern(pattern));

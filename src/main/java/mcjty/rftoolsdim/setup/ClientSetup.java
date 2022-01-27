@@ -19,7 +19,6 @@ public class ClientSetup {
     }
 
     public static void onDimensionChange(ClientPlayerNetworkEvent.RespawnEvent event) {
-        System.out.println("Respawn");
         RFToolsDimensionSpecialEffects.clearCache();
     }
 }

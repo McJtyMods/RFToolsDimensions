@@ -49,8 +49,9 @@ public class DimensionSettings {
             DimensionDescriptor randomizedDescriptor = new DimensionDescriptor();
             randomizedDescriptor.read(getRandomized());
             compiledDescriptor = new CompiledDescriptor();
-            DescriptorError error = compiledDescriptor.compile(descriptor, randomizedDescriptor);
-            if (!error.isOk()) {
+            try {
+                compiledDescriptor.compile(descriptor, randomizedDescriptor);
+            } catch (DescriptorError error) {
                 RFToolsDim.setup.getLogger().error("Error compiling dimension descriptor: " + error.getMessage());
 //                throw new RuntimeException("Error compiling dimension descriptor: " + error.getMessage());
             }

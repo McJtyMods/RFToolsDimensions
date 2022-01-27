@@ -26,16 +26,16 @@ import mcjty.rftoolsdim.dimension.descriptor.DimensionDescriptor;
 import mcjty.rftoolsdim.dimension.power.PowerHandler;
 import mcjty.rftoolsdim.modules.dimensionbuilder.DimensionBuilderConfig;
 import mcjty.rftoolsdim.modules.dimensionbuilder.DimensionBuilderModule;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.MenuProvider;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.util.StringRepresentable;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.common.util.LazyOptional;
@@ -167,22 +167,14 @@ public class DimensionBuilderTileEntity extends TickingTileEntity {
             if (data == null) {
                 return;
             }
-            long rf;
-            // @todo 1.16
-//            if (isCheaterDimension(tagCompound)) {
-//                rf = MachineConfiguration.BUILDER_MAXENERGY;
-//            } else {
-                rf = energyStorage.getEnergy();
-//            }
+            long rf = energyStorage.getEnergy();
 
             long energy = data.getEnergy();
             long maxEnergy = PowerHandler.calculateMaxDimensionPower(id, level) - energy;
             if (rf > maxEnergy) {
                 rf = maxEnergy;
             }
-//            if (!isCheaterDimension(tagCompound)) {
-                energyStorage.consumeEnergy(rf);
-//            }
+            energyStorage.consumeEnergy(rf);
             data.setEnergy(level, energy + rf);
             PersistantDimensionManager.get(level).save();
         }
@@ -219,7 +211,7 @@ public class DimensionBuilderTileEntity extends TickingTileEntity {
         DimensionManager.get().markReservedName(level, worldPosition, name);
 
         int createCost = tagCompound.getInt("rfCreateCost");
-        Float inf = infusableHandler.map(IInfusable::getInfusedFactor).orElse(0.0f);
+        float inf = infusableHandler.map(IInfusable::getInfusedFactor).orElse(0.0f);
         createCost = (int) (createCost * (2.0f - inf) / 2.0f);
 
         if (isCheaterDimension(tagCompound) || (energyStorage.getEnergyStored() >= createCost)) {
@@ -279,8 +271,8 @@ public class DimensionBuilderTileEntity extends TickingTileEntity {
     }
 
     private void placeMatterReceiver(ServerLevel newworld, String name) {
-        int y = 250;
-        while (y >= 1) {
+        int y = newworld.getMaxBuildHeight() - 10;
+        while (y >= newworld.getMinBuildHeight() + 1) {
             if (newworld.getBlockState(new BlockPos(8, y, 8)).getBlock() == Blocks.COMMAND_BLOCK) {
                 RFToolsUtilityCompat.createTeleporter(newworld, new BlockPos(8, y, 8), name);
                 return;

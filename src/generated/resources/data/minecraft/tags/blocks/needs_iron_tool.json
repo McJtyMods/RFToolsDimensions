@@ -16,6 +16,7 @@
     "rftoolsdim:fluid_absorber",
     "rftoolsdim:structure_absorber",
     "rftoolsdim:dimlet_workbench",
-    "rftoolsdim:knowledge_holder"
+    "rftoolsdim:knowledge_holder",
+    "rftoolsdim:activity_probe"
   ]
 }

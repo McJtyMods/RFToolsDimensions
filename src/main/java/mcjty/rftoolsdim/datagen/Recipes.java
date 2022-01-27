@@ -16,14 +16,14 @@ import mcjty.rftoolsdim.modules.enscriber.EnscriberModule;
 import mcjty.rftoolsdim.modules.essences.EssencesModule;
 import mcjty.rftoolsdim.modules.knowledge.KnowledgeModule;
 import mcjty.rftoolsdim.modules.workbench.WorkbenchModule;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.tags.ItemTags;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.Tags;
 
 import javax.annotation.Nonnull;
@@ -40,6 +40,10 @@ public class Recipes extends BaseRecipeProvider {
 
     @Override
     protected void buildCraftingRecipes(@Nonnull Consumer<FinishedRecipe> consumer) {
+        build(consumer, ShapedRecipeBuilder.shaped(mcjty.rftoolsdim.modules.various.VariousModule.ACTIVITY_PROBE.get())
+                        .define('C', VariousModule.INFUSED_ENDERPEARL.get())
+                        .unlockedBy("shard", has(VariousModule.DIMENSIONALSHARD.get())),
+                "sCs", "CFC", "sCs");
         build(consumer, ShapedRecipeBuilder.shaped(DimletModule.EMPTY_DIMLET.get())
                         .unlockedBy("shard", has(VariousModule.DIMENSIONALSHARD.get())),
                 " p ", "psp", " p ");

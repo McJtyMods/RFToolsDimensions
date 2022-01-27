@@ -41,8 +41,7 @@ public class DimensionDescriptor {
     }
 
     public void read(String json) {
-        JsonParser parser = new JsonParser();
-        JsonElement root = parser.parse(json);
+        JsonElement root = JsonParser.parseString(json);
         JsonArray object = root.getAsJsonArray();
 
         read(object);
@@ -117,10 +116,11 @@ public class DimensionDescriptor {
     }
 
     public void log(String header) {
-        header = "--------------------------------------------------\n" + header;
+        StringBuilder headerBuilder = new StringBuilder("--------------------------------------------------\n" + header);
         for (DimletKey dimlet : dimlets) {
-            header += "\n    " + dimlet.type().name() + ": " + dimlet.key();
+            headerBuilder.append("\n    ").append(dimlet.type().name()).append(": ").append(dimlet.key());
         }
+        header = headerBuilder.toString();
         header += "\n--------------------------------------------------";
         RFToolsDim.setup.getLogger().info(header);
     }
@@ -132,7 +132,7 @@ public class DimensionDescriptor {
         List<DimletKey> dimlets = getDimlets();
         List<DimletKey> randomized = randomizedDescriptor.getDimlets();
 
-        if (!hasTerrain(dimlets)) {
+        if (!has(dimlets, DimletType.TERRAIN)) {
             DimletKey terrainDimlet = DimletDictionary.get().getRandomDimlet(DimletType.TERRAIN, random);
             if (terrainDimlet != null) {
                 addBlockDimlets(randomized, random);
@@ -141,7 +141,7 @@ public class DimensionDescriptor {
                 randomized.add(terrainDimlet);
             }
         }
-        if (!hasStructures(dimlets)) {
+        if (!has(dimlets, DimletType.STRUCTURE)) {
             if (random.nextFloat() < .05) {
                 randomized.add(new DimletKey(DimletType.STRUCTURE, "none"));
             } if (random.nextFloat() < .6) {
@@ -151,11 +151,11 @@ public class DimensionDescriptor {
             }
         }
 
-        if (!hasSkyDimlets(dimlets)) {
+        if (!has(dimlets, DimletType.SKY)) {
             addRandomDimlets(DimletType.SKY, randomized, random, Math.max(0, random.nextInt(9) - 5));
         }
 
-        if (!hasFeatures(dimlets)) {
+        if (!has(dimlets, DimletType.FEATURE)) {
             int cnt = random.nextInt(4);
             for (int i = 0 ; i < cnt-1 ; i++) {
                 DimletKey featureDimlet = DimletDictionary.get().getRandomDimlet(DimletType.FEATURE, random);
@@ -170,7 +170,7 @@ public class DimensionDescriptor {
             }
         }
         boolean addedBiomeCategories = false;
-        if (!hasBiomeCategories(dimlets) && !hasBiomeDimlets(dimlets)) {
+        if (!has(dimlets, DimletType.BIOME_CATEGORY) && !has(dimlets, DimletType.BIOME)) {
             int cnt = random.nextInt(4);
             for (int i = 0 ; i < cnt-2 ; i++) {
                 DimletKey categoryDimlet = DimletDictionary.get().getRandomDimlet(DimletType.BIOME_CATEGORY, random);
@@ -180,7 +180,7 @@ public class DimensionDescriptor {
                 }
             }
         }
-        if (!hasBiomeController(dimlets)) {
+        if (!has(dimlets, DimletType.BIOME_CONTROLLER)) {
             DimletKey controllerDimlet = DimletDictionary.get().getRandomDimlet(DimletType.BIOME_CONTROLLER, random);
             if (controllerDimlet != null) {
                 if (!addedBiomeCategories) {
@@ -189,7 +189,7 @@ public class DimensionDescriptor {
                 randomized.add(controllerDimlet);
             }
         }
-        if (!hasTimeDimlet(dimlets)) {
+        if (!has(dimlets, DimletType.TIME)) {
             DimletKey timeDimlet = DimletDictionary.get().getRandomDimlet(DimletType.TIME, random);
             if (timeDimlet != null) {
                 randomized.add(timeDimlet);
@@ -228,36 +228,7 @@ public class DimensionDescriptor {
         }
     }
 
-    private boolean hasTerrain(List<DimletKey> dimlets) {
-        return dimlets.stream().anyMatch(key -> key.type() == DimletType.TERRAIN);
+    private boolean has(List<DimletKey> dimlets, DimletType type) {
+        return dimlets.stream().anyMatch(key -> key.type() == type);
     }
-
-    private boolean hasStructures(List<DimletKey> dimlets) {
-        return dimlets.stream().anyMatch(key -> key.type() == DimletType.STRUCTURE);
-    }
-
-    private boolean hasFeatures(List<DimletKey> dimlets) {
-        return dimlets.stream().anyMatch(key -> key.type() == DimletType.FEATURE);
-    }
-
-    private boolean hasSkyDimlets(List<DimletKey> dimlets) {
-        return dimlets.stream().anyMatch(key -> key.type() == DimletType.SKY);
-    }
-
-    private boolean hasBiomeController(List<DimletKey> dimlets) {
-        return dimlets.stream().anyMatch(key -> key.type() == DimletType.BIOME_CONTROLLER);
-    }
-
-    private boolean hasBiomeCategories(List<DimletKey> dimlets) {
-        return dimlets.stream().anyMatch(key -> key.type() == DimletType.BIOME_CATEGORY);
-    }
-
-    private boolean hasBiomeDimlets(List<DimletKey> dimlets) {
-        return dimlets.stream().anyMatch(key -> key.type() == DimletType.BIOME);
-    }
-
-    private boolean hasTimeDimlet(List<DimletKey> dimlets) {
-        return dimlets.stream().anyMatch(key -> key.type() == DimletType.TIME);
-    }
-
 }

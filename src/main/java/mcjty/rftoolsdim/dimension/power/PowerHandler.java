@@ -78,7 +78,7 @@ public class PowerHandler {
     private void sendOutPower(Level overworld) {
         PersistantDimensionManager mgr = PersistantDimensionManager.get(overworld);
         Map<ResourceLocation, ClientDimensionData.ClientData> clientDataMap = new HashMap<>();
-        for (Map.Entry<ResourceLocation, DimensionData> entry : mgr.getData().entrySet()) {
+        for (var entry : mgr.getData().entrySet()) {
             long energy = entry.getValue().getEnergy();
             clientDataMap.put(entry.getKey(), new ClientDimensionData.ClientData(energy, PowerHandler.calculateMaxDimensionPower(entry.getKey(), overworld),
                     entry.getValue().getSkyTypes()));
@@ -97,13 +97,19 @@ public class PowerHandler {
 
             if (compiledDescriptor != null) {
 
-                // If there is an activity probe we only drain power if the dimension is loaded (a player is there or a chunkloader)
-                // @todo 1.16
-//            if (!information.isCheater() && ((world != null && world.getChunkProvider().getLoadedChunkCount() > 0) || information.getProbeCounter() == 0)) {
-                power = handlePowerDimension(doEffects, world, entry.getValue(), compiledDescriptor);
-//            } else {
-//                power = dimensionStorage.getEnergyLevel(id);
-//            }
+                boolean doPower = true;
+                if (entry.getValue().getActivityProbes() > 0) {
+                    int chunks = world.getChunkSource().chunkMap.size();
+                    if (chunks == 0) {
+                        doPower = false;
+                    }
+                }
+
+                if (doPower) {
+                    power = handlePowerDimension(doEffects, world, entry.getValue(), compiledDescriptor);
+                } else {
+                    power = entry.getValue().getEnergy();
+                }
 
                 // Special effect handling.
                 if (doEffects && power > 0) {

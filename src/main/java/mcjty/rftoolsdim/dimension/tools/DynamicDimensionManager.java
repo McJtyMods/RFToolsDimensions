@@ -30,7 +30,7 @@ import java.util.function.BiFunction;
 
 /**
  * Thanks to Commoble for providing this code.
- *
+ * <p>
  * API for creating and uncreating dynamic dimensions during game runtime. This
  * should only be used for creating dynamic dimensions, whose quantity and
  * properties aren't known until created by some game mechanic. Static
@@ -68,7 +68,7 @@ public class DynamicDimensionManager {
         final Map<ResourceKey<Level>, ServerLevel> map = server.forgeGetWorldMap();
 
         // if the level already exists, return it
-        final @Nullable ServerLevel existingLevel = map.get(levelKey);
+        final ServerLevel existingLevel = map.get(levelKey);
         if (existingLevel != null) {
             return existingLevel;
         }
@@ -133,9 +133,9 @@ public class DynamicDimensionManager {
         final ServerLevel overworld = server.getLevel(Level.OVERWORLD);
 
         for (final ResourceKey<Level> levelKeyToRemove : keysToRemove) {
-            @Nullable ServerLevel removedLevel = server.forgeGetWorldMap().remove(levelKeyToRemove); // null if the specified key was not present
-            if (removedLevel != null) // if we removed the key from the map
-            {
+            ServerLevel removedLevel = server.forgeGetWorldMap().remove(levelKeyToRemove); // null if the specified key was not present
+            if (removedLevel != null) {
+                // if we removed the key from the map
                 // eject players from dead world
                 // iterate over a copy as the world will remove players from the original list
                 for (final ServerPlayer player : Lists.newArrayList(removedLevel.players())) {

@@ -32,7 +32,7 @@ public class SkyboxRenderer implements ISkyRenderHandler {
         RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
         RenderSystem.enableTexture();
 //        RenderSystem.setShaderColor(red, green, blue, 1.0F);
-        RenderSystem.setShaderTexture(0, texture1);
+        RenderSystem.setShaderTexture(0, texture2);
 
         BufferBuilder bufferbuilder = Tesselator.getInstance().getBuilder();
         bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
@@ -50,24 +50,26 @@ public class SkyboxRenderer implements ISkyRenderHandler {
         bufferbuilder.vertex(pose, v,  -200, -v).uv(1, 1).color(red, green, blue, 1).endVertex();
         bufferbuilder.vertex(pose, -v, -200, -v).uv(0, 1).color(red, green, blue, 1).endVertex();
 
+        RenderSystem.setShaderTexture(0, texture1);
+
         bufferbuilder.vertex(pose, -v, -v, -200).uv(0, 0).color(red, green, blue, 1).endVertex();
         bufferbuilder.vertex(pose, v,  -v, -200).uv(1, 0).color(red, green, blue, 1).endVertex();
         bufferbuilder.vertex(pose, v,   v, -200).uv(1, 1).color(red, green, blue, 1).endVertex();
         bufferbuilder.vertex(pose, -v,  v, -200).uv(0, 1).color(red, green, blue, 1).endVertex();
 
-        bufferbuilder.vertex(pose, -v,  v, 200).uv(0, 0).color(red, green, blue, 1).endVertex();
-        bufferbuilder.vertex(pose, v,   v, 200).uv(1, 0).color(red, green, blue, 1).endVertex();
-        bufferbuilder.vertex(pose, v,  -v, 200).uv(1, 1).color(red, green, blue, 1).endVertex();
-        bufferbuilder.vertex(pose, -v, -v, 200).uv(0, 1).color(red, green, blue, 1).endVertex();
+        bufferbuilder.vertex(pose, -v,  v, 200).uv(1, 1).color(red, green, blue, 1).endVertex();
+        bufferbuilder.vertex(pose, v,   v, 200).uv(0, 1).color(red, green, blue, 1).endVertex();
+        bufferbuilder.vertex(pose, v,  -v, 200).uv(0, 0).color(red, green, blue, 1).endVertex();
+        bufferbuilder.vertex(pose, -v, -v, 200).uv(1, 0).color(red, green, blue, 1).endVertex();
 
-        bufferbuilder.vertex(pose, 200, v,  -v).uv(0, 0).color(red, green, blue, 1).endVertex();
+        bufferbuilder.vertex(pose, 200, v,  -v).uv(1, 1).color(red, green, blue, 1).endVertex();
         bufferbuilder.vertex(pose, 200, -v, -v).uv(1, 0).color(red, green, blue, 1).endVertex();
-        bufferbuilder.vertex(pose, 200, -v,  v).uv(1, 1).color(red, green, blue, 1).endVertex();
+        bufferbuilder.vertex(pose, 200, -v,  v).uv(0, 0).color(red, green, blue, 1).endVertex();
         bufferbuilder.vertex(pose, 200, v,   v).uv(0, 1).color(red, green, blue, 1).endVertex();
 
-        bufferbuilder.vertex(pose, -200, v,   v).uv(0, 0).color(red, green, blue, 1).endVertex();
+        bufferbuilder.vertex(pose, -200, v,   v).uv(1, 1).color(red, green, blue, 1).endVertex();
         bufferbuilder.vertex(pose, -200, -v,  v).uv(1, 0).color(red, green, blue, 1).endVertex();
-        bufferbuilder.vertex(pose, -200, -v, -v).uv(1, 1).color(red, green, blue, 1).endVertex();
+        bufferbuilder.vertex(pose, -200, -v, -v).uv(0, 0).color(red, green, blue, 1).endVertex();
         bufferbuilder.vertex(pose, -200, v,  -v).uv(0, 1).color(red, green, blue, 1).endVertex();
 
         bufferbuilder.end();

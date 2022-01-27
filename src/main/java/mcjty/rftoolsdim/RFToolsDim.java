@@ -1,6 +1,7 @@
 package mcjty.rftoolsdim;
 
 import mcjty.lib.modules.Modules;
+import mcjty.rftoolsdim.dimension.client.OverlayRenderer;
 import mcjty.rftoolsdim.dimension.data.DimensionManager;
 import mcjty.rftoolsdim.modules.blob.BlobModule;
 import mcjty.rftoolsdim.modules.decorative.DecorativeModule;
@@ -10,6 +11,7 @@ import mcjty.rftoolsdim.modules.dimlets.DimletModule;
 import mcjty.rftoolsdim.modules.enscriber.EnscriberModule;
 import mcjty.rftoolsdim.modules.essences.EssencesModule;
 import mcjty.rftoolsdim.modules.knowledge.KnowledgeModule;
+import mcjty.rftoolsdim.modules.various.VariousModule;
 import mcjty.rftoolsdim.modules.workbench.WorkbenchModule;
 import mcjty.rftoolsdim.setup.ClientSetup;
 import mcjty.rftoolsdim.setup.Config;
@@ -47,6 +49,7 @@ public class RFToolsDim {
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
             MinecraftForge.EVENT_BUS.addListener(ClientSetup::onPlayerLogin);
             MinecraftForge.EVENT_BUS.addListener(ClientSetup::onDimensionChange);
+            MinecraftForge.EVENT_BUS.addListener(OverlayRenderer::render);
             modbus.addListener(ClientSetup::init);
             modbus.addListener(modules::initClient);
             modbus.addListener(WorkbenchModule::onTextureStitch);
@@ -55,6 +58,7 @@ public class RFToolsDim {
     }
 
     private void setupModules() {
+        modules.register(new VariousModule());
         modules.register(new DimensionBuilderModule());
         modules.register(new DimensionEditorModule());
         modules.register(new DimletModule());

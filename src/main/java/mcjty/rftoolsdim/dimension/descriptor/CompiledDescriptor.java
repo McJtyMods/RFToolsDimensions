@@ -22,7 +22,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.registries.ForgeRegistries;
 
-import javax.annotation.Nonnull;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -56,8 +55,7 @@ public class CompiledDescriptor {
     /**
      * Compile this descriptor
      */
-    @Nonnull
-    public DescriptorError compile(DimensionDescriptor descriptor, DimensionDescriptor randomizedDescriptor) {
+    public void compile(DimensionDescriptor descriptor, DimensionDescriptor randomizedDescriptor) throws DescriptorError {
         createCostPerTick = 10; // @todo 1.16 make configurable
         maintainCostPerTick = 10;   // @todo 1.16 make configurable
         randomizedCostPerTick = 0;
@@ -69,18 +67,12 @@ public class CompiledDescriptor {
         Set<AttributeType> collectedAttributes = EnumSet.noneOf(AttributeType.class);
 
         for (DimletKey dimlet : descriptor.getDimlets()) {
-            DescriptorError error = handleDimlet(collectedTags, collectedBlocks, collectedFluids, collectedAttributes, dimlet);
-            if (error != null) {
-                return error;
-            }
+            handleDimlet(collectedTags, collectedBlocks, collectedFluids, collectedAttributes, dimlet);
         }
         int originalMaintainCost = maintainCostPerTick;
         maintainCostPerTick = 0;
         for (DimletKey dimlet : randomizedDescriptor.getDimlets()) {
-            DescriptorError error = handleDimlet(collectedTags, collectedBlocks, collectedFluids, collectedAttributes, dimlet);
-            if (error != null) {
-                return error;
-            }
+            handleDimlet(collectedTags, collectedBlocks, collectedFluids, collectedAttributes, dimlet);
         }
         randomizedCostPerTick = (int) (maintainCostPerTick * DimensionConfig.RANDOMIZED_DIMLET_COST_FACTOR.get());
         maintainCostPerTick = originalMaintainCost;
@@ -93,19 +85,17 @@ public class CompiledDescriptor {
         }
 
         if (!collectedBlocks.isEmpty()) {
-            return ERROR(DANGLING_BLOCKS);
+            throw ERROR(DANGLING_BLOCKS);
         }
         if (!collectedFluids.isEmpty()) {
-            return ERROR(DANGLING_FLUIDS);
+            throw ERROR(DANGLING_FLUIDS);
         }
         if (!collectedAttributes.isEmpty()) {
-            return ERROR(DANGLING_ATTRIBUTES);
+            throw ERROR(DANGLING_ATTRIBUTES);
         }
         if (!collectedTags.isEmpty()) {
-            return ERROR(DANGLING_TAGS);
+            throw ERROR(DANGLING_TAGS);
         }
-
-        return DescriptorError.OK;
     }
 
     public void complete() {
@@ -123,7 +113,7 @@ public class CompiledDescriptor {
         }
     }
 
-    private DescriptorError handleDimlet(List<ResourceLocation> collectedTags, List<BlockState> collectedBlocks, List<BlockState> collectedFluids, Set<AttributeType> collectedAttributes, DimletKey dimlet) {
+    private void handleDimlet(List<ResourceLocation> collectedTags, List<BlockState> collectedBlocks, List<BlockState> collectedFluids, Set<AttributeType> collectedAttributes, DimletKey dimlet) throws DescriptorError {
         DimletSettings settings = DimletDictionary.get().getSettings(dimlet);
         if (settings != null) {
             createCostPerTick += settings.getCreateCost();
@@ -133,42 +123,12 @@ public class CompiledDescriptor {
         String name = dimlet.key();
         switch (dimlet.type()) {
             case TERRAIN:
-                if (terrainType != null) {
-                    return ERROR(ONLY_ONE_TERRAIN);
-                }
-                terrainType = TerrainType.byName(name);
-                if (terrainType == null) {
-                    return ERROR(BAD_TERRAIN_TYPE, name);
-                }
-
-                if (!collectedTags.isEmpty()) {
-                    return ERROR(NO_TAGS);
-                }
-                if (collectedBlocks.size() > 1) {
-                    return ERROR(ONLY_ONE_BLOCK);
-                }
-                if (collectedBlocks.isEmpty()) {
-                    baseBlock = Blocks.STONE.defaultBlockState();
-                } else {
-                    baseBlock = collectedBlocks.iterator().next();
-                }
-                collectedBlocks.clear();
-
-                attributeTypes.addAll(collectedAttributes);
-                collectedAttributes.clear();
-
-                if (collectedFluids.size() > 1) {
-                    return ERROR(ONLY_ONE_FLUID, name);
-                } else if (collectedFluids.size() == 1) {
-                    baseLiquid = collectedFluids.get(0);
-                    collectedFluids.clear();
-                }
-
+                handleDimletTerrain(collectedTags, collectedBlocks, collectedFluids, collectedAttributes, name);
                 break;
             case ATTRIBUTE: {
                 AttributeType type = AttributeType.byName(dimlet.key());
                 if (type == null) {
-                    return ERROR(BAD_ATTRIBUTE, name);
+                    throw ERROR(BAD_ATTRIBUTE, name);
                 }
                 collectedAttributes.add(type);
                 break;
@@ -178,18 +138,18 @@ public class CompiledDescriptor {
             case ADMIN: {
                 AdminDimletType type = AdminDimletType.byName(dimlet.key());
                 if (type == null) {
-                    return ERROR(BAD_ADMIN_TYPE, name);
+                    throw ERROR(BAD_ADMIN_TYPE, name);
                 }
                 adminDimletTypes.add(type);
                 break;
             }
             case BIOME_CONTROLLER:
                 if (biomeControllerType != null) {
-                    return ERROR(ONLY_ONE_BIOME_CONTROLLER);
+                    throw ERROR(ONLY_ONE_BIOME_CONTROLLER);
                 }
                 biomeControllerType = BiomeControllerType.byName(name);
                 if (biomeControllerType == null) {
-                    return ERROR(BAD_BIOME_CONTROLLER, name);
+                    throw ERROR(BAD_BIOME_CONTROLLER, name);
                 }
                 break;
             case BIOME_CATEGORY:
@@ -210,42 +170,16 @@ public class CompiledDescriptor {
             }
             case TIME: {
                 if (timeType != null) {
-                    return ERROR(ONLY_ONE_TIME);
+                    throw ERROR(ONLY_ONE_TIME);
                 }
                 timeType = TimeType.byName(name);
                 if (timeType == null) {
-                    return ERROR(BAD_TIME, name);
+                    throw ERROR(BAD_TIME, name);
                 }
                 break;
             }
             case FEATURE: {
-                FeatureType feature = FeatureType.byName(name);
-                if (feature == null) {
-                    return ERROR(BAD_FEATURE, name);
-                }
-                CompiledFeature compiledFeature = new CompiledFeature(feature);
-
-                for (ResourceLocation rl : collectedTags) {
-                    Tag<Block> tag = BlockTags.getAllTags().getTag(rl);
-                    if (tag != null) {
-                        collectedBlocks.addAll(tag.getValues().stream().map(Block::defaultBlockState).collect(Collectors.toList()));
-                    }
-                }
-                collectedTags.clear();
-
-                compiledFeature.getBlocks().addAll(collectedBlocks);
-                collectedBlocks.clear();
-                if (compiledFeature.getBlocks().isEmpty()) {
-                    compiledFeature.getBlocks().add(Blocks.STONE.defaultBlockState());
-                }
-
-                compiledFeature.getFluids().addAll(collectedFluids);
-                collectedFluids.clear();
-                if (compiledFeature.getFluids().isEmpty()) {
-                    compiledFeature.getFluids().add(Blocks.WATER.defaultBlockState());
-                }
-
-                features.add(compiledFeature);
+                handleDimletTerrain(collectedTags, collectedBlocks, collectedFluids, name);
                 break;
             }
             case TAG: {
@@ -255,7 +189,7 @@ public class CompiledDescriptor {
             case BLOCK: {
                 Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(name));
                 if (block == null) {
-                    return ERROR(BAD_BLOCK, name);
+                    throw ERROR(BAD_BLOCK, name);
                 }
                 collectedBlocks.add(block.defaultBlockState());
                 break;
@@ -264,18 +198,80 @@ public class CompiledDescriptor {
             case FLUID: {
                 Fluid fluid = ForgeRegistries.FLUIDS.getValue(new ResourceLocation(name));
                 if (fluid == null) {
-                    return ERROR(BAD_FLUID, name);
+                    throw ERROR(BAD_FLUID, name);
                 }
                 BlockState blockState = fluid.defaultFluidState().createLegacyBlock();
                 if (blockState != null && !blockState.isAir()) {
                     collectedFluids.add(blockState);
                 } else {
-                    return ERROR(FLUID_HAS_NO_BLOCK, name);
+                    throw ERROR(FLUID_HAS_NO_BLOCK, name);
                 }
                 break;
             }
         }
-        return null;
+    }
+
+    private void handleDimletTerrain(List<ResourceLocation> collectedTags, List<BlockState> collectedBlocks, List<BlockState> collectedFluids, String name) throws DescriptorError {
+        FeatureType feature = FeatureType.byName(name);
+        if (feature == null) {
+            throw ERROR(BAD_FEATURE, name);
+        }
+        CompiledFeature compiledFeature = new CompiledFeature(feature);
+
+        for (ResourceLocation rl : collectedTags) {
+            Tag<Block> tag = BlockTags.getAllTags().getTag(rl);
+            if (tag != null) {
+                collectedBlocks.addAll(tag.getValues().stream().map(Block::defaultBlockState).toList());
+            }
+        }
+        collectedTags.clear();
+
+        compiledFeature.getBlocks().addAll(collectedBlocks);
+        collectedBlocks.clear();
+        if (compiledFeature.getBlocks().isEmpty()) {
+            compiledFeature.getBlocks().add(Blocks.STONE.defaultBlockState());
+        }
+
+        compiledFeature.getFluids().addAll(collectedFluids);
+        collectedFluids.clear();
+        if (compiledFeature.getFluids().isEmpty()) {
+            compiledFeature.getFluids().add(Blocks.WATER.defaultBlockState());
+        }
+
+        features.add(compiledFeature);
+    }
+
+    private void handleDimletTerrain(List<ResourceLocation> collectedTags, List<BlockState> collectedBlocks, List<BlockState> collectedFluids, Set<AttributeType> collectedAttributes, String name) throws DescriptorError {
+        if (terrainType != null) {
+            throw ERROR(ONLY_ONE_TERRAIN);
+        }
+        terrainType = TerrainType.byName(name);
+        if (terrainType == null) {
+            throw ERROR(BAD_TERRAIN_TYPE, name);
+        }
+
+        if (!collectedTags.isEmpty()) {
+            throw ERROR(NO_TAGS);
+        }
+        if (collectedBlocks.size() > 1) {
+            throw ERROR(ONLY_ONE_BLOCK);
+        }
+        if (collectedBlocks.isEmpty()) {
+            baseBlock = Blocks.STONE.defaultBlockState();
+        } else {
+            baseBlock = collectedBlocks.iterator().next();
+        }
+        collectedBlocks.clear();
+
+        attributeTypes.addAll(collectedAttributes);
+        collectedAttributes.clear();
+
+        if (collectedFluids.size() > 1) {
+            throw ERROR(ONLY_ONE_FLUID, name);
+        } else if (collectedFluids.size() == 1) {
+            baseLiquid = collectedFluids.get(0);
+            collectedFluids.clear();
+        }
     }
 
     public void log(String header) {

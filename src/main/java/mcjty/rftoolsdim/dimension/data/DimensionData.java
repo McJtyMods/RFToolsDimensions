@@ -13,12 +13,14 @@ public class DimensionData {
     private final DimensionDescriptor randomizedDescriptor;
     private final long skyDimletTypes;
     private long energy;
+    private int activityProbes;
 
     public DimensionData(ResourceLocation id, DimensionDescriptor descriptor, DimensionDescriptor randomizedDescriptor, long skyDimletTypes) {
         this.id = id;
         this.descriptor = descriptor;
         this.randomizedDescriptor = randomizedDescriptor;
         this.skyDimletTypes = skyDimletTypes;
+        activityProbes = 0;
     }
 
     public DimensionData(CompoundTag tag) {
@@ -33,6 +35,7 @@ public class DimensionData {
             randomizedDescriptor = DimensionDescriptor.EMPTY;
         }
         skyDimletTypes = tag.getLong("skytypes");
+        activityProbes = tag.getInt("probes");
     }
 
     public void write(CompoundTag tag) {
@@ -41,6 +44,7 @@ public class DimensionData {
         tag.putString("randomized", randomizedDescriptor.compact());
         tag.putLong("energy", energy);
         tag.putLong("skytypes", skyDimletTypes);
+        tag.putInt("probes", activityProbes);
     }
 
     public ResourceLocation getId() {
@@ -61,6 +65,14 @@ public class DimensionData {
 
     public long getEnergy() {
         return energy;
+    }
+
+    public int getActivityProbes() {
+        return activityProbes;
+    }
+
+    public void setActivityProbes(int activityProbes) {
+        this.activityProbes = activityProbes;
     }
 
     /// 'world' should be a valid world (or overworld). Can be null in case in which case the low power freeze will not happen

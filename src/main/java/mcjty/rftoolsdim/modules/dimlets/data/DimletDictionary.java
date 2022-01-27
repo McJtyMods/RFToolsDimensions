@@ -180,7 +180,7 @@ public class DimletDictionary {
 
     @Nullable
     public DimletKey getBlockDimlet(String block) {
-        for (Map.Entry<DimletKey, DimletSettings> entry : dimlets.entrySet()) {
+        for (var entry : dimlets.entrySet()) {
             DimletKey key = entry.getKey();
             if (key.type().equals(DimletType.BLOCK)) {
                 if (Objects.equals(key.key(), block)) {
@@ -192,8 +192,21 @@ public class DimletDictionary {
     }
 
     @Nullable
+    public DimletKey getStructureDimlet(String structure) {
+        for (var entry : dimlets.entrySet()) {
+            DimletKey key = entry.getKey();
+            if (key.type().equals(DimletType.STRUCTURE)) {
+                if (Objects.equals(key.key(), structure)) {
+                    return key;
+                }
+            }
+        }
+        return null;
+    }
+
+    @Nullable
     public DimletKey getFluidDimlet(String fluid) {
-        for (Map.Entry<DimletKey, DimletSettings> entry : dimlets.entrySet()) {
+        for (var entry : dimlets.entrySet()) {
             DimletKey key = entry.getKey();
             if (key.type().equals(DimletType.FLUID)) {
                 if (Objects.equals(key.key(), fluid)) {
@@ -206,7 +219,7 @@ public class DimletDictionary {
 
     @Nullable
     public DimletKey getBiomeDimlet(String biomeId) {
-        for (Map.Entry<DimletKey, DimletSettings> entry : dimlets.entrySet()) {
+        for (var entry : dimlets.entrySet()) {
             DimletKey key = entry.getKey();
             if (key.type().equals(DimletType.BIOME)) {
                 if (Objects.equals(key.key(), biomeId)) {

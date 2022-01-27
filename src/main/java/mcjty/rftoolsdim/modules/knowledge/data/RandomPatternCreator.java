@@ -12,213 +12,253 @@ public class RandomPatternCreator {
 
     private static List<String[]> getPatterns() {
         if (PATTERNS.isEmpty()) {
-            generatePattern(PATTERNS,
+            generatePattern(
                     "##",
                     "##");
-            generatePattern(PATTERNS,
+            generatePattern(
                     "# ",
                     " #");
-            generatePattern(PATTERNS,
+            generatePattern(
                     " #",
                     "# ");
-            generatePattern(PATTERNS,
+            generatePattern(
                     "##",
                     " #");
-            generatePattern(PATTERNS,
+            generatePattern(
                     "##",
                     "# ");
-            generatePattern(PATTERNS,
+            generatePattern(
                     " #",
                     "##");
-            generatePattern(PATTERNS,
+            generatePattern(
                     "# ",
                     "##");
-            generatePattern(PATTERNS,
+            generatePattern(
                     "###",
                     "###");
-            generatePattern(PATTERNS,
+            generatePattern(
                     "##",
                     "##",
                     "##");
-            generatePattern(PATTERNS,
+            generatePattern(
                     "####",
                     "####");
-            generatePattern(PATTERNS,
+            generatePattern(
                     "##",
                     "##",
                     "##",
                     "##");
-            generatePattern(PATTERNS,
+            generatePattern(
                     "# #",
                     "   ",
                     "# #");
-            generatePattern(PATTERNS,
+            generatePattern(
                     "###",
                     "   ",
                     "###");
-            generatePattern(PATTERNS,
+            generatePattern(
                     "# #",
                     "# #",
                     "# #");
-            generatePattern(PATTERNS,
+            generatePattern(
                     "###",
                     "#  ",
                     "###");
-            generatePattern(PATTERNS,
+            generatePattern(
                     "###",
                     "# #",
                     "# #");
-            generatePattern(PATTERNS,
+            generatePattern(
                     "###",
                     "  #",
                     "###");
-            generatePattern(PATTERNS,
+            generatePattern(
                     "# #",
                     "# #",
                     "###");
-            generatePattern(PATTERNS,
+            generatePattern(
                     "###",
                     "# #",
                     "###");
-            generatePattern(PATTERNS,
+            generatePattern(
                     "###",
                     " # ",
                     "###");
-            generatePattern(PATTERNS,
+            generatePattern(
+                    "# #",
+                    "###",
+                    "# #");
+            generatePattern(
                     "#  ",
                     " # ",
                     "  #");
-            generatePattern(PATTERNS,
+            generatePattern(
                     "  #",
                     " # ",
                     "#  ");
-            generatePattern(PATTERNS,
+            generatePattern(
                     "###",
                     "#  ",
                     "#  ");
-            generatePattern(PATTERNS,
+            generatePattern(
                     "###",
                     "  #",
                     "  #");
-            generatePattern(PATTERNS,
+            generatePattern(
                     "#  ",
                     "#  ",
                     "###");
-            generatePattern(PATTERNS,
+            generatePattern(
                     "  #",
                     "  #",
                     "###");
-            generatePattern(PATTERNS,
+            generatePattern(
+                    " ##",
+                    "#  ",
+                    "#  ");
+            generatePattern(
+                    "## ",
+                    "  #",
+                    "  #");
+            generatePattern(
+                    "#  ",
+                    "#  ",
+                    " ##");
+            generatePattern(
+                    "  #",
+                    "  #",
+                    "## ");
+            generatePattern(
                     "# #",
                     " # ",
                     "# #");
-            generatePattern(PATTERNS,
+            generatePattern(
                     " # ",
                     "###",
                     " # ");
-            generatePattern(PATTERNS,
+            generatePattern(
                     "###",
                     "###",
                     "###");
-            generatePattern(PATTERNS,
+            generatePattern(
                     "#  #",
                     "    ",
                     "    ",
                     "#  #");
-            generatePattern(PATTERNS,
+            generatePattern(
                     "####",
                     "#   ",
                     "#   ",
                     "#   ");
-            generatePattern(PATTERNS,
+            generatePattern(
                     "####",
                     "   #",
                     "   #",
                     "   #");
-            generatePattern(PATTERNS,
+            generatePattern(
                     "#   ",
                     "#   ",
                     "#   ",
                     "####");
-            generatePattern(PATTERNS,
+            generatePattern(
                     "   #",
                     "   #",
                     "   #",
                     "####");
-            generatePattern(PATTERNS,
+            generatePattern(
+                    " ###",
+                    "#   ",
+                    "#   ",
+                    "#   ");
+            generatePattern(
+                    "### ",
+                    "   #",
+                    "   #",
+                    "   #");
+            generatePattern(
+                    "#   ",
+                    "#   ",
+                    "#   ",
+                    " ###");
+            generatePattern(
+                    "   #",
+                    "   #",
+                    "   #",
+                    "### ");
+            generatePattern(
                     "####",
                     "#  #",
                     "#  #",
                     "####");
-            generatePattern(PATTERNS,
+            generatePattern(
                     " ## ",
                     "#  #",
                     "#  #",
                     " ## ");
-            generatePattern(PATTERNS,
+            generatePattern(
                     "#  #",
                     " ## ",
                     " ## ",
                     "#  #");
-            generatePattern(PATTERNS,
+            generatePattern(
                     "#   #",
                     "     ",
                     "     ",
                     "     ",
                     "#   #");
-            generatePattern(PATTERNS,
+            generatePattern(
                     "#   #",
                     " # # ",
                     "  #  ",
                     " # # ",
                     "#   #");
-            generatePattern(PATTERNS,
+            generatePattern(
                     "#   #",
                     " ### ",
                     " ### ",
                     " ### ",
                     "#   #");
-            generatePattern(PATTERNS,
+            generatePattern(
                     "## ##",
                     "#   #",
                     "     ",
                     "#   #",
                     "## ##");
-            generatePattern(PATTERNS,
+            generatePattern(
                     "#####",
                     "#   #",
                     "#   #",
                     "#   #",
                     "#####");
-            generatePattern(PATTERNS,
+            generatePattern(
                     "#    #",
                     "      ",
                     "      ",
                     "      ",
                     "      ",
                     "#    #");
-            generatePattern(PATTERNS,
+            generatePattern(
                     "#    #",
                     " #  # ",
                     "  ##  ",
                     "  ##  ",
                     " #  # ",
                     "#    #");
-            generatePattern(PATTERNS,
+            generatePattern(
                     "##  ##",
                     "#    #",
                     "      ",
                     "      ",
                     "#    #",
                     "##  ##");
-            generatePattern(PATTERNS,
+            generatePattern(
                     "##  ##",
                     "##  ##",
                     "      ",
                     "      ",
                     "##  ##",
                     "##  ##");
-            generatePattern(PATTERNS,
+            generatePattern(
                     "######",
                     "#    #",
                     "#    #",
@@ -231,28 +271,28 @@ public class RandomPatternCreator {
         return PATTERNS;
     }
 
-    private static void generatePattern(List<String[]> patternList, String... pattern) {
+    private static void generatePattern(String... pattern) {
         for (int y = 0; y <= 6 - pattern.length; y++) {
             for (int x = 0; x <= 6 - pattern[0].length(); x++) {
                 String[] ppp = new String[6];
                 for (int py = 0; py < 6; py++) {
-                    String pat = "";
+                    StringBuilder pat = new StringBuilder();
                     if (py < y) {
-                        pat = "      ";
+                        pat = new StringBuilder("      ");
                     } else if (py >= y + pattern.length) {
-                        pat = "      ";
+                        pat = new StringBuilder("      ");
                     } else for (int px = 0; px < 6; px++) {
                         if (px < x) {
-                            pat += " ";
+                            pat.append(" ");
                         } else if (px >= x + pattern[0].length()) {
-                            pat += " ";
+                            pat.append(" ");
                         } else {
-                            pat += pattern[py-y].charAt(px - x);
+                            pat.append(pattern[py - y].charAt(px - x));
                         }
                     }
-                    ppp[py] = pat;
+                    ppp[py] = pat.toString();
                 }
-                patternList.add(ppp);
+                RandomPatternCreator.PATTERNS.add(ppp);
             }
         }
     }

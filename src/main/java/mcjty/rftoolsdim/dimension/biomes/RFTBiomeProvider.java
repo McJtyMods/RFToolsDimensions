@@ -199,26 +199,32 @@ public class RFTBiomeProvider extends BiomeSource {
 
     @Override
     public Biome getNoiseBiome(int x, int y, int z, Climate.Sampler climate) {
-        switch (settings.getCompiledDescriptor().getBiomeControllerType()) {
-            case CHECKER -> {
-                getBiome1And2();
-                if (((x>>3)+(z>>3))%2 == 0) {
-                    return biome1;
-                } else {
-                    return biome2;
-                }
-            }
-            case SINGLE -> {
-                getBiome1And2();
-                return biome1;
-            }
-            default -> {
-                if (defaultBiomes) {
-                    return multiNoiseBiomeSource.getNoiseBiome(x, y, z, climate);
-                } else {
-                    return getMappedBiome(multiNoiseBiomeSource.getNoiseBiome(x, y, z, climate));
-                }
-            }
+        return switch (settings.getCompiledDescriptor().getBiomeControllerType()) {
+            case CHECKER -> getCheckerBiome(x, z);
+            case SINGLE -> getSingleBiome();
+            default -> getDefaultBiome(x, y, z, climate);
+        };
+    }
+
+    private Biome getDefaultBiome(int x, int y, int z, Climate.Sampler climate) {
+        if (defaultBiomes) {
+            return multiNoiseBiomeSource.getNoiseBiome(x, y, z, climate);
+        } else {
+            return getMappedBiome(multiNoiseBiomeSource.getNoiseBiome(x, y, z, climate));
+        }
+    }
+
+    private Biome getSingleBiome() {
+        getBiome1And2();
+        return biome1;
+    }
+
+    private Biome getCheckerBiome(int x, int z) {
+        getBiome1And2();
+        if (((x >>3)+(z >>3))%2 == 0) {
+            return biome1;
+        } else {
+            return biome2;
         }
     }
 }

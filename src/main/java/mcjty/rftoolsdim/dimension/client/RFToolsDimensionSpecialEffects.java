@@ -81,18 +81,12 @@ public class RFToolsDimensionSpecialEffects extends DimensionSpecialEffects {
 
     @Override
     public Vec3 getBrightnessDependentFogColor(Vec3 vec, float bright) {
-//        ClientDimensionData.ClientData clientData = ClientDimensionData.get().getClientData(Minecraft.getInstance().level.dimension().location());
-//        float factor = (float) clientData.power() / clientData.max();
-//        Vec3 result = vec.multiply(bright * 0.94F + 0.06F, bright * 0.94F + 0.06F, bright * 0.91F + 0.09F);
-//        if (factor < .1) {
-//            return result.multiply(factor*10, factor*10, factor*10);
-//        }
         long skyMask = getSkyMask();
-        if (SkyDimletType.REDFOG.match(skyMask)) {
+        if (SkyDimletType.REDFOG.match(skyMask) || SkyDimletType.THICKREDFOG.match(skyMask)) {
             return RED_FOG;
-        } else if (SkyDimletType.BLACKFOG.match(skyMask)) {
+        } else if (SkyDimletType.BLACKFOG.match(skyMask) || SkyDimletType.THICKBLACKFOG.match(skyMask)) {
             return BLACK_FOG;
-        } else if (SkyDimletType.WHITEFOG.match(skyMask)) {
+        } else if (SkyDimletType.WHITEFOG.match(skyMask) || SkyDimletType.THICKWHITEFOG.match(skyMask)) {
             return WHITE_FOG;
         } else {
             return vec.multiply(bright * 0.94F + 0.06F, bright * 0.94F + 0.06F, bright * 0.91F + 0.09F);
@@ -102,6 +96,6 @@ public class RFToolsDimensionSpecialEffects extends DimensionSpecialEffects {
     @Override
     public boolean isFoggyAt(int x, int z) {
         long skyMask = getSkyMask();
-        return SkyDimletType.REDFOG.match(skyMask) || SkyDimletType.BLACKFOG.match(skyMask) || SkyDimletType.WHITEFOG.match(skyMask);
+        return SkyDimletType.THICKREDFOG.match(skyMask) || SkyDimletType.THICKBLACKFOG.match(skyMask) || SkyDimletType.THICKWHITEFOG.match(skyMask);
     }
 }

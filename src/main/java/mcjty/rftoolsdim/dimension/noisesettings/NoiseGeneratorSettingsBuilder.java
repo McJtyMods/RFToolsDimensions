@@ -113,7 +113,6 @@ public class NoiseGeneratorSettingsBuilder {
 
     public NoiseGeneratorSettings build(DimensionSettings settings) {
         List<ResourceLocation> structures = settings.getCompiledDescriptor().getStructures();
-//                .put(StructureFeature.VILLAGE, new StructureFeatureConfiguration(4, 2, 143576173))
         Map<StructureFeature<?>, StructureFeatureConfiguration> structMap = new HashMap<>();
         for (ResourceLocation structure : structures) {
             if (structure.getPath().equals("none")) {

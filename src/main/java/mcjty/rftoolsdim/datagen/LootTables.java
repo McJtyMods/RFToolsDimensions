@@ -12,6 +12,7 @@ import mcjty.rftoolsdim.modules.dimlets.lootmodifier.DimletLootEntry;
 import mcjty.rftoolsdim.modules.enscriber.EnscriberModule;
 import mcjty.rftoolsdim.modules.essences.EssencesModule;
 import mcjty.rftoolsdim.modules.knowledge.KnowledgeModule;
+import mcjty.rftoolsdim.modules.various.VariousModule;
 import mcjty.rftoolsdim.modules.workbench.WorkbenchModule;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.world.level.storage.loot.LootPool;
@@ -48,6 +49,8 @@ public class LootTables extends BaseLootTableProvider {
         addSimpleTable(DecorativeModule.DIMENSIONAL_PATTERN2_BLOCK.get());
         addSimpleTable(DecorativeModule.DIMENSIONAL_CROSS_BLOCK.get());
         addSimpleTable(DecorativeModule.DIMENSIONAL_CROSS2_BLOCK.get());
+
+        addSimpleTable(VariousModule.ACTIVITY_PROBE.get());
 
         addItemDropTable(BlobModule.DIMENSIONAL_BLOB_COMMON.get(), DimletModule.COMMON_ESSENCE.get(), 3, 5, 0, 1);
         addItemDropTable(BlobModule.DIMENSIONAL_BLOB_RARE.get(), DimletModule.RARE_ESSENCE.get(), 3, 5, 0, 1);

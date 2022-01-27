@@ -24,6 +24,7 @@ import mcjty.rftoolsdim.modules.essences.EssencesModule;
 import mcjty.rftoolsdim.modules.essences.blocks.BiomeAbsorberTileEntity;
 import mcjty.rftoolsdim.modules.essences.blocks.BlockAbsorberTileEntity;
 import mcjty.rftoolsdim.modules.essences.blocks.FluidAbsorberTileEntity;
+import mcjty.rftoolsdim.modules.essences.blocks.StructureAbsorberTileEntity;
 import mcjty.rftoolsdim.modules.knowledge.data.KnowledgeKey;
 import mcjty.rftoolsdim.modules.knowledge.items.LostKnowledgeItem;
 import mcjty.rftoolsdim.modules.workbench.WorkbenchConfig;
@@ -104,6 +105,8 @@ public class ResearcherTileEntity extends TickingTileEntity {
             return true;
         } else if (item == EssencesModule.BIOME_ABSORBER_ITEM.get()) {
             return true;
+        } else if (item == EssencesModule.STRUCTURE_ABSORBER_ITEM.get()) {
+            return true;
         } else if (DimletItem.isReadyDimlet(stack)) {
             DimletKey dimletKey = DimletTools.getDimletKey(stack);
             if (dimletKey == null) {
@@ -169,6 +172,8 @@ public class ResearcherTileEntity extends TickingTileEntity {
                 researchFluidAbsorber(stack);
             } else if (item == EssencesModule.BIOME_ABSORBER_ITEM.get()) {
                 researchBiomeAbsorber(stack);
+            } else if (item == EssencesModule.STRUCTURE_ABSORBER_ITEM.get()) {
+                researchStructureAbsorber(stack);
             } else if (DimletItem.isReadyDimlet(stack)) {
                 researchDimlet(stack);
             }
@@ -220,6 +225,21 @@ public class ResearcherTileEntity extends TickingTileEntity {
             DimletKey key = DimletDictionary.get().getFluidDimlet(fluidId);
             if (key != null) {
                 int absorberProgress = FluidAbsorberTileEntity.getProgress(stack);
+                if (level.getRandom().nextInt(100) < absorberProgress) {
+                    ItemStack researched = LostKnowledgeItem.createLostKnowledge(level, key);
+                    items.setStackInSlot(SLOT_OUT, researched);
+                }
+            }
+        }
+        items.decrStackSize(SLOT_IN, 1);
+    }
+
+    private void researchStructureAbsorber(ItemStack stack) {
+        String structureId = StructureAbsorberTileEntity.getStructure(stack);
+        if (structureId != null && !structureId.isEmpty()) {
+            DimletKey key = DimletDictionary.get().getStructureDimlet(structureId);
+            if (key != null) {
+                int absorberProgress = StructureAbsorberTileEntity.getProgress(stack);
                 if (level.getRandom().nextInt(100) < absorberProgress) {
                     ItemStack researched = LostKnowledgeItem.createLostKnowledge(level, key);
                     items.setStackInSlot(SLOT_OUT, researched);

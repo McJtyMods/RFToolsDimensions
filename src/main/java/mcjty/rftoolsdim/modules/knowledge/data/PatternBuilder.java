@@ -26,11 +26,11 @@ public class PatternBuilder {
     public DimletPattern build() {
         String[] p = new String[PATTERN_DIM];
         for (int y = 0 ; y < PATTERN_DIM ; y++) {
-            String s = "";
+            StringBuilder s = new StringBuilder();
             for (int x = 0 ; x < PATTERN_DIM ; x++) {
-                s += pattern[x][y];
+                s.append(pattern[x][y]);
             }
-            p[y] = s;
+            p[y] = s.toString();
         }
         return new DimletPattern(p);
     }

@@ -49,15 +49,11 @@ public class DimensionManager {
 
     // A transient map containing dimension names that are being created (with a timestamp). It's up to the
     // dimension builder to keep this up to date
-    private static class ReservedName {
-        private final long reservationTime;
-        private final BlockPos pos;
-        private final ResourceKey<Level> world;
+    private record ReservedName(long reservationTime, BlockPos pos,
+                                ResourceKey<Level> world) {
 
-        public ReservedName(Level world, BlockPos pos, long reservationTime) {
-            this.pos = pos;
-            this.world = world.dimension();
-            this.reservationTime = reservationTime;
+        public static ReservedName create(Level world, BlockPos pos, long reservationTime) {
+            return new ReservedName(reservationTime, pos, world.dimension());
         }
     }
     private final Map<String, ReservedName> reservedDimensionNames = new HashMap<>();
@@ -106,7 +102,7 @@ public class DimensionManager {
 
     // Mark a name of a dimension as being reserved for a given time
     public void markReservedName(Level world, BlockPos pos, String name) {
-        reservedDimensionNames.put(name, new ReservedName(world, pos, System.currentTimeMillis()));
+        reservedDimensionNames.put(name, ReservedName.create(world, pos, System.currentTimeMillis()));
     }
 
     // Function to get the RFTools Dimensions world for the given name. Supports both rftoolsdim:xxx notation
@@ -172,8 +168,9 @@ public class DimensionManager {
         randomizedDescriptor.log("Attempting to create dimension:");
 
         CompiledDescriptor compiledDescriptor = new CompiledDescriptor();
-        DescriptorError error = compiledDescriptor.compile(descriptor, randomizedDescriptor);
-        if (!error.isOk()) {
+        try {
+            compiledDescriptor.compile(descriptor, randomizedDescriptor);
+        } catch (DescriptorError error) {
             RFToolsDim.setup.getLogger().error("Error compiling dimension descriptor: " + error.getMessage());
             throw new RuntimeException("Error compiling dimension descriptor: " + error.getMessage());
         }
@@ -208,7 +205,7 @@ public class DimensionManager {
 
         long skyDimletTypes = compiledDescriptor.getSkyDimletTypes();
         if (skyDimletTypes == 0 && terrainType == TerrainType.CAVERN) {
-            skyDimletTypes = SkyDimletType.BLACK.getMask(); // Use black as default in case of cavern world
+            skyDimletTypes = SkyDimletType.BLACK.getMask() | SkyDimletType.BLACKFOG.getMask(); // Use black as default in case of cavern world
         }
         data = new DimensionData(id, descriptor, randomizedDescriptor, skyDimletTypes);
         mgr.register(data);

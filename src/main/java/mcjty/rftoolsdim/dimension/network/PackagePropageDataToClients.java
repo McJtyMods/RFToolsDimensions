@@ -31,7 +31,7 @@ public class PackagePropageDataToClients {
 
     public void toBytes(FriendlyByteBuf buf) {
         buf.writeInt(clientDataMap.size());
-        for (Map.Entry<ResourceLocation, ClientDimensionData.ClientData> entry : clientDataMap.entrySet()) {
+        for (var entry : clientDataMap.entrySet()) {
             buf.writeResourceLocation(entry.getKey());
             entry.getValue().writeToBuf(buf);
         }

@@ -9,6 +9,7 @@ import mcjty.rftoolsdim.modules.dimlets.DimletModule;
 import mcjty.rftoolsdim.modules.enscriber.EnscriberModule;
 import mcjty.rftoolsdim.modules.essences.EssencesModule;
 import mcjty.rftoolsdim.modules.knowledge.KnowledgeModule;
+import mcjty.rftoolsdim.modules.various.VariousModule;
 import mcjty.rftoolsdim.modules.workbench.WorkbenchModule;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
@@ -35,6 +36,7 @@ public class Items extends BaseItemModelProvider {
         parentedBlock(EssencesModule.FLUID_ABSORBER.get(), "block/fluid_absorber");
         parentedBlock(EssencesModule.BIOME_ABSORBER.get(), "block/biome_absorber");
         parentedBlock(EssencesModule.STRUCTURE_ABSORBER.get(), "block/structure_absorber");
+        parentedBlock(VariousModule.ACTIVITY_PROBE.get(), "block/activity_probe");
 
         parentedBlock(DecorativeModule.DIMENSIONAL_BLOCK.get(), "block/dimensional_block");
         parentedBlock(DecorativeModule.DIMENSIONAL_BLANK.get(), "block/dimensional_blank_block");

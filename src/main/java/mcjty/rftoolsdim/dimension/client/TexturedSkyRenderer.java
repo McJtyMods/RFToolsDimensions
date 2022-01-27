@@ -27,7 +27,7 @@ public class TexturedSkyRenderer implements ISkyRenderHandler {
 
         RenderSystem.depthMask(false);
 
-        BlackSkyRenderer.renderColor(0f, 0f, 0f);
+        BlackSkyRenderer.renderColor(0f, 0f, 0f, 1.0f);
 
         RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
         RenderSystem.enableTexture();

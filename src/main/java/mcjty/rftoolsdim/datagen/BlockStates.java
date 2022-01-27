@@ -10,6 +10,7 @@ import mcjty.rftoolsdim.modules.dimensioneditor.DimensionEditorModule;
 import mcjty.rftoolsdim.modules.dimensioneditor.blocks.DimensionEditorTileEntity;
 import mcjty.rftoolsdim.modules.enscriber.EnscriberModule;
 import mcjty.rftoolsdim.modules.essences.EssencesModule;
+import mcjty.rftoolsdim.modules.various.VariousModule;
 import mcjty.rftoolsdim.modules.workbench.WorkbenchModule;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -37,6 +38,7 @@ public class BlockStates extends BaseBlockStateProvider {
         singleTextureBlock(EssencesModule.FLUID_ABSORBER.get(), BLOCK_FOLDER + "/fluid_absorber", "block/fluidabsorber");
         singleTextureBlock(EssencesModule.BIOME_ABSORBER.get(), BLOCK_FOLDER + "/biome_absorber", "block/biomeabsorber");
         singleTextureBlock(EssencesModule.STRUCTURE_ABSORBER.get(), BLOCK_FOLDER + "/structure_absorber", "block/structureabsorber");
+        singleTextureBlock(VariousModule.ACTIVITY_PROBE.get(), BLOCK_FOLDER + "/activity_probe", "block/activity_probe");
 
         registerDimensionEditor();
 

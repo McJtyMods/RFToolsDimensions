@@ -31,13 +31,13 @@ import mcjty.rftoolsdim.modules.dimlets.data.DimletSettings;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletTools;
 import mcjty.rftoolsdim.modules.dimlets.items.DimletItem;
 import mcjty.rftoolsdim.modules.enscriber.EnscriberModule;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.MenuProvider;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.TextComponent;
-import net.minecraft.ChatFormatting;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.common.util.LazyOptional;
@@ -183,9 +183,15 @@ public class EnscriberTileEntity extends GenericTileEntity {
             // The dimension was already created.
             tagCompound.putInt("ticksLeft", 0);
             tagCompound.putString("dimension", data.getId().toString());
-            compiledDescriptor.compile(descriptor, data.getRandomizedDescriptor());
+            try {
+                compiledDescriptor.compile(descriptor, data.getRandomizedDescriptor());
+            } catch (DescriptorError ignore) {
+            }
         } else {
-            compiledDescriptor.compile(descriptor, DimensionDescriptor.EMPTY);  // Randomized part not known yet
+            try {
+                compiledDescriptor.compile(descriptor, DimensionDescriptor.EMPTY);  // Randomized part not known yet
+            } catch (DescriptorError ignore) {
+            }
             tagCompound.putInt("ticksLeft", compiledDescriptor.getActualTickCost());
         }
 
@@ -232,7 +238,11 @@ public class EnscriberTileEntity extends GenericTileEntity {
     private void validateDimlets() {
         DimensionDescriptor descriptor = convertToDimensionDescriptor(null);
         CompiledDescriptor compiledDescriptor = new CompiledDescriptor();
-        error = compiledDescriptor.compile(descriptor, DimensionDescriptor.EMPTY);  // We just need to check the descriptor. Not randomized
+        try {
+            compiledDescriptor.compile(descriptor, DimensionDescriptor.EMPTY);  // We just need to check the descriptor. Not randomized
+        } catch (DescriptorError e) {
+            error = e;
+        }
     }
 
     public int getClientErrorCode() {

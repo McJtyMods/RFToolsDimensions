@@ -49,16 +49,13 @@ public class BuildingTemplate {
 
     public void generate(TerrainType type, WorldGenLevel reader, BlockPos pos, List<BlockState> states, GenerateFlag flag) {
         switch (flag) {
-            case PLAIN:
-                break;
-            case FILLDOWN:
-                fillDown(reader, pos, states);
-                break;
-            case FILLDOWN_IFNOTVOID:
+            case PLAIN -> { }
+            case FILLDOWN -> fillDown(reader, pos, states);
+            case FILLDOWN_IFNOTVOID -> {
                 if (!type.isVoidLike()) {
                     fillDownIfNotVoid(reader, pos, states);
                 }
-                break;
+            }
         }
 
         int y = pos.getY();
