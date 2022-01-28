@@ -5,6 +5,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.LevelHeightAccessor;
 import net.minecraft.world.level.NoiseColumn;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -26,6 +27,18 @@ public class MazeGenerator {
 
         BlockState defaultBlock = generator.getDefaultBlock();
         long seed = generator.getSeed();
+
+        BlockState bedrock = Blocks.BEDROCK.defaultBlockState();
+        int minBuildHeight = chunkAccess.getMinBuildHeight();
+
+        for (int y = minBuildHeight; y < 0 ; y++) {
+            BlockState b = y < minBuildHeight+2 ? bedrock : defaultBlock;
+            for (int x = 0; x < 16; x++) {
+                for (int z = 0; z < 16; z++) {
+                    chunkAccess.setBlockState(mpos.set(x, y, z), b, false);
+                }
+            }
+        }
 
         for (int cy = 0 ; cy < 256 ; cy += 16) {
             boolean isTopOpen = isTopOpen(chunkpos.x, cy, chunkpos.z, seed);
@@ -115,8 +128,10 @@ public class MazeGenerator {
 
     @NotNull
     public static NoiseColumn getBaseColumn(int pX, int pZ, LevelHeightAccessor level, RFToolsChunkGenerator generator) {
-        BlockState[] states = new BlockState[-level.getMinBuildHeight() + getBaseHeight(pX, pZ, level)];
+        BlockState[] states = new BlockState[getBaseHeight(pX, pZ, level) - level.getMinBuildHeight()];
         Arrays.fill(states, generator.getDefaultBlock());
+        states[0] = Blocks.BEDROCK.defaultBlockState();
+        states[1] = Blocks.BEDROCK.defaultBlockState();
         return new NoiseColumn(level.getMinBuildHeight(), states);
     }
 }

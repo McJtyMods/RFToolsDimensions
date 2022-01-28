@@ -14,12 +14,14 @@ import mcjty.lib.tileentity.Cap;
 import mcjty.lib.tileentity.CapType;
 import mcjty.lib.tileentity.GenericEnergyStorage;
 import mcjty.lib.tileentity.TickingTileEntity;
+import mcjty.lib.varia.Broadcaster;
 import mcjty.lib.varia.LevelTools;
 import mcjty.lib.varia.NBTTools;
 import mcjty.rftoolsbase.tools.ManualHelper;
 import mcjty.rftoolsdim.compat.RFToolsUtilityCompat;
 import mcjty.rftoolsdim.dimension.data.DimensionData;
 import mcjty.rftoolsdim.dimension.data.PersistantDimensionManager;
+import mcjty.rftoolsdim.dimension.tools.DynamicDimensionManager;
 import mcjty.rftoolsdim.modules.dimensionbuilder.blocks.DimensionBuilderTileEntity;
 import mcjty.rftoolsdim.modules.dimensioneditor.DimensionEditorConfig;
 import mcjty.rftoolsdim.modules.dimensioneditor.DimensionEditorModule;
@@ -117,8 +119,11 @@ public class DimensionEditorTileEntity extends TickingTileEntity {
         };
     }
 
-    private static boolean isValidInput(net.minecraft.world.item.ItemStack s) {
-        if ("rftoolsutility:matter_receiver".equals(s.getItem().getRegistryName().toString())) {
+    private static boolean isValidInput(ItemStack s) {
+        if (isMatterReceiver(s)) {
+            return true;
+        }
+        if (DimensionEditorConfig.TNT_CAN_DESTROY_DIMENSION.get() && isTNT(s)) {
             return true;
         }
         // @todo 1.16 the other items are currently not implemented yet
@@ -190,7 +195,6 @@ public class DimensionEditorTileEntity extends TickingTileEntity {
                 if (ticksLeft <= 0) {
                     String dimension = dimensionItemStack.getOrCreateTag().getString("dimension");
                     ResourceLocation id = new ResourceLocation(dimension);
-                    DimensionData data = PersistantDimensionManager.get(level).getData(id);
 
                     if (isMatterReceiver(injectableItemStack)) {
                         ServerLevel dimWorld = LevelTools.getLevel(level, LevelTools.getId(id));
@@ -240,52 +244,36 @@ public class DimensionEditorTileEntity extends TickingTileEntity {
     }
 
     private void safeDeleteDimension(ResourceLocation id, ItemStack dimensionTab) {
-//        World w = DimensionManager.getWorld(id);
-//        if (w != null) {
-//            // Dimension is still loaded. Do nothing.
-//            Broadcaster.broadcast(getWorld(), pos.getX(), pos.getY(), pos.getZ(), "Dimension cannot be deleted. It is still in use!", 10);
-//            return;
-//        }
-//        RfToolsDimensionManager dimensionManager = RfToolsDimensionManager.getDimensionManager(getWorld());
-//        DimensionInformation information = dimensionManager.getDimensionInformation(id);
-//        if (information.getOwner() == null) {
-//            Broadcaster.broadcast(getWorld(), pos.getX(), pos.getY(), pos.getZ(), "You cannot delete a dimension without an owner!", 10);
-//            return;
-//        }
-//        if (getOwnerUUID() == null) {
-//            Broadcaster.broadcast(getWorld(), pos.getX(), pos.getY(), pos.getZ(), "This machine has no proper owner and cannot delete dimensions!", 10);
-//            return;
-//        }
-//        if (!getOwnerUUID().equals(information.getOwner())) {
-//            Broadcaster.broadcast(getWorld(), pos.getX(), pos.getY(), pos.getZ(), "This machine's owner differs from the dimensions owner!", 10);
-//            return;
-//        }
-//
-//        RFToolsDim.teleportationManager.removeReceiverDestinations(getWorld(), id);
-//
-//        dimensionManager.removeDimension(id);
-//        dimensionManager.reclaimId(id);
-//        dimensionManager.save(getWorld());
-//
-//        DimensionStorage dimensionStorage = DimensionStorage.getDimensionStorage(getWorld());
-//        dimensionStorage.removeDimension(id);
-//        dimensionStorage.save();
-//
-//        if (GeneralConfiguration.dimensionFolderIsDeletedWithSafeDel) {
-//            File rootDirectory = DimensionManager.getCurrentSaveRootDirectory();
-//            try {
-//                FileUtils.deleteDirectory(new File(rootDirectory.getPath() + File.separator + "RFTOOLS" + id));
-//                Broadcaster.broadcast(getWorld(), pos.getX(), pos.getY(), pos.getZ(), "Dimension deleted and dimension folder succesfully wiped!", 10);
-//            } catch (IOException e) {
-//                Broadcaster.broadcast(getWorld(), pos.getX(), pos.getY(), pos.getZ(), "Dimension deleted but dimension folder could not be completely wiped!", 10);
-//            }
-//        } else {
-//            Broadcaster.broadcast(getWorld(), pos.getX(), pos.getY(), pos.getZ(), "Dimension deleted. Please remove the dimension folder from disk!", 10);
-//        }
-//
-//        dimensionTab.getTagCompound().removeTag("id");
-//        int tickCost = dimensionTab.getTagCompound().getInteger("tickCost");
-//        dimensionTab.getTagCompound().setInteger("ticksLeft", tickCost);
+        DimensionData data = PersistantDimensionManager.get(level).getData(id);
+        if (data == null) {
+            return;
+        }
+        ServerLevel dimension = LevelTools.getLevel(this.level, id);
+        int chunks = dimension.getChunkSource().chunkMap.size();
+        if (chunks > 0) {
+            // Dimension is still loaded. Do nothing.
+            Broadcaster.broadcast(level, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), "Dimension cannot be deleted. It is still in use!", 10);
+            return;
+        }
+        if (data.getOwner() != null) {
+            if (getOwnerUUID() == null) {
+                Broadcaster.broadcast(level, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), "This machine has no proper owner and cannot delete dimensions!", 10);
+                return;
+            }
+            if (!getOwnerUUID().equals(data.getOwner())) {
+                Broadcaster.broadcast(level, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), "This machine's owner differs from the dimensions owner!", 10);
+                return;
+            }
+            RFToolsUtilityCompat.teleportationManager.removeReceiverDestinations(level, LevelTools.getId(id));
+            PersistantDimensionManager mgr = PersistantDimensionManager.get(level);
+            mgr.forget(id);
+            DynamicDimensionManager.markDimensionForUnregistration(level.getServer(), LevelTools.getId(id));
+            Broadcaster.broadcast(level, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), "Removed dimension '" + id.toString() + "'!", 10);
+
+            dimensionTab.getTag().remove("dimension");
+            int tickCost = dimensionTab.getTag().getInt("tickCost");
+            dimensionTab.getTag().putInt("ticksLeft", tickCost);
+        }
     }
 
     private int findGoodReceiverLocation(Level dimWorld) {
@@ -348,40 +336,32 @@ public class DimensionEditorTileEntity extends TickingTileEntity {
     }
 
     private ItemStack canDeleteDimension(ItemStack itemStack) {
-//        if (!GeneralConfiguration.playersCanDeleteDimensions) {
-//            Broadcaster.broadcast(getWorld(), pos.getX(), pos.getY(), pos.getZ(), "Players cannot delete dimensions!", 10);
-//            return ItemStack.EMPTY;
-//        }
-//        if (!GeneralConfiguration.editorCanDeleteDimensions) {
-//            Broadcaster.broadcast(getWorld(), pos.getX(), pos.getY(), pos.getZ(), "Dimension deletion with the editor is not enabled!", 10);
-//            return ItemStack.EMPTY;
-//        }
-//        ItemStack dimensionStack = inventoryHelper.getStackInSlot(DimensionEditorContainer.SLOT_DIMENSIONTARGET);
-//        if (dimensionStack.isEmpty()) {
-//            return ItemStack.EMPTY;
-//        }
-//
-//        NBTTagCompound tagCompound = dimensionStack.getTagCompound();
-//        int id = tagCompound.getInteger("id");
-//        if (id == 0) {
-//            return ItemStack.EMPTY;
-//        }
-//        DimensionInformation information = RfToolsDimensionManager.getDimensionManager(getWorld()).getDimensionInformation(id);
-//
-//        if (getOwnerUUID() != null && getOwnerUUID().equals(information.getOwner())) {
-//            return itemStack;
-//        }
-//
-//        Broadcaster.broadcast(getWorld(), pos.getX(), pos.getY(), pos.getZ(), "This machine's owner differs from the dimensions owner!", 10);
-//        return ItemStack.EMPTY;
+        if (!DimensionEditorConfig.TNT_CAN_DESTROY_DIMENSION.get()) {
+            Broadcaster.broadcast(level, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), "Players cannot delete dimensions!", 10);
+            return ItemStack.EMPTY;
+        }
+        ItemStack dimensionStack = items.getStackInSlot(SLOT_DIMENSIONTARGET);
+        if (dimensionStack.isEmpty()) {
+            return ItemStack.EMPTY;
+        }
+
+        String dimension = dimensionStack.getOrCreateTag().getString("dimension");
+        ResourceLocation id = new ResourceLocation(dimension);
+        DimensionData data = PersistantDimensionManager.get(level).getData(id);
+
+        if (getOwnerUUID() != null && getOwnerUUID().equals(data.getOwner())) {
+            return itemStack;
+        }
+
+        Broadcaster.broadcast(level, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), "This machine's owner differs from the dimensions owner!", 10);
         return ItemStack.EMPTY;
     }
 
-    private boolean isMatterReceiver(ItemStack itemStack) {
+    private static boolean isMatterReceiver(ItemStack itemStack) {
         return "rftoolsutility:matter_receiver".equals(itemStack.getItem().getRegistryName().toString());
     }
 
-    private boolean isTNT(ItemStack itemStack) {
+    private static boolean isTNT(ItemStack itemStack) {
         return itemStack.getItem() == Items.TNT;
     }
 

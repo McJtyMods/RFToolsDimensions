@@ -99,7 +99,7 @@ public class PlatformsGenerator {
     @NotNull
     public static NoiseColumn getBaseColumn(int pX, int pZ, LevelHeightAccessor level, RFToolsChunkGenerator generator) {
         // @todo not entirely correct
-        BlockState[] states = new BlockState[getBaseHeight(pX, pZ, level, generator)];
+        BlockState[] states = new BlockState[getBaseHeight(pX, pZ, level, generator) - level.getMinBuildHeight()];
         Arrays.fill(states, generator.getDefaultBlock());
         return new NoiseColumn(level.getMinBuildHeight(), states);
     }

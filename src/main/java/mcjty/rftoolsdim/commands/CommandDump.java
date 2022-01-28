@@ -43,6 +43,7 @@ public class CommandDump implements Command<CommandSourceStack> {
             feedback(context, ChatFormatting.RED + "Not an RFTools Dimensions!");
             return 0;
         }
+        feedback(context, ChatFormatting.YELLOW + "Owner: " + ChatFormatting.WHITE + data.getOwner());
         feedback(context, ChatFormatting.BLUE + "Energy: " + ChatFormatting.WHITE + data.getEnergy());
 
         ChunkGenerator generator = world.getChunkSource().getGenerator();

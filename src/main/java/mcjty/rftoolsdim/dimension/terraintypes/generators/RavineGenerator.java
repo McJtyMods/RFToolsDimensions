@@ -6,6 +6,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.LevelHeightAccessor;
 import net.minecraft.world.level.NoiseColumn;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -25,6 +26,9 @@ public class RavineGenerator {
         Heightmap hmOcean = chunkAccess.getOrCreateHeightmapUnprimed(Heightmap.Types.OCEAN_FLOOR_WG);
         Heightmap hmWorld = chunkAccess.getOrCreateHeightmapUnprimed(Heightmap.Types.WORLD_SURFACE_WG);
 
+        int minBuildHeight = chunkAccess.getMinBuildHeight();
+        BlockState bedrock = Blocks.BEDROCK.defaultBlockState();
+
         PerlinNoiseGenerator14 noise = generator.getPerlinNoise();
 
         BlockState defaultBlock = generator.getDefaultBlock();
@@ -33,10 +37,11 @@ public class RavineGenerator {
                 int realx = chunkpos.x * 16 + x;
                 int realz = chunkpos.z * 16 + z;
                 int height = calculateHeight(realx, realz, noise);
-                for (int y = chunkAccess.getMinBuildHeight() ; y < height ; y++) {
-                    chunkAccess.setBlockState(mpos.set(x, y, z), defaultBlock, false);
-                    hmOcean.update(x, y, z, defaultBlock);
-                    hmWorld.update(x, y, z, defaultBlock);
+                for (int y = minBuildHeight; y < height ; y++) {
+                    BlockState b = y < (minBuildHeight+2) ? bedrock : defaultBlock;
+                    chunkAccess.setBlockState(mpos.set(x, y, z), b, false);
+                    hmOcean.update(x, y, z, b);
+                    hmWorld.update(x, y, z, b);
                 }
             }
         }
@@ -66,8 +71,10 @@ public class RavineGenerator {
 
     @NotNull
     public static NoiseColumn getBaseColumn(int pX, int pZ, LevelHeightAccessor level, RFToolsChunkGenerator generator) {
-        BlockState[] states = new BlockState[calculateHeight(pX, pZ, generator.getPerlinNoise())];
+        BlockState[] states = new BlockState[calculateHeight(pX, pZ, generator.getPerlinNoise()) - level.getMinBuildHeight()];
         Arrays.fill(states, generator.getDefaultBlock());
+        states[0] = Blocks.BEDROCK.defaultBlockState();
+        states[1] = Blocks.BEDROCK.defaultBlockState();
         return new NoiseColumn(level.getMinBuildHeight(), states);
     }
 }

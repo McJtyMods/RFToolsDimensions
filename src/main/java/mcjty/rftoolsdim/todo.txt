@@ -1,7 +1,6 @@
 - Feature dimlets
 - Terrain types:
     - Rooms
-- Add bedrock layer at the bottom of maze and ravine terrain
 - Check low power
 - Darken sky in case of low power and probably other effects?
 - Weather dimlet
@@ -9,7 +8,6 @@
 - Check dimlet loot
 - Test researcher/knowledge system
 - Client side effects
-- Implement Activity Probe
 - Check admin dimlets
 - Fix dimension editor
-- Import vanilla biomes again!
+- Patchouli manuals?

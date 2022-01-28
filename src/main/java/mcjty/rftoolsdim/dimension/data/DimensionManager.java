@@ -35,6 +35,7 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * Manages runtime handling of a dimension. That includes the compiled descriptors and creation of dimensions
@@ -149,7 +150,9 @@ public class DimensionManager {
         return data == null;
     }
 
-    public ServerLevel createWorld(Level world, String name, long seed, DimensionDescriptor descriptor, DimensionDescriptor randomizedDescriptor) {
+    public ServerLevel createWorld(Level world, String name, long seed,
+                                   DimensionDescriptor descriptor, DimensionDescriptor randomizedDescriptor,
+                                   UUID owner) {
         ResourceLocation id = new ResourceLocation(RFToolsDim.MODID, name);
 
         PersistantDimensionManager mgr = PersistantDimensionManager.get(world);
@@ -207,7 +210,7 @@ public class DimensionManager {
         if (skyDimletTypes == 0 && terrainType == TerrainType.CAVERN) {
             skyDimletTypes = SkyDimletType.BLACK.getMask() | SkyDimletType.BLACKFOG.getMask(); // Use black as default in case of cavern world
         }
-        data = new DimensionData(id, descriptor, randomizedDescriptor, skyDimletTypes);
+        data = new DimensionData(id, descriptor, randomizedDescriptor, owner, skyDimletTypes);
         mgr.register(data);
         return result;
 
@@ -236,7 +239,7 @@ public class DimensionManager {
     }
 
     // Returns null on success, otherwise an error string
-    public String createDimension(Level world, String name, long seed, String filename) {
+    public String createDimension(Level world, String name, long seed, String filename, UUID owner) {
         ResourceKey<Level> id = LevelTools.getId(new ResourceLocation(RFToolsDim.MODID, name));
         if (world.getServer().getLevel(id) != null) {
             return "Dimension already exists!";
@@ -256,7 +259,7 @@ public class DimensionManager {
             throw new UncheckedIOException(ex);
         }
 
-        createWorld(world, name, seed, descriptor, DimensionDescriptor.EMPTY);
+        createWorld(world, name, seed, descriptor, DimensionDescriptor.EMPTY, owner);
         return null;
     }
 

@@ -135,7 +135,7 @@ public class DimensionDescriptor {
         if (!has(dimlets, DimletType.TERRAIN)) {
             DimletKey terrainDimlet = DimletDictionary.get().getRandomDimlet(DimletType.TERRAIN, random);
             if (terrainDimlet != null) {
-                addBlockDimlets(randomized, random);
+                addRandomDimlets(DimletType.BLOCK, randomized, random, Math.min(1, random.nextInt(5)-2));
                 addAttributeDimlets(randomized, random);
                 addFluidDimlets(randomized, random, 1);
                 randomized.add(terrainDimlet);

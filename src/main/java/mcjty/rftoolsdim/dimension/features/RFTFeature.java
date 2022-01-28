@@ -8,6 +8,7 @@ import mcjty.rftoolsdim.dimension.descriptor.CompiledDescriptor;
 import mcjty.rftoolsdim.dimension.descriptor.CompiledFeature;
 import mcjty.rftoolsdim.dimension.features.buildings.BuildingTemplate;
 import mcjty.rftoolsdim.dimension.features.buildings.DimletHut;
+import mcjty.rftoolsdim.dimension.features.buildings.SpawnHut;
 import mcjty.rftoolsdim.dimension.features.buildings.SpawnPlatform;
 import mcjty.rftoolsdim.dimension.terraintypes.RFToolsChunkGenerator;
 import mcjty.rftoolsdim.dimension.terraintypes.TerrainType;
@@ -90,8 +91,14 @@ public class RFTFeature extends Feature<NoneFeatureConfiguration> {
                 // Spawn platform
                 int floorHeight = getFloorHeight(terrainType, reader, cp);
                 DimensionManager.get().registerPlatformHeight(reader.getLevel().dimension().location(), floorHeight);
-                SpawnPlatform.SPAWN_PLATFORM.get().generate(terrainType, reader, new BlockPos(3, floorHeight, 3),
-                        baseBlocks, BuildingTemplate.GenerateFlag.PLAIN);
+
+                if (floorHeight < generator.getSeaLevel()) {
+                    SpawnHut.SPAWN_HUT.get().generate(terrainType, reader, new BlockPos(3, floorHeight, 3),
+                            baseBlocks, BuildingTemplate.GenerateFlag.PLAIN);
+                } else {
+                    SpawnPlatform.SPAWN_PLATFORM.get().generate(terrainType, reader, new BlockPos(3, floorHeight, 3),
+                            baseBlocks, BuildingTemplate.GenerateFlag.PLAIN);
+                }
                 generatedSomething = true;
             } else if (rand.nextFloat() < DimensionConfig.DIMLET_HUT_CHANCE.get()) {
                 DimletHut.DIMLET_HUT.get().generate(terrainType, reader, new BlockPos(cp.getMinBlockX() + 4, getFloorHeight(terrainType, reader, cp),cp.getMinBlockZ() + 4),

@@ -4,6 +4,7 @@ import mcjty.rftoolsdim.dimension.terraintypes.RFToolsChunkGenerator;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelHeightAccessor;
 import net.minecraft.world.level.NoiseColumn;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -21,14 +22,18 @@ public class FlatGenerator {
         BlockPos.MutableBlockPos mpos = new BlockPos.MutableBlockPos();
         Heightmap heightmap = chunkAccess.getOrCreateHeightmapUnprimed(Heightmap.Types.OCEAN_FLOOR_WG);
         Heightmap heightmap1 = chunkAccess.getOrCreateHeightmapUnprimed(Heightmap.Types.WORLD_SURFACE_WG);
-        BlockState defaultBlock = generator.getDefaultBlock();
 
-        for (int y = chunkAccess.getMinBuildHeight(); y < FLATHEIGHT; ++y) {
+        BlockState defaultBlock = generator.getDefaultBlock();
+        BlockState bedrock = Blocks.BEDROCK.defaultBlockState();
+
+        int minBuildHeight = chunkAccess.getMinBuildHeight();
+        for (int y = minBuildHeight; y < FLATHEIGHT; ++y) {
+            BlockState b = y < (minBuildHeight+2) ? bedrock : defaultBlock;
             for (int x = 0; x < 16; ++x) {
                 for (int z = 0; z < 16; ++z) {
-                    chunkAccess.setBlockState(mpos.set(x, y, z), defaultBlock, false);
-                    heightmap.update(x, y, z, defaultBlock);
-                    heightmap1.update(x, y, z, defaultBlock);
+                    chunkAccess.setBlockState(mpos.set(x, y, z), b, false);
+                    heightmap.update(x, y, z, b);
+                    heightmap1.update(x, y, z, b);
                 }
             }
         }
@@ -37,8 +42,10 @@ public class FlatGenerator {
 
     @NotNull
     public static NoiseColumn getBaseColumn(int pX, int pZ, LevelHeightAccessor level, RFToolsChunkGenerator generator) {
-        BlockState[] states = new BlockState[FLATHEIGHT -1];
+        BlockState[] states = new BlockState[FLATHEIGHT-level.getMinBuildHeight()];
         Arrays.fill(states, generator.getDefaultBlock());
+        states[0] = Blocks.BEDROCK.defaultBlockState();
+        states[1] = Blocks.BEDROCK.defaultBlockState();
         return new NoiseColumn(level.getMinBuildHeight(), states);
     }
 }

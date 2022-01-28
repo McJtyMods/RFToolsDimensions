@@ -257,7 +257,7 @@ public class DimensionBuilderTileEntity extends TickingTileEntity {
                 }
 
                 long seed = random.nextLong();
-                ServerLevel newworld = DimensionManager.get().createWorld(this.level, name, seed, descriptor, randomizedDescriptor);
+                ServerLevel newworld = DimensionManager.get().createWorld(this.level, name, seed, descriptor, randomizedDescriptor, getOwnerUUID());
                 ResourceLocation id = new ResourceLocation(RFToolsDim.MODID, name);
                 tagCompound.putString("dimension", id.toString());
                 CompiledDescriptor compiledDescriptor = DimensionManager.get().getCompiledDescriptor(newworld);
