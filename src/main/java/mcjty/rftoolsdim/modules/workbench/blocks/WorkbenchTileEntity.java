@@ -81,15 +81,13 @@ public class WorkbenchTileEntity extends GenericTileEntity {
 
     @Cap(type = CapType.ITEMS_AUTOMATION)
     private final GenericItemHandler items = GenericItemHandler.create(this, CONTAINER_FACTORY)
-            .itemValid((slot, stack) -> {
-                return switch (slot) {
-                    case SLOT_EMPTY_DIMLET -> DimletItem.isEmptyDimlet(stack);
-                    case SLOT_MEMORY_PART -> stack.getItem() instanceof PartItem;
-                    case SLOT_ENERGY_PART -> stack.getItem() instanceof PartItem;
-                    case SLOT_ESSENCE -> true;
-                    case SLOT_OUTPUT -> DimletItem.isReadyDimlet(stack);
-                    default -> isValidPatternItem(stack);
-                };
+            .itemValid((slot, stack) -> switch (slot) {
+                case SLOT_EMPTY_DIMLET -> DimletItem.isEmptyDimlet(stack);
+                case SLOT_MEMORY_PART -> stack.getItem() instanceof PartItem;
+                case SLOT_ENERGY_PART -> stack.getItem() instanceof PartItem;
+                case SLOT_ESSENCE -> true;
+                case SLOT_OUTPUT -> DimletItem.isReadyDimlet(stack);
+                default -> isValidPatternItem(stack);
             })
             .insertable(notslot(SLOT_OUTPUT))
             .build();

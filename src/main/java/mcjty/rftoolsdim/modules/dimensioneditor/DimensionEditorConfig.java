@@ -22,7 +22,7 @@ public class DimensionEditorConfig {
                 .defineInRange("generatorMaxRF", 20000, 0, Integer.MAX_VALUE);
         TNT_CAN_DESTROY_DIMENSION = SERVER_BUILDER
                 .comment("Set to true to allow the dimension editor to destroy dimensions using tnt")
-                .define("tntCanDestroyDimension", false);
+                .define("tntCanDestroyDimension", true);
 
         SERVER_BUILDER.pop();
     }

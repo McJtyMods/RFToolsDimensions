@@ -240,6 +240,7 @@ public class EnscriberTileEntity extends GenericTileEntity {
         CompiledDescriptor compiledDescriptor = new CompiledDescriptor();
         try {
             compiledDescriptor.compile(descriptor, DimensionDescriptor.EMPTY);  // We just need to check the descriptor. Not randomized
+            error = DescriptorError.OK;
         } catch (DescriptorError e) {
             error = e;
         }

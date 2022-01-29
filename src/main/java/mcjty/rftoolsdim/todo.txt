@@ -11,3 +11,4 @@
 - Check admin dimlets
 - Fix dimension editor
 - Patchouli manuals?
+- Fix activity probe name/tooltip
