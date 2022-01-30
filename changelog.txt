@@ -1,3 +1,6 @@
+Upcoming:
+- Added missing essences to the tag dimlets
+
 1.18-8.0.0-beta:
 - Ported to 1.18
 

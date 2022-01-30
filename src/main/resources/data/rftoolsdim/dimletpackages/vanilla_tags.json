@@ -7,7 +7,10 @@
     "maintain": 3000,
     "ticks": 200,
     "worldgen": true,
-    "dimlet": true
+    "dimlet": true,
+    "essence": {
+      "item": "minecraft:nether_star"
+    }
   },
   {
     "type": "tag",
@@ -17,7 +20,10 @@
     "maintain": 100,
     "ticks": 40,
     "worldgen": true,
-    "dimlet": true
+    "dimlet": true,
+    "essence": {
+      "item": "minecraft:oak_planks"
+    }
   },
   {
     "type": "tag",
@@ -27,7 +33,10 @@
     "maintain": 100,
     "ticks": 40,
     "worldgen": true,
-    "dimlet": true
+    "dimlet": true,
+    "essence": {
+      "item": "minecraft:white_wool"
+    }
   },
   {
     "type": "tag",
@@ -37,7 +46,10 @@
     "maintain": 200,
     "ticks": 80,
     "worldgen": true,
-    "dimlet": true
+    "dimlet": true,
+    "essence": {
+      "item": "minecraft:oak_log"
+    }
   },
   {
     "type": "tag",
@@ -47,7 +59,10 @@
     "maintain": 100,
     "ticks": 40,
     "worldgen": true,
-    "dimlet": true
+    "dimlet": true,
+    "essence": {
+      "item": "minecraft:ice"
+    }
   },
   {
     "type": "tag",
@@ -57,7 +72,10 @@
     "maintain": 100,
     "ticks": 40,
     "worldgen": true,
-    "dimlet": true
+    "dimlet": true,
+    "essence": {
+      "item": "minecraft:glass"
+    }
   },
   {
     "type": "tag",
@@ -67,6 +85,9 @@
     "maintain": 10,
     "ticks": 10,
     "worldgen": true,
-    "dimlet": true
+    "dimlet": true,
+    "essence": {
+      "item": "minecraft:dirt"
+    }
   }
 ]
