@@ -132,6 +132,9 @@ public class WorkbenchTileEntity extends GenericTileEntity {
         if (type == null) {
             return false;
         }
+        if (!type.usesKnowledgeSystem()) {
+           return false;
+        }
         if (memoryPart.isEmpty()) {
             return false;
         }
@@ -178,6 +181,9 @@ public class WorkbenchTileEntity extends GenericTileEntity {
     }
 
     private void hilightPattern(Player player, DimletKey key) {
+        if (!isCraftable(getSupportedKnowledgeKeys(), key)) {
+            return;
+        }
         DimletPattern pattern = KnowledgeManager.get().getPattern(LevelTools.getOverworld(player.level).getSeed(), key);
         if (pattern != null) {
             String[] p = pattern.pattern();
@@ -188,6 +194,9 @@ public class WorkbenchTileEntity extends GenericTileEntity {
 
     private void suggestParts(Player player, DimletKey key) {
         if (!key.type().usesKnowledgeSystem()) {
+            return;
+        }
+        if (!isCraftable(getSupportedKnowledgeKeys(), key)) {
             return;
         }
 
@@ -276,11 +285,15 @@ public class WorkbenchTileEntity extends GenericTileEntity {
         Set<KnowledgeKey> knownKeys = getSupportedKnowledgeKeys();
         List<DimletClientHelper.DimletWithInfo> dimlets = new ArrayList<>();
         for (DimletKey dimlet : DimletDictionary.get().getDimlets()) {
-            KnowledgeKey kkey = KnowledgeManager.get().getKnowledgeKey(LevelTools.getOverworld(level).getSeed(), dimlet);
-            boolean craftable = knownKeys.contains(kkey);
+            boolean craftable = isCraftable(knownKeys, dimlet);
             dimlets.add(new DimletClientHelper.DimletWithInfo(dimlet, craftable));
         }
         return dimlets;
+    }
+
+    private boolean isCraftable(Set<KnowledgeKey> knownKeys, DimletKey dimlet) {
+        KnowledgeKey kkey = KnowledgeManager.get().getKnowledgeKey(LevelTools.getOverworld(level).getSeed(), dimlet);
+        return knownKeys.contains(kkey);
     }
 
     @ServerCommand(type = DimletClientHelper.DimletWithInfo.class, serializer = DimletClientHelper.DimletWithInfo.Serializer.class)
