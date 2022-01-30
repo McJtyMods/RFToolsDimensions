@@ -1,3 +1,6 @@
+1.18-8.0.0-beta:
+- Ported to 1.18
+
 1.16-7.0.20-beta:
 - Updated to latest version of McJtyLib
 
