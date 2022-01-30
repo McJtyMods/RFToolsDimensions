@@ -1,4 +1,4 @@
-Upcoming:
+1.18-8.0.1:
 - Added missing essences to the tag dimlets
 
 1.18-8.0.0-beta:
