@@ -47,10 +47,6 @@ repositories {
         name = "CoFH Maven"
         url = "https://maven.covers1624.net"
     }
-    maven {
-        name = "TESLA"
-        url = "https://maven.mcmoddev.com"
-    }
 }
 
 group= "com.github.mcjty" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
