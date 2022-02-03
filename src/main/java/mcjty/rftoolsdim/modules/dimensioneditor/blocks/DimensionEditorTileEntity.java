@@ -349,6 +349,10 @@ public class DimensionEditorTileEntity extends TickingTileEntity {
         ResourceLocation id = new ResourceLocation(dimension);
         DimensionData data = PersistantDimensionManager.get(level).getData(id);
 
+        if (data == null) {
+            Broadcaster.broadcast(level, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), "Not a valid dimension!", 10);
+            return ItemStack.EMPTY;
+        }
         if (getOwnerUUID() != null && getOwnerUUID().equals(data.getOwner())) {
             return itemStack;
         }

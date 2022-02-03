@@ -7,3 +7,8 @@
 - Client side effects
 - Check admin dimlets
 - Fix dimension editor
+- Make a receiver in the destination dimension private for the given owner
+- Fix implementation of the destination analyzer
+- Fix platform from generating sometimes
+- Fix water/ocean from generating in 'chaotic'
+- Warning in the dialer when dialing to dimensions

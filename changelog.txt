@@ -1,3 +1,6 @@
+Upcoming:
+- Fixed a bug when trying to delete an already deleted dimension using the dimension editor
+
 1.18-8.0.1:
 - Added missing essences to the tag dimlets
 
