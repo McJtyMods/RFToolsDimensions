@@ -15,7 +15,7 @@ public enum TerrainType {
     NORMAL("normal", KnowledgeSet.SET3, TerrainPresets.RFTOOLSDIM_OVERWORLD, false),
     ISLANDS("islands", KnowledgeSet.SET4, TerrainPresets.RFTOOLSDIM_ISLANDS, true),
     CAVERN("cavern", KnowledgeSet.SET5, TerrainPresets.RFTOOLSDIM_CAVERN, false),
-    CHAOTIC("chaotic", KnowledgeSet.SET4, TerrainPresets.RFTOOLSDIM_CHAOTIC, false),
+    CHAOTIC("chaotic", KnowledgeSet.SET4, TerrainPresets.RFTOOLSDIM_CHAOTIC, true),
     GRID("grid", KnowledgeSet.SET2, TerrainPresets.RFTOOLSDIM_OVERWORLD, true),
     PLATFORMS("platforms", KnowledgeSet.SET2, TerrainPresets.RFTOOLSDIM_OVERWORLD, true),
     SPIKES("spikes", KnowledgeSet.SET4, TerrainPresets.RFTOOLSDIM_OVERWORLD, false),
