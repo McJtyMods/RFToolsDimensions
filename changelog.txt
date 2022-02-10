@@ -1,4 +1,4 @@
-Upcoming:
+1.18-8.0.2:
 - Fixed a bug when trying to delete an already deleted dimension using the dimension editor
 - Chaotic terrain was not marked as void like which could cause oceans to generate in it
 
