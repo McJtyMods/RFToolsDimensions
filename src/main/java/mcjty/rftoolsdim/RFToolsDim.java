@@ -1,8 +1,10 @@
 package mcjty.rftoolsdim;
 
 import mcjty.lib.modules.Modules;
+import mcjty.rftoolsbase.api.dimension.IDimensionManager;
+import mcjty.rftoolsdim.apiimpl.DimensionManager;
 import mcjty.rftoolsdim.dimension.client.OverlayRenderer;
-import mcjty.rftoolsdim.dimension.data.DimensionManager;
+import mcjty.rftoolsdim.dimension.data.DimensionCreator;
 import mcjty.rftoolsdim.modules.blob.BlobModule;
 import mcjty.rftoolsdim.modules.decorative.DecorativeModule;
 import mcjty.rftoolsdim.modules.dimensionbuilder.DimensionBuilderModule;
@@ -23,7 +25,11 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 @Mod(RFToolsDim.MODID)
 public class RFToolsDim {
@@ -44,6 +50,7 @@ public class RFToolsDim {
         IEventBus modbus = FMLJavaModLoadingContext.get().getModEventBus();
         modbus.addListener(setup::init);
         modbus.addListener(modules::init);
+        modbus.addListener(this::processIMC);
         MinecraftForge.EVENT_BUS.addListener(this::onJoinWorld);
 
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
@@ -56,6 +63,16 @@ public class RFToolsDim {
 //            FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientEventHandlers::onClientTick);
         });
     }
+
+    private void processIMC(final InterModProcessEvent event) {
+        event.getIMCStream().forEach(message -> {
+            if ("getDimensionManager".equals(message.getMethod())) {
+                Supplier<Function<IDimensionManager, Void>> supplier = message.getMessageSupplier();
+                supplier.get().apply(new DimensionManager());
+            }
+        });
+    }
+
 
     private void setupModules() {
         modules.register(new VariousModule());
@@ -71,6 +88,6 @@ public class RFToolsDim {
     }
 
     private void onJoinWorld(PlayerEvent.PlayerLoggedInEvent event) {
-        DimensionManager.get().clear();
+        DimensionCreator.get().clear();
     }
 }

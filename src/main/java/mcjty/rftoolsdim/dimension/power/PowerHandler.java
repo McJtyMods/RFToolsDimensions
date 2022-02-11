@@ -4,7 +4,7 @@ import mcjty.lib.varia.LevelTools;
 import mcjty.rftoolsdim.dimension.DimensionConfig;
 import mcjty.rftoolsdim.dimension.data.ClientDimensionData;
 import mcjty.rftoolsdim.dimension.data.DimensionData;
-import mcjty.rftoolsdim.dimension.data.DimensionManager;
+import mcjty.rftoolsdim.dimension.data.DimensionCreator;
 import mcjty.rftoolsdim.dimension.data.PersistantDimensionManager;
 import mcjty.rftoolsdim.dimension.descriptor.CompiledDescriptor;
 import mcjty.rftoolsdim.dimension.network.PackagePropageDataToClients;
@@ -33,7 +33,7 @@ public class PowerHandler {
     private int counterEffects = EFFECTS_MAX;
 
     public static long calculateMaxDimensionPower(ResourceLocation id, Level overworld) {
-        CompiledDescriptor descriptor = DimensionManager.get().getCompiledDescriptor(overworld, id);
+        CompiledDescriptor descriptor = DimensionCreator.get().getCompiledDescriptor(overworld, id);
         if (descriptor != null) {
             return calculateMaxDimensionPower(descriptor);
         } else {
@@ -93,7 +93,7 @@ public class PowerHandler {
             // Power handling.
             long power;
             ServerLevel world = LevelTools.getLevel(overworld, entry.getKey());
-            CompiledDescriptor compiledDescriptor = DimensionManager.get().getCompiledDescriptor(world);
+            CompiledDescriptor compiledDescriptor = DimensionCreator.get().getCompiledDescriptor(world);
 
             if (compiledDescriptor != null) {
 

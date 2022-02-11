@@ -40,7 +40,7 @@ import java.util.UUID;
 /**
  * Manages runtime handling of a dimension. That includes the compiled descriptors and creation of dimensions
  */
-public class DimensionManager {
+public class DimensionCreator {
 
     private final Map<ResourceLocation, CompiledDescriptor> compiledDescriptorMap = new HashMap<>();
 
@@ -59,9 +59,9 @@ public class DimensionManager {
     }
     private final Map<String, ReservedName> reservedDimensionNames = new HashMap<>();
 
-    private static final DimensionManager instance = new DimensionManager();
+    private static final DimensionCreator instance = new DimensionCreator();
 
-    public static DimensionManager get() {
+    public static DimensionCreator get() {
         return instance;
     }
 

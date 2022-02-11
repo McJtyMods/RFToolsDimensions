@@ -13,10 +13,6 @@ public record DimletKey(DimletType type, String key) implements Comparable<Dimle
         return new DimletKey(DimletType.byName(split[0]), split[1]);
     }
 
-    public String serialize() {
-        return type.getShortName() + "#" + key;
-    }
-
     public void toBytes(FriendlyByteBuf buf) {
         buf.writeInt(type.ordinal());
         buf.writeUtf(key);

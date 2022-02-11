@@ -1,15 +1,16 @@
 package mcjty.rftoolsdim.dimension.data;
 
 import mcjty.lib.varia.LevelTools;
+import mcjty.rftoolsbase.api.dimension.IDimensionInformation;
 import mcjty.rftoolsdim.dimension.descriptor.DimensionDescriptor;
+import mcjty.rftoolsdim.dimension.power.PowerHandler;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 
 import java.util.UUID;
 
-public class DimensionData {
+public class DimensionData implements IDimensionInformation {
 
     private final ResourceLocation id;
     private final DimensionDescriptor descriptor;
@@ -74,6 +75,7 @@ public class DimensionData {
         return randomizedDescriptor;
     }
 
+    @Override
     public UUID getOwner() {
         return owner;
     }
@@ -82,10 +84,17 @@ public class DimensionData {
         return skyDimletTypes;
     }
 
+    @Override
     public long getEnergy() {
         return energy;
     }
 
+    @Override
+    public long getMaxEnergy(Level world) {
+        return PowerHandler.calculateMaxDimensionPower(id, world);
+    }
+
+    @Override
     public int getActivityProbes() {
         return activityProbes;
     }

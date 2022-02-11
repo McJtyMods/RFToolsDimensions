@@ -19,7 +19,7 @@ import mcjty.lib.varia.Sync;
 import mcjty.rftoolsbase.tools.ManualHelper;
 import mcjty.rftoolsdim.dimension.DimensionConfig;
 import mcjty.rftoolsdim.dimension.data.DimensionData;
-import mcjty.rftoolsdim.dimension.data.DimensionManager;
+import mcjty.rftoolsdim.dimension.data.DimensionCreator;
 import mcjty.rftoolsdim.dimension.data.PersistantDimensionManager;
 import mcjty.rftoolsdim.dimension.descriptor.CompiledDescriptor;
 import mcjty.rftoolsdim.dimension.descriptor.DescriptorError;
@@ -145,7 +145,7 @@ public class EnscriberTileEntity extends GenericTileEntity {
             player.displayClientMessage(new TextComponent("This dimension already existed! If this is what you wanted then that's fine. Otherwise you need digit dimlets to make new unique dimensions. The dimlet sequence uniquely identifies a dimension. Names can't be changed")
                     .withStyle(ChatFormatting.YELLOW), false);
         } else {
-            if (!DimensionManager.get().isNameAvailable(level, null, name)) {
+            if (!DimensionCreator.get().isNameAvailable(level, null, name)) {
                 player.displayClientMessage(new TextComponent("This name is already used by another dimension!")
                         .withStyle(ChatFormatting.YELLOW), false);
                 return;

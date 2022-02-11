@@ -8,7 +8,7 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import mcjty.lib.varia.TeleportationTools;
 import mcjty.rftoolsdim.RFToolsDim;
-import mcjty.rftoolsdim.dimension.data.DimensionManager;
+import mcjty.rftoolsdim.dimension.data.DimensionCreator;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.server.level.ServerPlayer;
@@ -35,7 +35,7 @@ public class CommandTpDim implements Command<CommandSourceStack> {
         ServerPlayer player = context.getSource().getPlayerOrException();
         int x = player.blockPosition().getX();
         int z = player.blockPosition().getZ();
-        Level world = DimensionManager.get().getDimWorld(name);
+        Level world = DimensionCreator.get().getDimWorld(name);
         if (world == null) {
             RFToolsDim.setup.getLogger().error("Can't find dimension '" + name + "'!");
             return 0;

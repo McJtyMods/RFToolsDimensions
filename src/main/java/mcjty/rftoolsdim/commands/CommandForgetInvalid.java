@@ -6,7 +6,7 @@ import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import mcjty.rftoolsdim.dimension.data.DimensionData;
-import mcjty.rftoolsdim.dimension.data.DimensionManager;
+import mcjty.rftoolsdim.dimension.data.DimensionCreator;
 import mcjty.rftoolsdim.dimension.data.PersistantDimensionManager;
 import mcjty.rftoolsdim.dimension.descriptor.CompiledDescriptor;
 import net.minecraft.commands.CommandSourceStack;
@@ -38,7 +38,7 @@ public class CommandForgetInvalid implements Command<CommandSourceStack> {
         PersistantDimensionManager mgr = PersistantDimensionManager.get(world);
         Set<Map.Entry<ResourceLocation, DimensionData>> entries = new HashSet<>(mgr.getData().entrySet());
         for (Map.Entry<ResourceLocation, DimensionData> entry : entries) {
-            CompiledDescriptor descriptor = DimensionManager.get().getCompiledDescriptor(world, entry.getKey());
+            CompiledDescriptor descriptor = DimensionCreator.get().getCompiledDescriptor(world, entry.getKey());
             if (descriptor == null) {
                 mgr.forget(entry.getKey());
                 context.getSource().sendSuccess(new TextComponent(ChatFormatting.YELLOW + "Removed '" + entry.getKey() + "'"), false);

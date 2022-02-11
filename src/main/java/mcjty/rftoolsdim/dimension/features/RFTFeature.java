@@ -3,7 +3,7 @@ package mcjty.rftoolsdim.dimension.features;
 import com.mojang.serialization.Codec;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.dimension.DimensionConfig;
-import mcjty.rftoolsdim.dimension.data.DimensionManager;
+import mcjty.rftoolsdim.dimension.data.DimensionCreator;
 import mcjty.rftoolsdim.dimension.descriptor.CompiledDescriptor;
 import mcjty.rftoolsdim.dimension.descriptor.CompiledFeature;
 import mcjty.rftoolsdim.dimension.features.buildings.BuildingTemplate;
@@ -17,11 +17,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.Tag;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ChunkGenerator;
@@ -36,7 +33,6 @@ import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.level.levelgen.placement.PlacementModifier;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class RFTFeature extends Feature<NoneFeatureConfiguration> {
 
@@ -90,7 +86,7 @@ public class RFTFeature extends Feature<NoneFeatureConfiguration> {
             if (cp.x == 0 && cp.z == 0) {
                 // Spawn platform
                 int floorHeight = getFloorHeight(terrainType, reader, cp);
-                DimensionManager.get().registerPlatformHeight(reader.getLevel().dimension().location(), floorHeight);
+                DimensionCreator.get().registerPlatformHeight(reader.getLevel().dimension().location(), floorHeight);
 
                 if (floorHeight < generator.getSeaLevel()) {
                     SpawnHut.SPAWN_HUT.get().generate(terrainType, reader, new BlockPos(3, floorHeight, 3),

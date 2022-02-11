@@ -19,7 +19,7 @@ import mcjty.rftoolsbase.tools.ManualHelper;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.compat.RFToolsUtilityCompat;
 import mcjty.rftoolsdim.dimension.data.DimensionData;
-import mcjty.rftoolsdim.dimension.data.DimensionManager;
+import mcjty.rftoolsdim.dimension.data.DimensionCreator;
 import mcjty.rftoolsdim.dimension.data.PersistantDimensionManager;
 import mcjty.rftoolsdim.dimension.descriptor.CompiledDescriptor;
 import mcjty.rftoolsdim.dimension.descriptor.DimensionDescriptor;
@@ -208,14 +208,14 @@ public class DimensionBuilderTileEntity extends TickingTileEntity {
 
         // If we are creating a dimension we should reserve the name
         String name = tagCompound.getString("name");
-        DimensionManager.get().markReservedName(level, worldPosition, name);
+        DimensionCreator.get().markReservedName(level, worldPosition, name);
 
         int createCost = tagCompound.getInt("rfCreateCost");
         float inf = infusableHandler.map(IInfusable::getInfusedFactor).orElse(0.0f);
         createCost = (int) (createCost * (2.0f - inf) / 2.0f);
 
         if (isCheaterDimension(tagCompound) || (energyStorage.getEnergyStored() >= createCost)) {
-            if (!DimensionManager.get().isNameAvailable(level, worldPosition, name)) {
+            if (!DimensionCreator.get().isNameAvailable(level, worldPosition, name)) {
                 // The name is not available. Stop building!
                 errorMode = ERROR_COLLISION;
                 setChanged();
@@ -243,13 +243,13 @@ public class DimensionBuilderTileEntity extends TickingTileEntity {
 
                 DimensionDescriptor randomizedDescriptor = descriptor.createRandomizedDescriptor(random);
 
-                if (!DimensionManager.get().isNameAvailable(level, worldPosition, name)) {
+                if (!DimensionCreator.get().isNameAvailable(level, worldPosition, name)) {
                     // Error!
                     errorMode = ERROR_COLLISION;
                     setChanged();
                     return 0;
                 }
-                if (!DimensionManager.get().isDescriptorAvailable(level, descriptor)) {
+                if (!DimensionCreator.get().isDescriptorAvailable(level, descriptor)) {
                     // Error!
                     errorMode = ERROR_COLLISION;
                     setChanged();
@@ -257,10 +257,10 @@ public class DimensionBuilderTileEntity extends TickingTileEntity {
                 }
 
                 long seed = random.nextLong();
-                ServerLevel newworld = DimensionManager.get().createWorld(this.level, name, seed, descriptor, randomizedDescriptor, getOwnerUUID());
+                ServerLevel newworld = DimensionCreator.get().createWorld(this.level, name, seed, descriptor, randomizedDescriptor, getOwnerUUID());
                 ResourceLocation id = new ResourceLocation(RFToolsDim.MODID, name);
                 tagCompound.putString("dimension", id.toString());
-                CompiledDescriptor compiledDescriptor = DimensionManager.get().getCompiledDescriptor(newworld);
+                CompiledDescriptor compiledDescriptor = DimensionCreator.get().getCompiledDescriptor(newworld);
                 tagCompound.putInt("rfMaintainCost", compiledDescriptor.getActualPowerCost());
                 setChanged();
 
@@ -281,7 +281,7 @@ public class DimensionBuilderTileEntity extends TickingTileEntity {
         }
         // It failed, the commandblock may have been overwritten. Luckily we recorded the height
         // of the platform somewhere
-        int platformHeight = DimensionManager.get().getPlatformHeight(newworld.dimension().location());
+        int platformHeight = DimensionCreator.get().getPlatformHeight(newworld.dimension().location());
         RFToolsUtilityCompat.createTeleporter(newworld, new BlockPos(8, platformHeight, 8), name);
         newworld.setBlockAndUpdate(new BlockPos(8, platformHeight+1, 8), Blocks.AIR.defaultBlockState());
         newworld.setBlockAndUpdate(new BlockPos(8, platformHeight+2, 8), Blocks.AIR.defaultBlockState());
