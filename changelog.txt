@@ -1,4 +1,4 @@
-Upcoming:
+1.18-8.0.3:
 - New API so that other mods can check power usage of dimensions
 
 1.18-8.0.2:
