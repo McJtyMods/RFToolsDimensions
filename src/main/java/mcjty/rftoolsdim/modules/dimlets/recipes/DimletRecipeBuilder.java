@@ -14,14 +14,14 @@ import net.minecraft.advancements.CriterionTriggerInstance;
 import net.minecraft.advancements.RequirementsStrategy;
 import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
-import net.minecraft.data.recipes.FinishedRecipe;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.tags.Tag;
-import net.minecraft.world.level.ItemLike;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.core.Registry;
+import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.level.ItemLike;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -56,7 +56,7 @@ public class DimletRecipeBuilder implements IRecipeBuilder<DimletRecipeBuilder> 
     }
 
     @Override
-    public DimletRecipeBuilder define(Character symbol, Tag<Item> tagIn) {
+    public DimletRecipeBuilder define(Character symbol, TagKey<Item> tagIn) {
         return this.define(symbol, Ingredient.of(tagIn));
     }
 
