@@ -10,34 +10,35 @@ import mcjty.rftoolsdim.dimension.noisesettings.NoiseSettingsBuilder;
 import mcjty.rftoolsdim.dimension.noisesettings.NoiseSliderBuilder;
 import mcjty.rftoolsdim.dimension.terraintypes.generators.*;
 import mcjty.rftoolsdim.tools.PerlinNoiseGenerator14;
+import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
-import net.minecraft.resources.RegistryLookupCodec;
+import net.minecraft.resources.RegistryOps;
 import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.world.level.LevelHeightAccessor;
 import net.minecraft.world.level.NoiseColumn;
 import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.biome.BiomeSource;
+import net.minecraft.world.level.biome.Climate;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator;
 import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
-import net.minecraft.world.level.levelgen.NoiseSampler;
 import net.minecraft.world.level.levelgen.blending.Blender;
+import net.minecraft.world.level.levelgen.structure.StructureSet;
 import net.minecraft.world.level.levelgen.synth.NormalNoise;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 public class RFToolsChunkGenerator extends NoiseBasedChunkGenerator {
 
     public static final Codec<RFToolsChunkGenerator> CODEC = RecordCodecBuilder.create((instance) -> instance
-            .group(RegistryLookupCodec.create(
-                    Registry.NOISE_REGISTRY).forGetter((ins) -> ins.noises),
+            .group(RegistryOps.retrieveRegistry(Registry.STRUCTURE_SET_REGISTRY).forGetter((ins) -> ins.structureSets),
+                    RegistryOps.retrieveRegistry(Registry.NOISE_REGISTRY).forGetter((ins) -> ins.noises),
                     BiomeSource.CODEC.fieldOf("biome_source").forGetter((ins) -> ins.biomeSource),
                     Codec.LONG.fieldOf("seed").stable().forGetter((ins) -> ins.seed),
                     NoiseGeneratorSettings.CODEC.fieldOf("settings").forGetter((ins) -> ins.settings),
@@ -50,9 +51,10 @@ public class RFToolsChunkGenerator extends NoiseBasedChunkGenerator {
 
     private PerlinNoiseGenerator14 perlinNoise = null;
 
-    public RFToolsChunkGenerator(Registry<NormalNoise.NoiseParameters> noiseRegistry, BiomeSource biomeSource, long seed,
-                                 Supplier<NoiseGeneratorSettings> settingsSupplier, DimensionSettings dimensionSettings) {
-        super(noiseRegistry, biomeSource, seed, settingsSupplier);
+    public RFToolsChunkGenerator(Registry<StructureSet> structureSetRegistry,
+                                 Registry<NormalNoise.NoiseParameters> noiseRegistry, BiomeSource biomeSource, long seed,
+                                 Holder<NoiseGeneratorSettings> settingsSupplier, DimensionSettings dimensionSettings) {
+        super(structureSetRegistry, noiseRegistry, biomeSource, seed, settingsSupplier);
         this.noises = noiseRegistry;
         this.dimensionSettings = dimensionSettings;
     }
@@ -62,7 +64,7 @@ public class RFToolsChunkGenerator extends NoiseBasedChunkGenerator {
                                Consumer<NoiseSamplingSettingsBuilder> samplingSettingsBuilderConsumer,
                                Consumer<NoiseSliderBuilder> topSliderBuilderConsumer,
                                Consumer<NoiseSliderBuilder> bottomSliderBuilderConsumer) {
-        NoiseGeneratorSettings settings = this.settings.get();
+        NoiseGeneratorSettings settings = this.settings.value();
 
         NoiseSamplingSettingsBuilder samplingSettingsBuilder = NoiseSamplingSettingsBuilder.create(settings.noiseSettings().noiseSamplingSettings());
         samplingSettingsBuilderConsumer.accept(samplingSettingsBuilder);
@@ -82,12 +84,14 @@ public class RFToolsChunkGenerator extends NoiseBasedChunkGenerator {
         NoiseGeneratorSettings newsettings = NoiseGeneratorSettingsBuilder.create(settings)
                 .noiseSettings(noiseSettingsBuilder)
                 .build(dimensionSettings);
-        this.settings = () -> newsettings;
-        this.sampler = new NoiseSampler(newsettings.noiseSettings(), newsettings.isNoiseCavesEnabled(), seed, noises, newsettings.getRandomSource());
+        this.settings = Holder.direct(newsettings);
+//        this.sampler = new Climate.Sampler(newsettings.noiseSettings(), newsettings.isNoiseCavesEnabled(), seed, noises, newsettings.getRandomSource());
+        // @todo 1.18.2 NOT IMPLEMENTED YET
+//        this.router
     }
 
     public NoiseGeneratorSettings getNoiseGeneratorSettings() {
-        return settings.get();
+        return settings.value();
     }
 
     public long getSeed() {

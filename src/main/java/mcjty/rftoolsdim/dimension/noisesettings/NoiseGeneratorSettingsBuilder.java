@@ -6,11 +6,10 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
+import net.minecraft.world.level.levelgen.NoiseRouterWithOnlyNoises;
 import net.minecraft.world.level.levelgen.NoiseSettings;
-import net.minecraft.world.level.levelgen.StructureSettings;
 import net.minecraft.world.level.levelgen.SurfaceRules;
 import net.minecraft.world.level.levelgen.feature.StructureFeature;
-import net.minecraft.world.level.levelgen.feature.configurations.StructureFeatureConfiguration;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.HashMap;
@@ -102,11 +101,12 @@ public class NoiseGeneratorSettingsBuilder {
                 .aquifersEnabled(settings.isAquifersEnabled())
                 .disableMobGeneration(settings.disableMobGeneration())
                 .legacyRandomSource(settings.useLegacyRandomSource())
-                .liquidBlock(settings.getDefaultFluid())
-                .baseBlock(settings.getDefaultBlock())
-                .noiseCavesEnabled(settings.isNoiseCavesEnabled())
-                .noodleCavesEnabled(settings.isNoodleCavesEnabled())
-                .oreVeinsEnabled(settings.isOreVeinsEnabled())
+                .liquidBlock(settings.defaultFluid())
+                .baseBlock(settings.defaultBlock())
+                //@todo 1.18.2
+//                .noiseCavesEnabled(settings.isNoiseCavesEnabled())
+//                .noodleCavesEnabled(settings.isNoodleCavesEnabled())
+//                .oreVeinsEnabled(settings.isOreVeinsEnabled())
                 .seaLevel(settings.seaLevel())
                 ;
     }
@@ -130,11 +130,12 @@ public class NoiseGeneratorSettingsBuilder {
         }
         var structs = ImmutableMap.copyOf(structMap);
         StructureSettings structureSettings = new StructureSettings(Optional.empty(), structs);
-        return new NoiseGeneratorSettings(structureSettings,
+        return new NoiseGeneratorSettings(
                 noiseSettings,
                 baseBlock, liquidBlock,
+                new NoiseRouterWithOnlyNoises(),
                 ruleSource,
-                seaLevel, disableMobGeneration, aquifersEnabled, noiseCavesEnabled, oreVeinsEnabled, noodleCavesEnabled, legacyRandomSource);
+                seaLevel, disableMobGeneration, aquifersEnabled, /*noiseCavesEnabled, */oreVeinsEnabled, /*noodleCavesEnabled, */legacyRandomSource);
     }
 
     private void addDefaults(Map<StructureFeature<?>, StructureFeatureConfiguration> structMap) {
