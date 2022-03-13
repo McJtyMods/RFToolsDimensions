@@ -37,7 +37,7 @@ public class ForgeEventHandlers {
 
     @SubscribeEvent(priority = EventPriority.HIGH)
     public void onBiomeLoad(BiomeLoadingEvent event) {
-        event.getGeneration().getFeatures(GenerationStep.Decoration.RAW_GENERATION).add(() -> RFTFeature.RFTFEATURE_CONFIGURED);
+        event.getGeneration().getFeatures(GenerationStep.Decoration.RAW_GENERATION).add(RFTFeature.RFTFEATURE_CONFIGURED);
     }
 
     private final Random random = new Random();

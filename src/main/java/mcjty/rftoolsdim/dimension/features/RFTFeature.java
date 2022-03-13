@@ -14,7 +14,7 @@ import mcjty.rftoolsdim.dimension.terraintypes.RFToolsChunkGenerator;
 import mcjty.rftoolsdim.dimension.terraintypes.TerrainType;
 import mcjty.rftoolsdim.setup.Registration;
 import net.minecraft.core.BlockPos;
-import net.minecraft.data.BuiltinRegistries;
+import net.minecraft.core.Holder;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.ChunkPos;
@@ -26,31 +26,26 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraft.world.level.levelgen.placement.CountPlacement;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
-import net.minecraft.world.level.levelgen.placement.PlacementModifier;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
+import java.util.Set;
 
 public class RFTFeature extends Feature<NoneFeatureConfiguration> {
 
     public static final ResourceLocation RFTFEATURE_ID = new ResourceLocation(RFToolsDim.MODID, "rftfeature");
 
-    public static PlacedFeature RFTFEATURE_CONFIGURED;
+    public static Holder<PlacedFeature> RFTFEATURE_CONFIGURED;
 
     private static final long[] PRIMES = new long[] { 900157, 981961, 50001527, 32667413, 1111114993, 65548559, 320741, 100002509,
             35567897, 218021, 2900001163L, 3399018867L };
 
     public static void registerConfiguredFeatures() {
-        RFTFEATURE_CONFIGURED = registerPlacedFeature("rftfeature", Registration.RFTFEATURE.get().configured(NoneFeatureConfiguration.INSTANCE),
-                CountPlacement.of(1));
-    }
-
-    private static <C extends FeatureConfiguration, F extends Feature<C>> PlacedFeature registerPlacedFeature(String registryName, ConfiguredFeature<C, F> feature, PlacementModifier... placementModifiers) {
-        PlacedFeature placed = BuiltinRegistries.register(BuiltinRegistries.CONFIGURED_FEATURE, new ResourceLocation(registryName), feature).placed(placementModifiers);
-        return PlacementUtils.register(registryName, placed);
+        RFTFEATURE_CONFIGURED = PlacementUtils.register("rftfeature", Holder.direct(new ConfiguredFeature<>(Registration.RFTFEATURE.get(), NoneFeatureConfiguration.INSTANCE)), CountPlacement.of(1));
     }
 
     public RFTFeature(Codec<NoneFeatureConfiguration> codec) {

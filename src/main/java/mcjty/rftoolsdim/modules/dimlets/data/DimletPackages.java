@@ -1,6 +1,7 @@
 package mcjty.rftoolsdim.modules.dimlets.data;
 
 import com.google.gson.*;
+import mcjty.lib.varia.TagTools;
 import mcjty.rftoolsdim.RFToolsDim;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
@@ -90,7 +91,7 @@ public class DimletPackages {
                 // Skip blocks with tile entities
                 if (!hasTileEntity) {
                     if (!dimlets.contains(new DimletKey(DimletType.BLOCK, id.toString()))) {
-                        boolean isOre = block.getTags().contains(Tags.Blocks.ORES.getName());
+                        boolean isOre = TagTools.hasTag(block, Tags.Blocks.ORES);
                         JsonObject object = new JsonObject();
                         object.addProperty("type", DimletType.BLOCK.name().toLowerCase());
                         object.addProperty("key", id.toString());

@@ -1,5 +1,6 @@
 package mcjty.rftoolsdim.dimension.descriptor;
 
+import mcjty.lib.varia.TagTools;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.dimension.AdminDimletType;
 import mcjty.rftoolsdim.dimension.DimensionConfig;
@@ -12,9 +13,8 @@ import mcjty.rftoolsdim.dimension.terraintypes.TerrainType;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletDictionary;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletKey;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletSettings;
+import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.Tag;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -23,7 +23,6 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static mcjty.rftoolsdim.dimension.descriptor.DescriptorError.Code.*;
 import static mcjty.rftoolsdim.dimension.descriptor.DescriptorError.ERROR;
@@ -219,9 +218,8 @@ public class CompiledDescriptor {
         CompiledFeature compiledFeature = new CompiledFeature(feature);
 
         for (ResourceLocation rl : collectedTags) {
-            Tag<Block> tag = BlockTags.getAllTags().getTag(rl);
-            if (tag != null) {
-                collectedBlocks.addAll(tag.getValues().stream().map(Block::defaultBlockState).toList());
+            for (Holder<Block> holder : TagTools.getBlocksForTag(rl)) {
+                collectedBlocks.add(holder.value().defaultBlockState());
             }
         }
         collectedTags.clear();
