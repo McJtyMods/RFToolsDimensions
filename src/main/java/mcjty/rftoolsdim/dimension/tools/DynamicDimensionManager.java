@@ -3,7 +3,6 @@ package mcjty.rftoolsdim.dimension.tools;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
-import com.mojang.serialization.Lifecycle;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.MappedRegistry;
 import net.minecraft.core.Registry;
@@ -23,7 +22,6 @@ import net.minecraft.world.level.storage.WorldData;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.WorldEvent;
 
-import javax.annotation.Nullable;
 import java.util.*;
 import java.util.concurrent.Executor;
 import java.util.function.BiFunction;
@@ -188,15 +186,16 @@ public class DynamicDimensionManager {
 
         if (!removedLevelKeys.isEmpty()) {
             // replace the old dimension registry with a new one containing the dimensions that weren't removed, in the same order
-            final MappedRegistry<LevelStem> oldRegistry = worldGenSettings.dimensions();
-            final MappedRegistry<LevelStem> newRegistry = new MappedRegistry<>(Registry.LEVEL_STEM_REGISTRY, oldRegistry.elementsLifecycle());
+            final Registry<LevelStem> oldRegistry = worldGenSettings.dimensions();
+            final Registry<LevelStem> newRegistry = new MappedRegistry<>(Registry.LEVEL_STEM_REGISTRY, oldRegistry.elementsLifecycle(), null);  // @todo 1.18.2 is the null right?
 
             for (var entry : oldRegistry.entrySet()) {
                 final ResourceKey<LevelStem> oldKey = entry.getKey();
                 final ResourceKey<Level> oldLevelKey = ResourceKey.create(Registry.DIMENSION_REGISTRY, oldKey.location());
                 final LevelStem dimension = entry.getValue();
                 if (oldKey != null && dimension != null && !removedLevelKeys.contains(oldLevelKey)) {
-                    newRegistry.register(oldKey, dimension, oldRegistry.lifecycle(dimension));
+//                    newRegistry.register(oldKey, dimension, oldRegistry.lifecycle(dimension));
+                    Registry.register(newRegistry, oldKey, dimension);   // @todo 1.18.2 is this right?
                 }
             }
 
@@ -233,7 +232,8 @@ public class DynamicDimensionManager {
         // then instantiate level, add border listener, add to map, fire world load event
 
         // register the actual dimension
-        worldGenSettings.dimensions().register(dimensionKey, dimension, Lifecycle.experimental());
+        Registry.register(worldGenSettings.dimensions(), dimensionKey, dimension);
+//        worldGenSettings.dimensions().register(dimensionKey, dimension, Lifecycle.experimental());    // @todo 1.18.2
 
         // create the world instance
         final ServerLevel newWorld = new ServerLevel(
@@ -242,7 +242,7 @@ public class DynamicDimensionManager {
                 anvilConverter,
                 derivedLevelData,
                 worldKey,
-                dimension.type(),
+                dimension.typeHolder(),
                 chunkProgressListener,
                 dimension.generator(),
                 worldGenSettings.isDebug(),

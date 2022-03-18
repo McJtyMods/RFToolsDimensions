@@ -19,6 +19,7 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.feature.ConfiguredStructureFeature;
 import net.minecraft.world.level.levelgen.feature.StructureFeature;
 import net.minecraft.world.level.material.Material;
 
@@ -120,11 +121,11 @@ public class StructureAbsorberTileEntity extends TickingTileEntity {
     protected void tickServer() {
         if (structureId == null) {
             ChunkPos cp = new ChunkPos(worldPosition);
-            Map<StructureFeature<?>, LongSet> references = level.getChunk(cp.x, cp.z).getAllReferences();
+            Map<ConfiguredStructureFeature<?, ?>, LongSet> references = level.getChunk(cp.x, cp.z).getAllReferences();
             List<ResourceLocation> structures = new ArrayList<>();
-            for (Map.Entry<StructureFeature<?>, LongSet> entry : references.entrySet()) {
+            for (var entry : references.entrySet()) {
                 if (!entry.getValue().isEmpty()) {
-                    structures.add(entry.getKey().getRegistryName());
+                    structures.add(entry.getKey().feature.getRegistryName());
                 }
             }
             if (!structures.isEmpty()) {
@@ -150,10 +151,10 @@ public class StructureAbsorberTileEntity extends TickingTileEntity {
 
     private boolean isValidStructure() {
         ChunkPos cp = new ChunkPos(worldPosition);
-        Map<StructureFeature<?>, LongSet> references = level.getChunk(cp.x, cp.z).getAllReferences();
-        for (Map.Entry<StructureFeature<?>, LongSet> entry : references.entrySet()) {
+        Map<ConfiguredStructureFeature<?, ?>, LongSet> references = level.getChunk(cp.x, cp.z).getAllReferences();
+        for (var entry : references.entrySet()) {
             if (!entry.getValue().isEmpty()) {
-                if (structureId.equals(entry.getKey().getRegistryName().toString())) {
+                if (structureId.equals(entry.getKey().feature.getRegistryName().toString())) {
                     return true;
                 }
             }

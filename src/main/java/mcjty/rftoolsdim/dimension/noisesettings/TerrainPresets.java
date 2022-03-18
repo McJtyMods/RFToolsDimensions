@@ -1,6 +1,5 @@
 package mcjty.rftoolsdim.dimension.noisesettings;
 
-import com.google.common.collect.Maps;
 import net.minecraft.core.Registry;
 import net.minecraft.data.worldgen.SurfaceRuleData;
 import net.minecraft.data.worldgen.TerrainProvider;
@@ -8,10 +7,6 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.*;
-import net.minecraft.world.level.levelgen.feature.StructureFeature;
-
-import java.util.Map;
-import java.util.Optional;
 
 /*
 Sampling:
@@ -75,6 +70,8 @@ public class TerrainPresets {
     public static final ResourceKey<NoiseGeneratorSettings> RFTOOLSDIM_FLAT = ResourceKey.create(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY, new ResourceLocation("rftoolsdim_flat"));
     public static final ResourceKey<NoiseGeneratorSettings> RFTOOLSDIM_OVERWORLD = ResourceKey.create(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY, new ResourceLocation("rftoolsdim_overworld"));
 
+    public static final NoiseSettings NETHER_NOISE_SETTINGS = NoiseSettings.create(0, 128, new NoiseSamplingSettings(1.0D, 3.0D, 80.0D, 60.0D), new NoiseSlider(0.9375D, 3, 0), new NoiseSlider(2.5D, 4, -1), 1, 2, TerrainProvider.nether());
+
     public static void init() {
         NoiseGeneratorSettings.register(RFTOOLSDIM_CHAOTIC, chaotic());
         NoiseGeneratorSettings.register(RFTOOLSDIM_ISLANDS, islands());
@@ -91,10 +88,10 @@ public class TerrainPresets {
                         new NoiseSamplingSettings(1.0D, 3.0D, 80.0D, 60.0D),
                         new NoiseSlider(0.9375D, 3, 0),
                         new NoiseSlider(2.5D, 4, -1),
-                        1, 2, false, false, false, TerrainProvider.nether()),
+                        1, 2, /*false, false, false, */TerrainProvider.nether()),
                 Blocks.STONE.defaultBlockState(), Blocks.WATER.defaultBlockState(),
-                NoiseGeneratorSettings.caves(),
-                SurfaceRuleData.overworld(), 32, false, false, false, false, false, true);
+                NoiseRouterData.nether(NETHER_NOISE_SETTINGS),
+                SurfaceRuleData.overworld(), 32, false, false, false, true);
     }
 
     private static NoiseGeneratorSettings overworld() {

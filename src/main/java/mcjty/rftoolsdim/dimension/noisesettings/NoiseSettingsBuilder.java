@@ -84,9 +84,10 @@ public class NoiseSettingsBuilder {
                 .height(settings.height())
                 .noiseSizeHorizontal(settings.noiseSizeHorizontal())
                 .noiseSizeVertical(settings.noiseSizeVertical())
-                .islandNoiseOverride(settings.islandNoiseOverride())
-                .amplified(settings.isAmplified())
-                .largeBiomes(settings.largeBiomes())
+                // @todo 1.18.2
+//                .islandNoiseOverride(settings.islandNoiseOverride())
+//                .amplified(settings.isAmplified())
+//                .largeBiomes(settings.largeBiomes())
                 .bottomSlider(NoiseSliderBuilder.create(settings.bottomSlideSettings()))
                 .topSlider(NoiseSliderBuilder.create(settings.topSlideSettings()))
                 .samplingSettings(NoiseSamplingSettingsBuilder.create(settings.noiseSamplingSettings()))
@@ -99,7 +100,7 @@ public class NoiseSettingsBuilder {
                 samplingSettings,
                 topSlider,
                 bottomSlider,
-                noiseSizeHorizontal, noiseSizeVertical, islandNoiseOverride, amplified, largeBiomes,
+                noiseSizeHorizontal, noiseSizeVertical,//@todo 1.18.2 islandNoiseOverride, amplified, largeBiomes,
                 terrainShaper);
     }
 }

@@ -18,6 +18,7 @@ import mcjty.rftoolsdim.dimension.terraintypes.RFToolsChunkGenerator;
 import mcjty.rftoolsdim.dimension.terraintypes.TerrainType;
 import mcjty.rftoolsdim.dimension.tools.DynamicDimensionManager;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceKey;
@@ -194,16 +195,18 @@ public class DimensionCreator {
         if (terrainType == TerrainType.CAVERN) {
             dimensionType = DimensionRegistry.CAVERN_ID;
         }
-        DimensionType type = registryAccess.registryOrThrow(Registry.DIMENSION_TYPE_REGISTRY).get(dimensionType);
+        Holder<DimensionType> type = registryAccess.registryOrThrow(Registry.DIMENSION_TYPE_REGISTRY).getHolderOrThrow(ResourceKey.create(Registry.DIMENSION_TYPE_REGISTRY, dimensionType));
         ServerLevel result = DynamicDimensionManager.getOrCreateLevel(world.getServer(), key,
                 (server, registryKey) -> {
                     var noiseGeneratorSettings = registryAccess.registryOrThrow(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY);
                     var noiseSettingsIn = noiseGeneratorSettings.getOrThrow(terrainType.getNoiseSettings());
                     var noiseSettings = adapt(noiseSettingsIn, settings);
-                    ChunkGenerator generator = new RFToolsChunkGenerator(registryAccess.registryOrThrow(Registry.NOISE_REGISTRY),
+                    ChunkGenerator generator = new RFToolsChunkGenerator(
+                            registryAccess.registryOrThrow(Registry.STRUCTURE_SET_REGISTRY),
+                            registryAccess.registryOrThrow(Registry.NOISE_REGISTRY),
                             new RFTBiomeProvider(registryAccess.registryOrThrow(Registry.BIOME_REGISTRY), settings),
-                            seed, () -> noiseSettings, settings);
-                    return new LevelStem(() -> type, generator);
+                            seed, Holder.direct(noiseSettings), settings);
+                    return new LevelStem(type, generator);
                 });
 
         long skyDimletTypes = compiledDescriptor.getSkyDimletTypes();

@@ -11,6 +11,7 @@ import mcjty.rftoolsdim.modules.essences.EssencesConfig;
 import mcjty.rftoolsdim.modules.essences.EssencesModule;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -116,15 +117,15 @@ public class BiomeAbsorberTileEntity extends TickingTileEntity {
     @Override
     protected void tickServer() {
         if (biomeId == null) {
-            Biome biome = getLevel().getBiome(getBlockPos());
-            biomeId = biome.getRegistryName().toString();
+            Holder<Biome> biome = getLevel().getBiome(getBlockPos());
+            biomeId = biome.value().getRegistryName().toString();
             absorbing = EssencesConfig.maxBiomeAbsorption.get();
             setChanged();
         }
 
         if (absorbing > 0) {
-            Biome biome = level.getBiome(worldPosition);
-            if (!biome.getRegistryName().toString().equals(biomeId)) {
+            Holder<Biome> biome = level.getBiome(worldPosition);
+            if (!biome.value().getRegistryName().toString().equals(biomeId)) {
                 return;
             }
 

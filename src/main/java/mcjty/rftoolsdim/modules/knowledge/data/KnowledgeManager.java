@@ -1,6 +1,7 @@
 package mcjty.rftoolsdim.modules.knowledge.data;
 
 import mcjty.lib.varia.LevelTools;
+import mcjty.lib.varia.TagTools;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.dimension.TimeType;
 import mcjty.rftoolsdim.dimension.additional.SkyDimletType;
@@ -14,8 +15,9 @@ import mcjty.rftoolsdim.modules.dimlets.data.DimletKey;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletRarity;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletSettings;
 import mcjty.rftoolsdim.setup.Registration;
+import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -118,7 +120,7 @@ public class KnowledgeManager {
     private String getReasonBiome(DimletKey key) {
         Biome biome = ForgeRegistries.BIOMES.getValue(new ResourceLocation(key.key()));
         if (biome != null) {
-            return biome.getBiomeCategory().getName() + " biomes";
+            return Biome.getBiomeCategory(Holder.direct(biome)).getName() + " biomes";
         }
         return null;
     }
@@ -127,16 +129,16 @@ public class KnowledgeManager {
     private String getReasonStructure(DimletKey key) {
         StructureFeature<?> structure = ForgeRegistries.STRUCTURE_FEATURES.getValue(new ResourceLocation(key.key()));
         if (structure != null) {
-            return structure.getFeatureName();
+            return structure.getRegistryName().getPath();
         }
         return null;
     }
 
     @Nullable
     private String getReasonBlock(DimletKey key) {
-        ResourceLocation tagId = getMostCommonTagForBlock(key);
+        TagKey<Block> tagId = getMostCommonTagForBlock(key);
         if (tagId != null) {
-            return tagId.getPath();
+            return tagId.location().getPath();
         }
         return null;
     }
@@ -187,7 +189,7 @@ public class KnowledgeManager {
 
     /// Create a knowledge set based on the most important tag for a given block
     private KnowledgeSet getBlockKnowledgeSet(DimletKey key) {
-        ResourceLocation tagId = getMostCommonTagForBlock(key);
+        TagKey<Block> tagId = getMostCommonTagForBlock(key);
         if (tagId == null) {
             return KnowledgeSet.SET1;
         }
@@ -196,16 +198,17 @@ public class KnowledgeManager {
         return KnowledgeSet.values()[i%(KnowledgeSet.values().length)];
     }
 
-    private ResourceLocation getMostCommonTagForBlock(DimletKey key) {
-        ResourceLocation mostImportant = null;
+    private TagKey<Block> getMostCommonTagForBlock(DimletKey key) {
+        TagKey<Block> mostImportant = null;
         Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(key.key()));
         if (block == null) {
             RFToolsDim.setup.getLogger().error("Block '" + key.key() + "' is missing!");
         } else {
-            Set<ResourceLocation> tags = block.getTags();
+            Collection<TagKey<Block>> tags = TagTools.getTags(block);
             int maxAmount = -1;
-            for (ResourceLocation tag : tags) {
-                List<Block> elements = BlockTags.createOptional(tag).getValues();
+            for (TagKey<Block> tag : tags) {
+                List<Block> elements = new ArrayList<>();
+                TagTools.getBlocksForTag(tag).forEach(h -> elements.add(h.value()));
                 int size = elements.size();
                 if (commonTags.isCommon(tag)) {
                     size += 10; // Extra bonus
@@ -229,7 +232,7 @@ public class KnowledgeManager {
             return KnowledgeSet.SET2;
         }
         // @todo is this good?
-        return KnowledgeSet.values()[(Math.abs(structure.getFeatureName().hashCode())) % KnowledgeSet.values().length];
+        return KnowledgeSet.values()[(Math.abs(structure.getRegistryName().hashCode())) % KnowledgeSet.values().length];
     }
 
     /// Create a knowledge set based on the category of a biome
@@ -239,7 +242,8 @@ public class KnowledgeManager {
             RFToolsDim.setup.getLogger().error("Biome '" + key.key() + "' is missing!");
             return KnowledgeSet.SET1;
         }
-        return KnowledgeSet.values()[biome.getBiomeCategory().ordinal() % KnowledgeSet.values().length];
+        Biome.BiomeCategory category = Biome.getBiomeCategory(Holder.direct(biome));
+        return KnowledgeSet.values()[category.ordinal() % KnowledgeSet.values().length];
     }
 
     @Nullable
