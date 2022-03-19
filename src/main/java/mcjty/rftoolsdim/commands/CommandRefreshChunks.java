@@ -62,12 +62,12 @@ public class CommandRefreshChunks implements Command<CommandSourceStack> {
                     case YSCALE -> settings.noiseSettings().noiseSamplingSettings().yScale();
                     case XZFACTOR -> settings.noiseSettings().noiseSamplingSettings().xzFactor();
                     case YFACTOR -> settings.noiseSettings().noiseSamplingSettings().yFactor();
-                    case TOPOFFSET -> settings.noiseSettings().topSlideSettings().offset;
-                    case TOPSIZE -> settings.noiseSettings().topSlideSettings().size;
-                    case TOPTARGET -> settings.noiseSettings().topSlideSettings().target;
-                    case BOTTOMOFFSET -> settings.noiseSettings().bottomSlideSettings().offset;
-                    case BOTTOMSIZE -> settings.noiseSettings().bottomSlideSettings().size;
-                    case BOTTOMTARGET -> settings.noiseSettings().bottomSlideSettings().target;
+                    case TOPOFFSET -> settings.noiseSettings().topSlideSettings().offset();
+                    case TOPSIZE -> settings.noiseSettings().topSlideSettings().size();
+                    case TOPTARGET -> settings.noiseSettings().topSlideSettings().target();
+                    case BOTTOMOFFSET -> settings.noiseSettings().bottomSlideSettings().offset();
+                    case BOTTOMSIZE -> settings.noiseSettings().bottomSlideSettings().size();
+                    case BOTTOMTARGET -> settings.noiseSettings().bottomSlideSettings().target();
                     case HORIZONTAL -> settings.noiseSettings().noiseSizeHorizontal();
                     case VERTICAL -> settings.noiseSettings().noiseSizeVertical();
                     default -> 0;
@@ -114,12 +114,12 @@ public class CommandRefreshChunks implements Command<CommandSourceStack> {
                 + "  yfactor=" + samplingSettings.yFactor()
                 + "  xzscale=" + samplingSettings.xzScale()
                 + "  yscale=" + samplingSettings.yScale());
-        System.out.println("    TopSlider:  toptarget=" + noiseSettings.topSlideSettings().target
-                + "  topsize=" + noiseSettings.topSlideSettings().size
-                + "  topoffset=" + noiseSettings.topSlideSettings().offset);
-        System.out.println("    BottomSlider:  bottomtarget=" + noiseSettings.bottomSlideSettings().target
-                + "  bottomsize=" + noiseSettings.bottomSlideSettings().size
-                + "  bottomoffset=" + noiseSettings.bottomSlideSettings().offset);
+        System.out.println("    TopSlider:  toptarget=" + noiseSettings.topSlideSettings().target()
+                + "  topsize=" + noiseSettings.topSlideSettings().size()
+                + "  topoffset=" + noiseSettings.topSlideSettings().offset());
+        System.out.println("    BottomSlider:  bottomtarget=" + noiseSettings.bottomSlideSettings().target()
+                + "  bottomsize=" + noiseSettings.bottomSlideSettings().size()
+                + "  bottomoffset=" + noiseSettings.bottomSlideSettings().offset());
         System.out.println("    horizontal=" + noiseSettings.noiseSizeHorizontal()
                 + "  vertical=" + noiseSettings.noiseSizeVertical());
     }
