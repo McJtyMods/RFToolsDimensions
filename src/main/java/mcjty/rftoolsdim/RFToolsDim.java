@@ -5,6 +5,7 @@ import mcjty.rftoolsbase.api.dimension.IDimensionManager;
 import mcjty.rftoolsdim.apiimpl.DimensionManager;
 import mcjty.rftoolsdim.dimension.client.OverlayRenderer;
 import mcjty.rftoolsdim.dimension.data.DimensionCreator;
+import mcjty.rftoolsdim.dimension.noisesettings.TerrainPresets;
 import mcjty.rftoolsdim.modules.blob.BlobModule;
 import mcjty.rftoolsdim.modules.decorative.DecorativeModule;
 import mcjty.rftoolsdim.modules.dimensionbuilder.DimensionBuilderModule;
@@ -19,8 +20,10 @@ import mcjty.rftoolsdim.setup.ClientSetup;
 import mcjty.rftoolsdim.setup.Config;
 import mcjty.rftoolsdim.setup.ModSetup;
 import mcjty.rftoolsdim.setup.Registration;
+import net.minecraft.world.entity.EntityType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
@@ -51,6 +54,7 @@ public class RFToolsDim {
         modbus.addListener(setup::init);
         modbus.addListener(modules::init);
         modbus.addListener(this::processIMC);
+        modbus.addGenericListener(EntityType.class, this::onRegister);
         MinecraftForge.EVENT_BUS.addListener(this::onJoinWorld);
 
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
@@ -62,6 +66,11 @@ public class RFToolsDim {
             modbus.addListener(WorkbenchModule::onTextureStitch);
 //            FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientEventHandlers::onClientTick);
         });
+    }
+
+    // To register the recipe types at the proper time we need this
+    public void onRegister(final RegistryEvent.Register<EntityType<?>> e) {
+        TerrainPresets.init();
     }
 
     private void processIMC(final InterModProcessEvent event) {

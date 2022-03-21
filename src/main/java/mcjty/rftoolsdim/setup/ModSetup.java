@@ -37,7 +37,7 @@ public class ModSetup extends DefaultModSetup {
 
         e.enqueueWork(() -> {
             RFTFeature.registerConfiguredFeatures();
-            TerrainPresets.init();
+//            TerrainPresets.init();
         });
         MinecraftForge.EVENT_BUS.register(new ForgeEventHandlers());
 

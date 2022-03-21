@@ -1,5 +1,6 @@
 package mcjty.rftoolsdim.dimension.noisesettings;
 
+import mcjty.rftoolsdim.RFToolsDim;
 import net.minecraft.core.Registry;
 import net.minecraft.data.worldgen.SurfaceRuleData;
 import net.minecraft.data.worldgen.TerrainProvider;
@@ -64,20 +65,20 @@ new NoiseSettings(
  */
 public class TerrainPresets {
 
-    public static final ResourceKey<NoiseGeneratorSettings> RFTOOLSDIM_CHAOTIC = ResourceKey.create(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY, new ResourceLocation("rftoolsdim_chaotic"));
-    public static final ResourceKey<NoiseGeneratorSettings> RFTOOLSDIM_ISLANDS = ResourceKey.create(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY, new ResourceLocation("rftoolsdim_islands"));
-    public static final ResourceKey<NoiseGeneratorSettings> RFTOOLSDIM_CAVERN = ResourceKey.create(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY, new ResourceLocation("rftoolsdim_cavern"));
-    public static final ResourceKey<NoiseGeneratorSettings> RFTOOLSDIM_FLAT = ResourceKey.create(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY, new ResourceLocation("rftoolsdim_flat"));
-    public static final ResourceKey<NoiseGeneratorSettings> RFTOOLSDIM_OVERWORLD = ResourceKey.create(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY, new ResourceLocation("rftoolsdim_overworld"));
+    public static final ResourceKey<NoiseGeneratorSettings> RFTOOLSDIM_CHAOTIC = ResourceKey.create(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY, new ResourceLocation(RFToolsDim.MODID, "rftoolsdim_chaotic"));
+    public static final ResourceKey<NoiseGeneratorSettings> RFTOOLSDIM_ISLANDS = ResourceKey.create(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY, new ResourceLocation(RFToolsDim.MODID, "rftoolsdim_islands"));
+    public static final ResourceKey<NoiseGeneratorSettings> RFTOOLSDIM_CAVERN = ResourceKey.create(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY, new ResourceLocation(RFToolsDim.MODID, "rftoolsdim_cavern"));
+    public static final ResourceKey<NoiseGeneratorSettings> RFTOOLSDIM_FLAT = ResourceKey.create(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY, new ResourceLocation(RFToolsDim.MODID, "rftoolsdim_flat"));
+    public static final ResourceKey<NoiseGeneratorSettings> RFTOOLSDIM_OVERWORLD = ResourceKey.create(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY, new ResourceLocation(RFToolsDim.MODID, "rftoolsdim_overworld"));
 
     public static final NoiseSettings NETHER_NOISE_SETTINGS = NoiseSettings.create(0, 128, new NoiseSamplingSettings(1.0D, 3.0D, 80.0D, 60.0D), new NoiseSlider(0.9375D, 3, 0), new NoiseSlider(2.5D, 4, -1), 1, 2, TerrainProvider.nether());
 
     public static void init() {
-        NoiseGeneratorSettings.register(RFTOOLSDIM_CHAOTIC, chaotic());
-        NoiseGeneratorSettings.register(RFTOOLSDIM_ISLANDS, islands());
-        NoiseGeneratorSettings.register(RFTOOLSDIM_CAVERN, cavern());
-        NoiseGeneratorSettings.register(RFTOOLSDIM_FLAT, flat());
-        NoiseGeneratorSettings.register(RFTOOLSDIM_OVERWORLD, overworld());
+//        NoiseGeneratorSettings.register(RFTOOLSDIM_CHAOTIC, chaotic());
+//        NoiseGeneratorSettings.register(RFTOOLSDIM_ISLANDS, islands());
+//        NoiseGeneratorSettings.register(RFTOOLSDIM_CAVERN, cavern());
+//        NoiseGeneratorSettings.register(RFTOOLSDIM_FLAT, flat());
+//        NoiseGeneratorSettings.register(RFTOOLSDIM_OVERWORLD, overworld());
     }
 
     private static NoiseGeneratorSettings cavern() {
