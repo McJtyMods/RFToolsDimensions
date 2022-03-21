@@ -75,6 +75,11 @@ public class NoiseGeneratorSettingsBuilder {
         return this;
     }
 
+    public NoiseGeneratorSettingsBuilder noiseSettings(NoiseSettings noiseSettings) {
+        this.noiseSettings = noiseSettings;
+        return this;
+    }
+
     public NoiseGeneratorSettingsBuilder ruleSource(SurfaceRuleDataBuilder ruleSource) {
         this.ruleSource = ruleSource.build();
         return this;
@@ -96,7 +101,7 @@ public class NoiseGeneratorSettingsBuilder {
 
     public static NoiseGeneratorSettingsBuilder create(NoiseGeneratorSettings settings) {
         return new NoiseGeneratorSettingsBuilder()
-                .noiseSettings(NoiseSettingsBuilder.create(settings.noiseSettings()))
+                .noiseSettings(settings.noiseSettings())
                 .ruleSource(settings.surfaceRule())
                 .aquifersEnabled(settings.isAquifersEnabled())
                 .disableMobGeneration(settings.disableMobGeneration())

@@ -25,15 +25,18 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.dimension.LevelStem;
 import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
+import net.minecraft.world.level.levelgen.SurfaceRules;
 import net.minecraftforge.server.ServerLifecycleHooks;
 
 import javax.annotation.Nullable;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -236,9 +239,25 @@ public class DimensionCreator {
 
         if (compiledDescriptor.getBaseBlock() != null) {
             builder.baseBlock(compiledDescriptor.getBaseBlock());
+            SurfaceRules.RuleSource adapted = adaptSurfaceRule(in.surfaceRule(), compiledDescriptor.getBaseBlock());
+            builder.ruleSource(adapted);
         }
         builder.liquidBlock(compiledDescriptor.getBaseLiquid());
         return builder.build(settings);
+    }
+
+    private SurfaceRules.RuleSource adaptSurfaceRule(SurfaceRules.RuleSource input, BlockState baseBlock) {
+        if (input instanceof SurfaceRules.BlockRuleSource) {
+            return new SurfaceRules.BlockRuleSource(baseBlock);
+        } else if (input instanceof SurfaceRules.SequenceRuleSource sequenceRuleSource) {
+            SurfaceRules.SequenceRuleSource output = new SurfaceRules.SequenceRuleSource(new ArrayList<>());
+            for (SurfaceRules.RuleSource source : sequenceRuleSource.sequence()) {
+                output.sequence().add(adaptSurfaceRule(source, baseBlock));
+            }
+            return output;
+        } else {
+            return input;
+        }
     }
 
     // Returns null on success, otherwise an error string

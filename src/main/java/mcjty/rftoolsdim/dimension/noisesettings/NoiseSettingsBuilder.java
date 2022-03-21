@@ -59,8 +59,18 @@ public class NoiseSettingsBuilder {
         return this;
     }
 
+    public NoiseSettingsBuilder samplingSettings(NoiseSamplingSettings samplingSettings) {
+        this.samplingSettings = samplingSettings;
+        return this;
+    }
+
     public NoiseSettingsBuilder topSlider(NoiseSliderBuilder topSlider) {
         this.topSlider = topSlider.build();
+        return this;
+    }
+
+    public NoiseSettingsBuilder topSlider(NoiseSlider topSlider) {
+        this.topSlider = topSlider;
         return this;
     }
 
@@ -69,13 +79,14 @@ public class NoiseSettingsBuilder {
         return this;
     }
 
-    public NoiseSettingsBuilder terrainShaper(TerrainShaper terrainShaper) {
-        this.terrainShaper = terrainShaper;
+    public NoiseSettingsBuilder bottomSlider(NoiseSlider bottomSlider) {
+        this.bottomSlider = bottomSlider;
         return this;
     }
 
-    public static NoiseSettingsBuilder create() {
-        return new NoiseSettingsBuilder();
+    public NoiseSettingsBuilder terrainShaper(TerrainShaper terrainShaper) {
+        this.terrainShaper = terrainShaper;
+        return this;
     }
 
     public static NoiseSettingsBuilder create(NoiseSettings settings) {
@@ -88,9 +99,9 @@ public class NoiseSettingsBuilder {
 //                .islandNoiseOverride(settings.islandNoiseOverride())
 //                .amplified(settings.isAmplified())
 //                .largeBiomes(settings.largeBiomes())
-                .bottomSlider(NoiseSliderBuilder.create(settings.bottomSlideSettings()))
-                .topSlider(NoiseSliderBuilder.create(settings.topSlideSettings()))
-                .samplingSettings(NoiseSamplingSettingsBuilder.create(settings.noiseSamplingSettings()))
+                .bottomSlider(settings.bottomSlideSettings())
+                .topSlider(settings.topSlideSettings())
+                .samplingSettings(settings.noiseSamplingSettings())
                 .terrainShaper(settings.terrainShaper())
                 ;
     }
