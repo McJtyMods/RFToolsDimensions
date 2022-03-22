@@ -11,14 +11,17 @@ import mcjty.rftoolsdim.dimension.noisesettings.NoiseSliderBuilder;
 import mcjty.rftoolsdim.dimension.terraintypes.generators.*;
 import mcjty.rftoolsdim.tools.PerlinNoiseGenerator14;
 import net.minecraft.core.Holder;
+import net.minecraft.core.HolderSet;
 import net.minecraft.core.Registry;
+import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.resources.RegistryOps;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.world.level.LevelHeightAccessor;
 import net.minecraft.world.level.NoiseColumn;
 import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.biome.BiomeSource;
-import net.minecraft.world.level.biome.Climate;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ChunkGenerator;
@@ -27,12 +30,19 @@ import net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator;
 import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
 import net.minecraft.world.level.levelgen.blending.Blender;
 import net.minecraft.world.level.levelgen.structure.StructureSet;
+import net.minecraft.world.level.levelgen.structure.placement.StructurePlacement;
+import net.minecraft.world.level.levelgen.structure.placement.StructurePlacementType;
 import net.minecraft.world.level.levelgen.synth.NormalNoise;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Random;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 public class RFToolsChunkGenerator extends NoiseBasedChunkGenerator {
 
@@ -48,6 +58,7 @@ public class RFToolsChunkGenerator extends NoiseBasedChunkGenerator {
     // Mirror because the one in NoiseBasedChunkGenerator is private
     private final Registry<NormalNoise.NoiseParameters> noises;
     protected final DimensionSettings dimensionSettings;
+    private final Optional<HolderSet<StructureSet>> overrideStructures;
 
     private PerlinNoiseGenerator14 perlinNoise = null;
 
@@ -57,6 +68,43 @@ public class RFToolsChunkGenerator extends NoiseBasedChunkGenerator {
         super(structureSetRegistry, noiseRegistry, biomeSource, seed, settingsSupplier);
         this.noises = noiseRegistry;
         this.dimensionSettings = dimensionSettings;
+        this.overrideStructures = getStructures();
+    }
+
+    private Optional<HolderSet<StructureSet>> getStructures() {
+        List<ResourceLocation> structures = dimensionSettings.getCompiledDescriptor().getStructures();
+        List<Holder<StructureSet>> list = new ArrayList<>();
+        for (ResourceLocation structure : structures) {
+            if (structure.getPath().equals("none")) {
+                list.clear();  // No structures
+                break;
+            } else if (structure.getPath().equals("default"))  {
+                return Optional.empty();
+            } else {
+                BuiltinRegistries.CONFIGURED_STRUCTURE_FEATURE.getHolder(ResourceKey.create(Registry.CONFIGURED_STRUCTURE_FEATURE_REGISTRY, structure)).ifPresent(cfg -> {
+                    StructureSet set = new StructureSet(cfg, new StructurePlacement() {
+                        @Override
+                        public boolean isFeatureChunk(ChunkGenerator gen, long seed, int x, int z) {
+                            Random random = new Random(seed + x * 3423423889L + z * 12323491L);
+                            return random.nextFloat() < .1f;
+                        }
+
+                        @Override
+                        public StructurePlacementType<?> type() {
+                            return StructurePlacementType.RANDOM_SPREAD;
+                        }
+                    });
+                    list.add(Holder.direct(set));
+                });
+                BuiltinRegistries.STRUCTURE_SETS.getHolder(ResourceKey.create(Registry.STRUCTURE_SET_REGISTRY, structure)).ifPresent(list::add);
+            }
+        }
+        return Optional.of(HolderSet.direct(list));
+    }
+
+    @Override
+    public Stream<Holder<StructureSet>> possibleStructureSets() {
+        return overrideStructures.isPresent() ? overrideStructures.get().stream() : super.possibleStructureSets();
     }
 
     // Refresh after changing settings
