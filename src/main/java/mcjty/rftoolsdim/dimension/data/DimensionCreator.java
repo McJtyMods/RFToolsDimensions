@@ -3,6 +3,7 @@ package mcjty.rftoolsdim.dimension.data;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import mcjty.lib.varia.LevelTools;
+import mcjty.lostcities.varia.WorldTools;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.compat.LostCityCompat;
 import mcjty.rftoolsdim.dimension.DimensionRegistry;
@@ -21,9 +22,12 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
+import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
@@ -31,15 +35,18 @@ import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.dimension.LevelStem;
 import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
 import net.minecraft.world.level.levelgen.SurfaceRules;
+import net.minecraft.world.level.levelgen.feature.ConfiguredStructureFeature;
+import net.minecraft.world.level.levelgen.structure.StructureSet;
+import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadStructurePlacement;
+import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadType;
+import net.minecraft.world.level.levelgen.structure.placement.StructurePlacement;
 import net.minecraftforge.server.ServerLifecycleHooks;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Manages runtime handling of a dimension. That includes the compiled descriptors and creation of dimensions
@@ -204,9 +211,11 @@ public class DimensionCreator {
                     var noiseGeneratorSettings = registryAccess.registryOrThrow(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY);
                     var noiseSettingsIn = noiseGeneratorSettings.getOrThrow(terrainType.getNoiseSettings());
                     var noiseSettings = adapt(noiseSettingsIn, settings);
+
                     ChunkGenerator generator = new RFToolsChunkGenerator(
                             registryAccess.registryOrThrow(Registry.STRUCTURE_SET_REGISTRY),
                             registryAccess.registryOrThrow(Registry.NOISE_REGISTRY),
+                            getStructures(settings),
                             new RFTBiomeProvider(registryAccess.registryOrThrow(Registry.BIOME_REGISTRY), settings),
                             seed, Holder.direct(noiseSettings), settings);
                     return new LevelStem(type, generator);
@@ -219,8 +228,44 @@ public class DimensionCreator {
         data = new DimensionData(id, descriptor, randomizedDescriptor, owner, skyDimletTypes);
         mgr.register(data);
         return result;
-
     }
+
+    @NotNull
+    private List<Holder<StructureSet>> getStructures(DimensionSettings settings) {
+        List<ResourceLocation> structures = settings.getCompiledDescriptor().getStructures();
+        List<Holder<StructureSet>> list = new ArrayList<>();
+        for (ResourceLocation structure : structures) {
+            if (structure.getPath().equals("none")) {
+                list.clear();  // No structures
+                break;
+            } else if (structure.getPath().equals("default"))  {
+                return Collections.emptyList();
+            } else {
+                if (BuiltinRegistries.CONFIGURED_STRUCTURE_FEATURE.containsKey(structure)) {
+                    BuiltinRegistries.CONFIGURED_STRUCTURE_FEATURE.getHolder(ResourceKey.create(Registry.CONFIGURED_STRUCTURE_FEATURE_REGISTRY, structure)).ifPresent(cfg -> {
+                        StructureSet set = new StructureSet(cfg, getPlacement());
+                        list.add(Holder.direct(set));
+                    });
+                } else {
+                    var registryName = Registry.CONFIGURED_STRUCTURE_FEATURE_REGISTRY;
+                    Registry<ConfiguredStructureFeature<?, ?>> registry = WorldTools.getOverworld().registryAccess().registryOrThrow(registryName);
+                    var tag = TagKey.create(registryName, structure);
+                    registry.getOrCreateTag(tag).forEach(st -> {
+                        StructureSet set = new StructureSet(st, getPlacement());
+                        list.add(Holder.direct(set));
+                    });
+                }
+                BuiltinRegistries.STRUCTURE_SETS.getHolder(ResourceKey.create(Registry.STRUCTURE_SET_REGISTRY, structure)).ifPresent(list::add);
+            }
+        }
+        return list;
+    }
+
+    @NotNull
+    private StructurePlacement getPlacement() {
+        return new RandomSpreadStructurePlacement(12, 5, RandomSpreadType.LINEAR, 349399931);
+    }
+
 
     private NoiseGeneratorSettings adapt(NoiseGeneratorSettings in, DimensionSettings settings) {
         NoiseGeneratorSettingsBuilder builder = NoiseGeneratorSettingsBuilder.create(in);
