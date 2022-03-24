@@ -13,6 +13,7 @@ import mcjty.rftoolsdim.dimension.features.buildings.SpawnPlatform;
 import mcjty.rftoolsdim.dimension.terraintypes.RFToolsChunkGenerator;
 import mcjty.rftoolsdim.dimension.terraintypes.TerrainType;
 import mcjty.rftoolsdim.setup.Registration;
+import mcjty.rftoolsdim.tools.Primes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
@@ -41,9 +42,6 @@ public class RFTFeature extends Feature<NoneFeatureConfiguration> {
 
     public static Holder<PlacedFeature> RFTFEATURE_CONFIGURED;
 
-    private static final long[] PRIMES = new long[] { 900157, 981961, 50001527, 32667413, 1111114993, 65548559, 320741, 100002509,
-            35567897, 218021, 2900001163L, 3399018867L };
-
     public static void registerConfiguredFeatures() {
         RFTFEATURE_CONFIGURED = PlacementUtils.register("rftfeature", Holder.direct(new ConfiguredFeature<>(Registration.RFTFEATURE.get(), NoneFeatureConfiguration.INSTANCE)), CountPlacement.of(1));
     }
@@ -69,7 +67,7 @@ public class RFTFeature extends Feature<NoneFeatureConfiguration> {
             int primeIndex = 0;
             for (CompiledFeature feature : features) {
                 if (feature.getFeatureType().getFeature().generate(reader, generator, rand, pos,
-                        feature.getBlocks(), feature.getFluids(), PRIMES[primeIndex % PRIMES.length])) {
+                        feature.getBlocks(), feature.getFluids(), Primes.PRIMES[primeIndex % Primes.PRIMES.length])) {
                     generatedSomething = true;
                 }
                 primeIndex++;

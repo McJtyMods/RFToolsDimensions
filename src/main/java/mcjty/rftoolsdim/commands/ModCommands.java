@@ -22,6 +22,7 @@ public class ModCommands {
                         .then(CommandSetPower.register(dispatcher))
                         .then(CommandWeather.register(dispatcher))
                         .then(CommandCreateConfig.register(dispatcher))
+                        .then(CommandQuickSetup.register(dispatcher))
         );
 
         dispatcher.register(Commands.literal("dim").redirect(commands));
