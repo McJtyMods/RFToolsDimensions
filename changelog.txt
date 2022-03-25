@@ -1,3 +1,6 @@
+Upcoming:
+- Port to 1.18.2
+
 1.18-8.0.3:
 - New API so that other mods can check power usage of dimensions
 
