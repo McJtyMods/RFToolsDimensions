@@ -38,8 +38,8 @@ import java.util.stream.Stream;
 public class RFToolsChunkGenerator extends NoiseBasedChunkGenerator {
 
     public static final Codec<RFToolsChunkGenerator> CODEC = RecordCodecBuilder.create((instance) -> instance
-            .group(RegistryOps.retrieveRegistry(Registry.STRUCTURE_SET_REGISTRY).forGetter((ins) -> ins.structureSets),
-                    RegistryOps.retrieveRegistry(Registry.NOISE_REGISTRY).forGetter((ins) -> ins.noises),
+            .group(RegistryOps.retrieveRegistry(Registry.STRUCTURE_SET_REGISTRY).forGetter(ins -> ins.structureSets),
+                    RegistryOps.retrieveRegistry(Registry.NOISE_REGISTRY).forGetter(ins -> ins.noises),
                     Codec.list(StructureSet.CODEC).fieldOf("structures").forGetter(ins -> ins.overrideStructures),
                     BiomeSource.CODEC.fieldOf("biome_source").forGetter((ins) -> ins.biomeSource),
                     Codec.LONG.fieldOf("seed").stable().forGetter((ins) -> ins.seed),
@@ -99,6 +99,11 @@ public class RFToolsChunkGenerator extends NoiseBasedChunkGenerator {
 //        this.sampler = new Climate.Sampler(newsettings.noiseSettings(), newsettings.isNoiseCavesEnabled(), seed, noises, newsettings.getRandomSource());
         // @todo 1.18.2 NOT IMPLEMENTED YET
 //        this.router
+    }
+
+    @Override
+    public ChunkGenerator withSeed(long pSeed) {
+        return new RFToolsChunkGenerator(structureSets, noises, overrideStructures, biomeSource, pSeed, settings, dimensionSettings);
     }
 
     public NoiseGeneratorSettings getNoiseGeneratorSettings() {

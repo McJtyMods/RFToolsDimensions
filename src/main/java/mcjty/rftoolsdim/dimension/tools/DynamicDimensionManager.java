@@ -234,7 +234,7 @@ public class DynamicDimensionManager {
         // then instantiate level, add border listener, add to map, fire world load event
 
         // register the actual dimension
-        Registry.register(worldGenSettings.dimensions(), dimensionKey, dimension);
+//        Registry.register(worldGenSettings.dimensions(), dimensionKey, dimension);
         Registry<LevelStem> dimensionRegistry = worldGenSettings.dimensions();
         if (dimensionRegistry instanceof WritableRegistry<LevelStem> writableRegistry) {
             writableRegistry.register(dimensionKey, dimension, Lifecycle.stable());
