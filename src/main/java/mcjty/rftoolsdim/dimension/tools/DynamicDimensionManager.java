@@ -3,9 +3,11 @@ package mcjty.rftoolsdim.dimension.tools;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
+import com.mojang.serialization.Lifecycle;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.MappedRegistry;
 import net.minecraft.core.Registry;
+import net.minecraft.core.WritableRegistry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
@@ -187,7 +189,7 @@ public class DynamicDimensionManager {
         if (!removedLevelKeys.isEmpty()) {
             // replace the old dimension registry with a new one containing the dimensions that weren't removed, in the same order
             final Registry<LevelStem> oldRegistry = worldGenSettings.dimensions();
-            final Registry<LevelStem> newRegistry = new MappedRegistry<>(Registry.LEVEL_STEM_REGISTRY, oldRegistry.elementsLifecycle(), null);  // @todo 1.18.2 is the null right?
+            final Registry<LevelStem> newRegistry = new MappedRegistry<>(Registry.LEVEL_STEM_REGISTRY, oldRegistry.lifecycle(), null);
 
             for (var entry : oldRegistry.entrySet()) {
                 final ResourceKey<LevelStem> oldKey = entry.getKey();
@@ -233,7 +235,12 @@ public class DynamicDimensionManager {
 
         // register the actual dimension
         Registry.register(worldGenSettings.dimensions(), dimensionKey, dimension);
-//        worldGenSettings.dimensions().register(dimensionKey, dimension, Lifecycle.experimental());    // @todo 1.18.2
+        Registry<LevelStem> dimensionRegistry = worldGenSettings.dimensions();
+        if (dimensionRegistry instanceof WritableRegistry<LevelStem> writableRegistry) {
+            writableRegistry.register(dimensionKey, dimension, Lifecycle.stable());
+        } else {
+            throw new IllegalStateException("Unable to register dimension '" + dimensionKey.location() + "'! Registry not writable!");
+        }
 
         // create the world instance
         final ServerLevel newWorld = new ServerLevel(
