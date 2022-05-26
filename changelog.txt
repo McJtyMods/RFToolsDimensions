@@ -1,4 +1,4 @@
-Upcoming:
+1.18-8.0.5:
 - Fixed a wrong dependency on Lost Cities
 - Improved compatibility with Lost Cities in general
 
