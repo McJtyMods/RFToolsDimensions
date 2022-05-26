@@ -1,3 +1,6 @@
+Upcoming:
+- Fixed a wrong dependency on Lost Cities
+
 1.18-8.0.4:
 - Port to 1.18.2
 

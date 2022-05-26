@@ -3,7 +3,6 @@ package mcjty.rftoolsdim.dimension.data;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import mcjty.lib.varia.LevelTools;
-import mcjty.lostcities.varia.WorldTools;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.compat.LostCityCompat;
 import mcjty.rftoolsdim.dimension.DimensionRegistry;
@@ -23,6 +22,7 @@ import net.minecraft.core.*;
 import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.Level;
@@ -226,6 +226,11 @@ public class DimensionCreator {
         return result;
     }
 
+    public static ServerLevel getOverworld() {
+        MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
+        return server.getLevel(Level.OVERWORLD);
+    }
+
     @NotNull
     private List<Holder<StructureSet>> getStructures(DimensionSettings settings) {
         List<ResourceLocation> structures = settings.getCompiledDescriptor().getStructures();
@@ -239,7 +244,7 @@ public class DimensionCreator {
                 return Collections.emptyList();
             } else {
                 var registryName = Registry.CONFIGURED_STRUCTURE_FEATURE_REGISTRY;
-                Registry<ConfiguredStructureFeature<?, ?>> registry = WorldTools.getOverworld().registryAccess().registryOrThrow(registryName);
+                Registry<ConfiguredStructureFeature<?, ?>> registry = getOverworld().registryAccess().registryOrThrow(registryName);
                 var tagKey = TagKey.create(registryName, structure);
                 HolderSet.Named<ConfiguredStructureFeature<?, ?>> tag = registry.getOrCreateTag(tagKey);
                 if (tag.size() != 0) {
