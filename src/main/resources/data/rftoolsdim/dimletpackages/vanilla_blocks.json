@@ -281,16 +281,6 @@
   },
   {
     "type": "block",
-    "key": "minecraft:black_concrete_powder",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
     "key": "minecraft:black_glazed_terracotta",
     "rarity": "common",
     "create": 10,
@@ -381,16 +371,6 @@
   },
   {
     "type": "block",
-    "key": "minecraft:blue_concrete_powder",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
     "key": "minecraft:blue_glazed_terracotta",
     "rarity": "common",
     "create": 10,
@@ -472,16 +452,6 @@
   {
     "type": "block",
     "key": "minecraft:brown_concrete",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:brown_concrete_powder",
     "rarity": "common",
     "create": 10,
     "maintain": 10,
@@ -812,16 +782,6 @@
   {
     "type": "block",
     "key": "minecraft:cyan_concrete",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:cyan_concrete_powder",
     "rarity": "common",
     "create": 10,
     "maintain": 10,
@@ -1171,27 +1131,7 @@
   },
   {
     "type": "block",
-    "key": "minecraft:gravel",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
     "key": "minecraft:gray_concrete",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:gray_concrete_powder",
     "rarity": "common",
     "create": 10,
     "maintain": 10,
@@ -1232,16 +1172,6 @@
   {
     "type": "block",
     "key": "minecraft:green_concrete",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:green_concrete_powder",
     "rarity": "common",
     "create": 10,
     "maintain": 10,
@@ -1751,16 +1681,6 @@
   },
   {
     "type": "block",
-    "key": "minecraft:light_blue_concrete_powder",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
     "key": "minecraft:light_blue_glazed_terracotta",
     "rarity": "common",
     "create": 10,
@@ -1801,16 +1721,6 @@
   },
   {
     "type": "block",
-    "key": "minecraft:light_gray_concrete_powder",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
     "key": "minecraft:light_gray_glazed_terracotta",
     "rarity": "common",
     "create": 10,
@@ -1842,16 +1752,6 @@
   {
     "type": "block",
     "key": "minecraft:lime_concrete",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:lime_concrete_powder",
     "rarity": "common",
     "create": 10,
     "maintain": 10,
@@ -1902,16 +1802,6 @@
   {
     "type": "block",
     "key": "minecraft:magenta_concrete",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:magenta_concrete_powder",
     "rarity": "common",
     "create": 10,
     "maintain": 10,
@@ -2131,16 +2021,6 @@
   },
   {
     "type": "block",
-    "key": "minecraft:orange_concrete_powder",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
     "key": "minecraft:orange_glazed_terracotta",
     "rarity": "common",
     "create": 10,
@@ -2182,16 +2062,6 @@
   {
     "type": "block",
     "key": "minecraft:pink_concrete",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:pink_concrete_powder",
     "rarity": "common",
     "create": 10,
     "maintain": 10,
@@ -2341,16 +2211,6 @@
   },
   {
     "type": "block",
-    "key": "minecraft:purple_concrete_powder",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
     "key": "minecraft:purple_glazed_terracotta",
     "rarity": "common",
     "create": 10,
@@ -2441,16 +2301,6 @@
   },
   {
     "type": "block",
-    "key": "minecraft:red_concrete_powder",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
     "key": "minecraft:red_glazed_terracotta",
     "rarity": "common",
     "create": 10,
@@ -2472,16 +2322,6 @@
   {
     "type": "block",
     "key": "minecraft:red_nether_bricks",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:red_sand",
     "rarity": "common",
     "create": 10,
     "maintain": 10,
@@ -2546,16 +2386,6 @@
     "create": 100,
     "maintain": 100,
     "ticks": 100,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:sand",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
     "worldgen": true,
     "dimlet": true
   },
@@ -3011,16 +2841,6 @@
   },
   {
     "type": "block",
-    "key": "minecraft:white_concrete_powder",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
     "key": "minecraft:white_glazed_terracotta",
     "rarity": "common",
     "create": 10,
@@ -3052,16 +2872,6 @@
   {
     "type": "block",
     "key": "minecraft:yellow_concrete",
-    "rarity": "common",
-    "create": 10,
-    "maintain": 10,
-    "ticks": 10,
-    "worldgen": true,
-    "dimlet": true
-  },
-  {
-    "type": "block",
-    "key": "minecraft:yellow_concrete_powder",
     "rarity": "common",
     "create": 10,
     "maintain": 10,
