@@ -1,6 +1,7 @@
 Upcoming:
 - Concrete powder, gravel, and sand are no longer dimlets because dimensions made from them can cause massive lag
 - Added extra safety on lost city dimlet
+- Extra safety in the biome provider in case it can't find some biomes
 
 1.18-8.0.5:
 - Fixed a wrong dependency on Lost Cities

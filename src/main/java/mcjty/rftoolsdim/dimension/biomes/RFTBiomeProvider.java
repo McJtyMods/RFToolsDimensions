@@ -8,10 +8,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.resources.RegistryOps;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.biome.BiomeSource;
-import net.minecraft.world.level.biome.Climate;
-import net.minecraft.world.level.biome.MultiNoiseBiomeSource;
+import net.minecraft.world.level.biome.*;
 
 import javax.annotation.Nonnull;
 import java.util.*;
@@ -190,7 +187,15 @@ public class RFTBiomeProvider extends BiomeSource {
                 }
             }
             biome1 = getMappedBiome(biome1.value());
+            if (biome1 == null) {
+                // Safety. Shouldn't be possible
+                biome1 = biomeRegistry.getHolderOrThrow(Biomes.PLAINS);
+            }
             biome2 = getMappedBiome(biome2.value());
+            if (biome2 == null) {
+                // Safety
+                biome2 = biome1;
+            }
         }
     }
 
@@ -219,9 +224,9 @@ public class RFTBiomeProvider extends BiomeSource {
     private Holder<Biome> getCheckerBiome(int x, int z) {
         getBiome1And2();
         if (((x >>3)+(z >>3))%2 == 0) {
-            return biomeRegistry.getHolderOrThrow(ResourceKey.create(Registry.BIOME_REGISTRY, biome1.value().getRegistryName()));
+            return biome1;
         } else {
-            return biomeRegistry.getHolderOrThrow(ResourceKey.create(Registry.BIOME_REGISTRY, biome2.value().getRegistryName()));
+            return biome2;
         }
     }
 }
