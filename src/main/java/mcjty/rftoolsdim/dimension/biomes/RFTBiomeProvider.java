@@ -2,6 +2,7 @@ package mcjty.rftoolsdim.dimension.biomes;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import mcjty.lib.varia.Tools;
 import mcjty.rftoolsdim.dimension.data.DimensionSettings;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
@@ -52,9 +53,9 @@ public class RFTBiomeProvider extends BiomeSource {
 
     private Holder<Biome> getMappedBiome(Biome biome) {
         if (defaultBiomes) {
-            return biomeRegistry.getHolderOrThrow(ResourceKey.create(Registry.BIOME_REGISTRY, biome.getRegistryName()));
+            return biomeRegistry.getHolderOrThrow(ResourceKey.create(Registry.BIOME_REGISTRY, Tools.getId(biome)));
         }
-        return biomeMapping.computeIfAbsent(biome.getRegistryName(), resourceLocation -> {
+        return biomeMapping.computeIfAbsent(Tools.getId(biome), resourceLocation -> {
             List<Holder<Biome>> biomes = getBiomes(biomeRegistry, settings);
             final float[] minDist = {1000000000};
             final Biome[] desired = {biome};
@@ -83,7 +84,7 @@ public class RFTBiomeProvider extends BiomeSource {
                     }
                 }
             }
-            return biomeRegistry.getHolderOrThrow(ResourceKey.create(Registry.BIOME_REGISTRY, desired[0].getRegistryName()));
+            return biomeRegistry.getHolderOrThrow(ResourceKey.create(Registry.BIOME_REGISTRY, Tools.getId(desired[0])));
         });
     }
 
@@ -97,7 +98,7 @@ public class RFTBiomeProvider extends BiomeSource {
 
     private List<Holder<Biome>> getBiomes(Registry<Biome> biomeRegistry, DimensionSettings settings) {
         List<ResourceLocation> biomes = settings.getCompiledDescriptor().getBiomes();
-        return biomes.stream().map(biomeRegistry::get).map(b -> biomeRegistry.getHolderOrThrow(ResourceKey.create(Registry.BIOME_REGISTRY, b.getRegistryName()))).collect(Collectors.toList());
+        return biomes.stream().map(biomeRegistry::get).map(b -> biomeRegistry.getHolderOrThrow(ResourceKey.create(Registry.BIOME_REGISTRY, Tools.getId(b)))).collect(Collectors.toList());
     }
 
     private Set<Biome.BiomeCategory> getBiomeCategories(DimensionSettings settings) {
@@ -172,9 +173,9 @@ public class RFTBiomeProvider extends BiomeSource {
             if (biomes.isEmpty()) {
                 // Try to get from categories
                 List<Biome> list = biomeRegistry.stream().filter(b -> biomeCategories.contains(Biome.getBiomeCategory(Holder.direct(b)))).collect(Collectors.toList());
-                biome1 = biomeRegistry.getHolderOrThrow(ResourceKey.create(Registry.BIOME_REGISTRY, list.get(0).getRegistryName()));
+                biome1 = biomeRegistry.getHolderOrThrow(ResourceKey.create(Registry.BIOME_REGISTRY, Tools.getId(list.get(0))));
                 if (list.size() > 1) {
-                    biome2 = biomeRegistry.getHolderOrThrow(ResourceKey.create(Registry.BIOME_REGISTRY, list.get(1).getRegistryName()));
+                    biome2 = biomeRegistry.getHolderOrThrow(ResourceKey.create(Registry.BIOME_REGISTRY, Tools.getId(list.get(1))));
                 } else {
                     biome2 = biome1;
                 }

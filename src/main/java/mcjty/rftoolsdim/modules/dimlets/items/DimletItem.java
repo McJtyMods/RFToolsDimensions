@@ -3,6 +3,7 @@ package mcjty.rftoolsdim.modules.dimlets.items;
 import mcjty.lib.builder.TooltipBuilder;
 import mcjty.lib.tooltips.ITooltipExtras;
 import mcjty.lib.tooltips.ITooltipSettings;
+import mcjty.lib.varia.Tools;
 import mcjty.rftoolsdim.dimension.data.ClientDimensionData;
 import mcjty.rftoolsdim.modules.dimlets.DimletModule;
 import mcjty.rftoolsdim.modules.dimlets.data.*;
@@ -10,12 +11,12 @@ import mcjty.rftoolsdim.modules.knowledge.data.DimletPattern;
 import mcjty.rftoolsdim.modules.knowledge.data.KnowledgeManager;
 import mcjty.rftoolsdim.modules.knowledge.data.PatternBuilder;
 import mcjty.rftoolsdim.setup.Registration;
-import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.util.Lazy;
 import org.apache.commons.lang3.tuple.Pair;
@@ -83,7 +84,7 @@ public class DimletItem extends Item implements ITooltipSettings, ITooltipExtras
     @Override
     public void appendHoverText(@Nonnull ItemStack itemStack, Level world, @Nonnull List<Component> list, @Nonnull TooltipFlag flags) {
         super.appendHoverText(itemStack, world, list, flags);
-        tooltipBuilder.get().makeTooltip(getRegistryName(), itemStack, list, flags);
+        tooltipBuilder.get().makeTooltip(Tools.getId(this), itemStack, list, flags);
     }
 
     @Override

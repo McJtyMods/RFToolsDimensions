@@ -98,7 +98,7 @@ public class Items extends BaseItemModelProvider {
 
         ResourceLocation powerId = new ResourceLocation(RFToolsDim.MODID, "power");
 
-        getBuilder(DimensionBuilderModule.DIMENSION_MONITOR.get().getRegistryName().getPath())
+        getBuilder(DimensionBuilderModule.DIMENSION_MONITOR.getId().getPath())
                 .parent(getExistingFile(mcLoc("item/handheld")))
                 .texture("layer0", "item/monitor/monitoritem0")
                 .override().predicate(powerId, 0).model(createMonitorModel(0)).end()
@@ -111,7 +111,7 @@ public class Items extends BaseItemModelProvider {
                 .override().predicate(powerId, 7).model(createMonitorModel(7)).end()
                 .override().predicate(powerId, 8).model(createMonitorModel(8)).end()
         ;
-        getBuilder(DimensionBuilderModule.PHASED_FIELD_GENERATOR.get().getRegistryName().getPath())
+        getBuilder(DimensionBuilderModule.PHASED_FIELD_GENERATOR.getId().getPath())
                 .parent(getExistingFile(mcLoc("item/handheld")))
                 .texture("layer0", "item/pfg/phasedfieldgeneratoriteml0")
                 .override().predicate(powerId, 0).model(createPFGModel(0)).end()

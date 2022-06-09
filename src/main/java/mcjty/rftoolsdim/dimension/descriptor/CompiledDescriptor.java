@@ -1,6 +1,7 @@
 package mcjty.rftoolsdim.dimension.descriptor;
 
 import mcjty.lib.varia.TagTools;
+import mcjty.lib.varia.Tools;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.dimension.AdminDimletType;
 import mcjty.rftoolsdim.dimension.DimensionConfig;
@@ -277,9 +278,9 @@ public class CompiledDescriptor {
         header += "\n    TERRAIN: " + terrainType.getName();
         header += "\n    TIME: " + timeType.getName();
         header += "\n    SKY: " + SkyDimletType.getDescription(skyDimletTypes);
-        header += "\n    LIQUID: " + baseLiquid.getBlock().getRegistryName().toString();
+        header += "\n    LIQUID: " + Tools.getId(baseLiquid).toString();
         if (baseBlock != null) {
-            header += "\n    BLOCK: " + baseBlock.getBlock().getRegistryName().toString();
+            header += "\n    BLOCK: " + Tools.getId(baseBlock).toString();
         }
         for (AdminDimletType type : adminDimletTypes) {
             header += "\n    ADMIN: " + type.getName();
@@ -300,10 +301,10 @@ public class CompiledDescriptor {
         for (CompiledFeature feature : features) {
             header += "\n    FEATURE: " + feature.getFeatureType().getName();
             for (BlockState block : feature.getBlocks()) {
-                header += "\n        BLOCK: " + block.getBlock().getRegistryName().toString();
+                header += "\n        BLOCK: " + Tools.getId(block).toString();
             }
             for (BlockState fluid : feature.getFluids()) {
-                header += "\n        LIQUID: " + fluid.getBlock().getRegistryName().toString();
+                header += "\n        LIQUID: " + Tools.getId(fluid).toString();
             }
         }
 

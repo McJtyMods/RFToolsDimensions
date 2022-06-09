@@ -32,7 +32,7 @@ public class RFToolsDimensionsTOPDriver implements TOPDriver {
 
     @Override
     public void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, Player player, Level world, BlockState blockState, IProbeHitData data) {
-        ResourceLocation id = blockState.getBlock().getRegistryName();
+        ResourceLocation id = Tools.getId(blockState);
         if (!drivers.containsKey(id)) {
             if (blockState.getBlock() == EssencesModule.BLOCK_ABSORBER.get()) {
                 drivers.put(id, new BlockAbsorberDriver());

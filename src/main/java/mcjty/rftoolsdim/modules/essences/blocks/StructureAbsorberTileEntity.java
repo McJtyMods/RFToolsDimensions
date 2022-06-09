@@ -6,6 +6,7 @@ import mcjty.lib.blocks.RotationType;
 import mcjty.lib.builder.BlockBuilder;
 import mcjty.lib.tileentity.TickingTileEntity;
 import mcjty.lib.varia.NBTTools;
+import mcjty.lib.varia.Tools;
 import mcjty.rftoolsbase.tools.ManualHelper;
 import mcjty.rftoolsdim.compat.RFToolsDimensionsTOPDriver;
 import mcjty.rftoolsdim.modules.essences.EssencesConfig;
@@ -20,7 +21,6 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.ConfiguredStructureFeature;
-import net.minecraft.world.level.levelgen.feature.StructureFeature;
 import net.minecraft.world.level.material.Material;
 
 import java.util.ArrayList;
@@ -125,7 +125,7 @@ public class StructureAbsorberTileEntity extends TickingTileEntity {
             List<ResourceLocation> structures = new ArrayList<>();
             for (var entry : references.entrySet()) {
                 if (!entry.getValue().isEmpty()) {
-                    structures.add(entry.getKey().feature.getRegistryName());
+                    structures.add(Tools.getId(entry.getKey().feature));
                 }
             }
             if (!structures.isEmpty()) {
@@ -154,7 +154,7 @@ public class StructureAbsorberTileEntity extends TickingTileEntity {
         Map<ConfiguredStructureFeature<?, ?>, LongSet> references = level.getChunk(cp.x, cp.z).getAllReferences();
         for (var entry : references.entrySet()) {
             if (!entry.getValue().isEmpty()) {
-                if (structureId.equals(entry.getKey().feature.getRegistryName().toString())) {
+                if (structureId.equals(Tools.getId(entry.getKey().feature).toString())) {
                     return true;
                 }
             }

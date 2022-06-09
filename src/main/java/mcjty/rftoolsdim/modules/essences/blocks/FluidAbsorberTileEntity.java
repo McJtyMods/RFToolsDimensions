@@ -4,10 +4,7 @@ import mcjty.lib.blocks.BaseBlock;
 import mcjty.lib.blocks.RotationType;
 import mcjty.lib.builder.BlockBuilder;
 import mcjty.lib.tileentity.TickingTileEntity;
-import mcjty.lib.varia.FakePlayerGetter;
-import mcjty.lib.varia.FluidTools;
-import mcjty.lib.varia.NBTTools;
-import mcjty.lib.varia.SoundTools;
+import mcjty.lib.varia.*;
 import mcjty.rftoolsbase.tools.ManualHelper;
 import mcjty.rftoolsdim.compat.RFToolsDimensionsTOPDriver;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletDictionary;
@@ -230,7 +227,7 @@ public class FluidAbsorberTileEntity extends TickingTileEntity {
                 return false;
             }
             Fluid fluid = fluidState.getType();
-            DimletKey key = new DimletKey(DimletType.FLUID, fluid.getRegistryName().toString());
+            DimletKey key = new DimletKey(DimletType.FLUID, Tools.getId(fluid).toString());
             DimletSettings settings = DimletDictionary.get().getSettings(key);
             return settings != null && settings.isDimlet();
         }
@@ -288,7 +285,7 @@ public class FluidAbsorberTileEntity extends TickingTileEntity {
         CompoundTag info = getOrCreateInfo(tagCompound);
         info.putInt("absorbing", absorbing);
         if (absorbingBlock != null) {
-            info.putString("fluid", absorbingBlock.defaultBlockState().getFluidState().getType().getRegistryName().toString());
+            info.putString("fluid", Tools.getId(absorbingBlock.defaultBlockState().getFluidState()).toString());
         }
     }
 }

@@ -4,18 +4,19 @@ import mcjty.lib.builder.TooltipBuilder;
 import mcjty.lib.tooltips.ITooltipSettings;
 import mcjty.lib.varia.IEnergyItem;
 import mcjty.lib.varia.ItemCapabilityProvider;
+import mcjty.lib.varia.Tools;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.dimension.DimensionConfig;
 import mcjty.rftoolsdim.dimension.power.PowerHandler;
 import mcjty.rftoolsdim.modules.dimensionbuilder.DimensionBuilderConfig;
 import mcjty.rftoolsdim.modules.dimensionbuilder.DimensionBuilderModule;
-import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.Lazy;
@@ -25,8 +26,6 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 import static mcjty.lib.builder.TooltipBuilder.*;
-
-import net.minecraft.world.item.Item.Properties;
 
 public class PhasedFieldGenerator extends Item implements IEnergyItem, ITooltipSettings {
 
@@ -60,7 +59,7 @@ public class PhasedFieldGenerator extends Item implements IEnergyItem, ITooltipS
     @Override
     public void appendHoverText(@Nonnull ItemStack stack, @Nullable Level worldIn, @Nonnull List<Component> list, @Nonnull TooltipFlag flagIn) {
         super.appendHoverText(stack, worldIn, list, flagIn);
-        tooltipBuilder.get().makeTooltip(getRegistryName(), stack, list, flagIn);
+        tooltipBuilder.get().makeTooltip(Tools.getId(this), stack, list, flagIn);
     }
 
     @Override

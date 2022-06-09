@@ -225,7 +225,7 @@ public class BlockAbsorberTileEntity extends TickingTileEntity {
 
     private boolean isValidDimletBlock(BlockState state) {
         Block block = state.getBlock();
-        DimletKey key = new DimletKey(DimletType.BLOCK, block.getRegistryName().toString());
+        DimletKey key = new DimletKey(DimletType.BLOCK, Tools.getId(block).toString());
         DimletSettings settings = DimletDictionary.get().getSettings(key);
         return settings != null && settings.isDimlet();
     }
@@ -281,7 +281,7 @@ public class BlockAbsorberTileEntity extends TickingTileEntity {
         CompoundTag info = getOrCreateInfo(tagCompound);
         info.putInt("absorbing", absorbing);
         if (absorbingBlock != null) {
-            info.putString("block", absorbingBlock.getRegistryName().toString());
+            info.putString("block", absorbingTools.getId(block).toString());
         }
     }
 }

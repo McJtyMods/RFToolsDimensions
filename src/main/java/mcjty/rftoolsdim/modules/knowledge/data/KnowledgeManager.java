@@ -2,6 +2,7 @@ package mcjty.rftoolsdim.modules.knowledge.data;
 
 import mcjty.lib.varia.LevelTools;
 import mcjty.lib.varia.TagTools;
+import mcjty.lib.varia.Tools;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.dimension.TimeType;
 import mcjty.rftoolsdim.dimension.additional.SkyDimletType;
@@ -129,7 +130,7 @@ public class KnowledgeManager {
     private String getReasonStructure(DimletKey key) {
         StructureFeature<?> structure = ForgeRegistries.STRUCTURE_FEATURES.getValue(new ResourceLocation(key.key()));
         if (structure != null) {
-            return structure.getRegistryName().getPath();
+            return Tools.getId(structure).getPath();
         }
         return null;
     }
@@ -232,7 +233,7 @@ public class KnowledgeManager {
             return KnowledgeSet.SET2;
         }
         // @todo is this good?
-        return KnowledgeSet.values()[(Math.abs(structure.getRegistryName().hashCode())) % KnowledgeSet.values().length];
+        return KnowledgeSet.values()[(Math.abs(Tools.getId(structure).hashCode())) % KnowledgeSet.values().length];
     }
 
     /// Create a knowledge set based on the category of a biome

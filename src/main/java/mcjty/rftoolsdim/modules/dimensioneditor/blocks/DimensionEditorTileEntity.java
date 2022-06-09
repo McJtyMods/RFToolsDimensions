@@ -362,7 +362,7 @@ public class DimensionEditorTileEntity extends TickingTileEntity {
     }
 
     private static boolean isMatterReceiver(ItemStack itemStack) {
-        return "rftoolsutility:matter_receiver".equals(itemStack.getItem().getRegistryName().toString());
+        return "rftoolsutility:matter_receiver".equals(itemTools.getId(stack).toString());
     }
 
     private static boolean isTNT(ItemStack itemStack) {

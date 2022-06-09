@@ -5,6 +5,7 @@ import mcjty.lib.blocks.RotationType;
 import mcjty.lib.builder.BlockBuilder;
 import mcjty.lib.tileentity.TickingTileEntity;
 import mcjty.lib.varia.NBTTools;
+import mcjty.lib.varia.Tools;
 import mcjty.rftoolsbase.tools.ManualHelper;
 import mcjty.rftoolsdim.compat.RFToolsDimensionsTOPDriver;
 import mcjty.rftoolsdim.modules.essences.EssencesConfig;
@@ -118,14 +119,14 @@ public class BiomeAbsorberTileEntity extends TickingTileEntity {
     protected void tickServer() {
         if (biomeId == null) {
             Holder<Biome> biome = getLevel().getBiome(getBlockPos());
-            biomeId = biome.value().getRegistryName().toString();
+            biomeId = Tools.getId(biome.value()).toString();
             absorbing = EssencesConfig.maxBiomeAbsorption.get();
             setChanged();
         }
 
         if (absorbing > 0) {
             Holder<Biome> biome = level.getBiome(worldPosition);
-            if (!biome.value().getRegistryName().toString().equals(biomeId)) {
+            if (!Tools.getId(biome.value()).toString().equals(biomeId)) {
                 return;
             }
 
