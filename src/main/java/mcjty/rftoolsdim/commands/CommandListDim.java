@@ -5,15 +5,15 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import mcjty.lib.varia.ComponentFactory;
 import mcjty.rftoolsdim.dimension.data.DimensionData;
 import mcjty.rftoolsdim.dimension.data.PersistantDimensionManager;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.world.level.Level;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.server.ServerLifecycleHooks;
 
 public class CommandListDim implements Command<CommandSourceStack> {
@@ -36,7 +36,7 @@ public class CommandListDim implements Command<CommandSourceStack> {
             if (data != null) {
                 output += " (" + data.getEnergy() + ")";
             }
-            context.getSource().sendSuccess(new TextComponent(output), true);
+            context.getSource().sendSuccess(ComponentFactory.literal(output), true);
         }
         return 0;
     }

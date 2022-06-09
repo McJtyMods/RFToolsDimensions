@@ -6,14 +6,14 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import mcjty.lib.varia.ComponentFactory;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.dimension.data.PersistantDimensionManager;
+import net.minecraft.ChatFormatting;
+import net.minecraft.SharedConstants;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.SharedConstants;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.ChatFormatting;
 
 public class CommandForget implements Command<CommandSourceStack> {
 
@@ -32,7 +32,7 @@ public class CommandForget implements Command<CommandSourceStack> {
         String name = context.getArgument("name", String.class);
         PersistantDimensionManager mgr = PersistantDimensionManager.get(context.getSource().getLevel());
         mgr.forget(new ResourceLocation(RFToolsDim.MODID, name));
-        context.getSource().sendSuccess(new TextComponent(ChatFormatting.YELLOW + "Removed '" + name + "'"), false);
+        context.getSource().sendSuccess(ComponentFactory.literal(ChatFormatting.YELLOW + "Removed '" + name + "'"), false);
         return 0;
     }
 }

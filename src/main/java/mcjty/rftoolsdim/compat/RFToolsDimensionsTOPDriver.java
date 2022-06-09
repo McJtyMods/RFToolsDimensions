@@ -2,6 +2,7 @@ package mcjty.rftoolsdim.compat;
 
 import mcjty.lib.compat.theoneprobe.McJtyLibTOPDriver;
 import mcjty.lib.compat.theoneprobe.TOPDriver;
+import mcjty.lib.varia.ComponentFactory;
 import mcjty.lib.varia.Tools;
 import mcjty.rftoolsdim.modules.essences.EssencesConfig;
 import mcjty.rftoolsdim.modules.essences.EssencesModule;
@@ -13,8 +14,6 @@ import mcjty.theoneprobe.api.IProbeHitData;
 import mcjty.theoneprobe.api.IProbeInfo;
 import mcjty.theoneprobe.api.ProbeMode;
 import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -70,7 +69,7 @@ public class RFToolsDimensionsTOPDriver implements TOPDriver {
                 int pct = ((EssencesConfig.maxBlockAbsorption.get() - absorbing) * 100) / EssencesConfig.maxBlockAbsorption.get();
                 ItemStack stack = new ItemStack(block, 1);
                 if (!stack.isEmpty()) {
-                    probeInfo.text((new TextComponent("Block: ").append(new TranslatableComponent(stack.getDescriptionId())).withStyle(ChatFormatting.GREEN)))
+                    probeInfo.text((ComponentFactory.literal("Block: ").append(ComponentFactory.translatable(stack.getDescriptionId())).withStyle(ChatFormatting.GREEN)))
                             .horizontal()
                             .progress(pct, 100, probeInfo.defaultProgressStyle().suffix("%"))
                             .item(stack);
@@ -88,7 +87,7 @@ public class RFToolsDimensionsTOPDriver implements TOPDriver {
                 Block block = te.getAbsorbingBlock();
                 if (block != null) {
                     int pct = ((EssencesConfig.maxFluidAbsorption.get() - absorbing) * 100) / EssencesConfig.maxFluidAbsorption.get();
-                    probeInfo.text((new TextComponent("Fluid: ").append(new TranslatableComponent(block.getDescriptionId())).withStyle(ChatFormatting.GREEN)))
+                    probeInfo.text((ComponentFactory.literal("Fluid: ").append(ComponentFactory.translatable(block.getDescriptionId())).withStyle(ChatFormatting.GREEN)))
                             .horizontal()
                             .progress(pct, 100, probeInfo.defaultProgressStyle().suffix("%"));
                 }
@@ -107,7 +106,7 @@ public class RFToolsDimensionsTOPDriver implements TOPDriver {
                 ResourceLocation id = new ResourceLocation(biome);
                 String trans = "biome." + id.getNamespace() + "." + id.getPath();
 
-                probeInfo.text((new TextComponent("Biome: ").append(new TranslatableComponent(trans)).withStyle(ChatFormatting.GREEN)))
+                probeInfo.text((ComponentFactory.literal("Biome: ").append(ComponentFactory.translatable(trans)).withStyle(ChatFormatting.GREEN)))
                         .horizontal()
                         .progress(pct, 100, probeInfo.defaultProgressStyle().suffix("%"));
             }, "Bad tile entity!");
@@ -125,7 +124,7 @@ public class RFToolsDimensionsTOPDriver implements TOPDriver {
                     int pct = ((EssencesConfig.maxStructureAbsorption.get() - absorbing) * 100) / EssencesConfig.maxStructureAbsorption.get();
                     ResourceLocation id = new ResourceLocation(structure);
 
-                    probeInfo.text((new TextComponent("Structure: ").append(new TextComponent(id.getPath())).withStyle(ChatFormatting.GREEN)))
+                    probeInfo.text((ComponentFactory.literal("Structure: ").append(ComponentFactory.literal(id.getPath())).withStyle(ChatFormatting.GREEN)))
                             .horizontal()
                             .progress(pct, 100, probeInfo.defaultProgressStyle().suffix("%"));
                 }

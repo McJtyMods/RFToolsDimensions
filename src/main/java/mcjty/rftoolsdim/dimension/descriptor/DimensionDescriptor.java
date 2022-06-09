@@ -1,12 +1,12 @@
 package mcjty.rftoolsdim.dimension.descriptor;
 
 import com.google.gson.*;
+import mcjty.lib.varia.ComponentFactory;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletDictionary;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletKey;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletType;
 import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.entity.player.Player;
 
 import java.util.ArrayList;
@@ -108,9 +108,9 @@ public class DimensionDescriptor {
     public void dump(Player player) {
         for (DimletKey dimlet : dimlets) {
             player.displayClientMessage(
-                    new TextComponent(dimlet.type().name() + ": ")
+                    ComponentFactory.literal(dimlet.type().name() + ": ")
                             .withStyle(ChatFormatting.AQUA)
-                            .append(new TextComponent(dimlet.key()).withStyle(ChatFormatting.WHITE))
+                            .append(ComponentFactory.literal(dimlet.key()).withStyle(ChatFormatting.WHITE))
                     , false);
         }
     }

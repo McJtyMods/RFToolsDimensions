@@ -6,11 +6,11 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import mcjty.lib.varia.ComponentFactory;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletPackages;
+import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.ChatFormatting;
 
 import java.io.IOException;
 
@@ -34,7 +34,7 @@ public class CommandCreateConfig implements Command<CommandSourceStack> {
         try {
             DimletPackages.writePackage(filename, modid);
         } catch (IOException e) {
-            context.getSource().sendSuccess(new TextComponent(ChatFormatting.RED + e.getMessage()), true);
+            context.getSource().sendSuccess(ComponentFactory.literal(ChatFormatting.RED + e.getMessage()), true);
         }
         return 0;
     }

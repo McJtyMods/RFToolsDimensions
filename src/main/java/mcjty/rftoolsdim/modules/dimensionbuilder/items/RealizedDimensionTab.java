@@ -1,5 +1,6 @@
 package mcjty.rftoolsdim.modules.dimensionbuilder.items;
 
+import mcjty.lib.varia.ComponentFactory;
 import mcjty.lib.varia.LevelTools;
 import mcjty.lib.varia.Logging;
 import mcjty.lib.varia.SafeClientTools;
@@ -15,7 +16,6 @@ import mcjty.rftoolsdim.dimension.terraintypes.RFToolsChunkGenerator;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -50,10 +50,10 @@ public class RealizedDimensionTab extends Item {
                 String dimension = tagCompound.getString("dimension");
                 DimensionData data = PersistantDimensionManager.get(world).getData(new ResourceLocation(dimension));
                 if (data != null) {
-                    player.displayClientMessage(new TextComponent(ChatFormatting.BLUE + "Energy: " + ChatFormatting.WHITE + data.getEnergy()), false);
+                    player.displayClientMessage(ComponentFactory.literal(ChatFormatting.BLUE + "Energy: " + ChatFormatting.WHITE + data.getEnergy()), false);
                     DimensionDescriptor descriptor = data.getDescriptor();
                     descriptor.dump(player);
-                    player.displayClientMessage(new TextComponent("-----------------------------"), false);
+                    player.displayClientMessage(ComponentFactory.literal("-----------------------------"), false);
                     DimensionDescriptor randomized = data.getRandomizedDescriptor();
                     randomized.dump(player);
                 }
@@ -63,7 +63,7 @@ public class RealizedDimensionTab extends Item {
                 ChunkGenerator generator = serverWorld.getChunkSource().getGenerator();
                 if (generator instanceof RFToolsChunkGenerator) {
                     DimensionSettings settings = ((RFToolsChunkGenerator) generator).getDimensionSettings();
-                    player.displayClientMessage(new TextComponent(ChatFormatting.BLUE + "Seed: " + ChatFormatting.WHITE + settings.getSeed()), false);
+                    player.displayClientMessage(ComponentFactory.literal(ChatFormatting.BLUE + "Seed: " + ChatFormatting.WHITE + settings.getSeed()), false);
                 }
             }
         }
@@ -78,10 +78,10 @@ public class RealizedDimensionTab extends Item {
         if (tagCompound != null) {
             ResourceLocation dimension = tagCompound.contains("dimension") ? new ResourceLocation(tagCompound.getString("dimension")) : null;
             if (dimension != null) {
-                list.add(new TextComponent("Name: " + dimension.getPath()).withStyle(ChatFormatting.BLUE));
+                list.add(ComponentFactory.literal("Name: " + dimension.getPath()).withStyle(ChatFormatting.BLUE));
             } else if (tagCompound.contains("name")) {
                 String name = tagCompound.getString("name");
-                list.add(new TextComponent("Name: " + name).withStyle(ChatFormatting.BLUE));
+                list.add(ComponentFactory.literal("Name: " + name).withStyle(ChatFormatting.BLUE));
             }
 
             if (SafeClientTools.isSneaking()) {
@@ -89,17 +89,17 @@ public class RealizedDimensionTab extends Item {
                 String randomizedString = tagCompound.getString("randomized");
                 constructDescriptionHelp(list, descriptionString, randomizedString);
             } else {
-                list.add(new TextComponent(ChatFormatting.GREEN + "    <Press Shift>"));
+                list.add(ComponentFactory.literal(ChatFormatting.GREEN + "    <Press Shift>"));
             }
 
             int ticksLeft = tagCompound.getInt("ticksLeft");
             if (ticksLeft == 0) {
                 long power = ClientDimensionData.get().getPower(dimension);
                 long max = ClientDimensionData.get().getMaxPower(dimension);
-                list.add(new TextComponent("Dimension ready!").withStyle(ChatFormatting.BLUE));
+                list.add(ComponentFactory.literal("Dimension ready!").withStyle(ChatFormatting.BLUE));
                 int maintainCost = tagCompound.getInt("rfMaintainCost");
-                list.add(new TextComponent(ChatFormatting.YELLOW + "    Maintenance cost: " + maintainCost + " RF/tick"));
-                list.add(new TextComponent(ChatFormatting.YELLOW + "    Current power: " + power + " (" + max +")"));
+                list.add(ComponentFactory.literal(ChatFormatting.YELLOW + "    Maintenance cost: " + maintainCost + " RF/tick"));
+                list.add(ComponentFactory.literal(ChatFormatting.YELLOW + "    Current power: " + power + " (" + max +")"));
             } else {
                 int createCost = tagCompound.getInt("rfCreateCost");
                 int maintainCost = tagCompound.getInt("rfMaintainCost");
@@ -108,10 +108,10 @@ public class RealizedDimensionTab extends Item {
                 if (tickCost != 0) {
                     percentage = (tickCost - ticksLeft) * 100 / tickCost;
                 }
-                list.add(new TextComponent(ChatFormatting.BLUE + "Dimension progress: " + percentage + "%"));
-                list.add(new TextComponent(ChatFormatting.YELLOW + "    Creation cost: " + createCost + " RF/tick"));
-                list.add(new TextComponent(ChatFormatting.YELLOW + "    Maintenance cost: " + maintainCost + " RF/tick"));
-                list.add(new TextComponent(ChatFormatting.YELLOW + "    Tick cost: " + tickCost + " ticks"));
+                list.add(ComponentFactory.literal(ChatFormatting.BLUE + "Dimension progress: " + percentage + "%"));
+                list.add(ComponentFactory.literal(ChatFormatting.YELLOW + "    Creation cost: " + createCost + " RF/tick"));
+                list.add(ComponentFactory.literal(ChatFormatting.YELLOW + "    Maintenance cost: " + maintainCost + " RF/tick"));
+                list.add(ComponentFactory.literal(ChatFormatting.YELLOW + "    Tick cost: " + tickCost + " ticks"));
             }
         }
     }
@@ -127,19 +127,19 @@ public class RealizedDimensionTab extends Item {
         try {
             compiledDescriptor.compile(descriptor, randomizedDescriptor);
             if (compiledDescriptor.getTerrainType() != null) {
-                list.add(new TextComponent(ChatFormatting.GREEN + "    Terrain: " + ChatFormatting.WHITE + compiledDescriptor.getTerrainType().getName()));
+                list.add(ComponentFactory.literal(ChatFormatting.GREEN + "    Terrain: " + ChatFormatting.WHITE + compiledDescriptor.getTerrainType().getName()));
             }
             if (compiledDescriptor.getBiomeControllerType() != null) {
-                list.add(new TextComponent(ChatFormatting.GREEN + "    Biome Controller: " + ChatFormatting.WHITE + compiledDescriptor.getBiomeControllerType().getName()));
+                list.add(ComponentFactory.literal(ChatFormatting.GREEN + "    Biome Controller: " + ChatFormatting.WHITE + compiledDescriptor.getBiomeControllerType().getName()));
             }
             if (compiledDescriptor.getTimeType() != null) {
-                list.add(new TextComponent(ChatFormatting.GREEN + "    Time: " + ChatFormatting.WHITE + compiledDescriptor.getTimeType().getName()));
+                list.add(ComponentFactory.literal(ChatFormatting.GREEN + "    Time: " + ChatFormatting.WHITE + compiledDescriptor.getTimeType().getName()));
             }
             for (CompiledFeature feature : compiledDescriptor.getFeatures()) {
-                list.add(new TextComponent(ChatFormatting.GREEN + "    Feature: " + ChatFormatting.WHITE + feature.getFeatureType().getName()));
+                list.add(ComponentFactory.literal(ChatFormatting.GREEN + "    Feature: " + ChatFormatting.WHITE + feature.getFeatureType().getName()));
             }
         } catch (DescriptorError error) {
-            list.add(new TextComponent(ChatFormatting.RED + "Parse error: " + error.getMessage()));
+            list.add(ComponentFactory.literal(ChatFormatting.RED + "Parse error: " + error.getMessage()));
         }
     }
 }

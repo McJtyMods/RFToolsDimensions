@@ -7,12 +7,12 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import mcjty.lib.varia.ComponentFactory;
 import mcjty.rftoolsdim.dimension.data.DimensionCreator;
+import net.minecraft.ChatFormatting;
+import net.minecraft.SharedConstants;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
-import net.minecraft.SharedConstants;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.ChatFormatting;
 
 public class CommandCreateDim implements Command<CommandSourceStack> {
 
@@ -36,7 +36,7 @@ public class CommandCreateDim implements Command<CommandSourceStack> {
         String error = DimensionCreator.get().createDimension(context.getSource().getLevel(), name, seed,
                 descriptor, context.getSource().getPlayerOrException().getUUID());
         if (error != null) {
-            context.getSource().sendSuccess(new TextComponent(ChatFormatting.RED + error), true);
+            context.getSource().sendSuccess(ComponentFactory.literal(ChatFormatting.RED + error), true);
         }
         return 0;
     }

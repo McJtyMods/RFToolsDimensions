@@ -7,6 +7,7 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import mcjty.lib.varia.ComponentFactory;
 import mcjty.rftoolsdim.dimension.data.DimensionData;
 import mcjty.rftoolsdim.dimension.data.DimensionSettings;
 import mcjty.rftoolsdim.dimension.data.PersistantDimensionManager;
@@ -16,7 +17,6 @@ import mcjty.rftoolsdim.modules.dimlets.data.DimletKey;
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.chunk.ChunkGenerator;
@@ -68,6 +68,6 @@ public class CommandDump implements Command<CommandSourceStack> {
     }
 
     private void feedback(CommandContext<CommandSourceStack> context, String message) {
-        context.getSource().sendSuccess(new TextComponent(message), false);
+        context.getSource().sendSuccess(ComponentFactory.literal(message), false);
     }
 }

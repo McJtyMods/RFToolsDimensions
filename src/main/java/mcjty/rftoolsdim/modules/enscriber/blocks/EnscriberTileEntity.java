@@ -14,12 +14,13 @@ import mcjty.lib.tileentity.CapType;
 import mcjty.lib.tileentity.GenericTileEntity;
 import mcjty.lib.typed.Key;
 import mcjty.lib.typed.Type;
+import mcjty.lib.varia.ComponentFactory;
 import mcjty.lib.varia.Logging;
 import mcjty.lib.varia.Sync;
 import mcjty.rftoolsbase.tools.ManualHelper;
 import mcjty.rftoolsdim.dimension.DimensionConfig;
-import mcjty.rftoolsdim.dimension.data.DimensionData;
 import mcjty.rftoolsdim.dimension.data.DimensionCreator;
+import mcjty.rftoolsdim.dimension.data.DimensionData;
 import mcjty.rftoolsdim.dimension.data.PersistantDimensionManager;
 import mcjty.rftoolsdim.dimension.descriptor.CompiledDescriptor;
 import mcjty.rftoolsdim.dimension.descriptor.DescriptorError;
@@ -34,7 +35,6 @@ import mcjty.rftoolsdim.modules.enscriber.EnscriberModule;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -142,11 +142,11 @@ public class EnscriberTileEntity extends GenericTileEntity {
         DimensionData data = PersistantDimensionManager.get(level).getData(descriptor);
         if (data != null) {
             name = data.getId().getPath();
-            player.displayClientMessage(new TextComponent("This dimension already existed! If this is what you wanted then that's fine. Otherwise you need digit dimlets to make new unique dimensions. The dimlet sequence uniquely identifies a dimension. Names can't be changed")
+            player.displayClientMessage(ComponentFactory.literal("This dimension already existed! If this is what you wanted then that's fine. Otherwise you need digit dimlets to make new unique dimensions. The dimlet sequence uniquely identifies a dimension. Names can't be changed")
                     .withStyle(ChatFormatting.YELLOW), false);
         } else {
             if (!DimensionCreator.get().isNameAvailable(level, null, name)) {
-                player.displayClientMessage(new TextComponent("This name is already used by another dimension!")
+                player.displayClientMessage(ComponentFactory.literal("This name is already used by another dimension!")
                         .withStyle(ChatFormatting.YELLOW), false);
                 return;
             }

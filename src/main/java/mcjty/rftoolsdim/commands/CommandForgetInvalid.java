@@ -5,16 +5,16 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import mcjty.rftoolsdim.dimension.data.DimensionData;
+import mcjty.lib.varia.ComponentFactory;
 import mcjty.rftoolsdim.dimension.data.DimensionCreator;
+import mcjty.rftoolsdim.dimension.data.DimensionData;
 import mcjty.rftoolsdim.dimension.data.PersistantDimensionManager;
 import mcjty.rftoolsdim.dimension.descriptor.CompiledDescriptor;
+import net.minecraft.ChatFormatting;
+import net.minecraft.SharedConstants;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.SharedConstants;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.ChatFormatting;
 import net.minecraft.server.level.ServerLevel;
 
 import java.util.HashSet;
@@ -41,7 +41,7 @@ public class CommandForgetInvalid implements Command<CommandSourceStack> {
             CompiledDescriptor descriptor = DimensionCreator.get().getCompiledDescriptor(world, entry.getKey());
             if (descriptor == null) {
                 mgr.forget(entry.getKey());
-                context.getSource().sendSuccess(new TextComponent(ChatFormatting.YELLOW + "Removed '" + entry.getKey() + "'"), false);
+                context.getSource().sendSuccess(ComponentFactory.literal(ChatFormatting.YELLOW + "Removed '" + entry.getKey() + "'"), false);
             }
         }
         return 0;

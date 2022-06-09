@@ -6,13 +6,13 @@ import com.mojang.brigadier.arguments.LongArgumentType;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import mcjty.lib.varia.ComponentFactory;
 import mcjty.lib.varia.LevelTools;
 import mcjty.rftoolsdim.dimension.data.DimensionData;
 import mcjty.rftoolsdim.dimension.data.PersistantDimensionManager;
 import net.minecraft.SharedConstants;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
-import net.minecraft.network.chat.TextComponent;
 
 public class CommandSetPower implements Command<CommandSourceStack> {
 
@@ -32,10 +32,10 @@ public class CommandSetPower implements Command<CommandSourceStack> {
         PersistantDimensionManager mgr = PersistantDimensionManager.get(context.getSource().getLevel());
         DimensionData data = mgr.getData(context.getSource().getLevel().dimension().location());
         if (data == null) {
-            context.getSource().sendFailure(new TextComponent("Not an RFTools Dimension!"));
+            context.getSource().sendFailure(ComponentFactory.literal("Not an RFTools Dimension!"));
         } else {
             data.setEnergy(LevelTools.getOverworld(context.getSource().getLevel()), power);
-            context.getSource().sendFailure(new TextComponent("Power set to " + power));
+            context.getSource().sendFailure(ComponentFactory.literal("Power set to " + power));
         }
         return 0;
     }

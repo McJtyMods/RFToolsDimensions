@@ -9,6 +9,7 @@ import mcjty.lib.gui.widgets.Label;
 import mcjty.lib.gui.widgets.Panel;
 import mcjty.lib.gui.widgets.TextField;
 import mcjty.lib.typed.TypedMap;
+import mcjty.lib.varia.ComponentFactory;
 import mcjty.lib.varia.Logging;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.dimension.descriptor.DescriptorError;
@@ -17,11 +18,10 @@ import mcjty.rftoolsdim.modules.enscriber.EnscriberModule;
 import mcjty.rftoolsdim.modules.enscriber.blocks.EnscriberTileEntity;
 import mcjty.rftoolsdim.setup.RFToolsDimMessages;
 import net.minecraft.client.Minecraft;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.network.chat.TextComponent;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -89,7 +89,7 @@ public class GuiEnscriber extends GenericGuiContainer<EnscriberTileEntity, Gener
     private void storeDimlets() {
         String name = nameField.getText();
         if (name == null || name.trim().isEmpty()) {
-            Minecraft.getInstance().player.displayClientMessage(new TextComponent("Name is required!"), false);
+            Minecraft.getInstance().player.displayClientMessage(ComponentFactory.literal("Name is required!"), false);
             return;
         }
         sendServerCommandTyped(RFToolsDimMessages.INSTANCE, EnscriberTileEntity.CMD_STORE,
