@@ -17,6 +17,7 @@ import mcjty.lib.tileentity.TickingTileEntity;
 import mcjty.lib.varia.Broadcaster;
 import mcjty.lib.varia.LevelTools;
 import mcjty.lib.varia.NBTTools;
+import mcjty.lib.varia.Tools;
 import mcjty.rftoolsbase.tools.ManualHelper;
 import mcjty.rftoolsdim.compat.RFToolsUtilityCompat;
 import mcjty.rftoolsdim.dimension.data.DimensionData;
@@ -362,7 +363,7 @@ public class DimensionEditorTileEntity extends TickingTileEntity {
     }
 
     private static boolean isMatterReceiver(ItemStack itemStack) {
-        return "rftoolsutility:matter_receiver".equals(itemTools.getId(stack).toString());
+        return "rftoolsutility:matter_receiver".equals(Tools.getId(itemStack).toString());
     }
 
     private static boolean isTNT(ItemStack itemStack) {

@@ -7,6 +7,7 @@ import mcjty.lib.tileentity.TickingTileEntity;
 import mcjty.lib.varia.FakePlayerGetter;
 import mcjty.lib.varia.NBTTools;
 import mcjty.lib.varia.SoundTools;
+import mcjty.lib.varia.Tools;
 import mcjty.rftoolsbase.tools.ManualHelper;
 import mcjty.rftoolsdim.compat.RFToolsDimensionsTOPDriver;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletDictionary;
@@ -281,7 +282,7 @@ public class BlockAbsorberTileEntity extends TickingTileEntity {
         CompoundTag info = getOrCreateInfo(tagCompound);
         info.putInt("absorbing", absorbing);
         if (absorbingBlock != null) {
-            info.putString("block", absorbingTools.getId(block).toString());
+            info.putString("block", Tools.getId(absorbingBlock).toString());
         }
     }
 }
