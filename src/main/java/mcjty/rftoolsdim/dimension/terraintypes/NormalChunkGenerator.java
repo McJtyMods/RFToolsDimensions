@@ -577,10 +577,10 @@ public class NormalChunkGenerator extends BaseChunkGenerator {
     }
 
     private int iterateNoiseColumn(int x, int z, @Nullable BlockState[] states, @Nullable Predicate<BlockState> tester) {
-        int i = Math.floorDiv(x, this.horizontalNoiseGranularity);
-        int j = Math.floorDiv(z, this.horizontalNoiseGranularity);
-        int k = Math.floorMod(x, this.horizontalNoiseGranularity);
-        int l = Math.floorMod(z, this.horizontalNoiseGranularity);
+        int i = floorDiv(x, this.horizontalNoiseGranularity);
+        int j = floorDiv(z, this.horizontalNoiseGranularity);
+        int k = floorMod(x, this.horizontalNoiseGranularity);
+        int l = floorMod(z, this.horizontalNoiseGranularity);
         double d0 = (double) k / this.horizontalNoiseGranularity;
         double d1 = (double) l / this.horizontalNoiseGranularity;
         double[][] adouble = new double[][]{this.makeAndFillNoiseColumn(i, j), this.makeAndFillNoiseColumn(i, j + 1), this.makeAndFillNoiseColumn(i + 1, j), this.makeAndFillNoiseColumn(i + 1, j + 1)};
@@ -611,6 +611,18 @@ public class NormalChunkGenerator extends BaseChunkGenerator {
         }
 
         return 0;
+    }
+
+    public static int floorMod(int a, int b) {
+        return a - floorDiv(a, b) * b;
+    }
+
+    public static int floorDiv(int a, int b) {
+        int divider = a / b;
+        if ((a ^ b) < 0 && divider * b != a) {
+            --divider;
+        }
+        return divider;
     }
 
 }
