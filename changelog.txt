@@ -1,4 +1,4 @@
-Upcoming:
+1.16-7.0.21:
 - Avoid Math.floorMod and floorDiv since apparently older Java 8 versions don't have it
 
 1.16-7.0.20-beta:
