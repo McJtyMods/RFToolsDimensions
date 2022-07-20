@@ -1,4 +1,4 @@
-Upcoming:
+1.18-8.0.8:
 - Fixed a problem where the 'none' biome category could cause the dimension to crash
 - Updated the AE2 dimlet package. It was outdated. Thanks to obnys for reporting this
 - The researcher didn't have the correct tags so you couldn't break it with a pickaxe
