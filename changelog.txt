@@ -1,3 +1,6 @@
+Upcoming:
+- Fixed a problem where the 'none' biome category could cause the dimension to crash
+
 1.18-8.0.7:
 - Updated to latest McJtyLib
 

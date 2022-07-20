@@ -173,11 +173,16 @@ public class RFTBiomeProvider extends BiomeSource {
             if (biomes.isEmpty()) {
                 // Try to get from categories
                 List<Biome> list = biomeRegistry.stream().filter(b -> biomeCategories.contains(Biome.getBiomeCategory(Holder.direct(b)))).collect(Collectors.toList());
-                biome1 = biomeRegistry.getHolderOrThrow(ResourceKey.create(Registry.BIOME_REGISTRY, Tools.getId(list.get(0))));
-                if (list.size() > 1) {
-                    biome2 = biomeRegistry.getHolderOrThrow(ResourceKey.create(Registry.BIOME_REGISTRY, Tools.getId(list.get(1))));
+                if (list.isEmpty()) {
+                    // Safety, this is needed in case the category doesn't contain any biomes
+                    biome1 = biome2 = biomeRegistry.getHolderOrThrow(Biomes.PLAINS);
                 } else {
-                    biome2 = biome1;
+                    biome1 = biomeRegistry.getHolderOrThrow(ResourceKey.create(Registry.BIOME_REGISTRY, Tools.getId(list.get(0))));
+                    if (list.size() > 1) {
+                        biome2 = biomeRegistry.getHolderOrThrow(ResourceKey.create(Registry.BIOME_REGISTRY, Tools.getId(list.get(1))));
+                    } else {
+                        biome2 = biome1;
+                    }
                 }
             } else {
                 biome1 = biomes.get(0);
