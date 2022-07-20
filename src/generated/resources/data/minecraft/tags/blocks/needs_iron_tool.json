@@ -17,6 +17,7 @@
     "rftoolsdim:structure_absorber",
     "rftoolsdim:dimlet_workbench",
     "rftoolsdim:knowledge_holder",
+    "rftoolsdim:researcher",
     "rftoolsdim:activity_probe"
   ]
 }

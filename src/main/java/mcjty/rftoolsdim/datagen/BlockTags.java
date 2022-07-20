@@ -32,7 +32,7 @@ public class BlockTags extends BaseBlockTagsProvider {
                 EnscriberModule.ENSCRIBER,
                 EssencesModule.BIOME_ABSORBER, EssencesModule.BLOCK_ABSORBER,
                 EssencesModule.FLUID_ABSORBER, EssencesModule.STRUCTURE_ABSORBER,
-                WorkbenchModule.WORKBENCH, WorkbenchModule.HOLDER,
+                WorkbenchModule.WORKBENCH, WorkbenchModule.HOLDER, WorkbenchModule.RESEARCHER,
                 VariousModule.ACTIVITY_PROBE
         );
     }
