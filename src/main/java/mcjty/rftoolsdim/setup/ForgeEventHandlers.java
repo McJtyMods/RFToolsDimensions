@@ -65,7 +65,7 @@ public class ForgeEventHandlers {
     }
 
     @SubscribeEvent
-    public void onWorldTick(TickEvent.WorldTickEvent event) {
+    public void onWorldTick(TickEvent.LevelTickEvent event) {
         if (event.phase == TickEvent.Phase.START && !event.world.isClientSide) {
             // This should be in PotentialSpawns but that doesn't appear to be working correctly
             handleSpawning(event);
@@ -76,7 +76,7 @@ public class ForgeEventHandlers {
         }
     }
 
-    private void handleSpawning(TickEvent.WorldTickEvent event) {
+    private void handleSpawning(TickEvent.LevelTickEvent event) {
         if (event.world.isClientSide) {
             return;
         }
