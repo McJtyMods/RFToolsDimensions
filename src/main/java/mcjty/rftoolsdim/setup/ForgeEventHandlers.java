@@ -31,12 +31,6 @@ import java.util.Random;
 
 public class ForgeEventHandlers {
 
-    // @todo 1.19 biome decorators
-//    @SubscribeEvent(priority = EventPriority.HIGH)
-//    public void onBiomeLoad(BiomeLoadingEvent event) {
-//        event.getGeneration().getFeatures(GenerationStep.Decoration.RAW_GENERATION).add(RFTFeature.RFTFEATURE_CONFIGURED);
-//    }
-
     private final Random random = new Random();
     private final PowerHandler powerHandler = new PowerHandler();
 
