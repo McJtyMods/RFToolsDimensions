@@ -25,7 +25,7 @@ public class CommonTags {
             commonTags.add(BlockTags.RAILS);
             commonTags.add(BlockTags.SLABS);
             commonTags.add(BlockTags.WOOL);
-            commonTags.add(BlockTags.CARPETS);
+            commonTags.add(BlockTags.WOOL_CARPETS);
             commonTags.add(BlockTags.CROPS);
             commonTags.add(BlockTags.PLANKS);
             commonTags.add(BlockTags.STAIRS);

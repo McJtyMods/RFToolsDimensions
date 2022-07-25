@@ -1,6 +1,5 @@
 package mcjty.rftoolsdim.modules.essences.blocks;
 
-import it.unimi.dsi.fastutil.longs.LongSet;
 import mcjty.lib.blocks.BaseBlock;
 import mcjty.lib.blocks.RotationType;
 import mcjty.lib.builder.BlockBuilder;
@@ -15,18 +14,16 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.feature.ConfiguredStructureFeature;
 import net.minecraft.world.level.material.Material;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Random;
 
 import static mcjty.lib.builder.TooltipBuilder.*;
 
@@ -96,7 +93,7 @@ public class StructureAbsorberTileEntity extends TickingTileEntity {
     @Override
     protected void tickClient() {
         if (absorbing > 0) {
-            Random rand = level.random;
+            RandomSource rand = level.random;
 
             double u = rand.nextFloat() * 2.0f - 1.0f;
             double v = (float) (rand.nextFloat() * 2.0f * Math.PI);
@@ -121,11 +118,11 @@ public class StructureAbsorberTileEntity extends TickingTileEntity {
     protected void tickServer() {
         if (structureId == null) {
             ChunkPos cp = new ChunkPos(worldPosition);
-            Map<ConfiguredStructureFeature<?, ?>, LongSet> references = level.getChunk(cp.x, cp.z).getAllReferences();
+            var references = level.getChunk(cp.x, cp.z).getAllReferences();
             List<ResourceLocation> structures = new ArrayList<>();
             for (var entry : references.entrySet()) {
                 if (!entry.getValue().isEmpty()) {
-                    structures.add(Tools.getId(entry.getKey().feature));
+                    structures.add(Tools.getId(level, entry.getKey()));
                 }
             }
             if (!structures.isEmpty()) {
@@ -151,10 +148,10 @@ public class StructureAbsorberTileEntity extends TickingTileEntity {
 
     private boolean isValidStructure() {
         ChunkPos cp = new ChunkPos(worldPosition);
-        Map<ConfiguredStructureFeature<?, ?>, LongSet> references = level.getChunk(cp.x, cp.z).getAllReferences();
+        var references = level.getChunk(cp.x, cp.z).getAllReferences();
         for (var entry : references.entrySet()) {
             if (!entry.getValue().isEmpty()) {
-                if (structureId.equals(Tools.getId(entry.getKey().feature).toString())) {
+                if (structureId.equals(Tools.getId(level, entry.getKey()).toString())) {
                     return true;
                 }
             }

@@ -14,11 +14,11 @@ public class ClientSetup {
         DimensionSpecialEffects.EFFECTS.put(DimensionRegistry.RFTOOLS_EFFECTS_ID, effects);
     }
 
-    public static void onPlayerLogin(ClientPlayerNetworkEvent.LoggedInEvent event) {
+    public static void onPlayerLogin(ClientPlayerNetworkEvent.LoggingIn event) {
         ClientDimensionData.get().clear();
     }
 
-    public static void onDimensionChange(ClientPlayerNetworkEvent.RespawnEvent event) {
+    public static void onDimensionChange(ClientPlayerNetworkEvent.Clone event) {
         RFToolsDimensionSpecialEffects.clearCache();
     }
 }

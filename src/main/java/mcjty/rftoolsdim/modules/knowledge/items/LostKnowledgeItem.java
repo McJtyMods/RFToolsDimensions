@@ -14,6 +14,7 @@ import mcjty.rftoolsdim.modules.knowledge.data.KnowledgeManager;
 import mcjty.rftoolsdim.setup.Registration;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -101,7 +102,7 @@ public class LostKnowledgeItem extends Item implements ITooltipSettings {
         return ItemStack.EMPTY;
     }
 
-    public static ItemStack createRandomLostKnowledge(Level world, DimletRarity rarity, Random random) {
+    public static ItemStack createRandomLostKnowledge(Level world, DimletRarity rarity, RandomSource random) {
         List<KnowledgeKey> patterns = KnowledgeManager.get().getKnownPatterns(world, rarity);
         if (patterns.isEmpty()) {
             return ItemStack.EMPTY;

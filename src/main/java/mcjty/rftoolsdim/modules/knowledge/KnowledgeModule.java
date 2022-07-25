@@ -5,10 +5,10 @@ import mcjty.rftoolsdim.modules.dimlets.data.DimletRarity;
 import mcjty.rftoolsdim.modules.knowledge.data.KnowledgeManager;
 import mcjty.rftoolsdim.modules.knowledge.items.LostKnowledgeItem;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.world.WorldEvent;
-import net.minecraftforge.registries.RegistryObject;
+import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.registries.RegistryObject;
 
 import static mcjty.rftoolsdim.setup.Registration.ITEMS;
 
@@ -23,7 +23,7 @@ public class KnowledgeModule implements IModule {
         MinecraftForge.EVENT_BUS.addListener(this::onWorldLoad);
     }
 
-    private void onWorldLoad(WorldEvent.Load event) {
+    private void onWorldLoad(LevelEvent.Load event) {
         KnowledgeManager.get().clear();
     }
 

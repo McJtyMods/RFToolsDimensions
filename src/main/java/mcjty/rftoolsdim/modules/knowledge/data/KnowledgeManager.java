@@ -17,14 +17,17 @@ import mcjty.rftoolsdim.modules.dimlets.data.DimletRarity;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletSettings;
 import mcjty.rftoolsdim.setup.Registration;
 import net.minecraft.core.Holder;
+import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.CommonLevelAccessor;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.levelgen.feature.StructureFeature;
+import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nullable;
@@ -69,7 +72,7 @@ public class KnowledgeManager {
     public static ItemStack getPatternItem(char p) {
         return switch (p) {
             case EMPTY -> ItemStack.EMPTY;
-            case SHARD -> new ItemStack(Registration.DIMENSIONAL_SHARD);
+            case SHARD -> new ItemStack(Registration.DIMENSIONAL_SHARD.get());
             case LEV0 -> new ItemStack(DimletModule.COMMON_ESSENCE.get());
             case LEV1 -> new ItemStack(DimletModule.RARE_ESSENCE.get());
             case LEV2 -> new ItemStack(DimletModule.LEGENDARY_ESSENCE.get());
@@ -82,7 +85,7 @@ public class KnowledgeManager {
             return EMPTY;
         }
         Item item = stack.getItem();
-        if (item == Registration.DIMENSIONAL_SHARD) {
+        if (item == Registration.DIMENSIONAL_SHARD.get()) {
             return SHARD;
         }
         if (item == DimletModule.COMMON_ESSENCE.get()) {
@@ -98,14 +101,14 @@ public class KnowledgeManager {
     }
 
     @Nullable
-    private String getKnowledgeSetReason(DimletKey key) {
+    private String getKnowledgeSetReason(CommonLevelAccessor level, DimletKey key) {
         return switch (key.type()) {
             case TERRAIN -> null;
             case ATTRIBUTE -> null;
             case BIOME_CONTROLLER -> null;
             case BIOME_CATEGORY -> null;
             case BIOME -> getReasonBiome(key);
-            case STRUCTURE -> getReasonStructure(key);
+            case STRUCTURE -> getReasonStructure(level, key);
             case FEATURE -> null;
             case SKY -> null;
             case TIME -> null;
@@ -121,16 +124,17 @@ public class KnowledgeManager {
     private String getReasonBiome(DimletKey key) {
         Biome biome = ForgeRegistries.BIOMES.getValue(new ResourceLocation(key.key()));
         if (biome != null) {
-            return Biome.getBiomeCategory(Holder.direct(biome)).getName() + " biomes";
+            // @todo 1.19
+//            return Biome.getBiomeCategory(Holder.direct(biome)).getName() + " biomes";
         }
         return null;
     }
 
     @Nullable
-    private String getReasonStructure(DimletKey key) {
-        StructureFeature<?> structure = ForgeRegistries.STRUCTURE_FEATURES.getValue(new ResourceLocation(key.key()));
+    private String getReasonStructure(CommonLevelAccessor level, DimletKey key) {
+        Structure structure = BuiltinRegistries.STRUCTURES.get(new ResourceLocation(key.key()));
         if (structure != null) {
-            return Tools.getId(structure).getPath();
+            return Tools.getId(level, structure).getPath();
         }
         return null;
     }
@@ -144,14 +148,14 @@ public class KnowledgeManager {
         return null;
     }
 
-    private KnowledgeSet getKnowledgeSet(DimletKey key) {
+    private KnowledgeSet getKnowledgeSet(CommonLevelAccessor level, DimletKey key) {
         return switch (key.type()) {
             case TERRAIN -> TerrainType.byName(key.key()).getSet();
             case ATTRIBUTE -> AttributeType.byName(key.key()).getSet();
             case BIOME_CONTROLLER -> BiomeControllerType.byName(key.key()).getSet();
             case BIOME_CATEGORY -> getBiomeCategoryKnowledgeSet(key);
             case BIOME -> getBiomeKnowledgeSet(key);
-            case STRUCTURE -> getStructureKnowledgeSet(key);
+            case STRUCTURE -> getStructureKnowledgeSet(level, key);
             case FEATURE -> FeatureType.byName(key.key()).getSet();
             case TIME -> TimeType.byName(key.key()).getSet();
             case BLOCK -> getBlockKnowledgeSet(key);
@@ -177,8 +181,10 @@ public class KnowledgeManager {
     }
 
     private KnowledgeSet getBiomeCategoryKnowledgeSet(DimletKey key) {
-        Biome.BiomeCategory category = Biome.BiomeCategory.byName(key.key());
-        return KnowledgeSet.values()[category.ordinal() % KnowledgeSet.values().length];
+        // @todo 1.19
+//        Biome.BiomeCategory category = Biome.BiomeCategory.byName(key.key());
+//        return KnowledgeSet.values()[category.ordinal() % KnowledgeSet.values().length];
+        return KnowledgeSet.SET1;
     }
 
     /// Create a knowledge set based on the most important tag for a given block
@@ -223,8 +229,8 @@ public class KnowledgeManager {
         return mostImportant;
     }
 
-    private KnowledgeSet getStructureKnowledgeSet(DimletKey key) {
-        StructureFeature<?> structure = ForgeRegistries.STRUCTURE_FEATURES.getValue(new ResourceLocation(key.key()));
+    private KnowledgeSet getStructureKnowledgeSet(CommonLevelAccessor level, DimletKey key) {
+        Structure structure = BuiltinRegistries.STRUCTURES.get(new ResourceLocation(key.key()));
         if (structure == null) {
             if (key.key().equals("default") || key.key().equals("none")) {
                 return KnowledgeSet.SET1;
@@ -233,7 +239,7 @@ public class KnowledgeManager {
             return KnowledgeSet.SET2;
         }
         // @todo is this good?
-        return KnowledgeSet.values()[(Math.abs(Tools.getId(structure).hashCode())) % KnowledgeSet.values().length];
+        return KnowledgeSet.values()[(Math.abs(Tools.getId(level, structure).hashCode())) % KnowledgeSet.values().length];
     }
 
     /// Create a knowledge set based on the category of a biome
@@ -243,24 +249,26 @@ public class KnowledgeManager {
             RFToolsDim.setup.getLogger().error("Biome '" + key.key() + "' is missing!");
             return KnowledgeSet.SET1;
         }
-        Biome.BiomeCategory category = Biome.getBiomeCategory(Holder.direct(biome));
-        return KnowledgeSet.values()[category.ordinal() % KnowledgeSet.values().length];
+        // @todo 1.19
+//        Biome.BiomeCategory category = Biome.getBiomeCategory(Holder.direct(biome));
+//        return KnowledgeSet.values()[category.ordinal() % KnowledgeSet.values().length];
+        return KnowledgeSet.SET1;
     }
 
     @Nullable
-    public KnowledgeKey getKnowledgeKey(long seed, DimletKey key) {
+    public KnowledgeKey getKnowledgeKey(CommonLevelAccessor level, long seed, DimletKey key) {
         resolve(seed);
         DimletSettings settings = DimletDictionary.get().getSettings(key);
         if (settings == null) {
             return null;
         }
-        KnowledgeSet set = getKnowledgeSet(key);
+        KnowledgeSet set = getKnowledgeSet(level, key);
         return new KnowledgeKey(key.type(), settings.getRarity(), set);
     }
 
     @Nullable
-    public DimletPattern getPattern(long seed, DimletKey key) {
-        KnowledgeKey kkey = getKnowledgeKey(seed, key);
+    public DimletPattern getPattern(CommonLevelAccessor level, long seed, DimletKey key) {
+        KnowledgeKey kkey = getKnowledgeKey(level, seed, key);
         if (kkey == null) {
             return null;
         }
@@ -278,7 +286,8 @@ public class KnowledgeManager {
             for (DimletKey key : DimletDictionary.get().getDimlets()) {
                 DimletSettings settings = DimletDictionary.get().getSettings(key);
                 if (settings != null && Objects.equals(settings.getRarity(), rarity)) {
-                    KnowledgeKey kkey = getKnowledgeKey(LevelTools.getOverworld(world).getSeed(), key);
+                    ServerLevel overworld = LevelTools.getOverworld(world);
+                    KnowledgeKey kkey = getKnowledgeKey(overworld, overworld.getSeed(), key);
                     if (kkey != null) {
                         set.add(kkey);
                         String reason = getKnowledgeSetReason(key);

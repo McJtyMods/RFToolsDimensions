@@ -3,6 +3,7 @@ package mcjty.rftoolsdim.modules.dimlets.data;
 import mcjty.lib.varia.LevelTools;
 import mcjty.rftoolsdim.modules.knowledge.data.DimletPattern;
 import mcjty.rftoolsdim.modules.knowledge.data.KnowledgeManager;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.apache.commons.lang3.tuple.Pair;
@@ -68,7 +69,7 @@ public class DimletDictionary {
 
     @Nullable
     /// This only returns dimlets with worldgen == rue
-    public DimletKey getRandomDimlet(DimletRarity rarity, Random random) {
+    public DimletKey getRandomDimlet(DimletRarity rarity, RandomSource random) {
         List<DimletKey> keys = getDimletsByRarity(rarity);
         if (keys.isEmpty()) {
             return null;

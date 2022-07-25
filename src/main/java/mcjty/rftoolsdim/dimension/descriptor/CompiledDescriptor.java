@@ -41,7 +41,7 @@ public class CompiledDescriptor {
     private final Set<AdminDimletType> adminDimletTypes = EnumSet.noneOf(AdminDimletType.class);
     private final Set<CompiledFeature> features = new HashSet<>();
     private BiomeControllerType biomeControllerType = null;
-    private final Set<Biome.BiomeCategory> biomeCategories = new HashSet<>();
+//    private final Set<Biome.BiomeCategory> biomeCategories = new HashSet<>(); // @todo 1.19
     private final List<ResourceLocation> biomes = new ArrayList<>();
     private final List<ResourceLocation> structures = new ArrayList<>();
     private long skyDimletTypes = 0;
@@ -153,7 +153,8 @@ public class CompiledDescriptor {
                 }
                 break;
             case BIOME_CATEGORY:
-                biomeCategories.add(Biome.BiomeCategory.byName(name));
+//                biomeCategories.add(Biome.BiomeCategory.byName(name));
+                // @todo 1.19
                 break;
             case BIOME:
                 biomes.add(new ResourceLocation(name));
@@ -292,9 +293,10 @@ public class CompiledDescriptor {
         for (ResourceLocation biome : biomes) {
             header += "\n        BIOME: " + biome.toString();
         }
-        for (Biome.BiomeCategory category : biomeCategories) {
-            header += "\n        CATEGORY: " + category.getName();
-        }
+        // @todo 1.19
+//        for (Biome.BiomeCategory category : biomeCategories) {
+//            header += "\n        CATEGORY: " + category.getName();
+//        }
         for (ResourceLocation structure : structures) {
             header += "\n    STRUCTURE: " + structure.toString();
         }
@@ -375,7 +377,8 @@ public class CompiledDescriptor {
         return biomes;
     }
 
-    public Set<Biome.BiomeCategory> getBiomeCategories() {
-        return biomeCategories;
-    }
+    // @todo 1.19
+//    public Set<Biome.BiomeCategory> getBiomeCategories() {
+//        return biomeCategories;
+//    }
 }

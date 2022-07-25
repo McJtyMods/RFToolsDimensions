@@ -15,7 +15,6 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
-import net.minecraft.world.level.levelgen.NoiseSamplingSettings;
 import net.minecraft.world.level.levelgen.NoiseSettings;
 import org.apache.commons.lang3.StringUtils;
 
@@ -58,16 +57,17 @@ public class CommandRefreshChunks implements Command<CommandSourceStack> {
                 dump(settings);
             } else if (split.length <= 1) {
                 double result = switch (cmd) {
-                    case XZSCALE -> settings.noiseSettings().noiseSamplingSettings().xzScale();
-                    case YSCALE -> settings.noiseSettings().noiseSamplingSettings().yScale();
-                    case XZFACTOR -> settings.noiseSettings().noiseSamplingSettings().xzFactor();
-                    case YFACTOR -> settings.noiseSettings().noiseSamplingSettings().yFactor();
-                    case TOPOFFSET -> settings.noiseSettings().topSlideSettings().offset();
-                    case TOPSIZE -> settings.noiseSettings().topSlideSettings().size();
-                    case TOPTARGET -> settings.noiseSettings().topSlideSettings().target();
-                    case BOTTOMOFFSET -> settings.noiseSettings().bottomSlideSettings().offset();
-                    case BOTTOMSIZE -> settings.noiseSettings().bottomSlideSettings().size();
-                    case BOTTOMTARGET -> settings.noiseSettings().bottomSlideSettings().target();
+// @todo 1.19
+//                    case XZSCALE -> settings.noiseSettings().noiseSamplingSettings().xzScale();
+//                    case YSCALE -> settings.noiseSettings().noiseSamplingSettings().yScale();
+//                    case XZFACTOR -> settings.noiseSettings().noiseSamplingSettings().xzFactor();
+//                    case YFACTOR -> settings.noiseSettings().noiseSamplingSettings().yFactor();
+//                    case TOPOFFSET -> settings.noiseSettings().topSlideSettings().offset();
+//                    case TOPSIZE -> settings.noiseSettings().topSlideSettings().size();
+//                    case TOPTARGET -> settings.noiseSettings().topSlideSettings().target();
+//                    case BOTTOMOFFSET -> settings.noiseSettings().bottomSlideSettings().offset();
+//                    case BOTTOMSIZE -> settings.noiseSettings().bottomSlideSettings().size();
+//                    case BOTTOMTARGET -> settings.noiseSettings().bottomSlideSettings().target();
                     case HORIZONTAL -> settings.noiseSettings().noiseSizeHorizontal();
                     case VERTICAL -> settings.noiseSettings().noiseSizeVertical();
                     default -> 0;
@@ -107,21 +107,22 @@ public class CommandRefreshChunks implements Command<CommandSourceStack> {
     }
 
     private void dump(NoiseGeneratorSettings settings) {
-        NoiseSettings noiseSettings = settings.noiseSettings();
-        System.out.println("Noise settings:");
-        NoiseSamplingSettings samplingSettings = noiseSettings.noiseSamplingSettings();
-        System.out.println("    SamplingSettings:   xzfactor=" + samplingSettings.xzFactor()
-                + "  yfactor=" + samplingSettings.yFactor()
-                + "  xzscale=" + samplingSettings.xzScale()
-                + "  yscale=" + samplingSettings.yScale());
-        System.out.println("    TopSlider:  toptarget=" + noiseSettings.topSlideSettings().target()
-                + "  topsize=" + noiseSettings.topSlideSettings().size()
-                + "  topoffset=" + noiseSettings.topSlideSettings().offset());
-        System.out.println("    BottomSlider:  bottomtarget=" + noiseSettings.bottomSlideSettings().target()
-                + "  bottomsize=" + noiseSettings.bottomSlideSettings().size()
-                + "  bottomoffset=" + noiseSettings.bottomSlideSettings().offset());
-        System.out.println("    horizontal=" + noiseSettings.noiseSizeHorizontal()
-                + "  vertical=" + noiseSettings.noiseSizeVertical());
+        // @todo 1.19
+//        NoiseSettings noiseSettings = settings.noiseSettings();
+//        System.out.println("Noise settings:");
+//        NoiseSamplingSettings samplingSettings = noiseSettings.noiseSamplingSettings();
+//        System.out.println("    SamplingSettings:   xzfactor=" + samplingSettings.xzFactor()
+//                + "  yfactor=" + samplingSettings.yFactor()
+//                + "  xzscale=" + samplingSettings.xzScale()
+//                + "  yscale=" + samplingSettings.yScale());
+//        System.out.println("    TopSlider:  toptarget=" + noiseSettings.topSlideSettings().target()
+//                + "  topsize=" + noiseSettings.topSlideSettings().size()
+//                + "  topoffset=" + noiseSettings.topSlideSettings().offset());
+//        System.out.println("    BottomSlider:  bottomtarget=" + noiseSettings.bottomSlideSettings().target()
+//                + "  bottomsize=" + noiseSettings.bottomSlideSettings().size()
+//                + "  bottomoffset=" + noiseSettings.bottomSlideSettings().offset());
+//        System.out.println("    horizontal=" + noiseSettings.noiseSizeHorizontal()
+//                + "  vertical=" + noiseSettings.noiseSizeVertical());
     }
 
     private static double asDouble(String d) {

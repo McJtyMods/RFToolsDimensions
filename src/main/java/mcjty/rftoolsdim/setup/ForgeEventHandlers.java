@@ -4,7 +4,6 @@ import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.dimension.data.DimensionData;
 import mcjty.rftoolsdim.dimension.data.PersistantDimensionManager;
 import mcjty.rftoolsdim.dimension.descriptor.CompiledDescriptor;
-import mcjty.rftoolsdim.dimension.features.RFTFeature;
 import mcjty.rftoolsdim.dimension.power.PowerHandler;
 import mcjty.rftoolsdim.dimension.terraintypes.AttributeType;
 import mcjty.rftoolsdim.dimension.terraintypes.RFToolsChunkGenerator;
@@ -19,13 +18,10 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.event.server.ServerStartedEvent;
-import net.minecraftforge.event.world.BiomeLoadingEvent;
-import net.minecraftforge.event.world.BlockEvent;
-import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.network.PacketDistributor;
 
@@ -35,10 +31,11 @@ import java.util.Random;
 
 public class ForgeEventHandlers {
 
-    @SubscribeEvent(priority = EventPriority.HIGH)
-    public void onBiomeLoad(BiomeLoadingEvent event) {
-        event.getGeneration().getFeatures(GenerationStep.Decoration.RAW_GENERATION).add(RFTFeature.RFTFEATURE_CONFIGURED);
-    }
+    // @todo 1.19 biome decorators
+//    @SubscribeEvent(priority = EventPriority.HIGH)
+//    public void onBiomeLoad(BiomeLoadingEvent event) {
+//        event.getGeneration().getFeatures(GenerationStep.Decoration.RAW_GENERATION).add(RFTFeature.RFTFEATURE_CONFIGURED);
+//    }
 
     private final Random random = new Random();
     private final PowerHandler powerHandler = new PowerHandler();
@@ -48,7 +45,7 @@ public class ForgeEventHandlers {
     @SubscribeEvent
     public void onNeighborNotify(BlockEvent.NeighborNotifyEvent event) {
         // UGLY HACK to prevent stack overflow in rftools dimensions with block updates
-        if (event.getWorld() instanceof ServerLevel serverLevel) {
+        if (event.getLevel() instanceof ServerLevel serverLevel) {
             if (serverLevel.getChunkSource().getGenerator() instanceof RFToolsChunkGenerator) {
                 counter--;
                 if (counter < 0) {
@@ -66,21 +63,21 @@ public class ForgeEventHandlers {
 
     @SubscribeEvent
     public void onWorldTick(TickEvent.LevelTickEvent event) {
-        if (event.phase == TickEvent.Phase.START && !event.world.isClientSide) {
+        if (event.phase == TickEvent.Phase.START && !event.level.isClientSide) {
             // This should be in PotentialSpawns but that doesn't appear to be working correctly
             handleSpawning(event);
 
-            if (event.world.dimension() == Level.OVERWORLD) {
-                powerHandler.handlePower(event.world);
+            if (event.level.dimension() == Level.OVERWORLD) {
+                powerHandler.handlePower(event.level);
             }
         }
     }
 
     private void handleSpawning(TickEvent.LevelTickEvent event) {
-        if (event.world.isClientSide) {
+        if (event.level.isClientSide) {
             return;
         }
-        ServerLevel serverWorld = (ServerLevel) event.world;
+        ServerLevel serverWorld = (ServerLevel) event.level;
         if (serverWorld.players().isEmpty()) {
             return;
         }
@@ -126,13 +123,13 @@ public class ForgeEventHandlers {
         for (DimletKey key : dictionary.getDimlets()) {
             collected.put(key, dictionary.getSettings(key));
             if (collected.size() >= 100) {
-                RFToolsDimMessages.INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) event.getPlayer()),
+                RFToolsDimMessages.INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) event.getEntity()),
                         new PacketSendDimletPackages(collected));
                 collected.clear();
             }
         }
         if (!collected.isEmpty()) {
-            RFToolsDimMessages.INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) event.getPlayer()),
+            RFToolsDimMessages.INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) event.getEntity()),
                     new PacketSendDimletPackages(collected));
         }
     }
@@ -141,7 +138,7 @@ public class ForgeEventHandlers {
 //
 //    @SubscribeEvent
 //    public void onPotentialSpawn(WorldEvent.PotentialSpawns event) {
-//        IWorld iworld = event.getWorld();
+//        IWorld ilevel = event.getLevel();
 //        if (iworld instanceof World) {
 //            if (blobEntry == null) {
 //                blobEntry = new MobSpawnInfo.Spawners(BlobModule.DIMENSIONAL_BLOB.get(), 300, 6, 20);

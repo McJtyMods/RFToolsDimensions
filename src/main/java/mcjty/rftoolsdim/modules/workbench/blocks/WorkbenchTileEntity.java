@@ -104,7 +104,7 @@ public class WorkbenchTileEntity extends GenericTileEntity {
 
     private static boolean isValidPatternItem(ItemStack stack) {
         Item item = stack.getItem();
-        return item == DIMENSIONAL_SHARD || item == DimletModule.COMMON_ESSENCE.get() ||
+        return item == DIMENSIONAL_SHARD.get() || item == DimletModule.COMMON_ESSENCE.get() ||
                 item == DimletModule.RARE_ESSENCE.get() ||
                 item == DimletModule.LEGENDARY_ESSENCE.get();
     }
