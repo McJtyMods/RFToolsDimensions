@@ -14,6 +14,8 @@
   "respawn_anchor_works": true,
   "has_raids": false,
   "logical_height": 256,
+  "monster_spawn_block_light_limit": 0,
+  "monster_spawn_light_level": 0,
   "infiniburn": "#minecraft:infiniburn_overworld",
   "effects": "rftoolsdim:effects"
 }
