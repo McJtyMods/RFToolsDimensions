@@ -50,9 +50,20 @@ public class DimensionalBlobEntity extends Monster {
     private static int getDefaultMaxHealth(DimletRarity rarity) {
         // There is no UNCOMMON mob
         return switch (rarity) {
-            case COMMON -> 10;// @todo 1.19 BlobConfig.BLOB_COMMON_HEALTH.get();
-            case RARE -> 20; // @todo 1.19 BlobConfig.BLOB_RARE_HEALTH.get();
-            case LEGENDARY -> 30; // @todo 1.19 BlobConfig.BLOB_LEGENDARY_HEALTH.get();
+            case COMMON -> BlobConfig.BLOB_COMMON_HEALTH.get();
+            case RARE -> BlobConfig.BLOB_RARE_HEALTH.get();
+            case LEGENDARY -> BlobConfig.BLOB_LEGENDARY_HEALTH.get();
+            case UNCOMMON -> throw new IllegalStateException("There is no uncommon blob!");
+        };
+    }
+
+    // Can't use config here. So we use the default
+    private static int getDefaultMaxHealthSetup(DimletRarity rarity) {
+        // There is no UNCOMMON mob
+        return switch (rarity) {
+            case COMMON -> BlobConfig.BLOB_COMMON_HEALTH.getDefault();
+            case RARE -> BlobConfig.BLOB_RARE_HEALTH.getDefault();
+            case LEGENDARY -> BlobConfig.BLOB_LEGENDARY_HEALTH.getDefault();
             case UNCOMMON -> throw new IllegalStateException("There is no uncommon blob!");
         };
     }
@@ -99,7 +110,7 @@ public class DimensionalBlobEntity extends Monster {
         // the default from the config. In onInitialSpawn() this is later corrected
         return Monster.createMonsterAttributes()
                 .add(Attributes.MOVEMENT_SPEED, 0.25D)
-                .add(Attributes.MAX_HEALTH, getDefaultMaxHealth(rarity));
+                .add(Attributes.MAX_HEALTH, getDefaultMaxHealthSetup(rarity));
     }
 
     @Override

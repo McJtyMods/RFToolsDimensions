@@ -2,21 +2,19 @@ package mcjty.rftoolsdim.dimension.biomes;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import mcjty.lib.varia.TagTools;
 import mcjty.rftoolsdim.dimension.data.DimensionSettings;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.RegistryOps;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.BiomeTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.biome.*;
-import net.minecraftforge.common.Tags;
 
 import javax.annotation.Nonnull;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static mcjty.rftoolsdim.dimension.data.DimensionSettings.SETTINGS_CODEC;
 
@@ -54,6 +52,13 @@ public class RFTBiomeProvider extends BiomeSource {
         return settings;
     }
 
+    private boolean isCategoryMatching(Biome biome) {
+        if (biomeCategories.isEmpty()) {
+            return false;
+        }
+        return biomeRegistry.getResourceKey(biome).map(key -> biomeRegistry.getHolderOrThrow(key).tags().filter(biomeCategories::contains).findAny().isPresent()).orElse(false);
+    }
+
     private Holder<Biome> getMappedBiome(Biome biome) {
         if (defaultBiomes) {
             return biomeRegistry.getHolderOrThrow(ResourceKey.create(Registry.BIOME_REGISTRY, biomeRegistry.getKey(biome)));
@@ -64,10 +69,10 @@ public class RFTBiomeProvider extends BiomeSource {
             final Biome[] desired = {biome};
             if (biomes.isEmpty()) {
                 // Biomes was empty. Try to get one with the correct category
-                Optional<Holder<Biome>> holder = biomeRegistry.getHolder(biomeRegistry.getResourceKey(desired[0]).get());
-                if (!biomeCategories.contains(Biome.getBiomeCategory(Holder.direct(desired[0])))) {
+                // @todo why does the first one have to fail???
+                if (!isCategoryMatching(desired[0])) {
                     biomeRegistry.stream().forEach(b -> {
-                        if (biomeCategories.contains(Biome.getBiomeCategory(Holder.direct(b)))) {
+                        if (isCategoryMatching(b)) {
                             float dist = distance(b, biome);
                             if (dist < minDist[0]) {
                                 desired[0] = b;
@@ -79,22 +84,26 @@ public class RFTBiomeProvider extends BiomeSource {
             } else {
                 // If there are biomes we try to find one while also keeping category in mind
                 for (Holder<Biome> b : biomes) {
-                    // @todo 1.19
-//                    if (biomeCategories.isEmpty() || biomeCategories.contains(Biome.getBiomeCategory(b))) {
-//                        float dist = distance(b.value(), biome);
-//                        if (dist < minDist[0]) {
-//                            desired[0] = b.value();
-//                            minDist[0] = dist;
-//                        }
-//                    }
+                    if (biomeCategories.isEmpty() || isCategoryMatching(b.value())) {
+                        float dist = distance(b.value(), biome);
+                        if (dist < minDist[0]) {
+                            desired[0] = b.value();
+                            minDist[0] = dist;
+                        }
+                    }
                 }
             }
             return biomeRegistry.getHolderOrThrow(ResourceKey.create(Registry.BIOME_REGISTRY, biomeRegistry.getKey(desired[0])));
         });
     }
 
-    private static float distance(Biome biome1, Biome biome2) {
-        float d1 = 0.0f; // @todo 1.19 Biome.getBiomeCategory(Holder.direct(biome1)) == Biome.getBiomeCategory(Holder.direct(biome2)) ? 0 : 1;
+    private float distance(Biome biome1, Biome biome2) {
+        var tags1 = biomeRegistry.getHolderOrThrow(biomeRegistry.getResourceKey(biome1).get()).tags().collect(Collectors.toSet());
+        var tags2 = biomeRegistry.getHolderOrThrow(biomeRegistry.getResourceKey(biome2).get()).tags().collect(Collectors.toSet());
+        tags1.removeAll(tags2);
+        tags1 = biomeRegistry.getHolderOrThrow(biomeRegistry.getResourceKey(biome1).get()).tags().collect(Collectors.toSet());
+        tags2.removeAll(tags1);
+        float d1 = Math.max(tags1.size(), tags2.size());    // Use the number of differences in tags as a measure
         float d2 = Math.abs(biome1.getBaseTemperature() - biome2.getBaseTemperature());
         float d3 = Math.abs(biome1.getDownfall() - biome2.getDownfall());
         float d4 = biome1.isHumid() == biome2.isHumid() ? 0 : 1;
@@ -108,12 +117,7 @@ public class RFTBiomeProvider extends BiomeSource {
 
     private Set<TagKey<Biome>> getBiomeCategories(DimensionSettings settings) {
         Set<TagKey<Biome>> categories = settings.getCompiledDescriptor().getBiomeCategories();
-        // @todo 1.19
-//        if (categories.size() == 1 && categories.iterator().next().equals(Biome.BiomeCategory.NONE)) {
-//            return Collections.emptySet();
-//        } else {
-            return categories;
-//        }
+        return categories;
     }
 
     public Registry<Biome> getBiomeRegistry() {
@@ -180,20 +184,18 @@ public class RFTBiomeProvider extends BiomeSource {
         if (biome1 == null) {
             if (biomes.isEmpty()) {
                 // Try to get from categories
-                // @todo 1.19
-//                List<Biome> list = biomeRegistry.stream().filter(b -> biomeCategories.contains(Biome.getBiomeCategory(Holder.direct(b)))).collect(Collectors.toList());
-//                if (list.isEmpty()) {
+                List<Biome> list = biomeRegistry.stream().filter(this::isCategoryMatching).collect(Collectors.toList());
+                if (list.isEmpty()) {
                     // Safety, this is needed in case the category doesn't contain any biomes
                     biome1 = biome2 = biomeRegistry.getHolderOrThrow(Biomes.PLAINS);
-                // @todo 1.19
-//                } else {
-//                    biome1 = biomeRegistry.getHolderOrThrow(ResourceKey.create(Registry.BIOME_REGISTRY, Tools.getId(list.get(0))));
-//                    if (list.size() > 1) {
-//                        biome2 = biomeRegistry.getHolderOrThrow(ResourceKey.create(Registry.BIOME_REGISTRY, Tools.getId(list.get(1))));
-//                    } else {
-//                        biome2 = biome1;
-//                    }
-//                }
+                } else {
+                    biome1 = biomeRegistry.getHolderOrThrow(ResourceKey.create(Registry.BIOME_REGISTRY, biomeRegistry.getKey(list.get(0))));
+                    if (list.size() > 1) {
+                        biome2 = biomeRegistry.getHolderOrThrow(ResourceKey.create(Registry.BIOME_REGISTRY, biomeRegistry.getKey(list.get(1))));
+                    } else {
+                        biome2 = biome1;
+                    }
+                }
             } else {
                 biome1 = biomes.get(0);
                 if (biomes.size() > 1) {

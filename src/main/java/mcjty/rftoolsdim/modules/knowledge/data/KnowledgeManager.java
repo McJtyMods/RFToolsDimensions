@@ -16,7 +16,9 @@ import mcjty.rftoolsdim.modules.dimlets.data.DimletKey;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletRarity;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletSettings;
 import mcjty.rftoolsdim.setup.Registration;
+import net.minecraft.core.Registry;
 import net.minecraft.data.BuiltinRegistries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.TagKey;
@@ -121,12 +123,23 @@ public class KnowledgeManager {
 
     @Nullable
     private String getReasonBiome(DimletKey key) {
-        Biome biome = ForgeRegistries.BIOMES.getValue(new ResourceLocation(key.key()));
+        ResourceLocation rl = new ResourceLocation(key.key());
+        Biome biome = BuiltinRegistries.BIOME.get(rl);
         if (biome != null) {
-            // @todo 1.19
-//            return Biome.getBiomeCategory(Holder.direct(biome)).getName() + " biomes";
+            return getMostImportantIsTag(rl);
         }
         return null;
+    }
+
+    @Nullable
+    private String getMostImportantIsTag(ResourceLocation rl) {
+        return BuiltinRegistries.BIOME.getHolderOrThrow(ResourceKey.create(Registry.BIOME_REGISTRY, rl))
+                .tags()
+                .filter(t -> t.location().getPath().startsWith("is_"))
+                .sorted()
+                .findFirst()
+                .map(k -> k.location().toString())
+                .orElse(null);
     }
 
     @Nullable
@@ -180,10 +193,10 @@ public class KnowledgeManager {
     }
 
     private KnowledgeSet getBiomeCategoryKnowledgeSet(DimletKey key) {
-        // @todo 1.19
+        // @todo 1.19 is this a good way?
+        return KnowledgeSet.values()[key.key().hashCode() % KnowledgeSet.values().length];
 //        Biome.BiomeCategory category = Biome.BiomeCategory.byName(key.key());
 //        return KnowledgeSet.values()[category.ordinal() % KnowledgeSet.values().length];
-        return KnowledgeSet.SET1;
     }
 
     /// Create a knowledge set based on the most important tag for a given block
@@ -243,15 +256,16 @@ public class KnowledgeManager {
 
     /// Create a knowledge set based on the category of a biome
     private KnowledgeSet getBiomeKnowledgeSet(DimletKey key) {
-        Biome biome = ForgeRegistries.BIOMES.getValue(new ResourceLocation(key.key()));
+        ResourceLocation rl = new ResourceLocation(key.key());
+        Biome biome = BuiltinRegistries.BIOME.get(rl);
         if (biome == null) {
             RFToolsDim.setup.getLogger().error("Biome '" + key.key() + "' is missing!");
             return KnowledgeSet.SET1;
         }
-        // @todo 1.19
+        // @todo 1.19 is this right?
+        return KnowledgeSet.values()[key.key().hashCode() % KnowledgeSet.values().length];
 //        Biome.BiomeCategory category = Biome.getBiomeCategory(Holder.direct(biome));
 //        return KnowledgeSet.values()[category.ordinal() % KnowledgeSet.values().length];
-        return KnowledgeSet.SET1;
     }
 
     @Nullable
