@@ -1,21 +1,21 @@
 {
   "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": {
+      "tag": "minecraft:saplings"
+    },
+    "E": {
+      "item": "rftoolsdim:empty_dimlet"
+    },
+    "r": {
+      "item": "minecraft:redstone"
+    }
+  },
   "pattern": [
     "rCr",
     "CEC",
     "rCr"
   ],
-  "key": {
-    "C": {
-      "tag": "minecraft:saplings"
-    },
-    "r": {
-      "item": "minecraft:redstone"
-    },
-    "E": {
-      "item": "rftoolsdim:empty_dimlet"
-    }
-  },
   "result": {
     "item": "rftoolsdim:empty_biome_category_dimlet"
   }

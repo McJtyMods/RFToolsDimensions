@@ -2,15 +2,15 @@
   "type": "minecraft:block",
   "pools": [
     {
-      "name": "activity_probe",
-      "rolls": 1.0,
       "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",
           "name": "rftoolsdim:activity_probe"
         }
-      ]
+      ],
+      "name": "activity_probe",
+      "rolls": 1.0
     }
   ]
 }

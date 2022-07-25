@@ -1,14 +1,14 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "ss",
-    "ss"
-  ],
   "key": {
     "s": {
       "item": "rftoolsbase:dimensionalshard"
     }
   },
+  "pattern": [
+    "ss",
+    "ss"
+  ],
   "result": {
     "item": "rftoolsdim:dimensional_blank_block"
   }

@@ -1,13 +1,8 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "oeo",
-    "dFd",
-    "ggg"
-  ],
   "key": {
-    "g": {
-      "item": "minecraft:gold_ingot"
+    "F": {
+      "item": "rftoolsbase:machine_frame"
     },
     "d": {
       "item": "minecraft:diamond"
@@ -15,13 +10,18 @@
     "e": {
       "item": "minecraft:emerald"
     },
-    "F": {
-      "item": "rftoolsbase:machine_frame"
+    "g": {
+      "item": "minecraft:gold_ingot"
     },
     "o": {
       "tag": "forge:ender_pearls"
     }
   },
+  "pattern": [
+    "oeo",
+    "dFd",
+    "ggg"
+  ],
   "result": {
     "item": "rftoolsdim:dimension_builder"
   }

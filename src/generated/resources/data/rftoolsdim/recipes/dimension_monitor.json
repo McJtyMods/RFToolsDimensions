@@ -1,10 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    " s ",
-    "rCr",
-    " s "
-  ],
   "key": {
     "C": {
       "item": "minecraft:comparator"
@@ -16,6 +11,11 @@
       "item": "rftoolsbase:dimensionalshard"
     }
   },
+  "pattern": [
+    " s ",
+    "rCr",
+    " s "
+  ],
   "result": {
     "item": "rftoolsdim:dimension_monitor"
   }

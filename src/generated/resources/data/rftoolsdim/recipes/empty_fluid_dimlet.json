@@ -1,10 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "CWC",
-    "CEC",
-    "CCC"
-  ],
   "key": {
     "C": {
       "item": "minecraft:clay_ball"
@@ -16,6 +11,11 @@
       "item": "minecraft:water_bucket"
     }
   },
+  "pattern": [
+    "CWC",
+    "CEC",
+    "CCC"
+  ],
   "result": {
     "item": "rftoolsdim:empty_fluid_dimlet"
   }

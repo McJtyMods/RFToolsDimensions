@@ -2,8 +2,6 @@
   "type": "minecraft:block",
   "pools": [
     {
-      "name": "dimension_editor",
-      "rolls": 1.0,
       "bonus_rolls": 0.0,
       "entries": [
         {
@@ -15,39 +13,41 @@
             },
             {
               "function": "minecraft:copy_nbt",
-              "source": "block_entity",
               "ops": [
                 {
+                  "op": "replace",
                   "source": "Info",
-                  "target": "BlockEntityTag.Info",
-                  "op": "replace"
+                  "target": "BlockEntityTag.Info"
                 },
                 {
+                  "op": "replace",
                   "source": "Items",
-                  "target": "BlockEntityTag.McItems",
-                  "op": "replace"
+                  "target": "BlockEntityTag.McItems"
                 },
                 {
+                  "op": "replace",
                   "source": "Energy",
-                  "target": "BlockEntityTag.Energy",
-                  "op": "replace"
+                  "target": "BlockEntityTag.Energy"
                 }
-              ]
+              ],
+              "source": "block_entity"
             },
             {
-              "function": "minecraft:set_contents",
               "type": "rftoolsdim:dimension_editor",
               "entries": [
                 {
                   "type": "minecraft:dynamic",
                   "name": "minecraft:contents"
                 }
-              ]
+              ],
+              "function": "minecraft:set_contents"
             }
           ],
           "name": "rftoolsdim:dimension_editor"
         }
-      ]
+      ],
+      "name": "dimension_editor",
+      "rolls": 1.0
     }
   ]
 }

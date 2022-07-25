@@ -1,21 +1,21 @@
 {
   "type": "minecraft:crafting_shaped",
+  "key": {
+    "E": {
+      "item": "rftoolsdim:empty_dimlet"
+    },
+    "c": {
+      "tag": "minecraft:coals"
+    },
+    "r": {
+      "item": "minecraft:redstone"
+    }
+  },
   "pattern": [
     "rcr",
     "cEc",
     "rcr"
   ],
-  "key": {
-    "r": {
-      "item": "minecraft:redstone"
-    },
-    "c": {
-      "tag": "minecraft:coals"
-    },
-    "E": {
-      "item": "rftoolsdim:empty_dimlet"
-    }
-  },
   "result": {
     "item": "rftoolsdim:empty_feature_dimlet"
   }

@@ -1,96 +1,96 @@
 {
   "variants": {
-    "facing=down,operationtype=charging": {
-      "model": "rftoolsdim:block/dimensioneditor",
-      "x": 90
-    },
-    "facing=up,operationtype=charging": {
-      "model": "rftoolsdim:block/dimensioneditor",
-      "x": -90
-    },
-    "facing=north,operationtype=charging": {
-      "model": "rftoolsdim:block/dimensioneditor"
-    },
-    "facing=south,operationtype=charging": {
-      "model": "rftoolsdim:block/dimensioneditor",
-      "y": 180
-    },
-    "facing=west,operationtype=charging": {
-      "model": "rftoolsdim:block/dimensioneditor",
-      "y": 270
-    },
-    "facing=east,operationtype=charging": {
-      "model": "rftoolsdim:block/dimensioneditor",
-      "y": 90
-    },
-    "facing=down,operationtype=empty": {
-      "model": "rftoolsdim:block/dimensioneditor_empty",
-      "x": 90
-    },
-    "facing=up,operationtype=empty": {
-      "model": "rftoolsdim:block/dimensioneditor_empty",
-      "x": -90
-    },
-    "facing=north,operationtype=empty": {
-      "model": "rftoolsdim:block/dimensioneditor_empty"
-    },
-    "facing=south,operationtype=empty": {
-      "model": "rftoolsdim:block/dimensioneditor_empty",
-      "y": 180
-    },
-    "facing=west,operationtype=empty": {
-      "model": "rftoolsdim:block/dimensioneditor_empty",
-      "y": 270
-    },
-    "facing=east,operationtype=empty": {
-      "model": "rftoolsdim:block/dimensioneditor_empty",
-      "y": 90
-    },
     "facing=down,operationtype=building1": {
       "model": "rftoolsdim:block/dimensioneditor_busy1",
       "x": 90
-    },
-    "facing=up,operationtype=building1": {
-      "model": "rftoolsdim:block/dimensioneditor_busy1",
-      "x": -90
-    },
-    "facing=north,operationtype=building1": {
-      "model": "rftoolsdim:block/dimensioneditor_busy1"
-    },
-    "facing=south,operationtype=building1": {
-      "model": "rftoolsdim:block/dimensioneditor_busy1",
-      "y": 180
-    },
-    "facing=west,operationtype=building1": {
-      "model": "rftoolsdim:block/dimensioneditor_busy1",
-      "y": 270
-    },
-    "facing=east,operationtype=building1": {
-      "model": "rftoolsdim:block/dimensioneditor_busy1",
-      "y": 90
     },
     "facing=down,operationtype=building2": {
       "model": "rftoolsdim:block/dimensioneditor_busy2",
       "x": 90
     },
-    "facing=up,operationtype=building2": {
+    "facing=down,operationtype=charging": {
+      "model": "rftoolsdim:block/dimensioneditor",
+      "x": 90
+    },
+    "facing=down,operationtype=empty": {
+      "model": "rftoolsdim:block/dimensioneditor_empty",
+      "x": 90
+    },
+    "facing=east,operationtype=building1": {
+      "model": "rftoolsdim:block/dimensioneditor_busy1",
+      "y": 90
+    },
+    "facing=east,operationtype=building2": {
       "model": "rftoolsdim:block/dimensioneditor_busy2",
-      "x": -90
+      "y": 90
+    },
+    "facing=east,operationtype=charging": {
+      "model": "rftoolsdim:block/dimensioneditor",
+      "y": 90
+    },
+    "facing=east,operationtype=empty": {
+      "model": "rftoolsdim:block/dimensioneditor_empty",
+      "y": 90
+    },
+    "facing=north,operationtype=building1": {
+      "model": "rftoolsdim:block/dimensioneditor_busy1"
     },
     "facing=north,operationtype=building2": {
       "model": "rftoolsdim:block/dimensioneditor_busy2"
+    },
+    "facing=north,operationtype=charging": {
+      "model": "rftoolsdim:block/dimensioneditor"
+    },
+    "facing=north,operationtype=empty": {
+      "model": "rftoolsdim:block/dimensioneditor_empty"
+    },
+    "facing=south,operationtype=building1": {
+      "model": "rftoolsdim:block/dimensioneditor_busy1",
+      "y": 180
     },
     "facing=south,operationtype=building2": {
       "model": "rftoolsdim:block/dimensioneditor_busy2",
       "y": 180
     },
+    "facing=south,operationtype=charging": {
+      "model": "rftoolsdim:block/dimensioneditor",
+      "y": 180
+    },
+    "facing=south,operationtype=empty": {
+      "model": "rftoolsdim:block/dimensioneditor_empty",
+      "y": 180
+    },
+    "facing=up,operationtype=building1": {
+      "model": "rftoolsdim:block/dimensioneditor_busy1",
+      "x": -90
+    },
+    "facing=up,operationtype=building2": {
+      "model": "rftoolsdim:block/dimensioneditor_busy2",
+      "x": -90
+    },
+    "facing=up,operationtype=charging": {
+      "model": "rftoolsdim:block/dimensioneditor",
+      "x": -90
+    },
+    "facing=up,operationtype=empty": {
+      "model": "rftoolsdim:block/dimensioneditor_empty",
+      "x": -90
+    },
+    "facing=west,operationtype=building1": {
+      "model": "rftoolsdim:block/dimensioneditor_busy1",
+      "y": 270
+    },
     "facing=west,operationtype=building2": {
       "model": "rftoolsdim:block/dimensioneditor_busy2",
       "y": 270
     },
-    "facing=east,operationtype=building2": {
-      "model": "rftoolsdim:block/dimensioneditor_busy2",
-      "y": 90
+    "facing=west,operationtype=charging": {
+      "model": "rftoolsdim:block/dimensioneditor",
+      "y": 270
+    },
+    "facing=west,operationtype=empty": {
+      "model": "rftoolsdim:block/dimensioneditor_empty",
+      "y": 270
     }
   }
 }

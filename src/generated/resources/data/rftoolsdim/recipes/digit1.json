@@ -1,16 +1,16 @@
 {
   "type": "rftoolsdim:dimlet_cycle_recipe",
-  "pattern": [
-    "C"
-  ],
+  "input": "0",
   "key": {
     "C": {
       "item": "rftoolsdim:digit_dimlet"
     }
   },
+  "output": "1",
+  "pattern": [
+    "C"
+  ],
   "result": {
     "item": "rftoolsdim:digit_dimlet"
-  },
-  "input": "0",
-  "output": "1"
+  }
 }

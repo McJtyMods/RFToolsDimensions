@@ -1,24 +1,24 @@
 {
   "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": {
+      "item": "minecraft:sponge"
+    },
+    "W": {
+      "item": "minecraft:water_bucket"
+    },
+    "s": {
+      "item": "rftoolsbase:dimensionalshard"
+    },
+    "u": {
+      "item": "minecraft:slime_block"
+    }
+  },
   "pattern": [
     "uWu",
     "sCs",
     "usu"
   ],
-  "key": {
-    "C": {
-      "item": "minecraft:sponge"
-    },
-    "u": {
-      "item": "minecraft:slime_block"
-    },
-    "s": {
-      "item": "rftoolsbase:dimensionalshard"
-    },
-    "W": {
-      "item": "minecraft:water_bucket"
-    }
-  },
   "result": {
     "item": "rftoolsdim:fluid_absorber"
   }

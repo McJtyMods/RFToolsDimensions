@@ -1,16 +1,11 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "oio",
-    "iFi",
-    "ggg"
-  ],
   "key": {
-    "g": {
-      "item": "minecraft:gold_ingot"
-    },
     "F": {
       "item": "rftoolsbase:machine_frame"
+    },
+    "g": {
+      "item": "minecraft:gold_ingot"
     },
     "i": {
       "tag": "forge:ingots/iron"
@@ -19,6 +14,11 @@
       "tag": "forge:ender_pearls"
     }
   },
+  "pattern": [
+    "oio",
+    "iFi",
+    "ggg"
+  ],
   "result": {
     "item": "rftoolsdim:dimension_editor"
   }

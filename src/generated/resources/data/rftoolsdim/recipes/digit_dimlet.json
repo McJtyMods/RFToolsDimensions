@@ -1,10 +1,7 @@
 {
   "type": "rftoolsdim:dimlet_recipe",
-  "pattern": [
-    " C ",
-    "CEC",
-    " C "
-  ],
+  "dimletkey": "0",
+  "dimlettype": "DIGIT",
   "key": {
     "C": {
       "item": "minecraft:redstone_torch"
@@ -13,9 +10,12 @@
       "item": "rftoolsdim:empty_dimlet"
     }
   },
+  "pattern": [
+    " C ",
+    "CEC",
+    " C "
+  ],
   "result": {
     "item": "rftoolsdim:digit_dimlet"
-  },
-  "dimlettype": "DIGIT",
-  "dimletkey": "0"
+  }
 }

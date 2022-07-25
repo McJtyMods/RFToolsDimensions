@@ -1,13 +1,8 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "ulu",
-    "lMl",
-    "uUu"
-  ],
   "key": {
-    "u": {
-      "item": "rftoolsdim:rare_essence"
+    "M": {
+      "item": "rftoolsdim:part_memory_1"
     },
     "U": {
       "item": "rftoolsbase:infused_enderpearl"
@@ -15,10 +10,15 @@
     "l": {
       "tag": "forge:storage_blocks/lapis"
     },
-    "M": {
-      "item": "rftoolsdim:part_memory_1"
+    "u": {
+      "item": "rftoolsdim:rare_essence"
     }
   },
+  "pattern": [
+    "ulu",
+    "lMl",
+    "uUu"
+  ],
   "result": {
     "item": "rftoolsdim:part_memory_2"
   }

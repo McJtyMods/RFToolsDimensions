@@ -1,10 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "CCC",
-    "CEC",
-    "CCC"
-  ],
   "key": {
     "C": {
       "item": "minecraft:clay_ball"
@@ -13,6 +8,11 @@
       "item": "rftoolsdim:empty_dimlet"
     }
   },
+  "pattern": [
+    "CCC",
+    "CEC",
+    "CCC"
+  ],
   "result": {
     "item": "rftoolsdim:empty_block_dimlet"
   }

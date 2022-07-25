@@ -4,9 +4,9 @@
       "model": "rftoolsdim:block/dimlet_workbench",
       "x": 90
     },
-    "facing=up": {
+    "facing=east": {
       "model": "rftoolsdim:block/dimlet_workbench",
-      "x": -90
+      "y": 90
     },
     "facing=north": {
       "model": "rftoolsdim:block/dimlet_workbench"
@@ -15,13 +15,13 @@
       "model": "rftoolsdim:block/dimlet_workbench",
       "y": 180
     },
+    "facing=up": {
+      "model": "rftoolsdim:block/dimlet_workbench",
+      "x": -90
+    },
     "facing=west": {
       "model": "rftoolsdim:block/dimlet_workbench",
       "y": 270
-    },
-    "facing=east": {
-      "model": "rftoolsdim:block/dimlet_workbench",
-      "y": 90
     }
   }
 }

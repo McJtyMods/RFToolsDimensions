@@ -1,10 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "rlr",
-    "lsl",
-    "rgr"
-  ],
   "key": {
     "g": {
       "tag": "forge:dusts/glowstone"
@@ -19,6 +14,11 @@
       "item": "rftoolsbase:dimensionalshard"
     }
   },
+  "pattern": [
+    "rlr",
+    "lsl",
+    "rgr"
+  ],
   "result": {
     "item": "rftoolsdim:part_memory_0"
   }

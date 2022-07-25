@@ -1,24 +1,24 @@
 {
   "type": "minecraft:crafting_shaped",
+  "key": {
+    "M": {
+      "item": "rftoolsdim:part_memory_0"
+    },
+    "l": {
+      "tag": "forge:storage_blocks/lapis"
+    },
+    "s": {
+      "item": "rftoolsbase:dimensionalshard"
+    },
+    "u": {
+      "item": "rftoolsdim:common_essence"
+    }
+  },
   "pattern": [
     "ulu",
     "lMl",
     "usu"
   ],
-  "key": {
-    "u": {
-      "item": "rftoolsdim:common_essence"
-    },
-    "l": {
-      "tag": "forge:storage_blocks/lapis"
-    },
-    "M": {
-      "item": "rftoolsdim:part_memory_0"
-    },
-    "s": {
-      "item": "rftoolsbase:dimensionalshard"
-    }
-  },
   "result": {
     "item": "rftoolsdim:part_memory_1"
   }

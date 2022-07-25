@@ -1,21 +1,21 @@
 {
   "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": {
+      "item": "minecraft:paper"
+    },
+    "E": {
+      "item": "rftoolsdim:empty_dimlet"
+    },
+    "r": {
+      "item": "minecraft:redstone"
+    }
+  },
   "pattern": [
     "rCr",
     "CEC",
     "rCr"
   ],
-  "key": {
-    "C": {
-      "item": "minecraft:paper"
-    },
-    "r": {
-      "item": "minecraft:redstone"
-    },
-    "E": {
-      "item": "rftoolsdim:empty_dimlet"
-    }
-  },
   "result": {
     "item": "rftoolsdim:empty_tag_dimlet"
   }

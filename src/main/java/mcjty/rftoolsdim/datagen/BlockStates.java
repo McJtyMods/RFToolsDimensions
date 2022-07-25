@@ -34,10 +34,10 @@ public class BlockStates extends BaseBlockStateProvider {
         orientedBlock(WorkbenchModule.WORKBENCH.get(), topBasedModel("dimlet_workbench", modLoc("block/dimletworkbenchtop")));
         orientedBlock(WorkbenchModule.HOLDER.get(), frontBasedModel("knowledge_holder", modLoc("block/knowledge_holder")));
         orientedBlock(EnscriberModule.ENSCRIBER.get(), frontBasedModel("enscriber", modLoc("block/dimensionenscriber")));
-        singleTextureBlock(EssencesModule.BLOCK_ABSORBER.get(), BLOCK_FOLDER + "/block_absorber", "block/blockabsorber");
-        singleTextureBlock(EssencesModule.FLUID_ABSORBER.get(), BLOCK_FOLDER + "/fluid_absorber", "block/fluidabsorber");
-        singleTextureBlock(EssencesModule.BIOME_ABSORBER.get(), BLOCK_FOLDER + "/biome_absorber", "block/biomeabsorber");
-        singleTextureBlock(EssencesModule.STRUCTURE_ABSORBER.get(), BLOCK_FOLDER + "/structure_absorber", "block/structureabsorber");
+        singleTextureBlockC(EssencesModule.BLOCK_ABSORBER.get(), BLOCK_FOLDER + "/block_absorber", "block/blockabsorber", builder -> builder.renderType("cutout"));
+        singleTextureBlockC(EssencesModule.FLUID_ABSORBER.get(), BLOCK_FOLDER + "/fluid_absorber", "block/fluidabsorber", builder -> builder.renderType("cutout"));
+        singleTextureBlockC(EssencesModule.BIOME_ABSORBER.get(), BLOCK_FOLDER + "/biome_absorber", "block/biomeabsorber", builder -> builder.renderType("cutout"));
+        singleTextureBlockC(EssencesModule.STRUCTURE_ABSORBER.get(), BLOCK_FOLDER + "/structure_absorber", "block/structureabsorber", builder -> builder.renderType("cutout"));
         singleTextureBlock(VariousModule.ACTIVITY_PROBE.get(), BLOCK_FOLDER + "/activity_probe", "block/activity_probe");
 
         registerDimensionEditor();

@@ -6,7 +6,6 @@ import mcjty.rftoolsdim.modules.essences.blocks.BiomeAbsorberTileEntity;
 import mcjty.rftoolsdim.modules.essences.blocks.BlockAbsorberTileEntity;
 import mcjty.rftoolsdim.modules.essences.blocks.FluidAbsorberTileEntity;
 import mcjty.rftoolsdim.modules.essences.blocks.StructureAbsorberTileEntity;
-import mcjty.rftoolsdim.modules.essences.client.ClientSetup;
 import mcjty.rftoolsdim.setup.Config;
 import mcjty.rftoolsdim.setup.Registration;
 import net.minecraft.world.item.BlockItem;
@@ -42,7 +41,6 @@ public class EssencesModule implements IModule {
 
     @Override
     public void initClient(FMLClientSetupEvent event) {
-        ClientSetup.initClient();
     }
 
     @Override

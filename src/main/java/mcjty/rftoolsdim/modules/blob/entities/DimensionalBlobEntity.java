@@ -50,9 +50,9 @@ public class DimensionalBlobEntity extends Monster {
     private static int getDefaultMaxHealth(DimletRarity rarity) {
         // There is no UNCOMMON mob
         return switch (rarity) {
-            case COMMON -> BlobConfig.BLOB_COMMON_HEALTH.get();
-            case RARE -> BlobConfig.BLOB_RARE_HEALTH.get();
-            case LEGENDARY -> BlobConfig.BLOB_LEGENDARY_HEALTH.get();
+            case COMMON -> 10;// @todo 1.19 BlobConfig.BLOB_COMMON_HEALTH.get();
+            case RARE -> 20; // @todo 1.19 BlobConfig.BLOB_RARE_HEALTH.get();
+            case LEGENDARY -> 30; // @todo 1.19 BlobConfig.BLOB_LEGENDARY_HEALTH.get();
             case UNCOMMON -> throw new IllegalStateException("There is no uncommon blob!");
         };
     }

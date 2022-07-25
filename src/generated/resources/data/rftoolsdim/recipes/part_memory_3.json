@@ -1,13 +1,8 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "ulu",
-    "lMl",
-    "uUu"
-  ],
   "key": {
-    "u": {
-      "item": "rftoolsdim:legendary_essence"
+    "M": {
+      "item": "rftoolsdim:part_memory_2"
     },
     "U": {
       "item": "rftoolsbase:infused_diamond"
@@ -15,10 +10,15 @@
     "l": {
       "tag": "forge:storage_blocks/lapis"
     },
-    "M": {
-      "item": "rftoolsdim:part_memory_2"
+    "u": {
+      "item": "rftoolsdim:legendary_essence"
     }
   },
+  "pattern": [
+    "ulu",
+    "lMl",
+    "uUu"
+  ],
   "result": {
     "item": "rftoolsdim:part_memory_3"
   }

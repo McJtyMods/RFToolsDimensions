@@ -1,24 +1,24 @@
 {
   "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": {
+      "item": "minecraft:crafting_table"
+    },
+    "F": {
+      "item": "rftoolsbase:machine_frame"
+    },
+    "p": {
+      "item": "minecraft:paper"
+    },
+    "u": {
+      "item": "rftoolsdim:empty_dimlet"
+    }
+  },
   "pattern": [
     "pup",
     "CFC",
     "pup"
   ],
-  "key": {
-    "C": {
-      "item": "minecraft:crafting_table"
-    },
-    "u": {
-      "item": "rftoolsdim:empty_dimlet"
-    },
-    "p": {
-      "item": "minecraft:paper"
-    },
-    "F": {
-      "item": "rftoolsbase:machine_frame"
-    }
-  },
   "result": {
     "item": "rftoolsdim:enscriber"
   }

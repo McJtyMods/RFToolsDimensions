@@ -1,21 +1,21 @@
 {
   "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": {
+      "item": "rftoolsbase:infused_enderpearl"
+    },
+    "F": {
+      "item": "rftoolsbase:machine_frame"
+    },
+    "s": {
+      "item": "rftoolsbase:dimensionalshard"
+    }
+  },
   "pattern": [
     "sCs",
     "CFC",
     "sCs"
   ],
-  "key": {
-    "C": {
-      "item": "rftoolsbase:infused_enderpearl"
-    },
-    "s": {
-      "item": "rftoolsbase:dimensionalshard"
-    },
-    "F": {
-      "item": "rftoolsbase:machine_frame"
-    }
-  },
   "result": {
     "item": "rftoolsdim:activity_probe"
   }

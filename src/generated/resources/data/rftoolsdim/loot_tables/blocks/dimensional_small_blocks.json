@@ -2,15 +2,15 @@
   "type": "minecraft:block",
   "pools": [
     {
-      "name": "dimensional_small_blocks",
-      "rolls": 1.0,
       "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",
           "name": "rftoolsdim:dimensional_small_blocks"
         }
-      ]
+      ],
+      "name": "dimensional_small_blocks",
+      "rolls": 1.0
     }
   ]
 }

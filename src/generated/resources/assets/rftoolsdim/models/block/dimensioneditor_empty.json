@@ -2,11 +2,11 @@
   "parent": "minecraft:block/cube",
   "textures": {
     "down": "rftoolsbase:block/base/machinebottom",
-    "up": "rftoolsbase:block/base/machinetop",
-    "north": "rftoolsdim:block/dimensioneditor_empty",
-    "south": "rftoolsbase:block/base/machineside",
     "east": "rftoolsbase:block/base/machineside",
-    "west": "rftoolsbase:block/base/machineside",
-    "particle": "rftoolsdim:block/dimensioneditor_empty"
+    "north": "rftoolsdim:block/dimensioneditor_empty",
+    "particle": "rftoolsdim:block/dimensioneditor_empty",
+    "south": "rftoolsbase:block/base/machineside",
+    "up": "rftoolsbase:block/base/machinetop",
+    "west": "rftoolsbase:block/base/machineside"
   }
 }

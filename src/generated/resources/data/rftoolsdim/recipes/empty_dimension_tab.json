@@ -1,10 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "prp",
-    "rpr",
-    "prp"
-  ],
   "key": {
     "p": {
       "item": "minecraft:paper"
@@ -13,6 +8,11 @@
       "item": "minecraft:redstone"
     }
   },
+  "pattern": [
+    "prp",
+    "rpr",
+    "prp"
+  ],
   "result": {
     "item": "rftoolsdim:empty_dimension_tab"
   }

@@ -1,62 +1,62 @@
 {
   "parent": "minecraft:item/handheld",
-  "textures": {
-    "layer0": "rftoolsdim:item/monitor/monitoritem0"
-  },
   "overrides": [
     {
+      "model": "rftoolsdim:item/monitoritem0",
       "predicate": {
         "rftoolsdim:power": 0.0
-      },
-      "model": "rftoolsdim:item/monitoritem0"
+      }
     },
     {
+      "model": "rftoolsdim:item/monitoritem1",
       "predicate": {
         "rftoolsdim:power": 1.0
-      },
-      "model": "rftoolsdim:item/monitoritem1"
+      }
     },
     {
+      "model": "rftoolsdim:item/monitoritem2",
       "predicate": {
         "rftoolsdim:power": 2.0
-      },
-      "model": "rftoolsdim:item/monitoritem2"
+      }
     },
     {
+      "model": "rftoolsdim:item/monitoritem3",
       "predicate": {
         "rftoolsdim:power": 3.0
-      },
-      "model": "rftoolsdim:item/monitoritem3"
+      }
     },
     {
+      "model": "rftoolsdim:item/monitoritem4",
       "predicate": {
         "rftoolsdim:power": 4.0
-      },
-      "model": "rftoolsdim:item/monitoritem4"
+      }
     },
     {
+      "model": "rftoolsdim:item/monitoritem5",
       "predicate": {
         "rftoolsdim:power": 5.0
-      },
-      "model": "rftoolsdim:item/monitoritem5"
+      }
     },
     {
+      "model": "rftoolsdim:item/monitoritem6",
       "predicate": {
         "rftoolsdim:power": 6.0
-      },
-      "model": "rftoolsdim:item/monitoritem6"
+      }
     },
     {
+      "model": "rftoolsdim:item/monitoritem7",
       "predicate": {
         "rftoolsdim:power": 7.0
-      },
-      "model": "rftoolsdim:item/monitoritem7"
+      }
     },
     {
+      "model": "rftoolsdim:item/monitoritem8",
       "predicate": {
         "rftoolsdim:power": 8.0
-      },
-      "model": "rftoolsdim:item/monitoritem8"
+      }
     }
-  ]
+  ],
+  "textures": {
+    "layer0": "rftoolsdim:item/monitor/monitoritem0"
+  }
 }

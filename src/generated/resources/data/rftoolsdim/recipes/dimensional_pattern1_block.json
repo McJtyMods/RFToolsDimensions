@@ -1,9 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "sS",
-    "sS"
-  ],
   "key": {
     "S": {
       "tag": "forge:stone"
@@ -12,6 +8,10 @@
       "item": "rftoolsbase:dimensionalshard"
     }
   },
+  "pattern": [
+    "sS",
+    "sS"
+  ],
   "result": {
     "item": "rftoolsdim:dimensional_pattern1_block"
   }

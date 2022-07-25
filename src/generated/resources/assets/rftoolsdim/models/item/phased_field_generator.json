@@ -1,62 +1,62 @@
 {
   "parent": "minecraft:item/handheld",
-  "textures": {
-    "layer0": "rftoolsdim:item/pfg/phasedfieldgeneratoriteml0"
-  },
   "overrides": [
     {
+      "model": "rftoolsdim:item/phasedfieldgenerator0",
       "predicate": {
         "rftoolsdim:power": 0.0
-      },
-      "model": "rftoolsdim:item/phasedfieldgenerator0"
+      }
     },
     {
+      "model": "rftoolsdim:item/phasedfieldgenerator1",
       "predicate": {
         "rftoolsdim:power": 1.0
-      },
-      "model": "rftoolsdim:item/phasedfieldgenerator1"
+      }
     },
     {
+      "model": "rftoolsdim:item/phasedfieldgenerator2",
       "predicate": {
         "rftoolsdim:power": 2.0
-      },
-      "model": "rftoolsdim:item/phasedfieldgenerator2"
+      }
     },
     {
+      "model": "rftoolsdim:item/phasedfieldgenerator3",
       "predicate": {
         "rftoolsdim:power": 3.0
-      },
-      "model": "rftoolsdim:item/phasedfieldgenerator3"
+      }
     },
     {
+      "model": "rftoolsdim:item/phasedfieldgenerator4",
       "predicate": {
         "rftoolsdim:power": 4.0
-      },
-      "model": "rftoolsdim:item/phasedfieldgenerator4"
+      }
     },
     {
+      "model": "rftoolsdim:item/phasedfieldgenerator5",
       "predicate": {
         "rftoolsdim:power": 5.0
-      },
-      "model": "rftoolsdim:item/phasedfieldgenerator5"
+      }
     },
     {
+      "model": "rftoolsdim:item/phasedfieldgenerator6",
       "predicate": {
         "rftoolsdim:power": 6.0
-      },
-      "model": "rftoolsdim:item/phasedfieldgenerator6"
+      }
     },
     {
+      "model": "rftoolsdim:item/phasedfieldgenerator7",
       "predicate": {
         "rftoolsdim:power": 7.0
-      },
-      "model": "rftoolsdim:item/phasedfieldgenerator7"
+      }
     },
     {
+      "model": "rftoolsdim:item/phasedfieldgenerator8",
       "predicate": {
         "rftoolsdim:power": 8.0
-      },
-      "model": "rftoolsdim:item/phasedfieldgenerator8"
+      }
     }
-  ]
+  ],
+  "textures": {
+    "layer0": "rftoolsdim:item/pfg/phasedfieldgeneratoriteml0"
+  }
 }

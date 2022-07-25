@@ -2,141 +2,141 @@
   "type": "minecraft:chest",
   "pools": [
     {
-      "name": "chests/hut_loot",
-      "rolls": {
-        "type": "minecraft:uniform",
-        "min": 1.0,
-        "max": 5.0
-      },
       "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "rftoolsdim:dimlet_loot",
-          "weight": 14,
           "functions": [
             {
-              "function": "minecraft:set_count",
+              "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "min": 0.0,
-                "max": 2.0
+                "max": 2.0,
+                "min": 0.0
               },
-              "add": false
+              "function": "minecraft:set_count"
             }
           ],
-          "rarity": "COMMON"
-        },
-        {
-          "type": "rftoolsdim:dimlet_loot",
-          "weight": 4,
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": {
-                "type": "minecraft:uniform",
-                "min": 0.0,
-                "max": 2.0
-              },
-              "add": false
-            }
-          ],
-          "rarity": "UNCOMMON"
-        },
-        {
-          "type": "rftoolsdim:dimlet_loot",
-          "weight": 2,
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": {
-                "type": "minecraft:uniform",
-                "min": 0.0,
-                "max": 1.0
-              },
-              "add": false
-            }
-          ],
-          "rarity": "RARE"
+          "rarity": "COMMON",
+          "weight": 14
         },
         {
           "type": "rftoolsdim:dimlet_loot",
           "functions": [
             {
-              "function": "minecraft:set_count",
+              "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "min": 0.0,
-                "max": 1.0
+                "max": 2.0,
+                "min": 0.0
               },
-              "add": false
+              "function": "minecraft:set_count"
+            }
+          ],
+          "rarity": "UNCOMMON",
+          "weight": 4
+        },
+        {
+          "type": "rftoolsdim:dimlet_loot",
+          "functions": [
+            {
+              "add": false,
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 1.0,
+                "min": 0.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "rarity": "RARE",
+          "weight": 2
+        },
+        {
+          "type": "rftoolsdim:dimlet_loot",
+          "functions": [
+            {
+              "add": false,
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 1.0,
+                "min": 0.0
+              },
+              "function": "minecraft:set_count"
             }
           ],
           "rarity": "LEGENDARY"
         },
         {
           "type": "minecraft:item",
-          "weight": 14,
           "functions": [
             {
-              "function": "minecraft:set_count",
+              "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "min": 0.0,
-                "max": 3.0
+                "max": 3.0,
+                "min": 0.0
               },
-              "add": false
+              "function": "minecraft:set_count"
             }
           ],
-          "name": "rftoolsdim:common_lost_knowledge"
-        },
-        {
-          "type": "minecraft:item",
-          "weight": 4,
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": {
-                "type": "minecraft:uniform",
-                "min": 0.0,
-                "max": 3.0
-              },
-              "add": false
-            }
-          ],
-          "name": "rftoolsdim:uncommon_lost_knowledge"
-        },
-        {
-          "type": "minecraft:item",
-          "weight": 2,
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": {
-                "type": "minecraft:uniform",
-                "min": 0.0,
-                "max": 2.0
-              },
-              "add": false
-            }
-          ],
-          "name": "rftoolsdim:rare_lost_knowledge"
+          "name": "rftoolsdim:common_lost_knowledge",
+          "weight": 14
         },
         {
           "type": "minecraft:item",
           "functions": [
             {
-              "function": "minecraft:set_count",
+              "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "min": 0.0,
-                "max": 1.0
+                "max": 3.0,
+                "min": 0.0
               },
-              "add": false
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "rftoolsdim:uncommon_lost_knowledge",
+          "weight": 4
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "add": false,
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 2.0,
+                "min": 0.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "rftoolsdim:rare_lost_knowledge",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "add": false,
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 1.0,
+                "min": 0.0
+              },
+              "function": "minecraft:set_count"
             }
           ],
           "name": "rftoolsdim:legendary_lost_knowledge"
         }
-      ]
+      ],
+      "name": "chests/hut_loot",
+      "rolls": {
+        "type": "minecraft:uniform",
+        "max": 5.0,
+        "min": 1.0
+      }
     }
   ]
 }
