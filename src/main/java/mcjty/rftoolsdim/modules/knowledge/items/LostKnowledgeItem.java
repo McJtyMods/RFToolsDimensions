@@ -14,6 +14,7 @@ import mcjty.rftoolsdim.modules.knowledge.data.KnowledgeManager;
 import mcjty.rftoolsdim.setup.Registration;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -93,7 +94,8 @@ public class LostKnowledgeItem extends Item implements ITooltipSettings {
     public static ItemStack createLostKnowledge(Level world, DimletKey key) {
         DimletSettings settings = DimletDictionary.get().getSettings(key);
         if (settings != null) {
-            KnowledgeKey kkey = KnowledgeManager.get().getKnowledgeKey(LevelTools.getOverworld(world).getSeed(), key);
+            ServerLevel overworld = LevelTools.getOverworld(world);
+            KnowledgeKey kkey = KnowledgeManager.get().getKnowledgeKey(overworld, overworld.getSeed(), key);
             if (kkey != null) {
                 DimletRarity rarity = settings.getRarity();
                 return createLostKnowledgeStack(world, rarity, kkey);

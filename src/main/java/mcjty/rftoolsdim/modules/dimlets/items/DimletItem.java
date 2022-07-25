@@ -3,6 +3,7 @@ package mcjty.rftoolsdim.modules.dimlets.items;
 import mcjty.lib.builder.TooltipBuilder;
 import mcjty.lib.tooltips.ITooltipExtras;
 import mcjty.lib.tooltips.ITooltipSettings;
+import mcjty.lib.varia.SafeClientTools;
 import mcjty.lib.varia.Tools;
 import mcjty.rftoolsdim.dimension.data.ClientDimensionData;
 import mcjty.rftoolsdim.modules.dimlets.DimletModule;
@@ -89,7 +90,7 @@ public class DimletItem extends Item implements ITooltipSettings, ITooltipExtras
 
     @Override
     public void fillItemCategory(@Nonnull CreativeModeTab group, @Nonnull NonNullList<ItemStack> items) {
-        if (this.allowdedIn(group)) {
+        if (this.allowedIn(group)) {
             if (this == DimletModule.ADMIN_DIMLET.get()) {
                 ItemStack stack = DimletTools.getDimletStack(new DimletKey(DimletType.ADMIN, "owner"));
                 if (!stack.isEmpty()) {
@@ -119,7 +120,7 @@ public class DimletItem extends Item implements ITooltipSettings, ITooltipExtras
 
             long seed = ClientDimensionData.get().getWorldSeed();
             if (seed != -1) {
-                DimletPattern pattern = KnowledgeManager.get().getPattern(seed, key);
+                DimletPattern pattern = KnowledgeManager.get().getPattern(SafeClientTools.getClientWorld(), seed, key);
                 addPatternItems(pattern, items);
             }
 
@@ -140,7 +141,7 @@ public class DimletItem extends Item implements ITooltipSettings, ITooltipExtras
         if (pattern != null) {
             int cnt = pattern.count(PatternBuilder.SHARD);
             if (cnt > 0) {
-                items.add(Pair.of(new ItemStack(Registration.DIMENSIONAL_SHARD, cnt), NOERROR));
+                items.add(Pair.of(new ItemStack(Registration.DIMENSIONAL_SHARD.get(), cnt), NOERROR));
             }
             cnt = pattern.count(PatternBuilder.LEV0);
             if (cnt > 0) {

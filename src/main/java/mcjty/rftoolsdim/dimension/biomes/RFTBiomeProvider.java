@@ -2,7 +2,6 @@ package mcjty.rftoolsdim.dimension.biomes;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import mcjty.lib.varia.Tools;
 import mcjty.rftoolsdim.dimension.data.DimensionSettings;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
@@ -26,7 +25,8 @@ public class RFTBiomeProvider extends BiomeSource {
             ).apply(instance, RFTBiomeProvider::new));
 
     private final List<Holder<Biome>> biomes;
-    private final Set<Biome.BiomeCategory> biomeCategories;
+    // @todo 1.19
+//    private final Set<Biome.BiomeCategory> biomeCategories;
     private final Map<ResourceLocation, Holder<Biome>> biomeMapping = new HashMap<>();
     private final Registry<Biome> biomeRegistry;
     private final DimensionSettings settings;
@@ -41,9 +41,10 @@ public class RFTBiomeProvider extends BiomeSource {
         this.biomeRegistry = biomeRegistry;
         multiNoiseBiomeSource = MultiNoiseBiomeSource.Preset.OVERWORLD.biomeSource(biomeRegistry, true);
         biomes = getBiomes(biomeRegistry, settings);
-        biomeCategories = getBiomeCategories(settings);
+        // @todo 1.19
+//        biomeCategories = getBiomeCategories(settings);
 
-        defaultBiomes = biomes.isEmpty() && biomeCategories.isEmpty();
+        defaultBiomes = biomes.isEmpty();//@todo 1.19 && biomeCategories.isEmpty();
         biomeRegistry.stream().forEach(this::getMappedBiome);
     }
 
@@ -53,43 +54,45 @@ public class RFTBiomeProvider extends BiomeSource {
 
     private Holder<Biome> getMappedBiome(Biome biome) {
         if (defaultBiomes) {
-            return biomeRegistry.getHolderOrThrow(ResourceKey.create(Registry.BIOME_REGISTRY, Tools.getId(biome)));
+            return biomeRegistry.getHolderOrThrow(ResourceKey.create(Registry.BIOME_REGISTRY, biomeRegistry.getKey(biome)));
         }
-        return biomeMapping.computeIfAbsent(Tools.getId(biome), resourceLocation -> {
+        return biomeMapping.computeIfAbsent(biomeRegistry.getKey(biome), resourceLocation -> {
             List<Holder<Biome>> biomes = getBiomes(biomeRegistry, settings);
             final float[] minDist = {1000000000};
             final Biome[] desired = {biome};
             if (biomes.isEmpty()) {
                 // Biomes was empty. Try to get one with the correct category
-                if (!biomeCategories.contains(Biome.getBiomeCategory(Holder.direct(desired[0])))) {
-                    biomeRegistry.stream().forEach(b -> {
-                        if (biomeCategories.contains(Biome.getBiomeCategory(Holder.direct(b)))) {
-                            float dist = distance(b, biome);
-                            if (dist < minDist[0]) {
-                                desired[0] = b;
-                                minDist[0] = dist;
-                            }
-                        }
-                    });
-                }
+                // @todo 1.19
+//                if (!biomeCategories.contains(Biome.getBiomeCategory(Holder.direct(desired[0])))) {
+//                    biomeRegistry.stream().forEach(b -> {
+//                        if (biomeCategories.contains(Biome.getBiomeCategory(Holder.direct(b)))) {
+//                            float dist = distance(b, biome);
+//                            if (dist < minDist[0]) {
+//                                desired[0] = b;
+//                                minDist[0] = dist;
+//                            }
+//                        }
+//                    });
+//                }
             } else {
                 // If there are biomes we try to find one while also keeping category in mind
                 for (Holder<Biome> b : biomes) {
-                    if (biomeCategories.isEmpty() || biomeCategories.contains(Biome.getBiomeCategory(b))) {
-                        float dist = distance(b.value(), biome);
-                        if (dist < minDist[0]) {
-                            desired[0] = b.value();
-                            minDist[0] = dist;
-                        }
-                    }
+                    // @todo 1.19
+//                    if (biomeCategories.isEmpty() || biomeCategories.contains(Biome.getBiomeCategory(b))) {
+//                        float dist = distance(b.value(), biome);
+//                        if (dist < minDist[0]) {
+//                            desired[0] = b.value();
+//                            minDist[0] = dist;
+//                        }
+//                    }
                 }
             }
-            return biomeRegistry.getHolderOrThrow(ResourceKey.create(Registry.BIOME_REGISTRY, Tools.getId(desired[0])));
+            return biomeRegistry.getHolderOrThrow(ResourceKey.create(Registry.BIOME_REGISTRY, biomeRegistry.getKey(desired[0])));
         });
     }
 
     private static float distance(Biome biome1, Biome biome2) {
-        float d1 = Biome.getBiomeCategory(Holder.direct(biome1)) == Biome.getBiomeCategory(Holder.direct(biome2)) ? 0 : 1;
+        float d1 = 0.0f; // @todo 1.19 Biome.getBiomeCategory(Holder.direct(biome1)) == Biome.getBiomeCategory(Holder.direct(biome2)) ? 0 : 1;
         float d2 = Math.abs(biome1.getBaseTemperature() - biome2.getBaseTemperature());
         float d3 = Math.abs(biome1.getDownfall() - biome2.getDownfall());
         float d4 = biome1.isHumid() == biome2.isHumid() ? 0 : 1;
@@ -98,17 +101,18 @@ public class RFTBiomeProvider extends BiomeSource {
 
     private List<Holder<Biome>> getBiomes(Registry<Biome> biomeRegistry, DimensionSettings settings) {
         List<ResourceLocation> biomes = settings.getCompiledDescriptor().getBiomes();
-        return biomes.stream().map(biomeRegistry::get).map(b -> biomeRegistry.getHolderOrThrow(ResourceKey.create(Registry.BIOME_REGISTRY, Tools.getId(b)))).collect(Collectors.toList());
+        return biomes.stream().map(biomeRegistry::get).map(b -> biomeRegistry.getHolderOrThrow(ResourceKey.create(Registry.BIOME_REGISTRY, biomeRegistry.getKey(b)))).collect(Collectors.toList());
     }
 
-    private Set<Biome.BiomeCategory> getBiomeCategories(DimensionSettings settings) {
-        Set<Biome.BiomeCategory> categories = settings.getCompiledDescriptor().getBiomeCategories();
-        if (categories.size() == 1 && categories.iterator().next().equals(Biome.BiomeCategory.NONE)) {
-            return Collections.emptySet();
-        } else {
-            return categories;
-        }
-    }
+    // @todo 1.19
+//    private Set<Biome.BiomeCategory> getBiomeCategories(DimensionSettings settings) {
+//        Set<Biome.BiomeCategory> categories = settings.getCompiledDescriptor().getBiomeCategories();
+//        if (categories.size() == 1 && categories.iterator().next().equals(Biome.BiomeCategory.NONE)) {
+//            return Collections.emptySet();
+//        } else {
+//            return categories;
+//        }
+//    }
 
     public Registry<Biome> getBiomeRegistry() {
         return biomeRegistry;
@@ -120,13 +124,15 @@ public class RFTBiomeProvider extends BiomeSource {
         return CODEC;
     }
 
-    @Nonnull
-    @Override
-    public BiomeSource withSeed(long seed) {
-        return new RFTBiomeProvider(getBiomeRegistry(), settings);
-    }
+//    @Nonnull
+//    @Override
+//    public BiomeSource withSeed(long seed) {
+//        return new RFTBiomeProvider(getBiomeRegistry(), settings);
+//    }
+
 
     @Override
+    @Nonnull
     public Set<Holder<Biome>> possibleBiomes() {
         if (defaultBiomes) {
             return multiNoiseBiomeSource.possibleBiomes();
@@ -135,10 +141,10 @@ public class RFTBiomeProvider extends BiomeSource {
         }
     }
 
-    @Override
-    public List<StepFeatureData> featuresPerStep() {
-        return multiNoiseBiomeSource.featuresPerStep();
-    }
+//    @Override
+//    public List<StepFeatureData> featuresPerStep() {
+//        return multiNoiseBiomeSource.featuresPerStep();
+//    }
 
 //    @Override
 //    public void addMultinoiseDebugInfo(List<String> list, BlockPos pos, Climate.Sampler climate) {
@@ -172,18 +178,20 @@ public class RFTBiomeProvider extends BiomeSource {
         if (biome1 == null) {
             if (biomes.isEmpty()) {
                 // Try to get from categories
-                List<Biome> list = biomeRegistry.stream().filter(b -> biomeCategories.contains(Biome.getBiomeCategory(Holder.direct(b)))).collect(Collectors.toList());
-                if (list.isEmpty()) {
+                // @todo 1.19
+//                List<Biome> list = biomeRegistry.stream().filter(b -> biomeCategories.contains(Biome.getBiomeCategory(Holder.direct(b)))).collect(Collectors.toList());
+//                if (list.isEmpty()) {
                     // Safety, this is needed in case the category doesn't contain any biomes
                     biome1 = biome2 = biomeRegistry.getHolderOrThrow(Biomes.PLAINS);
-                } else {
-                    biome1 = biomeRegistry.getHolderOrThrow(ResourceKey.create(Registry.BIOME_REGISTRY, Tools.getId(list.get(0))));
-                    if (list.size() > 1) {
-                        biome2 = biomeRegistry.getHolderOrThrow(ResourceKey.create(Registry.BIOME_REGISTRY, Tools.getId(list.get(1))));
-                    } else {
-                        biome2 = biome1;
-                    }
-                }
+                // @todo 1.19
+//                } else {
+//                    biome1 = biomeRegistry.getHolderOrThrow(ResourceKey.create(Registry.BIOME_REGISTRY, Tools.getId(list.get(0))));
+//                    if (list.size() > 1) {
+//                        biome2 = biomeRegistry.getHolderOrThrow(ResourceKey.create(Registry.BIOME_REGISTRY, Tools.getId(list.get(1))));
+//                    } else {
+//                        biome2 = biome1;
+//                    }
+//                }
             } else {
                 biome1 = biomes.get(0);
                 if (biomes.size() > 1) {
@@ -206,6 +214,7 @@ public class RFTBiomeProvider extends BiomeSource {
     }
 
     @Override
+    @Nonnull
     public Holder<Biome> getNoiseBiome(int x, int y, int z, Climate.Sampler climate) {
         return switch (settings.getCompiledDescriptor().getBiomeControllerType()) {
             case CHECKER -> getCheckerBiome(x, z);

@@ -3,6 +3,7 @@ package mcjty.rftoolsdim.modules.dimlets.data;
 import com.google.gson.*;
 import mcjty.lib.varia.TagTools;
 import mcjty.rftoolsdim.RFToolsDim;
+import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -110,7 +111,7 @@ public class DimletPackages {
 
     private static void writeStructures(JsonArray root, String modid) {
         Set<DimletKey> dimlets = DimletDictionary.get().getDimlets();
-        for (var entry : ForgeRegistries.STRUCTURE_FEATURES.getEntries()) {
+        for (var entry : BuiltinRegistries.STRUCTURES.entrySet()) {
             ResourceLocation id = entry.getKey().location();
             if (modid.toLowerCase().equals(id.getNamespace())) {
                 if (!dimlets.contains(new DimletKey(DimletType.STRUCTURE, id.toString()))) {

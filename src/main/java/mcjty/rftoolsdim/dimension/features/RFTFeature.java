@@ -18,6 +18,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockState;
@@ -54,7 +55,7 @@ public class RFTFeature extends Feature<NoneFeatureConfiguration> {
     public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context) {
         ChunkGenerator generator = context.chunkGenerator();
         BlockPos pos = context.origin();
-        Random rand = context.random();
+        RandomSource rand = context.random();
         WorldGenLevel reader = context.level();
         if (generator instanceof RFToolsChunkGenerator chunkGenerator) {
             CompiledDescriptor compiledDescriptor = chunkGenerator.getDimensionSettings().getCompiledDescriptor();

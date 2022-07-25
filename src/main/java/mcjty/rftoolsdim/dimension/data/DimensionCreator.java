@@ -18,7 +18,10 @@ import mcjty.rftoolsdim.dimension.terraintypes.RFToolsChunkGenerator;
 import mcjty.rftoolsdim.dimension.terraintypes.TerrainType;
 import mcjty.rftoolsdim.dimension.tools.DynamicDimensionManager;
 import mcjty.rftoolsdim.tools.Primes;
-import net.minecraft.core.*;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
+import net.minecraft.core.Registry;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -32,7 +35,6 @@ import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.dimension.LevelStem;
 import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
 import net.minecraft.world.level.levelgen.SurfaceRules;
-import net.minecraft.world.level.levelgen.feature.ConfiguredStructureFeature;
 import net.minecraft.world.level.levelgen.structure.StructureSet;
 import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadStructurePlacement;
 import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadType;
@@ -214,7 +216,7 @@ public class DimensionCreator {
                             getStructures(settings),
                             new RFTBiomeProvider(registryAccess.registryOrThrow(Registry.BIOME_REGISTRY), settings),
                             seed, Holder.direct(noiseSettings), settings);
-                    return new LevelStem(type, generator, true);
+                    return new LevelStem(type, generator);
                 });
 
         long skyDimletTypes = compiledDescriptor.getSkyDimletTypes();
@@ -243,18 +245,18 @@ public class DimensionCreator {
             } else if (structure.getPath().equals("default"))  {
                 return Collections.emptyList();
             } else {
-                var registryName = Registry.CONFIGURED_STRUCTURE_FEATURE_REGISTRY;
-                Registry<ConfiguredStructureFeature<?, ?>> registry = getOverworld().registryAccess().registryOrThrow(registryName);
+                var registryName = Registry.STRUCTURE_REGISTRY;
+                var registry = getOverworld().registryAccess().registryOrThrow(registryName);
                 var tagKey = TagKey.create(registryName, structure);
-                HolderSet.Named<ConfiguredStructureFeature<?, ?>> tag = registry.getOrCreateTag(tagKey);
+                var tag = registry.getOrCreateTag(tagKey);
                 if (tag.size() != 0) {
                     tag.forEach(st -> {
                         StructureSet set = new StructureSet(st, new RandomSpreadStructurePlacement(12, 5, RandomSpreadType.LINEAR, primes.nextIntUnsigned()));
                         list.add(Holder.direct(set));
                     });
                 } else {
-                    if (BuiltinRegistries.CONFIGURED_STRUCTURE_FEATURE.containsKey(structure)) {
-                        BuiltinRegistries.CONFIGURED_STRUCTURE_FEATURE.getHolder(ResourceKey.create(Registry.CONFIGURED_STRUCTURE_FEATURE_REGISTRY, structure)).ifPresent(cfg -> {
+                    if (BuiltinRegistries.STRUCTURES.containsKey(structure)) {
+                        BuiltinRegistries.STRUCTURES.getHolder(ResourceKey.create(Registry.STRUCTURE_REGISTRY, structure)).ifPresent(cfg -> {
                             StructureSet set = new StructureSet(cfg, new RandomSpreadStructurePlacement(12, 5, RandomSpreadType.LINEAR, primes.nextIntUnsigned()));
                             list.add(Holder.direct(set));
                         });

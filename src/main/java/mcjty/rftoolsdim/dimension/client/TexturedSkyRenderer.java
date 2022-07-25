@@ -3,14 +3,14 @@ package mcjty.rftoolsdim.dimension.client;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Matrix4f;
-import net.minecraft.client.Minecraft;
+import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.FogRenderer;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.client.ISkyRenderHandler;
+import net.minecraftforge.client.extensions.IForgeDimensionSpecialEffects;
 
-public class TexturedSkyRenderer implements ISkyRenderHandler {
+public class TexturedSkyRenderer {
 
     private final ResourceLocation texture;
 
@@ -18,8 +18,7 @@ public class TexturedSkyRenderer implements ISkyRenderHandler {
         this.texture = texture;
     }
 
-    @Override
-    public void render(int ticks, float partialTicks, PoseStack matrixStack, ClientLevel world, Minecraft mc) {
+    public boolean renderSky(ClientLevel level, int ticks, float partialTick, PoseStack poseStack, Camera camera, Matrix4f projectionMatrix, boolean isFoggy, Runnable setupFog) {
         float red = FogRenderer.fogRed;
         float green = FogRenderer.fogGreen;
         float blue =FogRenderer.fogBlue;
@@ -37,7 +36,7 @@ public class TexturedSkyRenderer implements ISkyRenderHandler {
         BufferBuilder bufferbuilder = Tesselator.getInstance().getBuilder();
         bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
 
-        Matrix4f pose = matrixStack.last().pose();
+        Matrix4f pose = poseStack.last().pose();
 
         float v = 800.0F;
         bufferbuilder.vertex(pose, -v, 200, -v).uv(0, 0).color(red, green, blue, 1).endVertex();
@@ -46,9 +45,9 @@ public class TexturedSkyRenderer implements ISkyRenderHandler {
         bufferbuilder.vertex(pose, -v, 200, v).uv(0, 1).color(red, green, blue, 1).endVertex();
 
 
-        bufferbuilder.end();
-        BufferUploader.end(bufferbuilder);
+        BufferUploader.draw(bufferbuilder.end());
 
         RenderSystem.depthMask(true);
+        return true;
     }
 }

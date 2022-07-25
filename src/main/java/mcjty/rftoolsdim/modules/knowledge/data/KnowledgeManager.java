@@ -16,7 +16,6 @@ import mcjty.rftoolsdim.modules.dimlets.data.DimletKey;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletRarity;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletSettings;
 import mcjty.rftoolsdim.setup.Registration;
-import net.minecraft.core.Holder;
 import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -290,7 +289,7 @@ public class KnowledgeManager {
                     KnowledgeKey kkey = getKnowledgeKey(overworld, overworld.getSeed(), key);
                     if (kkey != null) {
                         set.add(kkey);
-                        String reason = getKnowledgeSetReason(key);
+                        String reason = getKnowledgeSetReason(world, key);
                         if (reason != null) {
                             keyReasons.put(kkey, reason);
                         }

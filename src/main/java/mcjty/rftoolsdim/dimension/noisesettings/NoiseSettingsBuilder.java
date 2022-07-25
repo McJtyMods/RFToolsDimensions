@@ -1,10 +1,6 @@
 package mcjty.rftoolsdim.dimension.noisesettings;
 
-import net.minecraft.data.worldgen.TerrainProvider;
-import net.minecraft.world.level.biome.TerrainShaper;
-import net.minecraft.world.level.levelgen.NoiseSamplingSettings;
 import net.minecraft.world.level.levelgen.NoiseSettings;
-import net.minecraft.world.level.levelgen.NoiseSlider;
 
 public class NoiseSettingsBuilder {
     int minY = 0;
@@ -14,10 +10,11 @@ public class NoiseSettingsBuilder {
     private boolean islandNoiseOverride = false;
     private boolean amplified = false;
     private boolean largeBiomes = false;
-    private NoiseSamplingSettings samplingSettings;
-    private NoiseSlider topSlider;
-    private NoiseSlider bottomSlider;
-    private TerrainShaper terrainShaper = TerrainProvider.floatingIslands();
+    // @todo 1.19
+//    private NoiseSamplingSettings samplingSettings;
+//    private NoiseSlider topSlider;
+//    private NoiseSlider bottomSlider;
+//    private TerrainShaper terrainShaper = TerrainProvider.floatingIslands();
 
     public NoiseSettingsBuilder minY(int minY) {
         this.minY = minY;
@@ -55,39 +52,46 @@ public class NoiseSettingsBuilder {
     }
 
     public NoiseSettingsBuilder samplingSettings(NoiseSamplingSettingsBuilder samplingSettings) {
-        this.samplingSettings = samplingSettings.build();
+        // @todo 1.19
+//        this.samplingSettings = samplingSettings.build();
         return this;
     }
 
-    public NoiseSettingsBuilder samplingSettings(NoiseSamplingSettings samplingSettings) {
-        this.samplingSettings = samplingSettings;
-        return this;
-    }
+    // @todo 1.19
+//    public NoiseSettingsBuilder samplingSettings(NoiseSamplingSettings samplingSettings) {
+//        this.samplingSettings = samplingSettings;
+//        return this;
+//    }
 
     public NoiseSettingsBuilder topSlider(NoiseSliderBuilder topSlider) {
-        this.topSlider = topSlider.build();
+        // @todo 1.19
+//        this.topSlider = topSlider.build();
         return this;
     }
 
-    public NoiseSettingsBuilder topSlider(NoiseSlider topSlider) {
-        this.topSlider = topSlider;
-        return this;
-    }
+    // @todo 1.19
+//    public NoiseSettingsBuilder topSlider(NoiseSlider topSlider) {
+//        this.topSlider = topSlider;
+//        return this;
+//    }
 
     public NoiseSettingsBuilder bottomSlider(NoiseSliderBuilder bottomSlider) {
-        this.bottomSlider = bottomSlider.build();
+        // @todo 1.19
+//        this.bottomSlider = bottomSlider.build();
         return this;
     }
 
-    public NoiseSettingsBuilder bottomSlider(NoiseSlider bottomSlider) {
-        this.bottomSlider = bottomSlider;
-        return this;
-    }
+    // @todo 1.19
+//    public NoiseSettingsBuilder bottomSlider(NoiseSlider bottomSlider) {
+//        this.bottomSlider = bottomSlider;
+//        return this;
+//    }
 
-    public NoiseSettingsBuilder terrainShaper(TerrainShaper terrainShaper) {
-        this.terrainShaper = terrainShaper;
-        return this;
-    }
+    // @todo 1.19
+//    public NoiseSettingsBuilder terrainShaper(TerrainShaper terrainShaper) {
+//        this.terrainShaper = terrainShaper;
+//        return this;
+//    }
 
     public static NoiseSettingsBuilder create(NoiseSettings settings) {
         return new NoiseSettingsBuilder()
@@ -95,23 +99,21 @@ public class NoiseSettingsBuilder {
                 .height(settings.height())
                 .noiseSizeHorizontal(settings.noiseSizeHorizontal())
                 .noiseSizeVertical(settings.noiseSizeVertical())
-                // @todo 1.18.2
-//                .islandNoiseOverride(settings.islandNoiseOverride())
-//                .amplified(settings.isAmplified())
-//                .largeBiomes(settings.largeBiomes())
-                .bottomSlider(settings.bottomSlideSettings())
-                .topSlider(settings.topSlideSettings())
-                .samplingSettings(settings.noiseSamplingSettings())
-                .terrainShaper(settings.terrainShaper())
+                // @todo 1.19
+//                .bottomSlider(settings.bottomSlideSettings())
+//                .topSlider(settings.topSlideSettings())
+//                .samplingSettings(settings.noiseSamplingSettings())
+//                .terrainShaper(settings.terrainShaper())
                 ;
     }
 
-    public NoiseSettings build() {
-        return NoiseSettings.create(minY, height,
-                samplingSettings,
-                topSlider,
-                bottomSlider,
-                noiseSizeHorizontal, noiseSizeVertical,//@todo 1.18.2 islandNoiseOverride, amplified, largeBiomes,
-                terrainShaper);
-    }
+    // @todo 1.19
+//    public NoiseSettings build() {
+//        return NoiseSettings.create(minY, height,
+//                samplingSettings,
+//                topSlider,
+//                bottomSlider,
+//                noiseSizeHorizontal, noiseSizeVertical,//@todo 1.18.2 islandNoiseOverride, amplified, largeBiomes,
+//                terrainShaper);
+//    }
 }

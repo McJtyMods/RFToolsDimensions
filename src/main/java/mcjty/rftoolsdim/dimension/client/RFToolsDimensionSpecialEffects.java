@@ -1,23 +1,27 @@
 package mcjty.rftoolsdim.dimension.client;
 
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Matrix4f;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.dimension.additional.SkyDimletType;
 import mcjty.rftoolsdim.dimension.data.ClientDimensionData;
+import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.DimensionSpecialEffects;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.client.ISkyRenderHandler;
-import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.Nonnull;
 
 public class RFToolsDimensionSpecialEffects extends DimensionSpecialEffects {
 
-    private final ISkyRenderHandler blackSky = new BlackSkyRenderer();
-    private final ISkyRenderHandler infernalSky = new TexturedSkyRenderer(new ResourceLocation(RFToolsDim.MODID, "textures/sky/redlines.png"));
-    private final ISkyRenderHandler starsSky = new SkyboxRenderer(
+    private final BlackSkyRenderer blackSky = new BlackSkyRenderer();
+    private final TexturedSkyRenderer infernalSky = new TexturedSkyRenderer(new ResourceLocation(RFToolsDim.MODID, "textures/sky/redlines.png"));
+    private final SkyboxRenderer starsSky = new SkyboxRenderer(
             new ResourceLocation(RFToolsDim.MODID, "textures/sky/stars1.png"),
             new ResourceLocation(RFToolsDim.MODID, "textures/sky/stars1a.png"));
-    private final ISkyRenderHandler nebulaSky = new SkyboxRenderer(
+    private final SkyboxRenderer nebulaSky = new SkyboxRenderer(
             new ResourceLocation(RFToolsDim.MODID, "textures/sky/stars3.png"),
             new ResourceLocation(RFToolsDim.MODID, "textures/sky/stars3a.png"));
 
@@ -35,24 +39,24 @@ public class RFToolsDimensionSpecialEffects extends DimensionSpecialEffects {
         cachedSkyMask = -1L;
     }
 
-    @Nullable
     @Override
-    public ISkyRenderHandler getSkyRenderHandler() {
+    public boolean renderSky(ClientLevel level, int ticks, float partialTick, PoseStack poseStack, Camera camera, Matrix4f projectionMatrix, boolean isFoggy, Runnable setupFog) {
         long skyMask = getSkyMask();
         if (SkyDimletType.BLACK.match(skyMask)) {
-            return blackSky;
+            return blackSky.renderSky(level, ticks, partialTick, poseStack, camera, projectionMatrix, isFoggy, setupFog);
         } else if (SkyDimletType.INFERNAL.match(skyMask)) {
-            return infernalSky;
+            return infernalSky.renderSky(level, ticks, partialTick, poseStack, camera, projectionMatrix, isFoggy, setupFog);
         } else if (SkyDimletType.STARS.match(skyMask)) {
-            return starsSky;
+            return starsSky.renderSky(level, ticks, partialTick, poseStack, camera, projectionMatrix, isFoggy, setupFog);
         } else if (SkyDimletType.NEBULA.match(skyMask)) {
-            return nebulaSky;
+            return nebulaSky.renderSky(level, ticks, partialTick, poseStack, camera, projectionMatrix, isFoggy, setupFog);
         } else {
-            return null;
+            return false;
         }
     }
 
     @Override
+    @Nonnull
     public SkyType skyType() {
         long skyMask = getSkyMask();
         if (SkyDimletType.END.match(skyMask)) {

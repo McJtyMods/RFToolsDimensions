@@ -19,6 +19,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -165,7 +166,7 @@ public class FluidAbsorberTileEntity extends TickingTileEntity {
     @Override
     protected void tickClient() {
         if (absorbing > 0) {
-            Random rand = level.random;
+            RandomSource rand = level.random;
 
             double u = rand.nextFloat() * 2.0f - 1.0f;
             double v = (float) (rand.nextFloat() * 2.0f * Math.PI);

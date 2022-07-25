@@ -33,6 +33,7 @@ import mcjty.rftoolsdim.modules.workbench.WorkbenchModule;
 import mcjty.rftoolsdim.modules.workbench.network.PacketPatternToClient;
 import mcjty.rftoolsdim.setup.RFToolsDimMessages;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.MenuProvider;
@@ -184,7 +185,8 @@ public class WorkbenchTileEntity extends GenericTileEntity {
         if (!isCraftable(getSupportedKnowledgeKeys(), key)) {
             return;
         }
-        DimletPattern pattern = KnowledgeManager.get().getPattern(LevelTools.getOverworld(player.level).getSeed(), key);
+        ServerLevel overworld = LevelTools.getOverworld(player.level);
+        DimletPattern pattern = KnowledgeManager.get().getPattern(overworld, overworld.getSeed(), key);
         if (pattern != null) {
             String[] p = pattern.pattern();
             RFToolsDimMessages.INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player),
@@ -210,7 +212,8 @@ public class WorkbenchTileEntity extends GenericTileEntity {
             tryFindAndFitItem(player, s -> false, SLOT_ESSENCE);
         }
 
-        DimletPattern pattern = KnowledgeManager.get().getPattern(LevelTools.getOverworld(level).getSeed(), key);
+        ServerLevel overworld = LevelTools.getOverworld(level);
+        DimletPattern pattern = KnowledgeManager.get().getPattern(overworld, overworld.getSeed(), key);
         if (pattern != null) {
             String[] p = pattern.pattern();
             int slotNumber = SLOT_PATTERN;
@@ -292,7 +295,8 @@ public class WorkbenchTileEntity extends GenericTileEntity {
     }
 
     private boolean isCraftable(Set<KnowledgeKey> knownKeys, DimletKey dimlet) {
-        KnowledgeKey kkey = KnowledgeManager.get().getKnowledgeKey(LevelTools.getOverworld(level).getSeed(), dimlet);
+        ServerLevel overworld = LevelTools.getOverworld(level);
+        KnowledgeKey kkey = KnowledgeManager.get().getKnowledgeKey(overworld, overworld.getSeed(), dimlet);
         return knownKeys.contains(kkey);
     }
 

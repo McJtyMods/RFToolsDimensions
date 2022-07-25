@@ -5,12 +5,13 @@ import com.mojang.blaze3d.vertex.*;
 import mcjty.rftoolsdim.dimension.data.ClientDimensionData;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.event.RenderGuiOverlayEvent;
+import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 
 public class OverlayRenderer {
 
-    public static void render(RenderGameOverlayEvent.Post event) {
-        if (event.getType() == RenderGameOverlayEvent.ElementType.ALL) {
+    public static void render(RenderGuiOverlayEvent.Post event) {
+        if (event.getOverlay() == VanillaGuiOverlay.SLEEP_FADE.type()) {
             ClientDimensionData.ClientData clientData = ClientDimensionData.get().getClientData(Minecraft.getInstance().level.dimension().location());
             if (clientData.power() >= 0) {
                 // Don't do anything outside an RFTools Dimension
@@ -42,8 +43,7 @@ public class OverlayRenderer {
         bufferbuilder.vertex(v, -v, -100f).color(red, green, blue, alpha).endVertex();
         bufferbuilder.vertex(-v, -v, -100f).color(red, green, blue, alpha).endVertex();
 
-        bufferbuilder.end();
-        BufferUploader.end(bufferbuilder);
+        BufferUploader.draw(bufferbuilder.end());
     }
 
 }

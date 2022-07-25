@@ -1,7 +1,5 @@
 package mcjty.rftoolsdim.dimension.noisesettings;
 
-import net.minecraft.world.level.levelgen.NoiseSamplingSettings;
-
 public class NoiseSamplingSettingsBuilder {
     private double xzScale = 1.0D;
     private double yScale = 1.0D;
@@ -32,15 +30,16 @@ public class NoiseSamplingSettingsBuilder {
         return new NoiseSamplingSettingsBuilder();
     }
 
-    public static NoiseSamplingSettingsBuilder create(NoiseSamplingSettings settings) {
-        return new NoiseSamplingSettingsBuilder()
-                .xzScale(settings.xzScale())
-                .xzFactor(settings.xzFactor())
-                .yScale(settings.yScale())
-                .yFactor(settings.yFactor());
-    }
-
-    public NoiseSamplingSettings build() {
-        return new NoiseSamplingSettings(xzScale, yScale, xzFactor, yFactor);
-    }
+    // @todo 1.19
+//    public static NoiseSamplingSettingsBuilder create(NoiseSamplingSettings settings) {
+//        return new NoiseSamplingSettingsBuilder()
+//                .xzScale(settings.xzScale())
+//                .xzFactor(settings.xzFactor())
+//                .yScale(settings.yScale())
+//                .yFactor(settings.yFactor());
+//    }
+//
+//    public NoiseSamplingSettings build() {
+//        return new NoiseSamplingSettings(xzScale, yScale, xzFactor, yFactor);
+//    }
 }

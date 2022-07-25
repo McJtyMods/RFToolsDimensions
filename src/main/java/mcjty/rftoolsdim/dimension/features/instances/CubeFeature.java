@@ -1,12 +1,14 @@
 package mcjty.rftoolsdim.dimension.features.instances;
 
 import mcjty.rftoolsdim.dimension.features.IFeature;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.LegacyRandomSource;
 
 import java.util.List;
 import java.util.Random;
@@ -14,7 +16,7 @@ import java.util.Random;
 public record CubeFeature(boolean hollow, boolean liquid) implements IFeature {
 
     @Override
-    public boolean generate(WorldGenLevel reader, ChunkGenerator generator, Random rand, BlockPos pos,
+    public boolean generate(WorldGenLevel reader, ChunkGenerator generator, RandomSource rand, BlockPos pos,
                             List<BlockState> states, List<BlockState> liquids, long prime) {
         ChunkPos cp = new ChunkPos(pos);
         int chunkX = cp.x;
@@ -43,7 +45,7 @@ public record CubeFeature(boolean hollow, boolean liquid) implements IFeature {
 
     private void generate(WorldGenLevel world, int chunkX, int chunkZ, int dx, int dz,
                           List<BlockState> states, BlockState filler, long prime) {
-        Random random = new Random(world.getSeed() + (chunkZ + dz) * prime + (chunkX + dx) * 899809363L);
+        RandomSource random = new LegacyRandomSource(world.getSeed() + (chunkZ + dz) * prime + (chunkX + dx) * 899809363L);
         random.nextFloat();
         int radius = random.nextInt(12) + 9;
         int centery = random.nextInt(60) + 40;

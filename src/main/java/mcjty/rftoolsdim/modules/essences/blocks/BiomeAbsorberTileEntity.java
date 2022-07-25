@@ -16,6 +16,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.SoundType;
@@ -94,7 +95,7 @@ public class BiomeAbsorberTileEntity extends TickingTileEntity {
     @Override
     protected void tickClient() {
         if (absorbing > 0) {
-            Random rand = level.random;
+            RandomSource rand = level.random;
 
             double u = rand.nextFloat() * 2.0f - 1.0f;
             double v = (float) (rand.nextFloat() * 2.0f * Math.PI);
@@ -119,14 +120,14 @@ public class BiomeAbsorberTileEntity extends TickingTileEntity {
     protected void tickServer() {
         if (biomeId == null) {
             Holder<Biome> biome = getLevel().getBiome(getBlockPos());
-            biomeId = Tools.getId(biome.value()).toString();
+            biomeId = Tools.getId(level, biome.value()).toString();
             absorbing = EssencesConfig.maxBiomeAbsorption.get();
             setChanged();
         }
 
         if (absorbing > 0) {
             Holder<Biome> biome = level.getBiome(worldPosition);
-            if (!Tools.getId(biome.value()).toString().equals(biomeId)) {
+            if (!Tools.getId(level, biome.value()).toString().equals(biomeId)) {
                 return;
             }
 

@@ -22,6 +22,7 @@ import net.minecraft.world.level.storage.DerivedLevelData;
 import net.minecraft.world.level.storage.LevelStorageSource;
 import net.minecraft.world.level.storage.WorldData;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.level.LevelEvent;
 
 import java.util.*;
 import java.util.concurrent.Executor;
@@ -163,7 +164,7 @@ public class DynamicDimensionManager {
                 removedLevel.save(null, false, removedLevel.noSave());
 
                 // fire world unload event -- when the server stops, this would fire after worlds get saved, so we'll do that here too
-                MinecraftForge.EVENT_BUS.post(new net.minecraftforge.event.world.WorldEvent.Unload(removedLevel));
+                MinecraftForge.EVENT_BUS.post(new net.minecraftforge.event.level.LevelEvent.Unload(removedLevel));
 
                 // remove the world border listener if possible
                 final WorldBorder overworldBorder = overworld.getWorldBorder();
@@ -248,9 +249,8 @@ public class DynamicDimensionManager {
                 anvilConverter,
                 derivedLevelData,
                 worldKey,
-                dimension.typeHolder(),
+                dimension,
                 chunkProgressListener,
-                dimension.generator(),
                 worldGenSettings.isDebug(),
                 net.minecraft.world.level.biome.BiomeManager.obfuscateSeed(worldGenSettings.seed()),
                 ImmutableList.of(), // "special spawn list"
@@ -274,7 +274,7 @@ public class DynamicDimensionManager {
         server.markWorldsDirty();
 
         // fire world load event
-        MinecraftForge.EVENT_BUS.post(new WorldEvent.Load(newWorld));
+        MinecraftForge.EVENT_BUS.post(new LevelEvent.Load(newWorld));
 
         // update clients' dimension lists
         PacketSyncDimensionListChanges.updateClientDimensionLists(ImmutableSet.of(worldKey), ImmutableSet.of());

@@ -6,11 +6,13 @@ import mcjty.rftoolsdim.modules.dimlets.data.DimletKey;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletTools;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
+import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.ingredients.subtypes.IIngredientSubtypeInterpreter;
 import mezz.jei.api.ingredients.subtypes.UidContext;
 import mezz.jei.api.registration.ISubtypeRegistration;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 
@@ -26,16 +28,16 @@ public class JeiCompatibility implements IModPlugin {
 
     @Override
     public void registerItemSubtypes(ISubtypeRegistration registration) {
-        registration.registerSubtypeInterpreter(DimletModule.ATTRIBUTE_DIMLET.get(), DimletInterpreter.INSTANCE);
-        registration.registerSubtypeInterpreter(DimletModule.TERRAIN_DIMLET.get(), DimletInterpreter.INSTANCE);
-        registration.registerSubtypeInterpreter(DimletModule.FLUID_DIMLET.get(), DimletInterpreter.INSTANCE);
-        registration.registerSubtypeInterpreter(DimletModule.FEATURE_DIMLET.get(), DimletInterpreter.INSTANCE);
-        registration.registerSubtypeInterpreter(DimletModule.BIOME_DIMLET.get(), DimletInterpreter.INSTANCE);
-        registration.registerSubtypeInterpreter(DimletModule.BIOME_CONTROLLER_DIMLET.get(), DimletInterpreter.INSTANCE);
-        registration.registerSubtypeInterpreter(DimletModule.BLOCK_DIMLET.get(), DimletInterpreter.INSTANCE);
-        registration.registerSubtypeInterpreter(DimletModule.TIME_DIMLET.get(), DimletInterpreter.INSTANCE);
-        registration.registerSubtypeInterpreter(DimletModule.DIGIT_DIMLET.get(), DimletInterpreter.INSTANCE);
-        registration.registerSubtypeInterpreter(DimletModule.ADMIN_DIMLET.get(), DimletInterpreter.INSTANCE);
+        registration.registerSubtypeInterpreter(VanillaTypes.ITEM_STACK, DimletModule.ATTRIBUTE_DIMLET.get(), DimletInterpreter.INSTANCE);
+        registration.registerSubtypeInterpreter(VanillaTypes.ITEM_STACK, DimletModule.TERRAIN_DIMLET.get(), DimletInterpreter.INSTANCE);
+        registration.registerSubtypeInterpreter(VanillaTypes.ITEM_STACK, DimletModule.FLUID_DIMLET.get(), DimletInterpreter.INSTANCE);
+        registration.registerSubtypeInterpreter(VanillaTypes.ITEM_STACK, DimletModule.FEATURE_DIMLET.get(), DimletInterpreter.INSTANCE);
+        registration.registerSubtypeInterpreter(VanillaTypes.ITEM_STACK, DimletModule.BIOME_DIMLET.get(), DimletInterpreter.INSTANCE);
+        registration.registerSubtypeInterpreter(VanillaTypes.ITEM_STACK, DimletModule.BIOME_CONTROLLER_DIMLET.get(), DimletInterpreter.INSTANCE);
+        registration.registerSubtypeInterpreter(VanillaTypes.ITEM_STACK, DimletModule.BLOCK_DIMLET.get(), DimletInterpreter.INSTANCE);
+        registration.registerSubtypeInterpreter(VanillaTypes.ITEM_STACK, DimletModule.TIME_DIMLET.get(), DimletInterpreter.INSTANCE);
+        registration.registerSubtypeInterpreter(VanillaTypes.ITEM_STACK, DimletModule.DIGIT_DIMLET.get(), DimletInterpreter.INSTANCE);
+        registration.registerSubtypeInterpreter(VanillaTypes.ITEM_STACK, DimletModule.ADMIN_DIMLET.get(), DimletInterpreter.INSTANCE);
     }
 
     public static class DimletInterpreter implements IIngredientSubtypeInterpreter<ItemStack> {
@@ -43,6 +45,7 @@ public class JeiCompatibility implements IModPlugin {
         public static final DimletInterpreter INSTANCE = new DimletInterpreter();
 
         @Override
+        @Nonnull
         public String apply(ItemStack ingredient, UidContext context) {
             DimletKey key = DimletTools.getDimletKey(ingredient);
             return key == null ? "null" : key.key();

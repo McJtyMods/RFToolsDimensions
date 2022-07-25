@@ -4,11 +4,13 @@ import mcjty.lib.varia.MathTools;
 import mcjty.rftoolsdim.dimension.features.IFeature;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.LegacyRandomSource;
 
 import java.util.List;
 import java.util.Random;
@@ -24,7 +26,7 @@ public class TendrilsFeature implements IFeature {
         double centerZ = (chunkZ * 16 + 8);
         float f3 = 0.0F;
         float f4 = 0.0F;
-        Random random = new Random(seed);
+        RandomSource random = new LegacyRandomSource(seed);
 
         if (p_151541_16_ <= 0) {
             int j1 = this.range * 16 - 16;
@@ -155,7 +157,7 @@ public class TendrilsFeature implements IFeature {
 
 
     @Override
-    public boolean generate(WorldGenLevel reader, ChunkGenerator generator, Random rand, BlockPos pos,
+    public boolean generate(WorldGenLevel reader, ChunkGenerator generator, RandomSource rand, BlockPos pos,
                             List<BlockState> states, List<BlockState> liquids, long prime) {
 
         ChunkPos cp = new ChunkPos(pos);

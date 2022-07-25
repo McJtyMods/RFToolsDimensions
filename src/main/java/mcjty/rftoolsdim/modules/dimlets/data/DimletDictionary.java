@@ -3,6 +3,7 @@ package mcjty.rftoolsdim.modules.dimlets.data;
 import mcjty.lib.varia.LevelTools;
 import mcjty.rftoolsdim.modules.knowledge.data.DimletPattern;
 import mcjty.rftoolsdim.modules.knowledge.data.KnowledgeManager;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -54,7 +55,8 @@ public class DimletDictionary {
                     if (energyPart.sameItem(DimletTools.getNeededEnergyPart(key))) {
                         ItemStack neededEssence = DimletTools.getNeededEssence(key, entry.getValue());
                         if (DimletTools.isFullEssence(essence, neededEssence, key.key())) {
-                            DimletPattern neededPattern = KnowledgeManager.get().getPattern(LevelTools.getOverworld(world).getSeed(), key);
+                            ServerLevel overworld = LevelTools.getOverworld(world);
+                            DimletPattern neededPattern = KnowledgeManager.get().getPattern(overworld, overworld.getSeed(), key);
                             if (Objects.equals(neededPattern, pattern)) {
                                 return key;
                             }

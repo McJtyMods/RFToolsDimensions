@@ -1,7 +1,5 @@
 package mcjty.rftoolsdim.dimension.noisesettings;
 
-import net.minecraft.world.level.levelgen.NoiseSlider;
-
 public class NoiseSliderBuilder {
     private double top = 1.0D;
     private int size = 1;
@@ -26,14 +24,15 @@ public class NoiseSliderBuilder {
         return new NoiseSliderBuilder();
     }
 
-    public static NoiseSliderBuilder create(NoiseSlider slider) {
-        return new NoiseSliderBuilder()
-                .top(slider.target())
-                .offset(slider.offset())
-                .size(slider.size());
-    }
-
-    public NoiseSlider build() {
-        return new NoiseSlider(top, size, offset);
-    }
+    // @todo 1.19
+//    public static NoiseSliderBuilder create(NoiseSlider slider) {
+//        return new NoiseSliderBuilder()
+//                .top(slider.target())
+//                .offset(slider.offset())
+//                .size(slider.size());
+//    }
+//
+//    public NoiseSlider build() {
+//        return new NoiseSlider(top, size, offset);
+//    }
 }

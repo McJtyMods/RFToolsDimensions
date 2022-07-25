@@ -5,10 +5,11 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
-import net.minecraft.world.level.levelgen.NoiseRouterWithOnlyNoises;
+import net.minecraft.world.level.levelgen.NoiseRouter;
 import net.minecraft.world.level.levelgen.NoiseSettings;
 import net.minecraft.world.level.levelgen.SurfaceRules;
 
+import java.util.Collections;
 import java.util.List;
 
 public class NoiseGeneratorSettingsBuilder {
@@ -22,7 +23,8 @@ public class NoiseGeneratorSettingsBuilder {
     private boolean noodleCavesEnabled = false;
     private boolean legacyRandomSource = true;
     private NoiseSettings noiseSettings;
-    private NoiseRouterWithOnlyNoises router;
+
+    private NoiseRouter router;
     private SurfaceRules.RuleSource ruleSource;
 
     public NoiseGeneratorSettingsBuilder baseBlock(BlockState baseBlock) {
@@ -71,7 +73,8 @@ public class NoiseGeneratorSettingsBuilder {
     }
 
     public NoiseGeneratorSettingsBuilder noiseSettings(NoiseSettingsBuilder noiseSettings) {
-        this.noiseSettings = noiseSettings.build();
+        // @todo 1.19
+//        this.noiseSettings = noiseSettings.build();
         return this;
     }
 
@@ -90,7 +93,7 @@ public class NoiseGeneratorSettingsBuilder {
         return this;
     }
 
-    public NoiseGeneratorSettingsBuilder router(NoiseRouterWithOnlyNoises router) {
+    public NoiseGeneratorSettingsBuilder router(NoiseRouter router) {
         this.router = router;
         return this;
     }
@@ -141,6 +144,7 @@ public class NoiseGeneratorSettingsBuilder {
                 baseBlock, liquidBlock,
                 router,
                 ruleSource,
+                Collections.emptyList(),    // @todo 1.19 what to fill here
                 seaLevel, disableMobGeneration, aquifersEnabled, /*noiseCavesEnabled, */oreVeinsEnabled, /*noodleCavesEnabled, */legacyRandomSource);
     }
 
@@ -176,6 +180,7 @@ public class NoiseGeneratorSettingsBuilder {
                 baseBlock, liquidBlock,
                 router,
                 ruleSource,
+                Collections.emptyList(),    // @todo 1.19 what to fill here
                 seaLevel, disableMobGeneration, aquifersEnabled, /*noiseCavesEnabled, */oreVeinsEnabled, /*noodleCavesEnabled, */legacyRandomSource);
     }
 }
