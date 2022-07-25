@@ -2,13 +2,17 @@ package mcjty.rftoolsdim.dimension.biomes;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import mcjty.lib.varia.TagTools;
 import mcjty.rftoolsdim.dimension.data.DimensionSettings;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.RegistryOps;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.BiomeTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.biome.*;
+import net.minecraftforge.common.Tags;
 
 import javax.annotation.Nonnull;
 import java.util.*;
@@ -25,8 +29,7 @@ public class RFTBiomeProvider extends BiomeSource {
             ).apply(instance, RFTBiomeProvider::new));
 
     private final List<Holder<Biome>> biomes;
-    // @todo 1.19
-//    private final Set<Biome.BiomeCategory> biomeCategories;
+    private final Set<TagKey<Biome>> biomeCategories;
     private final Map<ResourceLocation, Holder<Biome>> biomeMapping = new HashMap<>();
     private final Registry<Biome> biomeRegistry;
     private final DimensionSettings settings;
@@ -41,10 +44,9 @@ public class RFTBiomeProvider extends BiomeSource {
         this.biomeRegistry = biomeRegistry;
         multiNoiseBiomeSource = MultiNoiseBiomeSource.Preset.OVERWORLD.biomeSource(biomeRegistry, true);
         biomes = getBiomes(biomeRegistry, settings);
-        // @todo 1.19
-//        biomeCategories = getBiomeCategories(settings);
+        biomeCategories = getBiomeCategories(settings);
 
-        defaultBiomes = biomes.isEmpty();//@todo 1.19 && biomeCategories.isEmpty();
+        defaultBiomes = biomes.isEmpty() && biomeCategories.isEmpty();
         biomeRegistry.stream().forEach(this::getMappedBiome);
     }
 
@@ -62,18 +64,18 @@ public class RFTBiomeProvider extends BiomeSource {
             final Biome[] desired = {biome};
             if (biomes.isEmpty()) {
                 // Biomes was empty. Try to get one with the correct category
-                // @todo 1.19
-//                if (!biomeCategories.contains(Biome.getBiomeCategory(Holder.direct(desired[0])))) {
-//                    biomeRegistry.stream().forEach(b -> {
-//                        if (biomeCategories.contains(Biome.getBiomeCategory(Holder.direct(b)))) {
-//                            float dist = distance(b, biome);
-//                            if (dist < minDist[0]) {
-//                                desired[0] = b;
-//                                minDist[0] = dist;
-//                            }
-//                        }
-//                    });
-//                }
+                Optional<Holder<Biome>> holder = biomeRegistry.getHolder(biomeRegistry.getResourceKey(desired[0]).get());
+                if (!biomeCategories.contains(Biome.getBiomeCategory(Holder.direct(desired[0])))) {
+                    biomeRegistry.stream().forEach(b -> {
+                        if (biomeCategories.contains(Biome.getBiomeCategory(Holder.direct(b)))) {
+                            float dist = distance(b, biome);
+                            if (dist < minDist[0]) {
+                                desired[0] = b;
+                                minDist[0] = dist;
+                            }
+                        }
+                    });
+                }
             } else {
                 // If there are biomes we try to find one while also keeping category in mind
                 for (Holder<Biome> b : biomes) {
@@ -104,15 +106,15 @@ public class RFTBiomeProvider extends BiomeSource {
         return biomes.stream().map(biomeRegistry::get).map(b -> biomeRegistry.getHolderOrThrow(ResourceKey.create(Registry.BIOME_REGISTRY, biomeRegistry.getKey(b)))).collect(Collectors.toList());
     }
 
-    // @todo 1.19
-//    private Set<Biome.BiomeCategory> getBiomeCategories(DimensionSettings settings) {
-//        Set<Biome.BiomeCategory> categories = settings.getCompiledDescriptor().getBiomeCategories();
+    private Set<TagKey<Biome>> getBiomeCategories(DimensionSettings settings) {
+        Set<TagKey<Biome>> categories = settings.getCompiledDescriptor().getBiomeCategories();
+        // @todo 1.19
 //        if (categories.size() == 1 && categories.iterator().next().equals(Biome.BiomeCategory.NONE)) {
 //            return Collections.emptySet();
 //        } else {
-//            return categories;
+            return categories;
 //        }
-//    }
+    }
 
     public Registry<Biome> getBiomeRegistry() {
         return biomeRegistry;

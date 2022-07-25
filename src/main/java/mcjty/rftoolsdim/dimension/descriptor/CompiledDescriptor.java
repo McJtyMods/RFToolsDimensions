@@ -15,7 +15,9 @@ import mcjty.rftoolsdim.modules.dimlets.data.DimletDictionary;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletKey;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletSettings;
 import net.minecraft.core.Holder;
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -41,7 +43,7 @@ public class CompiledDescriptor {
     private final Set<AdminDimletType> adminDimletTypes = EnumSet.noneOf(AdminDimletType.class);
     private final Set<CompiledFeature> features = new HashSet<>();
     private BiomeControllerType biomeControllerType = null;
-//    private final Set<Biome.BiomeCategory> biomeCategories = new HashSet<>(); // @todo 1.19
+    private final Set<TagKey<Biome>> biomeCategories = new HashSet<>();
     private final List<ResourceLocation> biomes = new ArrayList<>();
     private final List<ResourceLocation> structures = new ArrayList<>();
     private long skyDimletTypes = 0;
@@ -153,8 +155,7 @@ public class CompiledDescriptor {
                 }
                 break;
             case BIOME_CATEGORY:
-//                biomeCategories.add(Biome.BiomeCategory.byName(name));
-                // @todo 1.19
+                biomeCategories.add(TagKey.create(Registry.BIOME_REGISTRY, new ResourceLocation(name)));
                 break;
             case BIOME:
                 biomes.add(new ResourceLocation(name));
@@ -293,10 +294,9 @@ public class CompiledDescriptor {
         for (ResourceLocation biome : biomes) {
             header += "\n        BIOME: " + biome.toString();
         }
-        // @todo 1.19
-//        for (Biome.BiomeCategory category : biomeCategories) {
-//            header += "\n        CATEGORY: " + category.getName();
-//        }
+        for (TagKey<Biome> category : biomeCategories) {
+            header += "\n        CATEGORY: " + category.location().toString();
+        }
         for (ResourceLocation structure : structures) {
             header += "\n    STRUCTURE: " + structure.toString();
         }
@@ -377,8 +377,7 @@ public class CompiledDescriptor {
         return biomes;
     }
 
-    // @todo 1.19
-//    public Set<Biome.BiomeCategory> getBiomeCategories() {
-//        return biomeCategories;
-//    }
+    public Set<TagKey<Biome>> getBiomeCategories() {
+        return biomeCategories;
+    }
 }
