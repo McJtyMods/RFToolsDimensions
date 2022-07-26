@@ -44,7 +44,7 @@ public class RFTFeature extends Feature<NoneFeatureConfiguration> {
     public static Holder<PlacedFeature> RFTFEATURE_CONFIGURED;
 
     public static void registerConfiguredFeatures() {
-        RFTFEATURE_CONFIGURED = PlacementUtils.register("rftfeature", Holder.direct(new ConfiguredFeature<>(Registration.RFTFEATURE.get(), NoneFeatureConfiguration.INSTANCE)), CountPlacement.of(1));
+        RFTFEATURE_CONFIGURED = PlacementUtils.register("rftoolsdim:rftfeature", Holder.direct(new ConfiguredFeature<>(Registration.RFTFEATURE.get(), NoneFeatureConfiguration.INSTANCE)), CountPlacement.of(1));
     }
 
     public RFTFeature(Codec<NoneFeatureConfiguration> codec) {
