@@ -1,5 +1,6 @@
 package mcjty.rftoolsdim.modules.dimlets;
 
+import com.mojang.serialization.Codec;
 import mcjty.lib.modules.IModule;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletType;
@@ -12,14 +13,15 @@ import mcjty.rftoolsdim.modules.dimlets.recipes.DimletCycleRecipeSerializer;
 import mcjty.rftoolsdim.modules.dimlets.recipes.DimletRecipeSerializer;
 import mcjty.rftoolsdim.setup.Config;
 import mcjty.rftoolsdim.setup.Registration;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
-import net.minecraft.world.level.storage.loot.entries.LootPoolEntryType;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.core.Registry;
-import net.minecraftforge.registries.RegistryObject;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.storage.loot.entries.LootPoolEntryType;
+import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
+import net.minecraftforge.common.loot.IGlobalLootModifier;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.registries.RegistryObject;
 
 import static mcjty.rftoolsdim.setup.Registration.*;
 
@@ -68,8 +70,7 @@ public class DimletModule implements IModule {
     public static final RegistryObject<Item> RARE_ESSENCE = ITEMS.register("rare_essence", () -> new Item(Registration.createStandardProperties()));
     public static final RegistryObject<Item> LEGENDARY_ESSENCE = ITEMS.register("legendary_essence", () -> new Item(Registration.createStandardProperties()));
 
-    // @todo 1.19
-//    public static final RegistryObject<EndermanLootModifier.Serializer> ENDERMAN_LOOT_MODIFIER = LOOT_MODIFIER_SERIALIZERS.register("enderman_extra", EndermanLootModifier.Serializer::new);
+    public static final RegistryObject<Codec<? extends IGlobalLootModifier>> ENDERMAN_LOOT_MODIFIER = LOOT_MODIFIER_SERIALIZERS.register("enderman_extra", () -> EndermanLootModifier.CODEC);
     public static final RegistryObject<DimletRecipeSerializer> DIMLET_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register("dimlet_recipe", DimletRecipeSerializer::new);
     public static final RegistryObject<DimletCycleRecipeSerializer> DIMLET_CYCLE_SERIALIZER = RECIPE_SERIALIZERS.register("dimlet_cycle_recipe", DimletCycleRecipeSerializer::new);
 

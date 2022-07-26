@@ -1,6 +1,7 @@
 package mcjty.rftoolsdim.modules.dimlets.lootmodifier;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletDictionary;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletKey;
@@ -18,6 +19,32 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public class EndermanLootModifier extends LootModifier {
+
+    // @todo better but doesn't work for some reason
+//    public static final Codec<EndermanLootModifier> CODEC = RecordCodecOBuilder.create(instance -> codecStart(instance).and(
+//            instance.group(
+//                    Codec.FLOAT.fieldOf("commonKnowledgeChance").forGetter(l -> l.commonKnowledgeChance),
+//                    Codec.FLOAT.fieldOf("uncommonKnowledgeChance").forGetter(l -> l.uncommonKnowledgeChance),
+//                    Codec.FLOAT.fieldOf("rareKnowledgeChance").forGetter(l -> l.rareKnowledgeChance),
+//                    Codec.FLOAT.fieldOf("legendaryKnowledgeChance").forGetter(l -> l.legendaryKnowledgeChance),
+//                    Codec.FLOAT.fieldOf("commonDimletChance").forGetter(l -> l.commonDimletChance),
+//                    Codec.FLOAT.fieldOf("uncommonDimletChance").forGetter(l -> l.uncommonDimletChance),
+//                    Codec.FLOAT.fieldOf("rareDimletChance").forGetter(l -> l.rareDimletChance),
+//                    Codec.FLOAT.fieldOf("legendaryDimletChance").forGetter(l -> l.legendaryDimletChance))
+//    ).apply(instance, EndermanLootModifier::new));
+
+    public static final Codec<EndermanLootModifier> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+            LOOT_CONDITIONS_CODEC.fieldOf("conditions").forGetter(l -> l.conditions),
+            Codec.FLOAT.fieldOf("commonKnowledgeChance").forGetter(l -> l.commonKnowledgeChance),
+            Codec.FLOAT.fieldOf("uncommonKnowledgeChance").forGetter(l -> l.uncommonKnowledgeChance),
+            Codec.FLOAT.fieldOf("rareKnowledgeChance").forGetter(l -> l.rareKnowledgeChance),
+            Codec.FLOAT.fieldOf("legendaryKnowledgeChance").forGetter(l -> l.legendaryKnowledgeChance),
+            Codec.FLOAT.fieldOf("commonDimletChance").forGetter(l -> l.commonDimletChance),
+            Codec.FLOAT.fieldOf("uncommonDimletChance").forGetter(l -> l.uncommonDimletChance),
+            Codec.FLOAT.fieldOf("rareDimletChance").forGetter(l -> l.rareDimletChance),
+            Codec.FLOAT.fieldOf("legendaryDimletChance").forGetter(l -> l.legendaryDimletChance)
+    ).apply(instance, EndermanLootModifier::new));
+
 
     private final float commonKnowledgeChance;
     private final float uncommonKnowledgeChance;
@@ -92,8 +119,7 @@ public class EndermanLootModifier extends LootModifier {
 
     @Override
     public Codec<? extends IGlobalLootModifier> codec() {
-        // @todo 1.19
-        return null;
+        return CODEC;
     }
 
     private void spawnKnowledge(List<ItemStack> generatedLoot, LootContext context, RandomSource random, float chance, DimletRarity rarity) {
@@ -113,37 +139,4 @@ public class EndermanLootModifier extends LootModifier {
             }
         }
     }
-
-    // @todo 1.19
-//    public static class Serializer extends GlobalLootModifierSerializer<EndermanLootModifier> {
-//
-//        @Override
-//        public EndermanLootModifier read(ResourceLocation name, JsonObject object, LootItemCondition[] conditionsIn) {
-//            float commonKnowledgeChance = GsonHelper.getAsFloat(object, "commonKnowledgeChance");
-//            float uncommonKnowledgeChance = GsonHelper.getAsFloat(object, "uncommonKnowledgeChance");
-//            float rareKnowledgeChance = GsonHelper.getAsFloat(object, "rareKnowledgeChance");
-//            float legendaryKnowledgeChance = GsonHelper.getAsFloat(object, "legendaryKnowledgeChance");
-//            float commonDimletChance = GsonHelper.getAsFloat(object, "commonDimletChance");
-//            float uncommonDimletChance = GsonHelper.getAsFloat(object, "uncommonDimletChance");
-//            float rareDimletChance = GsonHelper.getAsFloat(object, "rareDimletChance");
-//            float legendaryDimletChance = GsonHelper.getAsFloat(object, "legendaryDimletChance");
-//            return new EndermanLootModifier(conditionsIn,
-//                    commonKnowledgeChance, uncommonKnowledgeChance, rareKnowledgeChance, legendaryKnowledgeChance,
-//                    commonDimletChance, uncommonDimletChance, rareDimletChance, legendaryDimletChance);
-//        }
-//
-//        @Override
-//        public JsonObject write(EndermanLootModifier instance) {
-//            JsonObject object = makeConditions(instance.conditions);
-//            object.addProperty("commonKnowledgeChance", instance.getCommonKnowledgeChance());
-//            object.addProperty("uncommonKnowledgeChance", instance.getUncommonKnowledgeChance());
-//            object.addProperty("rareKnowledgeChance", instance.getRareKnowledgeChance());
-//            object.addProperty("legendaryKnowledgeChance", instance.getLegendaryKnowledgeChance());
-//            object.addProperty("commonDimletChance", instance.getCommonDimletChance());
-//            object.addProperty("uncommonDimletChance", instance.getUncommonDimletChance());
-//            object.addProperty("rareDimletChance", instance.getRareDimletChance());
-//            object.addProperty("legendaryDimletChance", instance.getLegendaryDimletChance());
-//            return object;
-//        }
-//    }
 }
