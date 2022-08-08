@@ -1,6 +1,3 @@
-Upcoming:
-- Fixed a bug with the customize screen crashing
-
 1.18-8.0.8:
 - Fixed a problem where the 'none' biome category could cause the dimension to crash
 - Updated the AE2 dimlet package. It was outdated. Thanks to obnys for reporting this
