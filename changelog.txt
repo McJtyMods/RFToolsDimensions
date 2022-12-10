@@ -1,3 +1,6 @@
+1.19-9.0.0:
+- Port to 1.19
+
 1.18-8.0.8:
 - Fixed a problem where the 'none' biome category could cause the dimension to crash
 - Updated the AE2 dimlet package. It was outdated. Thanks to obnys for reporting this

@@ -76,7 +76,7 @@ public class CompiledDescriptor {
         for (DimletKey dimlet : randomizedDescriptor.getDimlets()) {
             handleDimlet(collectedTags, collectedBlocks, collectedFluids, collectedAttributes, dimlet);
         }
-        randomizedCostPerTick = (int) (maintainCostPerTick * DimensionConfig.RANDOMIZED_DIMLET_COST_FACTOR.get());
+        randomizedCostPerTick = maintainCostPerTick;
         maintainCostPerTick = originalMaintainCost;
 
         if (adminDimletTypes.contains(AdminDimletType.CHEATER)) {
@@ -354,7 +354,7 @@ public class CompiledDescriptor {
      * Get the actual cost per tick after accounting for efficiency dimlets
      */
     public int getActualPowerCost() {
-        return maintainCostPerTick + randomizedCostPerTick;
+        return maintainCostPerTick + (int)(randomizedCostPerTick * DimensionConfig.RANDOMIZED_DIMLET_COST_FACTOR.get());
     }
 
     public int getMaintainCostPerTick() {
