@@ -194,7 +194,7 @@ public class KnowledgeManager {
 
     private KnowledgeSet getBiomeCategoryKnowledgeSet(DimletKey key) {
         // @todo 1.19 is this a good way?
-        return KnowledgeSet.values()[key.key().hashCode() % KnowledgeSet.values().length];
+        return KnowledgeSet.values()[Math.abs(key.key().hashCode()) % KnowledgeSet.values().length];
 //        Biome.BiomeCategory category = Biome.BiomeCategory.byName(key.key());
 //        return KnowledgeSet.values()[category.ordinal() % KnowledgeSet.values().length];
     }
@@ -242,7 +242,8 @@ public class KnowledgeManager {
     }
 
     private KnowledgeSet getStructureKnowledgeSet(CommonLevelAccessor level, DimletKey key) {
-        Structure structure = BuiltinRegistries.STRUCTURES.get(new ResourceLocation(key.key()));
+        ResourceLocation id = new ResourceLocation(key.key());
+        Structure structure = BuiltinRegistries.STRUCTURES.get(id);
         if (structure == null) {
             if (key.key().equals("default") || key.key().equals("none")) {
                 return KnowledgeSet.SET1;
@@ -251,7 +252,7 @@ public class KnowledgeManager {
             return KnowledgeSet.SET2;
         }
         // @todo is this good?
-        return KnowledgeSet.values()[(Math.abs(Tools.getId(level, structure).hashCode())) % KnowledgeSet.values().length];
+        return KnowledgeSet.values()[(Math.abs(id.hashCode())) % KnowledgeSet.values().length];
     }
 
     /// Create a knowledge set based on the category of a biome
@@ -263,7 +264,7 @@ public class KnowledgeManager {
             return KnowledgeSet.SET1;
         }
         // @todo 1.19 is this right?
-        return KnowledgeSet.values()[key.key().hashCode() % KnowledgeSet.values().length];
+        return KnowledgeSet.values()[Math.abs(key.key().hashCode()) % KnowledgeSet.values().length];
 //        Biome.BiomeCategory category = Biome.getBiomeCategory(Holder.direct(biome));
 //        return KnowledgeSet.values()[category.ordinal() % KnowledgeSet.values().length];
     }

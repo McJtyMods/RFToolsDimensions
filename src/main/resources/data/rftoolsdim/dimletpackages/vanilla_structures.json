@@ -137,7 +137,17 @@
   },
   {
     "type": "structure",
-    "key": "minecraft:ocean_ruin",
+    "key": "minecraft:ocean_ruin_cold",
+    "rarity": "uncommon",
+    "create": 150,
+    "maintain": 150,
+    "ticks": 150,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "structure",
+    "key": "minecraft:ocean_ruin_warm",
     "rarity": "uncommon",
     "create": 150,
     "maintain": 150,
@@ -157,7 +167,7 @@
   },
   {
     "type": "structure",
-    "key": "minecraft:endcity",
+    "key": "minecraft:end_city",
     "rarity": "uncommon",
     "create": 800,
     "maintain": 500,
@@ -177,7 +187,47 @@
   },
   {
     "type": "structure",
-    "key": "minecraft:village",
+    "key": "minecraft:village_plains",
+    "rarity": "rare",
+    "create": 1000,
+    "maintain": 1000,
+    "ticks": 500,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "structure",
+    "key": "minecraft:village_desert",
+    "rarity": "rare",
+    "create": 1000,
+    "maintain": 1000,
+    "ticks": 500,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "structure",
+    "key": "minecraft:village_snowy",
+    "rarity": "rare",
+    "create": 1000,
+    "maintain": 1000,
+    "ticks": 500,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "structure",
+    "key": "minecraft:village_savanna",
+    "rarity": "rare",
+    "create": 1000,
+    "maintain": 1000,
+    "ticks": 500,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "structure",
+    "key": "minecraft:village_taiga",
     "rarity": "rare",
     "create": 1000,
     "maintain": 1000,
