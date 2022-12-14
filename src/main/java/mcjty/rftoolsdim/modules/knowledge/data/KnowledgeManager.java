@@ -2,7 +2,6 @@ package mcjty.rftoolsdim.modules.knowledge.data;
 
 import mcjty.lib.varia.LevelTools;
 import mcjty.lib.varia.TagTools;
-import mcjty.lib.varia.Tools;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.dimension.TimeType;
 import mcjty.rftoolsdim.dimension.additional.SkyDimletType;
@@ -146,7 +145,7 @@ public class KnowledgeManager {
     private String getReasonStructure(CommonLevelAccessor level, DimletKey key) {
         Structure structure = BuiltinRegistries.STRUCTURES.get(new ResourceLocation(key.key()));
         if (structure != null) {
-            return Tools.getId(level, structure).getPath();
+            return new ResourceLocation(key.key()).getPath();
         }
         return null;
     }
