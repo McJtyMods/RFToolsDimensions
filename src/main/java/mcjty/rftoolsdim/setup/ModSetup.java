@@ -35,10 +35,10 @@ public class ModSetup extends DefaultModSetup {
 
         RFToolsDimMessages.registerMessages("rftoolsdim");
 
-        e.enqueueWork(() -> {
-            RFTFeature.registerConfiguredFeatures();
+//        e.enqueueWork(() -> {
+//            RFTFeature.registerConfiguredFeatures();
 //            TerrainPresets.init();
-        });
+//        });
         MinecraftForge.EVENT_BUS.register(new ForgeEventHandlers());
 
         e.enqueueWork(() -> {

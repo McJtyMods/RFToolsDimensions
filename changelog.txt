@@ -1,3 +1,6 @@
+Upcoming:
+- Improved feature registration making it more compatible with other mods
+
 1.19-9.0.2:
 - Fixed a crash with the researcher
 

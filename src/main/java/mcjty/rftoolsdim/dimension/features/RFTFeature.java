@@ -12,11 +12,8 @@ import mcjty.rftoolsdim.dimension.features.buildings.SpawnHut;
 import mcjty.rftoolsdim.dimension.features.buildings.SpawnPlatform;
 import mcjty.rftoolsdim.dimension.terraintypes.RFToolsChunkGenerator;
 import mcjty.rftoolsdim.dimension.terraintypes.TerrainType;
-import mcjty.rftoolsdim.setup.Registration;
 import mcjty.rftoolsdim.tools.Primes;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Holder;
-import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
@@ -25,27 +22,23 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
-import net.minecraft.world.level.levelgen.placement.CountPlacement;
-import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 import java.util.Set;
 
 public class RFTFeature extends Feature<NoneFeatureConfiguration> {
 
     public static final ResourceLocation RFTFEATURE_ID = new ResourceLocation(RFToolsDim.MODID, "rftfeature");
 
-    public static Holder<PlacedFeature> RFTFEATURE_CONFIGURED;
-
-    public static void registerConfiguredFeatures() {
-        RFTFEATURE_CONFIGURED = PlacementUtils.register("rftoolsdim:rftfeature", Holder.direct(new ConfiguredFeature<>(Registration.RFTFEATURE.get(), NoneFeatureConfiguration.INSTANCE)), CountPlacement.of(1));
-    }
+//    public static Holder<PlacedFeature> RFTFEATURE_CONFIGURED;
+//
+//    public static void registerConfiguredFeatures() {
+//        RFTFEATURE_CONFIGURED = PlacementUtils.register("rftoolsdim:rftfeature", Holder.direct(new ConfiguredFeature<>(Registration.RFTFEATURE.get(), NoneFeatureConfiguration.INSTANCE)), CountPlacement.of(1));
+//    }
 
     public RFTFeature(Codec<NoneFeatureConfiguration> codec) {
         super(codec);
