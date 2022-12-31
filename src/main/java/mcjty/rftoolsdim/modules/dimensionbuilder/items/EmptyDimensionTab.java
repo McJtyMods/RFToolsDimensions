@@ -16,7 +16,7 @@ import java.util.List;
 public class EmptyDimensionTab extends Item {
 
     public EmptyDimensionTab() {
-        super(new Item.Properties().tab(RFToolsDim.setup.getTab()).stacksTo(1));
+        super(RFToolsDim.setup.defaultProperties().stacksTo(1));
     }
 
     @Override

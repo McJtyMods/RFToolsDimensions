@@ -39,7 +39,7 @@ public class PhasedFieldGenerator extends Item implements IEnergyItem, ITooltipS
     }
 
     public PhasedFieldGenerator() {
-        super(new Properties().tab(RFToolsDim.setup.getTab()).stacksTo(1));
+        super(RFToolsDim.setup.defaultProperties().stacksTo(1));
     }
 
     @Override

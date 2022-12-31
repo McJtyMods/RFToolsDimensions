@@ -72,6 +72,6 @@ public class Registration {
             () -> new PlacedFeature(CONFIGURED_RFTFEATURE.getHolder().get(), List.of(CountPlacement.of(1))));
 
     public static Item.Properties createStandardProperties() {
-        return new Item.Properties().tab(RFToolsDim.setup.getTab());
+        return RFToolsDim.setup.defaultProperties();
     }
 }

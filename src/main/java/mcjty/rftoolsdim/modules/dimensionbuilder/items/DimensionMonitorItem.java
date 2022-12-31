@@ -28,7 +28,7 @@ public class DimensionMonitorItem extends Item implements ITooltipSettings {
                     TooltipBuilder.parameter("name", ClientHelpers::getDimensionName));
 
     public DimensionMonitorItem() {
-        super(new Properties().tab(RFToolsDim.setup.getTab()).stacksTo(1));
+        super(RFToolsDim.setup.defaultProperties().stacksTo(1));
     }
 
     @Override
