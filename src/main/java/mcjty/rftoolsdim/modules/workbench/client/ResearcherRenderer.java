@@ -1,8 +1,6 @@
 package mcjty.rftoolsdim.modules.workbench.client;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
 import mcjty.lib.client.CustomRenderTypes;
 import mcjty.lib.client.RenderHelper;
 import mcjty.lib.client.RenderSettings;
@@ -10,9 +8,7 @@ import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.modules.workbench.WorkbenchModule;
 import mcjty.rftoolsdim.modules.workbench.blocks.ResearcherTileEntity;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -46,7 +42,7 @@ public class ResearcherRenderer implements BlockEntityRenderer<ResearcherTileEnt
                 matrixStack.scale(.5f, .5f, .5f);
                 matrixStack.translate(1f, 2.1f, 1f);
                 float angle = ((millis / 45) % 360);
-                matrixStack.mulPose(Vector3f.YP.rotationDegrees(angle));
+                RenderHelper.rotateYP(matrixStack, angle);
                 itemRenderer.renderStatic(stack, ItemTransforms.TransformType.FIXED, RenderHelper.MAX_BRIGHTNESS, combinedOverlay, matrixStack, buffer, 0);  // @todo 1.18 last parameter?
                 matrixStack.popPose();
 
