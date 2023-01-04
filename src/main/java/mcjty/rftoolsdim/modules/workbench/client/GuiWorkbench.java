@@ -2,7 +2,7 @@ package mcjty.rftoolsdim.modules.workbench.client;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.*;
+import com.mojang.blaze3d.vertex.PoseStack;
 import mcjty.lib.base.StyleConfig;
 import mcjty.lib.client.RenderHelper;
 import mcjty.lib.container.GenericContainer;
@@ -147,7 +147,7 @@ public class GuiWorkbench extends GenericGuiContainer<WorkbenchTileEntity, Gener
                             RenderSystem.disableDepthTest();
                             RenderSystem.setShader(GameRenderer::getPositionTexShader);
                             RenderSystem.setShaderTexture(0, iconGuiElements);
-                            RenderHelper.drawTexturedModalRect(matrixStack.last().pose(), slot.x, slot.y, 14 * 16, 3 * 16, 16, 16);
+                            RenderHelper.drawTexturedModalRect(matrixStack, slot.x, slot.y, 14 * 16, 3 * 16, 16, 16);
                             RenderSystem.enableDepthTest();
                             RenderSystem.disableBlend();
                         }
