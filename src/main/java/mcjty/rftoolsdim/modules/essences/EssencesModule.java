@@ -64,6 +64,7 @@ public class EssencesModule implements IModule {
                         .standardLoot(TYPE_BLOCK_ABSORBER)
                         .blockState(p -> p.singleTextureBlockC(BLOCK_ABSORBER.get(), BLOCK_FOLDER + "/block_absorber", "block/blockabsorber", builder -> builder.renderType("cutout")))
                         .shaped(builder -> builder
+                                        .define('s', mcjty.rftoolsbase.modules.various.VariousModule.DIMENSIONALSHARD.get())
                                         .define('C', Blocks.SPONGE)
                                         .define('u', Blocks.SLIME_BLOCK)
                                         .unlockedBy("sponge", has(Blocks.SPONGE)),
@@ -74,6 +75,7 @@ public class EssencesModule implements IModule {
                         .standardLoot(TYPE_FLUID_ABSORBER)
                         .blockState(p -> p.singleTextureBlockC(FLUID_ABSORBER.get(), BLOCK_FOLDER + "/fluid_absorber", "block/fluidabsorber", builder -> builder.renderType("cutout")))
                         .shaped(builder -> builder
+                                        .define('s', mcjty.rftoolsbase.modules.various.VariousModule.DIMENSIONALSHARD.get())
                                         .define('C', Blocks.SPONGE)
                                         .define('u', Blocks.SLIME_BLOCK)
                                         .unlockedBy("sponge", has(Blocks.SPONGE)),
@@ -84,6 +86,7 @@ public class EssencesModule implements IModule {
                         .standardLoot(TYPE_BIOME_ABSORBER)
                         .blockState(p -> p.singleTextureBlockC(BIOME_ABSORBER.get(), BLOCK_FOLDER + "/biome_absorber", "block/biomeabsorber", builder -> builder.renderType("cutout")))
                         .shaped(builder -> builder
+                                        .define('s', mcjty.rftoolsbase.modules.various.VariousModule.DIMENSIONALSHARD.get())
                                         .define('C', Blocks.SPONGE)
                                         .define('u', ItemTags.LEAVES)
                                         .unlockedBy("sponge", has(Blocks.SPONGE)),
@@ -94,6 +97,7 @@ public class EssencesModule implements IModule {
                         .standardLoot(TYPE_STRUCTURE_ABSORBER)
                         .blockState(p -> p.singleTextureBlockC(STRUCTURE_ABSORBER.get(), BLOCK_FOLDER + "/structure_absorber", "block/structureabsorber", builder -> builder.renderType("cutout")))
                         .shaped(builder -> builder
+                                        .define('s', mcjty.rftoolsbase.modules.various.VariousModule.DIMENSIONALSHARD.get())
                                         .define('C', Blocks.SPONGE)
                                         .define('u', ItemTags.STONE_BRICKS)
                                         .unlockedBy("sponge", has(Blocks.SPONGE)),

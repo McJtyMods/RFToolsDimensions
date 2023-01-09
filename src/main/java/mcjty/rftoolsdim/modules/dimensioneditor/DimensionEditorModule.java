@@ -60,6 +60,7 @@ public class DimensionEditorModule implements IModule {
                         .standardLoot(TYPE_DIMENSION_EDITOR)
                         .blockState(DataGenHelper::registerDimensionEditor)
                         .shaped(builder -> builder
+                                        .define('F', mcjty.rftoolsbase.modules.various.VariousModule.MACHINE_FRAME.get())
                                         .define('g', Items.GOLD_INGOT)
                                         .unlockedBy("frame", has(VariousModule.MACHINE_FRAME.get())),
                                 "oio", "iFi", "ggg")

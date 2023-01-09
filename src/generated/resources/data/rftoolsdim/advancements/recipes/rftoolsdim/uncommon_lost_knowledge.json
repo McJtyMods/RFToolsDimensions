@@ -7,7 +7,7 @@
       },
       "trigger": "minecraft:recipe_unlocked"
     },
-    "knowlege": {
+    "knowledge": {
       "conditions": {
         "items": [
           {
@@ -22,7 +22,7 @@
   },
   "requirements": [
     [
-      "knowlege",
+      "knowledge",
       "has_the_recipe"
     ]
   ],

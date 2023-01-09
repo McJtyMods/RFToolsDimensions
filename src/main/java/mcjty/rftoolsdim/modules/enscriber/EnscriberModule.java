@@ -58,6 +58,7 @@ public class EnscriberModule implements IModule {
                         .standardLoot(TYPE_ENSCRIBER)
                         .blockState(p -> p.orientedBlock(ENSCRIBER.get(), p.frontBasedModel("enscriber", p.modLoc("block/dimensionenscriber"))))
                         .shaped(builder -> builder
+                                        .define('F', mcjty.rftoolsbase.modules.various.VariousModule.MACHINE_FRAME.get())
                                         .define('C', Blocks.CRAFTING_TABLE)
                                         .define('u', DimletModule.EMPTY_DIMLET.get())
                                         .unlockedBy("frame", has(VariousModule.MACHINE_FRAME.get())),

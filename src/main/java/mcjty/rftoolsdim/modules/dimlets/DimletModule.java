@@ -6,7 +6,9 @@ import mcjty.lib.datagen.Dob;
 import mcjty.lib.modules.IModule;
 import mcjty.rftoolsbase.modules.various.VariousModule;
 import mcjty.rftoolsdim.RFToolsDim;
+import mcjty.rftoolsdim.dimension.DimensionRegistry;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletKey;
+import mcjty.rftoolsdim.modules.dimlets.data.DimletRarity;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletTools;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletType;
 import mcjty.rftoolsdim.modules.dimlets.items.DimletItem;
@@ -27,8 +29,13 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.storage.loot.LootPool;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.entries.LootPoolEntryType;
+import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
+import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.loot.IGlobalLootModifier;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -36,6 +43,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.registries.RegistryObject;
 
 import static mcjty.lib.datagen.DataGen.has;
+import static mcjty.rftoolsdim.modules.knowledge.KnowledgeModule.*;
 import static mcjty.rftoolsdim.setup.Registration.*;
 
 public class DimletModule implements IModule {
@@ -114,79 +122,133 @@ public class DimletModule implements IModule {
 
     @Override
     public void initDatagen(DataGen dataGen) {
+        registerLootHelpers();
         dataGen.add(
                 Dob.itemBuilder(EMPTY_DIMLET)
                         .generatedItem("item/dimlets/empty_dimlet")
                         .shaped(builder -> builder
+                                        .define('s', mcjty.rftoolsbase.modules.various.VariousModule.DIMENSIONALSHARD.get())
                                         .unlockedBy("shard", has(VariousModule.DIMENSIONALSHARD.get())),
-                                " p ", "psp", " p "),
+                                " p ", "psp", " p ")
+                        .loot(p -> {
+                            LootPool.Builder builder = LootPool.lootPool()
+                                    .name(DimensionRegistry.HUT_LOOT.getPath())
+                                    .setRolls(UniformGenerator.between(1, 5))
+                                    .add(DimletLootEntry.builder(DimletRarity.COMMON)
+                                            .setWeight(14)
+                                            .apply(SetItemCountFunction
+                                                    .setCount(UniformGenerator.between(0, 2))))
+                                    .add(DimletLootEntry.builder(DimletRarity.UNCOMMON)
+                                            .setWeight(4)
+                                            .apply(SetItemCountFunction
+                                                    .setCount(UniformGenerator.between(0, 2))))
+                                    .add(DimletLootEntry.builder(DimletRarity.RARE)
+                                            .setWeight(2)
+                                            .apply(SetItemCountFunction
+                                                    .setCount(UniformGenerator.between(0, 1))))
+                                    .add(DimletLootEntry.builder(DimletRarity.LEGENDARY)
+                                            .setWeight(1)
+                                            .apply(SetItemCountFunction
+                                                    .setCount(UniformGenerator.between(0, 1))))
+                                    .add(LootItem.lootTableItem(COMMON_LOST_KNOWLEDGE.get())
+                                            .setWeight(14)
+                                            .apply(SetItemCountFunction
+                                                    .setCount(UniformGenerator.between(0, 3))))
+                                    .add(LootItem.lootTableItem(UNCOMMON_LOST_KNOWLEDGE.get())
+                                            .setWeight(4)
+                                            .apply(SetItemCountFunction
+                                                    .setCount(UniformGenerator.between(0, 3))))
+                                    .add(LootItem.lootTableItem(RARE_LOST_KNOWLEDGE.get())
+                                            .setWeight(2)
+                                            .apply(SetItemCountFunction
+                                                    .setCount(UniformGenerator.between(0, 2))))
+                                    .add(LootItem.lootTableItem(LEGENDARY_LOST_KNOWLEDGE.get())
+                                            .setWeight(1)
+                                            .apply(SetItemCountFunction
+                                                    .setCount(UniformGenerator.between(0, 1))))
+                                    ;
+                            p.addChestLootTable(DimensionRegistry.HUT_LOOT, LootTable.lootTable().withPool(builder));
+
+                        }),
                 Dob.itemBuilder(EMPTY_TERRAIN_DIMLET)
                         .generatedItem("item/dimlets/empty_terrain_dimlet")
                         .shaped(builder -> builder
                                         .define('C', Tags.Items.COBBLESTONE)
+                                        .define('E', EMPTY_DIMLET.get())
                                         .unlockedBy("empty_dimlet", has(EMPTY_DIMLET.get())),
                                 "CDC", "DED", "CDC"),
                 Dob.itemBuilder(EMPTY_ATTRIBUTE_DIMLET)
                         .generatedItem("item/dimlets/empty_attribute_dimlet")
                         .shaped(builder -> builder
+                                        .define('E', EMPTY_DIMLET.get())
                                         .unlockedBy("empty_dimlet", has(EMPTY_DIMLET.get())),
                                 "ppp", "pEp", "ppp"),
                 Dob.itemBuilder(EMPTY_FEATURE_DIMLET)
                         .generatedItem("item/dimlets/empty_feature_dimlet")
                         .shaped(builder -> builder
+                                        .define('E', EMPTY_DIMLET.get())
                                         .unlockedBy("empty_dimlet", has(EMPTY_DIMLET.get())),
                                 "rcr", "cEc", "rcr"),
                 Dob.itemBuilder(EMPTY_STRUCTURE_DIMLET)
                         .generatedItem("item/dimlets/empty_structure_dimlet")
                         .shaped(builder -> builder
                                         .define('C', ItemTags.STONE_BRICKS)
+                                        .define('E', EMPTY_DIMLET.get())
                                         .unlockedBy("empty_dimlet", has(EMPTY_DIMLET.get())),
                                 "rCr", "CEC", "rCr"),
                 Dob.itemBuilder(EMPTY_BIOME_DIMLET)
                         .generatedItem("item/dimlets/empty_biome_dimlet")
                         .shaped(builder -> builder
                                         .define('C', Items.CLAY_BALL)
+                                        .define('E', EMPTY_DIMLET.get())
                                         .unlockedBy("empty_dimlet", has(EMPTY_DIMLET.get())),
                                 "rCr", "CEC", "rCr"),
                 Dob.itemBuilder(EMPTY_BIOME_CONTROLLER_DIMLET)
                         .generatedItem("item/dimlets/empty_biome_controller_dimlet")
                         .shaped(builder -> builder
+                                        .define('E', EMPTY_DIMLET.get())
                                         .unlockedBy("empty_dimlet", has(EMPTY_DIMLET.get())),
                                 "DDD", "DED", "DOD"),
                 Dob.itemBuilder(EMPTY_BIOME_CATEGORY_DIMLET)
                         .generatedItem("item/dimlets/empty_biome_category_dimlet")
                         .shaped(builder -> builder
                                         .define('C', ItemTags.SAPLINGS)
+                                        .define('E', EMPTY_DIMLET.get())
                                         .unlockedBy("empty_dimlet", has(EMPTY_DIMLET.get())),
                                 "rCr", "CEC", "rCr"),
                 Dob.itemBuilder(EMPTY_BLOCK_DIMLET)
                         .generatedItem("item/dimlets/empty_block_dimlet")
                         .shaped(builder -> builder
                                         .define('C', Items.CLAY_BALL)
+                                        .define('E', EMPTY_DIMLET.get())
                                         .unlockedBy("empty_dimlet", has(EMPTY_DIMLET.get())),
                                 "CCC", "CEC", "CCC"),
                 Dob.itemBuilder(EMPTY_FLUID_DIMLET)
                         .generatedItem("item/dimlets/empty_fluid_dimlet")
                         .shaped(builder -> builder
                                         .define('C', Items.CLAY_BALL)
+                                        .define('E', EMPTY_DIMLET.get())
                                         .unlockedBy("empty_dimlet", has(EMPTY_DIMLET.get())),
                                 "CWC", "CEC", "CCC"),
                 Dob.itemBuilder(EMPTY_TIME_DIMLET)
                         .generatedItem("item/dimlets/empty_time_dimlet")
                         .shaped(builder -> builder
                                         .define('C', Items.CLOCK)
+                                        .define('E', EMPTY_DIMLET.get())
                                         .unlockedBy("empty_dimlet", has(EMPTY_DIMLET.get())),
                                 "rCr", "CEC", "rCr"),
                 Dob.itemBuilder(EMPTY_TAG_DIMLET)
                         .generatedItem("item/dimlets/empty_tag_dimlet")
                         .shaped(builder -> builder
                                         .define('C', Items.PAPER)
+                                        .define('E', EMPTY_DIMLET.get())
                                         .unlockedBy("empty_dimlet", has(EMPTY_DIMLET.get())),
                                 "rCr", "CEC", "rCr"),
                 Dob.itemBuilder(EMPTY_SKY_DIMLET)
                         .generatedItem("item/dimlets/empty_sky_dimlet")
                         .shaped(builder -> builder
                                         .define('C', Items.BLUE_WOOL)
+                                        .define('E', EMPTY_DIMLET.get())
                                         .unlockedBy("empty_dimlet", has(EMPTY_DIMLET.get())),
                                 "rCr", "CEC", "rCr"),
                 Dob.itemBuilder(TERRAIN_DIMLET)
@@ -212,6 +274,7 @@ public class DimletModule implements IModule {
                 Dob.itemBuilder(DIGIT_DIMLET)
                         .generatedItem("item/dimlets/digit_dimlet")
                         .recipe(() -> DimletRecipeBuilder.shapedRecipe(DimletModule.DIGIT_DIMLET.get())
+                                .define('E', EMPTY_DIMLET.get())
                                 .define('C', Items.REDSTONE_TORCH)
                                 .patternLine(" C ")
                                 .patternLine("CEC")
@@ -233,12 +296,14 @@ public class DimletModule implements IModule {
                 Dob.itemBuilder(PART_ENERGY_0)
                         .generatedItem("item/parts/part_energy_0")
                         .shaped(builder -> builder
+                                        .define('s', VariousModule.DIMENSIONALSHARD.get())
                                         .define('g', Tags.Items.DUSTS_GLOWSTONE)
                                         .unlockedBy("shard", has(VariousModule.DIMENSIONALSHARD.get())),
                                 "rRr", "RsR", "rgr"),
                 Dob.itemBuilder(PART_ENERGY_1)
                         .generatedItem("item/parts/part_energy_1")
                         .shaped(builder -> builder
+                                        .define('s', VariousModule.DIMENSIONALSHARD.get())
                                         .define('u', COMMON_ESSENCE.get())
                                         .define('M', PART_ENERGY_0.get())
                                         .unlockedBy("energy0", has(PART_ENERGY_0.get())),
@@ -262,6 +327,7 @@ public class DimletModule implements IModule {
                 Dob.itemBuilder(PART_MEMORY_0)
                         .generatedItem("item/parts/part_memory_0")
                         .shaped(builder -> builder
+                                        .define('s', VariousModule.DIMENSIONALSHARD.get())
                                         .define('g', Tags.Items.DUSTS_GLOWSTONE)
                                         .define('l', Tags.Items.STORAGE_BLOCKS_LAPIS)
                                         .unlockedBy("shard", has(VariousModule.DIMENSIONALSHARD.get())),
@@ -269,6 +335,7 @@ public class DimletModule implements IModule {
                 Dob.itemBuilder(PART_MEMORY_1)
                         .generatedItem("item/parts/part_memory_1")
                         .shaped(builder -> builder
+                                        .define('s', VariousModule.DIMENSIONALSHARD.get())
                                         .define('u', COMMON_ESSENCE.get())
                                         .define('l', Tags.Items.STORAGE_BLOCKS_LAPIS)
                                         .define('M', PART_MEMORY_0.get())

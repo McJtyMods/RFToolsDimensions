@@ -86,6 +86,7 @@ public class DimensionBuilderModule implements IModule {
                         .standardLoot(TYPE_DIMENSION_BUILDER)
                         .blockState(p -> p.orientedBlock(DIMENSION_BUILDER.get(), p.frontBasedModel("dimension_builder", p.modLoc("block/dimensionbuilder"))))
                         .shaped(builder -> builder
+                                        .define('F', mcjty.rftoolsbase.modules.various.VariousModule.MACHINE_FRAME.get())
                                         .define('g', Items.GOLD_INGOT)
                                         .unlockedBy("frame", has(VariousModule.MACHINE_FRAME.get())),
                                 "oeo", "dFd", "ggg"),
@@ -115,6 +116,7 @@ public class DimensionBuilderModule implements IModule {
                         })
                         .shaped(builder -> builder
                                         .define('C', Blocks.COMPARATOR)
+                                        .define('s', mcjty.rftoolsbase.modules.various.VariousModule.DIMENSIONALSHARD.get())
                                         .unlockedBy("redstone", has(Items.REDSTONE)),
                                 " s ", "rCr", " s "),
                 Dob.itemBuilder(PHASED_FIELD_GENERATOR)
@@ -136,6 +138,7 @@ public class DimensionBuilderModule implements IModule {
                         })
                         .shaped(builder -> builder
                                         .define('C', Items.ENDER_EYE)
+                                        .define('s', mcjty.rftoolsbase.modules.various.VariousModule.DIMENSIONALSHARD.get())
                                         .unlockedBy("redstone", has(Items.REDSTONE)),
                                 "rsr", "sCs", "rsr")
         );

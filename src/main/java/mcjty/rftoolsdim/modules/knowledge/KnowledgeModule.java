@@ -6,7 +6,6 @@ import mcjty.lib.modules.IModule;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletRarity;
 import mcjty.rftoolsdim.modules.knowledge.data.KnowledgeManager;
 import mcjty.rftoolsdim.modules.knowledge.items.LostKnowledgeItem;
-import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;

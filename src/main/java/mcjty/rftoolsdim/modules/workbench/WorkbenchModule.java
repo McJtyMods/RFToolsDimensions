@@ -82,33 +82,37 @@ public class WorkbenchModule implements IModule {
         dataGen.add(
                 Dob.blockBuilder(WORKBENCH)
                         .ironPickaxeTags()
-                        .generatedItem("block/dimlet_workbench")
+                        .parentedItem("block/dimlet_workbench")
                         .standardLoot(TYPE_WORKBENCH)
                         .blockState(p -> p.orientedBlock(WORKBENCH.get(), p.topBasedModel("dimlet_workbench", p.modLoc("block/dimletworkbenchtop"))))
                         .shaped(builder -> builder
+                                        .define('F', mcjty.rftoolsbase.modules.various.VariousModule.MACHINE_FRAME.get())
                                         .define('C', Blocks.CRAFTING_TABLE)
                                         .define('u', DimletModule.EMPTY_DIMLET.get())
                                         .unlockedBy("frame", has(VariousModule.MACHINE_FRAME.get())),
                                 "rur", "CFC", "rur"),
                 Dob.blockBuilder(HOLDER)
                         .ironPickaxeTags()
-                        .generatedItem("block/knowledge_holder")
+                        .parentedItem("block/knowledge_holder")
                         .standardLoot(TYPE_HOLDER)
                         .blockState(p -> p.orientedBlock(HOLDER.get(), p.frontBasedModel("knowledge_holder", p.modLoc("block/knowledge_holder"))))
                         .shaped(builder -> builder
+                                        .define('F', mcjty.rftoolsbase.modules.various.VariousModule.MACHINE_FRAME.get())
+                                        .define('s', mcjty.rftoolsbase.modules.various.VariousModule.DIMENSIONALSHARD.get())
                                         .define('C', Blocks.CHEST)
                                         .define('u', DimletModule.EMPTY_DIMLET.get())
                                         .unlockedBy("frame", has(VariousModule.MACHINE_FRAME.get())),
                                 "sus", "CFC", "sus"),
                 Dob.blockBuilder(RESEARCHER)
                         .ironPickaxeTags()
-                        .generatedItem("block/researcher")
+                        .parentedItem("block/researcher")
                         .standardLoot(TYPE_RESEARCHER)
                         .blockState(p -> p.simpleBlock(WorkbenchModule.RESEARCHER.get(), p.models().slab("researcher",
                                 p.modLoc("block/researcher_side"),
                                 new ResourceLocation("rftoolsbase", "block/base/machinebottom"),
                                 new ResourceLocation("rftoolsbase", "block/base/machinetop"))))
                         .shaped(builder -> builder
+                                        .define('F', mcjty.rftoolsbase.modules.various.VariousModule.MACHINE_FRAME.get())
                                         .define('C', Blocks.ENCHANTING_TABLE)
                                         .define('X', Blocks.COMPARATOR)
                                         .define('u', DimletModule.EMPTY_DIMLET.get())

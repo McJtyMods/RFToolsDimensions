@@ -1,22 +1,22 @@
 {
   "values": [
-    "rftoolsdim:dimensional_blank_block",
-    "rftoolsdim:dimensional_block",
-    "rftoolsdim:dimensional_cross2_block",
-    "rftoolsdim:dimensional_cross_block",
-    "rftoolsdim:dimensional_pattern1_block",
-    "rftoolsdim:dimensional_pattern2_block",
-    "rftoolsdim:dimensional_small_blocks",
+    "rftoolsdim:activity_probe",
     "rftoolsdim:dimension_builder",
     "rftoolsdim:dimension_editor",
     "rftoolsdim:enscriber",
-    "rftoolsdim:biome_absorber",
-    "rftoolsdim:block_absorber",
-    "rftoolsdim:fluid_absorber",
-    "rftoolsdim:structure_absorber",
     "rftoolsdim:dimlet_workbench",
     "rftoolsdim:knowledge_holder",
     "rftoolsdim:researcher",
-    "rftoolsdim:activity_probe"
+    "rftoolsdim:block_absorber",
+    "rftoolsdim:fluid_absorber",
+    "rftoolsdim:biome_absorber",
+    "rftoolsdim:structure_absorber",
+    "rftoolsdim:dimensional_block",
+    "rftoolsdim:dimensional_blank_block",
+    "rftoolsdim:dimensional_cross_block",
+    "rftoolsdim:dimensional_cross2_block",
+    "rftoolsdim:dimensional_pattern1_block",
+    "rftoolsdim:dimensional_pattern2_block",
+    "rftoolsdim:dimensional_small_blocks"
   ]
 }
