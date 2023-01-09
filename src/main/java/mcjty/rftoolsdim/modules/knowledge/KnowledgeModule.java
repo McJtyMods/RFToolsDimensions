@@ -1,15 +1,19 @@
 package mcjty.rftoolsdim.modules.knowledge;
 
+import mcjty.lib.datagen.DataGen;
+import mcjty.lib.datagen.Dob;
 import mcjty.lib.modules.IModule;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletRarity;
 import mcjty.rftoolsdim.modules.knowledge.data.KnowledgeManager;
 import mcjty.rftoolsdim.modules.knowledge.items.LostKnowledgeItem;
+import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.registries.RegistryObject;
 
+import static mcjty.lib.datagen.DataGen.has;
 import static mcjty.rftoolsdim.setup.Registration.ITEMS;
 
 public class KnowledgeModule implements IModule {
@@ -39,5 +43,31 @@ public class KnowledgeModule implements IModule {
     @Override
     public void initConfig() {
 
+    }
+
+    @Override
+    public void initDatagen(DataGen dataGen) {
+        dataGen.add(
+                Dob.itemBuilder(COMMON_LOST_KNOWLEDGE)
+                        .generatedItem("item/common_lost_knowledge"),
+                Dob.itemBuilder(UNCOMMON_LOST_KNOWLEDGE)
+                        .generatedItem("item/uncommon_lost_knowledge")
+                        .shaped(builder -> builder
+                                        .define('u', COMMON_LOST_KNOWLEDGE.get())
+                                        .unlockedBy("knowledge", has(COMMON_LOST_KNOWLEDGE.get())),
+                                "uuu", "uuu", "uuu"),
+                Dob.itemBuilder(RARE_LOST_KNOWLEDGE)
+                        .generatedItem("item/rare_lost_knowledge")
+                        .shaped(builder -> builder
+                                        .define('u', UNCOMMON_LOST_KNOWLEDGE.get())
+                                        .unlockedBy("knowledge", has(COMMON_LOST_KNOWLEDGE.get())),
+                                "uuu", "uuu", "uuu"),
+                Dob.itemBuilder(LEGENDARY_LOST_KNOWLEDGE)
+                        .generatedItem("item/legendary_lost_knowledge")
+                        .shaped(builder -> builder
+                                        .define('u', RARE_LOST_KNOWLEDGE.get())
+                                        .unlockedBy("knowledge", has(COMMON_LOST_KNOWLEDGE.get())),
+                                "uuu", "uuu", "uuu")
+        );
     }
 }

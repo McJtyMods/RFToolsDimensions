@@ -2,11 +2,9 @@ package mcjty.rftoolsdim.datagen;
 
 import mcjty.lib.datagen.BaseLootTableProvider;
 import mcjty.rftoolsdim.dimension.DimensionRegistry;
-import mcjty.rftoolsdim.modules.blob.BlobModule;
 import mcjty.rftoolsdim.modules.decorative.DecorativeModule;
 import mcjty.rftoolsdim.modules.dimensionbuilder.DimensionBuilderModule;
 import mcjty.rftoolsdim.modules.dimensioneditor.DimensionEditorModule;
-import mcjty.rftoolsdim.modules.dimlets.DimletModule;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletRarity;
 import mcjty.rftoolsdim.modules.dimlets.lootmodifier.DimletLootEntry;
 import mcjty.rftoolsdim.modules.enscriber.EnscriberModule;
@@ -31,31 +29,6 @@ public class LootTables extends BaseLootTableProvider {
 
     @Override
     protected void addTables() {
-        addStandardTable(DimensionBuilderModule.DIMENSION_BUILDER.get(), DimensionBuilderModule.TYPE_DIMENSION_BUILDER.get());
-        addStandardTable(DimensionEditorModule.DIMENSION_EDITOR.get(), DimensionEditorModule.TYPE_DIMENSION_EDITOR.get());
-        addStandardTable(WorkbenchModule.WORKBENCH.get(), WorkbenchModule.TYPE_WORKBENCH.get());
-        addStandardTable(WorkbenchModule.HOLDER.get(), WorkbenchModule.TYPE_HOLDER.get());
-        addStandardTable(WorkbenchModule.RESEARCHER.get(), WorkbenchModule.TYPE_RESEARCHER.get());
-        addStandardTable(EnscriberModule.ENSCRIBER.get(), EnscriberModule.TYPE_ENSCRIBER.get());
-        addStandardTable(EssencesModule.BLOCK_ABSORBER.get(), EssencesModule.TYPE_BLOCK_ABSORBER.get());
-        addStandardTable(EssencesModule.FLUID_ABSORBER.get(), EssencesModule.TYPE_FLUID_ABSORBER.get());
-        addStandardTable(EssencesModule.BIOME_ABSORBER.get(), EssencesModule.TYPE_BIOME_ABSORBER.get());
-        addStandardTable(EssencesModule.STRUCTURE_ABSORBER.get(), EssencesModule.TYPE_STRUCTURE_ABSORBER.get());
-
-        addSimpleTable(DecorativeModule.DIMENSIONAL_SMALL_BLOCK.get());
-        addSimpleTable(DecorativeModule.DIMENSIONAL_BLANK.get());
-        addSimpleTable(DecorativeModule.DIMENSIONAL_BLOCK.get());
-        addSimpleTable(DecorativeModule.DIMENSIONAL_PATTERN1_BLOCK.get());
-        addSimpleTable(DecorativeModule.DIMENSIONAL_PATTERN2_BLOCK.get());
-        addSimpleTable(DecorativeModule.DIMENSIONAL_CROSS_BLOCK.get());
-        addSimpleTable(DecorativeModule.DIMENSIONAL_CROSS2_BLOCK.get());
-
-        addSimpleTable(VariousModule.ACTIVITY_PROBE.get());
-
-        addItemDropTable(BlobModule.DIMENSIONAL_BLOB_COMMON.get(), DimletModule.COMMON_ESSENCE.get(), 3, 5, 0, 1);
-        addItemDropTable(BlobModule.DIMENSIONAL_BLOB_RARE.get(), DimletModule.RARE_ESSENCE.get(), 3, 5, 0, 1);
-        addItemDropTable(BlobModule.DIMENSIONAL_BLOB_LEGENDARY.get(), DimletModule.LEGENDARY_ESSENCE.get(), 4, 6, 0, 1);
-
         LootPool.Builder builder = LootPool.lootPool()
                 .name(DimensionRegistry.HUT_LOOT.getPath())
                 .setRolls(UniformGenerator.between(1, 5))

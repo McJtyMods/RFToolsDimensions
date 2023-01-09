@@ -1,9 +1,12 @@
 package mcjty.rftoolsdim.modules.blob;
 
+import mcjty.lib.datagen.DataGen;
+import mcjty.lib.datagen.Dob;
 import mcjty.lib.modules.IModule;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.modules.blob.client.DimensionalBlobRender;
 import mcjty.rftoolsdim.modules.blob.entities.DimensionalBlobEntity;
+import mcjty.rftoolsdim.modules.dimlets.DimletModule;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletRarity;
 import mcjty.rftoolsdim.setup.Config;
 import net.minecraft.world.entity.EntityType;
@@ -70,5 +73,17 @@ public class BlobModule implements IModule {
     @Override
     public void initConfig() {
         BlobConfig.init(Config.SERVER_BUILDER, Config.COMMON_BUILDER, Config.CLIENT_BUILDER);
+    }
+
+    @Override
+    public void initDatagen(DataGen dataGen) {
+        dataGen.add(
+                Dob.entityBuilder(DIMENSIONAL_BLOB_COMMON)
+                        .loot(p -> p.addItemDropTable(DIMENSIONAL_BLOB_COMMON.get(), DimletModule.COMMON_ESSENCE.get(), 3, 5, 0, 1)),
+                Dob.entityBuilder(DIMENSIONAL_BLOB_RARE)
+                        .loot(p -> p.addItemDropTable(DIMENSIONAL_BLOB_RARE.get(), DimletModule.RARE_ESSENCE.get(), 3, 5, 0, 1)),
+                Dob.entityBuilder(DIMENSIONAL_BLOB_LEGENDARY)
+                        .loot(p -> p.addItemDropTable(DIMENSIONAL_BLOB_LEGENDARY.get(), DimletModule.LEGENDARY_ESSENCE.get(), 4, 6, 0, 1))
+        );
     }
 }

@@ -1,5 +1,6 @@
 package mcjty.rftoolsdim;
 
+import mcjty.lib.datagen.DataGen;
 import mcjty.lib.modules.Modules;
 import mcjty.rftoolsbase.api.dimension.IDimensionManager;
 import mcjty.rftoolsdim.apiimpl.DimensionManager;
@@ -21,6 +22,7 @@ import mcjty.rftoolsdim.setup.ModSetup;
 import mcjty.rftoolsdim.setup.Registration;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
@@ -47,19 +49,20 @@ public class RFToolsDim {
 
         Registration.register();
 
-        IEventBus modbus = FMLJavaModLoadingContext.get().getModEventBus();
-        modbus.addListener(setup::init);
-        modbus.addListener(modules::init);
-        modbus.addListener(this::processIMC);
+        IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
+        bus.addListener(setup::init);
+        bus.addListener(modules::init);
+        bus.addListener(this::processIMC);
+        bus.addListener(this::onDataGen);
         MinecraftForge.EVENT_BUS.addListener(this::onJoinWorld);
 
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
             MinecraftForge.EVENT_BUS.addListener(ClientSetup::onPlayerLogin);
             MinecraftForge.EVENT_BUS.addListener(ClientSetup::onDimensionChange);
             MinecraftForge.EVENT_BUS.addListener(OverlayRenderer::render);
-            modbus.addListener(ClientSetup::init);
-            modbus.addListener(modules::initClient);
-            modbus.addListener(WorkbenchModule::onTextureStitch);
+            bus.addListener(ClientSetup::init);
+            bus.addListener(modules::initClient);
+            bus.addListener(WorkbenchModule::onTextureStitch);
 //            FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientEventHandlers::onClientTick);
         });
     }
@@ -73,6 +76,11 @@ public class RFToolsDim {
         });
     }
 
+    private void onDataGen(GatherDataEvent event) {
+        DataGen datagen = new DataGen(MODID, event);
+        modules.datagen(datagen);
+        datagen.generate();
+    }
 
     private void setupModules() {
         modules.register(new VariousModule());

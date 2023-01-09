@@ -1,9 +1,12 @@
 package mcjty.rftoolsdim.modules.various;
 
 import mcjty.lib.builder.BlockBuilder;
+import mcjty.lib.datagen.DataGen;
+import mcjty.lib.datagen.Dob;
 import mcjty.lib.modules.IModule;
 import mcjty.rftoolsdim.modules.various.blocks.ActivityProbeBlock;
 import mcjty.rftoolsdim.setup.Registration;
+import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -11,8 +14,10 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.registries.RegistryObject;
 
+import static mcjty.lib.datagen.DataGen.has;
 import static mcjty.rftoolsdim.setup.Registration.BLOCKS;
 import static mcjty.rftoolsdim.setup.Registration.ITEMS;
+import static net.minecraftforge.client.model.generators.ModelProvider.BLOCK_FOLDER;
 
 public class VariousModule implements IModule {
 
@@ -30,5 +35,20 @@ public class VariousModule implements IModule {
 
     @Override
     public void initConfig() {
+    }
+
+    @Override
+    public void initDatagen(DataGen dataGen) {
+        dataGen.add(
+                Dob.blockBuilder(ACTIVITY_PROBE)
+                        .ironPickaxeTags()
+                        .parentedItem("block/activity_probe")
+                        .simpleLoot()
+                        .blockState(p -> p.singleTextureBlock(ACTIVITY_PROBE.get(), BLOCK_FOLDER + "/activity_probe", "block/activity_probe"))
+                        .shaped(builder -> builder
+                                        .define('C', mcjty.rftoolsbase.modules.various.VariousModule.INFUSED_ENDERPEARL.get())
+                                        .unlockedBy("shard", has(mcjty.rftoolsbase.modules.various.VariousModule.DIMENSIONALSHARD.get())),
+                                "sCs", "CFC", "sCs")
+        );
     }
 }
