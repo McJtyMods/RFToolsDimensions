@@ -22,12 +22,13 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 
 import static mcjty.lib.datagen.DataGen.has;
+import static mcjty.rftoolsdim.RFToolsDim.tab;
 import static mcjty.rftoolsdim.setup.Registration.*;
 
 public class DimensionEditorModule implements IModule {
 
     public static final RegistryObject<BaseBlock> DIMENSION_EDITOR = BLOCKS.register("dimension_editor", DimensionEditorTileEntity::createBlock);
-    public static final RegistryObject<Item> DIMENSION_EDITOR_ITEM = ITEMS.register("dimension_editor", () -> new BlockItem(DIMENSION_EDITOR.get(), Registration.createStandardProperties()));
+    public static final RegistryObject<Item> DIMENSION_EDITOR_ITEM = ITEMS.register("dimension_editor", tab(() -> new BlockItem(DIMENSION_EDITOR.get(), Registration.createStandardProperties())));
     public static final RegistryObject<BlockEntityType<DimensionEditorTileEntity>> TYPE_DIMENSION_EDITOR = TILES.register("dimension_editor", () -> BlockEntityType.Builder.of(DimensionEditorTileEntity::new, DIMENSION_EDITOR.get()).build(null));
     public static final RegistryObject<MenuType<GenericContainer>> CONTAINER_DIMENSION_EDITOR = CONTAINERS.register("dimension_editor", GenericContainer::createContainerType);
 

@@ -1,5 +1,6 @@
 package mcjty.rftoolsdim.modules.knowledge.data;
 
+import mcjty.lib.varia.TagTools;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
@@ -50,11 +51,11 @@ public class CommonTags {
             commonTags.add(Tags.Blocks.ORES_QUARTZ);
             commonTags.add(Tags.Blocks.ORES_IRON);
             commonTags.add(Tags.Blocks.ORES_LAPIS);
-            commonTags.add(TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation("forge", "ores/copper")));
-            commonTags.add(TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation("forge", "ores/tin")));
-            commonTags.add(TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation("forge", "ores/silver")));
-            commonTags.add(TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation("forge", "ores/manganese")));
-            commonTags.add(TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation("forge", "ores/platinum")));
+            commonTags.add(TagTools.createBlockTagKey(new ResourceLocation("forge", "ores/copper")));
+            commonTags.add(TagTools.createBlockTagKey(new ResourceLocation("forge", "ores/tin")));
+            commonTags.add(TagTools.createBlockTagKey(new ResourceLocation("forge", "ores/silver")));
+            commonTags.add(TagTools.createBlockTagKey(new ResourceLocation("forge", "ores/manganese")));
+            commonTags.add(TagTools.createBlockTagKey(new ResourceLocation("forge", "ores/platinum")));
 
             commonTags.add(Tags.Blocks.STORAGE_BLOCKS_COAL);
             commonTags.add(Tags.Blocks.STORAGE_BLOCKS_DIAMOND);
@@ -64,11 +65,11 @@ public class CommonTags {
             commonTags.add(Tags.Blocks.STORAGE_BLOCKS_QUARTZ);
             commonTags.add(Tags.Blocks.STORAGE_BLOCKS_IRON);
             commonTags.add(Tags.Blocks.STORAGE_BLOCKS_LAPIS);
-            commonTags.add(TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation("forge", "storage_blocks/copper")));
-            commonTags.add(TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation("forge", "storage_blocks/tin")));
-            commonTags.add(TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation("forge", "storage_blocks/silver")));
-            commonTags.add(TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation("forge", "storage_blocks/manganese")));
-            commonTags.add(TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation("forge", "storage_blocks/platinum")));
+            commonTags.add(TagTools.createBlockTagKey(new ResourceLocation("forge", "storage_blocks/copper")));
+            commonTags.add(TagTools.createBlockTagKey(new ResourceLocation("forge", "storage_blocks/tin")));
+            commonTags.add(TagTools.createBlockTagKey(new ResourceLocation("forge", "storage_blocks/silver")));
+            commonTags.add(TagTools.createBlockTagKey(new ResourceLocation("forge", "storage_blocks/manganese")));
+            commonTags.add(TagTools.createBlockTagKey(new ResourceLocation("forge", "storage_blocks/platinum")));
         }
     }
 

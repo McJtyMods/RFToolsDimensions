@@ -14,7 +14,7 @@ import net.minecraft.advancements.CriterionTriggerInstance;
 import net.minecraft.advancements.RequirementsStrategy;
 import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
@@ -105,12 +105,12 @@ public class DimletRecipeBuilder implements IRecipeBuilder<DimletRecipeBuilder> 
 
     @Override
     public void build(Consumer<FinishedRecipe> consumerIn) {
-        this.build(consumerIn, Registry.ITEM.getKey(this.result));
+        this.build(consumerIn, BuiltInRegistries.ITEM.getKey(this.result));
     }
 
     @Override
     public void build(Consumer<FinishedRecipe> consumerIn, String save) {
-        ResourceLocation resourcelocation = Registry.ITEM.getKey(this.result);
+        ResourceLocation resourcelocation = BuiltInRegistries.ITEM.getKey(this.result);
         if ((new ResourceLocation(save)).equals(resourcelocation)) {
             throw new IllegalStateException("Shaped Recipe " + save + " should remove its 'save' argument");
         } else {
@@ -123,8 +123,9 @@ public class DimletRecipeBuilder implements IRecipeBuilder<DimletRecipeBuilder> 
         this.validate(id);
         this.advancementBuilder.parent(new ResourceLocation("recipes/root")).addCriterion("has_the_recipe",
                 new RecipeUnlockedTrigger.TriggerInstance(EntityPredicate.Composite.ANY /* @todo 1.16, is this right? */, id)).rewards(AdvancementRewards.Builder.recipe(id)).requirements(RequirementsStrategy.OR);
+        String folder = ""; // @todo 1.19.3 this.result.getItemCategory().getRecipeFolderName()
         consumerIn.accept(new Result(id, this.result, this.count, this.group == null ? "" : this.group, this.pattern, this.key, this.advancementBuilder,
-                new ResourceLocation(id.getNamespace(), "recipes/" + this.result.getItemCategory().getRecipeFolderName() + "/" + id.getPath()), dimletKey));
+                new ResourceLocation(id.getNamespace(), "recipes/" + folder + "/" + id.getPath()), dimletKey));
     }
 
     private void validate(ResourceLocation id) {
@@ -200,7 +201,7 @@ public class DimletRecipeBuilder implements IRecipeBuilder<DimletRecipeBuilder> 
 
             json.add("key", jsonobject);
             JsonObject jsonobject1 = new JsonObject();
-            jsonobject1.addProperty("item", Registry.ITEM.getKey(this.result).toString());
+            jsonobject1.addProperty("item", BuiltInRegistries.ITEM.getKey(this.result).toString());
             if (this.count > 1) {
                 jsonobject1.addProperty("count", this.count);
             }

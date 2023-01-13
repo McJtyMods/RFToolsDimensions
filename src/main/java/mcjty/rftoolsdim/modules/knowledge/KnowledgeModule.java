@@ -13,14 +13,15 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.registries.RegistryObject;
 
 import static mcjty.lib.datagen.DataGen.has;
+import static mcjty.rftoolsdim.RFToolsDim.tab;
 import static mcjty.rftoolsdim.setup.Registration.ITEMS;
 
 public class KnowledgeModule implements IModule {
 
-    public static final RegistryObject<LostKnowledgeItem> COMMON_LOST_KNOWLEDGE = ITEMS.register("common_lost_knowledge", () -> new LostKnowledgeItem(DimletRarity.COMMON));
-    public static final RegistryObject<LostKnowledgeItem> UNCOMMON_LOST_KNOWLEDGE = ITEMS.register("uncommon_lost_knowledge", () -> new LostKnowledgeItem(DimletRarity.UNCOMMON));
-    public static final RegistryObject<LostKnowledgeItem> RARE_LOST_KNOWLEDGE = ITEMS.register("rare_lost_knowledge", () -> new LostKnowledgeItem(DimletRarity.RARE));
-    public static final RegistryObject<LostKnowledgeItem> LEGENDARY_LOST_KNOWLEDGE = ITEMS.register("legendary_lost_knowledge", () -> new LostKnowledgeItem(DimletRarity.LEGENDARY));
+    public static final RegistryObject<LostKnowledgeItem> COMMON_LOST_KNOWLEDGE = ITEMS.register("common_lost_knowledge", tab(() -> new LostKnowledgeItem(DimletRarity.COMMON)));
+    public static final RegistryObject<LostKnowledgeItem> UNCOMMON_LOST_KNOWLEDGE = ITEMS.register("uncommon_lost_knowledge", tab(() -> new LostKnowledgeItem(DimletRarity.UNCOMMON)));
+    public static final RegistryObject<LostKnowledgeItem> RARE_LOST_KNOWLEDGE = ITEMS.register("rare_lost_knowledge", tab(() -> new LostKnowledgeItem(DimletRarity.RARE)));
+    public static final RegistryObject<LostKnowledgeItem> LEGENDARY_LOST_KNOWLEDGE = ITEMS.register("legendary_lost_knowledge", tab(() -> new LostKnowledgeItem(DimletRarity.LEGENDARY)));
 
     public KnowledgeModule() {
         MinecraftForge.EVENT_BUS.addListener(this::onWorldLoad);

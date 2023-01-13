@@ -2,6 +2,7 @@ package mcjty.rftoolsdim;
 
 import mcjty.lib.datagen.DataGen;
 import mcjty.lib.modules.Modules;
+import mcjty.lib.varia.ClientTools;
 import mcjty.rftoolsbase.api.dimension.IDimensionManager;
 import mcjty.rftoolsdim.apiimpl.DimensionManager;
 import mcjty.rftoolsdim.dimension.client.OverlayRenderer;
@@ -20,6 +21,7 @@ import mcjty.rftoolsdim.setup.ClientSetup;
 import mcjty.rftoolsdim.setup.Config;
 import mcjty.rftoolsdim.setup.ModSetup;
 import mcjty.rftoolsdim.setup.Registration;
+import net.minecraft.world.item.Item;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.data.event.GatherDataEvent;
@@ -62,7 +64,7 @@ public class RFToolsDim {
             MinecraftForge.EVENT_BUS.addListener(OverlayRenderer::render);
             bus.addListener(ClientSetup::init);
             bus.addListener(modules::initClient);
-            bus.addListener(WorkbenchModule::onTextureStitch);
+            ClientTools.onTextureStitch(bus, WorkbenchModule::onTextureStitch);
 //            FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientEventHandlers::onClientTick);
         });
     }
@@ -74,6 +76,11 @@ public class RFToolsDim {
                 supplier.get().apply(new DimensionManager());
             }
         });
+    }
+
+    public static <T extends Item> Supplier<T> tab(Supplier<T> supplier) {
+        instance.setup.tab(supplier);
+        return supplier;
     }
 
     private void onDataGen(GatherDataEvent event) {

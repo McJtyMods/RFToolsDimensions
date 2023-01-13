@@ -6,6 +6,7 @@ import mcjty.rftoolsdim.modules.dimlets.data.DimletKey;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletTools;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.ShapedRecipe;
 
@@ -18,6 +19,11 @@ public class DimletRecipe extends AbstractRecipeAdaptor {
     public DimletRecipe(ShapedRecipe recipe, DimletKey key) {
         super(recipe);
         this.key = key;
+    }
+
+    @Override
+    public CraftingBookCategory category() {
+        return CraftingBookCategory.MISC;
     }
 
     public DimletKey getKey() {

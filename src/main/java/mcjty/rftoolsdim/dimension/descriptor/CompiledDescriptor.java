@@ -16,6 +16,7 @@ import mcjty.rftoolsdim.modules.dimlets.data.DimletKey;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletSettings;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.biome.Biome;
@@ -155,7 +156,7 @@ public class CompiledDescriptor {
                 }
                 break;
             case BIOME_CATEGORY:
-                biomeCategories.add(TagKey.create(Registry.BIOME_REGISTRY, new ResourceLocation(name)));
+                biomeCategories.add(TagKey.create(Registries.BIOME, new ResourceLocation(name)));
                 break;
             case BIOME:
                 biomes.add(new ResourceLocation(name));

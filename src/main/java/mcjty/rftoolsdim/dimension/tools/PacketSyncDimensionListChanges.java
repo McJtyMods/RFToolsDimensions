@@ -3,7 +3,7 @@ package mcjty.rftoolsdim.dimension.tools;
 import mcjty.rftoolsdim.setup.RFToolsDimMessages;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -43,13 +43,13 @@ public class PacketSyncDimensionListChanges {
         final int newDimensionCount = buf.readVarInt();
         for (int i = 0; i < newDimensionCount; i++) {
             final ResourceLocation worldID = buf.readResourceLocation();
-            newDimensions.add(ResourceKey.create(Registry.DIMENSION_REGISTRY, worldID));
+            newDimensions.add(ResourceKey.create(Registries.DIMENSION, worldID));
         }
 
         final int removedDimensionCount = buf.readVarInt();
         for (int i = 0; i < removedDimensionCount; i++) {
             final ResourceLocation worldID = buf.readResourceLocation();
-            removedDimensions.add(ResourceKey.create(Registry.DIMENSION_REGISTRY, worldID));
+            removedDimensions.add(ResourceKey.create(Registries.DIMENSION, worldID));
         }
     }
 

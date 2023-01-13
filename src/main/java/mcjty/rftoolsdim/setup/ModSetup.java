@@ -2,6 +2,7 @@ package mcjty.rftoolsdim.setup;
 
 import mcjty.lib.compat.MainCompatHandler;
 import mcjty.lib.setup.DefaultModSetup;
+import mcjty.rftoolsbase.RFToolsBase;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.commands.ModCommands;
 import mcjty.rftoolsdim.compat.LostCityCompat;
@@ -13,6 +14,7 @@ import mcjty.rftoolsdim.dimension.noisesettings.TerrainPresets;
 import mcjty.rftoolsdim.dimension.terraintypes.RFToolsChunkGenerator;
 import mcjty.rftoolsdim.modules.dimlets.DimletModule;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
@@ -26,7 +28,7 @@ import static mcjty.rftoolsdim.dimension.DimensionRegistry.RFTOOLS_CHUNKGEN_ID;
 public class ModSetup extends DefaultModSetup {
 
     public ModSetup() {
-        createTab("rftoolsdim", () -> new ItemStack(DimletModule.EMPTY_DIMLET.get()));
+        createTab(RFToolsDim.MODID, "rftoolsdim", () -> new ItemStack(DimletModule.EMPTY_DIMLET.get()));
     }
 
     @Override
@@ -42,8 +44,8 @@ public class ModSetup extends DefaultModSetup {
         MinecraftForge.EVENT_BUS.register(new ForgeEventHandlers());
 
         e.enqueueWork(() -> {
-            Registry.register(Registry.CHUNK_GENERATOR, RFTOOLS_CHUNKGEN_ID, RFToolsChunkGenerator.CODEC);
-            Registry.register(Registry.BIOME_SOURCE, DimensionRegistry.RFTOOLS_BIOMES_ID, RFTBiomeProvider.CODEC);
+            Registry.register(BuiltInRegistries.CHUNK_GENERATOR, RFTOOLS_CHUNKGEN_ID, RFToolsChunkGenerator.CODEC);
+            Registry.register(BuiltInRegistries.BIOME_SOURCE, DimensionRegistry.RFTOOLS_BIOMES_ID, RFTBiomeProvider.CODEC);
         });
     }
 

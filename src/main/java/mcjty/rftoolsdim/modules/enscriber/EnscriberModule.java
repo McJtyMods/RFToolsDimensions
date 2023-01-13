@@ -23,12 +23,13 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 
 import static mcjty.lib.datagen.DataGen.has;
+import static mcjty.rftoolsdim.RFToolsDim.tab;
 import static mcjty.rftoolsdim.setup.Registration.*;
 
 public class EnscriberModule implements IModule {
 
     public static final RegistryObject<BaseBlock> ENSCRIBER = BLOCKS.register("enscriber", EnscriberTileEntity::createBlock);
-    public static final RegistryObject<Item> ENSCRIBER_ITEM = ITEMS.register("enscriber", () -> new BlockItem(ENSCRIBER.get(), Registration.createStandardProperties()));
+    public static final RegistryObject<Item> ENSCRIBER_ITEM = ITEMS.register("enscriber", tab(() -> new BlockItem(ENSCRIBER.get(), Registration.createStandardProperties())));
     public static final RegistryObject<BlockEntityType<EnscriberTileEntity>> TYPE_ENSCRIBER = TILES.register("enscriber", () -> BlockEntityType.Builder.of(EnscriberTileEntity::new, ENSCRIBER.get()).build(null));
     public static final RegistryObject<MenuType<GenericContainer>> CONTAINER_ENSCRIBER = CONTAINERS.register("enscriber", GenericContainer::createContainerType);
 

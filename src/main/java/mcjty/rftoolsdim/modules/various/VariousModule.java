@@ -13,6 +13,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.registries.RegistryObject;
 
 import static mcjty.lib.datagen.DataGen.has;
+import static mcjty.rftoolsdim.RFToolsDim.tab;
 import static mcjty.rftoolsdim.setup.Registration.BLOCKS;
 import static mcjty.rftoolsdim.setup.Registration.ITEMS;
 import static net.minecraftforge.client.model.generators.ModelProvider.BLOCK_FOLDER;
@@ -20,7 +21,7 @@ import static net.minecraftforge.client.model.generators.ModelProvider.BLOCK_FOL
 public class VariousModule implements IModule {
 
     public static final RegistryObject<ActivityProbeBlock> ACTIVITY_PROBE = BLOCKS.register("activity_probe", () -> new ActivityProbeBlock(BlockBuilder.STANDARD_IRON));
-    public static final RegistryObject<Item> ACTIVITY_PROBE_ITEM = ITEMS.register("activity_probe", () -> new BlockItem(ACTIVITY_PROBE.get(), Registration.createStandardProperties()));
+    public static final RegistryObject<Item> ACTIVITY_PROBE_ITEM = ITEMS.register("activity_probe", tab(() -> new BlockItem(ACTIVITY_PROBE.get(), Registration.createStandardProperties())));
 
     @Override
     public void init(FMLCommonSetupEvent event) {

@@ -22,7 +22,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
-import net.minecraft.data.BuiltinRegistries;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
@@ -203,18 +204,16 @@ public class DimensionCreator {
         if (terrainType == TerrainType.CAVERN) {
             dimensionType = DimensionRegistry.CAVERN_ID;
         }
-        Holder<DimensionType> type = registryAccess.registryOrThrow(Registry.DIMENSION_TYPE_REGISTRY).getHolderOrThrow(ResourceKey.create(Registry.DIMENSION_TYPE_REGISTRY, dimensionType));
+        Holder<DimensionType> type = registryAccess.registryOrThrow(Registries.DIMENSION_TYPE).getHolderOrThrow(ResourceKey.create(Registries.DIMENSION_TYPE, dimensionType));
         ServerLevel result = DynamicDimensionManager.getOrCreateLevel(world.getServer(), key,
                 (server, registryKey) -> {
-                    var noiseGeneratorSettings = registryAccess.registryOrThrow(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY);
+                    var noiseGeneratorSettings = registryAccess.registryOrThrow(Registries.NOISE_SETTINGS);
                     var noiseSettingsIn = noiseGeneratorSettings.getOrThrow(terrainType.getNoiseSettings());
                     var noiseSettings = adapt(noiseSettingsIn, settings);
 
                     ChunkGenerator generator = new RFToolsChunkGenerator(
-                            registryAccess.registryOrThrow(Registry.STRUCTURE_SET_REGISTRY),
-                            registryAccess.registryOrThrow(Registry.NOISE_REGISTRY),
-                            getStructures(settings),
-                            new RFTBiomeProvider(registryAccess.registryOrThrow(Registry.BIOME_REGISTRY), settings),
+                            getStructures(server, settings),
+                            new RFTBiomeProvider(registryAccess.registryOrThrow(Registries.BIOME).asLookup(), settings),
                             seed, Holder.direct(noiseSettings), settings);
                     return new LevelStem(type, generator);
                 });
@@ -234,7 +233,7 @@ public class DimensionCreator {
     }
 
     @NotNull
-    private List<Holder<StructureSet>> getStructures(DimensionSettings settings) {
+    private List<Holder<StructureSet>> getStructures(MinecraftServer server, DimensionSettings settings) {
         List<ResourceLocation> structures = settings.getCompiledDescriptor().getStructures();
         List<Holder<StructureSet>> list = new ArrayList<>();
         Primes primes = new Primes();
@@ -245,7 +244,7 @@ public class DimensionCreator {
             } else if (structure.getPath().equals("default"))  {
                 return Collections.emptyList();
             } else {
-                var registryName = Registry.STRUCTURE_REGISTRY;
+                var registryName = Registries.STRUCTURE;
                 var registry = getOverworld().registryAccess().registryOrThrow(registryName);
                 var tagKey = TagKey.create(registryName, structure);
                 var tag = registry.getOrCreateTag(tagKey);
@@ -255,14 +254,14 @@ public class DimensionCreator {
                         list.add(Holder.direct(set));
                     });
                 } else {
-                    if (BuiltinRegistries.STRUCTURES.containsKey(structure)) {
-                        BuiltinRegistries.STRUCTURES.getHolder(ResourceKey.create(Registry.STRUCTURE_REGISTRY, structure)).ifPresent(cfg -> {
+                    if (BuiltInRegistries.STRUCTURE_TYPE.containsKey(structure)) {
+                        server.registryAccess().registryOrThrow(Registries.STRUCTURE).getHolder(ResourceKey.create(Registries.STRUCTURE, structure)).ifPresent(cfg -> {
                             StructureSet set = new StructureSet(cfg, new RandomSpreadStructurePlacement(12, 5, RandomSpreadType.LINEAR, primes.nextIntUnsigned()));
                             list.add(Holder.direct(set));
                         });
                     }
                 }
-                BuiltinRegistries.STRUCTURE_SETS.getHolder(ResourceKey.create(Registry.STRUCTURE_SET_REGISTRY, structure)).ifPresent(list::add);
+                server.registryAccess().registryOrThrow(Registries.STRUCTURE_SET).getHolder(ResourceKey.create(Registries.STRUCTURE_SET, structure)).ifPresent(list::add);
             }
         }
         return list;

@@ -6,11 +6,12 @@ import net.minecraftforge.client.event.TextureStitchEvent;
 
 public class ClientSetup {
 
-    public static void onTextureStitch(TextureStitchEvent.Pre event) {
-        if (!event.getAtlas().location().equals(TextureAtlas.LOCATION_BLOCKS)) {
-            return;
-        }
-        event.addSprite(DimensionBuilderRenderer.STAGES);
-    }
+    // @todo 1.19.3
+//    public static void onTextureStitch(TextureStitchEvent.Pre event) {
+//        if (!event.getAtlas().location().equals(TextureAtlas.LOCATION_BLOCKS)) {
+//            return;
+//        }
+//        event.addSprite(DimensionBuilderRenderer.STAGES);
+//    }
 
 }

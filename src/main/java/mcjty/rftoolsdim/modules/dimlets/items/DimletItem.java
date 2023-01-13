@@ -88,27 +88,28 @@ public class DimletItem extends Item implements ITooltipSettings, ITooltipExtras
         tooltipBuilder.get().makeTooltip(Tools.getId(this), itemStack, list, flags);
     }
 
-    @Override
-    public void fillItemCategory(@Nonnull CreativeModeTab group, @Nonnull NonNullList<ItemStack> items) {
-        if (this.allowedIn(group)) {
-            if (this == DimletModule.ADMIN_DIMLET.get()) {
-                ItemStack stack = DimletTools.getDimletStack(new DimletKey(DimletType.ADMIN, "owner"));
-                if (!stack.isEmpty()) {
-                    items.add(stack);
-                }
-                stack = DimletTools.getDimletStack(new DimletKey(DimletType.ADMIN, "cheater"));
-                if (!stack.isEmpty()) {
-                    items.add(stack);
-                }
-            } else if (this == DimletModule.DIGIT_DIMLET.get()) {
-                for (int i = 0 ; i < 10 ; i++) {
-                    items.add(DimletTools.getDimletStack(new DimletKey(DimletType.DIGIT, String.valueOf(i))));
-                }
-            } else {
-                items.add(new ItemStack(this));
-            }
-        }
-    }
+    // @todo 1.19
+//    @Override
+//    public void fillItemCategory(@Nonnull CreativeModeTab group, @Nonnull NonNullList<ItemStack> items) {
+//        if (this.allowedIn(group)) {
+//            if (this == DimletModule.ADMIN_DIMLET.get()) {
+//                ItemStack stack = DimletTools.getDimletStack(new DimletKey(DimletType.ADMIN, "owner"));
+//                if (!stack.isEmpty()) {
+//                    items.add(stack);
+//                }
+//                stack = DimletTools.getDimletStack(new DimletKey(DimletType.ADMIN, "cheater"));
+//                if (!stack.isEmpty()) {
+//                    items.add(stack);
+//                }
+//            } else if (this == DimletModule.DIGIT_DIMLET.get()) {
+//                for (int i = 0 ; i < 10 ; i++) {
+//                    items.add(DimletTools.getDimletStack(new DimletKey(DimletType.DIGIT, String.valueOf(i))));
+//                }
+//            } else {
+//                items.add(new ItemStack(this));
+//            }
+//        }
+//    }
 
     @Override
     public List<Pair<ItemStack, Integer>> getItems(ItemStack stack) {

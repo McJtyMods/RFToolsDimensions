@@ -15,10 +15,10 @@ import mcjty.rftoolsdim.modules.dimlets.data.DimletKey;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletRarity;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletSettings;
 import mcjty.rftoolsdim.setup.Registration;
-import net.minecraft.core.Registry;
-import net.minecraft.data.BuiltinRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
@@ -29,6 +29,7 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.server.ServerLifecycleHooks;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -123,7 +124,9 @@ public class KnowledgeManager {
     @Nullable
     private String getReasonBiome(DimletKey key) {
         ResourceLocation rl = new ResourceLocation(key.key());
-        Biome biome = BuiltinRegistries.BIOME.get(rl);
+        MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
+
+        Biome biome = server.registryAccess().registryOrThrow(Registries.BIOME).get(rl);
         if (biome != null) {
             return getMostImportantIsTag(rl);
         }
@@ -132,7 +135,8 @@ public class KnowledgeManager {
 
     @Nullable
     private String getMostImportantIsTag(ResourceLocation rl) {
-        return BuiltinRegistries.BIOME.getHolderOrThrow(ResourceKey.create(Registry.BIOME_REGISTRY, rl))
+        MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
+        return server.registryAccess().registryOrThrow(Registries.BIOME).getHolderOrThrow(ResourceKey.create(Registries.BIOME, rl))
                 .tags()
                 .filter(t -> t.location().getPath().startsWith("is_"))
                 .sorted()
@@ -143,7 +147,7 @@ public class KnowledgeManager {
 
     @Nullable
     private String getReasonStructure(CommonLevelAccessor level, DimletKey key) {
-        Structure structure = BuiltinRegistries.STRUCTURES.get(new ResourceLocation(key.key()));
+        Structure structure = level.registryAccess().registryOrThrow(Registries.STRUCTURE).get(new ResourceLocation(key.key()));
         if (structure != null) {
             return new ResourceLocation(key.key()).getPath();
         }
@@ -242,7 +246,7 @@ public class KnowledgeManager {
 
     private KnowledgeSet getStructureKnowledgeSet(CommonLevelAccessor level, DimletKey key) {
         ResourceLocation id = new ResourceLocation(key.key());
-        Structure structure = BuiltinRegistries.STRUCTURES.get(id);
+        Structure structure = level.registryAccess().registryOrThrow(Registries.STRUCTURE).get(id);
         if (structure == null) {
             if (key.key().equals("default") || key.key().equals("none")) {
                 return KnowledgeSet.SET1;
@@ -257,7 +261,8 @@ public class KnowledgeManager {
     /// Create a knowledge set based on the category of a biome
     private KnowledgeSet getBiomeKnowledgeSet(DimletKey key) {
         ResourceLocation rl = new ResourceLocation(key.key());
-        Biome biome = BuiltinRegistries.BIOME.get(rl);
+        MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
+        Biome biome = server.registryAccess().registryOrThrow(Registries.BIOME).get(rl);
         if (biome == null) {
             RFToolsDim.setup.getLogger().error("Biome '" + key.key() + "' is missing!");
             return KnowledgeSet.SET1;

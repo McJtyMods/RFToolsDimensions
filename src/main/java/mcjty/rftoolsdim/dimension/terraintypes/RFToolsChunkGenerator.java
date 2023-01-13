@@ -10,8 +10,6 @@ import mcjty.rftoolsdim.dimension.noisesettings.NoiseSliderBuilder;
 import mcjty.rftoolsdim.dimension.terraintypes.generators.*;
 import mcjty.rftoolsdim.tools.PerlinNoiseGenerator14;
 import net.minecraft.core.Holder;
-import net.minecraft.core.Registry;
-import net.minecraft.resources.RegistryOps;
 import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.world.level.LevelHeightAccessor;
 import net.minecraft.world.level.NoiseColumn;
@@ -26,7 +24,6 @@ import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
 import net.minecraft.world.level.levelgen.RandomState;
 import net.minecraft.world.level.levelgen.blending.Blender;
 import net.minecraft.world.level.levelgen.structure.StructureSet;
-import net.minecraft.world.level.levelgen.synth.NormalNoise;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
@@ -34,14 +31,11 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.function.Consumer;
-import java.util.stream.Stream;
 
 public class RFToolsChunkGenerator extends NoiseBasedChunkGenerator {
 
     public static final Codec<RFToolsChunkGenerator> CODEC = RecordCodecBuilder.create((instance) -> instance
-            .group(RegistryOps.retrieveRegistry(Registry.STRUCTURE_SET_REGISTRY).forGetter(ins -> ins.structureSets),
-                    RegistryOps.retrieveRegistry(Registry.NOISE_REGISTRY).forGetter(ins -> ins.noises),
-                    Codec.list(StructureSet.CODEC).fieldOf("structures").forGetter(ins -> ins.overrideStructures),
+            .group(Codec.list(StructureSet.CODEC).fieldOf("structures").forGetter(ins -> ins.overrideStructures),
                     BiomeSource.CODEC.fieldOf("biome_source").forGetter((ins) -> ins.biomeSource),
                     Codec.LONG.fieldOf("seed").stable().forGetter(RFToolsChunkGenerator::getSeed),
                     NoiseGeneratorSettings.CODEC.fieldOf("settings").forGetter((ins) -> ins.settings),
@@ -49,30 +43,27 @@ public class RFToolsChunkGenerator extends NoiseBasedChunkGenerator {
             .apply(instance, instance.stable(RFToolsChunkGenerator::new)));
 
     // Mirror because the one in NoiseBasedChunkGenerator is private
-    private final Registry<NormalNoise.NoiseParameters> noises;
     private final DimensionSettings dimensionSettings;
     private final List<Holder<StructureSet>> overrideStructures;
     private final long seed;
 
     private PerlinNoiseGenerator14 perlinNoise = null;
 
-    public RFToolsChunkGenerator(Registry<StructureSet> structureSetRegistry,
-                                 Registry<NormalNoise.NoiseParameters> noiseRegistry,
-                                 List<Holder<StructureSet>> overrideStructures,
+    public RFToolsChunkGenerator(List<Holder<StructureSet>> overrideStructures,
                                  BiomeSource biomeSource, long seed,
                                  Holder<NoiseGeneratorSettings> settingsSupplier, DimensionSettings dimensionSettings) {
-        super(structureSetRegistry, noiseRegistry, biomeSource, settingsSupplier);
-        this.noises = noiseRegistry;
+        super(biomeSource, settingsSupplier);
         this.dimensionSettings = dimensionSettings;
         this.overrideStructures = overrideStructures;
         this.seed = seed;
     }
 
-    @Override
-    @Nonnull
-    public Stream<Holder<StructureSet>> possibleStructureSets() {
-        return overrideStructures.stream();
-    }
+    // @todo 1.19.3
+//    @Override
+//    @Nonnull
+//    public Stream<Holder<StructureSet>> possibleStructureSets() {
+//        return overrideStructures.stream();
+//    }
 
     // Refresh after changing settings
     public void changeSettings(Consumer<NoiseSettingsBuilder> noiseBuilderConsumer,
@@ -112,7 +103,7 @@ public class RFToolsChunkGenerator extends NoiseBasedChunkGenerator {
     }
 
     public BlockState getDefaultBlock() {
-        return defaultBlock;
+        return this.settings.value().defaultBlock();
     }
 
     public PerlinNoiseGenerator14 getPerlinNoise() {

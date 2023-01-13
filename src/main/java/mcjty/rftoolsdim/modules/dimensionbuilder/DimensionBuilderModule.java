@@ -36,24 +36,26 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.RegistryObject;
 
 import static mcjty.lib.datagen.DataGen.has;
+import static mcjty.rftoolsdim.RFToolsDim.tab;
 import static mcjty.rftoolsdim.setup.Registration.*;
 
 public class DimensionBuilderModule implements IModule {
 
     public static final RegistryObject<BaseBlock> DIMENSION_BUILDER = BLOCKS.register("dimension_builder", DimensionBuilderTileEntity::createBlock);
-    public static final RegistryObject<Item> DIMENSION_BUILDER_ITEM = ITEMS.register("dimension_builder", () -> new BlockItem(DIMENSION_BUILDER.get(), Registration.createStandardProperties()));
+    public static final RegistryObject<Item> DIMENSION_BUILDER_ITEM = ITEMS.register("dimension_builder", tab(() -> new BlockItem(DIMENSION_BUILDER.get(), Registration.createStandardProperties())));
     public static final RegistryObject<BlockEntityType<DimensionBuilderTileEntity>> TYPE_DIMENSION_BUILDER = TILES.register("dimension_builder", () -> BlockEntityType.Builder.of(DimensionBuilderTileEntity::new, DIMENSION_BUILDER.get()).build(null));
     public static final RegistryObject<MenuType<GenericContainer>> CONTAINER_DIMENSION_BUILDER = CONTAINERS.register("dimension_builder", GenericContainer::createContainerType);
 
-    public static final RegistryObject<EmptyDimensionTab> EMPTY_DIMENSION_TAB = ITEMS.register("empty_dimension_tab", EmptyDimensionTab::new);
-    public static final RegistryObject<RealizedDimensionTab> REALIZED_DIMENSION_TAB = ITEMS.register("realized_dimension_tab", RealizedDimensionTab::new);
+    public static final RegistryObject<EmptyDimensionTab> EMPTY_DIMENSION_TAB = ITEMS.register("empty_dimension_tab", tab(EmptyDimensionTab::new));
+    public static final RegistryObject<RealizedDimensionTab> REALIZED_DIMENSION_TAB = ITEMS.register("realized_dimension_tab", tab(RealizedDimensionTab::new));
 
-    public static final RegistryObject<DimensionMonitorItem> DIMENSION_MONITOR = ITEMS.register("dimension_monitor", DimensionMonitorItem::new);
-    public static final RegistryObject<PhasedFieldGenerator> PHASED_FIELD_GENERATOR = ITEMS.register("phased_field_generator", PhasedFieldGenerator::new);
+    public static final RegistryObject<DimensionMonitorItem> DIMENSION_MONITOR = ITEMS.register("dimension_monitor", tab(DimensionMonitorItem::new));
+    public static final RegistryObject<PhasedFieldGenerator> PHASED_FIELD_GENERATOR = ITEMS.register("phased_field_generator", tab(PhasedFieldGenerator::new));
 
     public DimensionBuilderModule() {
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
-            FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientSetup::onTextureStitch);
+            // @todo 1.19.3
+//            FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientSetup::onTextureStitch);
         });
     }
 

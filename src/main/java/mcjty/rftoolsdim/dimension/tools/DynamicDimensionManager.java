@@ -4,12 +4,12 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.mojang.serialization.Lifecycle;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.MappedRegistry;
-import net.minecraft.core.Registry;
-import net.minecraft.core.WritableRegistry;
+import net.minecraft.core.*;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.RegistryLayer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.level.progress.ChunkProgressListener;
@@ -18,6 +18,7 @@ import net.minecraft.world.level.border.BorderChangeListener;
 import net.minecraft.world.level.border.WorldBorder;
 import net.minecraft.world.level.dimension.LevelStem;
 import net.minecraft.world.level.levelgen.WorldGenSettings;
+import net.minecraft.world.level.levelgen.WorldOptions;
 import net.minecraft.world.level.storage.DerivedLevelData;
 import net.minecraft.world.level.storage.LevelStorageSource;
 import net.minecraft.world.level.storage.WorldData;
@@ -128,7 +129,7 @@ public class DynamicDimensionManager {
         // the dimension registry has five sub-collections that need to be cleaned up
         // we should also eject players from the removed worlds or they could get stuck there
 
-        final WorldGenSettings worldGenSettings = server.getWorldData().worldGenSettings();
+        final WorldOptions worldGenSettings = server.getWorldData().worldGenOptions();
         final Set<ResourceKey<Level>> removedLevelKeys = new HashSet<>();
         final ServerLevel overworld = server.getLevel(Level.OVERWORLD);
 
@@ -188,21 +189,34 @@ public class DynamicDimensionManager {
 
         if (!removedLevelKeys.isEmpty()) {
             // replace the old dimension registry with a new one containing the dimensions that weren't removed, in the same order
-            final Registry<LevelStem> oldRegistry = worldGenSettings.dimensions();
-            final Registry<LevelStem> newRegistry = new MappedRegistry<>(Registry.LEVEL_STEM_REGISTRY, oldRegistry.lifecycle(), null);
+
+            LayeredRegistryAccess<RegistryLayer> registries = server.registries();
+            RegistryAccess.ImmutableRegistryAccess composite = (RegistryAccess.ImmutableRegistryAccess)registries.compositeAccess();
+
+            // @todo 1.19.3
+//            Map<? extends ResourceKey<?>,? extends Registry<?>> map = composite.registries;
+
+            Map<ResourceKey<?>,Registry<?>> hashMap = new HashMap<>(); // @todo 1.19.3 map
+            ResourceKey<?> key = ResourceKey.create(ResourceKey.createRegistryKey(new ResourceLocation("root")),new ResourceLocation("dimension"));
+
+            final Registry<LevelStem> oldRegistry = (Registry<LevelStem>) hashMap.get(key);
+            Lifecycle oldLifecycle = null; // @todo 1.19.3 AT ((MappedRegistry<LevelStem>)oldRegistry).registryLifecycle;
+            final Registry<LevelStem> newRegistry = new MappedRegistry<>(Registries.LEVEL_STEM, oldLifecycle, false);
 
             for (var entry : oldRegistry.entrySet()) {
                 final ResourceKey<LevelStem> oldKey = entry.getKey();
-                final ResourceKey<Level> oldLevelKey = ResourceKey.create(Registry.DIMENSION_REGISTRY, oldKey.location());
+                final ResourceKey<Level> oldLevelKey = ResourceKey.create(Registries.DIMENSION, oldKey.location());
                 final LevelStem dimension = entry.getValue();
                 if (oldKey != null && dimension != null && !removedLevelKeys.contains(oldLevelKey)) {
 //                    newRegistry.register(oldKey, dimension, oldRegistry.lifecycle(dimension));
                     Registry.register(newRegistry, oldKey, dimension);   // @todo 1.18.2 is this right?
                 }
             }
+            hashMap.replace(key, newRegistry);
 
             // then replace the old registry with the new registry
-            worldGenSettings.dimensions = newRegistry;
+            // @todo 1.19.3
+//            composite.registries = hashMap;
 
             // update the server's levels so dead levels don't get ticked
             server.markWorldsDirty();
@@ -217,7 +231,7 @@ public class DynamicDimensionManager {
         final ServerLevel overworld = server.getLevel(Level.OVERWORLD);
 
         // dimension keys have a 1:1 relationship with level keys, they have the same IDs as well
-        final ResourceKey<LevelStem> dimensionKey = ResourceKey.create(Registry.LEVEL_STEM_REGISTRY, worldKey.location());
+        final ResourceKey<LevelStem> dimensionKey = ResourceKey.create(Registries.LEVEL_STEM, worldKey.location());
         final LevelStem dimension = dimensionFactory.apply(server, dimensionKey);
 
         // the int in create() here is radius of chunks to watch, 11 is what the server uses when it initializes worlds
@@ -225,7 +239,7 @@ public class DynamicDimensionManager {
         final Executor executor = server.executor;
         final LevelStorageSource.LevelStorageAccess anvilConverter = server.storageSource;
         final WorldData worldData = server.getWorldData();
-        final WorldGenSettings worldGenSettings = worldData.worldGenSettings();
+        final WorldOptions worldGenSettings = worldData.worldGenOptions();
         final DerivedLevelData derivedLevelData = new DerivedLevelData(worldData, worldData.overworldData());
 
         // now we have everything we need to create the dimension and the level
@@ -235,7 +249,7 @@ public class DynamicDimensionManager {
 
         // register the actual dimension
 //        Registry.register(worldGenSettings.dimensions(), dimensionKey, dimension);
-        Registry<LevelStem> dimensionRegistry = worldGenSettings.dimensions();
+        Registry<LevelStem> dimensionRegistry = null; // @todo 1.19.3 worldGenSettings.dimensions();
         if (dimensionRegistry instanceof WritableRegistry<LevelStem> writableRegistry) {
             writableRegistry.register(dimensionKey, dimension, Lifecycle.stable());
         } else {
@@ -251,7 +265,7 @@ public class DynamicDimensionManager {
                 worldKey,
                 dimension,
                 chunkProgressListener,
-                worldGenSettings.isDebug(),
+                false, // @todo 1.19.3 worldGenSettings.isDebug(),
                 net.minecraft.world.level.biome.BiomeManager.obfuscateSeed(worldGenSettings.seed()),
                 ImmutableList.of(), // "special spawn list"
                 // phantoms, travelling traders, patrolling/sieging raiders, and cats are overworld special spawns
