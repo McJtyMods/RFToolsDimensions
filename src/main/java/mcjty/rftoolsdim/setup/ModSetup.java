@@ -26,7 +26,7 @@ import static mcjty.rftoolsdim.dimension.DimensionRegistry.RFTOOLS_CHUNKGEN_ID;
 public class ModSetup extends DefaultModSetup {
 
     public ModSetup() {
-        createTab("rftoolsdim", () -> new ItemStack(DimletModule.EMPTY_DIMLET.get()));
+        createTab(RFToolsDim.MODID, "rftoolsdim", () -> new ItemStack(DimletModule.EMPTY_DIMLET.get()));
     }
 
     @Override
