@@ -1,0 +1,9 @@
+{
+  "feature": "rftoolsdim:rftfeature",
+  "placement": [
+    {
+      "count": 1,
+      "type": "minecraft:count"
+    }
+  ]
+}
