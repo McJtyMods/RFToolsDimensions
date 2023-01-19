@@ -3,7 +3,6 @@ buildscript {
         maven { url = 'https://maven.minecraftforge.net/' }
         maven { url = 'https://maven.parchmentmc.org' }
         maven { url = 'https://plugins.gradle.org/m2/' }
-        jcenter()
         mavenCentral()
     }
     dependencies {
@@ -38,7 +37,8 @@ archivesBaseName = "rftoolsdim"
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 minecraft {
-    mappings channel: 'parchment', version: "2022.11.27-1.19.2"
+    //mappings channel: 'parchment', version: "2022.11.27-1.19.2"
+    mappings channel: 'official', version: "1.19.2"
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
     runs {
