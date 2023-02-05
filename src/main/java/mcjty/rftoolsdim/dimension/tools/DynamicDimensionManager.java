@@ -17,7 +17,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.border.BorderChangeListener;
 import net.minecraft.world.level.border.WorldBorder;
 import net.minecraft.world.level.dimension.LevelStem;
-import net.minecraft.world.level.levelgen.WorldGenSettings;
 import net.minecraft.world.level.levelgen.WorldOptions;
 import net.minecraft.world.level.storage.DerivedLevelData;
 import net.minecraft.world.level.storage.LevelStorageSource;
@@ -248,13 +247,27 @@ public class DynamicDimensionManager {
         // then instantiate level, add border listener, add to map, fire world load event
 
         // register the actual dimension
-//        Registry.register(worldGenSettings.dimensions(), dimensionKey, dimension);
-        Registry<LevelStem> dimensionRegistry = null; // @todo 1.19.3 worldGenSettings.dimensions();
-        if (dimensionRegistry instanceof WritableRegistry<LevelStem> writableRegistry) {
-            writableRegistry.register(dimensionKey, dimension, Lifecycle.stable());
-        } else {
-            throw new IllegalStateException("Unable to register dimension '" + dimensionKey.location() + "'! Registry not writable!");
+        LayeredRegistryAccess<RegistryLayer> registries = server.registries();
+        RegistryAccess.ImmutableRegistryAccess composite = (RegistryAccess.ImmutableRegistryAccess)registries.compositeAccess();
+
+        Map<ResourceKey<? extends Registry<?>>, Registry<?>> regmap = new HashMap<>(composite.registries);
+        ResourceKey<? extends Registry<?>> key = ResourceKey.create(ResourceKey.createRegistryKey(new ResourceLocation("root")),new ResourceLocation("dimension"));
+        MappedRegistry<LevelStem> oldRegistry = (MappedRegistry<LevelStem>) regmap.get(key);
+        Lifecycle oldLifecycle = oldRegistry.registryLifecycle();
+
+        final MappedRegistry<LevelStem> newRegistry = new MappedRegistry<>(Registries.LEVEL_STEM, oldLifecycle, false);
+        for (var entry : oldRegistry.entrySet()) {
+            final ResourceKey<LevelStem> oldKey = entry.getKey();
+            final ResourceKey<Level> oldLevelKey = ResourceKey.create(Registries.DIMENSION, oldKey.location());
+            final LevelStem dim = entry.getValue();
+            if (dim != null && oldLevelKey != worldKey) {
+                Registry.register(newRegistry, oldKey, dim);
+            }
         }
+        Registry.register(newRegistry, dimensionKey, dimension);
+        regmap.replace(key, newRegistry);
+        Map<? extends ResourceKey<? extends Registry<?>>, ? extends Registry<?>> newmap = (Map<? extends ResourceKey<? extends Registry<?>>, ? extends Registry<?>>) regmap;
+        composite.registries = newmap;
 
         // create the world instance
         final ServerLevel newWorld = new ServerLevel(

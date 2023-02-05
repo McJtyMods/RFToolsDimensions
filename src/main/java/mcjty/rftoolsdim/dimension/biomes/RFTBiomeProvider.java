@@ -5,15 +5,12 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import mcjty.rftoolsdim.dimension.data.DimensionSettings;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.RegistryOps;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.biome.*;
-import net.minecraftforge.server.ServerLifecycleHooks;
 
 import javax.annotation.Nonnull;
 import java.util.*;
@@ -64,8 +61,6 @@ public class RFTBiomeProvider extends BiomeSource {
     }
 
     private Holder<Biome> getMappedBiome(Holder<Biome> biome) {
-        MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
-        Registry<Biome> reg = server.registryAccess().registryOrThrow(Registries.BIOME);
         if (defaultBiomes) {
             Optional<ResourceKey<Biome>> rk = biome.unwrapKey();
             return biomeLookup.get(rk.get()).get();

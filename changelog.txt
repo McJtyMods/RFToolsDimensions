@@ -1,3 +1,6 @@
+Upcoming:
+- Ported to 1.19.3
+
 1.19-9.0.3:
 - Improved feature registration making it more compatible with other mods
 
