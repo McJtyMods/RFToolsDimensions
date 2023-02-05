@@ -1,6 +1,7 @@
 package mcjty.rftoolsdim.modules.dimlets.items;
 
 import mcjty.lib.builder.TooltipBuilder;
+import mcjty.lib.items.BaseItem;
 import mcjty.lib.tooltips.ITooltipExtras;
 import mcjty.lib.tooltips.ITooltipSettings;
 import mcjty.lib.varia.SafeClientTools;
@@ -12,9 +13,7 @@ import mcjty.rftoolsdim.modules.knowledge.data.DimletPattern;
 import mcjty.rftoolsdim.modules.knowledge.data.KnowledgeManager;
 import mcjty.rftoolsdim.modules.knowledge.data.PatternBuilder;
 import mcjty.rftoolsdim.setup.Registration;
-import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -29,7 +28,7 @@ import java.util.List;
 
 import static mcjty.lib.builder.TooltipBuilder.*;
 
-public class DimletItem extends Item implements ITooltipSettings, ITooltipExtras {
+public class DimletItem extends BaseItem implements ITooltipSettings, ITooltipExtras {
 
     private final Lazy<TooltipBuilder> tooltipBuilder = () -> new TooltipBuilder()
             .info(key("message.rftoolsdim.shiftmessage"), TooltipBuilder.parameter("key", DimletItem::isReadyDimlet, DimletTools::getDimletDescription))
@@ -88,28 +87,15 @@ public class DimletItem extends Item implements ITooltipSettings, ITooltipExtras
         tooltipBuilder.get().makeTooltip(Tools.getId(this), itemStack, list, flags);
     }
 
-    // @todo 1.19
-//    @Override
-//    public void fillItemCategory(@Nonnull CreativeModeTab group, @Nonnull NonNullList<ItemStack> items) {
-//        if (this.allowedIn(group)) {
-//            if (this == DimletModule.ADMIN_DIMLET.get()) {
-//                ItemStack stack = DimletTools.getDimletStack(new DimletKey(DimletType.ADMIN, "owner"));
-//                if (!stack.isEmpty()) {
-//                    items.add(stack);
-//                }
-//                stack = DimletTools.getDimletStack(new DimletKey(DimletType.ADMIN, "cheater"));
-//                if (!stack.isEmpty()) {
-//                    items.add(stack);
-//                }
-//            } else if (this == DimletModule.DIGIT_DIMLET.get()) {
-//                for (int i = 0 ; i < 10 ; i++) {
-//                    items.add(DimletTools.getDimletStack(new DimletKey(DimletType.DIGIT, String.valueOf(i))));
-//                }
-//            } else {
-//                items.add(new ItemStack(this));
-//            }
-//        }
-//    }
+    @Override
+    public List<ItemStack> getItemsForTab() {
+        List<ItemStack> stacks = new ArrayList<>();
+        for (int i = 0 ; i <= 9 ; i++) {
+            ItemStack stack = DimletTools.getDimletStack(new DimletKey(DimletType.DIGIT, String.valueOf(i)));
+            stacks.add(stack);
+        }
+        return stacks;
+    }
 
     @Override
     public List<Pair<ItemStack, Integer>> getItems(ItemStack stack) {
