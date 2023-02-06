@@ -1,5 +1,6 @@
 Upcoming:
 - Added back the digit dimlets to JEI
+- Fixed a client side problem with structure dimlets
 
 1.19.3-9.0.4:
 - Ported to 1.19.3

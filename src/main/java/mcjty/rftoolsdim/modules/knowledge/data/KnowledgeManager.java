@@ -246,14 +246,6 @@ public class KnowledgeManager {
 
     private KnowledgeSet getStructureKnowledgeSet(CommonLevelAccessor level, DimletKey key) {
         ResourceLocation id = new ResourceLocation(key.key());
-        Structure structure = level.registryAccess().registryOrThrow(Registries.STRUCTURE).get(id);
-        if (structure == null) {
-            if (key.key().equals("default") || key.key().equals("none")) {
-                return KnowledgeSet.SET1;
-            }
-            RFToolsDim.setup.getLogger().error("Structure '" + key.key() + "' is missing!");
-            return KnowledgeSet.SET2;
-        }
         // @todo is this good?
         return KnowledgeSet.values()[(Math.abs(id.hashCode())) % KnowledgeSet.values().length];
     }
