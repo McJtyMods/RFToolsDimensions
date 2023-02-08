@@ -94,6 +94,20 @@ public class DimletItem extends BaseItem implements ITooltipSettings, ITooltipEx
             ItemStack stack = DimletTools.getDimletStack(new DimletKey(DimletType.DIGIT, String.valueOf(i)));
             stacks.add(stack);
         }
+        stacks.add(DimletTools.getDimletStack(new DimletKey(DimletType.ADMIN, "owner")));
+        stacks.add(DimletTools.getDimletStack(new DimletKey(DimletType.ADMIN, "cheater")));
+        stacks.add(new ItemStack(DimletModule.EMPTY_TERRAIN_DIMLET.get()));
+        stacks.add(new ItemStack(DimletModule.EMPTY_ATTRIBUTE_DIMLET.get()));
+        stacks.add(new ItemStack(DimletModule.EMPTY_FEATURE_DIMLET.get()));
+        stacks.add(new ItemStack(DimletModule.EMPTY_STRUCTURE_DIMLET.get()));
+        stacks.add(new ItemStack(DimletModule.EMPTY_BIOME_DIMLET.get()));
+        stacks.add(new ItemStack(DimletModule.EMPTY_BIOME_CONTROLLER_DIMLET.get()));
+        stacks.add(new ItemStack(DimletModule.EMPTY_BIOME_CATEGORY_DIMLET.get()));
+        stacks.add(new ItemStack(DimletModule.EMPTY_BLOCK_DIMLET.get()));
+        stacks.add(new ItemStack(DimletModule.EMPTY_FLUID_DIMLET.get()));
+        stacks.add(new ItemStack(DimletModule.EMPTY_TIME_DIMLET.get()));
+        stacks.add(new ItemStack(DimletModule.EMPTY_TAG_DIMLET.get()));
+        stacks.add(new ItemStack(DimletModule.EMPTY_SKY_DIMLET.get()));
         return stacks;
     }
 
