@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "rftoolsdim:block/dimensional_small_blocks"
+      "model": "rftoolsdim:block/dimensional_small_block"
     }
   }
 }

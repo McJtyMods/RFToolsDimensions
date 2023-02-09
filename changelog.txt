@@ -1,4 +1,5 @@
 Upcoming:
+- Fixed a model problem with dimensional small blocks
 - Restored the other dimlets to JEI/creative tab
 
 1.19.3-9.0.5:

@@ -124,7 +124,7 @@ public class DecorativeModule implements IModule {
                         .ironPickaxeTags()
                         .parentedItem("block/dimensional_small_block")
                         .simpleLoot()
-                        .blockState(p -> p.singleTextureBlock(DIMENSIONAL_SMALL_BLOCK.get(), BLOCK_FOLDER + "/dimensional_small_blocks", "block/decorative/dimblock_small_blocks"))
+                        .blockState(p -> p.singleTextureBlock(DIMENSIONAL_SMALL_BLOCK.get(), BLOCK_FOLDER + "/dimensional_small_block", "block/decorative/dimblock_small_blocks"))
                         .shaped(builder -> builder
                                         .define('s', VariousModule.DIMENSIONALSHARD.get())
                                         .define('S', Tags.Items.STONE)
