@@ -13,6 +13,7 @@ import net.minecraft.world.level.biome.*;
 
 import javax.annotation.Nonnull;
 import java.util.*;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -37,7 +38,7 @@ public class RFTBiomeProvider extends BiomeSource {
     private Holder<Biome> biome2 = null;   // For checker
 
     public RFTBiomeProvider(Registry<Biome> biomeRegistry, DimensionSettings settings) {
-        super(Collections.emptyList());
+        super(() -> getDefaultBiomes(biomeRegistry, settings));
         this.settings = settings;
         this.biomeRegistry = biomeRegistry;
         multiNoiseBiomeSource = MultiNoiseBiomeSource.Preset.OVERWORLD.biomeSource(biomeRegistry, true);
@@ -48,13 +49,18 @@ public class RFTBiomeProvider extends BiomeSource {
         biomeRegistry.stream().forEach(this::getMappedBiome);
     }
 
+    private static List<Holder<Biome>> getDefaultBiomes(Registry<Biome> biomeRegistry, DimensionSettings settings) {
+        List<ResourceLocation> biomes = settings.getCompiledDescriptor().getBiomes();
+        return biomes.stream().map(biomeRegistry::get).map(b -> biomeRegistry.getHolderOrThrow(ResourceKey.create(Registry.BIOME_REGISTRY, biomeRegistry.getKey(b)))).collect(Collectors.toList());
+    }
+
     public DimensionSettings getSettings() {
         return settings;
     }
 
     private boolean isCategoryMatching(Biome biome) {
         if (biomeCategories.isEmpty()) {
-            return false;
+            return true;
         }
         return biomeRegistry.getResourceKey(biome).map(key -> biomeRegistry.getHolderOrThrow(key).tags().filter(biomeCategories::contains).findAny().isPresent()).orElse(false);
     }
@@ -184,7 +190,7 @@ public class RFTBiomeProvider extends BiomeSource {
         if (biome1 == null) {
             if (biomes.isEmpty()) {
                 // Try to get from categories
-                List<Biome> list = biomeRegistry.stream().filter(this::isCategoryMatching).collect(Collectors.toList());
+                List<Biome> list = biomeRegistry.stream().filter(this::isCategoryMatching).toList();
                 if (list.isEmpty()) {
                     // Safety, this is needed in case the category doesn't contain any biomes
                     biome1 = biome2 = biomeRegistry.getHolderOrThrow(Biomes.PLAINS);
