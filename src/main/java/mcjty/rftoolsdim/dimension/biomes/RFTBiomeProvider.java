@@ -14,6 +14,7 @@ import net.minecraft.world.level.biome.*;
 
 import javax.annotation.Nonnull;
 import java.util.*;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import static mcjty.rftoolsdim.dimension.data.DimensionSettings.SETTINGS_CODEC;
@@ -37,7 +38,7 @@ public class RFTBiomeProvider extends BiomeSource {
     private Holder<Biome> biome2 = null;   // For checker
 
     public RFTBiomeProvider(HolderLookup.RegistryLookup<Biome> biomeLookup, DimensionSettings settings) {
-        super(Collections.emptyList());
+        super(() -> getDefaultBiomes(biomeLookup, settings));
         this.settings = settings;
         this.biomeLookup = biomeLookup;
         multiNoiseBiomeSource = MultiNoiseBiomeSource.Preset.OVERWORLD.biomeSource(biomeLookup, true);
@@ -48,13 +49,18 @@ public class RFTBiomeProvider extends BiomeSource {
         biomeLookup.listElements().forEach(this::getMappedBiome);
     }
 
+    private static List<Holder<Biome>> getDefaultBiomes(HolderLookup.RegistryLookup<Biome> biomeLookup, DimensionSettings settings) {
+        List<ResourceLocation> biomes = settings.getCompiledDescriptor().getBiomes();
+        return biomes.stream().map(rl -> biomeLookup.get(ResourceKey.create(Registries.BIOME, rl))).map(Optional::get).collect(Collectors.toList());
+    }
+
     public DimensionSettings getSettings() {
         return settings;
     }
 
     private boolean isCategoryMatching(Holder<Biome> biome) {
         if (biomeCategories.isEmpty()) {
-            return false;
+            return true;
         }
 
         return biomeLookup.getOrThrow(biome.unwrapKey().get()).tags().filter(biomeCategories::contains).findAny().isPresent();

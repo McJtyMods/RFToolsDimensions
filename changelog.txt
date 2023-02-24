@@ -1,4 +1,6 @@
 Upcoming:
+- Fixed a problem with biomes not being used correctly. Resulting in most dimensions using just plains biome
+- Fixed a problem with the biome source not correctly returning the biomes to use. This could causes issues with modded biomes
 - Fixed a model problem with dimensional small blocks
 - Restored the other dimlets to JEI/creative tab
 
