@@ -73,9 +73,12 @@ public class RFTFeature extends Feature<NoneFeatureConfiguration> {
             if (cp.x == 0 && cp.z == 0) {
                 // Spawn platform
                 int floorHeight = getFloorHeight(terrainType, reader, cp);
+                ChunkAccess chunk = reader.getChunk(cp.x, cp.z);
                 DimensionCreator.get().registerPlatformHeight(reader.getLevel().dimension().location(), floorHeight);
 
-                if (floorHeight < generator.getSeaLevel()) {
+                if (floorHeight < generator.getSeaLevel() ||
+                        (!chunk.getBlockState(new BlockPos(0, floorHeight+1, 0)).isAir()) ||
+                                !chunk.getBlockState(new BlockPos(0, floorHeight+2, 0)).isAir()) {
                     SpawnHut.SPAWN_HUT.get().generate(terrainType, reader, new BlockPos(3, floorHeight, 3),
                             baseBlocks, BuildingTemplate.GenerateFlag.PLAIN);
                 } else {
@@ -106,7 +109,7 @@ public class RFTFeature extends Feature<NoneFeatureConfiguration> {
     private int getHeightAt(TerrainType type, WorldGenLevel reader, ChunkPos cp, int dx, int dz) {
         int height;
         if (type == TerrainType.CAVERN) {
-            height = (reader.getMinBuildHeight() + reader.getMaxBuildHeight())/2;
+            height = 128/2; // @todo hardcoded cavern height, (reader.getMinBuildHeight() + reader.getMaxBuildHeight())/2;
             ChunkAccess chunk = reader.getChunk(cp.x, cp.z);
             BlockPos.MutableBlockPos mpos = new BlockPos.MutableBlockPos(dx, 0, dz);
             while (height > reader.getMinBuildHeight() && chunk.getBlockState(mpos.setY(height)).isAir()) {
