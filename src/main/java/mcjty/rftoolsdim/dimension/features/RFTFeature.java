@@ -76,9 +76,7 @@ public class RFTFeature extends Feature<NoneFeatureConfiguration> {
                 ChunkAccess chunk = reader.getChunk(cp.x, cp.z);
                 DimensionCreator.get().registerPlatformHeight(reader.getLevel().dimension().location(), floorHeight);
 
-                if (floorHeight < generator.getSeaLevel() ||
-                        (!chunk.getBlockState(new BlockPos(0, floorHeight+1, 0)).isAir()) ||
-                                !chunk.getBlockState(new BlockPos(0, floorHeight+2, 0)).isAir()) {
+                if (floorHeight < generator.getSeaLevel() || needsHut(chunk, floorHeight)) {
                     SpawnHut.SPAWN_HUT.get().generate(terrainType, reader, new BlockPos(3, floorHeight, 3),
                             baseBlocks, BuildingTemplate.GenerateFlag.PLAIN);
                 } else {
@@ -93,6 +91,20 @@ public class RFTFeature extends Feature<NoneFeatureConfiguration> {
             }
 
             return generatedSomething;
+        }
+        return false;
+    }
+
+    private boolean needsHut(ChunkAccess chunk, int height) {
+        var mpos = new BlockPos.MutableBlockPos();
+        for (int y = 1 ; y < 2 ; y++) {
+            for (int x = -2 ; x <= 2 ; x++) {
+                for (int z = -2 ; z <= 2 ; z++) {
+                    if (!chunk.getBlockState(mpos.set(x, height+y, z)).isAir()) {
+                        return true;
+                    }
+                }
+            }
         }
         return false;
     }
