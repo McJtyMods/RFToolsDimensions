@@ -98,6 +98,11 @@ public class FluidAbsorberTileEntity extends TickingTileEntity {
         if (absorbing == -1) {
             return "n.a.";
         } else {
+            String block = NBTTools.getInfoNBT(stack, CompoundTag::getString, "fluid", null);
+            if (block == null) {
+                return "n.a.";
+            }
+
             int pct = ((EssencesConfig.maxFluidAbsorption.get() - absorbing) * 100) / EssencesConfig.maxFluidAbsorption.get();
             return pct + "%";
         }
