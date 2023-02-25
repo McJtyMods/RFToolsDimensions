@@ -1,6 +1,7 @@
 Upcoming:
 - Fixed a problem with biomes not being used correctly. Resulting in most dimensions using just plains biome
 - Fixed a problem with the biome source not correctly returning the biomes to use. This could causes issues with modded biomes
+- Cavern type worlds no longer have the spawn platform above the bedrock. In addition the spawn platform will be a spawn hut if there is not enough air
 
 1.19-9.1.1:
 - Fixed a model problem with dimensional small blocks
