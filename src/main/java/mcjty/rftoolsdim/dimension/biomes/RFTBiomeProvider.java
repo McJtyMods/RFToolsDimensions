@@ -16,6 +16,7 @@ import javax.annotation.Nonnull;
 import java.util.*;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static mcjty.rftoolsdim.dimension.data.DimensionSettings.SETTINGS_CODEC;
 
@@ -38,10 +39,12 @@ public class RFTBiomeProvider extends BiomeSource {
     private Holder<Biome> biome2 = null;   // For checker
 
     public RFTBiomeProvider(HolderLookup.RegistryLookup<Biome> biomeLookup, DimensionSettings settings) {
-        super(() -> getDefaultBiomes(biomeLookup, settings));
+        // @todo 1.19.4
+//        super(() -> getDefaultBiomes(biomeLookup, settings));
+        super();
         this.settings = settings;
         this.biomeLookup = biomeLookup;
-        multiNoiseBiomeSource = MultiNoiseBiomeSource.Preset.OVERWORLD.biomeSource(biomeLookup, true);
+        multiNoiseBiomeSource = null; // @todo 1.19.4 MultiNoiseBiomeSource.Preset.OVERWORLD.biomeSource(biomeLookup, true);
         biomes = getBiomes(biomeLookup, settings);
         biomeCategories = getBiomeCategories(settings);
 
@@ -56,6 +59,11 @@ public class RFTBiomeProvider extends BiomeSource {
 
     public DimensionSettings getSettings() {
         return settings;
+    }
+
+    @Override
+    protected Stream<Holder<Biome>> collectPossibleBiomes() {
+        return possibleBiomes().stream();   // @todo 1.19.4 is this correct?
     }
 
     private boolean isCategoryMatching(Holder<Biome> biome) {
@@ -113,9 +121,9 @@ public class RFTBiomeProvider extends BiomeSource {
         tags2.removeAll(tags1);
         float d1 = Math.max(tags1.size(), tags2.size());    // Use the number of differences in tags as a measure
         float d2 = Math.abs(biome1.value().getBaseTemperature() - biome2.value().getBaseTemperature());
-        float d3 = Math.abs(biome1.value().getDownfall() - biome2.value().getDownfall());
-        float d4 = biome1.value().isHumid() == biome2.value().isHumid() ? 0 : 1;
-        return d1 + d2 * d2 + d3 * d3 + d4;
+//        float d3 = Math.abs(biome1.value().getDownfall() - biome2.value().getDownfall());
+//        float d4 = biome1.value().isHumid() == biome2.value().isHumid() ? 0 : 1;
+        return d1 + d2 * d2;// @todo 1.19.4 + d3 * d3 + d4;
     }
 
     private List<Holder<Biome>> getBiomes(HolderLookup.RegistryLookup<Biome> holderLookup, DimensionSettings settings) {

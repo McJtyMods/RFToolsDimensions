@@ -7,7 +7,7 @@ import net.minecraft.world.entity.LivingEntity;
 
 import javax.annotation.Nonnull;
 
-public class DamageSourcePowerLow extends DamageSource {
+public class DamageSourcePowerLow /* @todo 1.19.4 extends DamageSource {
     public DamageSourcePowerLow(String damageType) {
         super(damageType);
         bypassArmor();
@@ -21,3 +21,4 @@ public class DamageSourcePowerLow extends DamageSource {
         return ComponentFactory.translatable(s, entity.getName());
     }
 }
+*/ {}

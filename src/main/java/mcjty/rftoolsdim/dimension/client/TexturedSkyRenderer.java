@@ -28,7 +28,6 @@ public class TexturedSkyRenderer {
         BlackSkyRenderer.renderColor(0f, 0f, 0f, 1.0f);
 
         RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
-        RenderSystem.enableTexture();
         RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0F);
         RenderSystem.setShaderTexture(0, texture);
 

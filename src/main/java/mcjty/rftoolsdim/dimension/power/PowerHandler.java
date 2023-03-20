@@ -195,7 +195,8 @@ public class PowerHandler {
 //                if (PowerConfiguration.dimensionDifficulty >= 1) {
                 for (Player player : players) {
                     if (!PhasedFieldGenerator.checkValidPhasedFieldGenerator(player, true, phasedCost)) {
-                        player.hurt(new DamageSourcePowerLow("powerLow"), 1000000.0f);
+                        // @todo 1.19.4
+//                        player.hurt(new DamageSourcePowerLow("powerLow"), 1000000.0f);
                     } else {
                         if (doEffects && DimensionConfig.PHASED_FIELD_GENERATOR_DEBUF.get()) {
                             player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, EFFECTS_MAX * MAXTICKS, 2, true, true));

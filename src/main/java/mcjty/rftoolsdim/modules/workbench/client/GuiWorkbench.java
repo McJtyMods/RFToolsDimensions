@@ -125,10 +125,10 @@ public class GuiWorkbench extends GenericGuiContainer<WorkbenchTileEntity, Gener
         if (pattern != null) {
             com.mojang.blaze3d.platform.Lighting.setupFor3DItems();
             matrixStack.pushPose();
-            matrixStack.translate(leftPos, topPos, 0.0F);
+//            itemRenderer.blitOffset = 100.0F;
+            matrixStack.translate(leftPos, topPos, 100.0F);
             RenderSystem.setShaderColor(1.0F, 0.0F, 0.0F, 1.0F);
 
-            itemRenderer.blitOffset = 100.0F;
             GlStateManager._enableDepthTest();
             GlStateManager._disableBlend();
 
@@ -141,7 +141,7 @@ public class GuiWorkbench extends GenericGuiContainer<WorkbenchTileEntity, Gener
                         Slot slot = menu.getSlot(slotIdx);
                         if (!slot.hasItem()) {
                             RenderSystem.setShaderTexture(0, InventoryMenu.BLOCK_ATLAS);
-                            itemRenderer.renderAndDecorateItem(stack, leftPos + slot.x, topPos + slot.y);
+                            itemRenderer.renderAndDecorateItem(matrixStack, stack, leftPos + slot.x, topPos + slot.y);
 
                             RenderSystem.enableBlend();
                             RenderSystem.disableDepthTest();
@@ -154,7 +154,7 @@ public class GuiWorkbench extends GenericGuiContainer<WorkbenchTileEntity, Gener
                     }
                 }
             }
-            itemRenderer.blitOffset = 0.0F;
+//            itemRenderer.blitOffset = 0.0F;
 
             matrixStack.popPose();
 //            com.mojang.blaze3d.platform.Lighting.turnOff();   // @todo 1.18

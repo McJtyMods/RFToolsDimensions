@@ -28,7 +28,6 @@ public class SkyboxRenderer {
         RenderSystem.depthMask(false);
 
         RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
-        RenderSystem.enableTexture();
 //        RenderSystem.setShaderColor(red, green, blue, 1.0F);
         RenderSystem.setShaderTexture(0, texture2);
 

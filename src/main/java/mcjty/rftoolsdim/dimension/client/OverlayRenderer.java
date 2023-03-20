@@ -31,7 +31,6 @@ public class OverlayRenderer {
 
     public static void renderBlack(float red, float green, float blue, float alpha) {
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
-        RenderSystem.disableTexture();
         RenderSystem.setShaderColor(red, green, blue, alpha);
 
         BufferBuilder bufferbuilder = Tesselator.getInstance().getBuilder();

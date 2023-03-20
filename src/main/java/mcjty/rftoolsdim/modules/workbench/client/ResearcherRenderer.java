@@ -15,7 +15,9 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import javax.annotation.Nonnull;
@@ -30,7 +32,7 @@ public class ResearcherRenderer implements BlockEntityRenderer<ResearcherTileEnt
     @Override
     public void render(ResearcherTileEntity te, float v, @Nonnull PoseStack matrixStack, @Nonnull MultiBufferSource buffer, int combinedLight, int combinedOverlay) {
 
-        te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
+        te.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(h -> {
             matrixStack.pushPose();
 
             ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
@@ -43,7 +45,7 @@ public class ResearcherRenderer implements BlockEntityRenderer<ResearcherTileEnt
                 matrixStack.translate(1f, 2.1f, 1f);
                 float angle = ((millis / 45) % 360);
                 RenderHelper.rotateYP(matrixStack, angle);
-                itemRenderer.renderStatic(stack, ItemTransforms.TransformType.FIXED, RenderHelper.MAX_BRIGHTNESS, combinedOverlay, matrixStack, buffer, 0);  // @todo 1.18 last parameter?
+                itemRenderer.renderStatic(stack, ItemDisplayContext.FIXED, RenderHelper.MAX_BRIGHTNESS, combinedOverlay, matrixStack, buffer, Minecraft.getInstance().level, 0);  // @todo 1.18 last parameter?
                 matrixStack.popPose();
 
                 matrixStack.translate(0, 0.5f, 0);
