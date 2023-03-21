@@ -11,10 +11,12 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.biome.*;
+import net.minecraft.world.level.levelgen.presets.WorldPreset;
+import net.minecraft.world.level.levelgen.presets.WorldPresets;
+import net.minecraftforge.server.ServerLifecycleHooks;
 
 import javax.annotation.Nonnull;
 import java.util.*;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -39,12 +41,13 @@ public class RFTBiomeProvider extends BiomeSource {
     private Holder<Biome> biome2 = null;   // For checker
 
     public RFTBiomeProvider(HolderLookup.RegistryLookup<Biome> biomeLookup, DimensionSettings settings) {
-        // @todo 1.19.4
-//        super(() -> getDefaultBiomes(biomeLookup, settings));
         super();
         this.settings = settings;
         this.biomeLookup = biomeLookup;
-        multiNoiseBiomeSource = null; // @todo 1.19.4 MultiNoiseBiomeSource.Preset.OVERWORLD.biomeSource(biomeLookup, true);
+        // @todo 1.19.4 is this right?
+        WorldPreset worldPreset = ServerLifecycleHooks.getCurrentServer().registryAccess().registryOrThrow(Registries.WORLD_PRESET).get(WorldPresets.NORMAL);
+        multiNoiseBiomeSource = (MultiNoiseBiomeSource) worldPreset.overworld().get().generator().getBiomeSource();
+//        multiNoiseBiomeSource = MultiNoiseBiomeSource.Preset.OVERWORLD.biomeSource(biomeLookup, true);
         biomes = getBiomes(biomeLookup, settings);
         biomeCategories = getBiomeCategories(settings);
 
@@ -63,7 +66,7 @@ public class RFTBiomeProvider extends BiomeSource {
 
     @Override
     protected Stream<Holder<Biome>> collectPossibleBiomes() {
-        return possibleBiomes().stream();   // @todo 1.19.4 is this correct?
+        return getDefaultBiomes(biomeLookup, settings).stream();
     }
 
     private boolean isCategoryMatching(Holder<Biome> biome) {
