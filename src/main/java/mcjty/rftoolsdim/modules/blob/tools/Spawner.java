@@ -12,6 +12,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraftforge.event.ForgeEventFactory;
 
 import javax.annotation.Nullable;
 import java.util.Random;
@@ -41,7 +42,8 @@ public class Spawner {
         }
         DimensionalBlobEntity entity = type.create(world);
         entity.moveTo(x, pos.getY(), z, random.nextFloat() * 360.0F, 0.0F);
-        if (net.minecraftforge.common.ForgeHooks.canEntitySpawn(entity, world, x, pos.getY(), z, null, MobSpawnType.NATURAL) == -1) {
+        ForgeEventFactory.onFinalizeSpawn(entity, world, world.getCurrentDifficultyAt(entity.blockPosition()), MobSpawnType.NATURAL, null, null);
+        if (entity.isSpawnCancelled()) {
             return;
         }
         if (entity.checkSpawnRules(world, MobSpawnType.NATURAL) && entity.checkSpawnObstruction(world)) {
