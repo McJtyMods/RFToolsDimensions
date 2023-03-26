@@ -265,7 +265,9 @@ public class DimensionEditorTileEntity extends TickingTileEntity {
                 Broadcaster.broadcast(level, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), "This machine's owner differs from the dimensions owner!", 10);
                 return;
             }
-            RFToolsUtilityCompat.teleportationManager.removeReceiverDestinations(level, LevelTools.getId(id));
+            if(RFToolsUtilityCompat.teleportationManager != null){
+                RFToolsUtilityCompat.teleportationManager.removeReceiverDestinations(level, LevelTools.getId(id));
+            }
             PersistantDimensionManager mgr = PersistantDimensionManager.get(level);
             mgr.forget(id);
             DynamicDimensionManager.markDimensionForUnregistration(level.getServer(), LevelTools.getId(id));
