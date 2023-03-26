@@ -26,6 +26,7 @@ public class RFTBiomeProvider extends BiomeSource {
 
     public static final Codec<RFTBiomeProvider> CODEC = RecordCodecBuilder.create(instance ->
             instance.group(
+                    RegistryOps.retrieveRegistryLookup(Registries.WORLD_PRESET).forGetter(RFTBiomeProvider::getWorldPresetLookup),
                     RegistryOps.retrieveRegistryLookup(Registries.BIOME).forGetter(RFTBiomeProvider::getBiomeLookup),
                     SETTINGS_CODEC.fieldOf("settings").forGetter(RFTBiomeProvider::getSettings)
             ).apply(instance, RFTBiomeProvider::new));
@@ -33,6 +34,7 @@ public class RFTBiomeProvider extends BiomeSource {
     private final List<Holder<Biome>> biomes;
     private final Set<TagKey<Biome>> biomeCategories;
     private final Map<ResourceLocation, Holder<Biome>> biomeMapping = new HashMap<>();
+    private final HolderLookup.RegistryLookup<WorldPreset> worldPresetLookup;
     private final HolderLookup.RegistryLookup<Biome> biomeLookup;
     private final DimensionSettings settings;
     private final MultiNoiseBiomeSource multiNoiseBiomeSource;
@@ -40,19 +42,24 @@ public class RFTBiomeProvider extends BiomeSource {
     private Holder<Biome> biome1 = null;   // For single and checker
     private Holder<Biome> biome2 = null;   // For checker
 
-    public RFTBiomeProvider(HolderLookup.RegistryLookup<Biome> biomeLookup, DimensionSettings settings) {
+    public RFTBiomeProvider(HolderLookup.RegistryLookup<WorldPreset> worldPresetLookup, HolderLookup.RegistryLookup<Biome> biomeLookup, DimensionSettings settings) {
         super();
         this.settings = settings;
         this.biomeLookup = biomeLookup;
+        this.worldPresetLookup = worldPresetLookup;
         // @todo 1.19.4 is this right?
-        WorldPreset worldPreset = ServerLifecycleHooks.getCurrentServer().registryAccess().registryOrThrow(Registries.WORLD_PRESET).get(WorldPresets.NORMAL);
-        multiNoiseBiomeSource = (MultiNoiseBiomeSource) worldPreset.overworld().get().generator().getBiomeSource();
+        Optional<Holder.Reference<WorldPreset>> worldPreset = worldPresetLookup.get(WorldPresets.NORMAL);
+        multiNoiseBiomeSource = (MultiNoiseBiomeSource) worldPreset.get().get().overworld().get().generator().getBiomeSource();
 //        multiNoiseBiomeSource = MultiNoiseBiomeSource.Preset.OVERWORLD.biomeSource(biomeLookup, true);
         biomes = getBiomes(biomeLookup, settings);
         biomeCategories = getBiomeCategories(settings);
 
         defaultBiomes = biomes.isEmpty() && biomeCategories.isEmpty();
         biomeLookup.listElements().forEach(this::getMappedBiome);
+    }
+
+    public HolderLookup.RegistryLookup<WorldPreset> getWorldPresetLookup() {
+        return worldPresetLookup;
     }
 
     private static List<Holder<Biome>> getDefaultBiomes(HolderLookup.RegistryLookup<Biome> biomeLookup, DimensionSettings settings) {

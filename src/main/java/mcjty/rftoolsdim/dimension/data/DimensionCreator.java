@@ -213,7 +213,9 @@ public class DimensionCreator {
 
                     ChunkGenerator generator = new RFToolsChunkGenerator(
                             getStructures(server, settings),
-                            new RFTBiomeProvider(registryAccess.registryOrThrow(Registries.BIOME).asLookup(), settings),
+                            new RFTBiomeProvider(
+                                    registryAccess.registryOrThrow(Registries.WORLD_PRESET).asLookup(),
+                                    registryAccess.registryOrThrow(Registries.BIOME).asLookup(), settings),
                             seed, Holder.direct(noiseSettings), settings);
                     return new LevelStem(type, generator);
                 });
