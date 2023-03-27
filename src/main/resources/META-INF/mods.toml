@@ -24,7 +24,7 @@ Create dimensions and power them with Forge Energy
 [[dependencies.rftoolsdim]]
     modId="mcjtylib"
     mandatory=true
-    versionRange="[1.19-7.2.0,)"
+    versionRange="[1.19-7.2.1,)"
     ordering="AFTER"
     side="BOTH"
 [[dependencies.rftoolsdim]]
