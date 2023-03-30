@@ -51,6 +51,9 @@ public class RFTBiomeProvider extends BiomeSource {
 
     private static List<Holder<Biome>> getDefaultBiomes(Registry<Biome> biomeRegistry, DimensionSettings settings) {
         List<ResourceLocation> biomes = settings.getCompiledDescriptor().getBiomes();
+        if (biomes.isEmpty()) {
+            return biomeRegistry.entrySet().stream().map(Map.Entry::getKey).map(biomeRegistry::getHolderOrThrow).collect(Collectors.toList());
+        }
         return biomes.stream().map(biomeRegistry::get).map(b -> biomeRegistry.getHolderOrThrow(ResourceKey.create(Registry.BIOME_REGISTRY, biomeRegistry.getKey(b)))).collect(Collectors.toList());
     }
 
