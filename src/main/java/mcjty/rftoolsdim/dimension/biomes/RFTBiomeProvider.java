@@ -36,7 +36,7 @@ public class RFTBiomeProvider extends BiomeSource {
     private Holder<Biome> biome2 = null;   // For checker
 
     public RFTBiomeProvider(Registry<Biome> biomeRegistry, DimensionSettings settings) {
-        super(Collections.emptyList());
+        super(getDefaultBiomes(biomeRegistry, settings));
         this.settings = settings;
         this.biomeRegistry = biomeRegistry;
         multiNoiseBiomeSource = MultiNoiseBiomeSource.Preset.OVERWORLD.biomeSource(biomeRegistry, true);
@@ -46,6 +46,15 @@ public class RFTBiomeProvider extends BiomeSource {
         defaultBiomes = biomes.isEmpty() && biomeCategories.isEmpty();
         biomeRegistry.stream().forEach(this::getMappedBiome);
     }
+
+    private static List<Holder<Biome>> getDefaultBiomes(Registry<Biome> biomeRegistry, DimensionSettings settings) {
+        List<ResourceLocation> biomes = settings.getCompiledDescriptor().getBiomes();
+        if (biomes.isEmpty()) {
+            return biomeRegistry.entrySet().stream().map(Map.Entry::getKey).map(biomeRegistry::getHolderOrThrow).collect(Collectors.toList());
+        }
+        return biomes.stream().map(biomeRegistry::get).map(b -> biomeRegistry.getHolderOrThrow(ResourceKey.create(Registry.BIOME_REGISTRY, biomeRegistry.getKey(b)))).collect(Collectors.toList());
+    }
+
 
     public DimensionSettings getSettings() {
         return settings;

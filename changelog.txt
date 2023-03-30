@@ -1,3 +1,6 @@
+Upcoming:
+- Potentially fixed a compatibility problem with terrablender (again)
+
 1.18-8.0.9:
 - Fix patchouli manual
 
