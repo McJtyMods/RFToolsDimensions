@@ -1,3 +1,6 @@
+Upcoming:
+- Potentially fixed a compatibility problem with terrablender (again)
+
 1.19.3-10.0.0:
 - Fixed a problem with biomes not being used correctly. Resulting in most dimensions using just plains biome
 - Fixed a problem with the biome source not correctly returning the biomes to use. This could cause issues with modded biomes
