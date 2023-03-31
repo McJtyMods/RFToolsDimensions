@@ -62,22 +62,34 @@ public class RFTBiomeProvider extends BiomeSource {
         return worldPresetLookup;
     }
 
-    private static List<Holder<Biome>> getDefaultBiomes(HolderLookup.RegistryLookup<Biome> biomeLookup, DimensionSettings settings) {
-//        List<ResourceLocation> biomes = settings.getCompiledDescriptor().getBiomes();
-//        if (biomes.isEmpty()) {
-            return biomeLookup.listElements().collect(Collectors.toList());
-//        }
-//        return biomes.stream().map(rl -> biomeLookup.get(ResourceKey.create(Registries.BIOME, rl))).map(Optional::get).collect(Collectors.toList());
-    }
-
     public DimensionSettings getSettings() {
         return settings;
+    }
+
+    private static List<Holder<Biome>> getDefaultBiomes(HolderLookup.RegistryLookup<Biome> biomeLookup, DimensionSettings settings) {
+        List<ResourceLocation> biomes = settings.getCompiledDescriptor().getBiomes();
+        if (biomes.isEmpty()) {
+            return biomeLookup.listElements().collect(Collectors.toList());
+        }
+        return biomes.stream().map(rl -> biomeLookup.get(ResourceKey.create(Registries.BIOME, rl))).map(Optional::get).collect(Collectors.toList());
     }
 
     @Override
     protected Stream<Holder<Biome>> collectPossibleBiomes() {
         return getDefaultBiomes(biomeLookup, settings).stream();
     }
+
+//    @Override
+//    @Nonnull
+//    public Set<Holder<Biome>> possibleBiomes() {
+//        return biomeLookup.listElements().map(this::getMappedBiome).collect(Collectors.toSet());
+//        if (defaultBiomes) {
+//            return multiNoiseBiomeSource.possibleBiomes();
+//        } else {
+//            return new HashSet<>(multiNoiseBiomeSource.possibleBiomes());
+//        }
+//    }
+
 
     private boolean isCategoryMatching(Holder<Biome> biome) {
         if (biomeCategories.isEmpty()) {
@@ -165,16 +177,6 @@ public class RFTBiomeProvider extends BiomeSource {
 //        return new RFTBiomeProvider(getBiomeRegistry(), settings);
 //    }
 
-
-    @Override
-    @Nonnull
-    public Set<Holder<Biome>> possibleBiomes() {
-        if (defaultBiomes) {
-            return multiNoiseBiomeSource.possibleBiomes();
-        } else {
-            return new HashSet<>(multiNoiseBiomeSource.possibleBiomes());
-        }
-    }
 
 //    @Override
 //    public List<StepFeatureData> featuresPerStep() {
