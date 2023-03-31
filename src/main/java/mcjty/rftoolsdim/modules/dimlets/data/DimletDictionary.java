@@ -3,6 +3,7 @@ package mcjty.rftoolsdim.modules.dimlets.data;
 import mcjty.lib.varia.LevelTools;
 import mcjty.rftoolsdim.modules.knowledge.data.DimletPattern;
 import mcjty.rftoolsdim.modules.knowledge.data.KnowledgeManager;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
@@ -30,8 +31,8 @@ public class DimletDictionary {
         dimletsByRarityAndType.clear();
     }
 
-    public boolean register(DimletKey key, DimletSettings settings) {
-        if (DimletTools.isValidDimlet(key)) {
+    public boolean register(RegistryAccess access, DimletKey key, DimletSettings settings) {
+        if (DimletTools.isValidDimlet(access, key)) {
             dimlets.put(key, settings);
             return true;
         }
@@ -177,8 +178,8 @@ public class DimletDictionary {
     }
 
 
-    public void readPackage(String filename) {
-        DimletPackages.readPackage(filename, this::register);
+    public void readPackage(RegistryAccess access, String filename) {
+        DimletPackages.readPackage(filename, (key, settings) -> register(access, key, settings));
     }
 
     @Nullable

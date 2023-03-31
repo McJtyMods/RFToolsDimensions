@@ -1,8 +1,10 @@
 package mcjty.rftoolsdim.modules.dimlets.network;
 
+import mcjty.lib.varia.SafeClientTools;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletDictionary;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletKey;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletSettings;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
 
@@ -40,9 +42,10 @@ public class PacketSendDimletPackages {
     public void handle(Supplier<NetworkEvent.Context> supplier) {
         NetworkEvent.Context ctx = supplier.get();
         ctx.enqueueWork(() -> {
+            RegistryAccess access = SafeClientTools.getClientWorld().registryAccess();
             DimletDictionary dictionary = DimletDictionary.get();
             for (Map.Entry<DimletKey, DimletSettings> entry : dimlets.entrySet()) {
-                dictionary.register(entry.getKey(), entry.getValue());
+                dictionary.register(access, entry.getKey(), entry.getValue());
             }
         });
         ctx.setPacketHandled(true);

@@ -104,7 +104,7 @@ public class ForgeEventHandlers {
         RFToolsDim.setup.getLogger().info("Reading dimlet packages: ");
         DimletDictionary.get().reset();
         for (String file : DimletConfig.DIMLET_PACKAGES.get()) {
-            DimletDictionary.get().readPackage(file);
+            DimletDictionary.get().readPackage(event.getServer().registryAccess(), file);
         }
     }
 
