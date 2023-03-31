@@ -1,5 +1,6 @@
 Upcoming:
 - Potentially fixed a compatibility problem with terrablender (again)
+- The biome dimlets were broken an all missing
 
 1.19.2-9.1.2:
 - Fixed a problem with biomes not being used correctly. Resulting in most dimensions using just plains biome
