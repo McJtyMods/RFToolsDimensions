@@ -10,8 +10,8 @@ import mcjty.rftoolsdim.modules.essences.blocks.BiomeAbsorberTileEntity;
 import mcjty.rftoolsdim.modules.essences.blocks.BlockAbsorberTileEntity;
 import mcjty.rftoolsdim.modules.essences.blocks.FluidAbsorberTileEntity;
 import net.minecraft.client.resources.language.I18n;
+import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -298,7 +298,7 @@ public class DimletTools {
     }
 
     private static boolean isValidBiome(RegistryAccess access, DimletKey key) {
-        return access.registry(Registries.BIOME).get().containsKey(new ResourceLocation(key.key()));
+        return access.registry(Registry.BIOME_REGISTRY).get().containsKey(new ResourceLocation(key.key()));
 //        return ForgeRegistries.BIOMES.getValue(new ResourceLocation(key.key())) != null;
     }
 
