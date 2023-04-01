@@ -128,6 +128,9 @@ public class RFTBiomeProvider extends BiomeSource {
     }
 
     private float distance(Holder<Biome> biome1, Holder<Biome> biome2) {
+        if (biome1 == biome2) {
+            return 0;
+        }
         var tags1 = biome1.tags().collect(Collectors.toSet());
         var tags2 = biome2.tags().collect(Collectors.toSet());
         tags1.removeAll(tags2);
