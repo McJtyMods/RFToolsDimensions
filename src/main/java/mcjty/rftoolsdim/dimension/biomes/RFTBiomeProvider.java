@@ -14,7 +14,6 @@ import net.minecraft.world.level.biome.*;
 
 import javax.annotation.Nonnull;
 import java.util.*;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import static mcjty.rftoolsdim.dimension.data.DimensionSettings.SETTINGS_CODEC;
@@ -47,6 +46,12 @@ public class RFTBiomeProvider extends BiomeSource {
 
         defaultBiomes = biomes.isEmpty() && biomeCategories.isEmpty();
         biomeLookup.listElements().forEach(this::getMappedBiome);
+
+        getBiome1And2();
+    }
+
+    public DimensionSettings getSettings() {
+        return settings;
     }
 
     private static List<Holder<Biome>> getDefaultBiomes(HolderLookup.RegistryLookup<Biome> biomeLookup, DimensionSettings settings) {
@@ -57,8 +62,10 @@ public class RFTBiomeProvider extends BiomeSource {
         return biomes.stream().map(rl -> biomeLookup.get(ResourceKey.create(Registries.BIOME, rl))).map(Optional::get).collect(Collectors.toList());
     }
 
-    public DimensionSettings getSettings() {
-        return settings;
+    @Override
+    @Nonnull
+    public Set<Holder<Biome>> possibleBiomes() {
+        return new HashSet<>(getDefaultBiomes(biomeLookup, settings));
     }
 
     private boolean isCategoryMatching(Holder<Biome> biome) {
@@ -71,8 +78,7 @@ public class RFTBiomeProvider extends BiomeSource {
 
     private Holder<Biome> getMappedBiome(Holder<Biome> biome) {
         if (defaultBiomes) {
-            Optional<ResourceKey<Biome>> rk = biome.unwrapKey();
-            return biomeLookup.get(rk.get()).get();
+            return biome;
         }
         return biomeMapping.computeIfAbsent(biome.unwrapKey().get().location(), resourceLocation -> {
             List<Holder<Biome>> biomes = getBiomes(biomeLookup, settings);
@@ -109,6 +115,9 @@ public class RFTBiomeProvider extends BiomeSource {
     }
 
     private float distance(Holder<Biome> biome1, Holder<Biome> biome2) {
+        if (biome1 == biome2) {
+            return 0;
+        }
         var tags1 = biome1.tags().collect(Collectors.toSet());
         var tags2 = biome2.tags().collect(Collectors.toSet());
         tags1.removeAll(tags2);
@@ -116,9 +125,9 @@ public class RFTBiomeProvider extends BiomeSource {
         tags2.removeAll(tags1);
         float d1 = Math.max(tags1.size(), tags2.size());    // Use the number of differences in tags as a measure
         float d2 = Math.abs(biome1.value().getBaseTemperature() - biome2.value().getBaseTemperature());
-        float d3 = Math.abs(biome1.value().getDownfall() - biome2.value().getDownfall());
-        float d4 = biome1.value().isHumid() == biome2.value().isHumid() ? 0 : 1;
-        return d1 + d2 * d2 + d3 * d3 + d4;
+//        float d3 = Math.abs(biome1.value().getDownfall() - biome2.value().getDownfall());
+//        float d4 = biome1.value().isHumid() == biome2.value().isHumid() ? 0 : 1;
+        return d1 + d2 * d2;// @todo 1.19.4 + d3 * d3 + d4;
     }
 
     private List<Holder<Biome>> getBiomes(HolderLookup.RegistryLookup<Biome> holderLookup, DimensionSettings settings) {
@@ -140,56 +149,6 @@ public class RFTBiomeProvider extends BiomeSource {
     protected Codec<? extends BiomeSource> codec() {
         return CODEC;
     }
-
-//    @Nonnull
-//    @Override
-//    public BiomeSource withSeed(long seed) {
-//        return new RFTBiomeProvider(getBiomeRegistry(), settings);
-//    }
-
-
-    @Override
-    @Nonnull
-    public Set<Holder<Biome>> possibleBiomes() {
-        if (defaultBiomes) {
-            return multiNoiseBiomeSource.possibleBiomes();
-        } else {
-            return new HashSet<>(multiNoiseBiomeSource.possibleBiomes());
-        }
-    }
-
-//    @Override
-//    public List<StepFeatureData> featuresPerStep() {
-//        return multiNoiseBiomeSource.featuresPerStep();
-//    }
-
-//    @Override
-//    public void addMultinoiseDebugInfo(List<String> list, BlockPos pos, Climate.Sampler climate) {
-//        multiNoiseBiomeSource.addMultinoiseDebugInfo(list, pos, climate);
-//    }
-
-//    @Nullable
-//    @Override
-//    public BlockPos findBiomeHorizontal(int x, int y, int z, int radius, Predicate<Biome> predicate, Random random, Climate.Sampler climate) {
-//        return multiNoiseBiomeSource.findBiomeHorizontal(x, y, z, radius, predicate, random, climate);
-//    }
-
-//    @Nullable
-//    @Override
-//    public BlockPos findBiomeHorizontal(int x, int y, int z, int p_186699_, int p_186700_, Predicate<Biome> predicate, Random random, boolean p_186703_, Climate.Sampler climate) {
-//        return multiNoiseBiomeSource.findBiomeHorizontal(x, y, z, p_186699_, p_186700_, predicate, random, p_186703_, climate);
-//    }
-
-//    @Override
-//    public Set<Biome> getBiomesWithin(int x, int y, int z, int radius, Climate.Sampler climate) {
-//        if (defaultBiomes) {
-//            return multiNoiseBiomeSource.getBiomesWithin(x, y, z, radius, climate);
-//        } else {
-//            return multiNoiseBiomeSource.getBiomesWithin(x, y, z, radius, climate).stream()
-//                    .map(this::getMappedBiome)
-//                    .collect(Collectors.toSet());
-//        }
-//    }
 
     private void getBiome1And2() {
         if (biome1 == null) {
@@ -247,12 +206,10 @@ public class RFTBiomeProvider extends BiomeSource {
     }
 
     private Holder<Biome> getSingleBiome() {
-        getBiome1And2();
         return biome1;
     }
 
     private Holder<Biome> getCheckerBiome(int x, int z) {
-        getBiome1And2();
         if (((x >> 3) + (z >> 3)) % 2 == 0) {
             return biome1;
         } else {
