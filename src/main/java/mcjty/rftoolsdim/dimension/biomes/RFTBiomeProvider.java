@@ -13,9 +13,7 @@ import net.minecraft.world.level.biome.*;
 
 import javax.annotation.Nonnull;
 import java.util.*;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static mcjty.rftoolsdim.dimension.data.DimensionSettings.SETTINGS_CODEC;
 
@@ -47,10 +45,15 @@ public class RFTBiomeProvider extends BiomeSource {
 
         defaultBiomes = biomes.isEmpty() && biomeCategories.isEmpty();
         biomeRegistry.stream().forEach(this::getMappedBiome);
+
+        getBiome1And2();
     }
 
     private static List<Holder<Biome>> getDefaultBiomes(Registry<Biome> biomeRegistry, DimensionSettings settings) {
         List<ResourceLocation> biomes = settings.getCompiledDescriptor().getBiomes();
+        if (biomes.isEmpty()) {
+            return biomeRegistry.stream().map(b -> biomeRegistry.getHolderOrThrow(ResourceKey.create(Registry.BIOME_REGISTRY, biomeRegistry.getKey(b)))).collect(Collectors.toList());
+        }
         return biomes.stream().map(biomeRegistry::get).map(b -> biomeRegistry.getHolderOrThrow(ResourceKey.create(Registry.BIOME_REGISTRY, biomeRegistry.getKey(b)))).collect(Collectors.toList());
     }
 
@@ -104,6 +107,9 @@ public class RFTBiomeProvider extends BiomeSource {
     }
 
     private float distance(Biome biome1, Biome biome2) {
+        if (Objects.equals(biome1, biome2)) {
+            return -1;
+        }
         var tags1 = biomeRegistry.getHolderOrThrow(biomeRegistry.getResourceKey(biome1).get()).tags().collect(Collectors.toSet());
         var tags2 = biomeRegistry.getHolderOrThrow(biomeRegistry.getResourceKey(biome2).get()).tags().collect(Collectors.toSet());
         tags1.removeAll(tags2);
@@ -136,55 +142,6 @@ public class RFTBiomeProvider extends BiomeSource {
         return CODEC;
     }
 
-//    @Nonnull
-//    @Override
-//    public BiomeSource withSeed(long seed) {
-//        return new RFTBiomeProvider(getBiomeRegistry(), settings);
-//    }
-
-
-    @Override
-    @Nonnull
-    public Set<Holder<Biome>> possibleBiomes() {
-        if (defaultBiomes) {
-            return multiNoiseBiomeSource.possibleBiomes();
-        } else {
-            return new HashSet<>(multiNoiseBiomeSource.possibleBiomes());
-        }
-    }
-
-//    @Override
-//    public List<StepFeatureData> featuresPerStep() {
-//        return multiNoiseBiomeSource.featuresPerStep();
-//    }
-
-//    @Override
-//    public void addMultinoiseDebugInfo(List<String> list, BlockPos pos, Climate.Sampler climate) {
-//        multiNoiseBiomeSource.addMultinoiseDebugInfo(list, pos, climate);
-//    }
-
-//    @Nullable
-//    @Override
-//    public BlockPos findBiomeHorizontal(int x, int y, int z, int radius, Predicate<Biome> predicate, Random random, Climate.Sampler climate) {
-//        return multiNoiseBiomeSource.findBiomeHorizontal(x, y, z, radius, predicate, random, climate);
-//    }
-
-//    @Nullable
-//    @Override
-//    public BlockPos findBiomeHorizontal(int x, int y, int z, int p_186699_, int p_186700_, Predicate<Biome> predicate, Random random, boolean p_186703_, Climate.Sampler climate) {
-//        return multiNoiseBiomeSource.findBiomeHorizontal(x, y, z, p_186699_, p_186700_, predicate, random, p_186703_, climate);
-//    }
-
-//    @Override
-//    public Set<Biome> getBiomesWithin(int x, int y, int z, int radius, Climate.Sampler climate) {
-//        if (defaultBiomes) {
-//            return multiNoiseBiomeSource.getBiomesWithin(x, y, z, radius, climate);
-//        } else {
-//            return multiNoiseBiomeSource.getBiomesWithin(x, y, z, radius, climate).stream()
-//                    .map(this::getMappedBiome)
-//                    .collect(Collectors.toSet());
-//        }
-//    }
 
     private void getBiome1And2() {
         if (biome1 == null) {
@@ -242,12 +199,10 @@ public class RFTBiomeProvider extends BiomeSource {
     }
 
     private Holder<Biome> getSingleBiome() {
-        getBiome1And2();
         return biome1;
     }
 
     private Holder<Biome> getCheckerBiome(int x, int z) {
-        getBiome1And2();
         if (((x >>3)+(z >>3))%2 == 0) {
             return biome1;
         } else {
