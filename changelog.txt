@@ -1,6 +1,7 @@
 Upcoming:
 - Potentially fixed a compatibility problem with terrablender (again)
 - The biome dimlets were broken an all missing
+- Fixed checkerboard biome controller
 
 1.19.4-10.1.0:
 - Port to 1.19.4
