@@ -10,6 +10,8 @@ import mcjty.rftoolsdim.modules.essences.blocks.BiomeAbsorberTileEntity;
 import mcjty.rftoolsdim.modules.essences.blocks.BlockAbsorberTileEntity;
 import mcjty.rftoolsdim.modules.essences.blocks.FluidAbsorberTileEntity;
 import net.minecraft.client.resources.language.I18n;
+import net.minecraft.core.Registry;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -278,9 +280,9 @@ public class DimletTools {
     }
 
     /// Return true if this dimlet can exist (refers to an existing block/biome/...)
-    public static boolean isValidDimlet(DimletKey key) {
+    public static boolean isValidDimlet(RegistryAccess access, DimletKey key) {
         return switch (key.type()) {
-            case BIOME -> isValidBiome(key);
+            case BIOME -> isValidBiome(access, key);
             case BLOCK -> isValidBlock(key);
             case FLUID -> isValidFluid(key);
             case ADMIN -> isValidAttribute(key);
@@ -295,8 +297,9 @@ public class DimletTools {
         return true;
     }
 
-    private static boolean isValidBiome(DimletKey key) {
-        return ForgeRegistries.BIOMES.getValue(new ResourceLocation(key.key())) != null;
+    private static boolean isValidBiome(RegistryAccess access, DimletKey key) {
+        return access.registry(Registry.BIOME_REGISTRY).get().containsKey(new ResourceLocation(key.key()));
+//        return ForgeRegistries.BIOMES.getValue(new ResourceLocation(key.key())) != null;
     }
 
     private static boolean isValidBlock(DimletKey key) {
