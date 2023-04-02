@@ -44,6 +44,7 @@ dependencies {
     mcjtylib()
     rftoolsbase()
     lostcities()
+    terrablender()
 }
 
 cfdeps(['the-one-probe', 'the-lost-cities'], ['mcjtylib', 'rftools-base'], [])
