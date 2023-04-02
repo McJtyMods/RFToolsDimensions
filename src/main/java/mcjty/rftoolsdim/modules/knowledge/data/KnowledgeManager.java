@@ -19,6 +19,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
@@ -29,6 +30,7 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.server.ServerLifecycleHooks;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -257,7 +259,8 @@ public class KnowledgeManager {
     /// Create a knowledge set based on the category of a biome
     private KnowledgeSet getBiomeKnowledgeSet(DimletKey key) {
         ResourceLocation rl = new ResourceLocation(key.key());
-        Biome biome = BuiltinRegistries.BIOME.get(rl);
+        MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
+        Biome biome = server.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY).get(rl);
         if (biome == null) {
             RFToolsDim.setup.getLogger().error("Biome '" + key.key() + "' is missing!");
             return KnowledgeSet.SET1;
