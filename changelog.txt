@@ -1,4 +1,4 @@
-Upcoming:
+1.19.2-9.1.4:
 - Fixed a problem with modded biomes not having the correct knowledge set
 
 1.19.2-9.1.3:
