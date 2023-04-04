@@ -511,6 +511,16 @@
   },
   {
     "type": "biome",
+    "key": "rftoolsdim:swump",
+    "rarity": "common",
+    "create": 10,
+    "maintain": 10,
+    "ticks": 1,
+    "worldgen": true,
+    "dimlet": true
+  },
+  {
+    "type": "biome",
     "key": "minecraft:taiga",
     "rarity": "common",
     "create": 10,
