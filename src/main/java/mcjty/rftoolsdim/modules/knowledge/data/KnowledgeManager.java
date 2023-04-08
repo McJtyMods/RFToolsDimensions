@@ -18,7 +18,6 @@ import mcjty.rftoolsdim.setup.Registration;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
@@ -29,7 +28,6 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.server.ServerLifecycleHooks;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -126,15 +124,14 @@ public class KnowledgeManager {
         ResourceLocation rl = new ResourceLocation(key.key());
         Biome biome = level.registryAccess().registryOrThrow(Registries.BIOME).get(rl);
         if (biome != null) {
-            return getMostImportantIsTag(rl);
+            return getMostImportantIsTag(level, rl);
         }
         return null;
     }
 
     @Nullable
-    private String getMostImportantIsTag(ResourceLocation rl) {
-        MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
-        return server.registryAccess().registryOrThrow(Registries.BIOME).getHolderOrThrow(ResourceKey.create(Registries.BIOME, rl))
+    private String getMostImportantIsTag(CommonLevelAccessor level, ResourceLocation rl) {
+        return level.registryAccess().registryOrThrow(Registries.BIOME).getHolderOrThrow(ResourceKey.create(Registries.BIOME, rl))
                 .tags()
                 .filter(t -> t.location().getPath().startsWith("is_"))
                 .sorted()
