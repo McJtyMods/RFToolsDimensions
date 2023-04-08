@@ -108,7 +108,7 @@ public class KnowledgeManager {
             case ATTRIBUTE -> null;
             case BIOME_CONTROLLER -> null;
             case BIOME_CATEGORY -> null;
-            case BIOME -> getReasonBiome(key);
+            case BIOME -> getReasonBiome(level, key);
             case STRUCTURE -> getReasonStructure(level, key);
             case FEATURE -> null;
             case SKY -> null;
@@ -122,11 +122,9 @@ public class KnowledgeManager {
     }
 
     @Nullable
-    private String getReasonBiome(DimletKey key) {
+    private String getReasonBiome(CommonLevelAccessor level, DimletKey key) {
         ResourceLocation rl = new ResourceLocation(key.key());
-        MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
-
-        Biome biome = server.registryAccess().registryOrThrow(Registries.BIOME).get(rl);
+        Biome biome = level.registryAccess().registryOrThrow(Registries.BIOME).get(rl);
         if (biome != null) {
             return getMostImportantIsTag(rl);
         }
@@ -169,7 +167,7 @@ public class KnowledgeManager {
             case ATTRIBUTE -> AttributeType.byName(key.key()).getSet();
             case BIOME_CONTROLLER -> BiomeControllerType.byName(key.key()).getSet();
             case BIOME_CATEGORY -> getBiomeCategoryKnowledgeSet(key);
-            case BIOME -> getBiomeKnowledgeSet(key);
+            case BIOME -> getBiomeKnowledgeSet(level, key);
             case STRUCTURE -> getStructureKnowledgeSet(level, key);
             case FEATURE -> FeatureType.byName(key.key()).getSet();
             case TIME -> TimeType.byName(key.key()).getSet();
@@ -251,10 +249,9 @@ public class KnowledgeManager {
     }
 
     /// Create a knowledge set based on the category of a biome
-    private KnowledgeSet getBiomeKnowledgeSet(DimletKey key) {
+    private KnowledgeSet getBiomeKnowledgeSet(CommonLevelAccessor level, DimletKey key) {
         ResourceLocation rl = new ResourceLocation(key.key());
-        MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
-        Biome biome = server.registryAccess().registryOrThrow(Registries.BIOME).get(rl);
+        Biome biome = level.registryAccess().registryOrThrow(Registries.BIOME).get(rl);
         if (biome == null) {
             RFToolsDim.setup.getLogger().error("Biome '" + key.key() + "' is missing!");
             return KnowledgeSet.SET1;
