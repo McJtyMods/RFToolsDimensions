@@ -19,7 +19,6 @@ import net.minecraft.core.Registry;
 import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
@@ -30,7 +29,6 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.server.ServerLifecycleHooks;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -167,7 +165,7 @@ public class KnowledgeManager {
             case ATTRIBUTE -> AttributeType.byName(key.key()).getSet();
             case BIOME_CONTROLLER -> BiomeControllerType.byName(key.key()).getSet();
             case BIOME_CATEGORY -> getBiomeCategoryKnowledgeSet(key);
-            case BIOME -> getBiomeKnowledgeSet(key);
+            case BIOME -> getBiomeKnowledgeSet(level, key);
             case STRUCTURE -> getStructureKnowledgeSet(level, key);
             case FEATURE -> FeatureType.byName(key.key()).getSet();
             case TIME -> TimeType.byName(key.key()).getSet();
@@ -257,10 +255,9 @@ public class KnowledgeManager {
     }
 
     /// Create a knowledge set based on the category of a biome
-    private KnowledgeSet getBiomeKnowledgeSet(DimletKey key) {
+    private KnowledgeSet getBiomeKnowledgeSet(CommonLevelAccessor level, DimletKey key) {
         ResourceLocation rl = new ResourceLocation(key.key());
-        MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
-        Biome biome = server.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY).get(rl);
+        Biome biome = level.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY).get(rl);
         if (biome == null) {
             RFToolsDim.setup.getLogger().error("Biome '" + key.key() + "' is missing!");
             return KnowledgeSet.SET1;
