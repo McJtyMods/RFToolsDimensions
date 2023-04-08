@@ -1,3 +1,6 @@
+Upcoming:
+- Fixed a problem with the knowledge for biome dimlets
+
 1.19.3-10.0.1:
 - Potentially fixed a compatibility problem with terrablender (again)
 - The biome dimlets were broken an all missing
