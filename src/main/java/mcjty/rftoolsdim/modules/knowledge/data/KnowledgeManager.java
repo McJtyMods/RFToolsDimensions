@@ -106,7 +106,7 @@ public class KnowledgeManager {
             case ATTRIBUTE -> null;
             case BIOME_CONTROLLER -> null;
             case BIOME_CATEGORY -> null;
-            case BIOME -> getReasonBiome(key);
+            case BIOME -> getReasonBiome(level, key);
             case STRUCTURE -> getReasonStructure(level, key);
             case FEATURE -> null;
             case SKY -> null;
@@ -120,21 +120,19 @@ public class KnowledgeManager {
     }
 
     @Nullable
-    private String getReasonBiome(DimletKey key) {
+    private String getReasonBiome(CommonLevelAccessor level, DimletKey key) {
         ResourceLocation rl = new ResourceLocation(key.key());
-        MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
 
-        Biome biome = server.registryAccess().registryOrThrow(Registries.BIOME).get(rl);
+        Biome biome = level.registryAccess().registryOrThrow(Registries.BIOME).get(rl);
         if (biome != null) {
-            return getMostImportantIsTag(rl);
+            return getMostImportantIsTag(level, rl);
         }
         return null;
     }
 
     @Nullable
-    private String getMostImportantIsTag(ResourceLocation rl) {
-        MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
-        return server.registryAccess().registryOrThrow(Registries.BIOME).getHolderOrThrow(ResourceKey.create(Registries.BIOME, rl))
+    private String getMostImportantIsTag(CommonLevelAccessor level, ResourceLocation rl) {
+        return level.registryAccess().registryOrThrow(Registries.BIOME).getHolderOrThrow(ResourceKey.create(Registries.BIOME, rl))
                 .tags()
                 .filter(t -> t.location().getPath().startsWith("is_"))
                 .sorted()
