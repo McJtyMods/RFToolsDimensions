@@ -16,7 +16,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 
 import javax.annotation.Nonnull;
 
@@ -30,7 +30,7 @@ public class ResearcherRenderer implements BlockEntityRenderer<ResearcherTileEnt
     @Override
     public void render(ResearcherTileEntity te, float v, @Nonnull PoseStack matrixStack, @Nonnull MultiBufferSource buffer, int combinedLight, int combinedOverlay) {
 
-        te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
+        te.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(h -> {
             matrixStack.pushPose();
 
             ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
