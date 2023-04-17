@@ -237,6 +237,9 @@ public class DynamicDimensionManager {
 //        Registry.register(worldGenSettings.dimensions(), dimensionKey, dimension);
         Registry<LevelStem> dimensionRegistry = worldGenSettings.dimensions();
         if (dimensionRegistry instanceof WritableRegistry<LevelStem> writableRegistry) {
+            if (dimensionRegistry instanceof MappedRegistry<LevelStem> mr) {
+                mr.unfreeze();
+            }
             writableRegistry.register(dimensionKey, dimension, Lifecycle.stable());
         } else {
             throw new IllegalStateException("Unable to register dimension '" + dimensionKey.location() + "'! Registry not writable!");

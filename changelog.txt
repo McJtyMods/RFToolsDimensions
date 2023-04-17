@@ -1,3 +1,6 @@
+Upcoming:
+- Potentially fixed a bug in combination with other mods that freeze the dimension registry
+
 1.19.2-9.1.5:
 - Fixed a problem with the knowledge for biome dimlets
 
