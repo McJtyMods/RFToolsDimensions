@@ -135,7 +135,7 @@ public class KnowledgeManager {
         return level.registryAccess().registryOrThrow(Registries.BIOME).getHolderOrThrow(ResourceKey.create(Registries.BIOME, rl))
                 .tags()
                 .filter(t -> t.location().getPath().startsWith("is_"))
-                .sorted()
+                .sorted(Comparator.comparing(o -> o.location().getPath()))
                 .findFirst()
                 .map(k -> k.location().toString())
                 .orElse(null);

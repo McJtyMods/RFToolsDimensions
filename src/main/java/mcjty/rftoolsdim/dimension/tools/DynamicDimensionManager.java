@@ -207,7 +207,9 @@ public class DynamicDimensionManager {
                 final ResourceKey<Level> oldLevelKey = ResourceKey.create(Registries.DIMENSION, oldKey.location());
                 final LevelStem dimension = entry.getValue();
                 if (oldKey != null && dimension != null && !removedLevelKeys.contains(oldLevelKey)) {
-//                    newRegistry.register(oldKey, dimension, oldRegistry.lifecycle(dimension));
+                    if (newRegistry instanceof MappedRegistry<LevelStem> mappedRegistry) {
+                        mappedRegistry.unfreeze();
+                    }
                     Registry.register(newRegistry, oldKey, dimension);   // @todo 1.18.2 is this right?
                 }
             }
