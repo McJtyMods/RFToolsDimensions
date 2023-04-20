@@ -1,3 +1,6 @@
+Upcoming:
+- Fixed a bug with the knowledge manager crashing
+
 1.19.2-9.1.6:
 - Potentially fixed a bug in combination with other mods that freeze the dimension registry
 

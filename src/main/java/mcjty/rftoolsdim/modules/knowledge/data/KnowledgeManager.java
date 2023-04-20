@@ -135,7 +135,7 @@ public class KnowledgeManager {
         return BuiltinRegistries.BIOME.getHolderOrThrow(ResourceKey.create(Registry.BIOME_REGISTRY, rl))
                 .tags()
                 .filter(t -> t.location().getPath().startsWith("is_"))
-                .sorted()
+                .sorted(Comparator.comparing(o -> o.location().getPath()))
                 .findFirst()
                 .map(k -> k.location().toString())
                 .orElse(null);
