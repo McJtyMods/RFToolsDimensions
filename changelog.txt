@@ -1,3 +1,7 @@
+Upcoming:
+- Potentially fixed a bug in combination with other mods that freeze the dimension registry
+- Fixed a bug with the knowledge manager crashing
+
 1.19.4-10.1.2:
 - Fixed a problem with the knowledge for biome dimlets
 
