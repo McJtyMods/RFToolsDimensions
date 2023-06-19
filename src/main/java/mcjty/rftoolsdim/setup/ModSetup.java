@@ -2,20 +2,15 @@ package mcjty.rftoolsdim.setup;
 
 import mcjty.lib.compat.MainCompatHandler;
 import mcjty.lib.setup.DefaultModSetup;
-import mcjty.rftoolsbase.RFToolsBase;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.commands.ModCommands;
 import mcjty.rftoolsdim.compat.LostCityCompat;
 import mcjty.rftoolsdim.compat.RFToolsUtilityCompat;
 import mcjty.rftoolsdim.dimension.DimensionRegistry;
 import mcjty.rftoolsdim.dimension.biomes.RFTBiomeProvider;
-import mcjty.rftoolsdim.dimension.features.RFTFeature;
-import mcjty.rftoolsdim.dimension.noisesettings.TerrainPresets;
 import mcjty.rftoolsdim.dimension.terraintypes.RFToolsChunkGenerator;
-import mcjty.rftoolsdim.modules.dimlets.DimletModule;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -26,10 +21,6 @@ import static mcjty.rftoolsdim.dimension.DimensionRegistry.RFTOOLS_CHUNKGEN_ID;
 
 @Mod.EventBusSubscriber(modid = RFToolsDim.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ModSetup extends DefaultModSetup {
-
-    public ModSetup() {
-        createTab(RFToolsDim.MODID, "rftoolsdim", () -> new ItemStack(DimletModule.EMPTY_DIMLET.get()));
-    }
 
     @Override
     public void init(FMLCommonSetupEvent e) {
