@@ -252,7 +252,7 @@ public class DimletTools {
     }
 
     public static boolean isFullEssence(ItemStack stack, ItemStack desired, String desiredKey) {
-        if (stack.sameItem(desired)) {
+        if (ItemStack.isSameItem(stack, desired)) {
             if (stack.getItem() == EssencesModule.BIOME_ABSORBER_ITEM.get()) {
                 String biome = BiomeAbsorberTileEntity.getBiome(stack);
                 if (Objects.equals(desiredKey, biome)) {

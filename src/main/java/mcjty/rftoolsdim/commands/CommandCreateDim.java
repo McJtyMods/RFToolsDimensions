@@ -36,7 +36,7 @@ public class CommandCreateDim implements Command<CommandSourceStack> {
         String error = DimensionCreator.get().createDimension(context.getSource().getLevel(), name, seed,
                 descriptor, context.getSource().getPlayerOrException().getUUID());
         if (error != null) {
-            context.getSource().sendSuccess(ComponentFactory.literal(ChatFormatting.RED + error), true);
+            context.getSource().sendSuccess(() -> ComponentFactory.literal(ChatFormatting.RED + error), true);
         }
         return 0;
     }

@@ -12,6 +12,7 @@ import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.modules.dimensionbuilder.DimensionBuilderModule;
 import mcjty.rftoolsdim.modules.dimensioneditor.DimensionEditorModule;
 import mcjty.rftoolsdim.modules.dimensioneditor.blocks.DimensionEditorTileEntity;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.Items;
@@ -60,7 +61,7 @@ public class GuiDimensionEditor extends GenericGuiContainer<DimensionEditorTileE
     }
 
     @Override
-    protected void renderBg(@Nonnull PoseStack matrixStack, float partialTicks, int x, int y) {
+    protected void renderBg(@Nonnull GuiGraphics graphics, float partialTicks, int x, int y) {
         int pct = tileEntity.getEditPercentage();
         if (pct > 0) {
             arrow.image(iconGuiElements, 144, 0);
@@ -77,7 +78,7 @@ public class GuiDimensionEditor extends GenericGuiContainer<DimensionEditorTileE
             }
         }
 
-        drawWindow(matrixStack);
+        drawWindow(graphics);
         updateEnergyBar(energyBar);
     }
 }

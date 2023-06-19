@@ -18,6 +18,7 @@ import mcjty.rftoolsdim.modules.enscriber.EnscriberModule;
 import mcjty.rftoolsdim.modules.enscriber.blocks.EnscriberTileEntity;
 import mcjty.rftoolsdim.setup.RFToolsDimMessages;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
@@ -137,7 +138,7 @@ public class GuiEnscriber extends GenericGuiContainer<EnscriberTileEntity, Gener
     }
 
     @Override
-    protected void renderBg(@Nonnull PoseStack matrixStack, float partialTicks, int x, int y) {
+    protected void renderBg(@Nonnull GuiGraphics graphics, float partialTicks, int x, int y) {
         enableButtons();
         validateDimlets();
 
@@ -154,7 +155,7 @@ public class GuiEnscriber extends GenericGuiContainer<EnscriberTileEntity, Gener
 
         setNameFromDimensionTab();
 
-        drawWindow(matrixStack);
+        drawWindow(graphics);
     }
 
     private void setNameFromDimensionTab() {

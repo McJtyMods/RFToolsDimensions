@@ -81,8 +81,8 @@ public class DimensionalBlobEntity extends Monster {
     @Override
     public void aiStep() {
         super.aiStep();
-        if (!level.isClientSide) {
-            DimensionData data = PersistantDimensionManager.get(level).getData(level.dimension().location());
+        if (!level().isClientSide) {
+            DimensionData data = PersistantDimensionManager.get(level()).getData(level().dimension().location());
             if (data != null) {
                 if (data.getEnergy() >= BlobConfig.BLOB_REGENERATION_LEVEL.get()) {
                     tickCounter--;
@@ -162,7 +162,7 @@ public class DimensionalBlobEntity extends Monster {
     @Override
     public void tick() {
         super.tick();
-        if (level.isClientSide) {
+        if (level().isClientSide) {
             this.squishFactor += (this.squishAmount - this.squishFactor) * 0.5F;
             this.prevSquishFactor = this.squishFactor;
 
@@ -175,7 +175,7 @@ public class DimensionalBlobEntity extends Monster {
             this.squishAmount *= 0.6F;
         } else {
             if (random.nextFloat() < .05) {
-                List<Player> players = level.getNearbyPlayers(PREDICATE, this, targetBox);
+                List<Player> players = level().getNearbyPlayers(PREDICATE, this, targetBox);
                 for (Player player : players) {
                     infectPlayer(player);
                 }

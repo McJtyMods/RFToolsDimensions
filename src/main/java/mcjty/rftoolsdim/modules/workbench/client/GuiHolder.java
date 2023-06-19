@@ -8,6 +8,7 @@ import mcjty.lib.gui.widgets.Panel;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.modules.workbench.WorkbenchModule;
 import mcjty.rftoolsdim.modules.workbench.blocks.KnowledgeHolderTileEntity;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.resources.ResourceLocation;
 
@@ -40,7 +41,7 @@ public class GuiHolder extends GenericGuiContainer<KnowledgeHolderTileEntity, Ge
     }
 
     @Override
-    protected void renderBg(@Nonnull PoseStack matrixStack, float partialTicks, int x, int y) {
-        drawWindow(matrixStack);
+    protected void renderBg(@Nonnull GuiGraphics graphics, float partialTicks, int x, int y) {
+        drawWindow(graphics);
     }
 }

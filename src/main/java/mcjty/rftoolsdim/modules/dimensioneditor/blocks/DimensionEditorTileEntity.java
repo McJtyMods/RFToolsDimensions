@@ -300,7 +300,7 @@ public class DimensionEditorTileEntity extends TickingTileEntity {
 
 
         BlockState state = world.getBlockState(new BlockPos(x, y + 1, z));
-        while (state.getMaterial().isLiquid()) {
+        while (state.liquid()) {
             y++;
             if (y > world.getHeight() - 10) {
                 return -1;

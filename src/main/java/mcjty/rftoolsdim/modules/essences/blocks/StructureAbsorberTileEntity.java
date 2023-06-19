@@ -20,7 +20,6 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +37,7 @@ public class StructureAbsorberTileEntity extends TickingTileEntity {
 
     public static BaseBlock createBlock() {
         return new BaseBlock(new BlockBuilder()
-                .properties(BlockBehaviour.Properties.of(Material.METAL)
+                .properties(BlockBehaviour.Properties.of()
                         .strength(2.0f)
                         .sound(SoundType.METAL)
                         .noOcclusion())

@@ -36,7 +36,8 @@ public class CommandListDim implements Command<CommandSourceStack> {
             if (data != null) {
                 output += " (" + data.getEnergy() + ")";
             }
-            context.getSource().sendSuccess(ComponentFactory.literal(output), true);
+            String finalOutput = output;
+            context.getSource().sendSuccess(() -> ComponentFactory.literal(finalOutput), true);
         }
         return 0;
     }

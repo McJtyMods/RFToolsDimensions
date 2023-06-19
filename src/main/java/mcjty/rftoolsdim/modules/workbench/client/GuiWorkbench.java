@@ -23,6 +23,7 @@ import mcjty.rftoolsdim.modules.workbench.WorkbenchModule;
 import mcjty.rftoolsdim.modules.workbench.blocks.WorkbenchTileEntity;
 import mcjty.rftoolsdim.setup.RFToolsDimMessages;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -121,9 +122,10 @@ public class GuiWorkbench extends GenericGuiContainer<WorkbenchTileEntity, Gener
         GuiWorkbench.pattern = pattern;
     }
 
-    private void renderHilightedPattern(PoseStack matrixStack) {
+    private void renderHilightedPattern(GuiGraphics graphics) {
         if (pattern != null) {
             com.mojang.blaze3d.platform.Lighting.setupFor3DItems();
+            PoseStack matrixStack = graphics.pose();
             matrixStack.pushPose();
 //            itemRenderer.blitOffset = 100.0F;
             matrixStack.translate(leftPos, topPos, 100.0F);
@@ -141,7 +143,9 @@ public class GuiWorkbench extends GenericGuiContainer<WorkbenchTileEntity, Gener
                         Slot slot = menu.getSlot(slotIdx);
                         if (!slot.hasItem()) {
                             RenderSystem.setShaderTexture(0, InventoryMenu.BLOCK_ATLAS);
-                            itemRenderer.renderAndDecorateItem(matrixStack, stack, leftPos + slot.x, topPos + slot.y);
+                            graphics.renderItem(stack, leftPos + slot.x, topPos + slot.y);
+                            graphics.renderItemDecorations(font, stack, leftPos + slot.x, topPos + slot.y);
+//                            itemRenderer.renderAndDecorateItem(matrixStack, stack, leftPos + slot.x, topPos + slot.y);
 
                             RenderSystem.enableBlend();
                             RenderSystem.disableDepthTest();
@@ -250,9 +254,9 @@ public class GuiWorkbench extends GenericGuiContainer<WorkbenchTileEntity, Gener
     }
 
     @Override
-    protected void renderBg(@Nonnull PoseStack matrixStack, float partialTicks, int x, int y) {
+    protected void renderBg(@Nonnull GuiGraphics graphics, float partialTicks, int x, int y) {
         updateList();
-        drawWindow(matrixStack);
-        renderHilightedPattern(matrixStack);
+        drawWindow(graphics);
+        renderHilightedPattern(graphics);
     }
 }

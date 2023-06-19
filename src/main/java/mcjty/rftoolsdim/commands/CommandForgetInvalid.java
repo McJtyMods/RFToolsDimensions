@@ -41,7 +41,7 @@ public class CommandForgetInvalid implements Command<CommandSourceStack> {
             CompiledDescriptor descriptor = DimensionCreator.get().getCompiledDescriptor(world, entry.getKey());
             if (descriptor == null) {
                 mgr.forget(entry.getKey());
-                context.getSource().sendSuccess(ComponentFactory.literal(ChatFormatting.YELLOW + "Removed '" + entry.getKey() + "'"), false);
+                context.getSource().sendSuccess(() -> ComponentFactory.literal(ChatFormatting.YELLOW + "Removed '" + entry.getKey() + "'"), false);
             }
         }
         return 0;

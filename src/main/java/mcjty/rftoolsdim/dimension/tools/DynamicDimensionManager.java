@@ -287,7 +287,8 @@ public class DynamicDimensionManager {
                 // this is always empty for non-overworld dimensions (including json dimensions)
                 // these spawners are ticked when the world ticks to do their spawning logic,
                 // mods that need "special spawns" for their own dimensions should implement them via tick events or other systems
-                false // "tick time", true for overworld, always false for nether, end, and json dimensions
+                false, // "tick time", true for overworld, always false for nether, end, and json dimensions
+                null // @todo 1.20, what is this?
         );
 
         // add world border listener, for parity with json dimensions

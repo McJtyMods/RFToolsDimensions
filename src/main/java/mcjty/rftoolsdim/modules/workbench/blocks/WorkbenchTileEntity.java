@@ -185,7 +185,7 @@ public class WorkbenchTileEntity extends GenericTileEntity {
         if (!isCraftable(getSupportedKnowledgeKeys(), key)) {
             return;
         }
-        ServerLevel overworld = LevelTools.getOverworld(player.level);
+        ServerLevel overworld = LevelTools.getOverworld(player.level());
         DimletPattern pattern = KnowledgeManager.get().getPattern(overworld, overworld.getSeed(), key);
         if (pattern != null) {
             String[] p = pattern.pattern();
@@ -202,9 +202,9 @@ public class WorkbenchTileEntity extends GenericTileEntity {
             return;
         }
 
-        tryFindAndFitItem(player, s -> s.sameItem(DimletTools.getEmptyDimletStack(key.type())), SLOT_EMPTY_DIMLET);
-        tryFindAndFitItem(player, s -> s.sameItem(DimletTools.getNeededMemoryPart(key)), SLOT_MEMORY_PART);
-        tryFindAndFitItem(player, s -> s.sameItem(DimletTools.getNeededEnergyPart(key)), SLOT_ENERGY_PART);
+        tryFindAndFitItem(player, s -> ItemStack.isSameItem(s, DimletTools.getEmptyDimletStack(key.type())), SLOT_EMPTY_DIMLET);
+        tryFindAndFitItem(player, s -> ItemStack.isSameItem(s, DimletTools.getNeededMemoryPart(key)), SLOT_MEMORY_PART);
+        tryFindAndFitItem(player, s -> ItemStack.isSameItem(s, DimletTools.getNeededEnergyPart(key)), SLOT_ENERGY_PART);
         ItemStack essence = DimletTools.getNeededEssence(key, DimletDictionary.get().getSettings(key));
         if (!essence.isEmpty()) {
             tryFindAndFitItem(player, s -> DimletTools.isFullEssence(s, essence, key.key()), SLOT_ESSENCE);
@@ -221,7 +221,7 @@ public class WorkbenchTileEntity extends GenericTileEntity {
                 for (int x = 0; x < value.length(); x++) {
                     ItemStack neededPattern = KnowledgeManager.getPatternItem(value.charAt(x));
                     if (!neededPattern.isEmpty()) {
-                        tryFindAndFitItem(player, s -> s.sameItem(neededPattern), slotNumber);
+                        tryFindAndFitItem(player, s -> ItemStack.isSameItem(s, neededPattern), slotNumber);
                     } else {
                         tryFindAndFitItem(player, s -> false, slotNumber);
                     }

@@ -28,13 +28,11 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.level.material.Material;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nonnull;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Random;
 import java.util.Set;
 
 import static mcjty.lib.builder.TooltipBuilder.*;
@@ -56,7 +54,7 @@ public class FluidAbsorberTileEntity extends TickingTileEntity {
 
     public static BaseBlock createBlock() {
         return new BaseBlock(new BlockBuilder()
-                .properties(BlockBehaviour.Properties.of(Material.METAL)
+                .properties(BlockBehaviour.Properties.of()
                         .strength(2.0f)
                         .sound(SoundType.METAL)
                         .noOcclusion())

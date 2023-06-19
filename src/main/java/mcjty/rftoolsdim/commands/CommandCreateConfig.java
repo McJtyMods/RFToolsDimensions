@@ -34,7 +34,7 @@ public class CommandCreateConfig implements Command<CommandSourceStack> {
         try {
             DimletPackages.writePackage(filename, modid);
         } catch (IOException e) {
-            context.getSource().sendSuccess(ComponentFactory.literal(ChatFormatting.RED + e.getMessage()), true);
+            context.getSource().sendSuccess(() -> ComponentFactory.literal(ChatFormatting.RED + e.getMessage()), true);
         }
         return 0;
     }

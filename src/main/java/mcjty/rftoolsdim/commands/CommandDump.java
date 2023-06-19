@@ -68,6 +68,6 @@ public class CommandDump implements Command<CommandSourceStack> {
     }
 
     private void feedback(CommandContext<CommandSourceStack> context, String message) {
-        context.getSource().sendSuccess(ComponentFactory.literal(message), false);
+        context.getSource().sendSuccess(() -> ComponentFactory.literal(message), false);
     }
 }

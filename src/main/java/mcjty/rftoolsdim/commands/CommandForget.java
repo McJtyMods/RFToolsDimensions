@@ -32,7 +32,7 @@ public class CommandForget implements Command<CommandSourceStack> {
         String name = context.getArgument("name", String.class);
         PersistantDimensionManager mgr = PersistantDimensionManager.get(context.getSource().getLevel());
         mgr.forget(new ResourceLocation(RFToolsDim.MODID, name));
-        context.getSource().sendSuccess(ComponentFactory.literal(ChatFormatting.YELLOW + "Removed '" + name + "'"), false);
+        context.getSource().sendSuccess(() -> ComponentFactory.literal(ChatFormatting.YELLOW + "Removed '" + name + "'"), false);
         return 0;
     }
 }

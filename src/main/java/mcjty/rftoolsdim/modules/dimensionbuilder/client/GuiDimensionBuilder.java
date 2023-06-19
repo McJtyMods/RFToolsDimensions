@@ -12,6 +12,7 @@ import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.modules.dimensionbuilder.DimensionBuilderModule;
 import mcjty.rftoolsdim.modules.dimensionbuilder.blocks.DimensionBuilderTileEntity;
 import mcjty.rftoolsdim.setup.RFToolsDimMessages;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.resources.ResourceLocation;
 
@@ -69,7 +70,7 @@ public class GuiDimensionBuilder extends GenericGuiContainer<DimensionBuilderTil
     }
 
     @Override
-    protected void renderBg(@Nonnull PoseStack matrixStack, float partialTicks, int x, int y) {
+    protected void renderBg(@Nonnull GuiGraphics graphics, float partialTicks, int x, int y) {
         int pct = tileEntity.getBuildPercentage();
         int error = tileEntity.getErrorMode();
 
@@ -94,7 +95,7 @@ public class GuiDimensionBuilder extends GenericGuiContainer<DimensionBuilderTil
             error2.text("");
         }
 
-        drawWindow(matrixStack);
+        drawWindow(graphics);
         updateEnergyBar(energyBar);
     }
 }

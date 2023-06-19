@@ -134,7 +134,7 @@ public class DimletModule implements IModule {
                                 " p ", "psp", " p ")
                         .loot(p -> {
                             LootPool.Builder builder = LootPool.lootPool()
-                                    .name(DimensionRegistry.HUT_LOOT.getPath())
+//                                    .name(DimensionRegistry.HUT_LOOT.getPath())   @todo 1.20
                                     .setRolls(UniformGenerator.between(1, 5))
                                     .add(DimletLootEntry.builder(DimletRarity.COMMON)
                                             .setWeight(14)

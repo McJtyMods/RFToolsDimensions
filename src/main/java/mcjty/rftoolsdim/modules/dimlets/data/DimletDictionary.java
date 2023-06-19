@@ -52,8 +52,8 @@ public class DimletDictionary {
         for (Map.Entry<DimletKey, DimletSettings> entry : dimlets.entrySet()) {
             DimletKey key = entry.getKey();
             if (type.equals(key.type())) {
-                if (memoryPart.sameItem(DimletTools.getNeededMemoryPart(key))) {
-                    if (energyPart.sameItem(DimletTools.getNeededEnergyPart(key))) {
+                if (ItemStack.isSameItem(memoryPart, DimletTools.getNeededMemoryPart(key))) {
+                    if (ItemStack.isSameItem(energyPart, DimletTools.getNeededEnergyPart(key))) {
                         ItemStack neededEssence = DimletTools.getNeededEssence(key, entry.getValue());
                         if (DimletTools.isFullEssence(essence, neededEssence, key.key())) {
                             ServerLevel overworld = LevelTools.getOverworld(world);

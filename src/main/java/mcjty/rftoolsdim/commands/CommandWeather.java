@@ -27,7 +27,7 @@ public class CommandWeather implements Command<CommandSourceStack> {
         ServerLevel level = context.getSource().getLevel();
         level.setWeatherParameters(600000, 0, false, false);
         level.getServer().getLevel(Level.OVERWORLD).setWeatherParameters(600000, 0, false, false);
-        context.getSource().sendSuccess(ComponentFactory.translatable("commands.weather.set.clear"), true);
+        context.getSource().sendSuccess(() -> ComponentFactory.translatable("commands.weather.set.clear"), true);
         return 0;
     }
 }

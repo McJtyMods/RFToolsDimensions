@@ -22,9 +22,6 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
-
-import java.util.Random;
 
 import static mcjty.lib.builder.TooltipBuilder.*;
 
@@ -39,7 +36,7 @@ public class BiomeAbsorberTileEntity extends TickingTileEntity {
 
     public static BaseBlock createBlock() {
         return new BaseBlock(new BlockBuilder()
-                .properties(BlockBehaviour.Properties.of(Material.METAL)
+                .properties(BlockBehaviour.Properties.of()
                         .strength(2.0f)
                         .sound(SoundType.METAL)
                         .noOcclusion())
