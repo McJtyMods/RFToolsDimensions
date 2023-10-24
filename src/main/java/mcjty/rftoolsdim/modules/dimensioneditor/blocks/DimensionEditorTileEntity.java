@@ -199,27 +199,30 @@ public class DimensionEditorTileEntity extends TickingTileEntity {
 
                     if (isMatterReceiver(injectableItemStack)) {
                         ServerLevel dimWorld = LevelTools.getLevel(level, LevelTools.getId(id));
-                        int y = findGoodReceiverLocation(dimWorld);
-                        if (y == -1) {
-                            y = dimWorld.getHeight() / 2;
-                        }
-                        Item item = injectableItemStack.getItem();
-                        if (item instanceof BlockItem) {
-                            BlockItem itemBlock = (BlockItem) item;
-                            BlockState state = itemBlock.getBlock().defaultBlockState();
-                            BlockPos pos = new BlockPos(8, y, 8);
-                            dimWorld.setBlock(pos, state, Block.UPDATE_NEIGHBORS);
-                            Block block = dimWorld.getBlockState(pos).getBlock();
-                            // @@@@@@@@@@@@@@ check if right?
-                            String name = NBTTools.getInfoNBT(injectableItemStack, CompoundTag::getString, "tpName", "");
-                            long energy = NBTTools.getBlockEntityNBT(injectableItemStack, CompoundTag::getLong, "Energy", 0L);
-                            RFToolsUtilityCompat.createTeleporter(dimWorld, pos, name, (int) energy);
-                            block.setPlacedBy(dimWorld, pos, state, null, injectableItemStack);
+                        if (dimWorld == null) {
+                            Broadcaster.broadcast(level, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), "Dimension does not exist!", 10);
+                        } else {
+                            int y = findGoodReceiverLocation(dimWorld);
+                            if (y == -1) {
+                                y = dimWorld.getHeight() / 2;
+                            }
+                            Item item = injectableItemStack.getItem();
+                            if (item instanceof BlockItem) {
+                                BlockItem itemBlock = (BlockItem) item;
+                                BlockState state = itemBlock.getBlock().defaultBlockState();
+                                BlockPos pos = new BlockPos(8, y, 8);
+                                dimWorld.setBlock(pos, state, Block.UPDATE_NEIGHBORS);
+                                Block block = dimWorld.getBlockState(pos).getBlock();
+                                // @@@@@@@@@@@@@@ check if right?
+                                String name = NBTTools.getInfoNBT(injectableItemStack, CompoundTag::getString, "tpName", "");
+                                long energy = NBTTools.getBlockEntityNBT(injectableItemStack, CompoundTag::getLong, "Energy", 0L);
+                                RFToolsUtilityCompat.createTeleporter(dimWorld, pos, name, (int) energy);
+                                block.setPlacedBy(dimWorld, pos, state, null, injectableItemStack);
 //                            block.onBlockActivated(dimWorld, pos, state, FakePlayerFactory.getMinecraft((WorldServer) dimWorld), EnumHand.MAIN_HAND, EnumFacing.DOWN, 0.0F, 0.0F, 0.0F);
 //                            block.onBlockPlacedBy(dimWorld, pos, state, null, injectableItemStack);
-                            dimWorld.setBlock(pos.above(), Blocks.AIR.defaultBlockState(), Block.UPDATE_NEIGHBORS);
-                            dimWorld.setBlock(pos.above(2), Blocks.AIR.defaultBlockState(), Block.UPDATE_NEIGHBORS);
-
+                                dimWorld.setBlock(pos.above(), Blocks.AIR.defaultBlockState(), Block.UPDATE_NEIGHBORS);
+                                dimWorld.setBlock(pos.above(2), Blocks.AIR.defaultBlockState(), Block.UPDATE_NEIGHBORS);
+                            }
                         }
                     } else if (isTNT(injectableItemStack)) {
                         safeDeleteDimension(id, dimensionItemStack);
@@ -241,7 +244,6 @@ public class DimensionEditorTileEntity extends TickingTileEntity {
         setChanged();
 
         setState();
-
     }
 
     private void safeDeleteDimension(ResourceLocation id, ItemStack dimensionTab) {
