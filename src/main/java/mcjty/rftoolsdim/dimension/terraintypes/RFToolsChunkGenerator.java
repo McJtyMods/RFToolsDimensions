@@ -1,5 +1,6 @@
 package mcjty.rftoolsdim.dimension.terraintypes;
 
+import com.google.common.base.Suppliers;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import mcjty.rftoolsdim.compat.LostCityCompat;
@@ -10,11 +11,13 @@ import mcjty.rftoolsdim.dimension.noisesettings.NoiseSliderBuilder;
 import mcjty.rftoolsdim.dimension.terraintypes.generators.*;
 import mcjty.rftoolsdim.tools.PerlinNoiseGenerator14;
 import net.minecraft.core.Holder;
+import net.minecraft.core.HolderSet;
 import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.world.level.LevelHeightAccessor;
 import net.minecraft.world.level.NoiseColumn;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.biome.BiomeSource;
+import net.minecraft.world.level.biome.FeatureSorter;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ChunkGenerator;
@@ -23,10 +26,13 @@ import net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator;
 import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
 import net.minecraft.world.level.levelgen.RandomState;
 import net.minecraft.world.level.levelgen.blending.Blender;
+import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.level.levelgen.structure.StructureSet;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
@@ -56,6 +62,17 @@ public class RFToolsChunkGenerator extends NoiseBasedChunkGenerator {
         this.dimensionSettings = dimensionSettings;
         this.overrideStructures = overrideStructures;
         this.seed = seed;
+        this.featuresPerStep = Suppliers.memoize(() -> {
+            return FeatureSorter.buildFeaturesPerStep(List.copyOf(biomeSource.possibleBiomes()), (biome) -> {
+                List<HolderSet<PlacedFeature>> features = biome.value().getGenerationSettings().features();
+                List<HolderSet<PlacedFeature>> newFeatures = new ArrayList<>();
+                for (HolderSet<PlacedFeature> set : features) {
+                    List<Holder<PlacedFeature>> list = set.stream().sorted(Comparator.comparing(placedFeatureHolder -> placedFeatureHolder.unwrapKey().get().toString())).toList();
+                    newFeatures.add(HolderSet.direct(list));
+                }
+                return newFeatures;
+            }, true);
+        });
     }
 
     // @todo 1.19.3
