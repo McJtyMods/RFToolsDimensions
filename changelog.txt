@@ -1,4 +1,4 @@
-Upcoming:
+1.20-11.0.2:
 - Fixed a big compatibility problem with mods adding biomes. This could cause dimensions to crash
 
 1.20-11.0.1:
