@@ -14,6 +14,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.RegistryOps;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.world.level.LevelHeightAccessor;
 import net.minecraft.world.level.NoiseColumn;
@@ -77,7 +78,7 @@ public class RFToolsChunkGenerator extends NoiseBasedChunkGenerator {
                 List<HolderSet<PlacedFeature>> features = biome.value().getGenerationSettings().features();
                 List<HolderSet<PlacedFeature>> newFeatures = new ArrayList<>();
                 for (HolderSet<PlacedFeature> set : features) {
-                    List<Holder<PlacedFeature>> list = set.stream().sorted(Comparator.comparing(placedFeatureHolder -> placedFeatureHolder.unwrapKey().get().toString())).toList();
+                    List<Holder<PlacedFeature>> list = set.stream().sorted(Comparator.comparing(placedFeatureHolder -> placedFeatureHolder.unwrapKey().map(ResourceKey::toString).orElse(""))).toList();
                     newFeatures.add(HolderSet.direct(list));
                 }
                 return newFeatures;
