@@ -129,7 +129,7 @@ public class GuiWorkbench extends GenericGuiContainer<WorkbenchTileEntity, Gener
             matrixStack.pushPose();
 //            itemRenderer.blitOffset = 100.0F;
             matrixStack.translate(leftPos, topPos, 100.0F);
-            RenderSystem.setShaderColor(1.0F, 0.0F, 0.0F, 1.0F);
+//            RenderSystem.setShaderColor(1.0F, 0.0F, 0.0F, 1.0F);
 
             GlStateManager._enableDepthTest();
             GlStateManager._disableBlend();
@@ -143,8 +143,8 @@ public class GuiWorkbench extends GenericGuiContainer<WorkbenchTileEntity, Gener
                         Slot slot = menu.getSlot(slotIdx);
                         if (!slot.hasItem()) {
                             RenderSystem.setShaderTexture(0, InventoryMenu.BLOCK_ATLAS);
-                            graphics.renderItem(stack, leftPos + slot.x, topPos + slot.y);
-                            graphics.renderItemDecorations(font, stack, leftPos + slot.x, topPos + slot.y);
+                            graphics.renderItem(stack, slot.x, slot.y);
+                            graphics.renderItemDecorations(font, stack, slot.x, slot.y);
 //                            itemRenderer.renderAndDecorateItem(matrixStack, stack, leftPos + slot.x, topPos + slot.y);
 
                             RenderSystem.enableBlend();
