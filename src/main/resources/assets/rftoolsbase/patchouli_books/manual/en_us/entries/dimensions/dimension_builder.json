@@ -1,7 +1,7 @@
 {
   "name": "Dimension Builder",
   "icon": "rftoolsdim:dimension_builder",
-  "category": "rftoolsdim:category_rftoolsdimensions_dimensions",
+  "category": "rftoolsbase:category_rftoolsdimensions_dimensions",
   "sortnum": 20,
   "pages": [
     {

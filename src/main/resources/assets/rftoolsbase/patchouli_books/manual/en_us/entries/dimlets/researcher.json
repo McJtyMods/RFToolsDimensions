@@ -1,7 +1,7 @@
 {
   "name": "Researcher",
   "icon": "rftoolsdim:researcher",
-  "category": "rftoolsdim:category_rftoolsdimensions_dimlets",
+  "category": "rftoolsbase:category_rftoolsdimensions_dimlets",
   "sortnum": 40,
   "pages": [
     {

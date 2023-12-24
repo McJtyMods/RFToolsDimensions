@@ -1,3 +1,6 @@
+Upcoming:
+- Fixed the manual
+
 1.20-11.0.4:
 - Fixed render glitches in the dimlet workbench
 

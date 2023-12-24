@@ -1,7 +1,7 @@
 {
   "name": "Dimlet Workbench",
   "icon": "rftoolsdim:dimlet_workbench",
-  "category": "rftoolsdim:category_rftoolsdimensions_dimlets",
+  "category": "rftoolsbase:category_rftoolsdimensions_dimlets",
   "sortnum": 20,
   "pages": [
     {

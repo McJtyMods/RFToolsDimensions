@@ -1,7 +1,7 @@
 {
   "name": "Enscriber",
   "icon": "rftoolsdim:enscriber",
-  "category": "rftoolsdim:category_rftoolsdimensions_dimensions",
+  "category": "rftoolsbase:category_rftoolsdimensions_dimensions",
   "sortnum": 10,
   "pages": [
     {

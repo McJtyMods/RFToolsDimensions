@@ -1,7 +1,7 @@
 {
   "name": "Knowledge Holder",
   "icon": "rftoolsdim:knowledge_holder",
-  "category": "rftoolsdim:category_rftoolsdimensions_dimlets",
+  "category": "rftoolsbase:category_rftoolsdimensions_dimlets",
   "sortnum": 30,
   "pages": [
     {
