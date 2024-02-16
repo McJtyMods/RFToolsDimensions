@@ -25,23 +25,25 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.RegistryObject;
 
+import java.util.function.Supplier;
+
 import static mcjty.rftoolsdim.setup.Registration.ENTITIES;
 
 public class BlobModule implements IModule {
 
-    public static final RegistryObject<EntityType<DimensionalBlobEntity>> DIMENSIONAL_BLOB_COMMON = ENTITIES.register("dimensional_blob_common",
+    public static final Supplier<EntityType<DimensionalBlobEntity>> DIMENSIONAL_BLOB_COMMON = ENTITIES.register("dimensional_blob_common",
             () -> EntityType.Builder.of((EntityType<DimensionalBlobEntity> type, Level world) -> new DimensionalBlobEntity(type, world, DimletRarity.COMMON),
                     MobCategory.MONSTER)
                     .sized(1.0F, 1.0F)
                     .setShouldReceiveVelocityUpdates(false)
                     .build("dimensional_blob_common"));
-    public static final RegistryObject<EntityType<DimensionalBlobEntity>> DIMENSIONAL_BLOB_RARE = ENTITIES.register("dimensional_blob_rare",
+    public static final Supplier<EntityType<DimensionalBlobEntity>> DIMENSIONAL_BLOB_RARE = ENTITIES.register("dimensional_blob_rare",
             () -> EntityType.Builder.of((EntityType<DimensionalBlobEntity> type, Level world) -> new DimensionalBlobEntity(type, world, DimletRarity.RARE),
                     MobCategory.MONSTER)
                     .sized(1.3F, 1.3F)
                     .setShouldReceiveVelocityUpdates(false)
                     .build("dimensional_blob_rare"));
-    public static final RegistryObject<EntityType<DimensionalBlobEntity>> DIMENSIONAL_BLOB_LEGENDARY = ENTITIES.register("dimensional_blob_legendary",
+    public static final Supplier<EntityType<DimensionalBlobEntity>> DIMENSIONAL_BLOB_LEGENDARY = ENTITIES.register("dimensional_blob_legendary",
             () -> EntityType.Builder.of((EntityType<DimensionalBlobEntity> type, Level world) -> new DimensionalBlobEntity(type, world, DimletRarity.LEGENDARY),
                     MobCategory.MONSTER)
                     .sized(1.8F, 1.8F)

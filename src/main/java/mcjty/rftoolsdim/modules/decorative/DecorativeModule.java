@@ -5,6 +5,8 @@ import mcjty.lib.builder.BlockBuilder;
 import mcjty.lib.datagen.DataGen;
 import mcjty.lib.datagen.Dob;
 import mcjty.lib.modules.IModule;
+import mcjty.lib.setup.DeferredBlock;
+import mcjty.lib.setup.DeferredItem;
 import mcjty.rftoolsbase.modules.various.VariousModule;
 import mcjty.rftoolsdim.setup.Registration;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
@@ -24,26 +26,26 @@ import static net.minecraftforge.client.model.generators.ModelProvider.BLOCK_FOL
 
 public class DecorativeModule implements IModule {
 
-    public static final RegistryObject<Block> DIMENSIONAL_BLANK = BLOCKS.register("dimensional_blank_block", () -> new Block(BlockBuilder.STANDARD_IRON));
-    public static final RegistryObject<Item> DIMENSIONAL_BLANK_ITEM = ITEMS.register("dimensional_blank_block", tab(() -> new BlockItem(DIMENSIONAL_BLANK.get(), Registration.createStandardProperties())));
+    public static final DeferredBlock<Block> DIMENSIONAL_BLANK = BLOCKS.register("dimensional_blank_block", () -> new Block(BlockBuilder.STANDARD_IRON));
+    public static final DeferredItem<Item> DIMENSIONAL_BLANK_ITEM = ITEMS.register("dimensional_blank_block", tab(() -> new BlockItem(DIMENSIONAL_BLANK.get(), Registration.createStandardProperties())));
 
-    public static final RegistryObject<Block> DIMENSIONAL_BLOCK = BLOCKS.register("dimensional_block", () -> new Block(BlockBuilder.STANDARD_IRON));
-    public static final RegistryObject<Item> DIMENSIONAL_BLOCK_ITEM = ITEMS.register("dimensional_block", tab(() -> new BlockItem(DIMENSIONAL_BLOCK.get(), Registration.createStandardProperties())));
+    public static final DeferredBlock<Block> DIMENSIONAL_BLOCK = BLOCKS.register("dimensional_block", () -> new Block(BlockBuilder.STANDARD_IRON));
+    public static final DeferredItem<Item> DIMENSIONAL_BLOCK_ITEM = ITEMS.register("dimensional_block", tab(() -> new BlockItem(DIMENSIONAL_BLOCK.get(), Registration.createStandardProperties())));
 
-    public static final RegistryObject<Block> DIMENSIONAL_SMALL_BLOCK = BLOCKS.register("dimensional_small_blocks", () -> new Block(BlockBuilder.STANDARD_IRON));
-    public static final RegistryObject<Item> DIMENSIONAL_SMALL_BLOCK_ITEM = ITEMS.register("dimensional_small_blocks", tab(() -> new BlockItem(DIMENSIONAL_SMALL_BLOCK.get(), Registration.createStandardProperties())));
+    public static final DeferredBlock<Block> DIMENSIONAL_SMALL_BLOCK = BLOCKS.register("dimensional_small_blocks", () -> new Block(BlockBuilder.STANDARD_IRON));
+    public static final DeferredItem<Item> DIMENSIONAL_SMALL_BLOCK_ITEM = ITEMS.register("dimensional_small_blocks", tab(() -> new BlockItem(DIMENSIONAL_SMALL_BLOCK.get(), Registration.createStandardProperties())));
 
-    public static final RegistryObject<Block> DIMENSIONAL_CROSS_BLOCK = BLOCKS.register("dimensional_cross_block", () -> new Block(BlockBuilder.STANDARD_IRON));
-    public static final RegistryObject<Item> DIMENSIONAL_CROSS_BLOCK_ITEM = ITEMS.register("dimensional_cross_block", tab(() -> new BlockItem(DIMENSIONAL_CROSS_BLOCK.get(), Registration.createStandardProperties())));
+    public static final DeferredBlock<Block> DIMENSIONAL_CROSS_BLOCK = BLOCKS.register("dimensional_cross_block", () -> new Block(BlockBuilder.STANDARD_IRON));
+    public static final DeferredItem<Item> DIMENSIONAL_CROSS_BLOCK_ITEM = ITEMS.register("dimensional_cross_block", tab(() -> new BlockItem(DIMENSIONAL_CROSS_BLOCK.get(), Registration.createStandardProperties())));
 
-    public static final RegistryObject<Block> DIMENSIONAL_CROSS2_BLOCK = BLOCKS.register("dimensional_cross2_block", () -> new Block(BlockBuilder.STANDARD_IRON));
-    public static final RegistryObject<Item> DIMENSIONAL_CROSS2_BLOCK_ITEM = ITEMS.register("dimensional_cross2_block", tab(() -> new BlockItem(DIMENSIONAL_CROSS2_BLOCK.get(), Registration.createStandardProperties())));
+    public static final DeferredBlock<Block> DIMENSIONAL_CROSS2_BLOCK = BLOCKS.register("dimensional_cross2_block", () -> new Block(BlockBuilder.STANDARD_IRON));
+    public static final DeferredItem<Item> DIMENSIONAL_CROSS2_BLOCK_ITEM = ITEMS.register("dimensional_cross2_block", tab(() -> new BlockItem(DIMENSIONAL_CROSS2_BLOCK.get(), Registration.createStandardProperties())));
 
-    public static final RegistryObject<Block> DIMENSIONAL_PATTERN1_BLOCK = BLOCKS.register("dimensional_pattern1_block", () -> new Block(BlockBuilder.STANDARD_IRON));
-    public static final RegistryObject<Item> DIMENSIONAL_PATTERN1_BLOCK_ITEM = ITEMS.register("dimensional_pattern1_block", tab(() -> new BlockItem(DIMENSIONAL_PATTERN1_BLOCK.get(), Registration.createStandardProperties())));
+    public static final DeferredBlock<Block> DIMENSIONAL_PATTERN1_BLOCK = BLOCKS.register("dimensional_pattern1_block", () -> new Block(BlockBuilder.STANDARD_IRON));
+    public static final DeferredItem<Item> DIMENSIONAL_PATTERN1_BLOCK_ITEM = ITEMS.register("dimensional_pattern1_block", tab(() -> new BlockItem(DIMENSIONAL_PATTERN1_BLOCK.get(), Registration.createStandardProperties())));
 
-    public static final RegistryObject<Block> DIMENSIONAL_PATTERN2_BLOCK = BLOCKS.register("dimensional_pattern2_block", () -> new Block(BlockBuilder.STANDARD_IRON));
-    public static final RegistryObject<Item> DIMENSIONAL_PATTERN2_BLOCK_ITEM = ITEMS.register("dimensional_pattern2_block", tab(() -> new BlockItem(DIMENSIONAL_PATTERN2_BLOCK.get(), Registration.createStandardProperties())));
+    public static final DeferredBlock<Block> DIMENSIONAL_PATTERN2_BLOCK = BLOCKS.register("dimensional_pattern2_block", () -> new Block(BlockBuilder.STANDARD_IRON));
+    public static final DeferredItem<Item> DIMENSIONAL_PATTERN2_BLOCK_ITEM = ITEMS.register("dimensional_pattern2_block", tab(() -> new BlockItem(DIMENSIONAL_PATTERN2_BLOCK.get(), Registration.createStandardProperties())));
 
     @Override
     public void init(FMLCommonSetupEvent event) {

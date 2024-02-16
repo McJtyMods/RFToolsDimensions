@@ -3,6 +3,7 @@ package mcjty.rftoolsdim.modules.knowledge;
 import mcjty.lib.datagen.DataGen;
 import mcjty.lib.datagen.Dob;
 import mcjty.lib.modules.IModule;
+import mcjty.lib.setup.DeferredItem;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletRarity;
 import mcjty.rftoolsdim.modules.knowledge.data.KnowledgeManager;
 import mcjty.rftoolsdim.modules.knowledge.items.LostKnowledgeItem;
@@ -18,10 +19,10 @@ import static mcjty.rftoolsdim.setup.Registration.ITEMS;
 
 public class KnowledgeModule implements IModule {
 
-    public static final RegistryObject<LostKnowledgeItem> COMMON_LOST_KNOWLEDGE = ITEMS.register("common_lost_knowledge", tab(() -> new LostKnowledgeItem(DimletRarity.COMMON)));
-    public static final RegistryObject<LostKnowledgeItem> UNCOMMON_LOST_KNOWLEDGE = ITEMS.register("uncommon_lost_knowledge", tab(() -> new LostKnowledgeItem(DimletRarity.UNCOMMON)));
-    public static final RegistryObject<LostKnowledgeItem> RARE_LOST_KNOWLEDGE = ITEMS.register("rare_lost_knowledge", tab(() -> new LostKnowledgeItem(DimletRarity.RARE)));
-    public static final RegistryObject<LostKnowledgeItem> LEGENDARY_LOST_KNOWLEDGE = ITEMS.register("legendary_lost_knowledge", tab(() -> new LostKnowledgeItem(DimletRarity.LEGENDARY)));
+    public static final DeferredItem<LostKnowledgeItem> COMMON_LOST_KNOWLEDGE = ITEMS.register("common_lost_knowledge", tab(() -> new LostKnowledgeItem(DimletRarity.COMMON)));
+    public static final DeferredItem<LostKnowledgeItem> UNCOMMON_LOST_KNOWLEDGE = ITEMS.register("uncommon_lost_knowledge", tab(() -> new LostKnowledgeItem(DimletRarity.UNCOMMON)));
+    public static final DeferredItem<LostKnowledgeItem> RARE_LOST_KNOWLEDGE = ITEMS.register("rare_lost_knowledge", tab(() -> new LostKnowledgeItem(DimletRarity.RARE)));
+    public static final DeferredItem<LostKnowledgeItem> LEGENDARY_LOST_KNOWLEDGE = ITEMS.register("legendary_lost_knowledge", tab(() -> new LostKnowledgeItem(DimletRarity.LEGENDARY)));
 
     public KnowledgeModule() {
         MinecraftForge.EVENT_BUS.addListener(this::onWorldLoad);

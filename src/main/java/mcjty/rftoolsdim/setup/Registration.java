@@ -2,6 +2,8 @@ package mcjty.rftoolsdim.setup;
 
 
 import com.mojang.serialization.Codec;
+import mcjty.lib.setup.DeferredBlocks;
+import mcjty.lib.setup.DeferredItems;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.dimension.features.RFTFeature;
 import mcjty.rftoolsdim.modules.dimlets.DimletModule;
@@ -27,14 +29,16 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
+import java.util.function.Supplier;
+
 import static mcjty.rftoolsdim.RFToolsDim.MODID;
 
 public class Registration {
 
     public static RegistryObject<Item> DIMENSIONAL_SHARD = RegistryObject.create(new ResourceLocation("rftoolsbase", "dimensionalshard"), ForgeRegistries.ITEMS);
 
-    public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, MODID);
-    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MODID);
+    public static final DeferredBlocks BLOCKS = DeferredBlocks.create(MODID);
+    public static final DeferredItems ITEMS = DeferredItems.create(MODID);
     public static final DeferredRegister<BlockEntityType<?>> TILES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, MODID);
     public static final DeferredRegister<MenuType<?>> CONTAINERS = DeferredRegister.create(ForgeRegistries.MENU_TYPES, MODID);
     public static final DeferredRegister<SoundEvent> SOUNDS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, MODID);
@@ -60,7 +64,7 @@ public class Registration {
     }
 
 
-    public static final RegistryObject<RFTFeature> RFTFEATURE = FEATURES.register(
+    public static final Supplier<RFTFeature> RFTFEATURE = FEATURES.register(
             RFTFeature.RFTFEATURE_ID.getPath(),
             () -> new RFTFeature(NoneFeatureConfiguration.CODEC));
 

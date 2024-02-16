@@ -1,35 +1,32 @@
 package mcjty.rftoolsdim.dimension.network;
 
+import mcjty.lib.network.CustomPacketPayload;
+import mcjty.lib.network.PlayPayloadContext;
+import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.dimension.data.ClientDimensionData;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.network.NetworkEvent;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Supplier;
 
-public class PackagePropageDataToClients {
+public record PackagePropageDataToClients(Map<ResourceLocation, ClientDimensionData.ClientData> clientDataMap, long seed) implements CustomPacketPayload  {
 
-    private final Map<ResourceLocation, ClientDimensionData.ClientData> clientDataMap;
-    private final long seed;
+    public static final ResourceLocation ID = new ResourceLocation(RFToolsDim.MODID, "propagate_data_to_clients");
 
-    public PackagePropageDataToClients(FriendlyByteBuf buf) {
+    public static PackagePropageDataToClients create(FriendlyByteBuf buf) {
         int size = buf.readInt();
-        clientDataMap = new HashMap<>(size);
+        Map<ResourceLocation, ClientDimensionData.ClientData> clientDataMap = new HashMap<>(size);
         for (int i = 0 ; i < size ; i++) {
             ResourceLocation id = buf.readResourceLocation();
             clientDataMap.put(id, ClientDimensionData.ClientData.create(buf));
         }
-        seed = buf.readLong();
+        long seed = buf.readLong();
+        return new PackagePropageDataToClients(clientDataMap, seed);
     }
 
-    public PackagePropageDataToClients(Map<ResourceLocation, ClientDimensionData.ClientData> clientDataMap, long seed) {
-        this.clientDataMap = clientDataMap;
-        this.seed = seed;
-    }
-
-    public void toBytes(FriendlyByteBuf buf) {
+    @Override
+    public void write(FriendlyByteBuf buf) {
         buf.writeInt(clientDataMap.size());
         for (var entry : clientDataMap.entrySet()) {
             buf.writeResourceLocation(entry.getKey());
@@ -38,11 +35,13 @@ public class PackagePropageDataToClients {
         buf.writeLong(seed);
     }
 
+    @Override
+    public ResourceLocation id() {
+        return ID;
+    }
 
-    public void handle(Supplier<NetworkEvent.Context> supplier) {
-        NetworkEvent.Context ctx = supplier.get();
-        ctx.enqueueWork(() -> ClientDimensionData.get().updateDataFromServer(clientDataMap, seed));
-        ctx.setPacketHandled(true);
+    public void handle(PlayPayloadContext ctx) {
+        ctx.workHandler().submitAsync(() -> ClientDimensionData.get().updateDataFromServer(clientDataMap, seed));
     }
 
 }

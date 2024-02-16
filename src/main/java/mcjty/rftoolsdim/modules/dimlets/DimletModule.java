@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import mcjty.lib.datagen.DataGen;
 import mcjty.lib.datagen.Dob;
 import mcjty.lib.modules.IModule;
+import mcjty.lib.setup.DeferredItem;
 import mcjty.rftoolsbase.modules.various.VariousModule;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.dimension.DimensionRegistry;
@@ -43,6 +44,8 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.registries.RegistryObject;
 
+import java.util.function.Supplier;
+
 import static mcjty.lib.datagen.DataGen.has;
 import static mcjty.rftoolsdim.RFToolsDim.tab;
 import static mcjty.rftoolsdim.modules.knowledge.KnowledgeModule.*;
@@ -50,52 +53,52 @@ import static mcjty.rftoolsdim.setup.Registration.*;
 
 public class DimletModule implements IModule {
 
-    public static final RegistryObject<DimletItem> EMPTY_DIMLET = ITEMS.register("empty_dimlet", tab(() -> new DimletItem(null, false)));
+    public static final DeferredItem<DimletItem> EMPTY_DIMLET = ITEMS.register("empty_dimlet", tab(() -> new DimletItem(null, false)));
 
-    public static final RegistryObject<DimletItem> EMPTY_TERRAIN_DIMLET = ITEMS.register("empty_terrain_dimlet", tab(() -> new DimletItem(DimletType.TERRAIN, false)));
-    public static final RegistryObject<DimletItem> EMPTY_ATTRIBUTE_DIMLET = ITEMS.register("empty_attribute_dimlet", tab(() -> new DimletItem(DimletType.ATTRIBUTE, false)));
-    public static final RegistryObject<DimletItem> EMPTY_FEATURE_DIMLET = ITEMS.register("empty_feature_dimlet", tab(() -> new DimletItem(DimletType.FEATURE, false)));
-    public static final RegistryObject<DimletItem> EMPTY_STRUCTURE_DIMLET = ITEMS.register("empty_structure_dimlet", tab(() -> new DimletItem(DimletType.STRUCTURE, false)));
-    public static final RegistryObject<DimletItem> EMPTY_BIOME_DIMLET = ITEMS.register("empty_biome_dimlet", tab(() -> new DimletItem(DimletType.BIOME, false)));
-    public static final RegistryObject<DimletItem> EMPTY_BIOME_CONTROLLER_DIMLET = ITEMS.register("empty_biome_controller_dimlet", tab(() -> new DimletItem(DimletType.BIOME_CONTROLLER, false)));
-    public static final RegistryObject<DimletItem> EMPTY_BIOME_CATEGORY_DIMLET = ITEMS.register("empty_biome_category_dimlet", tab(() -> new DimletItem(DimletType.BIOME_CATEGORY, false)));
-    public static final RegistryObject<DimletItem> EMPTY_BLOCK_DIMLET = ITEMS.register("empty_block_dimlet", tab(() -> new DimletItem(DimletType.BLOCK, false)));
-    public static final RegistryObject<DimletItem> EMPTY_FLUID_DIMLET = ITEMS.register("empty_fluid_dimlet", tab(() -> new DimletItem(DimletType.FLUID, false)));
-    public static final RegistryObject<DimletItem> EMPTY_TIME_DIMLET = ITEMS.register("empty_time_dimlet", tab(() -> new DimletItem(DimletType.TIME, false)));
-    public static final RegistryObject<DimletItem> EMPTY_TAG_DIMLET = ITEMS.register("empty_tag_dimlet", tab(() -> new DimletItem(DimletType.TAG, false)));
-    public static final RegistryObject<DimletItem> EMPTY_SKY_DIMLET = ITEMS.register("empty_sky_dimlet", tab(() -> new DimletItem(DimletType.SKY, false)));
+    public static final DeferredItem<DimletItem> EMPTY_TERRAIN_DIMLET = ITEMS.register("empty_terrain_dimlet", tab(() -> new DimletItem(DimletType.TERRAIN, false)));
+    public static final DeferredItem<DimletItem> EMPTY_ATTRIBUTE_DIMLET = ITEMS.register("empty_attribute_dimlet", tab(() -> new DimletItem(DimletType.ATTRIBUTE, false)));
+    public static final DeferredItem<DimletItem> EMPTY_FEATURE_DIMLET = ITEMS.register("empty_feature_dimlet", tab(() -> new DimletItem(DimletType.FEATURE, false)));
+    public static final DeferredItem<DimletItem> EMPTY_STRUCTURE_DIMLET = ITEMS.register("empty_structure_dimlet", tab(() -> new DimletItem(DimletType.STRUCTURE, false)));
+    public static final DeferredItem<DimletItem> EMPTY_BIOME_DIMLET = ITEMS.register("empty_biome_dimlet", tab(() -> new DimletItem(DimletType.BIOME, false)));
+    public static final DeferredItem<DimletItem> EMPTY_BIOME_CONTROLLER_DIMLET = ITEMS.register("empty_biome_controller_dimlet", tab(() -> new DimletItem(DimletType.BIOME_CONTROLLER, false)));
+    public static final DeferredItem<DimletItem> EMPTY_BIOME_CATEGORY_DIMLET = ITEMS.register("empty_biome_category_dimlet", tab(() -> new DimletItem(DimletType.BIOME_CATEGORY, false)));
+    public static final DeferredItem<DimletItem> EMPTY_BLOCK_DIMLET = ITEMS.register("empty_block_dimlet", tab(() -> new DimletItem(DimletType.BLOCK, false)));
+    public static final DeferredItem<DimletItem> EMPTY_FLUID_DIMLET = ITEMS.register("empty_fluid_dimlet", tab(() -> new DimletItem(DimletType.FLUID, false)));
+    public static final DeferredItem<DimletItem> EMPTY_TIME_DIMLET = ITEMS.register("empty_time_dimlet", tab(() -> new DimletItem(DimletType.TIME, false)));
+    public static final DeferredItem<DimletItem> EMPTY_TAG_DIMLET = ITEMS.register("empty_tag_dimlet", tab(() -> new DimletItem(DimletType.TAG, false)));
+    public static final DeferredItem<DimletItem> EMPTY_SKY_DIMLET = ITEMS.register("empty_sky_dimlet", tab(() -> new DimletItem(DimletType.SKY, false)));
 
-    public static final RegistryObject<DimletItem> TERRAIN_DIMLET = ITEMS.register("terrain_dimlet", tab(() -> new DimletItem(DimletType.TERRAIN, true)));
-    public static final RegistryObject<DimletItem> ATTRIBUTE_DIMLET = ITEMS.register("attribute_dimlet", tab(() -> new DimletItem(DimletType.ATTRIBUTE, true)));
-    public static final RegistryObject<DimletItem> FEATURE_DIMLET = ITEMS.register("feature_dimlet", tab(() -> new DimletItem(DimletType.FEATURE, true)));
-    public static final RegistryObject<DimletItem> STRUCTURE_DIMLET = ITEMS.register("structure_dimlet", tab(() -> new DimletItem(DimletType.STRUCTURE, true)));
-    public static final RegistryObject<DimletItem> BIOME_DIMLET = ITEMS.register("biome_dimlet", tab(() -> new DimletItem(DimletType.BIOME, true)));
-    public static final RegistryObject<DimletItem> BIOME_CONTROLLER_DIMLET = ITEMS.register("biome_controller_dimlet", tab(() -> new DimletItem(DimletType.BIOME_CONTROLLER, true)));
-    public static final RegistryObject<DimletItem> BIOME_CATEGORY_DIMLET = ITEMS.register("biome_category_dimlet", tab(() -> new DimletItem(DimletType.BIOME_CATEGORY, true)));
-    public static final RegistryObject<DimletItem> BLOCK_DIMLET = ITEMS.register("block_dimlet", tab(() -> new DimletItem(DimletType.BLOCK, true)));
-    public static final RegistryObject<DimletItem> FLUID_DIMLET = ITEMS.register("fluid_dimlet", tab(() -> new DimletItem(DimletType.FLUID, true)));
-    public static final RegistryObject<DimletItem> TIME_DIMLET = ITEMS.register("time_dimlet", tab(() -> new DimletItem(DimletType.TIME, true)));
-    public static final RegistryObject<DimletItem> DIGIT_DIMLET = ITEMS.register("digit_dimlet", tab(() -> new DimletItem(DimletType.DIGIT, true)));
-    public static final RegistryObject<DimletItem> TAG_DIMLET = ITEMS.register("tag_dimlet", tab(() -> new DimletItem(DimletType.TAG, true)));
-    public static final RegistryObject<DimletItem> SKY_DIMLET = ITEMS.register("sky_dimlet", tab(() -> new DimletItem(DimletType.SKY, true)));
-    public static final RegistryObject<DimletItem> ADMIN_DIMLET = ITEMS.register("admin_dimlet", tab(() -> new DimletItem(DimletType.ADMIN, true)));
+    public static final DeferredItem<DimletItem> TERRAIN_DIMLET = ITEMS.register("terrain_dimlet", tab(() -> new DimletItem(DimletType.TERRAIN, true)));
+    public static final DeferredItem<DimletItem> ATTRIBUTE_DIMLET = ITEMS.register("attribute_dimlet", tab(() -> new DimletItem(DimletType.ATTRIBUTE, true)));
+    public static final DeferredItem<DimletItem> FEATURE_DIMLET = ITEMS.register("feature_dimlet", tab(() -> new DimletItem(DimletType.FEATURE, true)));
+    public static final DeferredItem<DimletItem> STRUCTURE_DIMLET = ITEMS.register("structure_dimlet", tab(() -> new DimletItem(DimletType.STRUCTURE, true)));
+    public static final DeferredItem<DimletItem> BIOME_DIMLET = ITEMS.register("biome_dimlet", tab(() -> new DimletItem(DimletType.BIOME, true)));
+    public static final DeferredItem<DimletItem> BIOME_CONTROLLER_DIMLET = ITEMS.register("biome_controller_dimlet", tab(() -> new DimletItem(DimletType.BIOME_CONTROLLER, true)));
+    public static final DeferredItem<DimletItem> BIOME_CATEGORY_DIMLET = ITEMS.register("biome_category_dimlet", tab(() -> new DimletItem(DimletType.BIOME_CATEGORY, true)));
+    public static final DeferredItem<DimletItem> BLOCK_DIMLET = ITEMS.register("block_dimlet", tab(() -> new DimletItem(DimletType.BLOCK, true)));
+    public static final DeferredItem<DimletItem> FLUID_DIMLET = ITEMS.register("fluid_dimlet", tab(() -> new DimletItem(DimletType.FLUID, true)));
+    public static final DeferredItem<DimletItem> TIME_DIMLET = ITEMS.register("time_dimlet", tab(() -> new DimletItem(DimletType.TIME, true)));
+    public static final DeferredItem<DimletItem> DIGIT_DIMLET = ITEMS.register("digit_dimlet", tab(() -> new DimletItem(DimletType.DIGIT, true)));
+    public static final DeferredItem<DimletItem> TAG_DIMLET = ITEMS.register("tag_dimlet", tab(() -> new DimletItem(DimletType.TAG, true)));
+    public static final DeferredItem<DimletItem> SKY_DIMLET = ITEMS.register("sky_dimlet", tab(() -> new DimletItem(DimletType.SKY, true)));
+    public static final DeferredItem<DimletItem> ADMIN_DIMLET = ITEMS.register("admin_dimlet", tab(() -> new DimletItem(DimletType.ADMIN, true)));
 
-    public static final RegistryObject<PartItem> PART_ENERGY_0 = ITEMS.register("part_energy_0", tab(PartItem::new));
-    public static final RegistryObject<PartItem> PART_ENERGY_1 = ITEMS.register("part_energy_1", tab(PartItem::new));
-    public static final RegistryObject<PartItem> PART_ENERGY_2 = ITEMS.register("part_energy_2", tab(PartItem::new));
-    public static final RegistryObject<PartItem> PART_ENERGY_3 = ITEMS.register("part_energy_3", tab(PartItem::new));
-    public static final RegistryObject<PartItem> PART_MEMORY_0 = ITEMS.register("part_memory_0", tab(PartItem::new));
-    public static final RegistryObject<PartItem> PART_MEMORY_1 = ITEMS.register("part_memory_1", tab(PartItem::new));
-    public static final RegistryObject<PartItem> PART_MEMORY_2 = ITEMS.register("part_memory_2", tab(PartItem::new));
-    public static final RegistryObject<PartItem> PART_MEMORY_3 = ITEMS.register("part_memory_3", tab(PartItem::new));
+    public static final DeferredItem<PartItem> PART_ENERGY_0 = ITEMS.register("part_energy_0", tab(PartItem::new));
+    public static final DeferredItem<PartItem> PART_ENERGY_1 = ITEMS.register("part_energy_1", tab(PartItem::new));
+    public static final DeferredItem<PartItem> PART_ENERGY_2 = ITEMS.register("part_energy_2", tab(PartItem::new));
+    public static final DeferredItem<PartItem> PART_ENERGY_3 = ITEMS.register("part_energy_3", tab(PartItem::new));
+    public static final DeferredItem<PartItem> PART_MEMORY_0 = ITEMS.register("part_memory_0", tab(PartItem::new));
+    public static final DeferredItem<PartItem> PART_MEMORY_1 = ITEMS.register("part_memory_1", tab(PartItem::new));
+    public static final DeferredItem<PartItem> PART_MEMORY_2 = ITEMS.register("part_memory_2", tab(PartItem::new));
+    public static final DeferredItem<PartItem> PART_MEMORY_3 = ITEMS.register("part_memory_3", tab(PartItem::new));
 
-    public static final RegistryObject<Item> COMMON_ESSENCE = ITEMS.register("common_essence", tab(() -> new Item(Registration.createStandardProperties())));
-    public static final RegistryObject<Item> RARE_ESSENCE = ITEMS.register("rare_essence", tab(() -> new Item(Registration.createStandardProperties())));
-    public static final RegistryObject<Item> LEGENDARY_ESSENCE = ITEMS.register("legendary_essence", tab(() -> new Item(Registration.createStandardProperties())));
+    public static final DeferredItem<Item> COMMON_ESSENCE = ITEMS.register("common_essence", tab(() -> new Item(Registration.createStandardProperties())));
+    public static final DeferredItem<Item> RARE_ESSENCE = ITEMS.register("rare_essence", tab(() -> new Item(Registration.createStandardProperties())));
+    public static final DeferredItem<Item> LEGENDARY_ESSENCE = ITEMS.register("legendary_essence", tab(() -> new Item(Registration.createStandardProperties())));
 
-    public static final RegistryObject<Codec<? extends IGlobalLootModifier>> ENDERMAN_LOOT_MODIFIER = LOOT_MODIFIER_SERIALIZERS.register("enderman_extra", () -> EndermanLootModifier.CODEC);
-    public static final RegistryObject<DimletRecipeSerializer> DIMLET_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register("dimlet_recipe", DimletRecipeSerializer::new);
-    public static final RegistryObject<DimletCycleRecipeSerializer> DIMLET_CYCLE_SERIALIZER = RECIPE_SERIALIZERS.register("dimlet_cycle_recipe", DimletCycleRecipeSerializer::new);
+    public static final Supplier<Codec<? extends IGlobalLootModifier>> ENDERMAN_LOOT_MODIFIER = LOOT_MODIFIER_SERIALIZERS.register("enderman_extra", () -> EndermanLootModifier.CODEC);
+    public static final Supplier<DimletRecipeSerializer> DIMLET_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register("dimlet_recipe", DimletRecipeSerializer::new);
+    public static final Supplier<DimletCycleRecipeSerializer> DIMLET_CYCLE_SERIALIZER = RECIPE_SERIALIZERS.register("dimlet_cycle_recipe", DimletCycleRecipeSerializer::new);
 
     public static LootItemConditionType LOOT_TABLE_CONDITION;
     public static LootPoolEntryType DIMLET_LOOT_ENTRY;

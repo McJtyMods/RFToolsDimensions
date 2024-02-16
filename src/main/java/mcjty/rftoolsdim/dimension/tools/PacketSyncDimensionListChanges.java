@@ -1,5 +1,8 @@
 package mcjty.rftoolsdim.dimension.tools;
 
+import mcjty.lib.network.CustomPacketPayload;
+import mcjty.lib.network.PlayPayloadContext;
+import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.setup.RFToolsDimMessages;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
@@ -8,23 +11,22 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.network.PacketDistributor;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.function.Supplier;
 
-public class PacketSyncDimensionListChanges {
-    private final Set<ResourceKey<Level>> newDimensions;
-    private final Set<ResourceKey<Level>> removedDimensions;
+public record PacketSyncDimensionListChanges(Set<ResourceKey<Level>> newDimensions, Set<ResourceKey<Level>> removedDimensions) implements CustomPacketPayload {
+
+    public static final ResourceLocation ID = new ResourceLocation(RFToolsDim.MODID, "syncdimensionlistchanges");
 
     public PacketSyncDimensionListChanges(final Set<ResourceKey<Level>> newDimensions, final Set<ResourceKey<Level>> removedDimensions) {
         this.newDimensions = newDimensions;
         this.removedDimensions = removedDimensions;
     }
 
-    public void toBytes(FriendlyByteBuf buf) {
+    @Override
+    public void write(FriendlyByteBuf buf) {
         buf.writeVarInt(this.newDimensions.size());
         for (final ResourceKey<Level> key : this.newDimensions) {
             buf.writeResourceLocation(key.location());
@@ -36,9 +38,14 @@ public class PacketSyncDimensionListChanges {
         }
     }
 
-    public PacketSyncDimensionListChanges(FriendlyByteBuf buf) {
-        newDimensions = new HashSet<>();
-        removedDimensions = new HashSet<>();
+    @Override
+    public ResourceLocation id() {
+        return ID;
+    }
+
+    public static PacketSyncDimensionListChanges create(FriendlyByteBuf buf) {
+        Set<ResourceKey<Level>> newDimensions = new HashSet<>();
+        Set<ResourceKey<Level>> removedDimensions = new HashSet<>();
 
         final int newDimensionCount = buf.readVarInt();
         for (int i = 0; i < newDimensionCount; i++) {
@@ -51,11 +58,11 @@ public class PacketSyncDimensionListChanges {
             final ResourceLocation worldID = buf.readResourceLocation();
             removedDimensions.add(ResourceKey.create(Registries.DIMENSION, worldID));
         }
+        return new PacketSyncDimensionListChanges(newDimensions, removedDimensions);
     }
 
-    public void handle(Supplier<NetworkEvent.Context> contextGetter) {
-        final NetworkEvent.Context context = contextGetter.get();
-        context.enqueueWork(() -> {
+    public void handle(PlayPayloadContext ctx) {
+        ctx.workHandler().submitAsync(() -> {
             LocalPlayer player = Minecraft.getInstance().player;
             if (player != null) {
                 final Set<ResourceKey<Level>> commandSuggesterLevels = player.connection.levels();
@@ -65,7 +72,6 @@ public class PacketSyncDimensionListChanges {
                 }
             }
         });
-        context.setPacketHandled(true);
     }
 
 

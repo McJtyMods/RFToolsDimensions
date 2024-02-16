@@ -91,7 +91,7 @@ public class GuiWorkbench extends GenericGuiContainer<WorkbenchTileEntity, Gener
         window = new Window(this, toplevel);
         dimletListAge = -1;
 
-        RFToolsDimMessages.INSTANCE.sendToServer(new PacketGetListFromServer(tileEntity.getBlockPos(), WorkbenchTileEntity.CMD_GETDIMLETS.name()));
+        RFToolsDimMessages.sendToServer(PacketGetListFromServer.create(tileEntity.getBlockPos(), WorkbenchTileEntity.CMD_GETDIMLETS.name()));
     }
 
     private void createDimlet() {

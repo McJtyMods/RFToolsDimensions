@@ -31,6 +31,7 @@ import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.loading.FMLEnvironment;
 
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -44,6 +45,9 @@ public class RFToolsDim {
     public static final ModSetup setup = new ModSetup();
 
     public RFToolsDim() {
+        IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
+        Dist dist = FMLEnvironment.dist;
+
         instance = this;
         setupModules();
 
@@ -51,14 +55,13 @@ public class RFToolsDim {
 
         Registration.register();
 
-        IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
         bus.addListener(setup::init);
         bus.addListener(modules::init);
         bus.addListener(this::processIMC);
         bus.addListener(this::onDataGen);
         MinecraftForge.EVENT_BUS.addListener(this::onJoinWorld);
 
-        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
+        if (dist.isClient()) {
             MinecraftForge.EVENT_BUS.addListener(ClientSetup::onPlayerLogin);
             MinecraftForge.EVENT_BUS.addListener(ClientSetup::onDimensionChange);
             MinecraftForge.EVENT_BUS.addListener(OverlayRenderer::render);
@@ -66,7 +69,7 @@ public class RFToolsDim {
             bus.addListener(modules::initClient);
             ClientTools.onTextureStitch(bus, WorkbenchModule::onTextureStitch);
 //            FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientEventHandlers::onClientTick);
-        });
+        }
     }
 
     private void processIMC(final InterModProcessEvent event) {

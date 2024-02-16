@@ -117,14 +117,12 @@ public class ForgeEventHandlers {
         for (DimletKey key : dictionary.getDimlets()) {
             collected.put(key, dictionary.getSettings(key));
             if (collected.size() >= 100) {
-                RFToolsDimMessages.INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) event.getEntity()),
-                        new PacketSendDimletPackages(collected));
+                RFToolsDimMessages.sendToPlayer(PacketSendDimletPackages.create(collected), event.getEntity());
                 collected.clear();
             }
         }
         if (!collected.isEmpty()) {
-            RFToolsDimMessages.INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) event.getEntity()),
-                    new PacketSendDimletPackages(collected));
+            RFToolsDimMessages.sendToPlayer(PacketSendDimletPackages.create(collected), event.getEntity());
         }
     }
 

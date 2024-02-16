@@ -6,6 +6,8 @@ import mcjty.lib.datagen.DataGen;
 import mcjty.lib.datagen.Dob;
 import mcjty.lib.gui.GenericGuiContainer;
 import mcjty.lib.modules.IModule;
+import mcjty.lib.setup.DeferredBlock;
+import mcjty.lib.setup.DeferredItem;
 import mcjty.rftoolsbase.modules.various.VariousModule;
 import mcjty.rftoolsdim.modules.dimlets.DimletModule;
 import mcjty.rftoolsdim.modules.enscriber.blocks.EnscriberTileEntity;
@@ -22,16 +24,18 @@ import net.minecraftforge.registries.RegistryObject;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 
+import java.util.function.Supplier;
+
 import static mcjty.lib.datagen.DataGen.has;
 import static mcjty.rftoolsdim.RFToolsDim.tab;
 import static mcjty.rftoolsdim.setup.Registration.*;
 
 public class EnscriberModule implements IModule {
 
-    public static final RegistryObject<BaseBlock> ENSCRIBER = BLOCKS.register("enscriber", EnscriberTileEntity::createBlock);
-    public static final RegistryObject<Item> ENSCRIBER_ITEM = ITEMS.register("enscriber", tab(() -> new BlockItem(ENSCRIBER.get(), Registration.createStandardProperties())));
-    public static final RegistryObject<BlockEntityType<EnscriberTileEntity>> TYPE_ENSCRIBER = TILES.register("enscriber", () -> BlockEntityType.Builder.of(EnscriberTileEntity::new, ENSCRIBER.get()).build(null));
-    public static final RegistryObject<MenuType<GenericContainer>> CONTAINER_ENSCRIBER = CONTAINERS.register("enscriber", GenericContainer::createContainerType);
+    public static final DeferredBlock<BaseBlock> ENSCRIBER = BLOCKS.register("enscriber", EnscriberTileEntity::createBlock);
+    public static final DeferredItem<Item> ENSCRIBER_ITEM = ITEMS.register("enscriber", tab(() -> new BlockItem(ENSCRIBER.get(), Registration.createStandardProperties())));
+    public static final Supplier<BlockEntityType<EnscriberTileEntity>> TYPE_ENSCRIBER = TILES.register("enscriber", () -> BlockEntityType.Builder.of(EnscriberTileEntity::new, ENSCRIBER.get()).build(null));
+    public static final Supplier<MenuType<GenericContainer>> CONTAINER_ENSCRIBER = CONTAINERS.register("enscriber", GenericContainer::createContainerType);
 
     @Override
     public void init(FMLCommonSetupEvent event) {

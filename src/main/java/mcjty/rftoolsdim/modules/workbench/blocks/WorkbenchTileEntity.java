@@ -189,8 +189,7 @@ public class WorkbenchTileEntity extends GenericTileEntity {
         DimletPattern pattern = KnowledgeManager.get().getPattern(overworld, overworld.getSeed(), key);
         if (pattern != null) {
             String[] p = pattern.pattern();
-            RFToolsDimMessages.INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player),
-                    new PacketPatternToClient(p));
+            RFToolsDimMessages.sendToPlayer(PacketPatternToClient.create(p), player);
         }
     }
 

@@ -22,6 +22,10 @@ public class PacketPatternToClient {
         }
     }
 
+    public static PacketPatternToClient create(String[] p) {
+        return new PacketPatternToClient(p);
+    }
+
     public void toBytes(FriendlyByteBuf buf) {
         buf.writeInt(pattern.length);
         for (String p : pattern) {

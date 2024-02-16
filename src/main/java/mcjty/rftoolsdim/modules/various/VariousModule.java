@@ -4,6 +4,8 @@ import mcjty.lib.builder.BlockBuilder;
 import mcjty.lib.datagen.DataGen;
 import mcjty.lib.datagen.Dob;
 import mcjty.lib.modules.IModule;
+import mcjty.lib.setup.DeferredBlock;
+import mcjty.lib.setup.DeferredItem;
 import mcjty.rftoolsdim.modules.various.blocks.ActivityProbeBlock;
 import mcjty.rftoolsdim.setup.Registration;
 import net.minecraft.world.item.BlockItem;
@@ -20,8 +22,8 @@ import static net.minecraftforge.client.model.generators.ModelProvider.BLOCK_FOL
 
 public class VariousModule implements IModule {
 
-    public static final RegistryObject<ActivityProbeBlock> ACTIVITY_PROBE = BLOCKS.register("activity_probe", () -> new ActivityProbeBlock(BlockBuilder.STANDARD_IRON));
-    public static final RegistryObject<Item> ACTIVITY_PROBE_ITEM = ITEMS.register("activity_probe", tab(() -> new BlockItem(ACTIVITY_PROBE.get(), Registration.createStandardProperties())));
+    public static final DeferredBlock<ActivityProbeBlock> ACTIVITY_PROBE = BLOCKS.register("activity_probe", () -> new ActivityProbeBlock(BlockBuilder.STANDARD_IRON));
+    public static final DeferredItem<Item> ACTIVITY_PROBE_ITEM = ITEMS.register("activity_probe", tab(() -> new BlockItem(ACTIVITY_PROBE.get(), Registration.createStandardProperties())));
 
     @Override
     public void init(FMLCommonSetupEvent event) {
