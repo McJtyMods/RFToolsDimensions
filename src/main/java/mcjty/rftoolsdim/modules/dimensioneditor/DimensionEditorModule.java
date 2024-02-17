@@ -13,13 +13,12 @@ import mcjty.rftoolsdim.modules.dimensioneditor.blocks.DimensionEditorTileEntity
 import mcjty.rftoolsdim.modules.dimensioneditor.client.GuiDimensionEditor;
 import mcjty.rftoolsdim.setup.Config;
 import mcjty.rftoolsdim.setup.Registration;
-import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraftforge.registries.RegistryObject;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 
@@ -52,7 +51,7 @@ public class DimensionEditorModule implements IModule {
     }
 
     @Override
-    public void initConfig() {
+    public void initConfig(IEventBus bus) {
         DimensionEditorConfig.init(Config.SERVER_BUILDER, Config.CLIENT_BUILDER);
     }
 

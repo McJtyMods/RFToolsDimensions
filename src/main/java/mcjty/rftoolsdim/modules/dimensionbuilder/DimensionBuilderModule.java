@@ -21,7 +21,6 @@ import mcjty.rftoolsdim.modules.dimensionbuilder.items.PhasedFieldGenerator;
 import mcjty.rftoolsdim.modules.dimensionbuilder.items.RealizedDimensionTab;
 import mcjty.rftoolsdim.setup.Config;
 import mcjty.rftoolsdim.setup.Registration;
-import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
@@ -29,13 +28,10 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
-import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.registries.RegistryObject;
 
 import java.util.function.Supplier;
 
@@ -57,10 +53,6 @@ public class DimensionBuilderModule implements IModule {
     public static final DeferredItem<PhasedFieldGenerator> PHASED_FIELD_GENERATOR = ITEMS.register("phased_field_generator", tab(PhasedFieldGenerator::new));
 
     public DimensionBuilderModule() {
-        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
-            // @todo 1.19.3
-//            FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientSetup::onTextureStitch);
-        });
     }
 
     @Override
@@ -79,7 +71,7 @@ public class DimensionBuilderModule implements IModule {
     }
 
     @Override
-    public void initConfig() {
+    public void initConfig(IEventBus bus) {
         DimensionBuilderConfig.init(Config.SERVER_BUILDER, Config.CLIENT_BUILDER);
     }
 

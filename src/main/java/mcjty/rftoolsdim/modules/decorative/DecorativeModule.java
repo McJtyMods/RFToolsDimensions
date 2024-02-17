@@ -1,6 +1,5 @@
 package mcjty.rftoolsdim.modules.decorative;
 
-import mcjty.lib.blocks.BaseBlock;
 import mcjty.lib.builder.BlockBuilder;
 import mcjty.lib.datagen.DataGen;
 import mcjty.lib.datagen.Dob;
@@ -9,12 +8,11 @@ import mcjty.lib.setup.DeferredBlock;
 import mcjty.lib.setup.DeferredItem;
 import mcjty.rftoolsbase.modules.various.VariousModule;
 import mcjty.rftoolsdim.setup.Registration;
-import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.Tags;
-import net.minecraftforge.registries.RegistryObject;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 
@@ -57,7 +55,7 @@ public class DecorativeModule implements IModule {
     }
 
     @Override
-    public void initConfig() {
+    public void initConfig(IEventBus bus) {
     }
 
     @Override

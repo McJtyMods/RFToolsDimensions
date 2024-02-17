@@ -27,7 +27,6 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -49,11 +48,11 @@ public class RFToolsDim {
         Dist dist = FMLEnvironment.dist;
 
         instance = this;
-        setupModules();
+        setupModules(bus, dist);
 
-        Config.register(modules);
+        Config.register(bus, modules);
 
-        Registration.register();
+        Registration.register(bus);
 
         bus.addListener(setup::init);
         bus.addListener(modules::init);
@@ -91,14 +90,14 @@ public class RFToolsDim {
         datagen.generate();
     }
 
-    private void setupModules() {
+    private void setupModules(IEventBus bus, Dist dist) {
         modules.register(new VariousModule());
         modules.register(new DimensionBuilderModule());
         modules.register(new DimensionEditorModule());
         modules.register(new DimletModule());
         modules.register(new EnscriberModule());
         modules.register(new WorkbenchModule());
-        modules.register(new BlobModule());
+        modules.register(new BlobModule(bus, dist));
         modules.register(new KnowledgeModule());
         modules.register(new EssencesModule());
         modules.register(new DecorativeModule());

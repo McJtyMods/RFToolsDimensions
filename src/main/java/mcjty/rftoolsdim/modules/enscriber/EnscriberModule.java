@@ -14,13 +14,12 @@ import mcjty.rftoolsdim.modules.enscriber.blocks.EnscriberTileEntity;
 import mcjty.rftoolsdim.modules.enscriber.client.GuiEnscriber;
 import mcjty.rftoolsdim.setup.Config;
 import mcjty.rftoolsdim.setup.Registration;
-import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraftforge.registries.RegistryObject;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 
@@ -50,7 +49,7 @@ public class EnscriberModule implements IModule {
     }
 
     @Override
-    public void initConfig() {
+    public void initConfig(IEventBus bus) {
         EnscriberConfig.init(Config.SERVER_BUILDER, Config.CLIENT_BUILDER);
     }
 

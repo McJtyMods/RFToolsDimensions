@@ -10,9 +10,9 @@ import mcjty.rftoolsdim.modules.various.blocks.ActivityProbeBlock;
 import mcjty.rftoolsdim.setup.Registration;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.registries.RegistryObject;
 
 import static mcjty.lib.datagen.DataGen.has;
 import static mcjty.rftoolsdim.RFToolsDim.tab;
@@ -35,7 +35,7 @@ public class VariousModule implements IModule {
     }
 
     @Override
-    public void initConfig() {
+    public void initConfig(IEventBus bus) {
     }
 
     @Override

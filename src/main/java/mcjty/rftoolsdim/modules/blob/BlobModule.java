@@ -3,8 +3,6 @@ package mcjty.rftoolsdim.modules.blob;
 import mcjty.lib.datagen.DataGen;
 import mcjty.lib.datagen.Dob;
 import mcjty.lib.modules.IModule;
-import mcjty.rftoolsdim.RFToolsDim;
-import mcjty.rftoolsdim.modules.blob.client.DimensionalBlobRender;
 import mcjty.rftoolsdim.modules.blob.entities.DimensionalBlobEntity;
 import mcjty.rftoolsdim.modules.dimlets.DimletModule;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletRarity;
@@ -16,14 +14,10 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.registries.RegistryObject;
 
 import java.util.function.Supplier;
 
@@ -50,8 +44,8 @@ public class BlobModule implements IModule {
                     .setShouldReceiveVelocityUpdates(false)
                     .build("dimensional_blob_legendary"));
 
-    public BlobModule() {
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::registerEntityAttributes);
+    public BlobModule(IEventBus bus, Dist dist) {
+        bus.addListener(this::registerEntityAttributes);
     }
 
     @Override
@@ -73,7 +67,7 @@ public class BlobModule implements IModule {
 
 
     @Override
-    public void initConfig() {
+    public void initConfig(IEventBus bus) {
         BlobConfig.init(Config.SERVER_BUILDER, Config.COMMON_BUILDER, Config.CLIENT_BUILDER);
     }
 
