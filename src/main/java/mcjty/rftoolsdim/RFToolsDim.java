@@ -2,7 +2,6 @@ package mcjty.rftoolsdim;
 
 import mcjty.lib.datagen.DataGen;
 import mcjty.lib.modules.Modules;
-import mcjty.lib.varia.ClientTools;
 import mcjty.rftoolsbase.api.dimension.IDimensionManager;
 import mcjty.rftoolsdim.apiimpl.DimensionManager;
 import mcjty.rftoolsdim.dimension.client.OverlayRenderer;
@@ -66,7 +65,6 @@ public class RFToolsDim {
             MinecraftForge.EVENT_BUS.addListener(OverlayRenderer::render);
             bus.addListener(ClientSetup::init);
             bus.addListener(modules::initClient);
-            ClientTools.onTextureStitch(bus, WorkbenchModule::onTextureStitch);
 //            FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientEventHandlers::onClientTick);
         }
     }
