@@ -15,7 +15,6 @@ import mcjty.rftoolsdim.modules.dimlets.data.DimletDictionary;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletKey;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletSettings;
 import net.minecraft.core.Holder;
-import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
@@ -24,7 +23,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.*;
 
@@ -190,7 +188,7 @@ public class CompiledDescriptor {
                 break;
             }
             case BLOCK: {
-                Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(name));
+                Block block = Tools.getBlock(new ResourceLocation(name));
                 if (block == null) {
                     throw ERROR(BAD_BLOCK, name);
                 }
@@ -199,7 +197,7 @@ public class CompiledDescriptor {
             }
 
             case FLUID: {
-                Fluid fluid = ForgeRegistries.FLUIDS.getValue(new ResourceLocation(name));
+                Fluid fluid = Tools.getFluid(new ResourceLocation(name));
                 if (fluid == null) {
                     throw ERROR(BAD_FLUID, name);
                 }

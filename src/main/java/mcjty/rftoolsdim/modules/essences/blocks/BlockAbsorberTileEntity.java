@@ -34,7 +34,6 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.level.BlockEvent;
-import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nonnull;
 import java.util.HashSet;
@@ -84,7 +83,7 @@ public class BlockAbsorberTileEntity extends TickingTileEntity {
         if (block == null) {
             return "<Not Set>";
         } else {
-            Block b = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(block));
+            Block b = Tools.getBlock(new ResourceLocation(block));
             if (b != null) {
                 return I18n.get(b.getDescriptionId());
             } else {
@@ -249,7 +248,7 @@ public class BlockAbsorberTileEntity extends TickingTileEntity {
             CompoundTag info = tagCompound.getCompound("Info");
             absorbing = info.getInt("absorbing");
             if (info.contains("block")) {
-                Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(info.getString("block")));
+                Block block = Tools.getBlock(new ResourceLocation(info.getString("block")));
                 if (block != null) {
                     absorbingBlock = block;
                 }

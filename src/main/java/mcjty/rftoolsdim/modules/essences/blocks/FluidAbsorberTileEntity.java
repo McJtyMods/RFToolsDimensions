@@ -28,7 +28,6 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nonnull;
 import java.util.HashSet;
@@ -78,7 +77,7 @@ public class FluidAbsorberTileEntity extends TickingTileEntity {
         if (block == null) {
             return "<Not Set>";
         } else {
-            Fluid b = ForgeRegistries.FLUIDS.getValue(new ResourceLocation(block));
+            Fluid b = Tools.getFluid(new ResourceLocation(block));
             if (b != null) {
                 return I18n.get(b.defaultFluidState().createLegacyBlock().getBlock().getDescriptionId());
             } else {
@@ -257,7 +256,7 @@ public class FluidAbsorberTileEntity extends TickingTileEntity {
             CompoundTag info = tagCompound.getCompound("Info");
             absorbing = info.getInt("absorbing");
             if (info.contains("fluid")) {
-                Fluid fluid = ForgeRegistries.FLUIDS.getValue(new ResourceLocation(info.getString("fluid")));
+                Fluid fluid = Tools.getFluid(new ResourceLocation(info.getString("fluid")));
                 if (fluid != null) {
                     absorbingBlock = fluid.defaultFluidState().createLegacyBlock().getBlock();
                 }

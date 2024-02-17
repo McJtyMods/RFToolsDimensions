@@ -2,6 +2,7 @@ package mcjty.rftoolsdim.modules.knowledge.data;
 
 import mcjty.lib.varia.LevelTools;
 import mcjty.lib.varia.TagTools;
+import mcjty.lib.varia.Tools;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.dimension.TimeType;
 import mcjty.rftoolsdim.dimension.additional.SkyDimletType;
@@ -27,7 +28,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.structure.Structure;
-import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -217,7 +217,7 @@ public class KnowledgeManager {
 
     private TagKey<Block> getMostCommonTagForBlock(DimletKey key) {
         TagKey<Block> mostImportant = null;
-        Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(key.key()));
+        Block block = Tools.getBlock(new ResourceLocation(key.key()));
         if (block == null) {
             RFToolsDim.setup.getLogger().error("Block '" + key.key() + "' is missing!");
         } else {

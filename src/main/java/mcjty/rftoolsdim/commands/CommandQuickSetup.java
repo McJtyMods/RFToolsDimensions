@@ -5,8 +5,7 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import mcjty.lib.blocks.BaseBlock;
-import mcjty.rftoolsdim.compat.RFToolsUtilityCompat;
+import mcjty.lib.varia.Tools;
 import mcjty.rftoolsdim.modules.dimensionbuilder.DimensionBuilderModule;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletKey;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletTools;
@@ -26,7 +25,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraftforge.registries.ForgeRegistries;
 
 public class CommandQuickSetup implements Command<CommandSourceStack> {
 
@@ -63,10 +61,10 @@ public class CommandQuickSetup implements Command<CommandSourceStack> {
                 }
             }
         }
-        Block matterTransmitter = ForgeRegistries.BLOCKS.getValue(new ResourceLocation("rftoolsutility", "matter_transmitter"));
-        Block matterReceiver = ForgeRegistries.BLOCKS.getValue(new ResourceLocation("rftoolsutility", "matter_receiver"));
-        Block dialingDevice = ForgeRegistries.BLOCKS.getValue(new ResourceLocation("rftoolsutility", "dialing_device"));
-        Block creativeCell = ForgeRegistries.BLOCKS.getValue(new ResourceLocation("rftoolspower", "dimensionalcell_creative"));
+        Block matterTransmitter = Tools.getBlock(new ResourceLocation("rftoolsutility", "matter_transmitter"));
+        Block matterReceiver = Tools.getBlock(new ResourceLocation("rftoolsutility", "matter_receiver"));
+        Block dialingDevice = Tools.getBlock(new ResourceLocation("rftoolsutility", "dialing_device"));
+        Block creativeCell = Tools.getBlock(new ResourceLocation("rftoolspower", "dimensionalcell_creative"));
         world.setBlock(pos.offset(-4, -1, -4), matterTransmitter.defaultBlockState(), Block.UPDATE_ALL);
         world.setBlock(pos.offset(-3, -1, -4), creativeCell.defaultBlockState(), Block.UPDATE_ALL);
         world.setBlock(pos.offset(-2, -1, -4), matterReceiver.defaultBlockState(), Block.UPDATE_ALL);
@@ -84,7 +82,7 @@ public class CommandQuickSetup implements Command<CommandSourceStack> {
         player.addItem(DimletTools.getDimletStack(new DimletKey(DimletType.DIGIT, "4")));
         player.addItem(DimletTools.getDimletStack(new DimletKey(DimletType.TERRAIN, "flat")));
         player.addItem(DimletTools.getDimletStack(new DimletKey(DimletType.TERRAIN, "normal")));
-        Item chargedPorter = ForgeRegistries.ITEMS.getValue(new ResourceLocation("rftoolsutility", "advanced_charged_porter"));
+        Item chargedPorter = Tools.getItem(new ResourceLocation("rftoolsutility", "advanced_charged_porter"));
         player.addItem(new ItemStack(chargedPorter));
         player.addItem(new ItemStack(chargedPorter));
 

@@ -18,7 +18,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
@@ -217,7 +216,7 @@ public class DimletTools {
 
     @NotNull
     private static String getReadableNameFluid(DimletKey dimletKey) {
-        Fluid fluid = ForgeRegistries.FLUIDS.getValue(new ResourceLocation(dimletKey.key()));
+        Fluid fluid = Tools.getFluid(new ResourceLocation(dimletKey.key()));
         if (fluid != null) {
             String modName = Tools.getModName(fluid);
             if ("minecraft".equalsIgnoreCase(modName)) {
@@ -232,7 +231,7 @@ public class DimletTools {
 
     @NotNull
     private static String getReadableNameBlock(DimletKey dimletKey) {
-        Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(dimletKey.key()));
+        Block block = Tools.getBlock(new ResourceLocation(dimletKey.key()));
         if (block != null) {
             String modName = Tools.getModName(block);
             if ("minecraft".equalsIgnoreCase(modName)) {
@@ -303,12 +302,12 @@ public class DimletTools {
     }
 
     private static boolean isValidBlock(DimletKey key) {
-        Block value = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(key.key()));
+        Block value = Tools.getBlock(new ResourceLocation(key.key()));
         return value != null && value != Blocks.AIR;
     }
 
     private static boolean isValidFluid(DimletKey key) {
-        Fluid fluid = ForgeRegistries.FLUIDS.getValue(new ResourceLocation(key.key()));
+        Fluid fluid = Tools.getFluid(new ResourceLocation(key.key()));
         return fluid != null && fluid.defaultFluidState().createLegacyBlock().getBlock() != Blocks.AIR;
     }
 }
