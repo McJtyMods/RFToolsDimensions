@@ -11,7 +11,6 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.network.PacketDistributor;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -87,6 +86,6 @@ public record PacketSyncDimensionListChanges(Set<ResourceKey<Level>> newDimensio
      * so mods shouldn't need to call this themselves
      */
     public static void updateClientDimensionLists(Set<ResourceKey<Level>> newDimensions, Set<ResourceKey<Level>> removedDimensions) {
-        RFToolsDimMessages.INSTANCE.send(PacketDistributor.ALL.noArg(), new PacketSyncDimensionListChanges(newDimensions,removedDimensions));
+        RFToolsDimMessages.sendToAll(new PacketSyncDimensionListChanges(newDimensions,removedDimensions));
     }
 }

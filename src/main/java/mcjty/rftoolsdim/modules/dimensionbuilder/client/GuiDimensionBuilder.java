@@ -1,6 +1,5 @@
 package mcjty.rftoolsdim.modules.dimensionbuilder.client;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import mcjty.lib.container.GenericContainer;
 import mcjty.lib.gui.GenericGuiContainer;
 import mcjty.lib.gui.Window;
@@ -11,10 +10,9 @@ import mcjty.rftoolsbase.RFToolsBase;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.modules.dimensionbuilder.DimensionBuilderModule;
 import mcjty.rftoolsdim.modules.dimensionbuilder.blocks.DimensionBuilderTileEntity;
-import mcjty.rftoolsdim.setup.RFToolsDimMessages;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Inventory;
 
 import javax.annotation.Nonnull;
 
@@ -58,7 +56,7 @@ public class GuiDimensionBuilder extends GenericGuiContainer<DimensionBuilderTil
         toplevel.bounds(leftPos, topPos, imageWidth, imageHeight);
 
         window = new Window(this, toplevel);
-        window.bind(RFToolsDimMessages.INSTANCE, "redstone", tileEntity, "rsmode");
+        window.bind("redstone", tileEntity, "rsmode");
     }
 
     private ImageChoiceLabel initRedstoneMode() {

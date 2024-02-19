@@ -83,7 +83,7 @@ public class PowerHandler {
             clientDataMap.put(entry.getKey(), new ClientDimensionData.ClientData(energy, PowerHandler.calculateMaxDimensionPower(entry.getKey(), overworld),
                     entry.getValue().getSkyTypes()));
         }
-        RFToolsDimMessages.INSTANCE.send(PacketDistributor.ALL.noArg(), new PackagePropageDataToClients(clientDataMap,
+        RFToolsDimMessages.sendToAll(new PackagePropageDataToClients(clientDataMap,
                 ((ServerLevel) overworld).getSeed()));
     }
 

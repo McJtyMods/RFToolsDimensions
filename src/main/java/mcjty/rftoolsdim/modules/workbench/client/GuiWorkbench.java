@@ -3,6 +3,7 @@ package mcjty.rftoolsdim.modules.workbench.client;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import mcjty.lib.McJtyLib;
 import mcjty.lib.base.StyleConfig;
 import mcjty.lib.client.RenderHelper;
 import mcjty.lib.container.GenericContainer;
@@ -21,7 +22,6 @@ import mcjty.rftoolsdim.modules.dimlets.data.DimletTools;
 import mcjty.rftoolsdim.modules.knowledge.data.KnowledgeManager;
 import mcjty.rftoolsdim.modules.workbench.WorkbenchModule;
 import mcjty.rftoolsdim.modules.workbench.blocks.WorkbenchTileEntity;
-import mcjty.rftoolsdim.setup.RFToolsDimMessages;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
@@ -91,12 +91,11 @@ public class GuiWorkbench extends GenericGuiContainer<WorkbenchTileEntity, Gener
         window = new Window(this, toplevel);
         dimletListAge = -1;
 
-        RFToolsDimMessages.sendToServer(PacketGetListFromServer.create(tileEntity.getBlockPos(), WorkbenchTileEntity.CMD_GETDIMLETS.name()));
+        McJtyLib.sendToServer(PacketGetListFromServer.create(tileEntity.getBlockPos(), WorkbenchTileEntity.CMD_GETDIMLETS.name()));
     }
 
     private void createDimlet() {
-        sendServerCommandTyped(RFToolsDimMessages.INSTANCE, WorkbenchTileEntity.CMD_CREATE_DIMLET,
-                TypedMap.builder().build());
+        sendServerCommandTyped(WorkbenchTileEntity.CMD_CREATE_DIMLET, TypedMap.builder().build());
     }
 
     private void hilightPattern() {
@@ -109,7 +108,7 @@ public class GuiWorkbench extends GenericGuiContainer<WorkbenchTileEntity, Gener
         if (userObject instanceof DimletClientHelper.DimletWithInfo key) {
             if (key.craftable()) {
                 DimletKey dimlet = key.dimlet();
-                sendServerCommandTyped(RFToolsDimMessages.INSTANCE, WorkbenchTileEntity.CMD_HILIGHT_PATTERN,
+                sendServerCommandTyped(WorkbenchTileEntity.CMD_HILIGHT_PATTERN,
                         TypedMap.builder()
                                 .put(PARAM_TYPE, dimlet.type().name())
                                 .put(PARAM_ID, dimlet.key())
@@ -175,7 +174,7 @@ public class GuiWorkbench extends GenericGuiContainer<WorkbenchTileEntity, Gener
         if (userObject instanceof DimletClientHelper.DimletWithInfo) {
             DimletClientHelper.DimletWithInfo key = (DimletClientHelper.DimletWithInfo) userObject;
             DimletKey dimlet = key.dimlet();
-            sendServerCommandTyped(RFToolsDimMessages.INSTANCE, WorkbenchTileEntity.CMD_CHEATDIMLET,
+            sendServerCommandTyped(WorkbenchTileEntity.CMD_CHEATDIMLET,
                     TypedMap.builder()
                             .put(PARAM_TYPE, dimlet.type().name())
                             .put(PARAM_ID, dimlet.key())
@@ -194,7 +193,7 @@ public class GuiWorkbench extends GenericGuiContainer<WorkbenchTileEntity, Gener
             DimletClientHelper.DimletWithInfo key = (DimletClientHelper.DimletWithInfo) userObject;
             if (key.craftable()) {
                 DimletKey dimlet = key.dimlet();
-                sendServerCommandTyped(RFToolsDimMessages.INSTANCE, WorkbenchTileEntity.CMD_SUGGESTPARTS,
+                sendServerCommandTyped(WorkbenchTileEntity.CMD_SUGGESTPARTS,
                         TypedMap.builder()
                                 .put(PARAM_TYPE, dimlet.type().name())
                                 .put(PARAM_ID, dimlet.key())

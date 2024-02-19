@@ -1,6 +1,5 @@
 package mcjty.rftoolsdim.modules.enscriber.client;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import mcjty.lib.container.GenericContainer;
 import mcjty.lib.gui.GenericGuiContainer;
 import mcjty.lib.gui.Window;
@@ -16,7 +15,6 @@ import mcjty.rftoolsdim.dimension.descriptor.DescriptorError;
 import mcjty.rftoolsdim.modules.dimensionbuilder.DimensionBuilderModule;
 import mcjty.rftoolsdim.modules.enscriber.EnscriberModule;
 import mcjty.rftoolsdim.modules.enscriber.blocks.EnscriberTileEntity;
-import mcjty.rftoolsdim.setup.RFToolsDimMessages;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
@@ -84,7 +82,7 @@ public class GuiEnscriber extends GenericGuiContainer<EnscriberTileEntity, Gener
                 return;
             }
         }
-        sendServerCommandTyped(RFToolsDimMessages.INSTANCE, EnscriberTileEntity.CMD_EXTRACT, TypedMap.EMPTY);
+        sendServerCommandTyped(EnscriberTileEntity.CMD_EXTRACT, TypedMap.EMPTY);
     }
 
     private void storeDimlets() {
@@ -93,7 +91,7 @@ public class GuiEnscriber extends GenericGuiContainer<EnscriberTileEntity, Gener
             Minecraft.getInstance().player.displayClientMessage(ComponentFactory.literal("Name is required!"), false);
             return;
         }
-        sendServerCommandTyped(RFToolsDimMessages.INSTANCE, EnscriberTileEntity.CMD_STORE,
+        sendServerCommandTyped(EnscriberTileEntity.CMD_STORE,
                 TypedMap.builder()
                         .put(PARAM_NAME, name)
                         .build());
