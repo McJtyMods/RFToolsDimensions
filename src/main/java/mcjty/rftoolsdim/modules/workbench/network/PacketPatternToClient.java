@@ -1,43 +1,45 @@
 package mcjty.rftoolsdim.modules.workbench.network;
 
+import mcjty.lib.network.CustomPacketPayload;
+import mcjty.lib.network.PlayPayloadContext;
+import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.modules.workbench.client.GuiWorkbench;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.network.NetworkEvent;
+import net.minecraft.resources.ResourceLocation;
 
-import java.util.function.Supplier;
+public record PacketPatternToClient(String[] pattern) implements CustomPacketPayload {
 
-public class PacketPatternToClient {
+    public static final ResourceLocation ID = new ResourceLocation(RFToolsDim.MODID, "pattern_to_client");
 
-    private final String[] pattern;
-
-    public PacketPatternToClient(String[] pattern) {
-        this.pattern = pattern;
-    }
-
-    public PacketPatternToClient(FriendlyByteBuf buf) {
+    public static PacketPatternToClient create(FriendlyByteBuf buf) {
         int size = buf.readInt();
-        pattern = new String[size];
+        String[] pattern = new String[size];
         for (int i = 0 ; i < size ; i++) {
             pattern[i] = buf.readUtf(32767);
         }
+        return new PacketPatternToClient(pattern);
     }
 
     public static PacketPatternToClient create(String[] p) {
         return new PacketPatternToClient(p);
     }
 
-    public void toBytes(FriendlyByteBuf buf) {
+    @Override
+    public void write(FriendlyByteBuf buf) {
         buf.writeInt(pattern.length);
         for (String p : pattern) {
             buf.writeUtf(p);
         }
     }
 
-    public void handle(Supplier<NetworkEvent.Context> supplier) {
-        NetworkEvent.Context ctx = supplier.get();
-        ctx.enqueueWork(() -> {
+    @Override
+    public ResourceLocation id() {
+        return ID;
+    }
+
+    public void handle(PlayPayloadContext ctx) {
+        ctx.workHandler().submitAsync(() -> {
             GuiWorkbench.setPattern(pattern);
         });
-        ctx.setPacketHandled(true);
     }
 }

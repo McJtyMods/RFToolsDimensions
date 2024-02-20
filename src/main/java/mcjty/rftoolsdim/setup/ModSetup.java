@@ -26,7 +26,7 @@ public class ModSetup extends DefaultModSetup {
     public void init(FMLCommonSetupEvent e) {
         super.init(e);
 
-        RFToolsDimMessages.registerMessages("rftoolsdim");
+        RFToolsDimMessages.registerMessages();
 
 //        e.enqueueWork(() -> {
 //            RFTFeature.registerConfiguredFeatures();

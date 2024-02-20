@@ -3,7 +3,6 @@ package mcjty.rftoolsdim.modules.workbench.client;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import mcjty.lib.McJtyLib;
 import mcjty.lib.base.StyleConfig;
 import mcjty.lib.client.RenderHelper;
 import mcjty.lib.container.GenericContainer;
@@ -12,6 +11,7 @@ import mcjty.lib.gui.Window;
 import mcjty.lib.gui.events.SelectionEvent;
 import mcjty.lib.gui.layout.HorizontalAlignment;
 import mcjty.lib.gui.widgets.*;
+import mcjty.lib.network.Networking;
 import mcjty.lib.network.PacketGetListFromServer;
 import mcjty.lib.typed.TypedMap;
 import mcjty.rftoolsbase.RFToolsBase;
@@ -91,7 +91,7 @@ public class GuiWorkbench extends GenericGuiContainer<WorkbenchTileEntity, Gener
         window = new Window(this, toplevel);
         dimletListAge = -1;
 
-        McJtyLib.sendToServer(PacketGetListFromServer.create(tileEntity.getBlockPos(), WorkbenchTileEntity.CMD_GETDIMLETS.name()));
+        Networking.sendToServer(PacketGetListFromServer.create(tileEntity.getBlockPos(), WorkbenchTileEntity.CMD_GETDIMLETS.name()));
     }
 
     private void createDimlet() {
