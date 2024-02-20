@@ -18,8 +18,8 @@ import mcjty.lib.varia.Sync;
 import mcjty.rftoolsbase.tools.ManualHelper;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.compat.RFToolsUtilityCompat;
-import mcjty.rftoolsdim.dimension.data.DimensionData;
 import mcjty.rftoolsdim.dimension.data.DimensionCreator;
+import mcjty.rftoolsdim.dimension.data.DimensionData;
 import mcjty.rftoolsdim.dimension.data.PersistantDimensionManager;
 import mcjty.rftoolsdim.dimension.descriptor.CompiledDescriptor;
 import mcjty.rftoolsdim.dimension.descriptor.DimensionDescriptor;
@@ -38,7 +38,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.util.Lazy;
-import net.minecraftforge.common.util.LazyOptional;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -77,7 +76,7 @@ public class DimensionBuilderTileEntity extends TickingTileEntity {
             .setupSync(this));
 
     @Cap(type = CapType.INFUSABLE)
-    private final LazyOptional<IInfusable> infusableHandler = LazyOptional.of(() -> new DefaultInfusable(DimensionBuilderTileEntity.this));
+    private final IInfusable infusableHandler = new DefaultInfusable(DimensionBuilderTileEntity.this);
 
     // For usage in the gui
     private int clientBuildPercentage = 0;
@@ -211,7 +210,7 @@ public class DimensionBuilderTileEntity extends TickingTileEntity {
         DimensionCreator.get().markReservedName(level, worldPosition, name);
 
         int createCost = tagCompound.getInt("rfCreateCost");
-        float inf = infusableHandler.map(IInfusable::getInfusedFactor).orElse(0.0f);
+        float inf = infusableHandler.getInfusedFactor();
         createCost = (int) (createCost * (2.0f - inf) / 2.0f);
 
         if (isCheaterDimension(tagCompound) || (energyStorage.getEnergyStored() >= createCost)) {
