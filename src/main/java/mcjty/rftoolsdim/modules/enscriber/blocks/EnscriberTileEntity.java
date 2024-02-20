@@ -77,7 +77,7 @@ public class EnscriberTileEntity extends GenericTileEntity {
 
 
     @Cap(type = CapType.CONTAINER)
-    private final LazyOptional<MenuProvider> screenHandler = LazyOptional.of(() -> new DefaultContainerProvider<GenericContainer>("Enscriber")
+    private final Lazy<MenuProvider> screenHandler = Lazy.of(() -> new DefaultContainerProvider<GenericContainer>("Enscriber")
             .containerSupplier(container(EnscriberModule.CONTAINER_ENSCRIBER, CONTAINER_FACTORY, this))
             .itemHandler(() -> items)
             .shortListener(Sync.integer(() -> error.getCode().ordinal(), v -> clientErrorCode = v))
