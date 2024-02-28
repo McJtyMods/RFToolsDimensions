@@ -5,8 +5,8 @@ import com.mojang.blaze3d.vertex.*;
 import mcjty.rftoolsdim.dimension.data.ClientDimensionData;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraftforge.client.event.RenderGuiOverlayEvent;
-import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
+import net.neoforged.neoforge.client.event.RenderGuiOverlayEvent;
+import net.neoforged.neoforge.client.gui.overlay.VanillaGuiOverlay;
 
 public class OverlayRenderer {
 

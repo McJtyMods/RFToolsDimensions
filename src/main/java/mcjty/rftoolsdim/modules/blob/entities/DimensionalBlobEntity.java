@@ -22,7 +22,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.network.NetworkHooks;
+import net.neoforged.neoforge.network.NetworkHooks;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

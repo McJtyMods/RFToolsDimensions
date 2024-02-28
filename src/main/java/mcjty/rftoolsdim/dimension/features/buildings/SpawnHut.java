@@ -4,7 +4,7 @@ import mcjty.rftoolsdim.modules.decorative.DecorativeModule;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
-import net.minecraftforge.common.util.Lazy;
+import net.neoforged.neoforge.common.util.Lazy;
 
 public class SpawnHut extends BuildingTemplate {
 

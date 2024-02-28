@@ -12,7 +12,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraftforge.event.ForgeEventFactory;
+import net.neoforged.neoforge.event.ForgeEventFactory;
 
 import javax.annotation.Nullable;
 import java.util.Random;

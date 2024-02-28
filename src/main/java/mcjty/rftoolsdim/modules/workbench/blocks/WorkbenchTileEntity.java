@@ -43,10 +43,10 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.util.Lazy;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.network.PacketDistributor;
-import net.minecraftforge.items.ItemHandlerHelper;
+import net.neoforged.neoforge.common.util.Lazy;
+import net.neoforged.neoforge.common.util.LazyOptional;
+import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.items.ItemHandlerHelper;
 
 import java.util.ArrayList;
 import java.util.HashSet;

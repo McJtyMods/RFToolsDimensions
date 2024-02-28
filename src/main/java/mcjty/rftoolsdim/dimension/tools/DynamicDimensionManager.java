@@ -21,8 +21,8 @@ import net.minecraft.world.level.levelgen.WorldOptions;
 import net.minecraft.world.level.storage.DerivedLevelData;
 import net.minecraft.world.level.storage.LevelStorageSource;
 import net.minecraft.world.level.storage.WorldData;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.level.LevelEvent;
+import net.neoforged.neoforge.common.MinecraftForge;
+import net.neoforged.neoforge.event.level.LevelEvent;
 
 import java.util.*;
 import java.util.concurrent.Executor;

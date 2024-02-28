@@ -1,6 +1,6 @@
 package mcjty.rftoolsdim.modules.dimensionbuilder;
 
-import net.minecraftforge.common.ForgeConfigSpec;
+import net.neoforged.neoforge.common.ForgeConfigSpec;
 
 public class DimensionBuilderConfig {
 

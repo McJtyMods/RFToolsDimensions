@@ -1,6 +1,6 @@
 package mcjty.rftoolsdim.modules.dimlets;
 
-import net.minecraftforge.common.ForgeConfigSpec;
+import net.neoforged.neoforge.common.ForgeConfigSpec;
 
 import java.util.ArrayList;
 import java.util.List;

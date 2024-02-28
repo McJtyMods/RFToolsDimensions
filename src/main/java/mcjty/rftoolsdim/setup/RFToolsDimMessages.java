@@ -9,8 +9,8 @@ import mcjty.rftoolsdim.modules.dimlets.network.PacketSendDimletPackages;
 import mcjty.rftoolsdim.modules.workbench.network.PacketPatternToClient;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.network.NetworkDirection;
-import net.minecraftforge.network.PacketDistributor;
+import net.neoforged.neoforge.network.NetworkDirection;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 public class RFToolsDimMessages {
 

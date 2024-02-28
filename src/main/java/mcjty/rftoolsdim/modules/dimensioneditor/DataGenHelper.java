@@ -6,8 +6,8 @@ import mcjty.rftoolsdim.modules.dimensionbuilder.blocks.DimensionBuilderTileEnti
 import mcjty.rftoolsdim.modules.dimensioneditor.blocks.DimensionEditorTileEntity;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraftforge.client.model.generators.ModelFile;
-import net.minecraftforge.client.model.generators.VariantBlockStateBuilder;
+import net.neoforged.neoforge.client.model.generators.ModelFile;
+import net.neoforged.neoforge.client.model.generators.VariantBlockStateBuilder;
 
 public class DataGenHelper {
 

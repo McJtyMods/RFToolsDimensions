@@ -13,7 +13,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.biome.*;
 import net.minecraft.world.level.levelgen.presets.WorldPreset;
 import net.minecraft.world.level.levelgen.presets.WorldPresets;
-import net.minecraftforge.server.ServerLifecycleHooks;
+import net.neoforged.neoforge.server.ServerLifecycleHooks;
 
 import javax.annotation.Nonnull;
 import java.util.*;

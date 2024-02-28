@@ -7,6 +7,9 @@ displayURL="http://github.com/McJtyMods/RFToolsDimensions/"
 #credits="Thanks for this example mod goes to Java" #optional
 authors="McJty"
 
+[[accessTransformers]]
+file="META-INF/accesstransformer.cfg"
+
 [[mods]]
 modId="rftoolsdim"
 version="${file.jarVersion}"

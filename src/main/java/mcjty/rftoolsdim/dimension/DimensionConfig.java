@@ -1,6 +1,6 @@
 package mcjty.rftoolsdim.dimension;
 
-import net.minecraftforge.common.ForgeConfigSpec;
+import net.neoforged.neoforge.common.ForgeConfigSpec;
 
 import static mcjty.rftoolsdim.setup.Config.SERVER_BUILDER;
 

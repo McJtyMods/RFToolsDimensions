@@ -43,8 +43,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraftforge.common.util.Lazy;
-import net.minecraftforge.common.util.LazyOptional;
+import net.neoforged.neoforge.common.util.Lazy;
+import net.neoforged.neoforge.common.util.LazyOptional;
 
 import javax.annotation.Nonnull;
 

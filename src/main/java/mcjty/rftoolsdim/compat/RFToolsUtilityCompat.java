@@ -3,8 +3,8 @@ package mcjty.rftoolsdim.compat;
 import mcjty.rftoolsbase.api.teleportation.ITeleportationManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraftforge.fml.InterModComms;
-import net.minecraftforge.fml.ModList;
+import net.neoforged.neoforge.fml.InterModComms;
+import net.neoforged.neoforge.fml.ModList;
 
 import java.util.function.Function;
 

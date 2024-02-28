@@ -4,8 +4,8 @@ import mcjty.lib.varia.Logging;
 import mcjty.rftoolsdim.dimension.terraintypes.TerrainType;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.fml.InterModComms;
-import net.minecraftforge.fml.ModList;
+import net.neoforged.neoforge.fml.InterModComms;
+import net.neoforged.neoforge.fml.ModList;
 
 public class LostCityCompat {
 

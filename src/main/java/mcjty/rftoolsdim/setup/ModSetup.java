@@ -11,11 +11,11 @@ import mcjty.rftoolsdim.dimension.biomes.RFTBiomeProvider;
 import mcjty.rftoolsdim.dimension.terraintypes.RFToolsChunkGenerator;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.RegisterCommandsEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.neoforge.common.MinecraftForge;
+import net.neoforged.neoforge.event.RegisterCommandsEvent;
+import net.neoforged.neoforge.eventbus.api.SubscribeEvent;
+import net.neoforged.neoforge.fml.common.Mod;
+import net.neoforged.neoforge.fml.event.lifecycle.FMLCommonSetupEvent;
 
 import static mcjty.rftoolsdim.dimension.DimensionRegistry.RFTOOLS_CHUNKGEN_ID;
 

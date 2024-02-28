@@ -39,8 +39,8 @@ import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.util.Lazy;
-import net.minecraftforge.common.util.LazyOptional;
+import net.neoforged.neoforge.common.util.Lazy;
+import net.neoforged.neoforge.common.util.LazyOptional;
 
 import javax.annotation.Nullable;
 import java.util.List;

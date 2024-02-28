@@ -32,8 +32,8 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.level.BlockEvent;
+import net.neoforged.neoforge.common.MinecraftForge;
+import net.neoforged.neoforge.event.level.BlockEvent;
 
 import javax.annotation.Nonnull;
 import java.util.HashSet;
