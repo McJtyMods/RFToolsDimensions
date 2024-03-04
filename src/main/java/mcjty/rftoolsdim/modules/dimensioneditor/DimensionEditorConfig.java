@@ -1,17 +1,17 @@
 package mcjty.rftoolsdim.modules.dimensioneditor;
 
-import net.neoforged.neoforge.common.ForgeConfigSpec;
+import net.neoforged.neoforge.common.ModConfigSpec;
 
 public class DimensionEditorConfig {
 
     public static final String SUB_CATEGORY_DIMENSION_EDITOR = "dimensioneditor";
 
-    public static ForgeConfigSpec.IntValue EDITOR_MAXENERGY;
-    public static ForgeConfigSpec.IntValue EDITOR_RECEIVEPERTICK;
-    public static ForgeConfigSpec.BooleanValue TNT_CAN_DESTROY_DIMENSION;
+    public static ModConfigSpec.IntValue EDITOR_MAXENERGY;
+    public static ModConfigSpec.IntValue EDITOR_RECEIVEPERTICK;
+    public static ModConfigSpec.BooleanValue TNT_CAN_DESTROY_DIMENSION;
 
 
-    public static void init(ForgeConfigSpec.Builder SERVER_BUILDER, ForgeConfigSpec.Builder CLIENT_BUILDER) {
+    public static void init(ModConfigSpec.Builder SERVER_BUILDER, ModConfigSpec.Builder CLIENT_BUILDER) {
         SERVER_BUILDER.comment("Dimension Editor settings").push(SUB_CATEGORY_DIMENSION_EDITOR);
 
         EDITOR_MAXENERGY = SERVER_BUILDER

@@ -1,17 +1,17 @@
 package mcjty.rftoolsdim.modules.essences;
 
-import net.neoforged.neoforge.common.ForgeConfigSpec;
+import net.neoforged.neoforge.common.ModConfigSpec;
 
 public class EssencesConfig {
 
     public static final String SUB_CATEGORY_ESSENCES = "essences";
 
-    public static ForgeConfigSpec.IntValue maxBlockAbsorption;
-    public static ForgeConfigSpec.IntValue maxFluidAbsorption;
-    public static ForgeConfigSpec.IntValue maxBiomeAbsorption;
-    public static ForgeConfigSpec.IntValue maxStructureAbsorption;
+    public static ModConfigSpec.IntValue maxBlockAbsorption;
+    public static ModConfigSpec.IntValue maxFluidAbsorption;
+    public static ModConfigSpec.IntValue maxBiomeAbsorption;
+    public static ModConfigSpec.IntValue maxStructureAbsorption;
 
-    public static void init(ForgeConfigSpec.Builder SERVER_BUILDER, ForgeConfigSpec.Builder CLIENT_BUILDER) {
+    public static void init(ModConfigSpec.Builder SERVER_BUILDER, ModConfigSpec.Builder CLIENT_BUILDER) {
         SERVER_BUILDER.comment("Essence settings").push(SUB_CATEGORY_ESSENCES);
 
         maxBlockAbsorption = SERVER_BUILDER

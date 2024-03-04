@@ -255,7 +255,7 @@ public class GuiWorkbench extends GenericGuiContainer<WorkbenchTileEntity, Gener
     @Override
     protected void renderBg(@Nonnull GuiGraphics graphics, float partialTicks, int x, int y) {
         updateList();
-        drawWindow(graphics);
+        drawWindow(graphics, xxx, xxx, yyy);
         renderHilightedPattern(graphics);
     }
 }

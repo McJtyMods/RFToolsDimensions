@@ -1,22 +1,22 @@
 package mcjty.rftoolsdim.modules.blob;
 
-import net.neoforged.neoforge.common.ForgeConfigSpec;
+import net.neoforged.neoforge.common.ModConfigSpec;
 
 public class BlobConfig {
 
     public static final String SUB_CATEGORY_BLOBS = "blobs";
 
-    public static ForgeConfigSpec.IntValue BLOB_COMMON_HEALTH;
-    public static ForgeConfigSpec.IntValue BLOB_RARE_HEALTH;
-    public static ForgeConfigSpec.IntValue BLOB_LEGENDARY_HEALTH;
+    public static ModConfigSpec.IntValue BLOB_COMMON_HEALTH;
+    public static ModConfigSpec.IntValue BLOB_RARE_HEALTH;
+    public static ModConfigSpec.IntValue BLOB_LEGENDARY_HEALTH;
 
-    public static ForgeConfigSpec.IntValue BLOB_COMMON_REGEN;
-    public static ForgeConfigSpec.IntValue BLOB_RARE_REGEN;
-    public static ForgeConfigSpec.IntValue BLOB_LEGENDARY_REGEN;
+    public static ModConfigSpec.IntValue BLOB_COMMON_REGEN;
+    public static ModConfigSpec.IntValue BLOB_RARE_REGEN;
+    public static ModConfigSpec.IntValue BLOB_LEGENDARY_REGEN;
 
-    public static ForgeConfigSpec.LongValue BLOB_REGENERATION_LEVEL;
+    public static ModConfigSpec.LongValue BLOB_REGENERATION_LEVEL;
 
-    public static void init(ForgeConfigSpec.Builder SERVER_BUILDER, ForgeConfigSpec.Builder COMMON_BUILDER, ForgeConfigSpec.Builder CLIENT_BUILDER) {
+    public static void init(ModConfigSpec.Builder SERVER_BUILDER, ModConfigSpec.Builder COMMON_BUILDER, ModConfigSpec.Builder CLIENT_BUILDER) {
         SERVER_BUILDER.comment("Dimension Builder settings").push(SUB_CATEGORY_BLOBS);
 
         BLOB_COMMON_HEALTH = COMMON_BUILDER

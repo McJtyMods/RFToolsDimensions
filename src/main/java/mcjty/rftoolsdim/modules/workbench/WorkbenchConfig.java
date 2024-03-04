@@ -1,18 +1,18 @@
 package mcjty.rftoolsdim.modules.workbench;
 
-import net.neoforged.neoforge.common.ForgeConfigSpec;
+import net.neoforged.neoforge.common.ModConfigSpec;
 
 public class WorkbenchConfig {
 
     public static final String SUB_CATEGORY_WORKBENCH = "dimletworkbench";
 
-    public static ForgeConfigSpec.IntValue RESEARCHER_MAXENERGY;
-    public static ForgeConfigSpec.IntValue RESEARCHER_ENERGY_INPUT_PERTICK;
-    public static ForgeConfigSpec.IntValue RESEARCHER_USE_PER_TICK;
+    public static ModConfigSpec.IntValue RESEARCHER_MAXENERGY;
+    public static ModConfigSpec.IntValue RESEARCHER_ENERGY_INPUT_PERTICK;
+    public static ModConfigSpec.IntValue RESEARCHER_USE_PER_TICK;
 
-    public static ForgeConfigSpec.IntValue RESEARCH_TIME;
+    public static ModConfigSpec.IntValue RESEARCH_TIME;
 
-    public static void init(ForgeConfigSpec.Builder SERVER_BUILDER, ForgeConfigSpec.Builder CLIENT_BUILDER) {
+    public static void init(ModConfigSpec.Builder SERVER_BUILDER, ModConfigSpec.Builder CLIENT_BUILDER) {
         SERVER_BUILDER.comment("Dimlet Workbench settings").push(SUB_CATEGORY_WORKBENCH);
 
         RESEARCHER_MAXENERGY = SERVER_BUILDER

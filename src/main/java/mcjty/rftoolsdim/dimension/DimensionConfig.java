@@ -1,6 +1,6 @@
 package mcjty.rftoolsdim.dimension;
 
-import net.neoforged.neoforge.common.ForgeConfigSpec;
+import net.neoforged.neoforge.common.ModConfigSpec;
 
 import static mcjty.rftoolsdim.setup.Config.SERVER_BUILDER;
 
@@ -8,25 +8,25 @@ public class DimensionConfig {
 
     public static final String SUB_CATEGORY_DIMENSION = "dimensions";
 
-    public static ForgeConfigSpec.LongValue POWER_MULTIPLES;
-    public static ForgeConfigSpec.IntValue MIN_POWER_THRESSHOLD;
-    public static ForgeConfigSpec.IntValue MAX_POWER_THRESSHOLD;
-    public static ForgeConfigSpec.LongValue MAX_DIMENSION_POWER_MIN;
-    public static ForgeConfigSpec.LongValue MAX_DIMENSION_POWER_MAX;
+    public static ModConfigSpec.LongValue POWER_MULTIPLES;
+    public static ModConfigSpec.IntValue MIN_POWER_THRESSHOLD;
+    public static ModConfigSpec.IntValue MAX_POWER_THRESSHOLD;
+    public static ModConfigSpec.LongValue MAX_DIMENSION_POWER_MIN;
+    public static ModConfigSpec.LongValue MAX_DIMENSION_POWER_MAX;
 
-    public static ForgeConfigSpec.BooleanValue ENABLE_DYNAMIC_PHASECOST;
-    public static ForgeConfigSpec.DoubleValue DYNAMIC_PHASECOST_AMOUNT;
-    public static ForgeConfigSpec.BooleanValue PHASED_FIELD_GENERATOR_DEBUF;
+    public static ModConfigSpec.BooleanValue ENABLE_DYNAMIC_PHASECOST;
+    public static ModConfigSpec.DoubleValue DYNAMIC_PHASECOST_AMOUNT;
+    public static ModConfigSpec.BooleanValue PHASED_FIELD_GENERATOR_DEBUF;
 
-    public static ForgeConfigSpec.IntValue DIMPOWER_WARN0;     // This is only used for darkness calculations.
-    public static ForgeConfigSpec.IntValue DIMPOWER_WARN1;
-    public static ForgeConfigSpec.IntValue DIMPOWER_WARN2;
-    public static ForgeConfigSpec.IntValue DIMPOWER_WARN3;
+    public static ModConfigSpec.IntValue DIMPOWER_WARN0;     // This is only used for darkness calculations.
+    public static ModConfigSpec.IntValue DIMPOWER_WARN1;
+    public static ModConfigSpec.IntValue DIMPOWER_WARN2;
+    public static ModConfigSpec.IntValue DIMPOWER_WARN3;
 
-    public static ForgeConfigSpec.BooleanValue OWNER_DIMLET_REQUIRED;
+    public static ModConfigSpec.BooleanValue OWNER_DIMLET_REQUIRED;
 
-    public static ForgeConfigSpec.DoubleValue RANDOMIZED_DIMLET_COST_FACTOR;
-    public static ForgeConfigSpec.DoubleValue DIMLET_HUT_CHANCE;
+    public static ModConfigSpec.DoubleValue RANDOMIZED_DIMLET_COST_FACTOR;
+    public static ModConfigSpec.DoubleValue DIMLET_HUT_CHANCE;
 
 
     public static void init() {

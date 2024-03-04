@@ -93,7 +93,7 @@ public class GuiDimensionBuilder extends GenericGuiContainer<DimensionBuilderTil
             error2.text("");
         }
 
-        drawWindow(graphics);
+        drawWindow(graphics, xxx, xxx, yyy);
         updateEnergyBar(energyBar);
     }
 }

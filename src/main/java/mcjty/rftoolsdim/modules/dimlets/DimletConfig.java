@@ -1,6 +1,6 @@
 package mcjty.rftoolsdim.modules.dimlets;
 
-import net.neoforged.neoforge.common.ForgeConfigSpec;
+import net.neoforged.neoforge.common.ModConfigSpec;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,9 +9,9 @@ public class DimletConfig {
 
     public static final String SUB_CATEGORY_DIMLETS = "dimlets";
 
-    public static ForgeConfigSpec.ConfigValue<List<? extends String>> DIMLET_PACKAGES;
+    public static ModConfigSpec.ConfigValue<List<? extends String>> DIMLET_PACKAGES;
 
-    public static void init(ForgeConfigSpec.Builder SERVER_BUILDER, ForgeConfigSpec.Builder CLIENT_BUILDER) {
+    public static void init(ModConfigSpec.Builder SERVER_BUILDER, ModConfigSpec.Builder CLIENT_BUILDER) {
         SERVER_BUILDER.comment("Dimlets settings").push(SUB_CATEGORY_DIMLETS);
 
         List<String> defValues = new ArrayList<>();

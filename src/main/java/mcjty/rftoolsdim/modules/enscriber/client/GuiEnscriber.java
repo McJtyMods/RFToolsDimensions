@@ -153,7 +153,7 @@ public class GuiEnscriber extends GenericGuiContainer<EnscriberTileEntity, Gener
 
         setNameFromDimensionTab();
 
-        drawWindow(graphics);
+        drawWindow(graphics, xxx, xxx, yyy);
     }
 
     private void setNameFromDimensionTab() {

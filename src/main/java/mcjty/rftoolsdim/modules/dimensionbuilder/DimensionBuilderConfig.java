@@ -1,20 +1,20 @@
 package mcjty.rftoolsdim.modules.dimensionbuilder;
 
-import net.neoforged.neoforge.common.ForgeConfigSpec;
+import net.neoforged.neoforge.common.ModConfigSpec;
 
 public class DimensionBuilderConfig {
 
     public static final String SUB_CATEGORY_DIMENSION_BUILDER = "dimensionbuilder";
 
-    public static ForgeConfigSpec.IntValue BUILDER_MAXENERGY;
-    public static ForgeConfigSpec.IntValue BUILDER_RECEIVEPERTICK;
+    public static ModConfigSpec.IntValue BUILDER_MAXENERGY;
+    public static ModConfigSpec.IntValue BUILDER_RECEIVEPERTICK;
 
-    public static ForgeConfigSpec.LongValue PHASEDFIELD_MAXENERGY;
-    public static ForgeConfigSpec.LongValue PHASEDFIELD_RECEIVEPERTICK;
-    public static ForgeConfigSpec.LongValue PHASEDFIELD_CONSUMEPERTICK;
+    public static ModConfigSpec.LongValue PHASEDFIELD_MAXENERGY;
+    public static ModConfigSpec.LongValue PHASEDFIELD_RECEIVEPERTICK;
+    public static ModConfigSpec.LongValue PHASEDFIELD_CONSUMEPERTICK;
 
 
-    public static void init(ForgeConfigSpec.Builder SERVER_BUILDER, ForgeConfigSpec.Builder CLIENT_BUILDER) {
+    public static void init(ModConfigSpec.Builder SERVER_BUILDER, ModConfigSpec.Builder CLIENT_BUILDER) {
         SERVER_BUILDER.comment("Dimension Builder settings").push(SUB_CATEGORY_DIMENSION_BUILDER);
 
         BUILDER_MAXENERGY = SERVER_BUILDER

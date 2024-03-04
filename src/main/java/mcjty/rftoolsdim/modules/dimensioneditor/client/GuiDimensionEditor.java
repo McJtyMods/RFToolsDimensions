@@ -1,6 +1,5 @@
 package mcjty.rftoolsdim.modules.dimensioneditor.client;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import mcjty.lib.container.GenericContainer;
 import mcjty.lib.gui.GenericGuiContainer;
 import mcjty.lib.gui.Window;
@@ -9,7 +8,6 @@ import mcjty.lib.gui.widgets.ImageLabel;
 import mcjty.lib.gui.widgets.Label;
 import mcjty.lib.gui.widgets.Panel;
 import mcjty.rftoolsdim.RFToolsDim;
-import mcjty.rftoolsdim.modules.dimensionbuilder.DimensionBuilderModule;
 import mcjty.rftoolsdim.modules.dimensioneditor.DimensionEditorModule;
 import mcjty.rftoolsdim.modules.dimensioneditor.blocks.DimensionEditorTileEntity;
 import net.minecraft.client.gui.GuiGraphics;
@@ -78,7 +76,7 @@ public class GuiDimensionEditor extends GenericGuiContainer<DimensionEditorTileE
             }
         }
 
-        drawWindow(graphics);
+        drawWindow(graphics, xxx, xxx, yyy);
         updateEnergyBar(energyBar);
     }
 }
