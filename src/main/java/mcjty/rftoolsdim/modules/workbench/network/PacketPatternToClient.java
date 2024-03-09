@@ -1,7 +1,5 @@
 package mcjty.rftoolsdim.modules.workbench.network;
 
-import mcjty.lib.network.CustomPacketPayload;
-import mcjty.lib.network.PlayPayloadContext;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.modules.workbench.client.GuiWorkbench;
 import net.minecraft.network.FriendlyByteBuf;

@@ -1,7 +1,5 @@
 package mcjty.rftoolsdim.modules.dimlets.network;
 
-import mcjty.lib.network.CustomPacketPayload;
-import mcjty.lib.network.PlayPayloadContext;
 import mcjty.lib.varia.SafeClientTools;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletDictionary;

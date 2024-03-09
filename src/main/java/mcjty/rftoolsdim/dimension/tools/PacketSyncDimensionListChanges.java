@@ -1,7 +1,5 @@
 package mcjty.rftoolsdim.dimension.tools;
 
-import mcjty.lib.network.CustomPacketPayload;
-import mcjty.lib.network.PlayPayloadContext;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.setup.RFToolsDimMessages;
 import net.minecraft.client.Minecraft;

@@ -1,6 +1,5 @@
 package mcjty.rftoolsdim.setup;
 
-import mcjty.lib.network.IPayloadRegistrar;
 import mcjty.lib.network.Networking;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.dimension.network.PackagePropageDataToClients;
