@@ -5,7 +5,7 @@ import mcjty.rftoolsdim.dimension.client.RFToolsDimensionSpecialEffects;
 import mcjty.rftoolsdim.dimension.data.ClientDimensionData;
 import net.minecraft.client.renderer.DimensionSpecialEffects;
 import net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent;
-import net.neoforged.neoforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 
 public class ClientSetup {
 
