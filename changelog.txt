@@ -1,3 +1,6 @@
+1.18-8.0.11:
+- Ashnak fixed a bug where the owner dimlet logic was inverted
+
 1.18-8.0.10:
 - Potentially fixed a compatibility problem with terrablender (again)
 
