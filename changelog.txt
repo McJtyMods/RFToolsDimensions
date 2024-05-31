@@ -1,3 +1,6 @@
+1.19.2-9.1.10:
+- Ashnak fixed a bug where the owner dimlet logic was inverted
+
 1.19.2-9.1.9:
 - Fixed a bug introduced last version
 
