@@ -130,7 +130,7 @@ public class EnscriberTileEntity extends GenericTileEntity {
 
     private void storeDimlets(Player player, String name) {
         if (DimensionConfig.OWNER_DIMLET_REQUIRED.get()) {
-            if (checkOwnerDimlet()) {
+            if (!checkOwnerDimlet()) {
                 Logging.warn(player, "You need an owner dimlet to make a dimension!");
                 return;
             }
