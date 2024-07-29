@@ -23,6 +23,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.*;
 
@@ -107,10 +108,10 @@ public class CompiledDescriptor {
             biomeControllerType = BiomeControllerType.SINGLE;
         }
         if (baseBlock == null) {
-            baseBlock = Blocks.STONE.defaultBlockState();
+            baseBlock = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(DimensionConfig.DEFAULT_BASE_BLOCK.get())).defaultBlockState();
         }
         if (baseLiquid == null) {
-            baseLiquid = Blocks.WATER.defaultBlockState();
+            baseLiquid = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(DimensionConfig.DEFAULT_BASE_FLUID.get())).defaultBlockState();
         }
     }
 

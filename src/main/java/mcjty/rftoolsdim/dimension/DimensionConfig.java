@@ -23,6 +23,9 @@ public class DimensionConfig {
     public static ForgeConfigSpec.IntValue DIMPOWER_WARN2;
     public static ForgeConfigSpec.IntValue DIMPOWER_WARN3;
 
+    public static ForgeConfigSpec.ConfigValue<String> DEFAULT_BASE_BLOCK;
+    public static ForgeConfigSpec.ConfigValue<String> DEFAULT_BASE_FLUID;
+
     public static ForgeConfigSpec.BooleanValue OWNER_DIMLET_REQUIRED;
 
     public static ForgeConfigSpec.DoubleValue RANDOMIZED_DIMLET_COST_FACTOR;
@@ -88,6 +91,14 @@ public class DimensionConfig {
         OWNER_DIMLET_REQUIRED = SERVER_BUILDER
                 .comment("If true creating dimensions requires an owner dimlet")
                 .define("ownerDimletRequired", false);
+
+        DEFAULT_BASE_BLOCK = SERVER_BUILDER
+                .comment("The default base block for a dimension")
+                .define("defaultBaseBlock", "minecraft:stone");
+
+        DEFAULT_BASE_FLUID = SERVER_BUILDER
+                .comment("The default base fluid for a dimension")
+                .define("defaultBaseFluid", "minecraft:water");
 
         SERVER_BUILDER.pop();
     }
