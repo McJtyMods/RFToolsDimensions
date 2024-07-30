@@ -23,7 +23,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.*;
 
@@ -108,10 +107,10 @@ public class CompiledDescriptor {
             biomeControllerType = BiomeControllerType.SINGLE;
         }
         if (baseBlock == null) {
-            baseBlock = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(DimensionConfig.DEFAULT_BASE_BLOCK.get())).defaultBlockState();
+            baseBlock = Tools.getBlock(new ResourceLocation(DimensionConfig.DEFAULT_BASE_BLOCK.get())).defaultBlockState();
         }
         if (baseLiquid == null) {
-            baseLiquid = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(DimensionConfig.DEFAULT_BASE_FLUID.get())).defaultBlockState();
+            baseLiquid = Tools.getBlock(new ResourceLocation(DimensionConfig.DEFAULT_BASE_FLUID.get())).defaultBlockState();
         }
     }
 
@@ -230,13 +229,13 @@ public class CompiledDescriptor {
         compiledFeature.getBlocks().addAll(collectedBlocks);
         collectedBlocks.clear();
         if (compiledFeature.getBlocks().isEmpty()) {
-            compiledFeature.getBlocks().add(Blocks.STONE.defaultBlockState());
+            compiledFeature.getBlocks().add(Tools.getBlock(new ResourceLocation(DimensionConfig.DEFAULT_BASE_BLOCK.get())).defaultBlockState());
         }
 
         compiledFeature.getFluids().addAll(collectedFluids);
         collectedFluids.clear();
         if (compiledFeature.getFluids().isEmpty()) {
-            compiledFeature.getFluids().add(Blocks.WATER.defaultBlockState());
+            compiledFeature.getFluids().add(Tools.getBlock(new ResourceLocation(DimensionConfig.DEFAULT_BASE_FLUID.get())).defaultBlockState());
         }
 
         features.add(compiledFeature);
@@ -258,7 +257,7 @@ public class CompiledDescriptor {
             throw ERROR(ONLY_ONE_BLOCK);
         }
         if (collectedBlocks.isEmpty()) {
-            baseBlock = Blocks.STONE.defaultBlockState();
+            baseBlock = Tools.getBlock(new ResourceLocation(DimensionConfig.DEFAULT_BASE_BLOCK.get())).defaultBlockState();
         } else {
             baseBlock = collectedBlocks.iterator().next();
         }
