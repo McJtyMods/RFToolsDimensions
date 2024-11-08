@@ -1,3 +1,6 @@
+1.20-11.0.10:
+- Fixed the hitboxes for the dimensional blobs
+
 1.20-11.0.9:
 - Missed a few cases where 'defaultBaseBlock' and 'defaultBaseFluid' were not used
 
