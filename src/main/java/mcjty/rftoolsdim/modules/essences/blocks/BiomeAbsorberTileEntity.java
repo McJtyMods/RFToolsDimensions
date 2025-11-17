@@ -60,7 +60,7 @@ public class BiomeAbsorberTileEntity extends TickingTileEntity {
         if (biome == null) {
             return "<Not Set>";
         } else {
-            ResourceLocation id = new ResourceLocation(biome);
+            ResourceLocation id = ResourceLocation.parse(biome);
             String trans = "biome." + id.getNamespace() + "." + id.getPath();
             return I18n.get(trans);
         }
@@ -133,7 +133,8 @@ public class BiomeAbsorberTileEntity extends TickingTileEntity {
         }
     }
 
-    @Override
+// @todo 1.21
+/*    @Override
     public void saveInfo(CompoundTag tagCompound) {
         super.saveInfo(tagCompound);
         CompoundTag info = getOrCreateInfo(tagCompound);
@@ -142,8 +143,10 @@ public class BiomeAbsorberTileEntity extends TickingTileEntity {
             info.putString("biome", biomeId);
         }
     }
+*/
 
-    @Override
+// @todo 1.21
+/*    @Override
     public void loadInfo(CompoundTag tagCompound) {
         super.loadInfo(tagCompound);
         CompoundTag info = tagCompound.getCompound("Info");
@@ -154,4 +157,5 @@ public class BiomeAbsorberTileEntity extends TickingTileEntity {
             biomeId = null;
         }
     }
+*/
 }

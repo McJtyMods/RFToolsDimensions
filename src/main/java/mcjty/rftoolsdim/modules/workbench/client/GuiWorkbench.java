@@ -25,6 +25,7 @@ import mcjty.rftoolsdim.modules.workbench.blocks.WorkbenchTileEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.InventoryMenu;
@@ -42,8 +43,8 @@ public class GuiWorkbench extends GenericGuiContainer<WorkbenchTileEntity, Gener
     public static final int WIDTH = 256;
     public static final int HEIGHT = 240;
 
-    private static final ResourceLocation iconLocation = new ResourceLocation(RFToolsDim.MODID, "textures/gui/dimletworkbench.png");
-    private static final ResourceLocation iconGuiElements = new ResourceLocation(RFToolsBase.MODID, "textures/gui/guielements.png");
+    private static final ResourceLocation iconLocation = ResourceLocation.fromNamespaceAndPath(RFToolsDim.MODID, "textures/gui/dimletworkbench.png");
+    private static final ResourceLocation iconGuiElements = ResourceLocation.fromNamespaceAndPath(RFToolsBase.MODID, "textures/gui/guielements.png");
 
     private TextField searchBar;
     private WidgetList itemList;
@@ -52,8 +53,8 @@ public class GuiWorkbench extends GenericGuiContainer<WorkbenchTileEntity, Gener
 
     private static String[] pattern = null;
 
-    public GuiWorkbench(WorkbenchTileEntity tileEntity, GenericContainer container, Inventory inventory) {
-        super(tileEntity, container, inventory, WorkbenchModule.WORKBENCH.get().getManualEntry());
+    public GuiWorkbench(GenericContainer container, Inventory inventory, Component title) {
+        super(container, inventory, title, WorkbenchModule.WORKBENCH.block().get().getManualEntry());
 
         imageWidth = WIDTH;
         imageHeight = HEIGHT;
@@ -91,7 +92,10 @@ public class GuiWorkbench extends GenericGuiContainer<WorkbenchTileEntity, Gener
         window = new Window(this, toplevel);
         dimletListAge = -1;
 
-        Networking.sendToServer(PacketGetListFromServer.create(tileEntity.getBlockPos(), WorkbenchTileEntity.CMD_GETDIMLETS.name()));
+        WorkbenchTileEntity te = getBE();
+        if (te != null) {
+            Networking.sendToServer(PacketGetListFromServer.create(te.getBlockPos(), WorkbenchTileEntity.CMD_GETDIMLETS.name()));
+        }
     }
 
     private void createDimlet() {
@@ -255,7 +259,7 @@ public class GuiWorkbench extends GenericGuiContainer<WorkbenchTileEntity, Gener
     @Override
     protected void renderBg(@Nonnull GuiGraphics graphics, float partialTicks, int x, int y) {
         updateList();
-        drawWindow(graphics, xxx, xxx, yyy);
+        drawWindow(graphics, partialTicks, x, y);
         renderHilightedPattern(graphics);
     }
 }

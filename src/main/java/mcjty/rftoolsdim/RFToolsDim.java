@@ -19,17 +19,17 @@ import mcjty.rftoolsdim.modules.workbench.WorkbenchModule;
 import mcjty.rftoolsdim.setup.ClientSetup;
 import mcjty.rftoolsdim.setup.Config;
 import mcjty.rftoolsdim.setup.ModSetup;
+import mcjty.rftoolsdim.setup.RFToolsDimMessages;
 import mcjty.rftoolsdim.setup.Registration;
 import net.minecraft.world.item.Item;
-import net.neoforged.neoforge.api.distmarker.Dist;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.event.lifecycle.InterModProcessEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.neoforge.fml.common.Mod;
-import net.neoforged.neoforge.fml.event.lifecycle.InterModProcessEvent;
-import net.neoforged.neoforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.neoforged.neoforge.fml.loading.FMLEnvironment;
 
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -42,27 +42,25 @@ public class RFToolsDim {
     private final Modules modules = new Modules();
     public static final ModSetup setup = new ModSetup();
 
-    public RFToolsDim() {
-        IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
-        Dist dist = FMLEnvironment.dist;
-
+    public RFToolsDim(ModContainer mod, IEventBus bus, Dist dist) {
         instance = this;
         setupModules(bus, dist);
 
-        Config.register(bus, modules);
-
+        Config.register(mod, bus, modules);
         Registration.register(bus);
+        bus.addListener(setup.getBlockCapabilityRegistrar(Registration.RBLOCKS));
 
         bus.addListener(setup::init);
         bus.addListener(modules::init);
         bus.addListener(this::processIMC);
         bus.addListener(this::onDataGen);
-        MinecraftForge.EVENT_BUS.addListener(this::onJoinWorld);
+        bus.addListener(RFToolsDimMessages::registerMessages);
+        NeoForge.EVENT_BUS.addListener(this::onJoinWorld);
 
         if (dist.isClient()) {
-            MinecraftForge.EVENT_BUS.addListener(ClientSetup::onPlayerLogin);
-            MinecraftForge.EVENT_BUS.addListener(ClientSetup::onDimensionChange);
-            MinecraftForge.EVENT_BUS.addListener(OverlayRenderer::render);
+            NeoForge.EVENT_BUS.addListener(ClientSetup::onPlayerLogin);
+            NeoForge.EVENT_BUS.addListener(ClientSetup::onDimensionChange);
+            NeoForge.EVENT_BUS.addListener(OverlayRenderer::render);
             bus.addListener(ClientSetup::init);
             bus.addListener(modules::initClient);
 //            FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientEventHandlers::onClientTick);
@@ -84,17 +82,17 @@ public class RFToolsDim {
 
     private void onDataGen(GatherDataEvent event) {
         DataGen datagen = new DataGen(MODID, event);
-        modules.datagen(datagen);
+        modules.datagen(datagen, event.getLookupProvider());
         datagen.generate();
     }
 
     private void setupModules(IEventBus bus, Dist dist) {
         modules.register(new VariousModule());
-        modules.register(new DimensionBuilderModule());
-        modules.register(new DimensionEditorModule());
+        modules.register(new DimensionBuilderModule(bus));
+        modules.register(new DimensionEditorModule(bus));
         modules.register(new DimletModule());
-        modules.register(new EnscriberModule());
-        modules.register(new WorkbenchModule());
+        modules.register(new EnscriberModule(bus));
+        modules.register(new WorkbenchModule(bus));
         modules.register(new BlobModule(bus, dist));
         modules.register(new KnowledgeModule());
         modules.register(new EssencesModule());

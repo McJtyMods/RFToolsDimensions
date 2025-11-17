@@ -16,13 +16,14 @@ import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.common.capabilities.ForgeCapabilities;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.items.IItemHandler;
 
 import javax.annotation.Nonnull;
 
 public class ResearcherRenderer implements BlockEntityRenderer<ResearcherTileEntity> {
 
-    public static final ResourceLocation LIGHT = new ResourceLocation(RFToolsDim.MODID, "block/light");
+    public static final ResourceLocation LIGHT = ResourceLocation.fromNamespaceAndPath(RFToolsDim.MODID, "block/light");
 
     public ResearcherRenderer(BlockEntityRendererProvider.Context context) {
     }
@@ -30,13 +31,14 @@ public class ResearcherRenderer implements BlockEntityRenderer<ResearcherTileEnt
     @Override
     public void render(ResearcherTileEntity te, float v, @Nonnull PoseStack matrixStack, @Nonnull MultiBufferSource buffer, int combinedLight, int combinedOverlay) {
 
-        te.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(h -> {
+        IItemHandler handler = te.getLevel().getCapability(Capabilities.ItemHandler.BLOCK, te.getBlockPos(), null);
+        if (handler != null) {
             matrixStack.pushPose();
 
             ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
 
             long millis = System.currentTimeMillis();
-            ItemStack stack = h.getStackInSlot(ResearcherTileEntity.SLOT_IN);
+            ItemStack stack = handler.getStackInSlot(ResearcherTileEntity.SLOT_IN);
             if (!stack.isEmpty()) {
                 matrixStack.pushPose();
                 matrixStack.scale(.5f, .5f, .5f);
@@ -55,7 +57,7 @@ public class ResearcherRenderer implements BlockEntityRenderer<ResearcherTileEnt
             }
 
             matrixStack.popPose();
-        });
+        }
     }
 
     public static void register() {

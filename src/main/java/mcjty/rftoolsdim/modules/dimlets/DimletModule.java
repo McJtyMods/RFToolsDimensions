@@ -38,6 +38,7 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.loot.IGlobalLootModifier;
+import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -109,8 +110,8 @@ public class DimletModule implements IModule {
     }
 
     public static void registerLootHelpers() {
-        LOOT_TABLE_CONDITION = Registry.register(BuiltInRegistries.LOOT_CONDITION_TYPE, new ResourceLocation(RFToolsDim.MODID, "check_tables"), new LootItemConditionType(new LootTableCondition.Serializer()));
-        DIMLET_LOOT_ENTRY = Registry.register(BuiltInRegistries.LOOT_POOL_ENTRY_TYPE, new ResourceLocation(RFToolsDim.MODID, "dimlet_loot"), new LootPoolEntryType(new DimletLootEntry.Serializer()));
+        LOOT_TABLE_CONDITION = Registry.register(BuiltInRegistries.LOOT_CONDITION_TYPE, ResourceLocation.fromNamespaceAndPath(RFToolsDim.MODID, "check_tables"), new LootItemConditionType(LootTableCondition.CODEC));
+        DIMLET_LOOT_ENTRY = Registry.register(BuiltInRegistries.LOOT_POOL_ENTRY_TYPE, ResourceLocation.fromNamespaceAndPath(RFToolsDim.MODID, "dimlet_loot"), new LootPoolEntryType(DimletLootEntry.codec()));
     }
 
     @Override

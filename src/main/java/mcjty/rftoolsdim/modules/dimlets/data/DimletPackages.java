@@ -9,7 +9,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.common.Tags;
-import net.neoforged.neoforge.fml.loading.FMLPaths;
+import net.neoforged.fml.loading.FMLPaths;
 import net.neoforged.neoforge.registries.ForgeRegistries;
 
 import java.io.*;

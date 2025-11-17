@@ -10,8 +10,9 @@ import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.modules.workbench.WorkbenchModule;
 import mcjty.rftoolsdim.modules.workbench.blocks.ResearcherTileEntity;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Inventory;
 
 import javax.annotation.Nonnull;
 
@@ -26,10 +27,10 @@ public class GuiResearcher extends GenericGuiContainer<ResearcherTileEntity, Gen
     private EnergyBar energyBar;
     private Label progress;
 
-    private static final ResourceLocation iconLocation = new ResourceLocation(RFToolsDim.MODID, "textures/gui/researcher.png");
+    private static final ResourceLocation iconLocation = ResourceLocation.fromNamespaceAndPath(RFToolsDim.MODID, "textures/gui/researcher.png");
 
-    public GuiResearcher(ResearcherTileEntity tileEntity, GenericContainer container, Inventory inventory) {
-        super(tileEntity, container, inventory, WorkbenchModule.HOLDER.get().getManualEntry());
+    public GuiResearcher(GenericContainer container, Inventory inventory, Component title) {
+        super(container, inventory, title, WorkbenchModule.HOLDER.block().get().getManualEntry());
 
         imageWidth = WIDTH;
         imageHeight = HEIGHT;
@@ -59,12 +60,13 @@ public class GuiResearcher extends GenericGuiContainer<ResearcherTileEntity, Gen
             return;
         }
         updateEnergyBar(energyBar);
-        progress.text(tileEntity.getProgressPercentage() + "%");
+        ResearcherTileEntity te = getBE();
+        progress.text(te != null ? te.getProgressPercentage() + "%" : "");
     }
 
     @Override
     protected void renderBg(@Nonnull GuiGraphics graphics, float partialTicks, int x, int y) {
         updateFields();
-        drawWindow(graphics, xxx, xxx, yyy);
+        drawWindow(graphics, partialTicks, x, y);
     }
 }

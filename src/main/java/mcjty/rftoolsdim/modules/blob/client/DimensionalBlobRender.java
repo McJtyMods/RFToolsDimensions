@@ -14,9 +14,9 @@ import javax.annotation.Nonnull;
 
 public class DimensionalBlobRender extends LivingEntityRenderer<DimensionalBlobEntity, DimensionalBlobModel<DimensionalBlobEntity>> {
 
-    private static final ResourceLocation TEXTURE_COMMON = new ResourceLocation(RFToolsDim.MODID, "textures/entity/dimensional_blob_common.png");
-    private static final ResourceLocation TEXTURE_RARE = new ResourceLocation(RFToolsDim.MODID, "textures/entity/dimensional_blob_rare.png");
-    private static final ResourceLocation TEXTURE_LEGENDARY = new ResourceLocation(RFToolsDim.MODID, "textures/entity/dimensional_blob_legendary.png");
+    private static final ResourceLocation TEXTURE_COMMON = ResourceLocation.fromNamespaceAndPath(RFToolsDim.MODID, "textures/entity/dimensional_blob_common.png");
+    private static final ResourceLocation TEXTURE_RARE = ResourceLocation.fromNamespaceAndPath(RFToolsDim.MODID, "textures/entity/dimensional_blob_rare.png");
+    private static final ResourceLocation TEXTURE_LEGENDARY = ResourceLocation.fromNamespaceAndPath(RFToolsDim.MODID, "textures/entity/dimensional_blob_legendary.png");
 
     public DimensionalBlobRender(EntityRendererProvider.Context context) {
         super(context, new DimensionalBlobModel<>(context.getModelSet().bakeLayer(DimensionalBlobModel.BLOB_LAYER)), 0.8f);

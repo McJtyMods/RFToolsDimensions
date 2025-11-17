@@ -34,13 +34,13 @@ public class RFToolsDimensionsTOPDriver implements TOPDriver {
     public void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, Player player, Level world, BlockState blockState, IProbeHitData data) {
         ResourceLocation id = Tools.getId(blockState);
         if (!drivers.containsKey(id)) {
-            if (blockState.getBlock() == EssencesModule.BLOCK_ABSORBER.get()) {
+            if (blockState.getBlock() == EssencesModule.BLOCK_ABSORBER.block().get()) {
                 drivers.put(id, new BlockAbsorberDriver());
-            } else if (blockState.getBlock() == EssencesModule.FLUID_ABSORBER.get()) {
+            } else if (blockState.getBlock() == EssencesModule.FLUID_ABSORBER.block().get()) {
                 drivers.put(id, new FluidAbsorberDriver());
-            } else if (blockState.getBlock() == EssencesModule.BIOME_ABSORBER.get()) {
+            } else if (blockState.getBlock() == EssencesModule.BIOME_ABSORBER.block().get()) {
                 drivers.put(id, new BiomeAbsorberDriver());
-            } else if (blockState.getBlock() == EssencesModule.STRUCTURE_ABSORBER.get()) {
+            } else if (blockState.getBlock() == EssencesModule.STRUCTURE_ABSORBER.block().get()) {
                 drivers.put(id, new StructureAbsorberDriver());
             } else {
                 drivers.put(id, new DefaultDriver());
@@ -103,7 +103,7 @@ public class RFToolsDimensionsTOPDriver implements TOPDriver {
                 int absorbing = te.getAbsorbing();
                 String biome = te.getAbsorbingBiome();
                 int pct = ((EssencesConfig.maxBiomeAbsorption.get() - absorbing) * 100) / EssencesConfig.maxBiomeAbsorption.get();
-                ResourceLocation id = new ResourceLocation(biome);
+                ResourceLocation id = ResourceLocation.parse(biome);
                 String trans = "biome." + id.getNamespace() + "." + id.getPath();
 
                 probeInfo.text((ComponentFactory.literal("Biome: ").append(ComponentFactory.translatable(trans)).withStyle(ChatFormatting.GREEN)))
@@ -122,7 +122,7 @@ public class RFToolsDimensionsTOPDriver implements TOPDriver {
                 String structure = te.getAbsorbingStructure();
                 if (structure != null) {
                     int pct = ((EssencesConfig.maxStructureAbsorption.get() - absorbing) * 100) / EssencesConfig.maxStructureAbsorption.get();
-                    ResourceLocation id = new ResourceLocation(structure);
+                    ResourceLocation id = ResourceLocation.parse(structure);
 
                     probeInfo.text((ComponentFactory.literal("Structure: ").append(ComponentFactory.literal(id.getPath())).withStyle(ChatFormatting.GREEN)))
                             .horizontal()

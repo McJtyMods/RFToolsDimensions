@@ -63,9 +63,9 @@ new NoiseSettings(
  */
 public class TerrainPresets {
 
-    public static final ResourceKey<NoiseGeneratorSettings> RFTOOLSDIM_CHAOTIC = ResourceKey.create(Registries.NOISE_SETTINGS, new ResourceLocation(RFToolsDim.MODID, "rftoolsdim_chaotic"));
-    public static final ResourceKey<NoiseGeneratorSettings> RFTOOLSDIM_ISLANDS = ResourceKey.create(Registries.NOISE_SETTINGS, new ResourceLocation(RFToolsDim.MODID, "rftoolsdim_islands"));
-    public static final ResourceKey<NoiseGeneratorSettings> RFTOOLSDIM_CAVERN = ResourceKey.create(Registries.NOISE_SETTINGS, new ResourceLocation(RFToolsDim.MODID, "rftoolsdim_cavern"));
-    public static final ResourceKey<NoiseGeneratorSettings> RFTOOLSDIM_FLAT = ResourceKey.create(Registries.NOISE_SETTINGS, new ResourceLocation(RFToolsDim.MODID, "rftoolsdim_flat"));
-    public static final ResourceKey<NoiseGeneratorSettings> RFTOOLSDIM_OVERWORLD = ResourceKey.create(Registries.NOISE_SETTINGS, new ResourceLocation(RFToolsDim.MODID, "rftoolsdim_overworld"));
+    public static final ResourceKey<NoiseGeneratorSettings> RFTOOLSDIM_CHAOTIC = ResourceKey.create(Registries.NOISE_SETTINGS, ResourceLocation.fromNamespaceAndPath(RFToolsDim.MODID, "rftoolsdim_chaotic"));
+    public static final ResourceKey<NoiseGeneratorSettings> RFTOOLSDIM_ISLANDS = ResourceKey.create(Registries.NOISE_SETTINGS, ResourceLocation.fromNamespaceAndPath(RFToolsDim.MODID, "rftoolsdim_islands"));
+    public static final ResourceKey<NoiseGeneratorSettings> RFTOOLSDIM_CAVERN = ResourceKey.create(Registries.NOISE_SETTINGS, ResourceLocation.fromNamespaceAndPath(RFToolsDim.MODID, "rftoolsdim_cavern"));
+    public static final ResourceKey<NoiseGeneratorSettings> RFTOOLSDIM_FLAT = ResourceKey.create(Registries.NOISE_SETTINGS, ResourceLocation.fromNamespaceAndPath(RFToolsDim.MODID, "rftoolsdim_flat"));
+    public static final ResourceKey<NoiseGeneratorSettings> RFTOOLSDIM_OVERWORLD = ResourceKey.create(Registries.NOISE_SETTINGS, ResourceLocation.fromNamespaceAndPath(RFToolsDim.MODID, "rftoolsdim_overworld"));
 }

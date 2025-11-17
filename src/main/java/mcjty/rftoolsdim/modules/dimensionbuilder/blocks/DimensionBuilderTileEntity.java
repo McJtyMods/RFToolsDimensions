@@ -161,7 +161,7 @@ public class DimensionBuilderTileEntity extends TickingTileEntity {
     private void maintainDimensionTick(CompoundTag tagCompound) {
         if (tagCompound.contains("dimension")) {
             String dimension = tagCompound.getString("dimension");
-            ResourceLocation id = new ResourceLocation(dimension);
+            ResourceLocation id = ResourceLocation.parse(dimension);
             DimensionData data = PersistantDimensionManager.get(level).getData(id);
             if (data == null) {
                 return;
@@ -257,7 +257,7 @@ public class DimensionBuilderTileEntity extends TickingTileEntity {
 
                 long seed = random.nextLong();
                 ServerLevel newworld = DimensionCreator.get().createWorld(this.level, name, seed, descriptor, randomizedDescriptor, getOwnerUUID());
-                ResourceLocation id = new ResourceLocation(RFToolsDim.MODID, name);
+                ResourceLocation id = ResourceLocation.fromNamespaceAndPath(RFToolsDim.MODID, name);
                 tagCompound.putString("dimension", id.toString());
                 CompiledDescriptor compiledDescriptor = DimensionCreator.get().getCompiledDescriptor(newworld);
                 tagCompound.putInt("rfMaintainCost", compiledDescriptor.getActualPowerCost());

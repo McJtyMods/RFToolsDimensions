@@ -5,7 +5,6 @@ import com.mojang.brigadier.tree.LiteralCommandNode;
 import mcjty.rftoolsdim.RFToolsDim;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
-import net.minecraft.server.commands.ResetChunksCommand;
 
 public class ModCommands {
 
@@ -26,7 +25,8 @@ public class ModCommands {
         );
 
         dispatcher.register(Commands.literal("dim").redirect(commands));
-        ResetChunksCommand.register(dispatcher);
+        // @todo 1.21 reset chunks command
+//        ResetChunksCommand.register(dispatcher);
     }
 
 }

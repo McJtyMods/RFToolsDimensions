@@ -11,6 +11,7 @@ import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.modules.dimensionbuilder.DimensionBuilderModule;
 import mcjty.rftoolsdim.modules.dimensionbuilder.blocks.DimensionBuilderTileEntity;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
@@ -28,12 +29,12 @@ public class GuiDimensionBuilder extends GenericGuiContainer<DimensionBuilderTil
     private Label error1;
     private Label error2;
 
-    private static final ResourceLocation iconLocation = new ResourceLocation(RFToolsDim.MODID, "textures/gui/dimensionbuilder.png");
-    private static final ResourceLocation iconStages = new ResourceLocation(RFToolsDim.MODID, "textures/gui/dimensionbuilderstages.png");
-    private static final ResourceLocation iconGuiElements = new ResourceLocation(RFToolsBase.MODID, "textures/gui/guielements.png");
+    private static final ResourceLocation iconLocation = ResourceLocation.fromNamespaceAndPath(RFToolsDim.MODID, "textures/gui/dimensionbuilder.png");
+    private static final ResourceLocation iconStages = ResourceLocation.fromNamespaceAndPath(RFToolsDim.MODID, "textures/gui/dimensionbuilderstages.png");
+    private static final ResourceLocation iconGuiElements = ResourceLocation.fromNamespaceAndPath(RFToolsBase.MODID, "textures/gui/guielements.png");
 
-    public GuiDimensionBuilder(DimensionBuilderTileEntity tileEntity, GenericContainer container, Inventory inventory) {
-        super(tileEntity, container, inventory, DimensionBuilderModule.DIMENSION_BUILDER.get().getManualEntry());
+    public GuiDimensionBuilder(GenericContainer container, Inventory inventory, Component title) {
+        super(container, inventory, title, DimensionBuilderModule.DIMENSION_BUILDER.block().get().getManualEntry());
 
         imageWidth = BUILDER_WIDTH;
         imageHeight = BUILDER_HEIGHT;
@@ -56,7 +57,10 @@ public class GuiDimensionBuilder extends GenericGuiContainer<DimensionBuilderTil
         toplevel.bounds(leftPos, topPos, imageWidth, imageHeight);
 
         window = new Window(this, toplevel);
-        window.bind("redstone", tileEntity, "rsmode");
+        DimensionBuilderTileEntity te = getBE();
+        if (te != null) {
+            window.bind("redstone", te, "rsmode");
+        }
     }
 
     private ImageChoiceLabel initRedstoneMode() {
@@ -69,8 +73,9 @@ public class GuiDimensionBuilder extends GenericGuiContainer<DimensionBuilderTil
 
     @Override
     protected void renderBg(@Nonnull GuiGraphics graphics, float partialTicks, int x, int y) {
-        int pct = tileEntity.getBuildPercentage();
-        int error = tileEntity.getErrorMode();
+        DimensionBuilderTileEntity te = getBE();
+        int pct = te != null ? te.getBuildPercentage() : 0;
+        int error = te != null ? te.getErrorMode() : 0;
 
         if (error == DimensionBuilderTileEntity.ERROR_NOOWNER) {
             error1.text("Builder has");
@@ -93,7 +98,7 @@ public class GuiDimensionBuilder extends GenericGuiContainer<DimensionBuilderTil
             error2.text("");
         }
 
-        drawWindow(graphics, xxx, xxx, yyy);
+        drawWindow(graphics, partialTicks, x, y);
         updateEnergyBar(energyBar);
     }
 }

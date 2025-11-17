@@ -77,7 +77,7 @@ public class FluidAbsorberTileEntity extends TickingTileEntity {
         if (block == null) {
             return "<Not Set>";
         } else {
-            Fluid b = Tools.getFluid(new ResourceLocation(block));
+            Fluid b = Tools.getFluid(ResourceLocation.parse(block));
             if (b != null) {
                 return I18n.get(b.defaultFluidState().createLegacyBlock().getBlock().getDescriptionId());
             } else {
@@ -249,20 +249,22 @@ public class FluidAbsorberTileEntity extends TickingTileEntity {
         }
     }
 
-    @Override
+// @todo 1.21
+/*    @Override
     protected void loadInfo(CompoundTag tagCompound) {
         super.loadInfo(tagCompound);
         if (tagCompound.contains("Info")) {
             CompoundTag info = tagCompound.getCompound("Info");
             absorbing = info.getInt("absorbing");
             if (info.contains("fluid")) {
-                Fluid fluid = Tools.getFluid(new ResourceLocation(info.getString("fluid")));
+                Fluid fluid = Tools.getFluid(ResourceLocation.parse(info.getString("fluid")));
                 if (fluid != null) {
                     absorbingBlock = fluid.defaultFluidState().createLegacyBlock().getBlock();
                 }
             }
         }
     }
+*/
 
     @Override
     public void saveAdditional(@Nonnull CompoundTag tagCompound) {
@@ -282,7 +284,8 @@ public class FluidAbsorberTileEntity extends TickingTileEntity {
         tagCompound.putIntArray("toscanz", z);
     }
 
-    @Override
+// @todo 1.21
+/*    @Override
     protected void saveInfo(CompoundTag tagCompound) {
         super.saveInfo(tagCompound);
         CompoundTag info = getOrCreateInfo(tagCompound);
@@ -291,4 +294,5 @@ public class FluidAbsorberTileEntity extends TickingTileEntity {
             info.putString("fluid", Tools.getId(absorbingBlock.defaultBlockState().getFluidState()).toString());
         }
     }
+*/
 }

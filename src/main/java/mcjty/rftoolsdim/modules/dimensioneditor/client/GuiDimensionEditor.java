@@ -11,10 +11,11 @@ import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.modules.dimensioneditor.DimensionEditorModule;
 import mcjty.rftoolsdim.modules.dimensioneditor.blocks.DimensionEditorTileEntity;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.Items;
-import net.minecraft.resources.ResourceLocation;
 
 import javax.annotation.Nonnull;
 
@@ -29,11 +30,11 @@ public class GuiDimensionEditor extends GenericGuiContainer<DimensionEditorTileE
     private Label percentage;
     private Label destroy;
 
-    private static final ResourceLocation iconLocation = new ResourceLocation(RFToolsDim.MODID, "textures/gui/dimensioneditor.png");
-    private static final ResourceLocation iconGuiElements = new ResourceLocation(RFToolsDim.MODID, "textures/gui/guielements.png");
+    private static final ResourceLocation iconLocation = ResourceLocation.fromNamespaceAndPath(RFToolsDim.MODID, "textures/gui/dimensioneditor.png");
+    private static final ResourceLocation iconGuiElements = ResourceLocation.fromNamespaceAndPath(RFToolsDim.MODID, "textures/gui/guielements.png");
 
-    public GuiDimensionEditor(DimensionEditorTileEntity tileEntity, GenericContainer container, Inventory inventory) {
-        super(tileEntity, container, inventory, DimensionEditorModule.DIMENSION_EDITOR.get().getManualEntry());
+    public GuiDimensionEditor(GenericContainer container, Inventory inventory, Component title) {
+        super(container, inventory, title, DimensionEditorModule.DIMENSION_EDITOR.block().get().getManualEntry());
 
         imageWidth = WIDTH;
         imageHeight = HEIGHT;
@@ -60,7 +61,8 @@ public class GuiDimensionEditor extends GenericGuiContainer<DimensionEditorTileE
 
     @Override
     protected void renderBg(@Nonnull GuiGraphics graphics, float partialTicks, int x, int y) {
-        int pct = tileEntity.getEditPercentage();
+        DimensionEditorTileEntity te = getBE();
+        int pct = te != null ? te.getEditPercentage() : 0;
         if (pct > 0) {
             arrow.image(iconGuiElements, 144, 0);
         } else {
@@ -76,7 +78,7 @@ public class GuiDimensionEditor extends GenericGuiContainer<DimensionEditorTileE
             }
         }
 
-        drawWindow(graphics, xxx, xxx, yyy);
+        drawWindow(graphics, partialTicks, x, y);
         updateEnergyBar(energyBar);
     }
 }

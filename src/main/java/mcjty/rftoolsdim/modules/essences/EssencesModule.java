@@ -1,6 +1,7 @@
 package mcjty.rftoolsdim.modules.essences;
 
 import mcjty.lib.blocks.BaseBlock;
+import mcjty.lib.blocks.RBlock;
 import mcjty.lib.datagen.DataGen;
 import mcjty.lib.datagen.Dob;
 import mcjty.lib.modules.IModule;
@@ -16,33 +17,49 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 
 import java.util.function.Supplier;
 
 import static mcjty.lib.datagen.DataGen.has;
-import static mcjty.rftoolsdim.RFToolsDim.tab;
 import static mcjty.rftoolsdim.setup.Registration.*;
-import static net.minecraftforge.client.model.generators.ModelProvider.BLOCK_FOLDER;
+import static net.neoforged.neoforge.client.model.generators.ModelProvider.BLOCK_FOLDER;
 
 public class EssencesModule implements IModule {
 
-    public static final DeferredBlock<BaseBlock> BLOCK_ABSORBER = BLOCKS.register("block_absorber", BlockAbsorberTileEntity::createBlock);
-    public static final DeferredItem<Item> BLOCK_ABSORBER_ITEM = ITEMS.register("block_absorber", tab(() -> new BlockItem(BLOCK_ABSORBER.get(), Registration.createStandardProperties())));
-    public static final Supplier<BlockEntityType<BlockAbsorberTileEntity>> TYPE_BLOCK_ABSORBER = TILES.register("block_absorber", () -> BlockEntityType.Builder.of(BlockAbsorberTileEntity::new, BLOCK_ABSORBER.get()).build(null));
+    public static final RBlock<BaseBlock, BlockItem, BlockAbsorberTileEntity> BLOCK_ABSORBER = RBLOCKS.registerBlock("block_absorber",
+            BlockAbsorberTileEntity.class,
+            BlockAbsorberTileEntity::createBlock,
+            block -> new BlockItem(block.get(), Registration.createStandardProperties()),
+            BlockAbsorberTileEntity::new);
+    public static final DeferredItem<BlockItem> BLOCK_ABSORBER_ITEM = BLOCK_ABSORBER.item();
+    public static final Supplier<BlockEntityType<BlockAbsorberTileEntity>> TYPE_BLOCK_ABSORBER = BLOCK_ABSORBER.be();
 
-    public static final DeferredBlock<BaseBlock> FLUID_ABSORBER = BLOCKS.register("fluid_absorber", FluidAbsorberTileEntity::createBlock);
-    public static final DeferredItem<Item> FLUID_ABSORBER_ITEM = ITEMS.register("fluid_absorber", tab(() -> new BlockItem(FLUID_ABSORBER.get(), Registration.createStandardProperties())));
-    public static final Supplier<BlockEntityType<FluidAbsorberTileEntity>> TYPE_FLUID_ABSORBER = TILES.register("fluid_absorber", () -> BlockEntityType.Builder.of(FluidAbsorberTileEntity::new, FLUID_ABSORBER.get()).build(null));
+    public static final RBlock<BaseBlock, BlockItem, FluidAbsorberTileEntity> FLUID_ABSORBER = RBLOCKS.registerBlock("fluid_absorber",
+            FluidAbsorberTileEntity.class,
+            FluidAbsorberTileEntity::createBlock,
+            block -> new BlockItem(block.get(), Registration.createStandardProperties()),
+            FluidAbsorberTileEntity::new);
+    public static final DeferredItem<BlockItem> FLUID_ABSORBER_ITEM = FLUID_ABSORBER.item();
+    public static final Supplier<BlockEntityType<FluidAbsorberTileEntity>> TYPE_FLUID_ABSORBER = FLUID_ABSORBER.be();
 
-    public static final DeferredBlock<BaseBlock> BIOME_ABSORBER = BLOCKS.register("biome_absorber", BiomeAbsorberTileEntity::createBlock);
-    public static final DeferredItem<Item> BIOME_ABSORBER_ITEM = ITEMS.register("biome_absorber", tab(() -> new BlockItem(BIOME_ABSORBER.get(), Registration.createStandardProperties())));
-    public static final Supplier<BlockEntityType<BiomeAbsorberTileEntity>> TYPE_BIOME_ABSORBER = TILES.register("biome_absorber", () -> BlockEntityType.Builder.of(BiomeAbsorberTileEntity::new, BIOME_ABSORBER.get()).build(null));
+    public static final RBlock<BaseBlock, BlockItem, BiomeAbsorberTileEntity> BIOME_ABSORBER = RBLOCKS.registerBlock("biome_absorber",
+            BiomeAbsorberTileEntity.class,
+            BiomeAbsorberTileEntity::createBlock,
+            block -> new BlockItem(block.get(), Registration.createStandardProperties()),
+            BiomeAbsorberTileEntity::new);
+    public static final DeferredItem<BlockItem> BIOME_ABSORBER_ITEM = BIOME_ABSORBER.item();
+    public static final Supplier<BlockEntityType<BiomeAbsorberTileEntity>> TYPE_BIOME_ABSORBER = BIOME_ABSORBER.be();
 
-    public static final DeferredBlock<BaseBlock> STRUCTURE_ABSORBER = BLOCKS.register("structure_absorber", StructureAbsorberTileEntity::createBlock);
-    public static final DeferredItem<Item> STRUCTURE_ABSORBER_ITEM = ITEMS.register("structure_absorber", tab(() -> new BlockItem(STRUCTURE_ABSORBER.get(), Registration.createStandardProperties())));
-    public static final Supplier<BlockEntityType<StructureAbsorberTileEntity>> TYPE_STRUCTURE_ABSORBER = TILES.register("structure_absorber", () -> BlockEntityType.Builder.of(StructureAbsorberTileEntity::new, STRUCTURE_ABSORBER.get()).build(null));
+    public static final RBlock<BaseBlock, BlockItem, StructureAbsorberTileEntity> STRUCTURE_ABSORBER = RBLOCKS.registerBlock("structure_absorber",
+            StructureAbsorberTileEntity.class,
+            StructureAbsorberTileEntity::createBlock,
+            block -> new BlockItem(block.get(), Registration.createStandardProperties()),
+            StructureAbsorberTileEntity::new);
+    public static final DeferredItem<BlockItem> STRUCTURE_ABSORBER_ITEM = STRUCTURE_ABSORBER.item();
+    public static final Supplier<BlockEntityType<StructureAbsorberTileEntity>> TYPE_STRUCTURE_ABSORBER = STRUCTURE_ABSORBER.be();
 
     @Override
     public void init(FMLCommonSetupEvent event) {
@@ -64,7 +81,7 @@ public class EssencesModule implements IModule {
                         .ironPickaxeTags()
                         .parentedItem("block/block_absorber")
                         .standardLoot(TYPE_BLOCK_ABSORBER)
-                        .blockState(p -> p.singleTextureBlockC(BLOCK_ABSORBER.get(), BLOCK_FOLDER + "/block_absorber", "block/blockabsorber", builder -> builder.renderType("cutout")))
+                        .blockState(p -> p.singleTextureBlockC(BLOCK_ABSORBER.block().get(), BLOCK_FOLDER + "/block_absorber", "block/blockabsorber", builder -> builder.renderType("cutout")))
                         .shaped(builder -> builder
                                         .define('s', mcjty.rftoolsbase.modules.various.VariousModule.DIMENSIONALSHARD.get())
                                         .define('C', Blocks.SPONGE)
@@ -75,7 +92,7 @@ public class EssencesModule implements IModule {
                         .ironPickaxeTags()
                         .parentedItem("block/fluid_absorber")
                         .standardLoot(TYPE_FLUID_ABSORBER)
-                        .blockState(p -> p.singleTextureBlockC(FLUID_ABSORBER.get(), BLOCK_FOLDER + "/fluid_absorber", "block/fluidabsorber", builder -> builder.renderType("cutout")))
+                        .blockState(p -> p.singleTextureBlockC(FLUID_ABSORBER.block().get(), BLOCK_FOLDER + "/fluid_absorber", "block/fluidabsorber", builder -> builder.renderType("cutout")))
                         .shaped(builder -> builder
                                         .define('s', mcjty.rftoolsbase.modules.various.VariousModule.DIMENSIONALSHARD.get())
                                         .define('C', Blocks.SPONGE)
@@ -86,7 +103,7 @@ public class EssencesModule implements IModule {
                         .ironPickaxeTags()
                         .parentedItem("block/biome_absorber")
                         .standardLoot(TYPE_BIOME_ABSORBER)
-                        .blockState(p -> p.singleTextureBlockC(BIOME_ABSORBER.get(), BLOCK_FOLDER + "/biome_absorber", "block/biomeabsorber", builder -> builder.renderType("cutout")))
+                        .blockState(p -> p.singleTextureBlockC(BIOME_ABSORBER.block().get(), BLOCK_FOLDER + "/biome_absorber", "block/biomeabsorber", builder -> builder.renderType("cutout")))
                         .shaped(builder -> builder
                                         .define('s', mcjty.rftoolsbase.modules.various.VariousModule.DIMENSIONALSHARD.get())
                                         .define('C', Blocks.SPONGE)
@@ -97,7 +114,7 @@ public class EssencesModule implements IModule {
                         .ironPickaxeTags()
                         .parentedItem("block/structure_absorber")
                         .standardLoot(TYPE_STRUCTURE_ABSORBER)
-                        .blockState(p -> p.singleTextureBlockC(STRUCTURE_ABSORBER.get(), BLOCK_FOLDER + "/structure_absorber", "block/structureabsorber", builder -> builder.renderType("cutout")))
+                        .blockState(p -> p.singleTextureBlockC(STRUCTURE_ABSORBER.block().get(), BLOCK_FOLDER + "/structure_absorber", "block/structureabsorber", builder -> builder.renderType("cutout")))
                         .shaped(builder -> builder
                                         .define('s', mcjty.rftoolsbase.modules.various.VariousModule.DIMENSIONALSHARD.get())
                                         .define('C', Blocks.SPONGE)

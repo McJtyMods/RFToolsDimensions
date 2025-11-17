@@ -18,6 +18,10 @@ group = "com.github.mcjty"
 archivesBaseName = "rftoolsdim"
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
+if (System.getenv('BUILD_NUMBER') != null) {
+    version += "-${System.getenv('BUILD_NUMBER')}"
+}
+
 repos()
 at()
 runs()

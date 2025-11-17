@@ -5,13 +5,13 @@ import com.mojang.blaze3d.vertex.*;
 import mcjty.rftoolsdim.dimension.data.ClientDimensionData;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
-import net.neoforged.neoforge.client.event.RenderGuiOverlayEvent;
-import net.neoforged.neoforge.client.gui.overlay.VanillaGuiOverlay;
+import net.neoforged.neoforge.client.event.RenderGuiLayerEvent;
+import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 
 public class OverlayRenderer {
 
-    public static void render(RenderGuiOverlayEvent.Post event) {
-        if (event.getOverlay() == VanillaGuiOverlay.SLEEP_FADE.type()) {
+    public static void render(RenderGuiLayerEvent.Post event) {
+        if (event.getName().equals(VanillaGuiLayers.SLEEP_FADE)) {
             ClientDimensionData.ClientData clientData = ClientDimensionData.get().getClientData(Minecraft.getInstance().level.dimension().location());
             if (clientData.power() >= 0) {
                 // Don't do anything outside an RFTools Dimension

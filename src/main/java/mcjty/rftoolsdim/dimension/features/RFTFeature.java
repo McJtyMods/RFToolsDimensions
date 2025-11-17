@@ -32,7 +32,7 @@ import java.util.Set;
 
 public class RFTFeature extends Feature<NoneFeatureConfiguration> {
 
-    public static final ResourceLocation RFTFEATURE_ID = new ResourceLocation(RFToolsDim.MODID, "rftfeature");
+    public static final ResourceLocation RFTFEATURE_ID = ResourceLocation.fromNamespaceAndPath(RFToolsDim.MODID, "rftfeature");
 
 //    public static Holder<PlacedFeature> RFTFEATURE_CONFIGURED;
 //

@@ -6,7 +6,9 @@ import mcjty.lib.modules.IModule;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletRarity;
 import mcjty.rftoolsdim.modules.knowledge.data.KnowledgeManager;
 import mcjty.rftoolsdim.modules.knowledge.items.LostKnowledgeItem;
+import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.level.LevelEvent;
+import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -23,7 +25,7 @@ public class KnowledgeModule implements IModule {
     public static final DeferredItem<LostKnowledgeItem> LEGENDARY_LOST_KNOWLEDGE = ITEMS.register("legendary_lost_knowledge", tab(() -> new LostKnowledgeItem(DimletRarity.LEGENDARY)));
 
     public KnowledgeModule() {
-        MinecraftForge.EVENT_BUS.addListener(this::onWorldLoad);
+        NeoForge.EVENT_BUS.addListener(this::onWorldLoad);
     }
 
     private void onWorldLoad(LevelEvent.Load event) {

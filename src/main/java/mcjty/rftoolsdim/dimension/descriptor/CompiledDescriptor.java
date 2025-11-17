@@ -154,13 +154,13 @@ public class CompiledDescriptor {
                 }
                 break;
             case BIOME_CATEGORY:
-                biomeCategories.add(TagKey.create(Registries.BIOME, new ResourceLocation(name)));
+                biomeCategories.add(TagKey.create(Registries.BIOME, ResourceLocation.parse(name)));
                 break;
             case BIOME:
-                biomes.add(new ResourceLocation(name));
+                biomes.add(ResourceLocation.parse(name));
                 break;
             case STRUCTURE:
-                structures.add(new ResourceLocation(name));
+                structures.add(ResourceLocation.parse(name));
                 break;
             case SKY: {
                 SkyDimletType skyDimletType = SkyDimletType.byName(name);
@@ -184,11 +184,11 @@ public class CompiledDescriptor {
                 break;
             }
             case TAG: {
-                collectedTags.add(new ResourceLocation(name));
+                collectedTags.add(ResourceLocation.parse(name));
                 break;
             }
             case BLOCK: {
-                Block block = Tools.getBlock(new ResourceLocation(name));
+                Block block = Tools.getBlock(ResourceLocation.parse(name));
                 if (block == null) {
                     throw ERROR(BAD_BLOCK, name);
                 }
@@ -197,7 +197,7 @@ public class CompiledDescriptor {
             }
 
             case FLUID: {
-                Fluid fluid = Tools.getFluid(new ResourceLocation(name));
+                Fluid fluid = Tools.getFluid(ResourceLocation.parse(name));
                 if (fluid == null) {
                     throw ERROR(BAD_FLUID, name);
                 }

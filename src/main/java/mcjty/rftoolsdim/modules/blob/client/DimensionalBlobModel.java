@@ -13,7 +13,7 @@ public class DimensionalBlobModel<T extends DimensionalBlobEntity> extends Hiera
 
     public static final String BODY = "body";
 
-    public static ModelLayerLocation BLOB_LAYER = new ModelLayerLocation(new ResourceLocation(RFToolsDim.MODID, "dimensional_bloc"), BODY);
+    public static ModelLayerLocation BLOB_LAYER = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(RFToolsDim.MODID, "dimensional_bloc"), BODY);
 
     private final ModelPart root;
 

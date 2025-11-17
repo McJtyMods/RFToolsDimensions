@@ -16,7 +16,7 @@ public class DataGenHelper {
         ModelFile modelEmpty = provider.frontBasedModel("dimensioneditor_empty", provider.modLoc("block/dimensioneditor_empty"));
         ModelFile modelBusy1 = provider.frontBasedModel("dimensioneditor_busy1", provider.modLoc("block/dimensioneditor_busy1"));
         ModelFile modelBusy2 = provider.frontBasedModel("dimensioneditor_busy2", provider.modLoc("block/dimensioneditor_busy2"));
-        VariantBlockStateBuilder builder = provider.getVariantBuilder(DimensionEditorModule.DIMENSION_EDITOR.get());
+        VariantBlockStateBuilder builder = provider.getVariantBuilder(DimensionEditorModule.DIMENSION_EDITOR.block().get());
         for (Direction direction : OrientationTools.DIRECTION_VALUES) {
             provider.applyRotation(builder.partialState().with(BlockStateProperties.FACING, direction).with(DimensionEditorTileEntity.OPERATIONTYPE, DimensionBuilderTileEntity.OperationType.CHARGING)
                     .modelForState().modelFile(model), direction);

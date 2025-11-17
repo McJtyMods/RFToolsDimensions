@@ -18,10 +18,10 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.event.TickEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.level.BlockEvent;
 import net.neoforged.neoforge.event.server.ServerStartedEvent;
+import net.neoforged.neoforge.event.tick.LevelTickEvent;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 
@@ -56,22 +56,22 @@ public class ForgeEventHandlers {
     }
 
     @SubscribeEvent
-    public void onWorldTick(TickEvent.LevelTickEvent event) {
-        if (event.phase == TickEvent.Phase.START && !event.level.isClientSide) {
+    public void onWorldTick(LevelTickEvent.Pre event) {
+        if (!event.getLevel().isClientSide) {
             // This should be in PotentialSpawns but that doesn't appear to be working correctly
             handleSpawning(event);
 
-            if (event.level.dimension() == Level.OVERWORLD) {
-                powerHandler.handlePower(event.level);
+            if (event.getLevel().dimension() == Level.OVERWORLD) {
+                powerHandler.handlePower(event.getLevel());
             }
         }
     }
 
-    private void handleSpawning(TickEvent.LevelTickEvent event) {
-        if (event.level.isClientSide) {
+    private void handleSpawning(LevelTickEvent.Pre event) {
+        if (event.getLevel().isClientSide) {
             return;
         }
-        ServerLevel serverWorld = (ServerLevel) event.level;
+        ServerLevel serverWorld = (ServerLevel) event.getLevel();
         if (serverWorld.players().isEmpty()) {
             return;
         }

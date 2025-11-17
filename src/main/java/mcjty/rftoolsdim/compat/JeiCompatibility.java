@@ -23,7 +23,7 @@ public class JeiCompatibility implements IModPlugin {
     @Nonnull
     @Override
     public ResourceLocation getPluginUid() {
-        return new ResourceLocation(RFToolsDim.MODID, "jeiplugin");
+        return ResourceLocation.fromNamespaceAndPath(RFToolsDim.MODID, "jeiplugin");
     }
 
     @Override

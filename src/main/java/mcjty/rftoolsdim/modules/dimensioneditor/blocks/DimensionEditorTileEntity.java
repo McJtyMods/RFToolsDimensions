@@ -159,7 +159,7 @@ public class DimensionEditorTileEntity extends TickingTileEntity {
         if (ticksLeft == -1) {
             // We were not injecting. Start now.
             String dimension = dimensionItemStack.getOrCreateTag().getString("dimension");
-            ResourceLocation id = new ResourceLocation(dimension);
+            ResourceLocation id = ResourceLocation.parse(dimension);
             DimensionData data = PersistantDimensionManager.get(level).getData(id);
 
             if (false) { // @todo 1.16 dimensionManager.getDimensionInformation(id).isCheater()) {
@@ -195,7 +195,7 @@ public class DimensionEditorTileEntity extends TickingTileEntity {
                 ticksLeft--;
                 if (ticksLeft <= 0) {
                     String dimension = dimensionItemStack.getOrCreateTag().getString("dimension");
-                    ResourceLocation id = new ResourceLocation(dimension);
+                    ResourceLocation id = ResourceLocation.parse(dimension);
 
                     if (isMatterReceiver(injectableItemStack)) {
                         ServerLevel dimWorld = LevelTools.getLevel(level, LevelTools.getId(id));
@@ -349,7 +349,7 @@ public class DimensionEditorTileEntity extends TickingTileEntity {
         }
 
         String dimension = dimensionStack.getOrCreateTag().getString("dimension");
-        ResourceLocation id = new ResourceLocation(dimension);
+        ResourceLocation id = ResourceLocation.parse(dimension);
         DimensionData data = PersistantDimensionManager.get(level).getData(id);
 
         if (data == null) {
@@ -380,7 +380,7 @@ public class DimensionEditorTileEntity extends TickingTileEntity {
         }
 
         String dimension = itemStack.getOrCreateTag().getString("dimension");
-        ResourceLocation id = new ResourceLocation(dimension);
+        ResourceLocation id = ResourceLocation.parse(dimension);
         DimensionData data = PersistantDimensionManager.get(level).getData(id);
         if (data == null) {
             // Not a valid dimension.

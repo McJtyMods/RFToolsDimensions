@@ -83,7 +83,7 @@ public class BlockAbsorberTileEntity extends TickingTileEntity {
         if (block == null) {
             return "<Not Set>";
         } else {
-            Block b = Tools.getBlock(new ResourceLocation(block));
+            Block b = Tools.getBlock(ResourceLocation.parse(block));
             if (b != null) {
                 return I18n.get(b.getDescriptionId());
             } else {
@@ -210,7 +210,7 @@ public class BlockAbsorberTileEntity extends TickingTileEntity {
             return false;
         }
         BlockEvent.BreakEvent event = new BlockEvent.BreakEvent(world, pos, state, player);
-        MinecraftForge.EVENT_BUS.post(event);
+        NeoForge.EVENT_BUS.post(event);
         return !event.isCanceled();
     }
 
@@ -241,20 +241,22 @@ public class BlockAbsorberTileEntity extends TickingTileEntity {
         }
     }
 
-    @Override
+// @todo 1.21
+/*    @Override
     protected void loadInfo(CompoundTag tagCompound) {
         super.loadInfo(tagCompound);
         if (tagCompound.contains("Info")) {
             CompoundTag info = tagCompound.getCompound("Info");
             absorbing = info.getInt("absorbing");
             if (info.contains("block")) {
-                Block block = Tools.getBlock(new ResourceLocation(info.getString("block")));
+                Block block = Tools.getBlock(ResourceLocation.parse(info.getString("block")));
                 if (block != null) {
                     absorbingBlock = block;
                 }
             }
         }
     }
+*/
 
     @Override
     public void saveAdditional(@Nonnull CompoundTag tagCompound) {
@@ -274,7 +276,8 @@ public class BlockAbsorberTileEntity extends TickingTileEntity {
         tagCompound.putIntArray("toscanz", z);
     }
 
-    @Override
+// @todo 1.21
+/*    @Override
     protected void saveInfo(CompoundTag tagCompound) {
         super.saveInfo(tagCompound);
         CompoundTag info = getOrCreateInfo(tagCompound);
@@ -283,4 +286,5 @@ public class BlockAbsorberTileEntity extends TickingTileEntity {
             info.putString("block", Tools.getId(absorbingBlock).toString());
         }
     }
+*/
 }

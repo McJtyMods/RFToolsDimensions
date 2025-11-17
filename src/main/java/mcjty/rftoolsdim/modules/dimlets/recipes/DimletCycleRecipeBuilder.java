@@ -9,6 +9,7 @@ import mcjty.lib.crafting.IRecipeBuilder;
 import mcjty.rftoolsdim.modules.dimlets.DimletModule;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementRewards;
+import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.advancements.CriterionTriggerInstance;
 import net.minecraft.advancements.RequirementsStrategy;
 import net.minecraft.advancements.critereon.ContextAwarePredicate;
@@ -16,12 +17,11 @@ import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.ItemLike;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -111,28 +111,31 @@ public class DimletCycleRecipeBuilder implements IRecipeBuilder<DimletCycleRecip
     }
 
     @Override
-    public void build(Consumer<FinishedRecipe> consumerIn) {
+    public void build(RecipeOutput consumerIn) {
         this.build(consumerIn, BuiltInRegistries.ITEM.getKey(this.result));
     }
 
     @Override
-    public void build(Consumer<FinishedRecipe> consumerIn, String save) {
+    public void build(RecipeOutput consumerIn, String save) {
         ResourceLocation resourcelocation = BuiltInRegistries.ITEM.getKey(this.result);
-        if ((new ResourceLocation(save)).equals(resourcelocation)) {
+        if ((ResourceLocation.parse(save)).equals(resourcelocation)) {
             throw new IllegalStateException("Shaped Recipe " + save + " should remove its 'save' argument");
         } else {
-            this.build(consumerIn, new ResourceLocation(save));
+            this.build(consumerIn, ResourceLocation.parse(save));
         }
     }
 
     @Override
-    public void build(Consumer<FinishedRecipe> consumerIn, ResourceLocation id) {
+    public void build(RecipeOutput consumerIn, ResourceLocation id) {
         this.validate(id);
-        this.advancementBuilder.parent(new ResourceLocation("recipes/root")).addCriterion("has_the_recipe",
+        this.advancementBuilder.parent(ResourceLocation.parse("recipes/root")).addCriterion("has_the_recipe",
                 new RecipeUnlockedTrigger.TriggerInstance(ContextAwarePredicate.ANY /* @todo 1.16, is this right? */, id)).rewards(AdvancementRewards.Builder.recipe(id)).requirements(RequirementsStrategy.OR);
         String folder = "";//@todo 1.19.3 this.result.getItemCategory().getRecipeFolderName();
-        consumerIn.accept(new Result(id, this.result, this.count, this.group == null ? "" : this.group, this.pattern, this.key, this.advancementBuilder,
-                new ResourceLocation(id.getNamespace(), "recipes/" + folder + "/" + id.getPath()), input, output));
+        ResourceLocation advancementId = ResourceLocation.fromNamespaceAndPath(id.getNamespace(), "recipes/" + folder + "/" + id.getPath());
+        AdvancementHolder advancement = this.advancementBuilder.build(advancementId);
+        JsonObject json = createRecipeJson();
+        DigitCycleRecipe recipe = DimletModule.DIMLET_CYCLE_SERIALIZER.get().fromJson(id, json);
+        consumerIn.accept(id, recipe, advancement);
     }
 
     private void validate(ResourceLocation id) {
@@ -161,95 +164,34 @@ public class DimletCycleRecipeBuilder implements IRecipeBuilder<DimletCycleRecip
         }
     }
 
-    public static class Result implements FinishedRecipe {
-        private final ResourceLocation id;
-        private final Item result;
-        private final int count;
-        private final String group;
-        private final List<String> pattern;
-        private final Map<Character, Ingredient> key;
-        private final Advancement.Builder advancementBuilder;
-        private final ResourceLocation advancementId;
-        private final String input;
-        private final String output;
-
-        public Result(ResourceLocation idIn, Item resultIn, int countIn, String groupIn, List<String> patternIn, Map<Character, Ingredient> keyIn, Advancement.Builder advancementBuilderIn, ResourceLocation advancementIdIn,
-                      String input, String output) {
-            this.id = idIn;
-            this.result = resultIn;
-            this.count = countIn;
-            this.group = groupIn;
-            this.pattern = patternIn;
-            this.key = keyIn;
-            this.advancementBuilder = advancementBuilderIn;
-            this.advancementId = advancementIdIn;
-            this.input = input;
-            this.output = output;
+    private JsonObject createRecipeJson() {
+        JsonObject json = new JsonObject();
+        if (this.group != null && !this.group.isEmpty()) {
+            json.addProperty("group", this.group);
         }
 
-        @Override
-        public void serializeRecipeData(@Nonnull JsonObject json) {
-            if (!this.group.isEmpty()) {
-                json.addProperty("group", this.group);
-            }
-
-            JsonArray jsonarray = new JsonArray();
-
-            for(String s : this.pattern) {
-                jsonarray.add(s);
-            }
-
-            json.add("pattern", jsonarray);
-            JsonObject jsonobject = new JsonObject();
-
-            for(Map.Entry<Character, Ingredient> entry : this.key.entrySet()) {
-                jsonobject.add(String.valueOf(entry.getKey()), entry.getValue().toJson());
-            }
-
-            json.add("key", jsonobject);
-            JsonObject jsonobject1 = new JsonObject();
-            jsonobject1.addProperty("item", BuiltInRegistries.ITEM.getKey(this.result).toString());
-            if (this.count > 1) {
-                jsonobject1.addProperty("count", this.count);
-            }
-
-            json.add("result", jsonobject1);
-            json.addProperty("input", input);
-            json.addProperty("output", output);
+        JsonArray jsonarray = new JsonArray();
+        for (String s : this.pattern) {
+            jsonarray.add(s);
         }
 
-        @Override
-        @Nonnull
-        public RecipeSerializer<?> getType() {
-            return DimletModule.DIMLET_CYCLE_SERIALIZER.get();
+        json.add("pattern", jsonarray);
+        JsonObject jsonobject = new JsonObject();
+
+        for (Map.Entry<Character, Ingredient> entry : this.key.entrySet()) {
+            jsonobject.add(String.valueOf(entry.getKey()), entry.getValue().toJson());
         }
 
-        /**
-         * Gets the ID for the recipe.
-         */
-        @Override
-        @Nonnull
-        public ResourceLocation getId() {
-            return this.id;
+        json.add("key", jsonobject);
+        JsonObject jsonobject1 = new JsonObject();
+        jsonobject1.addProperty("item", BuiltInRegistries.ITEM.getKey(this.result).toString());
+        if (this.count > 1) {
+            jsonobject1.addProperty("count", this.count);
         }
 
-        /**
-         * Gets the JSON for the advancement that unlocks this recipe. Null if there is no advancement.
-         */
-        @Override
-        @Nullable
-        public JsonObject serializeAdvancement() {
-            return this.advancementBuilder.serializeToJson();
-        }
-
-        /**
-         * Gets the ID for the advancement associated with this recipe. Should not be null if {@link #getAdvancementJson}
-         * is non-null.
-         */
-        @Override
-        @Nullable
-        public ResourceLocation getAdvancementId() {
-            return this.advancementId;
-        }
+        json.add("result", jsonobject1);
+        json.addProperty("input", input);
+        json.addProperty("output", output);
+        return json;
     }
 }

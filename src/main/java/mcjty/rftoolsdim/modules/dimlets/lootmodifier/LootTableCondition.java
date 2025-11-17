@@ -1,19 +1,24 @@
 package mcjty.rftoolsdim.modules.dimlets.lootmodifier;
 
-import com.google.gson.*;
+import com.google.common.collect.ImmutableSet;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import mcjty.rftoolsdim.modules.dimlets.DimletModule;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
 
-import javax.annotation.Nonnull;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public record LootTableCondition(Set<ResourceLocation> tables) implements LootItemCondition {
 
-    @Nonnull
+    public static final MapCodec<LootTableCondition> CODEC = RecordCodecBuilder.mapCodec(
+            instance -> instance.group(ResourceLocation.CODEC.listOf().fieldOf("tables").forGetter(condition -> List.copyOf(condition.tables)))
+                    .apply(instance, list -> new LootTableCondition(ImmutableSet.copyOf(list)))
+    );
+
     @Override
     public LootItemConditionType getType() {
         return DimletModule.LOOT_TABLE_CONDITION;
@@ -23,29 +28,5 @@ public record LootTableCondition(Set<ResourceLocation> tables) implements LootIt
     public boolean test(LootContext lootContext) {
         ResourceLocation table = lootContext.getQueriedLootTableId();
         return tables.contains(table);
-    }
-
-    public static class Serializer implements net.minecraft.world.level.storage.loot.Serializer<LootTableCondition> {
-
-        @Override
-        public void serialize(@Nonnull JsonObject object, LootTableCondition condition, @Nonnull JsonSerializationContext context) {
-            JsonArray array = new JsonArray();
-            for (ResourceLocation table : condition.tables) {
-                array.add(table.toString());
-            }
-            object.add("tables", array);
-        }
-
-        @Nonnull
-        @Override
-        public LootTableCondition deserialize(JsonObject object, @Nonnull JsonDeserializationContext context) {
-            Set<ResourceLocation> tables = new HashSet<>();
-            JsonArray tablesArray = object.getAsJsonArray("tables");
-            for (JsonElement element : tablesArray) {
-                tables.add(new ResourceLocation(element.getAsString()));
-            }
-
-            return new LootTableCondition(tables);
-        }
     }
 }

@@ -2,7 +2,6 @@ package mcjty.rftoolsdim.modules.dimensionbuilder;
 
 import mcjty.rftoolsdim.modules.dimensionbuilder.client.DimensionBuilderRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlas;
-import net.neoforged.neoforge.client.event.TextureStitchEvent;
 
 public class ClientSetup {
 

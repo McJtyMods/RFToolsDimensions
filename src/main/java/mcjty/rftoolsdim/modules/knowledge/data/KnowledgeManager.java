@@ -114,14 +114,14 @@ public class KnowledgeManager {
             case DIGIT -> null;
             case ADMIN -> null;
             case BLOCK -> getReasonBlock(key);
-            case TAG -> new ResourceLocation(key.key()).getPath();
-            case FLUID -> new ResourceLocation(key.key()).getNamespace();
+            case TAG -> ResourceLocation.parse(key.key()).getPath();
+            case FLUID -> ResourceLocation.parse(key.key()).getNamespace();
         };
     }
 
     @Nullable
     private String getReasonBiome(CommonLevelAccessor level, DimletKey key) {
-        ResourceLocation rl = new ResourceLocation(key.key());
+        ResourceLocation rl = ResourceLocation.parse(key.key());
         Biome biome = level.registryAccess().registryOrThrow(Registries.BIOME).get(rl);
         if (biome != null) {
             return getMostImportantIsTag(level, rl);
@@ -142,9 +142,9 @@ public class KnowledgeManager {
 
     @Nullable
     private String getReasonStructure(CommonLevelAccessor level, DimletKey key) {
-        Structure structure = level.registryAccess().registryOrThrow(Registries.STRUCTURE).get(new ResourceLocation(key.key()));
+        Structure structure = level.registryAccess().registryOrThrow(Registries.STRUCTURE).get(ResourceLocation.parse(key.key()));
         if (structure != null) {
-            return new ResourceLocation(key.key()).getPath();
+            return ResourceLocation.parse(key.key()).getPath();
         }
         return null;
     }
@@ -186,7 +186,7 @@ public class KnowledgeManager {
     }
 
     private KnowledgeSet getFluidKnowledgeSet(DimletKey key) {
-        int i = Math.abs(new ResourceLocation(key.key()).getNamespace().hashCode());
+        int i = Math.abs(ResourceLocation.parse(key.key()).getNamespace().hashCode());
         return KnowledgeSet.values()[i%(KnowledgeSet.values().length)];
     }
 
@@ -199,7 +199,7 @@ public class KnowledgeManager {
 
     /// Create a knowledge set based on the most important tag for a given block
     private KnowledgeSet getTagKnowledgeSet(DimletKey key) {
-        ResourceLocation tagId = new ResourceLocation(key.key());
+        ResourceLocation tagId = ResourceLocation.parse(key.key());
         int i = Math.abs(tagId.hashCode());
         return KnowledgeSet.values()[i%(KnowledgeSet.values().length)];
     }
@@ -217,7 +217,7 @@ public class KnowledgeManager {
 
     private TagKey<Block> getMostCommonTagForBlock(DimletKey key) {
         TagKey<Block> mostImportant = null;
-        Block block = Tools.getBlock(new ResourceLocation(key.key()));
+        Block block = Tools.getBlock(ResourceLocation.parse(key.key()));
         if (block == null) {
             RFToolsDim.setup.getLogger().error("Block '" + key.key() + "' is missing!");
         } else {
@@ -240,14 +240,14 @@ public class KnowledgeManager {
     }
 
     private KnowledgeSet getStructureKnowledgeSet(CommonLevelAccessor level, DimletKey key) {
-        ResourceLocation id = new ResourceLocation(key.key());
+        ResourceLocation id = ResourceLocation.parse(key.key());
         // @todo is this good?
         return KnowledgeSet.values()[(Math.abs(id.hashCode())) % KnowledgeSet.values().length];
     }
 
     /// Create a knowledge set based on the category of a biome
     private KnowledgeSet getBiomeKnowledgeSet(CommonLevelAccessor level, DimletKey key) {
-        ResourceLocation rl = new ResourceLocation(key.key());
+        ResourceLocation rl = ResourceLocation.parse(key.key());
         Biome biome = level.registryAccess().registryOrThrow(Registries.BIOME).get(rl);
         if (biome == null) {
             RFToolsDim.setup.getLogger().error("Biome '" + key.key() + "' is missing!");

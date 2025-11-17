@@ -12,13 +12,14 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.resources.ResourceLocation;
-import net.neoforged.neoforge.common.capabilities.ForgeCapabilities;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.items.IItemHandler;
 
 import javax.annotation.Nonnull;
 
 public class DimensionBuilderRenderer implements BlockEntityRenderer<DimensionBuilderTileEntity> {
 
-    public static final ResourceLocation STAGES = new ResourceLocation(RFToolsDim.MODID, "block/dimensionstages");
+    public static final ResourceLocation STAGES = ResourceLocation.fromNamespaceAndPath(RFToolsDim.MODID, "block/dimensionstages");
 
     public DimensionBuilderRenderer(BlockEntityRendererProvider.Context context) {
     }
@@ -37,19 +38,18 @@ public class DimensionBuilderRenderer implements BlockEntityRenderer<DimensionBu
             r = g = b = 255;
         }
 
-        te.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(h -> {
-            if (!h.getStackInSlot(DimensionBuilderTileEntity.SLOT_DIMENSION_TAB).isEmpty()) {
-                matrixStack.pushPose();
-                matrixStack.translate(0.1, 1.2, 0.1);
-                matrixStack.scale(0.8f, 0.8f, 0.8f);
-                RenderHelper.renderBillboardQuadBright(matrixStack, buffer, 0.5f, STAGES, RenderSettings.builder()
-                        .color(r, g, b)
-                        .renderType(RenderType.translucent())
-                        .alpha(128)
-                        .build());
-                matrixStack.popPose();
-            }
-        });
+        IItemHandler handler = te.getLevel().getCapability(Capabilities.ItemHandler.BLOCK, te.getBlockPos(), null);
+        if (handler != null && !handler.getStackInSlot(DimensionBuilderTileEntity.SLOT_DIMENSION_TAB).isEmpty()) {
+            matrixStack.pushPose();
+            matrixStack.translate(0.1, 1.2, 0.1);
+            matrixStack.scale(0.8f, 0.8f, 0.8f);
+            RenderHelper.renderBillboardQuadBright(matrixStack, buffer, 0.5f, STAGES, RenderSettings.builder()
+                    .color(r, g, b)
+                    .renderType(RenderType.translucent())
+                    .alpha(128)
+                    .build());
+            matrixStack.popPose();
+        }
     }
 
     public static void register() {

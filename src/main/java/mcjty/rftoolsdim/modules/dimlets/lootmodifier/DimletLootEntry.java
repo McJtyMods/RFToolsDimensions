@@ -1,9 +1,9 @@
 package mcjty.rftoolsdim.modules.dimlets.lootmodifier;
 
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonSerializationContext;
-import mcjty.lib.varia.LevelTools;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.DataResult;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import mcjty.rftoolsdim.modules.dimlets.DimletModule;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletDictionary;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletKey;
@@ -11,31 +11,39 @@ import mcjty.rftoolsdim.modules.dimlets.data.DimletRarity;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletTools;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.levelgen.LegacyRandomSource;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.entries.LootPoolEntryType;
 import net.minecraft.world.level.storage.loot.entries.LootPoolSingletonContainer;
-import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.functions.LootItemFunction;
-import net.minecraft.util.GsonHelper;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 
-import javax.annotation.Nonnull;
-import java.util.Random;
+import java.util.List;
+import java.util.Locale;
 import java.util.function.Consumer;
 
 public class DimletLootEntry extends LootPoolSingletonContainer {
 
+    private static final MapCodec<DimletLootEntry> CODEC = RecordCodecBuilder.mapCodec(
+            instance -> singletonFields(instance)
+                    .and(rarityCodec().fieldOf("rarity").forGetter(DimletLootEntry::getRarity))
+                    .apply(instance, DimletLootEntry::new)
+    );
+
     private final DimletRarity rarity;
 
-    public DimletLootEntry(int weightIn, int qualityIn, LootItemCondition[] conditionsIn, LootItemFunction[] functionsIn, DimletRarity rarity) {
+    public static MapCodec<DimletLootEntry> codec() {
+        return CODEC;
+    }
+
+    private DimletLootEntry(int weightIn, int qualityIn, List<LootItemCondition> conditionsIn, List<LootItemFunction> functionsIn, DimletRarity rarity) {
         super(weightIn, qualityIn, conditionsIn, functionsIn);
         this.rarity = rarity;
     }
 
-    private final RandomSource random = new LegacyRandomSource(546);
+    private final RandomSource random = RandomSource.create(546);
 
     @Override
-    protected void createItemStack(@Nonnull Consumer<ItemStack> stackConsumer, @Nonnull LootContext context) {
+    protected void createItemStack(Consumer<ItemStack> stackConsumer, LootContext context) {
         DimletKey dimlet = DimletDictionary.get().getRandomDimlet(rarity, random);
         if (dimlet != null) {
             stackConsumer.accept(DimletTools.getDimletStack(dimlet));
@@ -46,8 +54,6 @@ public class DimletLootEntry extends LootPoolSingletonContainer {
         return rarity;
     }
 
-    @Override
-    @Nonnull
     public LootPoolEntryType getType() {
         return DimletModule.DIMLET_LOOT_ENTRY;
     }
@@ -56,20 +62,10 @@ public class DimletLootEntry extends LootPoolSingletonContainer {
         return simpleBuilder((weight, quality, conditions, functions) -> new DimletLootEntry(weight, quality, conditions, functions, rarity));
     }
 
-    public static class Serializer extends LootPoolSingletonContainer.Serializer<DimletLootEntry> {
-
-        @Override
-        public void serializeCustom(@Nonnull JsonObject object, @Nonnull DimletLootEntry entry, @Nonnull JsonSerializationContext conditions) {
-            super.serializeCustom(object, entry, conditions);
-            object.addProperty("rarity", entry.getRarity().name());
-        }
-
-        @Override
-        @Nonnull
-        protected DimletLootEntry deserialize(@Nonnull JsonObject object, @Nonnull JsonDeserializationContext context, int weight, int quality, @Nonnull LootItemCondition[] conditions, @Nonnull LootItemFunction[] functions) {
-            String rarityString = GsonHelper.getAsString(object, "rarity");
-            DimletRarity rarity = DimletRarity.byName(rarityString);
-            return new DimletLootEntry(weight, quality, conditions, functions, rarity);
-        }
+    private static Codec<DimletRarity> rarityCodec() {
+        return Codec.STRING.comapFlatMap(name -> {
+            DimletRarity rarity = DimletRarity.byName(name);
+            return rarity != null ? DataResult.success(rarity) : DataResult.error(() -> "Unknown rarity '" + name + "'");
+        }, rarity -> rarity.name().toLowerCase(Locale.ROOT));
     }
 }

@@ -1,11 +1,11 @@
 package mcjty.rftoolsdim.modules.dimensionbuilder;
 
 import mcjty.lib.blocks.BaseBlock;
+import mcjty.lib.blocks.RBlock;
 import mcjty.lib.container.GenericContainer;
 import mcjty.lib.datagen.BaseItemModelProvider;
 import mcjty.lib.datagen.DataGen;
 import mcjty.lib.datagen.Dob;
-import mcjty.lib.gui.GenericGuiContainer;
 import mcjty.lib.modules.IModule;
 import mcjty.rftoolsbase.modules.various.VariousModule;
 import mcjty.rftoolsdim.RFToolsDim;
@@ -26,10 +26,12 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.model.generators.ItemModelBuilder;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.neoforge.registries.DeferredItem;
 
 import java.util.function.Supplier;
 
@@ -39,9 +41,12 @@ import static mcjty.rftoolsdim.setup.Registration.*;
 
 public class DimensionBuilderModule implements IModule {
 
-    public static final DeferredBlock<BaseBlock> DIMENSION_BUILDER = BLOCKS.register("dimension_builder", DimensionBuilderTileEntity::createBlock);
-    public static final DeferredItem<Item> DIMENSION_BUILDER_ITEM = ITEMS.register("dimension_builder", tab(() -> new BlockItem(DIMENSION_BUILDER.get(), Registration.createStandardProperties())));
-    public static final Supplier<BlockEntityType<DimensionBuilderTileEntity>> TYPE_DIMENSION_BUILDER = TILES.register("dimension_builder", () -> BlockEntityType.Builder.of(DimensionBuilderTileEntity::new, DIMENSION_BUILDER.get()).build(null));
+    public static final RBlock<BaseBlock, BlockItem, DimensionBuilderTileEntity> DIMENSION_BUILDER = RBLOCKS.registerBlock("dimension_builder",
+            DimensionBuilderTileEntity.class,
+            DimensionBuilderTileEntity::createBlock,
+            block -> new BlockItem(block.get(), Registration.createStandardProperties()),
+            DimensionBuilderTileEntity::new);
+    public static final Supplier<BlockEntityType<DimensionBuilderTileEntity>> TYPE_DIMENSION_BUILDER = DIMENSION_BUILDER.be();
     public static final Supplier<MenuType<GenericContainer>> CONTAINER_DIMENSION_BUILDER = CONTAINERS.register("dimension_builder", GenericContainer::createContainerType);
 
     public static final DeferredItem<EmptyDimensionTab> EMPTY_DIMENSION_TAB = ITEMS.register("empty_dimension_tab", tab(EmptyDimensionTab::new));
@@ -50,7 +55,8 @@ public class DimensionBuilderModule implements IModule {
     public static final DeferredItem<DimensionMonitorItem> DIMENSION_MONITOR = ITEMS.register("dimension_monitor", tab(DimensionMonitorItem::new));
     public static final DeferredItem<PhasedFieldGenerator> PHASED_FIELD_GENERATOR = ITEMS.register("phased_field_generator", tab(PhasedFieldGenerator::new));
 
-    public DimensionBuilderModule() {
+    public DimensionBuilderModule(IEventBus bus) {
+        bus.addListener(this::registerMenuScreens);
     }
 
     @Override
@@ -61,11 +67,14 @@ public class DimensionBuilderModule implements IModule {
     @Override
     public void initClient(FMLClientSetupEvent event) {
         event.enqueueWork(() -> {
-            GenericGuiContainer.register(CONTAINER_DIMENSION_BUILDER.get(), GuiDimensionBuilder::new);
             ClientHelpers.initOverrides(DIMENSION_MONITOR.get());
             ClientHelpers.initOverrides(PHASED_FIELD_GENERATOR.get());
         });
         DimensionBuilderRenderer.register();
+    }
+
+    private void registerMenuScreens(RegisterMenuScreensEvent event) {
+        event.register(CONTAINER_DIMENSION_BUILDER.get(), GuiDimensionBuilder::new);
     }
 
     @Override
@@ -80,7 +89,7 @@ public class DimensionBuilderModule implements IModule {
                         .ironPickaxeTags()
                         .parentedItem("block/dimension_builder")
                         .standardLoot(TYPE_DIMENSION_BUILDER)
-                        .blockState(p -> p.orientedBlock(DIMENSION_BUILDER.get(), p.frontBasedModel("dimension_builder", p.modLoc("block/dimensionbuilder"))))
+                        .blockState(p -> p.orientedBlock(DIMENSION_BUILDER.block().get(), p.frontBasedModel("dimension_builder", p.modLoc("block/dimensionbuilder"))))
                         .shaped(builder -> builder
                                         .define('F', mcjty.rftoolsbase.modules.various.VariousModule.MACHINE_FRAME.get())
                                         .define('g', Items.GOLD_INGOT)
@@ -95,7 +104,7 @@ public class DimensionBuilderModule implements IModule {
                         .generatedItem("item/realized_dimension_tab"),
                 Dob.itemBuilder(DIMENSION_MONITOR)
                         .itemModel(p -> {
-                            ResourceLocation powerId = new ResourceLocation(RFToolsDim.MODID, "power");
+                            ResourceLocation powerId = ResourceLocation.fromNamespaceAndPath(RFToolsDim.MODID, "power");
                             p.getBuilder(DIMENSION_MONITOR.getId().getPath())
                                     .parent(p.getExistingFile(p.mcLoc("item/handheld")))
                                     .texture("layer0", "item/monitor/monitoritem0")
@@ -117,7 +126,7 @@ public class DimensionBuilderModule implements IModule {
                                 " s ", "rCr", " s "),
                 Dob.itemBuilder(PHASED_FIELD_GENERATOR)
                         .itemModel(p -> {
-                            ResourceLocation powerId = new ResourceLocation(RFToolsDim.MODID, "power");
+                            ResourceLocation powerId = ResourceLocation.fromNamespaceAndPath(RFToolsDim.MODID, "power");
                             p.getBuilder(PHASED_FIELD_GENERATOR.getId().getPath())
                                     .parent(p.getExistingFile(p.mcLoc("item/handheld")))
                                     .texture("layer0", "item/pfg/phasedfieldgeneratoriteml0")

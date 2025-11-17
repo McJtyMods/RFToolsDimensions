@@ -48,7 +48,7 @@ public class RealizedDimensionTab extends Item {
             Logging.message(player, tagCompound.getString("descriptor"));
             if (tagCompound.contains("dimension")) {
                 String dimension = tagCompound.getString("dimension");
-                DimensionData data = PersistantDimensionManager.get(world).getData(new ResourceLocation(dimension));
+                DimensionData data = PersistantDimensionManager.get(world).getData(ResourceLocation.parse(dimension));
                 if (data != null) {
                     player.displayClientMessage(ComponentFactory.literal(ChatFormatting.BLUE + "Energy: " + ChatFormatting.WHITE + data.getEnergy()), false);
                     DimensionDescriptor descriptor = data.getDescriptor();
@@ -76,7 +76,7 @@ public class RealizedDimensionTab extends Item {
         // @todo 1.16 tooltip system
         CompoundTag tagCompound = stack.getTag();
         if (tagCompound != null) {
-            ResourceLocation dimension = tagCompound.contains("dimension") ? new ResourceLocation(tagCompound.getString("dimension")) : null;
+            ResourceLocation dimension = tagCompound.contains("dimension") ? ResourceLocation.parse(tagCompound.getString("dimension")) : null;
             if (dimension != null) {
                 list.add(ComponentFactory.literal("Name: " + dimension.getPath()).withStyle(ChatFormatting.BLUE));
             } else if (tagCompound.contains("name")) {

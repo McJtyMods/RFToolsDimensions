@@ -61,19 +61,19 @@ public class CommandQuickSetup implements Command<CommandSourceStack> {
                 }
             }
         }
-        Block matterTransmitter = Tools.getBlock(new ResourceLocation("rftoolsutility", "matter_transmitter"));
-        Block matterReceiver = Tools.getBlock(new ResourceLocation("rftoolsutility", "matter_receiver"));
-        Block dialingDevice = Tools.getBlock(new ResourceLocation("rftoolsutility", "dialing_device"));
-        Block creativeCell = Tools.getBlock(new ResourceLocation("rftoolspower", "dimensionalcell_creative"));
+        Block matterTransmitter = Tools.getBlock(ResourceLocation.fromNamespaceAndPath("rftoolsutility", "matter_transmitter"));
+        Block matterReceiver = Tools.getBlock(ResourceLocation.fromNamespaceAndPath("rftoolsutility", "matter_receiver"));
+        Block dialingDevice = Tools.getBlock(ResourceLocation.fromNamespaceAndPath("rftoolsutility", "dialing_device"));
+        Block creativeCell = Tools.getBlock(ResourceLocation.fromNamespaceAndPath("rftoolspower", "dimensionalcell_creative"));
         world.setBlock(pos.offset(-4, -1, -4), matterTransmitter.defaultBlockState(), Block.UPDATE_ALL);
         world.setBlock(pos.offset(-3, -1, -4), creativeCell.defaultBlockState(), Block.UPDATE_ALL);
         world.setBlock(pos.offset(-2, -1, -4), matterReceiver.defaultBlockState(), Block.UPDATE_ALL);
         world.setBlock(pos.offset(-3, -1, -3), dialingDevice.defaultBlockState().setValue(BlockStateProperties.FACING, Direction.UP), Block.UPDATE_ALL);
 
         world.setBlock(pos.offset(3, 0, -4), creativeCell.defaultBlockState(), Block.UPDATE_ALL);
-        world.setBlock(pos.offset(4, 0, -4), DimensionBuilderModule.DIMENSION_BUILDER.get().defaultBlockState().setValue(BlockStateProperties.FACING, Direction.SOUTH), Block.UPDATE_ALL);
-        world.setBlock(pos.offset(3, 0, 4), WorkbenchModule.WORKBENCH.get().defaultBlockState(), Block.UPDATE_ALL);
-        world.setBlock(pos.offset(4, 0, 4), EnscriberModule.ENSCRIBER.get().defaultBlockState(), Block.UPDATE_ALL);
+        world.setBlock(pos.offset(4, 0, -4), DimensionBuilderModule.DIMENSION_BUILDER.block().get().defaultBlockState().setValue(BlockStateProperties.FACING, Direction.SOUTH), Block.UPDATE_ALL);
+        world.setBlock(pos.offset(3, 0, 4), WorkbenchModule.WORKBENCH.block().get().defaultBlockState(), Block.UPDATE_ALL);
+        world.setBlock(pos.offset(4, 0, 4), EnscriberModule.ENSCRIBER.block().get().defaultBlockState(), Block.UPDATE_ALL);
 
         player.addItem(new ItemStack(DimensionBuilderModule.EMPTY_DIMENSION_TAB.get()));
         player.addItem(DimletTools.getDimletStack(new DimletKey(DimletType.DIGIT, "1")));
@@ -82,7 +82,7 @@ public class CommandQuickSetup implements Command<CommandSourceStack> {
         player.addItem(DimletTools.getDimletStack(new DimletKey(DimletType.DIGIT, "4")));
         player.addItem(DimletTools.getDimletStack(new DimletKey(DimletType.TERRAIN, "flat")));
         player.addItem(DimletTools.getDimletStack(new DimletKey(DimletType.TERRAIN, "normal")));
-        Item chargedPorter = Tools.getItem(new ResourceLocation("rftoolsutility", "advanced_charged_porter"));
+        Item chargedPorter = Tools.getItem(ResourceLocation.fromNamespaceAndPath("rftoolsutility", "advanced_charged_porter"));
         player.addItem(new ItemStack(chargedPorter));
         player.addItem(new ItemStack(chargedPorter));
 

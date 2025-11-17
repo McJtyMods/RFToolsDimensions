@@ -17,13 +17,13 @@ import javax.annotation.Nonnull;
 public class RFToolsDimensionSpecialEffects extends DimensionSpecialEffects {
 
     private final BlackSkyRenderer blackSky = new BlackSkyRenderer();
-    private final TexturedSkyRenderer infernalSky = new TexturedSkyRenderer(new ResourceLocation(RFToolsDim.MODID, "textures/sky/redlines.png"));
+    private final TexturedSkyRenderer infernalSky = new TexturedSkyRenderer(ResourceLocation.fromNamespaceAndPath(RFToolsDim.MODID, "textures/sky/redlines.png"));
     private final SkyboxRenderer starsSky = new SkyboxRenderer(
-            new ResourceLocation(RFToolsDim.MODID, "textures/sky/stars1.png"),
-            new ResourceLocation(RFToolsDim.MODID, "textures/sky/stars1a.png"));
+            ResourceLocation.fromNamespaceAndPath(RFToolsDim.MODID, "textures/sky/stars1.png"),
+            ResourceLocation.fromNamespaceAndPath(RFToolsDim.MODID, "textures/sky/stars1a.png"));
     private final SkyboxRenderer nebulaSky = new SkyboxRenderer(
-            new ResourceLocation(RFToolsDim.MODID, "textures/sky/stars3.png"),
-            new ResourceLocation(RFToolsDim.MODID, "textures/sky/stars3a.png"));
+            ResourceLocation.fromNamespaceAndPath(RFToolsDim.MODID, "textures/sky/stars3.png"),
+            ResourceLocation.fromNamespaceAndPath(RFToolsDim.MODID, "textures/sky/stars3a.png"));
 
     private static final Vec3 RED_FOG = new Vec3(1, 0, 0);
     private static final Vec3 BLACK_FOG = new Vec3(0, 0, 0);

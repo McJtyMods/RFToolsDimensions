@@ -17,6 +17,7 @@ import mcjty.rftoolsdim.modules.enscriber.EnscriberModule;
 import mcjty.rftoolsdim.modules.enscriber.blocks.EnscriberTileEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
@@ -40,10 +41,10 @@ public class GuiEnscriber extends GenericGuiContainer<EnscriberTileEntity, Gener
     private TextField nameField;
     private Label validateField;
 
-    private static final ResourceLocation iconLocation = new ResourceLocation(RFToolsDim.MODID, "textures/gui/dimensionenscriber.png");
+    private static final ResourceLocation iconLocation = ResourceLocation.fromNamespaceAndPath(RFToolsDim.MODID, "textures/gui/dimensionenscriber.png");
 
-    public GuiEnscriber(EnscriberTileEntity te, GenericContainer container, Inventory inventory) {
-        super(te, container, inventory, EnscriberModule.ENSCRIBER.get().getManualEntry());
+    public GuiEnscriber(GenericContainer container, Inventory inventory, Component title) {
+        super(container, inventory, title, EnscriberModule.ENSCRIBER.block().get().getManualEntry());
 
         imageWidth = ENSCRIBER_WIDTH;
         imageHeight = ENSCRIBER_HEIGHT;
@@ -111,7 +112,12 @@ public class GuiEnscriber extends GenericGuiContainer<EnscriberTileEntity, Gener
     }
 
     private void validateDimlets() {
-        int errorCode = tileEntity.getClientErrorCode();
+        EnscriberTileEntity te = getBE();
+        if (te == null) {
+            validateField.text("");
+            return;
+        }
+        int errorCode = te.getClientErrorCode();
         DescriptorError.Code error = DescriptorError.Code.values()[errorCode];
 
         List<String> tooltips = new ArrayList<>();
@@ -153,13 +159,16 @@ public class GuiEnscriber extends GenericGuiContainer<EnscriberTileEntity, Gener
 
         setNameFromDimensionTab();
 
-        drawWindow(graphics, xxx, xxx, yyy);
+        drawWindow(graphics, partialTicks, x, y);
     }
 
     private void setNameFromDimensionTab() {
-        String dimensionName = tileEntity.getDimensionName();
-        if (dimensionName != null) {
-            nameField.text(dimensionName);
+        EnscriberTileEntity te = getBE();
+        if (te != null) {
+            String dimensionName = te.getDimensionName();
+            if (dimensionName != null) {
+                nameField.text(dimensionName);
+            }
         }
     }
 }

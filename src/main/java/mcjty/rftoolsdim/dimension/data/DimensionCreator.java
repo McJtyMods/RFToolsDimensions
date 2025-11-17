@@ -119,12 +119,12 @@ public class DimensionCreator {
     // Function to get the RFTools Dimensions world for the given name. Supports both rftoolsdim:xxx notation
     // as well as just xxx
     public Level getDimWorld(String name) {
-        ResourceLocation id = new ResourceLocation(name);
+        ResourceLocation id = ResourceLocation.parse(name);
         ResourceKey<Level> type = LevelTools.getId(id);
         ServerLevel world = ServerLifecycleHooks.getCurrentServer().getLevel(type);
         if (world == null) {
             if (!name.contains(":")) {
-                id = new ResourceLocation(RFToolsDim.MODID, name);
+                id = ResourceLocation.fromNamespaceAndPath(RFToolsDim.MODID, name);
                 type = LevelTools.getId(id);
                 return ServerLifecycleHooks.getCurrentServer().getLevel(type);
             }
@@ -146,7 +146,7 @@ public class DimensionCreator {
             }
         }
 
-        ResourceLocation id = new ResourceLocation(RFToolsDim.MODID, name);
+        ResourceLocation id = ResourceLocation.fromNamespaceAndPath(RFToolsDim.MODID, name);
 
         PersistantDimensionManager mgr = PersistantDimensionManager.get(world);
         DimensionData data = mgr.getData(id);
@@ -163,7 +163,7 @@ public class DimensionCreator {
     public ServerLevel createWorld(Level world, String name, long seed,
                                    DimensionDescriptor descriptor, DimensionDescriptor randomizedDescriptor,
                                    UUID owner) {
-        ResourceLocation id = new ResourceLocation(RFToolsDim.MODID, name);
+        ResourceLocation id = ResourceLocation.fromNamespaceAndPath(RFToolsDim.MODID, name);
 
         PersistantDimensionManager mgr = PersistantDimensionManager.get(world);
         DimensionData data = mgr.getData(id);
@@ -310,7 +310,7 @@ public class DimensionCreator {
 
     // Returns null on success, otherwise an error string
     public String createDimension(Level world, String name, long seed, String filename, UUID owner) {
-        ResourceKey<Level> id = LevelTools.getId(new ResourceLocation(RFToolsDim.MODID, name));
+        ResourceKey<Level> id = LevelTools.getId(ResourceLocation.fromNamespaceAndPath(RFToolsDim.MODID, name));
         if (world.getServer().getLevel(id) != null) {
             return "Dimension already exists!";
         }

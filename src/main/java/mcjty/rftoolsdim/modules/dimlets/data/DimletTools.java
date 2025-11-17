@@ -204,7 +204,7 @@ public class DimletTools {
             case BIOME -> getReadableNameBiome(dimletKey);
             case SKY -> dimletKey.key().toLowerCase();
             case FEATURE -> dimletKey.key().toLowerCase();
-            case STRUCTURE -> new ResourceLocation(dimletKey.key()).getPath();
+            case STRUCTURE -> ResourceLocation.parse(dimletKey.key()).getPath();
             case TIME -> dimletKey.key().toLowerCase();
             case BLOCK -> getReadableNameBlock(dimletKey);
             case TAG -> dimletKey.key().toLowerCase();
@@ -216,7 +216,7 @@ public class DimletTools {
 
     @NotNull
     private static String getReadableNameFluid(DimletKey dimletKey) {
-        Fluid fluid = Tools.getFluid(new ResourceLocation(dimletKey.key()));
+        Fluid fluid = Tools.getFluid(ResourceLocation.parse(dimletKey.key()));
         if (fluid != null) {
             String modName = Tools.getModName(fluid);
             if ("minecraft".equalsIgnoreCase(modName)) {
@@ -231,7 +231,7 @@ public class DimletTools {
 
     @NotNull
     private static String getReadableNameBlock(DimletKey dimletKey) {
-        Block block = Tools.getBlock(new ResourceLocation(dimletKey.key()));
+        Block block = Tools.getBlock(ResourceLocation.parse(dimletKey.key()));
         if (block != null) {
             String modName = Tools.getModName(block);
             if ("minecraft".equalsIgnoreCase(modName)) {
@@ -245,7 +245,7 @@ public class DimletTools {
 
     @NotNull
     private static String getReadableNameBiome(DimletKey dimletKey) {
-        ResourceLocation id = new ResourceLocation(dimletKey.key());
+        ResourceLocation id = ResourceLocation.parse(dimletKey.key());
         String trans = "biome." + id.getNamespace() + "." + id.getPath();
         return I18n.get(trans);
     }
@@ -297,17 +297,17 @@ public class DimletTools {
     }
 
     private static boolean isValidBiome(RegistryAccess access, DimletKey key) {
-        return access.registry(Registries.BIOME).get().containsKey(new ResourceLocation(key.key()));
-//        return ForgeRegistries.BIOMES.getValue(new ResourceLocation(key.key())) != null;
+        return access.registry(Registries.BIOME).get().containsKey(ResourceLocation.parse(key.key()));
+//        return ForgeRegistries.BIOMES.getValue(ResourceLocation.parse(key.key())) != null;
     }
 
     private static boolean isValidBlock(DimletKey key) {
-        Block value = Tools.getBlock(new ResourceLocation(key.key()));
+        Block value = Tools.getBlock(ResourceLocation.parse(key.key()));
         return value != null && value != Blocks.AIR;
     }
 
     private static boolean isValidFluid(DimletKey key) {
-        Fluid fluid = Tools.getFluid(new ResourceLocation(key.key()));
+        Fluid fluid = Tools.getFluid(ResourceLocation.parse(key.key()));
         return fluid != null && fluid.defaultFluidState().createLegacyBlock().getBlock() != Blocks.AIR;
     }
 }

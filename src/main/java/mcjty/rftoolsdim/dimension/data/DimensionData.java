@@ -32,7 +32,7 @@ public class DimensionData implements IDimensionInformation {
     }
 
     public DimensionData(CompoundTag tag) {
-        id = new ResourceLocation(tag.getString("id"));
+        id = ResourceLocation.parse(tag.getString("id"));
         descriptor = new DimensionDescriptor();
         descriptor.read(tag.getString("descriptor"));
         energy = tag.getLong("energy");
@@ -127,4 +127,3 @@ public class DimensionData implements IDimensionInformation {
         }
     }
 }
-

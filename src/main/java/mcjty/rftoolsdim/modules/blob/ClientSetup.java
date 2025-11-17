@@ -4,12 +4,12 @@ import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.modules.blob.client.DimensionalBlobModel;
 import mcjty.rftoolsdim.modules.blob.client.DimensionalBlobRender;
 import net.minecraft.client.model.SlimeModel;
-import net.neoforged.neoforge.api.distmarker.Dist;
+import net.neoforged.api.distmarker.Dist;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.neoforge.fml.common.Mod;
+import net.neoforged.fml.common.EventBusSubscriber;
 
-@Mod.EventBusSubscriber(modid = RFToolsDim.MODID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = RFToolsDim.MODID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD)
 public class ClientSetup {
 
     @SubscribeEvent
@@ -27,4 +27,3 @@ public class ClientSetup {
     }
 
 }
-

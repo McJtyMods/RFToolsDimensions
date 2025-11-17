@@ -14,12 +14,12 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.neoforge.fml.common.Mod;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 
 import static mcjty.rftoolsdim.dimension.DimensionRegistry.RFTOOLS_CHUNKGEN_ID;
 
-@Mod.EventBusSubscriber(modid = RFToolsDim.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
+@EventBusSubscriber(modid = RFToolsDim.MODID, bus = EventBusSubscriber.Bus.FORGE)
 public class ModSetup extends DefaultModSetup {
 
     @Override

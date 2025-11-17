@@ -61,7 +61,7 @@ public class StructureAbsorberTileEntity extends TickingTileEntity {
         if (structure == null) {
             return "<Not Set>";
         } else {
-            ResourceLocation id = new ResourceLocation(structure);
+            ResourceLocation id = ResourceLocation.parse(structure);
             return id.getPath();
         }
     }
@@ -158,7 +158,8 @@ public class StructureAbsorberTileEntity extends TickingTileEntity {
         return false;
     }
 
-    @Override
+// @todo 1.21
+/*    @Override
     public void saveInfo(CompoundTag tagCompound) {
         super.saveInfo(tagCompound);
         CompoundTag info = getOrCreateInfo(tagCompound);
@@ -167,8 +168,10 @@ public class StructureAbsorberTileEntity extends TickingTileEntity {
             info.putString("structure", structureId);
         }
     }
+*/
 
-    @Override
+// @todo 1.21
+/*    @Override
     public void loadInfo(CompoundTag tagCompound) {
         super.loadInfo(tagCompound);
         CompoundTag info = tagCompound.getCompound("Info");
@@ -179,4 +182,5 @@ public class StructureAbsorberTileEntity extends TickingTileEntity {
             structureId = null;
         }
     }
+*/
 }
