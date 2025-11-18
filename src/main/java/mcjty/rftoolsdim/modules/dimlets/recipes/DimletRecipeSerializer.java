@@ -1,42 +1,46 @@
 package mcjty.rftoolsdim.modules.dimlets.recipes;
 
-import com.google.gson.JsonObject;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletKey;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletType;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.ShapedRecipe;
 
-import javax.annotation.Nonnull;
-
 public class DimletRecipeSerializer implements RecipeSerializer<DimletRecipe> {
 
-    private final ShapedRecipe.Serializer serializer = new ShapedRecipe.Serializer();
+    private static final Codec<DimletType> DIMLET_TYPE_CODEC = Codec.STRING.xmap(DimletType::byName, DimletType::name);
 
-    @Nonnull
+    public static final MapCodec<DimletRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+            ShapedRecipe.Serializer.CODEC.forGetter(DimletRecipe::getRecipe),
+            DIMLET_TYPE_CODEC.fieldOf("dimlettype").forGetter(recipe -> recipe.getKey().type()),
+            Codec.STRING.fieldOf("dimletkey").forGetter(recipe -> recipe.getKey().key())
+    ).apply(instance, (shaped, type, key) -> new DimletRecipe(shaped, new DimletKey(type, key))));
+
+    public static final StreamCodec<RegistryFriendlyByteBuf, DimletRecipe> STREAM_CODEC = StreamCodec.of(
+            (buffer, recipe) -> {
+                ShapedRecipe.Serializer.STREAM_CODEC.encode(buffer, recipe.getRecipe());
+                buffer.writeUtf(recipe.getKey().type().name());
+                buffer.writeUtf(recipe.getKey().key());
+            },
+            buffer -> {
+                ShapedRecipe shaped = ShapedRecipe.Serializer.STREAM_CODEC.decode(buffer);
+                DimletType type = DimletType.byName(buffer.readUtf(32767));
+                String key = buffer.readUtf(32767);
+                return new DimletRecipe(shaped, new DimletKey(type, key));
+            }
+    );
+
     @Override
-    public DimletRecipe fromJson(@Nonnull ResourceLocation recipeId, @Nonnull JsonObject json) {
-        ShapedRecipe recipe = serializer.fromJson(recipeId, json);
-        String typeString = json.getAsJsonPrimitive("dimlettype").getAsString();
-        DimletType type = DimletType.byName(typeString);
-        String key = json.getAsJsonPrimitive("dimletkey").getAsString();
-        return new DimletRecipe(recipe, new DimletKey(type, key));
+    public MapCodec<DimletRecipe> codec() {
+        return CODEC;
     }
 
     @Override
-    public DimletRecipe fromNetwork(@Nonnull ResourceLocation recipeId, @Nonnull FriendlyByteBuf buffer) {
-        ShapedRecipe recipe = serializer.fromNetwork(recipeId, buffer);
-        String typeString = buffer.readUtf(32767);
-        DimletType type = DimletType.byName(typeString);
-        String key = buffer.readUtf(32767);
-        return new DimletRecipe(recipe, new DimletKey(type, key));
-    }
-
-    @Override
-    public void toNetwork(@Nonnull FriendlyByteBuf buffer, DimletRecipe recipe) {
-        serializer.toNetwork(buffer, recipe.getRecipe());
-        buffer.writeUtf(recipe.getKey().type().name());
-        buffer.writeUtf(recipe.getKey().key());
+    public StreamCodec<RegistryFriendlyByteBuf, DimletRecipe> streamCodec() {
+        return STREAM_CODEC;
     }
 }

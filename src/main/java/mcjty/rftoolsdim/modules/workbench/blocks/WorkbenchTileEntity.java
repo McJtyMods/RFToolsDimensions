@@ -44,7 +44,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.common.util.Lazy;
-import net.neoforged.neoforge.common.util.LazyOptional;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
 
@@ -52,6 +51,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 import static mcjty.lib.api.container.DefaultContainerProvider.container;
@@ -80,7 +80,6 @@ public class WorkbenchTileEntity extends GenericTileEntity {
             .box(specific(WorkbenchTileEntity::isValidPatternItem).in().out(), SLOT_PATTERN, 11, 28, PATTERN_DIM, PATTERN_DIM)
             .playerSlots(11, 158));
 
-    @Cap(type = CapType.ITEMS_AUTOMATION)
     private final GenericItemHandler items = GenericItemHandler.create(this, CONTAINER_FACTORY)
             .itemValid((slot, stack) -> switch (slot) {
                 case SLOT_EMPTY_DIMLET -> DimletItem.isEmptyDimlet(stack);
@@ -92,12 +91,14 @@ public class WorkbenchTileEntity extends GenericTileEntity {
             })
             .insertable(notslot(SLOT_OUTPUT))
             .build();
+    @Cap(type = CapType.ITEMS_AUTOMATION)
+    private static final Function<WorkbenchTileEntity, GenericItemHandler> ITEM_CAP = be -> be.items;
 
     @Cap(type = CapType.CONTAINER)
-    private final Lazy<MenuProvider> screenHandler = Lazy.of(() -> new DefaultContainerProvider<GenericContainer>("Dimlet Workbench")
-            .containerSupplier(container(WorkbenchModule.CONTAINER_WORKBENCH, CONTAINER_FACTORY, this))
-            .itemHandler(() -> items)
-            .setupSync(this));
+    private static final Function<WorkbenchTileEntity, MenuProvider> SCREEN_CAP = be -> new DefaultContainerProvider<GenericContainer>("Dimlet Workbench")
+            .containerSupplier(container(WorkbenchModule.CONTAINER_WORKBENCH, CONTAINER_FACTORY, be))
+            .itemHandler(() -> be.items)
+            .setupSync(be);
 
     public WorkbenchTileEntity(BlockPos pos, BlockState state) {
         super(WorkbenchModule.TYPE_WORKBENCH.get(), pos, state);

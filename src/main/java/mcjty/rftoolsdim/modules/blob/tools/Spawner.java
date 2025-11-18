@@ -4,15 +4,15 @@ import mcjty.rftoolsdim.dimension.data.DimensionData;
 import mcjty.rftoolsdim.dimension.descriptor.CompiledDescriptor;
 import mcjty.rftoolsdim.modules.blob.BlobModule;
 import mcjty.rftoolsdim.modules.blob.entities.DimensionalBlobEntity;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.pathfinder.PathComputationType;
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraft.server.level.ServerLevel;
-import net.neoforged.neoforge.event.ForgeEventFactory;
+import net.minecraft.world.level.pathfinder.PathComputationType;
+import net.neoforged.neoforge.event.EventHooks;
 
 import javax.annotation.Nullable;
 import java.util.Random;
@@ -35,14 +35,14 @@ public class Spawner {
         if (pos == null) {
             return;
         }
-        boolean nocollisions = world.noCollision(type.getAABB(x, pos.getY(), z));
+        boolean nocollisions = world.noCollision(type.getSpawnAABB(x, pos.getY(), z));
         boolean canSpawn = true;//EntitySpawnPlacementRegistry.canSpawnEntity(type, world, SpawnReason.NATURAL, new BlockPos(x, pos.getY(), z), random);
         if (!nocollisions || !canSpawn) {
             return;
         }
         DimensionalBlobEntity entity = type.create(world);
         entity.moveTo(x, pos.getY(), z, random.nextFloat() * 360.0F, 0.0F);
-        ForgeEventFactory.onFinalizeSpawn(entity, world, world.getCurrentDifficultyAt(entity.blockPosition()), MobSpawnType.NATURAL, null, null);
+        EventHooks.finalizeMobSpawn(entity, world, world.getCurrentDifficultyAt(entity.blockPosition()), MobSpawnType.NATURAL, null);
         if (entity.isSpawnCancelled()) {
             return;
         }
@@ -84,7 +84,7 @@ public class Spawner {
     }
 
     private static boolean isValidSpawnPos(LevelReader world, BlockPos pos) {
-        if (!world.getBlockState(pos).isPathfindable(world, pos, PathComputationType.LAND)) {
+        if (!world.getBlockState(pos).isPathfindable(PathComputationType.LAND)) {
             return false;
         }
         return world.getBlockState(pos.below()).canOcclude();

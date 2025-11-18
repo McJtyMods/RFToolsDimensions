@@ -5,10 +5,10 @@ import mcjty.rftoolsdim.modules.dimlets.DimletModule;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletKey;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletTools;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletType;
-import net.minecraft.core.RegistryAccess;
-import net.minecraft.world.inventory.CraftingContainer;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
+import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.ShapedRecipe;
 import net.minecraft.world.level.Level;
@@ -40,10 +40,10 @@ public class DigitCycleRecipe extends AbstractRecipeAdaptor {
     }
 
     @Override
-    public boolean matches(@Nonnull CraftingContainer inv, @Nonnull Level worldIn) {
+    public boolean matches(@Nonnull CraftingInput inv, @Nonnull Level worldIn) {
         boolean matches = super.matches(inv, worldIn);
         if (matches) {
-            for (int i = 0 ; i < inv.getContainerSize() ; i++) {
+            for (int i = 0 ; i < inv.size() ; i++) {
                 if (!inv.getItem(i).isEmpty()) {
                     DimletKey key = DimletTools.getDimletKey(inv.getItem(i));
                     if (key != null) {
@@ -57,13 +57,13 @@ public class DigitCycleRecipe extends AbstractRecipeAdaptor {
 
     @Nonnull
     @Override
-    public ItemStack getResultItem(RegistryAccess access) {
+    public ItemStack getResultItem(HolderLookup.Provider access) {
         return DimletTools.getDimletStack(new DimletKey(DimletType.DIGIT, output));
     }
 
     @Nonnull
     @Override
-    public ItemStack assemble(@Nonnull CraftingContainer inv, RegistryAccess access) {
+    public ItemStack assemble(@Nonnull CraftingInput inv, HolderLookup.Provider access) {
         return DimletTools.getDimletStack(new DimletKey(DimletType.DIGIT, output));
     }
 

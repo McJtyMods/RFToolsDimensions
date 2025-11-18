@@ -40,10 +40,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.common.util.Lazy;
-import net.neoforged.neoforge.common.util.LazyOptional;
-
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.function.Function;
 
 import static mcjty.lib.api.container.DefaultContainerProvider.container;
 import static mcjty.lib.builder.TooltipBuilder.*;
@@ -63,7 +62,6 @@ public class EnscriberTileEntity extends GenericTileEntity {
             .slot(specific(EnscriberTileEntity::isDimensionTab), SLOT_TAB, 13, 142)
             .playerSlots(85, 142));
 
-    @Cap(type = CapType.ITEMS_AUTOMATION)
     private final GenericItemHandler items = GenericItemHandler.create(this, CONTAINER_FACTORY)
             .slotLimit(1)
             .itemValid((slot, stack) -> {
@@ -74,14 +72,15 @@ public class EnscriberTileEntity extends GenericTileEntity {
             })
             .onUpdate((slot, stack) -> validateDimlets())
             .build();
-
+    @Cap(type = CapType.ITEMS_AUTOMATION)
+    private static final Function<EnscriberTileEntity, GenericItemHandler> ITEM_CAP = be -> be.items;
 
     @Cap(type = CapType.CONTAINER)
-    private final Lazy<MenuProvider> screenHandler = Lazy.of(() -> new DefaultContainerProvider<GenericContainer>("Enscriber")
-            .containerSupplier(container(EnscriberModule.CONTAINER_ENSCRIBER, CONTAINER_FACTORY, this))
-            .itemHandler(() -> items)
-            .shortListener(Sync.integer(() -> error.getCode().ordinal(), v -> clientErrorCode = v))
-            .setupSync(this));
+    private static final Function<EnscriberTileEntity, MenuProvider> SCREEN_CAP = be -> new DefaultContainerProvider<GenericContainer>("Enscriber")
+            .containerSupplier(container(EnscriberModule.CONTAINER_ENSCRIBER, CONTAINER_FACTORY, be))
+            .itemHandler(() -> be.items)
+            .shortListener(Sync.integer(() -> be.error.getCode().ordinal(), v -> be.clientErrorCode = v))
+            .setupSync(be);
 
     public EnscriberTileEntity(BlockPos pos, BlockState state) {
         super(EnscriberModule.TYPE_ENSCRIBER.get(), pos, state);

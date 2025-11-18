@@ -42,6 +42,7 @@ import net.neoforged.neoforge.common.util.Lazy;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Random;
+import java.util.function.Function;
 
 import static mcjty.lib.api.container.DefaultContainerProvider.container;
 import static mcjty.lib.builder.TooltipBuilder.*;
@@ -59,24 +60,27 @@ public class DimensionBuilderTileEntity extends TickingTileEntity {
                     SLOT_DIMENSION_TAB, 28, 24)
             .playerSlots(10, 70));
 
-    @Cap(type = CapType.ITEMS_AUTOMATION)
     private final GenericItemHandler items = GenericItemHandler.create(this, CONTAINER_FACTORY)
             .itemValid((slot, stack) -> isRealizedTab(stack))
             .build();
+    @Cap(type = CapType.ITEMS_AUTOMATION)
+    private static final Function<DimensionBuilderTileEntity, GenericItemHandler> ITEM_CAP = be -> be.items;
 
-    @Cap(type = CapType.ENERGY)
     private final GenericEnergyStorage energyStorage = new GenericEnergyStorage(this, true, DimensionBuilderConfig.BUILDER_MAXENERGY.get(), DimensionBuilderConfig.BUILDER_RECEIVEPERTICK.get());
+    @Cap(type = CapType.ENERGY)
+    private static final Function<DimensionBuilderTileEntity, GenericEnergyStorage> ENERGY_CAP = be -> be.energyStorage;
 
     @Cap(type = CapType.CONTAINER)
-    private final Lazy<MenuProvider> screenHandler = Lazy.of(() -> new DefaultContainerProvider<GenericContainer>("Dimension Builder")
-            .containerSupplier(container(DimensionBuilderModule.CONTAINER_DIMENSION_BUILDER, CONTAINER_FACTORY,this))
-            .itemHandler(() -> items)
-            .energyHandler(() -> energyStorage)
-            .integerListener(Sync.integer(this::getBuildPercentage, v -> clientBuildPercentage = v))
-            .setupSync(this));
+    private static final Function<DimensionBuilderTileEntity, MenuProvider> SCREEN_CAP = be -> new DefaultContainerProvider<GenericContainer>("Dimension Builder")
+            .containerSupplier(container(DimensionBuilderModule.CONTAINER_DIMENSION_BUILDER, CONTAINER_FACTORY, be))
+            .itemHandler(() -> be.items)
+            .energyHandler(() -> be.energyStorage)
+            .integerListener(Sync.integer(be::getBuildPercentage, v -> be.clientBuildPercentage = v))
+            .setupSync(be);
 
-    @Cap(type = CapType.INFUSABLE)
     private final IInfusable infusableHandler = new DefaultInfusable(DimensionBuilderTileEntity.this);
+    @Cap(type = CapType.INFUSABLE)
+    private static final Function<DimensionBuilderTileEntity, IInfusable> INFUSABLE_CAP = be -> be.infusableHandler;
 
     // For usage in the gui
     private int clientBuildPercentage = 0;

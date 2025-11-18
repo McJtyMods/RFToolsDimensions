@@ -17,6 +17,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Item.TooltipContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
@@ -31,11 +32,11 @@ import static mcjty.lib.builder.TooltipBuilder.*;
 
 public class LostKnowledgeItem extends Item implements ITooltipSettings {
 
-    private final Lazy<TooltipBuilder> tooltipBuilder = () -> new TooltipBuilder()
+    private final Lazy<TooltipBuilder> tooltipBuilder = Lazy.of(() -> new TooltipBuilder()
             .info(key("message.rftoolsdim.shiftmessage"))
             .infoShift(header(), gold(),
                     parameter("pattern", this::getPatternString),
-                    parameter("reason", s -> getReasonString(s) != null, this::getReasonString));
+                    parameter("reason", s -> getReasonString(s) != null, this::getReasonString)));
 
     private final DimletRarity rarity;
 
@@ -77,8 +78,8 @@ public class LostKnowledgeItem extends Item implements ITooltipSettings {
     }
 
     @Override
-    public void appendHoverText(@Nonnull ItemStack itemStack, Level world, @Nonnull List<Component> list, @Nonnull TooltipFlag flags) {
-        super.appendHoverText(itemStack, world, list, flags);
+    public void appendHoverText(@Nonnull ItemStack itemStack, TooltipContext context, @Nonnull List<Component> list, @Nonnull TooltipFlag flags) {
+        super.appendHoverText(itemStack, context, list, flags);
         tooltipBuilder.get().makeTooltip(Tools.getId(this), itemStack, list, flags);
     }
 

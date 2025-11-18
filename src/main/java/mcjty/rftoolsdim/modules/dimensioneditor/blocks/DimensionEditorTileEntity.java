@@ -16,7 +16,6 @@ import mcjty.lib.tileentity.GenericEnergyStorage;
 import mcjty.lib.tileentity.TickingTileEntity;
 import mcjty.lib.varia.Broadcaster;
 import mcjty.lib.varia.LevelTools;
-import mcjty.lib.varia.NBTTools;
 import mcjty.lib.varia.Tools;
 import mcjty.rftoolsbase.tools.ManualHelper;
 import mcjty.rftoolsdim.compat.RFToolsUtilityCompat;
@@ -44,9 +43,9 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.neoforged.neoforge.common.util.Lazy;
-import net.neoforged.neoforge.common.util.LazyOptional;
 
 import javax.annotation.Nonnull;
+import java.util.function.Function;
 
 import static mcjty.lib.api.container.DefaultContainerProvider.container;
 import static mcjty.lib.builder.TooltipBuilder.*;
@@ -64,7 +63,6 @@ public class DimensionEditorTileEntity extends TickingTileEntity {
             .slot(specific(DimensionBuilderTileEntity::isRealizedTab).in().out(), SLOT_DIMENSIONTARGET, 118, 24)
             .playerSlots(10, 70));
 
-    @Cap(type = CapType.ITEMS_AUTOMATION)
     private final GenericItemHandler items = GenericItemHandler.create(this, CONTAINER_FACTORY)
             .itemValid((slot, stack) -> {
                 if (slot == SLOT_DIMENSIONTARGET) {
@@ -74,19 +72,23 @@ public class DimensionEditorTileEntity extends TickingTileEntity {
                 }
             })
             .build();
+    @Cap(type = CapType.ITEMS_AUTOMATION)
+    private static final Function<DimensionEditorTileEntity, GenericItemHandler> ITEM_CAP = be -> be.items;
 
-    @Cap(type = CapType.ENERGY)
     private final GenericEnergyStorage energyStorage = new GenericEnergyStorage(this, true, DimensionEditorConfig.EDITOR_MAXENERGY.get(), DimensionEditorConfig.EDITOR_RECEIVEPERTICK.get());
+    @Cap(type = CapType.ENERGY)
+    private static final Function<DimensionEditorTileEntity, GenericEnergyStorage> ENERGY_CAP = be -> be.energyStorage;
 
     @Cap(type = CapType.CONTAINER)
-    private final Lazy<MenuProvider> screenHandler = Lazy.of(() -> new DefaultContainerProvider<GenericContainer>("Dimension Editor")
-            .containerSupplier(container(DimensionEditorModule.CONTAINER_DIMENSION_EDITOR, CONTAINER_FACTORY, this))
-            .itemHandler(() -> items)
-            .energyHandler(() -> energyStorage)
-            .setupSync(this));
+    private static final Function<DimensionEditorTileEntity, MenuProvider> SCREEN_CAP = be -> new DefaultContainerProvider<GenericContainer>("Dimension Editor")
+            .containerSupplier(container(DimensionEditorModule.CONTAINER_DIMENSION_EDITOR, CONTAINER_FACTORY, be))
+            .itemHandler(() -> be.items)
+            .energyHandler(() -> be.energyStorage)
+            .setupSync(be);
 
-    @Cap(type = CapType.INFUSABLE)
     private final IInfusable infusable = new DefaultInfusable(DimensionEditorTileEntity.this);
+    @Cap(type = CapType.INFUSABLE)
+    private static final Function<DimensionEditorTileEntity, IInfusable> INFUSABLE_CAP = be -> be.infusable;
 
     @GuiValue
     private int editPercentage = 0;

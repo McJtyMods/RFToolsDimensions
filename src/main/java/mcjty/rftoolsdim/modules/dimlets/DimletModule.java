@@ -1,6 +1,6 @@
 package mcjty.rftoolsdim.modules.dimlets;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import mcjty.lib.datagen.DataGen;
 import mcjty.lib.datagen.Dob;
 import mcjty.lib.modules.IModule;
@@ -22,6 +22,7 @@ import mcjty.rftoolsdim.modules.dimlets.recipes.DimletRecipeBuilder;
 import mcjty.rftoolsdim.modules.dimlets.recipes.DimletRecipeSerializer;
 import mcjty.rftoolsdim.setup.Config;
 import mcjty.rftoolsdim.setup.Registration;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
@@ -36,12 +37,12 @@ import net.minecraft.world.level.storage.loot.entries.LootPoolEntryType;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
-import net.neoforged.neoforge.common.Tags;
-import net.neoforged.neoforge.common.loot.IGlobalLootModifier;
-import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.common.loot.IGlobalLootModifier;
+import net.neoforged.neoforge.registries.DeferredItem;
 
 import java.util.function.Supplier;
 
@@ -95,7 +96,7 @@ public class DimletModule implements IModule {
     public static final DeferredItem<Item> RARE_ESSENCE = ITEMS.register("rare_essence", tab(() -> new Item(Registration.createStandardProperties())));
     public static final DeferredItem<Item> LEGENDARY_ESSENCE = ITEMS.register("legendary_essence", tab(() -> new Item(Registration.createStandardProperties())));
 
-    public static final Supplier<Codec<? extends IGlobalLootModifier>> ENDERMAN_LOOT_MODIFIER = LOOT_MODIFIER_SERIALIZERS.register("enderman_extra", () -> EndermanLootModifier.CODEC);
+    public static final Supplier<MapCodec<? extends IGlobalLootModifier>> ENDERMAN_LOOT_MODIFIER = LOOT_MODIFIER_SERIALIZERS.register("enderman_extra", () -> EndermanLootModifier.CODEC);
     public static final Supplier<DimletRecipeSerializer> DIMLET_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register("dimlet_recipe", DimletRecipeSerializer::new);
     public static final Supplier<DimletCycleRecipeSerializer> DIMLET_CYCLE_SERIALIZER = RECIPE_SERIALIZERS.register("dimlet_cycle_recipe", DimletCycleRecipeSerializer::new);
 
@@ -125,7 +126,7 @@ public class DimletModule implements IModule {
     }
 
     @Override
-    public void initDatagen(DataGen dataGen) {
+    public void initDatagen(DataGen dataGen, HolderLookup.Provider provider) {
         registerLootHelpers();
         dataGen.add(
                 Dob.itemBuilder(EMPTY_DIMLET)
@@ -177,7 +178,7 @@ public class DimletModule implements IModule {
                 Dob.itemBuilder(EMPTY_TERRAIN_DIMLET)
                         .generatedItem("item/dimlets/empty_terrain_dimlet")
                         .shaped(builder -> builder
-                                        .define('C', Tags.Items.COBBLESTONE)
+                                        .define('C', Tags.Items.COBBLESTONES)
                                         .define('E', EMPTY_DIMLET.get())
                                         .unlockedBy("empty_dimlet", has(EMPTY_DIMLET.get())),
                                 "CDC", "DED", "CDC"),
@@ -284,13 +285,13 @@ public class DimletModule implements IModule {
                                 .patternLine("CEC")
                                 .patternLine(" C ")
                                 .dimletKey(new DimletKey(DimletType.DIGIT, "0"))
-                                .addCriterion("empty_dimlet", has(DimletModule.EMPTY_DIMLET.get())))
+                                .addCriterion("empty_dimlet", has(DimletModule.EMPTY_DIMLET.get()).triggerInstance()))
                         .recipe("digit0", () -> DimletCycleRecipeBuilder.shapedRecipe(DimletModule.DIGIT_DIMLET.get())
                                 .define('C', Ingredient.of(DimletTools.getDimletStack(new DimletKey(DimletType.DIGIT, "1"))))
                                 .patternLine("C")
                                 .input("9")
                                 .output("0")
-                                .addCriterion("empty_dimlet", has(DimletModule.EMPTY_DIMLET.get()))),
+                                .addCriterion("empty_dimlet", has(DimletModule.EMPTY_DIMLET.get()).triggerInstance())),
                 Dob.itemBuilder(TAG_DIMLET)
                         .generatedItem("item/dimlets/tag_dimlet"),
                 Dob.itemBuilder(SKY_DIMLET)
@@ -379,7 +380,7 @@ public class DimletModule implements IModule {
                                     .patternLine("C")
                                     .input(String.valueOf(finalI - 1))
                                     .output(String.valueOf(finalI))
-                                    .addCriterion("empty_dimlet", has(DimletModule.EMPTY_DIMLET.get())))
+                                    .addCriterion("empty_dimlet", has(DimletModule.EMPTY_DIMLET.get()).triggerInstance()))
             );
         }
 

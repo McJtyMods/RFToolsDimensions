@@ -1,6 +1,7 @@
 package mcjty.rftoolsdim.dimension.biomes;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import mcjty.rftoolsdim.dimension.data.DimensionSettings;
 import net.minecraft.core.Holder;
@@ -24,7 +25,7 @@ import static mcjty.rftoolsdim.dimension.data.DimensionSettings.SETTINGS_CODEC;
 
 public class RFTBiomeProvider extends BiomeSource {
 
-    public static final Codec<RFTBiomeProvider> CODEC = RecordCodecBuilder.create(instance ->
+    public static final MapCodec<RFTBiomeProvider> CODEC = RecordCodecBuilder.mapCodec(instance ->
             instance.group(
                     RegistryOps.retrieveRegistryLookup(Registries.WORLD_PRESET).forGetter(RFTBiomeProvider::getWorldPresetLookup),
                     RegistryOps.retrieveRegistryLookup(Registries.BIOME).forGetter(RFTBiomeProvider::getBiomeLookup),
@@ -49,7 +50,7 @@ public class RFTBiomeProvider extends BiomeSource {
         this.worldPresetLookup = worldPresetLookup;
         // @todo 1.19.4 is this right?
         Optional<Holder.Reference<WorldPreset>> worldPreset = worldPresetLookup.get(WorldPresets.NORMAL);
-        multiNoiseBiomeSource = (MultiNoiseBiomeSource) worldPreset.get().get().overworld().get().generator().getBiomeSource();
+        multiNoiseBiomeSource = (MultiNoiseBiomeSource) worldPreset.get().value().overworld().get().generator().getBiomeSource();
 //        multiNoiseBiomeSource = MultiNoiseBiomeSource.Preset.OVERWORLD.biomeSource(biomeLookup, true);
         biomes = getBiomes(biomeLookup, settings);
         biomeCategories = getBiomeCategories(settings);
@@ -162,7 +163,7 @@ public class RFTBiomeProvider extends BiomeSource {
 
     @Nonnull
     @Override
-    protected Codec<? extends BiomeSource> codec() {
+    protected MapCodec<? extends BiomeSource> codec() {
         return CODEC;
     }
 

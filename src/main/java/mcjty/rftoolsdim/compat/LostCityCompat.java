@@ -3,6 +3,7 @@ package mcjty.rftoolsdim.compat;
 import mcjty.lib.varia.Logging;
 import mcjty.rftoolsdim.dimension.terraintypes.TerrainType;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.neoforged.fml.InterModComms;
 import net.neoforged.fml.ModList;
@@ -25,8 +26,8 @@ public class LostCityCompat {
         return hasLostCities;
     }
 
-    public static void registerDimension(ResourceKey<Level> key, String profile) {
-        lostCityInternal.lostCities.registerDimension(key, profile);
+    public static void registerDimension(ServerLevel level, ResourceKey<Level> key, String profile) {
+        lostCityInternal.lostCities.registerDimension(level, key, profile);
     }
 
     public static String getProfile(TerrainType terrainType) {

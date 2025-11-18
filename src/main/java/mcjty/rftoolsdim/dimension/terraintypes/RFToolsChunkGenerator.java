@@ -2,6 +2,7 @@ package mcjty.rftoolsdim.dimension.terraintypes;
 
 import com.google.common.base.Suppliers;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import mcjty.rftoolsdim.compat.LostCityCompat;
 import mcjty.rftoolsdim.dimension.data.DimensionSettings;
@@ -41,11 +42,11 @@ import java.util.function.Consumer;
 
 public class RFToolsChunkGenerator extends NoiseBasedChunkGenerator {
 
-    public static final Codec<RFToolsChunkGenerator> CODEC = RecordCodecBuilder.create((instance) -> instance
+    public static final MapCodec<RFToolsChunkGenerator> CODEC = RecordCodecBuilder.mapCodec((instance) -> instance
             .group(Codec.list(StructureSet.CODEC).fieldOf("structures").forGetter(ins -> ins.overrideStructures),
                     BiomeSource.CODEC.fieldOf("biome_source").forGetter((ins) -> ins.biomeSource),
                     Codec.LONG.fieldOf("seed").stable().forGetter(RFToolsChunkGenerator::getSeed),
-                    NoiseGeneratorSettings.CODEC.fieldOf("settings").forGetter((ins) -> ins.settings),
+                    NoiseGeneratorSettings.CODEC.fieldOf("settings").forGetter(NoiseBasedChunkGenerator::generatorSettings),
                     DimensionSettings.SETTINGS_CODEC.fieldOf("dimsettings").forGetter(RFToolsChunkGenerator::getDimensionSettings))
             .apply(instance, instance.stable(RFToolsChunkGenerator::new)));
 
@@ -88,7 +89,7 @@ public class RFToolsChunkGenerator extends NoiseBasedChunkGenerator {
                                Consumer<NoiseSamplingSettingsBuilder> samplingSettingsBuilderConsumer,
                                Consumer<NoiseSliderBuilder> topSliderBuilderConsumer,
                                Consumer<NoiseSliderBuilder> bottomSliderBuilderConsumer) {
-        NoiseGeneratorSettings settings = this.settings.value();
+        NoiseGeneratorSettings settings = this.generatorSettings().value();
 
         // @todo 1.19
 //        NoiseSamplingSettingsBuilder samplingSettingsBuilder = NoiseSamplingSettingsBuilder.create(settings.noiseSettings().noiseSamplingSettings());
@@ -113,7 +114,7 @@ public class RFToolsChunkGenerator extends NoiseBasedChunkGenerator {
     }
 
     public NoiseGeneratorSettings getNoiseGeneratorSettings() {
-        return settings.value();
+        return generatorSettings().value();
     }
 
     public long getSeed() {
@@ -121,7 +122,7 @@ public class RFToolsChunkGenerator extends NoiseBasedChunkGenerator {
     }
 
     public BlockState getDefaultBlock() {
-        return this.settings.value().defaultBlock();
+        return this.generatorSettings().value().defaultBlock();
     }
 
     public PerlinNoiseGenerator14 getPerlinNoise() {
@@ -148,7 +149,7 @@ public class RFToolsChunkGenerator extends NoiseBasedChunkGenerator {
 
     @Override
     @Nonnull
-    public CompletableFuture<ChunkAccess> fillFromNoise(Executor executor, Blender blender, RandomState randomState, StructureManager structureFeatureManager, ChunkAccess chunkAccess) {
+    public CompletableFuture<ChunkAccess> fillFromNoise(Blender blender, RandomState randomState, StructureManager structureFeatureManager, ChunkAccess chunkAccess) {
         TerrainType terrainType = dimensionSettings.getCompiledDescriptor().getTerrainType();
         return switch (terrainType) {
             case FLAT -> FlatGenerator.fillFromNoise(chunkAccess, this);
@@ -159,7 +160,7 @@ public class RFToolsChunkGenerator extends NoiseBasedChunkGenerator {
             case PLATFORMS -> PlatformsGenerator.fillFromNoise(chunkAccess, this);
             case MAZE -> MazeGenerator.fillFromNoise(chunkAccess, this);
             case RAVINE -> RavineGenerator.fillFromNoise(chunkAccess, this);
-            default -> super.fillFromNoise(executor, blender, randomState, structureFeatureManager, chunkAccess);
+            default -> super.fillFromNoise(blender, randomState, structureFeatureManager, chunkAccess);
         };
     }
 
@@ -202,7 +203,7 @@ public class RFToolsChunkGenerator extends NoiseBasedChunkGenerator {
 
     @Override
     @Nonnull
-    protected Codec<? extends ChunkGenerator> codec() {
+    protected MapCodec<? extends ChunkGenerator> codec() {
         return CODEC;
     }
 }

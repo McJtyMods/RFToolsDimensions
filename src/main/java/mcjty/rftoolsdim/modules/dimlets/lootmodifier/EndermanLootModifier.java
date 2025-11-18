@@ -1,6 +1,7 @@
 package mcjty.rftoolsdim.modules.dimlets.lootmodifier;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletDictionary;
@@ -33,7 +34,7 @@ public class EndermanLootModifier extends LootModifier {
 //                    Codec.FLOAT.fieldOf("legendaryDimletChance").forGetter(l -> l.legendaryDimletChance))
 //    ).apply(instance, EndermanLootModifier::new));
 
-    public static final Codec<EndermanLootModifier> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+    public static final MapCodec<EndermanLootModifier> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             LOOT_CONDITIONS_CODEC.fieldOf("conditions").forGetter(l -> l.conditions),
             Codec.FLOAT.fieldOf("commonKnowledgeChance").forGetter(l -> l.commonKnowledgeChance),
             Codec.FLOAT.fieldOf("uncommonKnowledgeChance").forGetter(l -> l.uncommonKnowledgeChance),
@@ -118,7 +119,7 @@ public class EndermanLootModifier extends LootModifier {
     }
 
     @Override
-    public Codec<? extends IGlobalLootModifier> codec() {
+    public MapCodec<? extends IGlobalLootModifier> codec() {
         return CODEC;
     }
 

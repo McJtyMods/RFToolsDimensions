@@ -3,38 +3,31 @@ package mcjty.rftoolsdim.modules.dimlets.recipes;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import mcjty.lib.crafting.IRecipeBuilder;
-import mcjty.rftoolsdim.modules.dimlets.DimletModule;
 import net.minecraft.advancements.Advancement;
-import net.minecraft.advancements.AdvancementRewards;
 import net.minecraft.advancements.AdvancementHolder;
+import net.minecraft.advancements.AdvancementRequirements;
+import net.minecraft.advancements.AdvancementRewards;
 import net.minecraft.advancements.CriterionTriggerInstance;
-import net.minecraft.advancements.RequirementsStrategy;
-import net.minecraft.advancements.critereon.ContextAwarePredicate;
-import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
-import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
+import net.minecraft.world.item.crafting.ShapedRecipe;
+import net.minecraft.world.item.crafting.ShapedRecipePattern;
 import net.minecraft.world.level.ItemLike;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.Consumer;
 
 public class DimletCycleRecipeBuilder implements IRecipeBuilder<DimletCycleRecipeBuilder> {
-    private static final Logger LOGGER = LogManager.getLogger();
     private final Item result;
     private final int count;
     private final List<String> pattern = Lists.newArrayList();
@@ -43,6 +36,7 @@ public class DimletCycleRecipeBuilder implements IRecipeBuilder<DimletCycleRecip
     private String group;
     private String input;
     private String output;
+    private boolean hasCriteria = false;
 
     public DimletCycleRecipeBuilder(ItemLike resultIn, int countIn) {
         this.result = resultIn.asItem();
@@ -101,6 +95,7 @@ public class DimletCycleRecipeBuilder implements IRecipeBuilder<DimletCycleRecip
 
     public DimletCycleRecipeBuilder addCriterion(String name, CriterionTriggerInstance criterionIn) {
         this.advancementBuilder.addCriterion(name, criterionIn);
+        this.hasCriteria = true;
         return this;
     }
 
@@ -128,13 +123,18 @@ public class DimletCycleRecipeBuilder implements IRecipeBuilder<DimletCycleRecip
     @Override
     public void build(RecipeOutput consumerIn, ResourceLocation id) {
         this.validate(id);
-        this.advancementBuilder.parent(ResourceLocation.parse("recipes/root")).addCriterion("has_the_recipe",
-                new RecipeUnlockedTrigger.TriggerInstance(ContextAwarePredicate.ANY /* @todo 1.16, is this right? */, id)).rewards(AdvancementRewards.Builder.recipe(id)).requirements(RequirementsStrategy.OR);
-        String folder = "";//@todo 1.19.3 this.result.getItemCategory().getRecipeFolderName();
+        this.advancementBuilder.parent(ResourceLocation.parse("recipes/root"))
+                .addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(id))
+                .rewards(AdvancementRewards.Builder.recipe(id))
+                .requirements(AdvancementRequirements.Strategy.OR);
+        String folder = "dimlets";
         ResourceLocation advancementId = ResourceLocation.fromNamespaceAndPath(id.getNamespace(), "recipes/" + folder + "/" + id.getPath());
         AdvancementHolder advancement = this.advancementBuilder.build(advancementId);
-        JsonObject json = createRecipeJson();
-        DigitCycleRecipe recipe = DimletModule.DIMLET_CYCLE_SERIALIZER.get().fromJson(id, json);
+
+        ShapedRecipePattern shapedPattern = ShapedRecipePattern.of(this.key, this.pattern);
+        ItemStack resultStack = new ItemStack(this.result, this.count);
+        ShapedRecipe shapedRecipe = new ShapedRecipe(this.group == null ? "" : this.group, CraftingBookCategory.MISC, shapedPattern, resultStack);
+        DigitCycleRecipe recipe = new DigitCycleRecipe(shapedRecipe, input, output);
         consumerIn.accept(id, recipe, advancement);
     }
 
@@ -158,40 +158,10 @@ public class DimletCycleRecipeBuilder implements IRecipeBuilder<DimletCycleRecip
 
             if (!set.isEmpty()) {
                 throw new IllegalStateException("Ingredients are defined but not used in pattern for recipe " + id);
-            } else if (this.advancementBuilder.getCriteria().isEmpty()) {
+            } else if (!hasCriteria) {
                 throw new IllegalStateException("No way of obtaining recipe " + id);
             }
         }
     }
 
-    private JsonObject createRecipeJson() {
-        JsonObject json = new JsonObject();
-        if (this.group != null && !this.group.isEmpty()) {
-            json.addProperty("group", this.group);
-        }
-
-        JsonArray jsonarray = new JsonArray();
-        for (String s : this.pattern) {
-            jsonarray.add(s);
-        }
-
-        json.add("pattern", jsonarray);
-        JsonObject jsonobject = new JsonObject();
-
-        for (Map.Entry<Character, Ingredient> entry : this.key.entrySet()) {
-            jsonobject.add(String.valueOf(entry.getKey()), entry.getValue().toJson());
-        }
-
-        json.add("key", jsonobject);
-        JsonObject jsonobject1 = new JsonObject();
-        jsonobject1.addProperty("item", BuiltInRegistries.ITEM.getKey(this.result).toString());
-        if (this.count > 1) {
-            jsonobject1.addProperty("count", this.count);
-        }
-
-        json.add("result", jsonobject1);
-        json.addProperty("input", input);
-        json.addProperty("output", output);
-        return json;
-    }
 }

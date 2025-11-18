@@ -19,14 +19,12 @@ import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 
 import static mcjty.rftoolsdim.dimension.DimensionRegistry.RFTOOLS_CHUNKGEN_ID;
 
-@EventBusSubscriber(modid = RFToolsDim.MODID, bus = EventBusSubscriber.Bus.FORGE)
+@EventBusSubscriber(modid = RFToolsDim.MODID)
 public class ModSetup extends DefaultModSetup {
 
     @Override
     public void init(FMLCommonSetupEvent e) {
         super.init(e);
-
-        RFToolsDimMessages.registerMessages();
 
 //        e.enqueueWork(() -> {
 //            RFTFeature.registerConfiguredFeatures();

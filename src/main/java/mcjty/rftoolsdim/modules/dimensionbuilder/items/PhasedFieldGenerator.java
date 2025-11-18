@@ -17,8 +17,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.common.capabilities.ICapabilityProvider;
+import net.minecraft.world.item.Item.TooltipContext;
+import net.neoforged.neoforge.capabilities.ICapabilityProvider;
 import net.neoforged.neoforge.common.util.Lazy;
 
 import javax.annotation.Nonnull;
@@ -29,10 +29,10 @@ import static mcjty.lib.builder.TooltipBuilder.*;
 
 public class PhasedFieldGenerator extends Item implements IEnergyItem, ITooltipSettings {
 
-    private final Lazy<TooltipBuilder> tooltipBuilder = () -> new TooltipBuilder()
+    private final Lazy<TooltipBuilder> tooltipBuilder = Lazy.of(() -> new TooltipBuilder()
             .info(key("message.rftoolsdim.shiftmessage"))
             .infoShift(header(), gold(),
-                    TooltipBuilder.parameter("power", this::getEnergyString));
+                    TooltipBuilder.parameter("power", this::getEnergyString)));
 
     private String getEnergyString(ItemStack stack) {
         return Integer.toString(stack.hasTag() ? stack.getTag().getInt("Energy") : 0);
@@ -57,8 +57,8 @@ public class PhasedFieldGenerator extends Item implements IEnergyItem, ITooltipS
 
 
     @Override
-    public void appendHoverText(@Nonnull ItemStack stack, @Nullable Level worldIn, @Nonnull List<Component> list, @Nonnull TooltipFlag flagIn) {
-        super.appendHoverText(stack, worldIn, list, flagIn);
+    public void appendHoverText(@Nonnull ItemStack stack, @Nullable TooltipContext context, @Nonnull List<Component> list, @Nonnull TooltipFlag flagIn) {
+        super.appendHoverText(stack, context, list, flagIn);
         tooltipBuilder.get().makeTooltip(Tools.getId(this), stack, list, flagIn);
     }
 

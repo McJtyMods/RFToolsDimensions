@@ -10,7 +10,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.fml.loading.FMLPaths;
-import net.neoforged.neoforge.registries.ForgeRegistries;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -41,7 +40,7 @@ public class DimletPackages {
 
     private static void writeBiomes(JsonArray root, String modid) {
         Set<DimletKey> dimlets = DimletDictionary.get().getDimlets();
-        for (var entry : ForgeRegistries.BIOMES.getEntries()) {
+        for (var entry : BuiltInRegistries.BIOME.entrySet()) {
             ResourceLocation id = entry.getKey().location();
             if (modid.toLowerCase().equals(id.getNamespace())) {
                 if (!dimlets.contains(new DimletKey(DimletType.BIOME, id.toString()))) {
@@ -61,7 +60,7 @@ public class DimletPackages {
 
     private static void writeFluids(JsonArray root, String modid) {
         Set<DimletKey> dimlets = DimletDictionary.get().getDimlets();
-        for (var entry : ForgeRegistries.FLUIDS.getEntries()) {
+        for (var entry : BuiltInRegistries.FLUID.entrySet()) {
             ResourceLocation id = entry.getKey().location();
             if (modid.toLowerCase().equals(id.getNamespace())) {
                 Fluid fluid = entry.getValue();
@@ -84,7 +83,7 @@ public class DimletPackages {
 
     private static void writeBlocks(JsonArray root, String modid) {
         Set<DimletKey> dimlets = DimletDictionary.get().getDimlets();
-        for (var entry : ForgeRegistries.BLOCKS.getEntries()) {
+        for (var entry : BuiltInRegistries.BLOCK.entrySet()) {
             ResourceLocation id = entry.getKey().location();
             if (modid.toLowerCase().equals(id.getNamespace())) {
                 Block block = entry.getValue();

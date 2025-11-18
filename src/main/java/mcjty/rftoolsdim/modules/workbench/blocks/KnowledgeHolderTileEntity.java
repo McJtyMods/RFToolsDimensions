@@ -20,9 +20,9 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.common.util.Lazy;
-import net.neoforged.neoforge.common.util.LazyOptional;
 
 import java.util.Set;
+import java.util.function.Function;
 
 import static mcjty.lib.api.container.DefaultContainerProvider.container;
 import static mcjty.lib.builder.TooltipBuilder.*;
@@ -34,16 +34,17 @@ public class KnowledgeHolderTileEntity extends GenericTileEntity {
             .box(specific(KnowledgeHolderTileEntity::isValidKnowledgeItem).in().out(), 0, 11, 10, 13, 8)
             .playerSlots(11, 158));
 
-    @Cap(type = CapType.ITEMS_AUTOMATION)
     private final GenericItemHandler items = GenericItemHandler.create(this, CONTAINER_FACTORY)
             .itemValid((slot, stack) -> isValidKnowledgeItem(stack))
             .build();
+    @Cap(type = CapType.ITEMS_AUTOMATION)
+    private static final Function<KnowledgeHolderTileEntity, GenericItemHandler> ITEM_CAP = be -> be.items;
 
     @Cap(type = CapType.CONTAINER)
-    private final Lazy<MenuProvider> screenHandler = Lazy.of(() -> new DefaultContainerProvider<GenericContainer>("Knowledge Holder")
-            .containerSupplier(container(WorkbenchModule.CONTAINER_HOLDER, CONTAINER_FACTORY,this))
-            .itemHandler(() -> items)
-            .setupSync(this));
+    private static final Function<KnowledgeHolderTileEntity, MenuProvider> SCREEN_CAP = be -> new DefaultContainerProvider<GenericContainer>("Knowledge Holder")
+            .containerSupplier(container(WorkbenchModule.CONTAINER_HOLDER, CONTAINER_FACTORY, be))
+            .itemHandler(() -> be.items)
+            .setupSync(be);
 
     public KnowledgeHolderTileEntity(BlockPos pos, BlockState state) {
         super(WorkbenchModule.TYPE_HOLDER.get(), pos, state);

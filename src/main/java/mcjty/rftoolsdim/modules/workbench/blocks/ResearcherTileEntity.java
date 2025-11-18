@@ -40,9 +40,9 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.common.util.Lazy;
-import net.neoforged.neoforge.common.util.LazyOptional;
 
 import javax.annotation.Nonnull;
+import java.util.function.Function;
 
 import static mcjty.lib.api.container.DefaultContainerProvider.container;
 import static mcjty.lib.builder.TooltipBuilder.*;
@@ -63,14 +63,15 @@ public class ResearcherTileEntity extends TickingTileEntity {
             .slot(generic().out(), SLOT_OUT, 118, 24)
             .playerSlots(10, 70));
 
-    @Cap(type = CapType.INFUSABLE)
     private final IInfusable infusable = new DefaultInfusable(ResearcherTileEntity.this);
+    @Cap(type = CapType.INFUSABLE)
+    private static final Function<ResearcherTileEntity, IInfusable> INFUSABLE_CAP = be -> be.infusable;
 
-    @Cap(type = CapType.ENERGY)
     private final GenericEnergyStorage energyStorage = new GenericEnergyStorage(this, true, WorkbenchConfig.RESEARCHER_MAXENERGY.get(),
             WorkbenchConfig.RESEARCHER_ENERGY_INPUT_PERTICK.get());
+    @Cap(type = CapType.ENERGY)
+    private static final Function<ResearcherTileEntity, GenericEnergyStorage> ENERGY_CAP = be -> be.energyStorage;
 
-    @Cap(type = CapType.ITEMS_AUTOMATION)
     private final GenericItemHandler items = GenericItemHandler.create(this, CONTAINER_FACTORY)
             .itemValid((slot, stack) -> isResearchable(stack))
             .insertable(slot(SLOT_IN))
@@ -80,13 +81,15 @@ public class ResearcherTileEntity extends TickingTileEntity {
                 }
             })
             .build();
+    @Cap(type = CapType.ITEMS_AUTOMATION)
+    private static final Function<ResearcherTileEntity, GenericItemHandler> ITEM_CAP = be -> be.items;
 
     @Cap(type = CapType.CONTAINER)
-    private final Lazy<MenuProvider> screenHandler = Lazy.of(() -> new DefaultContainerProvider<GenericContainer>("Knowledge Holder")
-            .containerSupplier(container(WorkbenchModule.CONTAINER_RESEARCHER, CONTAINER_FACTORY, this))
-            .energyHandler(() -> energyStorage)
-            .itemHandler(() -> items)
-            .setupSync(this));
+    private static final Function<ResearcherTileEntity, MenuProvider> SCREEN_CAP = be -> new DefaultContainerProvider<GenericContainer>("Knowledge Holder")
+            .containerSupplier(container(WorkbenchModule.CONTAINER_RESEARCHER, CONTAINER_FACTORY, be))
+            .energyHandler(() -> be.energyStorage)
+            .itemHandler(() -> be.items)
+            .setupSync(be);
 
     public static final VoxelShape SLAB = Shapes.box(0f, 0f, 0f, 1f, 0.5f, 1f);
 
