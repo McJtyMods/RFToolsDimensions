@@ -11,7 +11,7 @@ import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 public class OverlayRenderer {
 
     public static void render(RenderGuiLayerEvent.Post event) {
-        if (event.getName().equals(VanillaGuiLayers.SLEEP_FADE)) {
+        if (event.getName().equals(VanillaGuiLayers.TITLE)) {
             ClientDimensionData.ClientData clientData = ClientDimensionData.get().getClientData(Minecraft.getInstance().level.dimension().location());
             if (clientData.power() >= 0) {
                 // Don't do anything outside an RFTools Dimension
@@ -33,16 +33,15 @@ public class OverlayRenderer {
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
         RenderSystem.setShaderColor(red, green, blue, alpha);
 
-        BufferBuilder bufferbuilder = Tesselator.getInstance().getBuilder();
-        bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
+        BufferBuilder buffer = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
 
         float v = 900.0F;
-        bufferbuilder.vertex(-v, v, -100f).color(red, green, blue, alpha).endVertex();
-        bufferbuilder.vertex(v, v, -100f).color(red, green, blue, alpha).endVertex();
-        bufferbuilder.vertex(v, -v, -100f).color(red, green, blue, alpha).endVertex();
-        bufferbuilder.vertex(-v, -v, -100f).color(red, green, blue, alpha).endVertex();
+        buffer.addVertex(-v, v, -100f).setColor(red, green, blue, alpha);
+        buffer.addVertex(v, v, -100f).setColor(red, green, blue, alpha);
+        buffer.addVertex(v, -v, -100f).setColor(red, green, blue, alpha);
+        buffer.addVertex(-v, -v, -100f).setColor(red, green, blue, alpha);
 
-        BufferUploader.draw(bufferbuilder.end());
+        BufferUploader.drawWithShader(buffer.buildOrThrow());
     }
 
 }

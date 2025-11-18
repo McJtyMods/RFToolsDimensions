@@ -5,11 +5,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import mcjty.lib.crafting.IRecipeBuilder;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletKey;
-import net.minecraft.advancements.Advancement;
-import net.minecraft.advancements.AdvancementHolder;
-import net.minecraft.advancements.AdvancementRequirements;
-import net.minecraft.advancements.AdvancementRewards;
-import net.minecraft.advancements.CriterionTriggerInstance;
+import net.minecraft.advancements.*;
 import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.recipes.RecipeOutput;
@@ -87,7 +83,7 @@ public class DimletRecipeBuilder implements IRecipeBuilder<DimletRecipeBuilder> 
         }
     }
 
-    public DimletRecipeBuilder addCriterion(String name, CriterionTriggerInstance criterionIn) {
+    public DimletRecipeBuilder addCriterion(String name, Criterion criterionIn) {
         this.advancementBuilder.addCriterion(name, criterionIn);
         this.hasCriteria = true;
         return this;

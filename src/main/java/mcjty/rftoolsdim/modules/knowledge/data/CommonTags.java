@@ -31,16 +31,16 @@ public class CommonTags {
             commonTags.add(BlockTags.PLANKS);
             commonTags.add(BlockTags.STAIRS);
             commonTags.add(BlockTags.DIRT);
-            commonTags.add(Tags.Blocks.GLASS);
+            commonTags.add(Tags.Blocks.GLASS_BLOCKS);
             commonTags.add(Tags.Blocks.GLASS_PANES);
             commonTags.add(Tags.Blocks.CHESTS);
-            commonTags.add(Tags.Blocks.COBBLESTONE);
-            commonTags.add(Tags.Blocks.NETHERRACK);
-            commonTags.add(Tags.Blocks.OBSIDIAN);
-            commonTags.add(Tags.Blocks.GRAVEL);
-            commonTags.add(Tags.Blocks.SANDSTONE);
+            commonTags.add(Tags.Blocks.COBBLESTONES);
+            commonTags.add(Tags.Blocks.NETHERRACKS);
+            commonTags.add(Tags.Blocks.OBSIDIANS);
+            commonTags.add(Tags.Blocks.GRAVELS);
+            commonTags.add(Tags.Blocks.SANDSTONE_BLOCKS);
             commonTags.add(Tags.Blocks.END_STONES);
-            commonTags.add(Tags.Blocks.STONE);
+            commonTags.add(Tags.Blocks.STONES);
 
             commonTags.add(Tags.Blocks.ORES);
             commonTags.add(Tags.Blocks.ORES_COAL);
@@ -62,7 +62,6 @@ public class CommonTags {
             commonTags.add(Tags.Blocks.STORAGE_BLOCKS_EMERALD);
             commonTags.add(Tags.Blocks.STORAGE_BLOCKS_GOLD);
             commonTags.add(Tags.Blocks.STORAGE_BLOCKS_REDSTONE);
-            commonTags.add(Tags.Blocks.STORAGE_BLOCKS_QUARTZ);
             commonTags.add(Tags.Blocks.STORAGE_BLOCKS_IRON);
             commonTags.add(Tags.Blocks.STORAGE_BLOCKS_LAPIS);
             commonTags.add(TagTools.createBlockTagKey(ResourceLocation.fromNamespaceAndPath("forge", "storage_blocks/copper")));

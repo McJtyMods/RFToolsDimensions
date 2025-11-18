@@ -7,6 +7,7 @@ import mcjty.rftoolsdim.modules.dimlets.data.DimletKey;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletSettings;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
@@ -21,7 +22,7 @@ public record PacketSendDimletPackages(Map<DimletKey, DimletSettings> dimlets) i
     public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(RFToolsDim.MODID, "senddimletpackages");
     public static final CustomPacketPayload.Type<PacketSendDimletPackages> TYPE = new Type<>(ID);
 
-    public static final StreamCodec<FriendlyByteBuf, PacketSendDimletPackages> CODEC = StreamCodec.of(
+    public static final StreamCodec<RegistryFriendlyByteBuf, PacketSendDimletPackages> CODEC = StreamCodec.of(
             (buf, packet) -> {
                 buf.writeInt(packet.dimlets.size());
                 for (Map.Entry<DimletKey, DimletSettings> entry : packet.dimlets.entrySet()) {

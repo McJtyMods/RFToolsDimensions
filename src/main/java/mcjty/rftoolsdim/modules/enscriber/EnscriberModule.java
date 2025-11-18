@@ -12,6 +12,7 @@ import mcjty.rftoolsdim.modules.enscriber.blocks.EnscriberTileEntity;
 import mcjty.rftoolsdim.modules.enscriber.client.GuiEnscriber;
 import mcjty.rftoolsdim.setup.Config;
 import mcjty.rftoolsdim.setup.Registration;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -61,12 +62,12 @@ public class EnscriberModule implements IModule {
     }
 
     @Override
-    public void initDatagen(DataGen dataGen) {
+    public void initDatagen(DataGen dataGen, HolderLookup.Provider provider) {
         dataGen.add(
                 Dob.blockBuilder(ENSCRIBER)
                         .ironPickaxeTags()
                         .parentedItem("block/enscriber")
-                        .standardLoot(TYPE_ENSCRIBER)
+//                        .standardLoot(TYPE_ENSCRIBER) @todo 1.21
                         .blockState(p -> p.orientedBlock(ENSCRIBER.block().get(), p.frontBasedModel("enscriber", p.modLoc("block/dimensionenscriber"))))
                         .shaped(builder -> builder
                                         .define('F', mcjty.rftoolsbase.modules.various.VariousModule.MACHINE_FRAME.get())

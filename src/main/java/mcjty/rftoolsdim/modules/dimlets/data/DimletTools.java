@@ -113,11 +113,12 @@ public class DimletTools {
         if (stack.getItem() instanceof DimletItem) {
             DimletType type = ((DimletItem) stack.getItem()).getType();
             if (type != null) {
-                CompoundTag tag = stack.getTag();
-                if (tag != null) {
-                    String name = tag.getString("name");
-                    return new DimletKey(type, name);
-                }
+                // @todo 1.21 data
+//                CompoundTag tag = stack.getTag();
+//                if (tag != null) {
+//                    String name = tag.getString("name");
+//                    return new DimletKey(type, name);
+//                }
             }
         }
         return null;
@@ -127,7 +128,8 @@ public class DimletTools {
     public static ItemStack getDimletStack(DimletKey key) {
         DimletItem item = getDimletItem(key.type());
         ItemStack stack = new ItemStack(item);
-        stack.getOrCreateTag().putString("name", key.key());
+        // @todo 1.21 data
+//        stack.getOrCreateTag().putString("name", key.key());
         return stack;
     }
 

@@ -39,6 +39,11 @@ import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponentMap;
+import net.minecraft.core.component.DataComponentInput;
+import net.minecraft.nbt.CompoundTag;
+import mcjty.lib.setup.Registration;
 import net.neoforged.neoforge.common.util.Lazy;
 import javax.annotation.Nullable;
 import java.util.List;
@@ -108,10 +113,11 @@ public class EnscriberTileEntity extends GenericTileEntity {
     public String getDimensionName() {
         ItemStack stack = items.getStackInSlot(SLOT_TAB);
         if (!stack.isEmpty() && stack.getItem() == DimensionBuilderModule.REALIZED_DIMENSION_TAB.get()) {
-            CompoundTag tagCompound = stack.getTag();
-            if (tagCompound != null) {
-                return tagCompound.getString("name");
-            }
+            // @todo 1.21 data
+//            CompoundTag tagCompound = stack.getTag();
+//            if (tagCompound != null) {
+//                return tagCompound.getString("name");
+//            }
         }
         return null;
     }
@@ -156,7 +162,8 @@ public class EnscriberTileEntity extends GenericTileEntity {
             items.setStackInSlot(i, ItemStack.EMPTY);
         }
 
-        realizedTab.getOrCreateTag().putString("name", name);
+        // @todo 1.21 data
+//        realizedTab.getOrCreateTag().putString("name", name);
 
         items.setStackInSlot(SLOT_TAB, realizedTab);
 
@@ -169,7 +176,7 @@ public class EnscriberTileEntity extends GenericTileEntity {
      */
     private ItemStack createRealizedTab(DimensionDescriptor descriptor) {
         ItemStack realizedTab = new ItemStack(DimensionBuilderModule.REALIZED_DIMENSION_TAB.get(), 1);
-        CompoundTag tagCompound = realizedTab.getOrCreateTag();
+        CompoundTag tagCompound = null; // @todo 1.21 data realizedTab.getOrCreateTag();
         String compact = descriptor.compact();
         tagCompound.putString("descriptor", compact);
 
@@ -219,7 +226,7 @@ public class EnscriberTileEntity extends GenericTileEntity {
                 if (settings != null) {
                     // Make sure the dimlet is not blacklisted.
                     dimlets.add(key);
-                    CompoundTag tagCompound = stack.getTag();
+                    CompoundTag tagCompound = null; // @todo 1.21 data stack.getTag();
                     // @todo 1.16 is this the way?
                     if (tagCompound != null && tagCompound.getLong("forcedSeed") != 0) {
                         forcedSeed = tagCompound.getLong("forcedSeed");
@@ -251,7 +258,7 @@ public class EnscriberTileEntity extends GenericTileEntity {
 
     private void extractDimlets() {
         ItemStack realizedTab = items.getStackInSlot(SLOT_TAB);
-        CompoundTag tagCompound = realizedTab.getTag();
+        CompoundTag tagCompound = null; // @todo 1.21 data realizedTab.getTag();
         if (tagCompound != null) {
             long forcedSeed = tagCompound.getLong("forcedSeed");
             String descString = tagCompound.getString("descriptor");

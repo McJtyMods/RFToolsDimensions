@@ -56,7 +56,7 @@ public class StructureAbsorberTileEntity extends TickingTileEntity {
     }
 
     private static String getStructureName(ItemStack stack) {
-        String structure = NBTTools.getInfoNBT(stack, CompoundTag::getString, "structure", null);
+        String structure = ""; // @todo 1.21 data NBTTools.getInfoNBT(stack, CompoundTag::getString, "structure", null);
         if (structure == null) {
             return "<Not Set>";
         } else {
@@ -66,11 +66,11 @@ public class StructureAbsorberTileEntity extends TickingTileEntity {
     }
 
     public static String getStructure(ItemStack stack) {
-        return NBTTools.getInfoNBT(stack, CompoundTag::getString, "structure", null);
+        return ""; // @todo 1.21 data NBTTools.getInfoNBT(stack, CompoundTag::getString, "structure", null);
     }
 
     private static String getProgressName(ItemStack stack) {
-        int absorbing = NBTTools.getInfoNBT(stack, CompoundTag::getInt, "absorbing", -1);
+        int absorbing = 0; // @todo 1.21 data NBTTools.getInfoNBT(stack, CompoundTag::getInt, "absorbing", -1);
         if (absorbing == -1) {
             return "n.a.";
         } else {
@@ -80,7 +80,7 @@ public class StructureAbsorberTileEntity extends TickingTileEntity {
     }
 
     public static int getProgress(ItemStack stack) {
-        int absorbing = NBTTools.getInfoNBT(stack, CompoundTag::getInt, "absorbing", -1);
+        int absorbing = 0; // @todo 1.21 data NBTTools.getInfoNBT(stack, CompoundTag::getInt, "absorbing", -1);
         if (absorbing == -1) {
             return -1;
         } else {

@@ -6,6 +6,7 @@ import mcjty.lib.datagen.DataGen;
 import mcjty.lib.datagen.Dob;
 import mcjty.lib.modules.IModule;
 import mcjty.rftoolsbase.modules.various.VariousModule;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -42,7 +43,7 @@ public class DecorativeModule implements IModule {
     }
 
     @Override
-    public void initDatagen(DataGen dataGen) {
+    public void initDatagen(DataGen dataGen, HolderLookup.Provider provider) {
         dataGen.add(
                 Dob.blockBuilder(DIMENSIONAL_BLOCK)
                         .ironPickaxeTags()
@@ -51,7 +52,7 @@ public class DecorativeModule implements IModule {
                         .blockState(p -> p.singleTextureBlock(DIMENSIONAL_BLOCK.block().get(), BLOCK_FOLDER + "/dimensional_block", "block/decorative/dimblock_block"))
                         .shaped(builder -> builder
                                         .define('s', VariousModule.DIMENSIONALSHARD.get())
-                                        .define('S', Tags.Items.STONE)
+                                        .define('S', Tags.Items.STONES)
                                         .unlockedBy("shard", has(VariousModule.DIMENSIONALSHARD.get())),
                                 "Ss", "ss"),
                 Dob.blockBuilder(DIMENSIONAL_BLANK)
@@ -70,7 +71,7 @@ public class DecorativeModule implements IModule {
                         .blockState(p -> p.singleTextureBlock(DIMENSIONAL_CROSS_BLOCK.block().get(), BLOCK_FOLDER + "/dimensional_cross_block", "block/decorative/dimblock_pattern3"))
                         .shaped(builder -> builder
                                         .define('s', VariousModule.DIMENSIONALSHARD.get())
-                                        .define('S', Tags.Items.STONE)
+                                        .define('S', Tags.Items.STONES)
                                         .unlockedBy("shard", has(VariousModule.DIMENSIONALSHARD.get())),
                                 "Ss", "sS"),
                 Dob.blockBuilder(DIMENSIONAL_CROSS2_BLOCK)
@@ -80,7 +81,7 @@ public class DecorativeModule implements IModule {
                         .blockState(p -> p.singleTextureBlock(DIMENSIONAL_CROSS2_BLOCK.block().get(), BLOCK_FOLDER + "/dimensional_cross2_block", "block/decorative/dimblock_pattern4"))
                         .shaped(builder -> builder
                                         .define('s', VariousModule.DIMENSIONALSHARD.get())
-                                        .define('S', Tags.Items.STONE)
+                                        .define('S', Tags.Items.STONES)
                                         .unlockedBy("shard", has(VariousModule.DIMENSIONALSHARD.get())),
                                 "sS", "Ss"),
                 Dob.blockBuilder(DIMENSIONAL_PATTERN1_BLOCK)
@@ -90,7 +91,7 @@ public class DecorativeModule implements IModule {
                         .blockState(p -> p.singleTextureBlock(DIMENSIONAL_PATTERN1_BLOCK.block().get(), BLOCK_FOLDER + "/dimensional_pattern1_block", "block/decorative/dimblock_pattern7"))
                         .shaped(builder -> builder
                                         .define('s', VariousModule.DIMENSIONALSHARD.get())
-                                        .define('S', Tags.Items.STONE)
+                                        .define('S', Tags.Items.STONES)
                                         .unlockedBy("shard", has(VariousModule.DIMENSIONALSHARD.get())),
                                 "sS", "sS"),
                 Dob.blockBuilder(DIMENSIONAL_PATTERN2_BLOCK)
@@ -100,7 +101,7 @@ public class DecorativeModule implements IModule {
                         .blockState(p -> p.singleTextureBlock(DIMENSIONAL_PATTERN2_BLOCK.block().get(), BLOCK_FOLDER + "/dimensional_pattern2_block", "block/decorative/dimblock_pattern8"))
                         .shaped(builder -> builder
                                         .define('s', VariousModule.DIMENSIONALSHARD.get())
-                                        .define('S', Tags.Items.STONE)
+                                        .define('S', Tags.Items.STONES)
                                         .unlockedBy("shard", has(VariousModule.DIMENSIONALSHARD.get())),
                                 "Ss", "Ss"),
                 Dob.blockBuilder(DIMENSIONAL_SMALL_BLOCK)
@@ -110,7 +111,7 @@ public class DecorativeModule implements IModule {
                         .blockState(p -> p.singleTextureBlock(DIMENSIONAL_SMALL_BLOCK.block().get(), BLOCK_FOLDER + "/dimensional_small_block", "block/decorative/dimblock_small_blocks"))
                         .shaped(builder -> builder
                                         .define('s', VariousModule.DIMENSIONALSHARD.get())
-                                        .define('S', Tags.Items.STONE)
+                                        .define('S', Tags.Items.STONES)
                                         .unlockedBy("shard", has(VariousModule.DIMENSIONALSHARD.get())),
                                 "ss", "sS")
         );

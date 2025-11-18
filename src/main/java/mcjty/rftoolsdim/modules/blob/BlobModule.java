@@ -7,17 +7,19 @@ import mcjty.rftoolsdim.modules.blob.entities.DimensionalBlobEntity;
 import mcjty.rftoolsdim.modules.dimlets.DimletModule;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletRarity;
 import mcjty.rftoolsdim.setup.Config;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
-import net.minecraft.world.entity.SpawnPlacements;
+import net.minecraft.world.entity.SpawnPlacementTypes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.neoforged.api.distmarker.Dist;
-import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
+import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
 
 import java.util.function.Supplier;
 
@@ -46,19 +48,24 @@ public class BlobModule implements IModule {
 
     public BlobModule(IEventBus bus, Dist dist) {
         bus.addListener(this::registerEntityAttributes);
+        bus.addListener(this::registerSpawnPlacements);
     }
 
     @Override
     public void init(FMLCommonSetupEvent event) {
-        SpawnPlacements.register(DIMENSIONAL_BLOB_COMMON.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules);
-        SpawnPlacements.register(DIMENSIONAL_BLOB_RARE.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules);
-        SpawnPlacements.register(DIMENSIONAL_BLOB_LEGENDARY.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules);
     }
 
     private void registerEntityAttributes(EntityAttributeCreationEvent event) {
         event.put(DIMENSIONAL_BLOB_COMMON.get(), DimensionalBlobEntity.registerAttributes(DimletRarity.COMMON).build());
         event.put(DIMENSIONAL_BLOB_RARE.get(), DimensionalBlobEntity.registerAttributes(DimletRarity.RARE).build());
         event.put(DIMENSIONAL_BLOB_LEGENDARY.get(), DimensionalBlobEntity.registerAttributes(DimletRarity.LEGENDARY).build());
+    }
+
+    private void registerSpawnPlacements(RegisterSpawnPlacementsEvent event) {
+        // @todo 1.21 is operation.AND correct?
+        event.register(DIMENSIONAL_BLOB_COMMON.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules, RegisterSpawnPlacementsEvent.Operation.AND);
+        event.register(DIMENSIONAL_BLOB_RARE.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules,  RegisterSpawnPlacementsEvent.Operation.AND);
+        event.register(DIMENSIONAL_BLOB_LEGENDARY.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules,  RegisterSpawnPlacementsEvent.Operation.AND);
     }
 
     @Override
@@ -72,14 +79,14 @@ public class BlobModule implements IModule {
     }
 
     @Override
-    public void initDatagen(DataGen dataGen) {
+    public void initDatagen(DataGen dataGen, HolderLookup.Provider provider) {
         dataGen.add(
                 Dob.entityBuilder(DIMENSIONAL_BLOB_COMMON)
-                        .loot(p -> p.addItemDropTable(DIMENSIONAL_BLOB_COMMON.get(), DimletModule.COMMON_ESSENCE.get(), 3, 5, 0, 1)),
+                        .loot(p -> p.addItemDropTable(provider, DIMENSIONAL_BLOB_COMMON.get(), DimletModule.COMMON_ESSENCE.get(), 3, 5, 0, 1)),
                 Dob.entityBuilder(DIMENSIONAL_BLOB_RARE)
-                        .loot(p -> p.addItemDropTable(DIMENSIONAL_BLOB_RARE.get(), DimletModule.RARE_ESSENCE.get(), 3, 5, 0, 1)),
+                        .loot(p -> p.addItemDropTable(provider, DIMENSIONAL_BLOB_RARE.get(), DimletModule.RARE_ESSENCE.get(), 3, 5, 0, 1)),
                 Dob.entityBuilder(DIMENSIONAL_BLOB_LEGENDARY)
-                        .loot(p -> p.addItemDropTable(DIMENSIONAL_BLOB_LEGENDARY.get(), DimletModule.LEGENDARY_ESSENCE.get(), 4, 6, 0, 1))
+                        .loot(p -> p.addItemDropTable(provider, DIMENSIONAL_BLOB_LEGENDARY.get(), DimletModule.LEGENDARY_ESSENCE.get(), 4, 6, 0, 1))
         );
     }
 }

@@ -2,6 +2,7 @@ package mcjty.rftoolsdim.dimension.data;
 
 import mcjty.lib.worlddata.AbstractWorldData;
 import mcjty.rftoolsdim.dimension.descriptor.DimensionDescriptor;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
@@ -72,7 +73,7 @@ public class PersistantDimensionManager extends AbstractWorldData<PersistantDime
 
     @Nonnull
     @Override
-    public CompoundTag save(@Nonnull CompoundTag compound) {
+    public CompoundTag save(@Nonnull CompoundTag compound, HolderLookup.Provider provider) {
         CompoundTag tag = new CompoundTag();
 
         ListTag list = new ListTag();

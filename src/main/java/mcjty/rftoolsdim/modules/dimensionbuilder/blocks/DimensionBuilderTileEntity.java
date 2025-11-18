@@ -26,9 +26,13 @@ import mcjty.rftoolsdim.dimension.descriptor.DimensionDescriptor;
 import mcjty.rftoolsdim.dimension.power.PowerHandler;
 import mcjty.rftoolsdim.modules.dimensionbuilder.DimensionBuilderConfig;
 import mcjty.rftoolsdim.modules.dimensionbuilder.DimensionBuilderModule;
+import mcjty.rftoolsdim.modules.dimensionbuilder.data.RealizedTabData;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
+import mcjty.lib.setup.Registration;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -78,7 +82,7 @@ public class DimensionBuilderTileEntity extends TickingTileEntity {
             .integerListener(Sync.integer(be::getBuildPercentage, v -> be.clientBuildPercentage = v))
             .setupSync(be);
 
-    private final IInfusable infusableHandler = new DefaultInfusable(DimensionBuilderTileEntity.this);
+    private final DefaultInfusable infusableHandler = new DefaultInfusable(DimensionBuilderTileEntity.this);
     @Cap(type = CapType.INFUSABLE)
     private static final Function<DimensionBuilderTileEntity, IInfusable> INFUSABLE_CAP = be -> be.infusableHandler;
 
@@ -115,24 +119,24 @@ public class DimensionBuilderTileEntity extends TickingTileEntity {
     @Override
     public ClientboundBlockEntityDataPacket getUpdatePacket() {
         CompoundTag nbtTag = new CompoundTag();
-        this.saveClientDataToNBT(nbtTag);
+        this.saveClientDataToNBT(nbtTag, level.registryAccess());
         nbtTag.putInt("errorMode", errorMode);
         return ClientboundBlockEntityDataPacket.create(this);
     }
 
     @Nonnull
     @Override
-    public CompoundTag getUpdateTag() {
-        CompoundTag updateTag = super.getUpdateTag();
+    public CompoundTag getUpdateTag(HolderLookup.Provider provider) {
+        CompoundTag updateTag = super.getUpdateTag(provider);
         updateTag.putInt("errorMode", errorMode);
         return updateTag;
     }
 
     @Override
-    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket packet) {
+    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket packet, HolderLookup.Provider provider) {
         int oldstate = state;
         int oldError = errorMode;
-        super.onDataPacket(net, packet);
+        super.onDataPacket(net, packet, provider);
         errorMode = (short) packet.getTag().getInt("errorMode");
         if (oldstate != state || oldError != this.errorMode) {
             getLevel().setBlocksDirty(worldPosition, getBlockState(), getBlockState());
@@ -141,8 +145,8 @@ public class DimensionBuilderTileEntity extends TickingTileEntity {
 
     @Override
     public void tickServer() {
-        CompoundTag tagCompound = hasTab();
-        if (tagCompound == null) {
+        RealizedTabData tab = hasTab();
+        if (tab == null || tab.tickCost() == 0) {
             setState(-1);
             return;
         }
@@ -152,20 +156,20 @@ public class DimensionBuilderTileEntity extends TickingTileEntity {
             return;
         }
 
-        int ticksLeft = tagCompound.getInt("ticksLeft");
+        int ticksLeft = tab.ticksLeft();
         if (ticksLeft > 0) {
-            ticksLeft = createDimensionTick(tagCompound, ticksLeft);
+            ItemStack itemStack = items.getStackInSlot(SLOT_DIMENSION_TAB);
+            ticksLeft = createDimensionTick(itemStack, tab);
         } else {
-            maintainDimensionTick(tagCompound);
+            maintainDimensionTick(tab);
         }
 
         setState(ticksLeft);
     }
 
-    private void maintainDimensionTick(CompoundTag tagCompound) {
-        if (tagCompound.contains("dimension")) {
-            String dimension = tagCompound.getString("dimension");
-            ResourceLocation id = ResourceLocation.parse(dimension);
+    private void maintainDimensionTick(RealizedTabData tab) {
+        if (tab.dimension().isPresent()) {
+            ResourceLocation id = tab.dimension().get();
             DimensionData data = PersistantDimensionManager.get(level).getData(id);
             if (data == null) {
                 return;
@@ -185,7 +189,7 @@ public class DimensionBuilderTileEntity extends TickingTileEntity {
 
     private static final Random random = new Random();
 
-    private int createDimensionTick(CompoundTag tagCompound, int ticksLeft) {
+    private int createDimensionTick(ItemStack stack, RealizedTabData tab) {
 
         // @todo 1.16
 //        if (GeneralConfiguration.dimensionBuilderNeedsOwner) {
@@ -210,22 +214,23 @@ public class DimensionBuilderTileEntity extends TickingTileEntity {
         errorMode = OK;
 
         // If we are creating a dimension we should reserve the name
-        String name = tagCompound.getString("name");
+        String name = tab.name().orElse("");
         DimensionCreator.get().markReservedName(level, worldPosition, name);
 
-        int createCost = tagCompound.getInt("rfCreateCost");
+        int createCost = tab.rfCreateCost();
         float inf = infusableHandler.getInfusedFactor();
         createCost = (int) (createCost * (2.0f - inf) / 2.0f);
 
-        if (isCheaterDimension(tagCompound) || (energyStorage.getEnergyStored() >= createCost)) {
+        if (isCheaterDimension(tab) || (energyStorage.getEnergyStored() >= createCost)) {
             if (!DimensionCreator.get().isNameAvailable(level, worldPosition, name)) {
                 // The name is not available. Stop building!
                 errorMode = ERROR_COLLISION;
                 setChanged();
-                return ticksLeft;
+                return tab.ticksLeft();
             }
 
-            if (isCheaterDimension(tagCompound)) {
+            int ticksLeft = tab.ticksLeft();
+            if (isCheaterDimension(tab)) {
                 ticksLeft = 0;
             } else {
                 energyStorage.consumeEnergy(createCost);
@@ -238,9 +243,10 @@ public class DimensionBuilderTileEntity extends TickingTileEntity {
                     }
                 }
             }
-            tagCompound.putInt("ticksLeft", ticksLeft);
+            tab = tab.withTicksLeft(ticksLeft);
+            stack.set(DimensionBuilderModule.ITEM_REALIZED_TAB_DATA, tab);
             if (ticksLeft <= 0) {
-                String descriptorString = tagCompound.getString("descriptor");
+                String descriptorString = tab.descriptor();
                 DimensionDescriptor descriptor = new DimensionDescriptor();
                 descriptor.read(descriptorString);
 
@@ -260,17 +266,18 @@ public class DimensionBuilderTileEntity extends TickingTileEntity {
                 }
 
                 long seed = random.nextLong();
-                ServerLevel newworld = DimensionCreator.get().createWorld(this.level, name, seed, descriptor, randomizedDescriptor, getOwnerUUID());
+                ServerLevel newworld = DimensionCreator.get().createWorld((ServerLevel) this.level, name, seed, descriptor, randomizedDescriptor, getOwnerUUID());
                 ResourceLocation id = ResourceLocation.fromNamespaceAndPath(RFToolsDim.MODID, name);
-                tagCompound.putString("dimension", id.toString());
+                tab = tab.withDimension(id);
                 CompiledDescriptor compiledDescriptor = DimensionCreator.get().getCompiledDescriptor(newworld);
-                tagCompound.putInt("rfMaintainCost", compiledDescriptor.getActualPowerCost());
+                tab = tab.withRfMaintainCost(compiledDescriptor.getActualPowerCost());
+                stack.set(DimensionBuilderModule.ITEM_REALIZED_TAB_DATA, tab);
                 setChanged();
 
                 placeMatterReceiver(newworld, name);
             }
         }
-        return ticksLeft;
+        return tab.ticksLeft();
     }
 
     private void placeMatterReceiver(ServerLevel newworld, String name) {
@@ -290,7 +297,7 @@ public class DimensionBuilderTileEntity extends TickingTileEntity {
         newworld.setBlockAndUpdate(new BlockPos(8, platformHeight+2, 8), Blocks.AIR.defaultBlockState());
     }
 
-    private boolean isCheaterDimension(CompoundTag tag) {
+    private boolean isCheaterDimension(RealizedTabData tab) {
         // @todo 1.16
         return false;
     }
@@ -316,32 +323,32 @@ public class DimensionBuilderTileEntity extends TickingTileEntity {
     }
 
     @Override
-    public void loadClientDataFromNBT(CompoundTag tagCompound) {
-        loadItemHandlerCap(tagCompound);
+    public void loadClientDataFromNBT(CompoundTag tag, HolderLookup.Provider provider) {
+        items.load(tag, "items", provider);
     }
 
     @Override
-    public void saveClientDataToNBT(CompoundTag tagCompound) {
-        saveItemHandlerCap(tagCompound);
+    public void saveClientDataToNBT(CompoundTag tag, HolderLookup.Provider provider) {
+        items.save(tag, "items", provider);
     }
 
-    public CompoundTag hasTab() {
+    public RealizedTabData hasTab() {
         ItemStack itemStack = items.getStackInSlot(SLOT_DIMENSION_TAB);
         if (itemStack.isEmpty()) {
             return null;
         }
 
-        return itemStack.getTag();
+        return itemStack.get(DimensionBuilderModule.ITEM_REALIZED_TAB_DATA);
     }
 
     public int getBuildPercentage() {
         if (level.isClientSide) {
             return clientBuildPercentage;
         } else {
-            CompoundTag tag = hasTab();
-            if (tag != null) {
-                int ticksLeft = tag.getInt("ticksLeft");
-                int tickCost = tag.getInt("tickCost");
+            RealizedTabData tab = hasTab();
+            if (tab != null) {
+                int ticksLeft = tab.ticksLeft();
+                int tickCost = tab.tickCost();
                 if (tickCost == 0) {
                     return 0;
                 }
@@ -385,4 +392,35 @@ public class DimensionBuilderTileEntity extends TickingTileEntity {
         }
     }
 
+    @Override
+    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
+        super.saveAdditional(tag, provider);
+        energyStorage.save(tag, "energy", provider);
+        items.save(tag, "items", provider);
+        infusableHandler.save(tag, "infusable");
+    }
+
+    @Override
+    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
+        super.loadAdditional(tag, provider);
+        energyStorage.load(tag, "energy", provider);
+        items.load(tag, "items", provider);
+        infusableHandler.load(tag, "infusable");
+    }
+
+    @Override
+    protected void applyImplicitComponents(DataComponentInput input) {
+        super.applyImplicitComponents(input);
+        energyStorage.applyImplicitComponents(input.get(mcjty.lib.setup.Registration.ITEM_ENERGY));
+        items.applyImplicitComponents(input.get(mcjty.lib.setup.Registration.ITEM_INVENTORY));
+        infusableHandler.applyImplicitComponents(input.get(mcjty.lib.setup.Registration.ITEM_INFUSABLE));
+    }
+
+    @Override
+    protected void collectImplicitComponents(DataComponentMap.Builder builder) {
+        super.collectImplicitComponents(builder);
+        energyStorage.collectImplicitComponents(builder);
+        items.collectImplicitComponents(builder);
+        infusableHandler.collectImplicitComponents(builder);
+    }
 }

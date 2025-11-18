@@ -4,6 +4,7 @@ import mcjty.lib.blockcommands.ISerializer;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletKey;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletType;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +25,7 @@ public class DimletClientHelper {
 
         public static class Serializer implements ISerializer<DimletWithInfo> {
             @Override
-            public Function<FriendlyByteBuf, DimletWithInfo> getDeserializer() {
+            public Function<RegistryFriendlyByteBuf, DimletWithInfo> getDeserializer() {
                 return buf -> {
                     short idx = buf.readShort();
                     DimletType type = DimletType.values()[idx];
@@ -36,7 +37,7 @@ public class DimletClientHelper {
             }
 
             @Override
-            public BiConsumer<FriendlyByteBuf, DimletWithInfo> getSerializer() {
+            public BiConsumer<RegistryFriendlyByteBuf, DimletWithInfo> getSerializer() {
                 return (buf, info) -> {
                     DimletKey dimlet1 = info.dimlet();
                     buf.writeShort(dimlet1.type().ordinal());

@@ -13,24 +13,29 @@ import mcjty.rftoolsdim.modules.dimensionbuilder.blocks.DimensionBuilderTileEnti
 import mcjty.rftoolsdim.modules.dimensionbuilder.client.ClientHelpers;
 import mcjty.rftoolsdim.modules.dimensionbuilder.client.DimensionBuilderRenderer;
 import mcjty.rftoolsdim.modules.dimensionbuilder.client.GuiDimensionBuilder;
+import mcjty.rftoolsdim.modules.dimensionbuilder.data.PhasedFieldGeneratorData;
+import mcjty.rftoolsdim.modules.dimensionbuilder.data.RealizedTabData;
 import mcjty.rftoolsdim.modules.dimensionbuilder.items.DimensionMonitorItem;
 import mcjty.rftoolsdim.modules.dimensionbuilder.items.EmptyDimensionTab;
 import mcjty.rftoolsdim.modules.dimensionbuilder.items.PhasedFieldGenerator;
 import mcjty.rftoolsdim.modules.dimensionbuilder.items.RealizedDimensionTab;
 import mcjty.rftoolsdim.setup.Config;
 import mcjty.rftoolsdim.setup.Registration;
+import net.minecraft.core.component.DataComponentType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
-import net.neoforged.neoforge.client.model.generators.ItemModelBuilder;
+import net.minecraft.core.HolderLookup;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
+import net.neoforged.neoforge.client.model.generators.ItemModelBuilder;
+import net.neoforged.neoforge.attachment.AttachmentType;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
 
 import java.util.function.Supplier;
@@ -54,6 +59,16 @@ public class DimensionBuilderModule implements IModule {
 
     public static final DeferredItem<DimensionMonitorItem> DIMENSION_MONITOR = ITEMS.register("dimension_monitor", tab(DimensionMonitorItem::new));
     public static final DeferredItem<PhasedFieldGenerator> PHASED_FIELD_GENERATOR = ITEMS.register("phased_field_generator", tab(PhasedFieldGenerator::new));
+
+    // Data components for items in this module
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<RealizedTabData>> ITEM_REALIZED_TAB_DATA = COMPONENTS.registerComponentType(
+            "realized_tab_data",
+            builder -> builder.persistent(RealizedTabData.CODEC).networkSynchronized(RealizedTabData.STREAM_CODEC)
+    );
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<PhasedFieldGeneratorData>> ITEM_PHASED_FIELD_GENERATOR_DATA = COMPONENTS.registerComponentType(
+            "phased_field_generator_data",
+            builder -> builder.persistent(PhasedFieldGeneratorData.CODEC).networkSynchronized(PhasedFieldGeneratorData.STREAM_CODEC)
+    );
 
     public DimensionBuilderModule(IEventBus bus) {
         bus.addListener(this::registerMenuScreens);
@@ -83,12 +98,12 @@ public class DimensionBuilderModule implements IModule {
     }
 
     @Override
-    public void initDatagen(DataGen dataGen) {
+    public void initDatagen(DataGen dataGen, HolderLookup.Provider provider) {
         dataGen.add(
                 Dob.blockBuilder(DIMENSION_BUILDER)
                         .ironPickaxeTags()
                         .parentedItem("block/dimension_builder")
-                        .standardLoot(TYPE_DIMENSION_BUILDER)
+                        .standardLoot() // @todo 1.21
                         .blockState(p -> p.orientedBlock(DIMENSION_BUILDER.block().get(), p.frontBasedModel("dimension_builder", p.modLoc("block/dimensionbuilder"))))
                         .shaped(builder -> builder
                                         .define('F', mcjty.rftoolsbase.modules.various.VariousModule.MACHINE_FRAME.get())

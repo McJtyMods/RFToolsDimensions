@@ -18,6 +18,7 @@ import mcjty.rftoolsdim.modules.essences.EssencesModule;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -78,7 +79,7 @@ public class BlockAbsorberTileEntity extends TickingTileEntity {
     }
 
     private static String getBlockName(ItemStack stack) {
-        String block = NBTTools.getInfoNBT(stack, CompoundTag::getString, "block", null);
+        String block = ""; // @todo 1.21 data NBTTools.getInfoNBT(stack, CompoundTag::getString, "block", null);
         if (block == null) {
             return "<Not Set>";
         } else {
@@ -92,11 +93,11 @@ public class BlockAbsorberTileEntity extends TickingTileEntity {
     }
 
     public static String getBlock(ItemStack stack) {
-        return NBTTools.getInfoNBT(stack, CompoundTag::getString, "block", null);
+        return ""; // @todo 1.21 data NBTTools.getInfoNBT(stack, CompoundTag::getString, "block", null);
     }
 
     private static String getProgressName(ItemStack stack) {
-        int absorbing = NBTTools.getInfoNBT(stack, CompoundTag::getInt, "absorbing", -1);
+        int absorbing = 0; // @todo 1.21 data NBTTools.getInfoNBT(stack, CompoundTag::getInt, "absorbing", -1);
         if (absorbing == -1) {
             return "n.a.";
         } else {
@@ -106,7 +107,7 @@ public class BlockAbsorberTileEntity extends TickingTileEntity {
     }
 
     public static int getProgress(ItemStack stack) {
-        int absorbing = NBTTools.getInfoNBT(stack, CompoundTag::getInt, "absorbing", -1);
+        int absorbing = 0; // @todo 1.21 data NBTTools.getInfoNBT(stack, CompoundTag::getInt, "absorbing", -1);
         if (absorbing == -1) {
             return -1;
         } else {
@@ -229,8 +230,8 @@ public class BlockAbsorberTileEntity extends TickingTileEntity {
     }
 
     @Override
-    public void load(CompoundTag tagCompound) {
-        super.load(tagCompound);
+    public void loadAdditional(CompoundTag tagCompound, HolderLookup.Provider provider) {
+        super.loadAdditional(tagCompound, provider);
         int[] x = tagCompound.getIntArray("toscanx");
         int[] y = tagCompound.getIntArray("toscany");
         int[] z = tagCompound.getIntArray("toscanz");
@@ -258,8 +259,8 @@ public class BlockAbsorberTileEntity extends TickingTileEntity {
 */
 
     @Override
-    public void saveAdditional(@Nonnull CompoundTag tagCompound) {
-        super.saveAdditional(tagCompound);
+    public void saveAdditional(@Nonnull CompoundTag tagCompound, HolderLookup.Provider provider) {
+        super.saveAdditional(tagCompound, provider);
         int[] x = new int[toscan.size()];
         int[] y = new int[toscan.size()];
         int[] z = new int[toscan.size()];

@@ -137,7 +137,7 @@ public class DimletModule implements IModule {
                                 " p ", "psp", " p ")
                         .loot(p -> {
                             LootPool.Builder builder = LootPool.lootPool()
-                                    .name(DimensionRegistry.HUT_LOOT.getPath())
+                                    .name(DimensionRegistry.HUT_LOOT.location().getPath())
                                     .setRolls(UniformGenerator.between(1, 5))
                                     .add(DimletLootEntry.builder(DimletRarity.COMMON)
                                             .setWeight(14)
@@ -172,7 +172,7 @@ public class DimletModule implements IModule {
                                             .apply(SetItemCountFunction
                                                     .setCount(UniformGenerator.between(0, 1))))
                                     ;
-                            p.addChestLootTable(DimensionRegistry.HUT_LOOT, LootTable.lootTable().withPool(builder));
+                            p.addChestLootTable(DimensionRegistry.HUT_LOOT.location(), LootTable.lootTable().withPool(builder));
 
                         }),
                 Dob.itemBuilder(EMPTY_TERRAIN_DIMLET)
@@ -285,13 +285,13 @@ public class DimletModule implements IModule {
                                 .patternLine("CEC")
                                 .patternLine(" C ")
                                 .dimletKey(new DimletKey(DimletType.DIGIT, "0"))
-                                .addCriterion("empty_dimlet", has(DimletModule.EMPTY_DIMLET.get()).triggerInstance()))
+                                .addCriterion("empty_dimlet", has(DimletModule.EMPTY_DIMLET.get())))
                         .recipe("digit0", () -> DimletCycleRecipeBuilder.shapedRecipe(DimletModule.DIGIT_DIMLET.get())
                                 .define('C', Ingredient.of(DimletTools.getDimletStack(new DimletKey(DimletType.DIGIT, "1"))))
                                 .patternLine("C")
                                 .input("9")
                                 .output("0")
-                                .addCriterion("empty_dimlet", has(DimletModule.EMPTY_DIMLET.get()).triggerInstance())),
+                                .addCriterion("empty_dimlet", has(DimletModule.EMPTY_DIMLET.get()))),
                 Dob.itemBuilder(TAG_DIMLET)
                         .generatedItem("item/dimlets/tag_dimlet"),
                 Dob.itemBuilder(SKY_DIMLET)
@@ -380,7 +380,7 @@ public class DimletModule implements IModule {
                                     .patternLine("C")
                                     .input(String.valueOf(finalI - 1))
                                     .output(String.valueOf(finalI))
-                                    .addCriterion("empty_dimlet", has(DimletModule.EMPTY_DIMLET.get()).triggerInstance()))
+                                    .addCriterion("empty_dimlet", has(DimletModule.EMPTY_DIMLET.get())))
             );
         }
 

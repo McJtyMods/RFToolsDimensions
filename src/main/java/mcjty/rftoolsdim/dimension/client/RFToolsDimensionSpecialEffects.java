@@ -1,6 +1,5 @@
 package mcjty.rftoolsdim.dimension.client;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.dimension.additional.SkyDimletType;
 import mcjty.rftoolsdim.dimension.data.ClientDimensionData;
@@ -40,16 +39,16 @@ public class RFToolsDimensionSpecialEffects extends DimensionSpecialEffects {
     }
 
     @Override
-    public boolean renderSky(ClientLevel level, int ticks, float partialTick, PoseStack poseStack, Camera camera, Matrix4f projectionMatrix, boolean isFoggy, Runnable setupFog) {
+    public boolean renderSky(ClientLevel level, int ticks, float partialTick, Matrix4f modelViewMatrix, Camera camera, Matrix4f projectionMatrix, boolean isFoggy, Runnable setupFog) {
         long skyMask = getSkyMask();
         if (SkyDimletType.BLACK.match(skyMask)) {
-            return blackSky.renderSky(level, ticks, partialTick, poseStack, camera, projectionMatrix, isFoggy, setupFog);
+            return blackSky.renderSky();
         } else if (SkyDimletType.INFERNAL.match(skyMask)) {
-            return infernalSky.renderSky(level, ticks, partialTick, poseStack, camera, projectionMatrix, isFoggy, setupFog);
+            return infernalSky.renderSky(modelViewMatrix);
         } else if (SkyDimletType.STARS.match(skyMask)) {
-            return starsSky.renderSky(level, ticks, partialTick, poseStack, camera, projectionMatrix, isFoggy, setupFog);
+            return starsSky.renderSky(modelViewMatrix);
         } else if (SkyDimletType.NEBULA.match(skyMask)) {
-            return nebulaSky.renderSky(level, ticks, partialTick, poseStack, camera, projectionMatrix, isFoggy, setupFog);
+            return nebulaSky.renderSky(modelViewMatrix);
         } else {
             return false;
         }

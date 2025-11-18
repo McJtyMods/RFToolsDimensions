@@ -160,7 +160,7 @@ public class DimensionCreator {
         return data == null;
     }
 
-    public ServerLevel createWorld(Level world, String name, long seed,
+    public ServerLevel createWorld(ServerLevel world, String name, long seed,
                                    DimensionDescriptor descriptor, DimensionDescriptor randomizedDescriptor,
                                    UUID owner) {
         ResourceLocation id = ResourceLocation.fromNamespaceAndPath(RFToolsDim.MODID, name);
@@ -196,7 +196,7 @@ public class DimensionCreator {
         ResourceKey<Level> key = LevelTools.getId(id);
 
         if (settings.getCompiledDescriptor().getAttributeTypes().contains(AttributeType.CITIES) && LostCityCompat.hasLostCities()) {
-            LostCityCompat.registerDimension(key, LostCityCompat.getProfile(terrainType));
+            LostCityCompat.registerDimension(world, key, LostCityCompat.getProfile(terrainType));
         }
 
         RegistryAccess registryAccess = world.getServer().registryAccess();
@@ -309,7 +309,7 @@ public class DimensionCreator {
     }
 
     // Returns null on success, otherwise an error string
-    public String createDimension(Level world, String name, long seed, String filename, UUID owner) {
+    public String createDimension(ServerLevel world, String name, long seed, String filename, UUID owner) {
         ResourceKey<Level> id = LevelTools.getId(ResourceLocation.fromNamespaceAndPath(RFToolsDim.MODID, name));
         if (world.getServer().getLevel(id) != null) {
             return "Dimension already exists!";

@@ -41,20 +41,22 @@ public class LostKnowledgeItem extends Item implements ITooltipSettings {
     private final DimletRarity rarity;
 
     private String getReasonString(ItemStack stack) {
-        CompoundTag tag = stack.getTag();
-        if (tag != null && tag.contains("reason")) {
-            return tag.getString("reason");
-        }
+        // @todfo 1.21 data
+//        CompoundTag tag = stack.getTag();
+//        if (tag != null && tag.contains("reason")) {
+//            return tag.getString("reason");
+//        }
         return null;
     }
 
     private String getPatternString(ItemStack stack) {
-        CompoundTag tag = stack.getTag();
-        if (tag != null && tag.contains("pattern")) {
-            String pattern = tag.getString("pattern");
-            KnowledgeKey kkey = KnowledgeKey.create(pattern);
-            return kkey.rarity().name().toLowerCase() + " " + kkey.type().name().toLowerCase();
-        }
+        // @todo 1.21 data
+//        CompoundTag tag = stack.getTag();
+//        if (tag != null && tag.contains("pattern")) {
+//            String pattern = tag.getString("pattern");
+//            KnowledgeKey kkey = KnowledgeKey.create(pattern);
+//            return kkey.rarity().name().toLowerCase() + " " + kkey.type().name().toLowerCase();
+//        }
         return "<Unknown>";
     }
 
@@ -69,11 +71,12 @@ public class LostKnowledgeItem extends Item implements ITooltipSettings {
 
     @Nullable
     public static KnowledgeKey getKnowledgeKey(ItemStack stack) {
-        CompoundTag tag = stack.getTag();
-        if (tag != null && tag.contains("pattern")) {
-            String pattern = tag.getString("pattern");
-            return KnowledgeKey.create(pattern);
-        }
+        // @todo 1.21 data
+//        CompoundTag tag = stack.getTag();
+//        if (tag != null && tag.contains("pattern")) {
+//            String pattern = tag.getString("pattern");
+//            return KnowledgeKey.create(pattern);
+//        }
         return null;
     }
 
@@ -117,11 +120,12 @@ public class LostKnowledgeItem extends Item implements ITooltipSettings {
     private static ItemStack createLostKnowledgeStack(Level world, DimletRarity rarity, KnowledgeKey kkey) {
         LostKnowledgeItem item = getKnowledgeItem(rarity);
         ItemStack result = new ItemStack(item);
-        result.getOrCreateTag().putString("pattern", kkey.serialize());
-        String reason = KnowledgeManager.get().getReason(world, kkey);
-        if (reason != null) {
-            result.getTag().putString("reason", reason);
-        }
+        // @todo 1.21 data
+//        result.getOrCreateTag().putString("pattern", kkey.serialize());
+//        String reason = KnowledgeManager.get().getReason(world, kkey);
+//        if (reason != null) {
+//            result.getTag().putString("reason", reason);
+//        }
         return result;
     }
 

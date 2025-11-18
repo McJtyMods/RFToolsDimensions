@@ -11,6 +11,7 @@ import mcjty.rftoolsdim.modules.dimensioneditor.blocks.DimensionEditorTileEntity
 import mcjty.rftoolsdim.modules.dimensioneditor.client.GuiDimensionEditor;
 import mcjty.rftoolsdim.setup.Config;
 import mcjty.rftoolsdim.setup.Registration;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -60,12 +61,12 @@ public class DimensionEditorModule implements IModule {
     }
 
     @Override
-    public void initDatagen(DataGen dataGen) {
+    public void initDatagen(DataGen dataGen, HolderLookup.Provider provider) {
         dataGen.add(
                 Dob.blockBuilder(DIMENSION_EDITOR)
                         .ironPickaxeTags()
                         .parentedItem( "block/dimensioneditor")
-                        .standardLoot(TYPE_DIMENSION_EDITOR)
+//                        .standardLoot(TYPE_DIMENSION_EDITOR) @todo 1.21
                         .blockState(DataGenHelper::registerDimensionEditor)
                         .shaped(builder -> builder
                                         .define('F', mcjty.rftoolsbase.modules.various.VariousModule.MACHINE_FRAME.get())

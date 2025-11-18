@@ -134,7 +134,7 @@ public class RFToolsChunkGenerator extends NoiseBasedChunkGenerator {
 
     private void checkForCities(WorldGenRegion region, TerrainType terrainType) {
         if (LostCityCompat.hasLostCities() && dimensionSettings.getCompiledDescriptor().getAttributeTypes().contains(AttributeType.CITIES)) {
-            LostCityCompat.registerDimension(region.getLevel().dimension(), LostCityCompat.getProfile(terrainType));
+            LostCityCompat.registerDimension(region.getLevel(), region.getLevel().dimension(), LostCityCompat.getProfile(terrainType));
         }
     }
 

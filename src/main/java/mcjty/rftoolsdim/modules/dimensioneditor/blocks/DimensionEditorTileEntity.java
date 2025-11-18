@@ -27,7 +27,6 @@ import mcjty.rftoolsdim.modules.dimensioneditor.DimensionEditorConfig;
 import mcjty.rftoolsdim.modules.dimensioneditor.DimensionEditorModule;
 import mcjty.rftoolsdim.modules.dimlets.data.*;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.MenuProvider;
@@ -39,6 +38,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.core.component.DataComponentMap;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -46,6 +48,7 @@ import net.neoforged.neoforge.common.util.Lazy;
 
 import javax.annotation.Nonnull;
 import java.util.function.Function;
+import mcjty.lib.setup.Registration;
 
 import static mcjty.lib.api.container.DefaultContainerProvider.container;
 import static mcjty.lib.builder.TooltipBuilder.*;
@@ -86,7 +89,7 @@ public class DimensionEditorTileEntity extends TickingTileEntity {
             .energyHandler(() -> be.energyStorage)
             .setupSync(be);
 
-    private final IInfusable infusable = new DefaultInfusable(DimensionEditorTileEntity.this);
+    private final DefaultInfusable infusable = new DefaultInfusable(DimensionEditorTileEntity.this);
     @Cap(type = CapType.INFUSABLE)
     private static final Function<DimensionEditorTileEntity, IInfusable> INFUSABLE_CAP = be -> be.infusable;
 
@@ -100,6 +103,38 @@ public class DimensionEditorTileEntity extends TickingTileEntity {
 
     public DimensionEditorTileEntity(BlockPos pos, BlockState state) {
         super(DimensionEditorModule.TYPE_DIMENSION_EDITOR.get(), pos, state);
+    }
+
+    @Override
+    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
+        super.saveAdditional(tag, provider);
+        energyStorage.save(tag, "energy", provider);
+        items.save(tag, "items", provider);
+        infusable.save(tag, "infusable");
+    }
+
+    @Override
+    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
+        super.loadAdditional(tag, provider);
+        energyStorage.load(tag, "energy", provider);
+        items.load(tag, "items", provider);
+        infusable.load(tag, "infusable");
+    }
+
+    @Override
+    protected void applyImplicitComponents(DataComponentInput input) {
+        super.applyImplicitComponents(input);
+        energyStorage.applyImplicitComponents(input.get(Registration.ITEM_ENERGY));
+        items.applyImplicitComponents(input.get(Registration.ITEM_INVENTORY));
+        infusable.applyImplicitComponents(input.get(Registration.ITEM_INFUSABLE));
+    }
+
+    @Override
+    protected void collectImplicitComponents(DataComponentMap.Builder builder) {
+        super.collectImplicitComponents(builder);
+        energyStorage.collectImplicitComponents(builder);
+        items.collectImplicitComponents(builder);
+        infusable.collectImplicitComponents(builder);
     }
 
     public static BaseBlock createBlock() {
@@ -160,7 +195,7 @@ public class DimensionEditorTileEntity extends TickingTileEntity {
 
         if (ticksLeft == -1) {
             // We were not injecting. Start now.
-            String dimension = dimensionItemStack.getOrCreateTag().getString("dimension");
+            String dimension = ""; // @todo 1.21 data dimensionItemStack.getOrCreateTag().getString("dimension");
             ResourceLocation id = ResourceLocation.parse(dimension);
             DimensionData data = PersistantDimensionManager.get(level).getData(id);
 
@@ -196,7 +231,7 @@ public class DimensionEditorTileEntity extends TickingTileEntity {
 
                 ticksLeft--;
                 if (ticksLeft <= 0) {
-                    String dimension = dimensionItemStack.getOrCreateTag().getString("dimension");
+                    String dimension = ""; // @todo 1.21 data dimensionItemStack.getOrCreateTag().getString("dimension");
                     ResourceLocation id = ResourceLocation.parse(dimension);
 
                     if (isMatterReceiver(injectableItemStack)) {
@@ -216,8 +251,8 @@ public class DimensionEditorTileEntity extends TickingTileEntity {
                                 dimWorld.setBlock(pos, state, Block.UPDATE_NEIGHBORS);
                                 Block block = dimWorld.getBlockState(pos).getBlock();
                                 // @@@@@@@@@@@@@@ check if right?
-                                String name = NBTTools.getInfoNBT(injectableItemStack, CompoundTag::getString, "tpName", "");
-                                long energy = NBTTools.getBlockEntityNBT(injectableItemStack, CompoundTag::getLong, "Energy", 0L);
+                                String name = ""; // @todo 1.21 data NBTTools.getInfoNBT(injectableItemStack, CompoundTag::getString, "tpName", "");
+                                long energy = 0; // @todo 1.21 data NBTTools.getBlockEntityNBT(injectableItemStack, CompoundTag::getLong, "Energy", 0L);
                                 RFToolsUtilityCompat.createTeleporter(dimWorld, pos, name, (int) energy);
                                 block.setPlacedBy(dimWorld, pos, state, null, injectableItemStack);
 //                            block.onBlockActivated(dimWorld, pos, state, FakePlayerFactory.getMinecraft((WorldServer) dimWorld), EnumHand.MAIN_HAND, EnumFacing.DOWN, 0.0F, 0.0F, 0.0F);
@@ -275,9 +310,10 @@ public class DimensionEditorTileEntity extends TickingTileEntity {
             DynamicDimensionManager.markDimensionForUnregistration(level.getServer(), LevelTools.getId(id));
             Broadcaster.broadcast(level, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), "Removed dimension '" + id.toString() + "'!", 10);
 
-            dimensionTab.getTag().remove("dimension");
-            int tickCost = dimensionTab.getTag().getInt("tickCost");
-            dimensionTab.getTag().putInt("ticksLeft", tickCost);
+            // @todo 1.21 data
+//            dimensionTab.getTag().remove("dimension");
+//            int tickCost = dimensionTab.getTag().getInt("tickCost");
+//            dimensionTab.getTag().putInt("ticksLeft", tickCost);
         }
     }
 
@@ -350,7 +386,7 @@ public class DimensionEditorTileEntity extends TickingTileEntity {
             return ItemStack.EMPTY;
         }
 
-        String dimension = dimensionStack.getOrCreateTag().getString("dimension");
+        String dimension = ""; // @todo 1.21 data dimensionStack.getOrCreateTag().getString("dimension");
         ResourceLocation id = ResourceLocation.parse(dimension);
         DimensionData data = PersistantDimensionManager.get(level).getData(id);
 
@@ -381,7 +417,7 @@ public class DimensionEditorTileEntity extends TickingTileEntity {
             return ItemStack.EMPTY;
         }
 
-        String dimension = itemStack.getOrCreateTag().getString("dimension");
+        String dimension = ""; // @todo 1.21 data itemStack.getOrCreateTag().getString("dimension");
         ResourceLocation id = ResourceLocation.parse(dimension);
         DimensionData data = PersistantDimensionManager.get(level).getData(id);
         if (data == null) {

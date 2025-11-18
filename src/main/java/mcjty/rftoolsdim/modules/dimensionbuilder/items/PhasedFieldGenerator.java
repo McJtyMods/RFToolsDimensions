@@ -35,7 +35,9 @@ public class PhasedFieldGenerator extends Item implements IEnergyItem, ITooltipS
                     TooltipBuilder.parameter("power", this::getEnergyString)));
 
     private String getEnergyString(ItemStack stack) {
-        return Integer.toString(stack.hasTag() ? stack.getTag().getInt("Energy") : 0);
+        // @todo 1.21 data
+//        return Integer.toString(stack.hasTag() ? stack.getTag().getInt("Energy") : 0);
+        return "";
     }
 
     public PhasedFieldGenerator() {
@@ -50,10 +52,11 @@ public class PhasedFieldGenerator extends Item implements IEnergyItem, ITooltipS
         return oldStack.getItem() != newStack.getItem();
     }
 
-    @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
-        return new ItemCapabilityProvider(stack, this);
-    }
+    // @todo 1.21
+//    @Override
+//    public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
+//        return new ItemCapabilityProvider(stack, this);
+//    }
 
 
     @Override
@@ -64,36 +67,42 @@ public class PhasedFieldGenerator extends Item implements IEnergyItem, ITooltipS
 
     @Override
     public long receiveEnergyL(ItemStack container, long maxReceive, boolean simulate) {
-        CompoundTag tag = container.getOrCreateTag();
-        long energy = tag.getLong("Energy");
-        long energyReceived = Math.min(getMaxEnergyStoredL(container) - energy, Math.min(DimensionBuilderConfig.PHASEDFIELD_RECEIVEPERTICK.get(), maxReceive));
-
-        if (!simulate) {
-            energy += energyReceived;
-            tag.putLong("Energy", energy);
-        }
-        return energyReceived;
+        // @todo 1.21 data
+//        CompoundTag tag = container.getOrCreateTag();
+//        long energy = tag.getLong("Energy");
+//        long energyReceived = Math.min(getMaxEnergyStoredL(container) - energy, Math.min(DimensionBuilderConfig.PHASEDFIELD_RECEIVEPERTICK.get(), maxReceive));
+//
+//        if (!simulate) {
+//            energy += energyReceived;
+//            tag.putLong("Energy", energy);
+//        }
+//        return energyReceived;
+        return 0;
     }
 
     @Override
     public long extractEnergyL(ItemStack container, long maxExtract, boolean simulate) {
-        CompoundTag tag = container.getOrCreateTag();
-        long energy = tag.getLong("Energy");
-        long energyExtracted = Math.min(energy, Math.min(DimensionBuilderConfig.PHASEDFIELD_CONSUMEPERTICK.get() * PowerHandler.MAXTICKS, maxExtract));
-
-        if (!simulate) {
-            energy -= energyExtracted;
-            tag.putLong("Energy", energy);
-        }
-        return energyExtracted;
+        // @todo 1.21 data
+//        CompoundTag tag = container.getOrCreateTag();
+//        long energy = tag.getLong("Energy");
+//        long energyExtracted = Math.min(energy, Math.min(DimensionBuilderConfig.PHASEDFIELD_CONSUMEPERTICK.get() * PowerHandler.MAXTICKS, maxExtract));
+//
+//        if (!simulate) {
+//            energy -= energyExtracted;
+//            tag.putLong("Energy", energy);
+//        }
+//        return energyExtracted;
+        return 0;
     }
 
     @Override
     public long getEnergyStoredL(ItemStack container) {
-        if (container.getTag() == null || !container.getTag().contains("Energy")) {
-            return 0;
-        }
-        return container.getTag().getLong("Energy");
+        // @todo 1.21
+//        if (container.getTag() == null || !container.getTag().contains("Energy")) {
+//            return 0;
+//        }
+//        return container.getTag().getLong("Energy");
+        return 0;
     }
 
     @Override

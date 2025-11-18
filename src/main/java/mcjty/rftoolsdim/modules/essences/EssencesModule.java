@@ -11,6 +11,7 @@ import mcjty.rftoolsdim.modules.essences.blocks.FluidAbsorberTileEntity;
 import mcjty.rftoolsdim.modules.essences.blocks.StructureAbsorberTileEntity;
 import mcjty.rftoolsdim.setup.Config;
 import mcjty.rftoolsdim.setup.Registration;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -75,12 +76,12 @@ public class EssencesModule implements IModule {
     }
 
     @Override
-    public void initDatagen(DataGen dataGen) {
+    public void initDatagen(DataGen dataGen, HolderLookup.Provider provider) {
         dataGen.add(
                 Dob.blockBuilder(BLOCK_ABSORBER)
                         .ironPickaxeTags()
                         .parentedItem("block/block_absorber")
-                        .standardLoot(TYPE_BLOCK_ABSORBER)
+//                        .standardLoot(TYPE_BLOCK_ABSORBER) @todo 1.21
                         .blockState(p -> p.singleTextureBlockC(BLOCK_ABSORBER.block().get(), BLOCK_FOLDER + "/block_absorber", "block/blockabsorber", builder -> builder.renderType("cutout")))
                         .shaped(builder -> builder
                                         .define('s', mcjty.rftoolsbase.modules.various.VariousModule.DIMENSIONALSHARD.get())
@@ -91,7 +92,7 @@ public class EssencesModule implements IModule {
                 Dob.blockBuilder(FLUID_ABSORBER)
                         .ironPickaxeTags()
                         .parentedItem("block/fluid_absorber")
-                        .standardLoot(TYPE_FLUID_ABSORBER)
+//                        .standardLoot(TYPE_FLUID_ABSORBER)    @todo 1.21
                         .blockState(p -> p.singleTextureBlockC(FLUID_ABSORBER.block().get(), BLOCK_FOLDER + "/fluid_absorber", "block/fluidabsorber", builder -> builder.renderType("cutout")))
                         .shaped(builder -> builder
                                         .define('s', mcjty.rftoolsbase.modules.various.VariousModule.DIMENSIONALSHARD.get())
@@ -102,7 +103,7 @@ public class EssencesModule implements IModule {
                 Dob.blockBuilder(BIOME_ABSORBER)
                         .ironPickaxeTags()
                         .parentedItem("block/biome_absorber")
-                        .standardLoot(TYPE_BIOME_ABSORBER)
+//                        .standardLoot(TYPE_BIOME_ABSORBER)    @todo 1.21
                         .blockState(p -> p.singleTextureBlockC(BIOME_ABSORBER.block().get(), BLOCK_FOLDER + "/biome_absorber", "block/biomeabsorber", builder -> builder.renderType("cutout")))
                         .shaped(builder -> builder
                                         .define('s', mcjty.rftoolsbase.modules.various.VariousModule.DIMENSIONALSHARD.get())
@@ -113,7 +114,7 @@ public class EssencesModule implements IModule {
                 Dob.blockBuilder(STRUCTURE_ABSORBER)
                         .ironPickaxeTags()
                         .parentedItem("block/structure_absorber")
-                        .standardLoot(TYPE_STRUCTURE_ABSORBER)
+//                        .standardLoot(TYPE_STRUCTURE_ABSORBER)    @todo 1.21
                         .blockState(p -> p.singleTextureBlockC(STRUCTURE_ABSORBER.block().get(), BLOCK_FOLDER + "/structure_absorber", "block/structureabsorber", builder -> builder.renderType("cutout")))
                         .shaped(builder -> builder
                                         .define('s', mcjty.rftoolsbase.modules.various.VariousModule.DIMENSIONALSHARD.get())

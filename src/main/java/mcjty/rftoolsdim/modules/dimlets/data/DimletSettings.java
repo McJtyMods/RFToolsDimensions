@@ -1,10 +1,12 @@
 package mcjty.rftoolsdim.modules.dimlets.data;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
+import mcjty.lib.network.NetworkTools;
 import mcjty.lib.varia.JSonTools;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.network.FriendlyByteBuf;
 
 public class DimletSettings {
 
@@ -29,24 +31,24 @@ public class DimletSettings {
         }
     }
 
-    public DimletSettings(FriendlyByteBuf buf) {
+    public DimletSettings(RegistryFriendlyByteBuf buf) {
         rarity = DimletRarity.values()[buf.readInt()];
         createCost = buf.readInt();
         maintainCost = buf.readInt();
         tickCost = buf.readInt();
         worldgen = buf.readBoolean();
         dimlet = buf.readBoolean();
-        essence = buf.readItem();
+        essence = NetworkTools.readItemStack(buf);
     }
 
-    public void toBytes(FriendlyByteBuf buf) {
+    public void toBytes(RegistryFriendlyByteBuf buf) {
         buf.writeInt(rarity.ordinal());
         buf.writeInt(createCost);
         buf.writeInt(maintainCost);
         buf.writeInt(tickCost);
         buf.writeBoolean(worldgen);
         buf.writeBoolean(dimlet);
-        buf.writeItemStack(essence, false);
+        NetworkTools.writeItemStack(buf, essence);
     }
 
     public void buildElement(JsonObject jsonObject) {
@@ -59,7 +61,7 @@ public class DimletSettings {
         jsonObject.add("worldgen", new JsonPrimitive(worldgen));
         jsonObject.add("dimlet", new JsonPrimitive(dimlet));
         if (!essence.isEmpty()) {
-            JsonObject json = JSonTools.itemStackToJson(essence);
+            JsonElement json = JSonTools.itemStackToJson(essence);
             jsonObject.add("essence", json);
         }
 

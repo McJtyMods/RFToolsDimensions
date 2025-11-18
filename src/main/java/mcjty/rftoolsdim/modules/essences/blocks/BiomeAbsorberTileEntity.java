@@ -55,7 +55,7 @@ public class BiomeAbsorberTileEntity extends TickingTileEntity {
     }
 
     private static String getBiomeName(ItemStack stack) {
-        String biome = NBTTools.getInfoNBT(stack, CompoundTag::getString, "biome", null);
+        String biome = ""; // @todo 1.21 data NBTTools.getInfoNBT(stack, CompoundTag::getString, "biome", null);
         if (biome == null) {
             return "<Not Set>";
         } else {
@@ -66,11 +66,13 @@ public class BiomeAbsorberTileEntity extends TickingTileEntity {
     }
 
     public static String getBiome(ItemStack stack) {
-        return NBTTools.getInfoNBT(stack, CompoundTag::getString, "biome", null);
+        // @todo 1.21 data
+//        return NBTTools.getInfoNBT(stack, CompoundTag::getString, "biome", null);
+        return "";
     }
 
     private static String getProgressName(ItemStack stack) {
-        int absorbing = NBTTools.getInfoNBT(stack, CompoundTag::getInt, "absorbing", -1);
+        int absorbing = 0; // @todo 1.21 data NBTTools.getInfoNBT(stack, CompoundTag::getInt, "absorbing", -1);
         if (absorbing == -1) {
             return "n.a.";
         } else {
@@ -80,7 +82,7 @@ public class BiomeAbsorberTileEntity extends TickingTileEntity {
     }
 
     public static int getProgress(ItemStack stack) {
-        int absorbing = NBTTools.getInfoNBT(stack, CompoundTag::getInt, "absorbing", -1);
+        int absorbing = 0; // @todo 1.21 data NBTTools.getInfoNBT(stack, CompoundTag::getInt, "absorbing", -1);
         if (absorbing == -1) {
             return -1;
         } else {

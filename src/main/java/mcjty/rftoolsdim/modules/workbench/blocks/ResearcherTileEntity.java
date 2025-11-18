@@ -30,6 +30,7 @@ import mcjty.rftoolsdim.modules.knowledge.items.LostKnowledgeItem;
 import mcjty.rftoolsdim.modules.workbench.WorkbenchConfig;
 import mcjty.rftoolsdim.modules.workbench.WorkbenchModule;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.item.Item;
@@ -277,26 +278,26 @@ public class ResearcherTileEntity extends TickingTileEntity {
     }
 
     @Override
-    public void load(CompoundTag tagCompound) {
-        super.load(tagCompound);
+    public void loadAdditional(CompoundTag tagCompound, HolderLookup.Provider provider) {
+        super.loadAdditional(tagCompound, provider);
         progress = tagCompound.getInt("progress");
     }
 
     @Override
-    public void saveAdditional(@Nonnull CompoundTag tagCompound) {
+    public void saveAdditional(@Nonnull CompoundTag tagCompound, HolderLookup.Provider provider) {
         tagCompound.putInt("progress", progress);
-        super.saveAdditional(tagCompound);
+        super.saveAdditional(tagCompound, provider);
     }
 
     @Override
-    public void saveClientDataToNBT(CompoundTag tagCompound) {
+    public void saveClientDataToNBT(CompoundTag tag, HolderLookup.Provider provider) {
         // Item is required at client side because it is rendered in world
-        saveItemHandlerCap(tagCompound);
+        items.save(tag, "items", provider);
     }
 
     @Override
-    public void loadClientDataFromNBT(CompoundTag tagCompound) {
-        loadItemHandlerCap(tagCompound);
+    public void loadClientDataFromNBT(CompoundTag tag, HolderLookup.Provider provider) {
+        items.load(tag, "items", provider);
     }
 
 }

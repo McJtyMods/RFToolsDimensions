@@ -17,6 +17,7 @@ import mcjty.rftoolsdim.modules.workbench.client.GuiWorkbench;
 import mcjty.rftoolsdim.modules.workbench.client.ResearcherRenderer;
 import mcjty.rftoolsdim.setup.Config;
 import mcjty.rftoolsdim.setup.Registration;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
@@ -91,12 +92,12 @@ public class WorkbenchModule implements IModule {
     }
 
     @Override
-    public void initDatagen(DataGen dataGen) {
+    public void initDatagen(DataGen dataGen, HolderLookup.Provider provider) {
         dataGen.add(
                 Dob.blockBuilder(WORKBENCH)
                         .ironPickaxeTags()
                         .parentedItem("block/dimlet_workbench")
-                        .standardLoot(TYPE_WORKBENCH)
+//                        .standardLoot(TYPE_WORKBENCH) @todo 1.21
                         .blockState(p -> p.orientedBlock(WORKBENCH.block().get(), p.topBasedModel("dimlet_workbench", p.modLoc("block/dimletworkbenchtop"))))
                         .shaped(builder -> builder
                                         .define('F', mcjty.rftoolsbase.modules.various.VariousModule.MACHINE_FRAME.get())
@@ -107,7 +108,7 @@ public class WorkbenchModule implements IModule {
                 Dob.blockBuilder(HOLDER)
                         .ironPickaxeTags()
                         .parentedItem("block/knowledge_holder")
-                        .standardLoot(TYPE_HOLDER)
+//                        .standardLoot(TYPE_HOLDER)    @todo 1.21
                         .blockState(p -> p.orientedBlock(HOLDER.block().get(), p.frontBasedModel("knowledge_holder", p.modLoc("block/knowledge_holder"))))
                         .shaped(builder -> builder
                                         .define('F', mcjty.rftoolsbase.modules.various.VariousModule.MACHINE_FRAME.get())
@@ -119,7 +120,7 @@ public class WorkbenchModule implements IModule {
                 Dob.blockBuilder(RESEARCHER)
                         .ironPickaxeTags()
                         .parentedItem("block/researcher")
-                        .standardLoot(TYPE_RESEARCHER)
+//                        .standardLoot(TYPE_RESEARCHER)    @todo 1.21
                         .blockState(p -> p.simpleBlock(WorkbenchModule.RESEARCHER.block().get(), p.models().slab("researcher",
                                 p.modLoc("block/researcher_side"),
                                 ResourceLocation.fromNamespaceAndPath("rftoolsbase", "block/base/machinebottom"),

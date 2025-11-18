@@ -1,10 +1,13 @@
 package mcjty.rftoolsdim.dimension.features.buildings;
 
+import mcjty.lib.blocks.RBlock;
 import mcjty.rftoolsdim.dimension.features.IFeature;
 import mcjty.rftoolsdim.dimension.terraintypes.TerrainType;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.ArrayList;
@@ -20,6 +23,10 @@ public class BuildingTemplate {
     private final Map<Character, BiConsumer<WorldGenLevel, BlockPos>> paletteSpecial = new HashMap<>();
 
     private final List<Slice> slices = new ArrayList<>();
+
+    public BuildingTemplate palette(Character key, RBlock<Block, BlockItem, BlockEntity> block) {
+        return palette(key, block.block());
+    }
 
     public BuildingTemplate palette(Character key, BlockState state) {
         palette.put(key, state);

@@ -45,7 +45,7 @@ public class RealizedDimensionTab extends Item {
     public InteractionResultHolder<ItemStack> use(Level world, Player player, @Nonnull InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         if ((!world.isClientSide) && player.isShiftKeyDown()) {
-            CompoundTag tagCompound = stack.getTag();
+            CompoundTag tagCompound = null;// @todo 1.21 data stack.getTag();
             Logging.message(player, tagCompound.getString("descriptor"));
             if (tagCompound.contains("dimension")) {
                 String dimension = tagCompound.getString("dimension");
@@ -75,7 +75,7 @@ public class RealizedDimensionTab extends Item {
     public void appendHoverText(@Nonnull ItemStack stack, @Nullable TooltipContext context, @Nonnull List<Component> list, @Nonnull TooltipFlag flagIn) {
         super.appendHoverText(stack, context, list, flagIn);
         // @todo 1.16 tooltip system
-        CompoundTag tagCompound = stack.getTag();
+        CompoundTag tagCompound = null; // @todo 1.21 data stack.getTag();
         if (tagCompound != null) {
             ResourceLocation dimension = tagCompound.contains("dimension") ? ResourceLocation.parse(tagCompound.getString("dimension")) : null;
             if (dimension != null) {

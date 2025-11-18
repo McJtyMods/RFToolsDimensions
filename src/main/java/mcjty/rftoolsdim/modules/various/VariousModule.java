@@ -7,6 +7,7 @@ import mcjty.lib.datagen.Dob;
 import mcjty.lib.modules.IModule;
 import mcjty.rftoolsdim.modules.various.blocks.ActivityProbeBlock;
 import mcjty.rftoolsdim.setup.Registration;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.bus.api.IEventBus;
@@ -35,7 +36,7 @@ public class VariousModule implements IModule {
     }
 
     @Override
-    public void initDatagen(DataGen dataGen) {
+    public void initDatagen(DataGen dataGen, HolderLookup.Provider provider) {
         dataGen.add(
                 Dob.blockBuilder(ACTIVITY_PROBE)
                         .ironPickaxeTags()

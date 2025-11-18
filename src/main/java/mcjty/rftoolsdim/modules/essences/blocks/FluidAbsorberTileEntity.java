@@ -16,6 +16,7 @@ import mcjty.rftoolsdim.modules.essences.EssencesModule;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -73,7 +74,7 @@ public class FluidAbsorberTileEntity extends TickingTileEntity {
     }
 
     private static String getFluidName(ItemStack stack) {
-        String block = NBTTools.getInfoNBT(stack, CompoundTag::getString, "fluid", null);
+        String block = ""; // @todo 1.21 data NBTTools.getInfoNBT(stack, CompoundTag::getString, "fluid", null);
         if (block == null) {
             return "<Not Set>";
         } else {
@@ -87,15 +88,15 @@ public class FluidAbsorberTileEntity extends TickingTileEntity {
     }
 
     public static String getFluid(ItemStack stack) {
-        return NBTTools.getInfoNBT(stack, CompoundTag::getString, "fluid", null);
+        return ""; // @todo 1.21 data NBTTools.getInfoNBT(stack, CompoundTag::getString, "fluid", null);
     }
 
     private static String getProgressName(ItemStack stack) {
-        int absorbing = NBTTools.getInfoNBT(stack, CompoundTag::getInt, "absorbing", -1);
+        int absorbing = 0; // @todo 1.21 data NBTTools.getInfoNBT(stack, CompoundTag::getInt, "absorbing", -1);
         if (absorbing == -1) {
             return "n.a.";
         } else {
-            String block = NBTTools.getInfoNBT(stack, CompoundTag::getString, "fluid", null);
+            String block = ""; // @todo 1.21 data NBTTools.getInfoNBT(stack, CompoundTag::getString, "fluid", null);
             if (block == null) {
                 return "n.a.";
             }
@@ -106,7 +107,7 @@ public class FluidAbsorberTileEntity extends TickingTileEntity {
     }
 
     public static int getProgress(ItemStack stack) {
-        int absorbing = NBTTools.getInfoNBT(stack, CompoundTag::getInt, "absorbing", -1);
+        int absorbing = 0; // @todo 1.21 data NBTTools.getInfoNBT(stack, CompoundTag::getInt, "absorbing", -1);
         if (absorbing == -1) {
             return -1;
         } else {
@@ -238,8 +239,8 @@ public class FluidAbsorberTileEntity extends TickingTileEntity {
     }
 
     @Override
-    public void load(CompoundTag tagCompound) {
-        super.load(tagCompound);
+    public void loadAdditional(CompoundTag tagCompound, HolderLookup.Provider provider) {
+        super.loadAdditional(tagCompound, provider);
         int[] x = tagCompound.getIntArray("toscanx");
         int[] y = tagCompound.getIntArray("toscany");
         int[] z = tagCompound.getIntArray("toscanz");
@@ -267,8 +268,8 @@ public class FluidAbsorberTileEntity extends TickingTileEntity {
 */
 
     @Override
-    public void saveAdditional(@Nonnull CompoundTag tagCompound) {
-        super.saveAdditional(tagCompound);
+    public void saveAdditional(@Nonnull CompoundTag tagCompound, HolderLookup.Provider provider) {
+        super.saveAdditional(tagCompound, provider);
         int[] x = new int[toscan.size()];
         int[] y = new int[toscan.size()];
         int[] z = new int[toscan.size()];

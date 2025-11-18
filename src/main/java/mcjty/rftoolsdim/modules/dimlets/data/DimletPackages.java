@@ -40,7 +40,7 @@ public class DimletPackages {
 
     private static void writeBiomes(JsonArray root, String modid) {
         Set<DimletKey> dimlets = DimletDictionary.get().getDimlets();
-        for (var entry : BuiltInRegistries.BIOME.entrySet()) {
+        for (var entry : BuiltInRegistries.BIOME_SOURCE.entrySet()) {
             ResourceLocation id = entry.getKey().location();
             if (modid.toLowerCase().equals(id.getNamespace())) {
                 if (!dimlets.contains(new DimletKey(DimletType.BIOME, id.toString()))) {

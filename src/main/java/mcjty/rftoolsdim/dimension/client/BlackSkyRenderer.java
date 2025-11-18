@@ -4,14 +4,12 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.renderer.FogRenderer;
 import net.minecraft.client.renderer.GameRenderer;
 import org.joml.Matrix4f;
 
 public class BlackSkyRenderer {
 
-    public boolean renderSky(ClientLevel level, int ticks, float partialTick, PoseStack poseStack, Camera camera, Matrix4f projectionMatrix, boolean isFoggy, Runnable setupFog) {
-        FogRenderer.levelFogColor();
+    public boolean renderSky() {
         RenderSystem.depthMask(false);
         renderColor(0f, 0f, 0f, 1.0f);
 
@@ -23,15 +21,14 @@ public class BlackSkyRenderer {
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
         RenderSystem.setShaderColor(red, green, blue, alpha);
 
-        BufferBuilder bufferbuilder = Tesselator.getInstance().getBuilder();
-        bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
+        BufferBuilder buffer = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
 
         float v = 200.0F;
-        bufferbuilder.vertex(-v, -v, -100f).color(red, green, blue, alpha).endVertex();
-        bufferbuilder.vertex(v, -v, -100f).color(red, green, blue, alpha).endVertex();
-        bufferbuilder.vertex(v, v, -100f).color(red, green, blue, alpha).endVertex();
-        bufferbuilder.vertex(-v, v, -100f).color(red, green, blue, alpha).endVertex();
+        buffer.addVertex(-v, -v, -100f).setColor(red, green, blue, alpha);
+        buffer.addVertex(v, -v, -100f).setColor(red, green, blue, alpha);
+        buffer.addVertex(v, v, -100f).setColor(red, green, blue, alpha);
+        buffer.addVertex(-v, v, -100f).setColor(red, green, blue, alpha);
 
-        BufferUploader.draw(bufferbuilder.end());
+        BufferUploader.drawWithShader(buffer.buildOrThrow());
     }
 }
