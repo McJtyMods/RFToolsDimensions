@@ -10,6 +10,7 @@ import mcjty.lib.builder.BlockBuilder;
 import mcjty.lib.container.ContainerFactory;
 import mcjty.lib.container.GenericContainer;
 import mcjty.lib.container.GenericItemHandler;
+import mcjty.lib.setup.Registration;
 import mcjty.lib.tileentity.Cap;
 import mcjty.lib.tileentity.CapType;
 import mcjty.lib.tileentity.GenericEnergyStorage;
@@ -22,11 +23,16 @@ import mcjty.rftoolsdim.compat.RFToolsUtilityCompat;
 import mcjty.rftoolsdim.dimension.data.DimensionData;
 import mcjty.rftoolsdim.dimension.data.PersistantDimensionManager;
 import mcjty.rftoolsdim.dimension.tools.DynamicDimensionManager;
+import mcjty.rftoolsdim.modules.dimensionbuilder.DimensionBuilderModule;
 import mcjty.rftoolsdim.modules.dimensionbuilder.blocks.DimensionBuilderTileEntity;
+import mcjty.rftoolsdim.modules.dimensionbuilder.data.RealizedTabData;
 import mcjty.rftoolsdim.modules.dimensioneditor.DimensionEditorConfig;
 import mcjty.rftoolsdim.modules.dimensioneditor.DimensionEditorModule;
 import mcjty.rftoolsdim.modules.dimlets.data.*;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponentMap;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.MenuProvider;
@@ -38,9 +44,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.core.component.DataComponentMap;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -48,7 +51,6 @@ import net.neoforged.neoforge.common.util.Lazy;
 
 import javax.annotation.Nonnull;
 import java.util.function.Function;
-import mcjty.lib.setup.Registration;
 
 import static mcjty.lib.api.container.DefaultContainerProvider.container;
 import static mcjty.lib.builder.TooltipBuilder.*;
@@ -195,8 +197,8 @@ public class DimensionEditorTileEntity extends TickingTileEntity {
 
         if (ticksLeft == -1) {
             // We were not injecting. Start now.
-            String dimension = ""; // @todo 1.21 data dimensionItemStack.getOrCreateTag().getString("dimension");
-            ResourceLocation id = ResourceLocation.parse(dimension);
+            RealizedTabData tab = dimensionItemStack.getOrDefault(DimensionBuilderModule.ITEM_REALIZED_TAB_DATA, RealizedTabData.DEFAULT);
+            ResourceLocation id = tab.dimension().orElse(null);
             DimensionData data = PersistantDimensionManager.get(level).getData(id);
 
             if (false) { // @todo 1.16 dimensionManager.getDimensionInformation(id).isCheater()) {
@@ -231,8 +233,8 @@ public class DimensionEditorTileEntity extends TickingTileEntity {
 
                 ticksLeft--;
                 if (ticksLeft <= 0) {
-                    String dimension = ""; // @todo 1.21 data dimensionItemStack.getOrCreateTag().getString("dimension");
-                    ResourceLocation id = ResourceLocation.parse(dimension);
+                    RealizedTabData tab = dimensionItemStack.getOrDefault(DimensionBuilderModule.ITEM_REALIZED_TAB_DATA, RealizedTabData.DEFAULT);
+                    ResourceLocation id = tab.dimension().orElse(null);
 
                     if (isMatterReceiver(injectableItemStack)) {
                         ServerLevel dimWorld = LevelTools.getLevel(level, LevelTools.getId(id));
@@ -310,10 +312,10 @@ public class DimensionEditorTileEntity extends TickingTileEntity {
             DynamicDimensionManager.markDimensionForUnregistration(level.getServer(), LevelTools.getId(id));
             Broadcaster.broadcast(level, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), "Removed dimension '" + id.toString() + "'!", 10);
 
-            // @todo 1.21 data
-//            dimensionTab.getTag().remove("dimension");
-//            int tickCost = dimensionTab.getTag().getInt("tickCost");
-//            dimensionTab.getTag().putInt("ticksLeft", tickCost);
+            RealizedTabData tab = dimensionTab.getOrDefault(DimensionBuilderModule.ITEM_REALIZED_TAB_DATA, RealizedTabData.DEFAULT);
+            int tickCost = tab.tickCost();
+            tab = tab.withTicksLeft(tickCost);
+            dimensionTab.set(DimensionBuilderModule.ITEM_REALIZED_TAB_DATA, tab);
         }
     }
 
@@ -386,8 +388,8 @@ public class DimensionEditorTileEntity extends TickingTileEntity {
             return ItemStack.EMPTY;
         }
 
-        String dimension = ""; // @todo 1.21 data dimensionStack.getOrCreateTag().getString("dimension");
-        ResourceLocation id = ResourceLocation.parse(dimension);
+        RealizedTabData tab = dimensionStack.getOrDefault(DimensionBuilderModule.ITEM_REALIZED_TAB_DATA, RealizedTabData.DEFAULT);
+        ResourceLocation id = tab.dimension().orElse(null);
         DimensionData data = PersistantDimensionManager.get(level).getData(id);
 
         if (data == null) {
@@ -417,8 +419,8 @@ public class DimensionEditorTileEntity extends TickingTileEntity {
             return ItemStack.EMPTY;
         }
 
-        String dimension = ""; // @todo 1.21 data itemStack.getOrCreateTag().getString("dimension");
-        ResourceLocation id = ResourceLocation.parse(dimension);
+        RealizedTabData tab = itemStack.getOrDefault(DimensionBuilderModule.ITEM_REALIZED_TAB_DATA, RealizedTabData.DEFAULT);
+        ResourceLocation id = tab.dimension().orElse(null);
         DimensionData data = PersistantDimensionManager.get(level).getData(id);
         if (data == null) {
             // Not a valid dimension.

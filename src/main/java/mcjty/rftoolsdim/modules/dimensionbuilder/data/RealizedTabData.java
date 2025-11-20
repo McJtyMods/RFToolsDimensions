@@ -58,4 +58,20 @@ public record RealizedTabData(Optional<ResourceLocation> dimension,
     public RealizedTabData withRfMaintainCost(int rfMaintainCost) {
         return new RealizedTabData(dimension, name, descriptor, randomized, ticksLeft, rfCreateCost, rfMaintainCost, tickCost);
     }
+
+    public RealizedTabData withName(String name) {
+        return new RealizedTabData(dimension, Optional.ofNullable(name), descriptor, randomized, ticksLeft, rfCreateCost, rfMaintainCost, tickCost);
+    }
+
+    public RealizedTabData withDescriptor(String descriptor) {
+        return new RealizedTabData(dimension, name, descriptor, randomized, ticksLeft, rfCreateCost, rfMaintainCost, tickCost);
+    }
+
+    public RealizedTabData withTickCost(int tickCost) {
+        return new RealizedTabData(dimension, name, descriptor, randomized, ticksLeft, rfCreateCost, rfMaintainCost, tickCost);
+    }
+
+    public RealizedTabData withRfCreateCost(int rfCreateCost) {
+        return new RealizedTabData(dimension, name, descriptor, randomized, ticksLeft, rfCreateCost, rfMaintainCost, tickCost);
+    }
 }

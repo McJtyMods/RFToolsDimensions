@@ -13,6 +13,8 @@ import mcjty.rftoolsdim.dimension.descriptor.CompiledFeature;
 import mcjty.rftoolsdim.dimension.descriptor.DescriptorError;
 import mcjty.rftoolsdim.dimension.descriptor.DimensionDescriptor;
 import mcjty.rftoolsdim.dimension.terraintypes.RFToolsChunkGenerator;
+import mcjty.rftoolsdim.modules.dimensionbuilder.DimensionBuilderModule;
+import mcjty.rftoolsdim.modules.dimensionbuilder.data.RealizedTabData;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -24,7 +26,6 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Item.TooltipContext;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.chunk.ChunkGenerator;
@@ -45,11 +46,11 @@ public class RealizedDimensionTab extends Item {
     public InteractionResultHolder<ItemStack> use(Level world, Player player, @Nonnull InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         if ((!world.isClientSide) && player.isShiftKeyDown()) {
-            CompoundTag tagCompound = null;// @todo 1.21 data stack.getTag();
-            Logging.message(player, tagCompound.getString("descriptor"));
-            if (tagCompound.contains("dimension")) {
-                String dimension = tagCompound.getString("dimension");
-                DimensionData data = PersistantDimensionManager.get(world).getData(ResourceLocation.parse(dimension));
+            RealizedTabData tab = stack.getOrDefault(DimensionBuilderModule.ITEM_REALIZED_TAB_DATA, RealizedTabData.DEFAULT);
+            Logging.message(player, tab.descriptor());
+            if (tab.dimension().isPresent()) {
+                ResourceLocation dimension =  tab.dimension().get();
+                DimensionData data = PersistantDimensionManager.get(world).getData(dimension);
                 if (data != null) {
                     player.displayClientMessage(ComponentFactory.literal(ChatFormatting.BLUE + "Energy: " + ChatFormatting.WHITE + data.getEnergy()), false);
                     DimensionDescriptor descriptor = data.getDescriptor();
@@ -75,36 +76,36 @@ public class RealizedDimensionTab extends Item {
     public void appendHoverText(@Nonnull ItemStack stack, @Nullable TooltipContext context, @Nonnull List<Component> list, @Nonnull TooltipFlag flagIn) {
         super.appendHoverText(stack, context, list, flagIn);
         // @todo 1.16 tooltip system
-        CompoundTag tagCompound = null; // @todo 1.21 data stack.getTag();
-        if (tagCompound != null) {
-            ResourceLocation dimension = tagCompound.contains("dimension") ? ResourceLocation.parse(tagCompound.getString("dimension")) : null;
+        RealizedTabData tab = stack.get(DimensionBuilderModule.ITEM_REALIZED_TAB_DATA);
+        if (tab != null) {
+            ResourceLocation dimension = tab.dimension().orElse(null);
             if (dimension != null) {
                 list.add(ComponentFactory.literal("Name: " + dimension.getPath()).withStyle(ChatFormatting.BLUE));
-            } else if (tagCompound.contains("name")) {
-                String name = tagCompound.getString("name");
+            } else if (tab.name().isPresent()) {
+                String name = tab.name().get();
                 list.add(ComponentFactory.literal("Name: " + name).withStyle(ChatFormatting.BLUE));
             }
 
             if (SafeClientTools.isSneaking()) {
-                String descriptionString = tagCompound.getString("descriptor");
-                String randomizedString = tagCompound.getString("randomized");
+                String descriptionString = tab.descriptor();
+                String randomizedString = tab.randomized();
                 constructDescriptionHelp(list, descriptionString, randomizedString);
             } else {
                 list.add(ComponentFactory.literal(ChatFormatting.GREEN + "    <Press Shift>"));
             }
 
-            int ticksLeft = tagCompound.getInt("ticksLeft");
+            int ticksLeft = tab.ticksLeft();
             if (ticksLeft == 0) {
                 long power = ClientDimensionData.get().getPower(dimension);
                 long max = ClientDimensionData.get().getMaxPower(dimension);
                 list.add(ComponentFactory.literal("Dimension ready!").withStyle(ChatFormatting.BLUE));
-                int maintainCost = tagCompound.getInt("rfMaintainCost");
+                int maintainCost = tab.rfMaintainCost();
                 list.add(ComponentFactory.literal(ChatFormatting.YELLOW + "    Maintenance cost: " + maintainCost + " RF/tick"));
                 list.add(ComponentFactory.literal(ChatFormatting.YELLOW + "    Current power: " + power + " (" + max +")"));
             } else {
-                int createCost = tagCompound.getInt("rfCreateCost");
-                int maintainCost = tagCompound.getInt("rfMaintainCost");
-                int tickCost = tagCompound.getInt("tickCost");
+                int createCost = tab.rfCreateCost();
+                int maintainCost = tab.rfMaintainCost();
+                int tickCost = tab.tickCost();
                 int percentage = 0;
                 if (tickCost != 0) {
                     percentage = (tickCost - ticksLeft) * 100 / tickCost;

@@ -26,6 +26,7 @@ import mcjty.rftoolsdim.dimension.descriptor.CompiledDescriptor;
 import mcjty.rftoolsdim.dimension.descriptor.DescriptorError;
 import mcjty.rftoolsdim.dimension.descriptor.DimensionDescriptor;
 import mcjty.rftoolsdim.modules.dimensionbuilder.DimensionBuilderModule;
+import mcjty.rftoolsdim.modules.dimensionbuilder.data.RealizedTabData;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletDictionary;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletKey;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletSettings;
@@ -39,12 +40,8 @@ import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.core.component.DataComponentMap;
-import net.minecraft.core.component.DataComponentInput;
-import net.minecraft.nbt.CompoundTag;
-import mcjty.lib.setup.Registration;
 import net.neoforged.neoforge.common.util.Lazy;
+
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.function.Function;
@@ -113,11 +110,10 @@ public class EnscriberTileEntity extends GenericTileEntity {
     public String getDimensionName() {
         ItemStack stack = items.getStackInSlot(SLOT_TAB);
         if (!stack.isEmpty() && stack.getItem() == DimensionBuilderModule.REALIZED_DIMENSION_TAB.get()) {
-            // @todo 1.21 data
-//            CompoundTag tagCompound = stack.getTag();
-//            if (tagCompound != null) {
-//                return tagCompound.getString("name");
-//            }
+            RealizedTabData tab = stack.get(DimensionBuilderModule.ITEM_REALIZED_TAB_DATA);
+            if (tab != null) {
+                return tab.name().orElse(null);
+            }
         }
         return null;
     }
@@ -162,9 +158,8 @@ public class EnscriberTileEntity extends GenericTileEntity {
             items.setStackInSlot(i, ItemStack.EMPTY);
         }
 
-        // @todo 1.21 data
-//        realizedTab.getOrCreateTag().putString("name", name);
-
+        RealizedTabData tab = realizedTab.getOrDefault(DimensionBuilderModule.ITEM_REALIZED_TAB_DATA,  RealizedTabData.DEFAULT);
+        realizedTab.set(DimensionBuilderModule.ITEM_REALIZED_TAB_DATA, tab.withName(name));
         items.setStackInSlot(SLOT_TAB, realizedTab);
 
         setChanged();
@@ -176,9 +171,9 @@ public class EnscriberTileEntity extends GenericTileEntity {
      */
     private ItemStack createRealizedTab(DimensionDescriptor descriptor) {
         ItemStack realizedTab = new ItemStack(DimensionBuilderModule.REALIZED_DIMENSION_TAB.get(), 1);
-        CompoundTag tagCompound = null; // @todo 1.21 data realizedTab.getOrCreateTag();
+        RealizedTabData tab = realizedTab.getOrDefault(DimensionBuilderModule.ITEM_REALIZED_TAB_DATA,  RealizedTabData.DEFAULT);
         String compact = descriptor.compact();
-        tagCompound.putString("descriptor", compact);
+        tab = tab.withDescriptor(compact);
 
         PersistantDimensionManager mgr = PersistantDimensionManager.get(level);
         DimensionData data = mgr.getData(descriptor);
@@ -187,8 +182,8 @@ public class EnscriberTileEntity extends GenericTileEntity {
 
         if (data != null) {
             // The dimension was already created.
-            tagCompound.putInt("ticksLeft", 0);
-            tagCompound.putString("dimension", data.getId().toString());
+            tab = tab.withTicksLeft(0);
+            tab = tab.withDimension(data.getId());
             try {
                 compiledDescriptor.compile(descriptor, data.getRandomizedDescriptor());
             } catch (DescriptorError ignore) {
@@ -198,12 +193,13 @@ public class EnscriberTileEntity extends GenericTileEntity {
                 compiledDescriptor.compile(descriptor, DimensionDescriptor.EMPTY);  // Randomized part not known yet
             } catch (DescriptorError ignore) {
             }
-            tagCompound.putInt("ticksLeft", compiledDescriptor.getActualTickCost());
+            tab = tab.withTicksLeft(compiledDescriptor.getActualTickCost());
         }
 
-        tagCompound.putInt("tickCost", compiledDescriptor.getActualTickCost());
-        tagCompound.putInt("rfCreateCost", compiledDescriptor.getCreateCostPerTick());
-        tagCompound.putInt("rfMaintainCost", compiledDescriptor.getActualPowerCost());
+        tab = tab.withTickCost(compiledDescriptor.getActualTickCost());
+        tab = tab.withRfCreateCost(compiledDescriptor.getCreateCostPerTick());
+        tab = tab.withRfMaintainCost(compiledDescriptor.getActualPowerCost());
+        realizedTab.set(DimensionBuilderModule.ITEM_REALIZED_TAB_DATA, tab);
 
         return realizedTab;
     }
