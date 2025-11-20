@@ -32,6 +32,7 @@ import mcjty.rftoolsdim.modules.workbench.WorkbenchModule;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -194,9 +195,9 @@ public class ResearcherTileEntity extends TickingTileEntity {
     }
 
     private void researchBiomeAbsorber(ItemStack stack) {
-        String biomeId = BiomeAbsorberTileEntity.getBiome(stack);
-        if (biomeId != null && !biomeId.isEmpty()) {
-            DimletKey key = DimletDictionary.get().getBiomeDimlet(biomeId);
+        ResourceLocation biomeId = BiomeAbsorberTileEntity.getBiome(stack);
+        if (biomeId != null) {
+            DimletKey key = DimletDictionary.get().getBiomeDimlet(biomeId.toString());
             if (key != null) {
                 int absorberProgress = BiomeAbsorberTileEntity.getProgress(stack);
                 if (level.getRandom().nextInt(100) < absorberProgress) {
@@ -209,9 +210,9 @@ public class ResearcherTileEntity extends TickingTileEntity {
     }
 
     private void researchBlockAbsorber(ItemStack stack) {
-        String blockId = BlockAbsorberTileEntity.getBlock(stack);
-        if (blockId != null && !blockId.isEmpty()) {
-            DimletKey key = DimletDictionary.get().getBlockDimlet(blockId);
+        ResourceLocation blockId = BlockAbsorberTileEntity.getBlock(stack);
+        if (blockId != null) {
+            DimletKey key = DimletDictionary.get().getBlockDimlet(blockId.toString());
             if (key != null) {
                 int absorberProgress = BlockAbsorberTileEntity.getProgress(stack);
                 if (level.getRandom().nextInt(100) < absorberProgress) {
@@ -224,9 +225,9 @@ public class ResearcherTileEntity extends TickingTileEntity {
     }
 
     private void researchFluidAbsorber(ItemStack stack) {
-        String fluidId = FluidAbsorberTileEntity.getFluid(stack);
-        if (fluidId != null && !fluidId.isEmpty()) {
-            DimletKey key = DimletDictionary.get().getFluidDimlet(fluidId);
+        ResourceLocation fluidId = FluidAbsorberTileEntity.getFluid(stack);
+        if (fluidId != null) {
+            DimletKey key = DimletDictionary.get().getFluidDimlet(fluidId.toString());
             if (key != null) {
                 int absorberProgress = FluidAbsorberTileEntity.getProgress(stack);
                 if (level.getRandom().nextInt(100) < absorberProgress) {
@@ -239,9 +240,9 @@ public class ResearcherTileEntity extends TickingTileEntity {
     }
 
     private void researchStructureAbsorber(ItemStack stack) {
-        String structureId = StructureAbsorberTileEntity.getStructure(stack);
-        if (structureId != null && !structureId.isEmpty()) {
-            DimletKey key = DimletDictionary.get().getStructureDimlet(structureId);
+        ResourceLocation structureId = StructureAbsorberTileEntity.getStructure(stack);
+        if (structureId != null) {
+            DimletKey key = DimletDictionary.get().getStructureDimlet(structureId.toString());
             if (key != null) {
                 int absorberProgress = StructureAbsorberTileEntity.getProgress(stack);
                 if (level.getRandom().nextInt(100) < absorberProgress) {

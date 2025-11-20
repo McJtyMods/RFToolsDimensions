@@ -4,7 +4,10 @@ import mcjty.lib.blocks.BaseBlock;
 import mcjty.lib.blocks.RotationType;
 import mcjty.lib.builder.BlockBuilder;
 import mcjty.lib.tileentity.TickingTileEntity;
-import mcjty.lib.varia.*;
+import mcjty.lib.varia.FakePlayerGetter;
+import mcjty.lib.varia.FluidTools;
+import mcjty.lib.varia.SoundTools;
+import mcjty.lib.varia.Tools;
 import mcjty.rftoolsbase.tools.ManualHelper;
 import mcjty.rftoolsdim.compat.RFToolsDimensionsTOPDriver;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletDictionary;
@@ -13,11 +16,13 @@ import mcjty.rftoolsdim.modules.dimlets.data.DimletSettings;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletType;
 import mcjty.rftoolsdim.modules.essences.EssencesConfig;
 import mcjty.rftoolsdim.modules.essences.EssencesModule;
+import mcjty.rftoolsdim.modules.essences.data.BlockFluidAbsorberData;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
@@ -31,8 +36,10 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Objects;
 import java.util.Set;
 
 import static mcjty.lib.builder.TooltipBuilder.*;
@@ -41,8 +48,6 @@ public class FluidAbsorberTileEntity extends TickingTileEntity {
 
     private static final int ABSORB_SPEED = 2;
 
-    private int absorbing = 0;
-    private Block absorbingBlock = null;
     private int timer = ABSORB_SPEED;
     private final Set<BlockPos> toscan = new HashSet<>();
 
@@ -74,59 +79,53 @@ public class FluidAbsorberTileEntity extends TickingTileEntity {
     }
 
     private static String getFluidName(ItemStack stack) {
-        String block = ""; // @todo 1.21 data NBTTools.getInfoNBT(stack, CompoundTag::getString, "fluid", null);
-        if (block == null) {
+        BlockFluidAbsorberData data = stack.get(EssencesModule.ITEM_BLOCKFLUID_ABSORBER_DATA);
+        if (data == null || data.block() == null) {
             return "<Not Set>";
         } else {
-            Fluid b = Tools.getFluid(ResourceLocation.parse(block));
-            if (b != null) {
-                return I18n.get(b.defaultFluidState().createLegacyBlock().getBlock().getDescriptionId());
-            } else {
-                return "<Invalid>";
-            }
+            return I18n.get(data.block().toLanguageKey(Registries.FLUID.location().getPath()).replace('/', '.'));
         }
     }
 
-    public static String getFluid(ItemStack stack) {
-        return ""; // @todo 1.21 data NBTTools.getInfoNBT(stack, CompoundTag::getString, "fluid", null);
+    public static ResourceLocation getFluid(ItemStack stack) {
+        BlockFluidAbsorberData data = stack.getOrDefault(EssencesModule.ITEM_BLOCKFLUID_ABSORBER_DATA, BlockFluidAbsorberData.DEFAULT);
+        return data.block();
     }
 
     private static String getProgressName(ItemStack stack) {
-        int absorbing = 0; // @todo 1.21 data NBTTools.getInfoNBT(stack, CompoundTag::getInt, "absorbing", -1);
-        if (absorbing == -1) {
+        BlockFluidAbsorberData data = stack.get(EssencesModule.ITEM_BLOCKFLUID_ABSORBER_DATA);
+        if  (data == null) {
             return "n.a.";
         } else {
-            String block = ""; // @todo 1.21 data NBTTools.getInfoNBT(stack, CompoundTag::getString, "fluid", null);
-            if (block == null) {
-                return "n.a.";
-            }
-
-            int pct = ((EssencesConfig.maxFluidAbsorption.get() - absorbing) * 100) / EssencesConfig.maxFluidAbsorption.get();
+            int pct = ((EssencesConfig.maxFluidAbsorption.get() - data.absorbing()) * 100) / EssencesConfig.maxFluidAbsorption.get();
             return pct + "%";
         }
     }
 
     public static int getProgress(ItemStack stack) {
-        int absorbing = 0; // @todo 1.21 data NBTTools.getInfoNBT(stack, CompoundTag::getInt, "absorbing", -1);
-        if (absorbing == -1) {
+        BlockFluidAbsorberData data = stack.get(EssencesModule.ITEM_BLOCKFLUID_ABSORBER_DATA);
+        if (data == null) {
             return -1;
         } else {
-            return ((EssencesConfig.maxFluidAbsorption.get() - absorbing) * 100) / EssencesConfig.maxFluidAbsorption.get();
+            return ((EssencesConfig.maxFluidAbsorption.get() - data.absorbing()) * 100) / EssencesConfig.maxFluidAbsorption.get();
         }
     }
 
     @Override
     protected void tickServer() {
-        if (absorbing > 0 || absorbingBlock == null) {
+        BlockFluidAbsorberData data = getData(EssencesModule.BLOCKFLUID_ABSORBER_DATA);
+        ResourceLocation blockId = data.block();
+        int absorbing = data.absorbing();
+        if (absorbing > 0 || blockId == null) {
             timer--;
             if (timer <= 0) {
                 timer = ABSORB_SPEED;
                 BlockState b = isValidSourceBlock(getBlockPos().below());
                 if (b != null) {
-                    if (absorbingBlock == null) {
+                    if (blockId == null) {
                         absorbing = EssencesConfig.maxFluidAbsorption.get();
                         // Safety
-                        absorbingBlock = b.getBlock();
+                        blockId = Tools.getId(b.getBlock());
                         toscan.clear();
                     }
                     toscan.add(getBlockPos().below());
@@ -150,7 +149,7 @@ public class FluidAbsorberTileEntity extends TickingTileEntity {
                     if (blockMatches(c)) {
                         BlockState oldState = level.getBlockState(c);
                         FluidState oldFluidState = level.getFluidState(c);
-                        SoundTools.playSound(level, absorbingBlock.getSoundType(oldFluidState.createLegacyBlock(), level, c, null).getBreakSound(), getBlockPos().getX(), getBlockPos().getY(), getBlockPos().getZ(), 1.0f, 1.0f);
+                        SoundTools.playSound(level, oldState.getBlock().getSoundType(oldFluidState.createLegacyBlock(), level, c, null).getBreakSound(), getBlockPos().getX(), getBlockPos().getY(), getBlockPos().getZ(), 1.0f, 1.0f);
 
                         BlockPos finalC = c;
                         FluidTools.pickupFluidBlock(level, c, s -> true, () -> level.setBlock(finalC, Blocks.AIR.defaultBlockState(), 2));
@@ -162,13 +161,14 @@ public class FluidAbsorberTileEntity extends TickingTileEntity {
                     }
                 }
             }
-            setChanged();
+            setData(EssencesModule.BLOCKFLUID_ABSORBER_DATA, new BlockFluidAbsorberData(blockId, absorbing));
         }
     }
 
     @Override
     protected void tickClient() {
-        if (absorbing > 0) {
+        BlockFluidAbsorberData data = getData(EssencesModule.BLOCKFLUID_ABSORBER_DATA);
+        if (data.absorbing() > 0) {
             RandomSource rand = level.random;
 
             double u = rand.nextFloat() * 2.0f - 1.0f;
@@ -194,20 +194,25 @@ public class FluidAbsorberTileEntity extends TickingTileEntity {
         if (!state.isSource()) {
             return false;
         }
-        return state.createLegacyBlock().getBlock().equals(absorbingBlock);
+        BlockFluidAbsorberData data = getData(EssencesModule.BLOCKFLUID_ABSORBER_DATA);
+        return Objects.equals(Tools.getId(level.getBlockState(c).getBlock()), data.block());
     }
 
     public int getAbsorbing() {
-        return absorbing;
+        BlockFluidAbsorberData data = getData(EssencesModule.BLOCKFLUID_ABSORBER_DATA);
+        return data.absorbing();
     }
 
-    public Block getAbsorbingBlock() {
-        return absorbingBlock;
+    @Nullable
+    public ResourceLocation getAbsorbingBlock() {
+        BlockFluidAbsorberData data = getData(EssencesModule.BLOCKFLUID_ABSORBER_DATA);
+        return data.block();
     }
 
     public Fluid getAbsorbingFluid() {
-        if (absorbingBlock != null) {
-            return absorbingBlock.defaultBlockState().getFluidState().getType();
+        BlockFluidAbsorberData data = getData(EssencesModule.BLOCKFLUID_ABSORBER_DATA);
+        if (data.block() != null) {
+            return Tools.getFluid(data.block());
         } else {
             return null;
         }
@@ -250,23 +255,6 @@ public class FluidAbsorberTileEntity extends TickingTileEntity {
         }
     }
 
-// @todo 1.21
-/*    @Override
-    protected void loadInfo(CompoundTag tagCompound) {
-        super.loadInfo(tagCompound);
-        if (tagCompound.contains("Info")) {
-            CompoundTag info = tagCompound.getCompound("Info");
-            absorbing = info.getInt("absorbing");
-            if (info.contains("fluid")) {
-                Fluid fluid = Tools.getFluid(ResourceLocation.parse(info.getString("fluid")));
-                if (fluid != null) {
-                    absorbingBlock = fluid.defaultFluidState().createLegacyBlock().getBlock();
-                }
-            }
-        }
-    }
-*/
-
     @Override
     public void saveAdditional(@Nonnull CompoundTag tagCompound, HolderLookup.Provider provider) {
         super.saveAdditional(tagCompound, provider);
@@ -284,16 +272,4 @@ public class FluidAbsorberTileEntity extends TickingTileEntity {
         tagCompound.putIntArray("toscany", y);
         tagCompound.putIntArray("toscanz", z);
     }
-
-// @todo 1.21
-/*    @Override
-    protected void saveInfo(CompoundTag tagCompound) {
-        super.saveInfo(tagCompound);
-        CompoundTag info = getOrCreateInfo(tagCompound);
-        info.putInt("absorbing", absorbing);
-        if (absorbingBlock != null) {
-            info.putString("fluid", Tools.getId(absorbingBlock.defaultBlockState().getFluidState()).toString());
-        }
-    }
-*/
 }

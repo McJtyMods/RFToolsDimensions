@@ -7,10 +7,7 @@ import mcjty.lib.modules.IModule;
 import mcjty.rftoolsbase.modules.various.VariousModule;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.dimension.DimensionRegistry;
-import mcjty.rftoolsdim.modules.dimlets.data.DimletKey;
-import mcjty.rftoolsdim.modules.dimlets.data.DimletRarity;
-import mcjty.rftoolsdim.modules.dimlets.data.DimletTools;
-import mcjty.rftoolsdim.modules.dimlets.data.DimletType;
+import mcjty.rftoolsdim.modules.dimlets.data.*;
 import mcjty.rftoolsdim.modules.dimlets.items.DimletItem;
 import mcjty.rftoolsdim.modules.dimlets.items.PartItem;
 import mcjty.rftoolsdim.modules.dimlets.lootmodifier.DimletLootEntry;
@@ -20,10 +17,12 @@ import mcjty.rftoolsdim.modules.dimlets.recipes.DimletCycleRecipeBuilder;
 import mcjty.rftoolsdim.modules.dimlets.recipes.DimletCycleRecipeSerializer;
 import mcjty.rftoolsdim.modules.dimlets.recipes.DimletRecipeBuilder;
 import mcjty.rftoolsdim.modules.dimlets.recipes.DimletRecipeSerializer;
+import mcjty.rftoolsdim.modules.essences.data.StructureAbsorberData;
 import mcjty.rftoolsdim.setup.Config;
 import mcjty.rftoolsdim.setup.Registration;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Registry;
+import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
@@ -42,6 +41,7 @@ import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.loot.IGlobalLootModifier;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
 
 import java.util.function.Supplier;
@@ -99,6 +99,12 @@ public class DimletModule implements IModule {
     public static final Supplier<MapCodec<? extends IGlobalLootModifier>> ENDERMAN_LOOT_MODIFIER = LOOT_MODIFIER_SERIALIZERS.register("enderman_extra", () -> EndermanLootModifier.CODEC);
     public static final Supplier<DimletRecipeSerializer> DIMLET_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register("dimlet_recipe", DimletRecipeSerializer::new);
     public static final Supplier<DimletCycleRecipeSerializer> DIMLET_CYCLE_SERIALIZER = RECIPE_SERIALIZERS.register("dimlet_cycle_recipe", DimletCycleRecipeSerializer::new);
+
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<DimletData>> ITEM_DIMLET_DATA = COMPONENTS.registerComponentType(
+            "dimlet_data",
+            builder -> builder
+                    .persistent(DimletData.CODEC)
+                    .networkSynchronized(DimletData.STREAM_CODEC));
 
     public static LootItemConditionType LOOT_TABLE_CONDITION;
     public static LootPoolEntryType DIMLET_LOOT_ENTRY;

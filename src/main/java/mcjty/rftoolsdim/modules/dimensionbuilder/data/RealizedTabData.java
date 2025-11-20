@@ -47,7 +47,7 @@ public record RealizedTabData(Optional<ResourceLocation> dimension,
             ByteBufCodecs.INT, RealizedTabData::rfCreateCost,
             ByteBufCodecs.INT, RealizedTabData::rfMaintainCost,
             ByteBufCodecs.INT, RealizedTabData::tickCost,
-            (dimension, name, descriptor, randomized, ticksLeft, rfCreateCost, rfMaintainCost, tickCost) -> new RealizedTabData(dimension, name, descriptor, randomized, ticksLeft, rfCreateCost, rfMaintainCost, tickCost)
+            RealizedTabData::new
     );
 
     public RealizedTabData withTicksLeft(int ticksLeft) {

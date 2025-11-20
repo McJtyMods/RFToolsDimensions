@@ -222,10 +222,10 @@ public class EnscriberTileEntity extends GenericTileEntity {
                 if (settings != null) {
                     // Make sure the dimlet is not blacklisted.
                     dimlets.add(key);
-                    CompoundTag tagCompound = null; // @todo 1.21 data stack.getTag();
+                    RealizedTabData tab = stack.get(DimensionBuilderModule.ITEM_REALIZED_TAB_DATA);
                     // @todo 1.16 is this the way?
-                    if (tagCompound != null && tagCompound.getLong("forcedSeed") != 0) {
-                        forcedSeed = tagCompound.getLong("forcedSeed");
+                    if (tab != null && tab.forcedSeed() != 0) {
+                        forcedSeed = tab.forcedSeed();
                     }
                 } else {
                     if (player != null) {

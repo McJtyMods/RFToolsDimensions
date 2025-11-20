@@ -11,13 +11,12 @@ import mcjty.rftoolsdim.modules.dimlets.data.DimletSettings;
 import mcjty.rftoolsdim.modules.knowledge.KnowledgeModule;
 import mcjty.rftoolsdim.modules.knowledge.data.KnowledgeKey;
 import mcjty.rftoolsdim.modules.knowledge.data.KnowledgeManager;
+import mcjty.rftoolsdim.modules.knowledge.data.LostKnowledgeData;
 import mcjty.rftoolsdim.setup.Registration;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Item.TooltipContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
@@ -26,7 +25,6 @@ import net.neoforged.neoforge.common.util.Lazy;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
-import java.util.Random;
 
 import static mcjty.lib.builder.TooltipBuilder.*;
 
@@ -41,22 +39,20 @@ public class LostKnowledgeItem extends Item implements ITooltipSettings {
     private final DimletRarity rarity;
 
     private String getReasonString(ItemStack stack) {
-        // @todfo 1.21 data
-//        CompoundTag tag = stack.getTag();
-//        if (tag != null && tag.contains("reason")) {
-//            return tag.getString("reason");
-//        }
+        LostKnowledgeData data = stack.get(KnowledgeModule.ITEM_LOST_KNOWLEDGE_DATA);
+        if (data != null) {
+            return data.reason();
+        }
         return null;
     }
 
     private String getPatternString(ItemStack stack) {
-        // @todo 1.21 data
-//        CompoundTag tag = stack.getTag();
-//        if (tag != null && tag.contains("pattern")) {
-//            String pattern = tag.getString("pattern");
-//            KnowledgeKey kkey = KnowledgeKey.create(pattern);
-//            return kkey.rarity().name().toLowerCase() + " " + kkey.type().name().toLowerCase();
-//        }
+        LostKnowledgeData data = stack.get(KnowledgeModule.ITEM_LOST_KNOWLEDGE_DATA);
+        if (data != null) {
+            String pattern = data.pattern();
+            KnowledgeKey kkey = KnowledgeKey.create(pattern);
+            return kkey.rarity().name().toLowerCase() + " " + kkey.type().name().toLowerCase();
+        }
         return "<Unknown>";
     }
 
@@ -71,12 +67,11 @@ public class LostKnowledgeItem extends Item implements ITooltipSettings {
 
     @Nullable
     public static KnowledgeKey getKnowledgeKey(ItemStack stack) {
-        // @todo 1.21 data
-//        CompoundTag tag = stack.getTag();
-//        if (tag != null && tag.contains("pattern")) {
-//            String pattern = tag.getString("pattern");
-//            return KnowledgeKey.create(pattern);
-//        }
+        LostKnowledgeData data = stack.get(KnowledgeModule.ITEM_LOST_KNOWLEDGE_DATA);
+        if (data != null) {
+            String pattern = data.pattern();
+            return KnowledgeKey.create(pattern);
+        }
         return null;
     }
 
@@ -120,12 +115,8 @@ public class LostKnowledgeItem extends Item implements ITooltipSettings {
     private static ItemStack createLostKnowledgeStack(Level world, DimletRarity rarity, KnowledgeKey kkey) {
         LostKnowledgeItem item = getKnowledgeItem(rarity);
         ItemStack result = new ItemStack(item);
-        // @todo 1.21 data
-//        result.getOrCreateTag().putString("pattern", kkey.serialize());
-//        String reason = KnowledgeManager.get().getReason(world, kkey);
-//        if (reason != null) {
-//            result.getTag().putString("reason", reason);
-//        }
+        String reason = KnowledgeManager.get().getReason(world, kkey);
+        result.set(KnowledgeModule.ITEM_LOST_KNOWLEDGE_DATA, new LostKnowledgeData(kkey.serialize(), reason));
         return result;
     }
 

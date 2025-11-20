@@ -5,17 +5,21 @@ import mcjty.lib.datagen.Dob;
 import mcjty.lib.modules.IModule;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletRarity;
 import mcjty.rftoolsdim.modules.knowledge.data.KnowledgeManager;
+import mcjty.rftoolsdim.modules.knowledge.data.LostKnowledgeData;
 import mcjty.rftoolsdim.modules.knowledge.items.LostKnowledgeItem;
 import net.minecraft.core.HolderLookup;
-import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.event.level.LevelEvent;
-import net.neoforged.neoforge.registries.DeferredItem;
+import net.minecraft.core.component.DataComponentType;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.level.LevelEvent;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.DeferredItem;
 
 import static mcjty.lib.datagen.DataGen.has;
 import static mcjty.rftoolsdim.RFToolsDim.tab;
+import static mcjty.rftoolsdim.setup.Registration.COMPONENTS;
 import static mcjty.rftoolsdim.setup.Registration.ITEMS;
 
 public class KnowledgeModule implements IModule {
@@ -24,6 +28,12 @@ public class KnowledgeModule implements IModule {
     public static final DeferredItem<LostKnowledgeItem> UNCOMMON_LOST_KNOWLEDGE = ITEMS.register("uncommon_lost_knowledge", tab(() -> new LostKnowledgeItem(DimletRarity.UNCOMMON)));
     public static final DeferredItem<LostKnowledgeItem> RARE_LOST_KNOWLEDGE = ITEMS.register("rare_lost_knowledge", tab(() -> new LostKnowledgeItem(DimletRarity.RARE)));
     public static final DeferredItem<LostKnowledgeItem> LEGENDARY_LOST_KNOWLEDGE = ITEMS.register("legendary_lost_knowledge", tab(() -> new LostKnowledgeItem(DimletRarity.LEGENDARY)));
+
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<LostKnowledgeData>> ITEM_LOST_KNOWLEDGE_DATA = COMPONENTS.registerComponentType(
+            "lost_knowledge_data",
+            builder -> builder
+                    .persistent(LostKnowledgeData.CODEC)
+                    .networkSynchronized(LostKnowledgeData.STREAM_CODEC));
 
     public KnowledgeModule() {
         NeoForge.EVENT_BUS.addListener(this::onWorldLoad);

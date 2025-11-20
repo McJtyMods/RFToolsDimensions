@@ -12,7 +12,6 @@ import mcjty.rftoolsdim.modules.essences.blocks.FluidAbsorberTileEntity;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
@@ -113,12 +112,11 @@ public class DimletTools {
         if (stack.getItem() instanceof DimletItem) {
             DimletType type = ((DimletItem) stack.getItem()).getType();
             if (type != null) {
-                // @todo 1.21 data
-//                CompoundTag tag = stack.getTag();
-//                if (tag != null) {
-//                    String name = tag.getString("name");
-//                    return new DimletKey(type, name);
-//                }
+                DimletData data = stack.get(DimletModule.ITEM_DIMLET_DATA);
+                if (data != null) {
+                    String name = data.name();
+                    return new DimletKey(type, name);
+                }
             }
         }
         return null;
@@ -128,8 +126,7 @@ public class DimletTools {
     public static ItemStack getDimletStack(DimletKey key) {
         DimletItem item = getDimletItem(key.type());
         ItemStack stack = new ItemStack(item);
-        // @todo 1.21 data
-//        stack.getOrCreateTag().putString("name", key.key());
+        stack.set(DimletModule.ITEM_DIMLET_DATA, new DimletData(key.key()));
         return stack;
     }
 
@@ -255,18 +252,18 @@ public class DimletTools {
     public static boolean isFullEssence(ItemStack stack, ItemStack desired, String desiredKey) {
         if (ItemStack.isSameItem(stack, desired)) {
             if (stack.getItem() == EssencesModule.BIOME_ABSORBER_ITEM.get()) {
-                String biome = BiomeAbsorberTileEntity.getBiome(stack);
-                if (Objects.equals(desiredKey, biome)) {
+                ResourceLocation biome = BiomeAbsorberTileEntity.getBiome(stack);
+                if (Objects.equals(desiredKey, biome == null ? null : biome.toString())) {
                     return BiomeAbsorberTileEntity.getProgress(stack) >= 100;
                 }
             } else if (stack.getItem() == EssencesModule.BLOCK_ABSORBER_ITEM.get()) {
-                String block = BlockAbsorberTileEntity.getBlock(stack);
-                if (Objects.equals(desiredKey, block)) {
+                ResourceLocation block = BlockAbsorberTileEntity.getBlock(stack);
+                if (Objects.equals(desiredKey, block == null ? null : block.toString())) {
                     return BlockAbsorberTileEntity.getProgress(stack) >= 100;
                 }
             } else if (stack.getItem() == EssencesModule.FLUID_ABSORBER_ITEM.get()) {
-                String fluid = FluidAbsorberTileEntity.getFluid(stack);
-                if (Objects.equals(desiredKey, fluid)) {
+                ResourceLocation fluid = FluidAbsorberTileEntity.getFluid(stack);
+                if (Objects.equals(desiredKey, fluid == null ? null : fluid.toString())) {
                     return FluidAbsorberTileEntity.getProgress(stack) >= 100;
                 }
             } else {

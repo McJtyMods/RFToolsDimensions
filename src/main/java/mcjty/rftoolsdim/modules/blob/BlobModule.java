@@ -62,7 +62,6 @@ public class BlobModule implements IModule {
     }
 
     private void registerSpawnPlacements(RegisterSpawnPlacementsEvent event) {
-        // @todo 1.21 is operation.AND correct?
         event.register(DIMENSIONAL_BLOB_COMMON.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules, RegisterSpawnPlacementsEvent.Operation.AND);
         event.register(DIMENSIONAL_BLOB_RARE.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules,  RegisterSpawnPlacementsEvent.Operation.AND);
         event.register(DIMENSIONAL_BLOB_LEGENDARY.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules,  RegisterSpawnPlacementsEvent.Operation.AND);

@@ -9,11 +9,12 @@ import mcjty.rftoolsbase.tools.ManualHelper;
 import mcjty.rftoolsdim.compat.RFToolsDimensionsTOPDriver;
 import mcjty.rftoolsdim.modules.essences.EssencesConfig;
 import mcjty.rftoolsdim.modules.essences.EssencesModule;
+import mcjty.rftoolsdim.modules.essences.data.BiomeAbsorberData;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
@@ -22,6 +23,8 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 
+import javax.annotation.Nullable;
+
 import static mcjty.lib.builder.TooltipBuilder.*;
 
 public class BiomeAbsorberTileEntity extends TickingTileEntity {
@@ -29,9 +32,6 @@ public class BiomeAbsorberTileEntity extends TickingTileEntity {
     public BiomeAbsorberTileEntity(BlockPos pos, BlockState state) {
         super(EssencesModule.TYPE_BIOME_ABSORBER.get(), pos, state);
     }
-
-    private int absorbing = 0;
-    private String biomeId = null;
 
     public static BaseBlock createBlock() {
         return new BaseBlock(new BlockBuilder()
@@ -55,44 +55,42 @@ public class BiomeAbsorberTileEntity extends TickingTileEntity {
     }
 
     private static String getBiomeName(ItemStack stack) {
-        String biome = ""; // @todo 1.21 data NBTTools.getInfoNBT(stack, CompoundTag::getString, "biome", null);
-        if (biome == null) {
+        BiomeAbsorberData data = stack.get(EssencesModule.ITEM_BIOME_ABSORBER_DATA);
+        if  (data == null || data.biome() == null) {
             return "<Not Set>";
         } else {
-            ResourceLocation id = ResourceLocation.parse(biome);
-            String trans = "biome." + id.getNamespace() + "." + id.getPath();
-            return I18n.get(trans);
+            return I18n.get(data.biome().toLanguageKey(Registries.BIOME.location().getPath()).replace('/', '.'));
         }
     }
 
-    public static String getBiome(ItemStack stack) {
-        // @todo 1.21 data
-//        return NBTTools.getInfoNBT(stack, CompoundTag::getString, "biome", null);
-        return "";
+    public static ResourceLocation getBiome(ItemStack stack) {
+        BiomeAbsorberData data = stack.getOrDefault(EssencesModule.ITEM_BIOME_ABSORBER_DATA, BiomeAbsorberData.DEFAULT);
+        return data.biome();
     }
 
     private static String getProgressName(ItemStack stack) {
-        int absorbing = 0; // @todo 1.21 data NBTTools.getInfoNBT(stack, CompoundTag::getInt, "absorbing", -1);
-        if (absorbing == -1) {
+        BiomeAbsorberData data = stack.get(EssencesModule.ITEM_BIOME_ABSORBER_DATA);
+        if  (data == null) {
             return "n.a.";
         } else {
-            int pct = ((EssencesConfig.maxBiomeAbsorption.get() - absorbing) * 100) / EssencesConfig.maxBiomeAbsorption.get();
+            int pct = ((EssencesConfig.maxBiomeAbsorption.get() - data.absorbing()) * 100) / EssencesConfig.maxBiomeAbsorption.get();
             return pct + "%";
         }
     }
 
     public static int getProgress(ItemStack stack) {
-        int absorbing = 0; // @todo 1.21 data NBTTools.getInfoNBT(stack, CompoundTag::getInt, "absorbing", -1);
-        if (absorbing == -1) {
+        BiomeAbsorberData data = stack.get(EssencesModule.ITEM_BIOME_ABSORBER_DATA);
+        if (data == null) {
             return -1;
         } else {
-            return ((EssencesConfig.maxBiomeAbsorption.get() - absorbing) * 100) / EssencesConfig.maxBiomeAbsorption.get();
+            return ((EssencesConfig.maxBiomeAbsorption.get() - data.absorbing()) * 100) / EssencesConfig.maxBiomeAbsorption.get();
         }
     }
 
     @Override
     protected void tickClient() {
-        if (absorbing > 0) {
+        BiomeAbsorberData data = getData(EssencesModule.BIOME_ABSORBER_DATA);
+        if (data.absorbing() > 0) {
             RandomSource rand = level.random;
 
             double u = rand.nextFloat() * 2.0f - 1.0f;
@@ -107,56 +105,34 @@ public class BiomeAbsorberTileEntity extends TickingTileEntity {
     }
 
     public int getAbsorbing() {
-        return absorbing;
+        BiomeAbsorberData data = getData(EssencesModule.BIOME_ABSORBER_DATA);
+        return data.absorbing();
     }
 
-    public String getAbsorbingBiome() {
-        return biomeId;
+    @Nullable
+    public ResourceLocation getAbsorbingBiome() {
+        BiomeAbsorberData data = getData(EssencesModule.BIOME_ABSORBER_DATA);
+        return data.biome();
     }
 
     @Override
     protected void tickServer() {
+        BiomeAbsorberData data = getData(EssencesModule.BIOME_ABSORBER_DATA);
+        ResourceLocation biomeId = data.biome();
+        int absorbing = data.absorbing();
         if (biomeId == null) {
             Holder<Biome> biome = getLevel().getBiome(getBlockPos());
-            biomeId = Tools.getId(level, biome.value()).toString();
+            biomeId = Tools.getId(level, biome.value());
             absorbing = EssencesConfig.maxBiomeAbsorption.get();
-            setChanged();
         }
 
         if (absorbing > 0) {
             Holder<Biome> biome = level.getBiome(worldPosition);
-            if (!Tools.getId(level, biome.value()).toString().equals(biomeId)) {
+            if (!Tools.getId(level, biome.value()).equals(biomeId)) {
                 return;
             }
-
             absorbing--;
-            setChanged();
         }
+        setData(EssencesModule.BIOME_ABSORBER_DATA, new BiomeAbsorberData(biomeId, absorbing));
     }
-
-// @todo 1.21
-/*    @Override
-    public void saveInfo(CompoundTag tagCompound) {
-        super.saveInfo(tagCompound);
-        CompoundTag info = getOrCreateInfo(tagCompound);
-        info.putInt("absorbing", absorbing);
-        if (biomeId != null) {
-            info.putString("biome", biomeId);
-        }
-    }
-*/
-
-// @todo 1.21
-/*    @Override
-    public void loadInfo(CompoundTag tagCompound) {
-        super.loadInfo(tagCompound);
-        CompoundTag info = tagCompound.getCompound("Info");
-        absorbing = info.getInt("absorbing");
-        if (info.contains("biome")) {
-            biomeId = info.getString("biome");
-        } else {
-            biomeId = null;
-        }
-    }
-*/
 }

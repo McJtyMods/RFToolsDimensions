@@ -9,9 +9,11 @@ import mcjty.rftoolsbase.tools.ManualHelper;
 import mcjty.rftoolsdim.compat.RFToolsDimensionsTOPDriver;
 import mcjty.rftoolsdim.modules.essences.EssencesConfig;
 import mcjty.rftoolsdim.modules.essences.EssencesModule;
+import mcjty.rftoolsdim.modules.essences.data.StructureAbsorberData;
+import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
@@ -22,6 +24,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static mcjty.lib.builder.TooltipBuilder.*;
 
@@ -30,9 +33,6 @@ public class StructureAbsorberTileEntity extends TickingTileEntity {
     public StructureAbsorberTileEntity(BlockPos pos, BlockState state) {
         super(EssencesModule.TYPE_STRUCTURE_ABSORBER.get(), pos, state);
     }
-
-    private int absorbing = 0;
-    private String structureId = null;
 
     public static BaseBlock createBlock() {
         return new BaseBlock(new BlockBuilder()
@@ -56,41 +56,42 @@ public class StructureAbsorberTileEntity extends TickingTileEntity {
     }
 
     private static String getStructureName(ItemStack stack) {
-        String structure = ""; // @todo 1.21 data NBTTools.getInfoNBT(stack, CompoundTag::getString, "structure", null);
-        if (structure == null) {
+        StructureAbsorberData data = stack.get(EssencesModule.ITEM_STRUCTURE_ABSORBER_DATA);
+        if (data == null || data.structure() == null) {
             return "<Not Set>";
         } else {
-            ResourceLocation id = ResourceLocation.parse(structure);
-            return id.getPath();
+            return I18n.get(data.structure().toLanguageKey(Registries.STRUCTURE.location().getPath()).replace('/', '.'));
         }
     }
 
-    public static String getStructure(ItemStack stack) {
-        return ""; // @todo 1.21 data NBTTools.getInfoNBT(stack, CompoundTag::getString, "structure", null);
+    public static ResourceLocation getStructure(ItemStack stack) {
+        StructureAbsorberData data = stack.getOrDefault(EssencesModule.ITEM_STRUCTURE_ABSORBER_DATA, StructureAbsorberData.DEFAULT);
+        return data.structure();
     }
 
     private static String getProgressName(ItemStack stack) {
-        int absorbing = 0; // @todo 1.21 data NBTTools.getInfoNBT(stack, CompoundTag::getInt, "absorbing", -1);
-        if (absorbing == -1) {
+        StructureAbsorberData data = stack.get(EssencesModule.ITEM_STRUCTURE_ABSORBER_DATA);
+        if (data == null) {
             return "n.a.";
         } else {
-            int pct = ((EssencesConfig.maxStructureAbsorption.get() - absorbing) * 100) / EssencesConfig.maxStructureAbsorption.get();
+            int pct = ((EssencesConfig.maxStructureAbsorption.get() - data.absorbing()) * 100) / EssencesConfig.maxStructureAbsorption.get();
             return pct + "%";
         }
     }
 
     public static int getProgress(ItemStack stack) {
-        int absorbing = 0; // @todo 1.21 data NBTTools.getInfoNBT(stack, CompoundTag::getInt, "absorbing", -1);
-        if (absorbing == -1) {
+        StructureAbsorberData data = stack.get(EssencesModule.ITEM_STRUCTURE_ABSORBER_DATA);
+        if (data == null) {
             return -1;
         } else {
-            return ((EssencesConfig.maxStructureAbsorption.get() - absorbing) * 100) / EssencesConfig.maxStructureAbsorption.get();
+            return ((EssencesConfig.maxStructureAbsorption.get() - data.absorbing()) * 100) / EssencesConfig.maxStructureAbsorption.get();
         }
     }
 
     @Override
     protected void tickClient() {
-        if (absorbing > 0) {
+        StructureAbsorberData data = getData(EssencesModule.STRUCTURE_ABSORBER_DATA);
+        if (data.absorbing() > 0) {
             RandomSource rand = level.random;
 
             double u = rand.nextFloat() * 2.0f - 1.0f;
@@ -105,15 +106,20 @@ public class StructureAbsorberTileEntity extends TickingTileEntity {
     }
 
     public int getAbsorbing() {
-        return absorbing;
+        StructureAbsorberData data = getData(EssencesModule.STRUCTURE_ABSORBER_DATA);
+        return data.absorbing();
     }
 
-    public String getAbsorbingStructure() {
-        return structureId;
+    public ResourceLocation getAbsorbingStructure() {
+        StructureAbsorberData data = getData(EssencesModule.STRUCTURE_ABSORBER_DATA);
+        return data.structure();
     }
 
     @Override
     protected void tickServer() {
+        StructureAbsorberData data = getData(EssencesModule.STRUCTURE_ABSORBER_DATA);
+        ResourceLocation structureId = data.structure();
+        int absorbing = data.absorbing();
         if (structureId == null) {
             ChunkPos cp = new ChunkPos(worldPosition);
             var references = level.getChunk(cp.x, cp.z).getAllReferences();
@@ -125,12 +131,11 @@ public class StructureAbsorberTileEntity extends TickingTileEntity {
             }
             if (!structures.isEmpty()) {
                 if (structures.size() == 1) {
-                    structureId = structures.get(0).toString();
+                    structureId = structures.get(0);
                 } else {
-                    structureId = structures.get(level.random.nextInt(structures.size())).toString();
+                    structureId = structures.get(level.random.nextInt(structures.size()));
                 }
                 absorbing = EssencesConfig.maxStructureAbsorption.get();
-                setChanged();
             }
         }
 
@@ -140,46 +145,21 @@ public class StructureAbsorberTileEntity extends TickingTileEntity {
             }
 
             absorbing--;
-            setChanged();
         }
+        setData(EssencesModule.STRUCTURE_ABSORBER_DATA, new StructureAbsorberData(structureId, absorbing));
     }
 
     private boolean isValidStructure() {
+        StructureAbsorberData data = getData(EssencesModule.STRUCTURE_ABSORBER_DATA);
         ChunkPos cp = new ChunkPos(worldPosition);
         var references = level.getChunk(cp.x, cp.z).getAllReferences();
         for (var entry : references.entrySet()) {
             if (!entry.getValue().isEmpty()) {
-                if (structureId.equals(Tools.getId(level, entry.getKey()).toString())) {
+                if (Objects.equals(data.structure(), Tools.getId(level, entry.getKey()).toString())) {
                     return true;
                 }
             }
         }
         return false;
     }
-
-// @todo 1.21
-/*    @Override
-    public void saveInfo(CompoundTag tagCompound) {
-        super.saveInfo(tagCompound);
-        CompoundTag info = getOrCreateInfo(tagCompound);
-        info.putInt("absorbing", absorbing);
-        if (structureId != null) {
-            info.putString("structure", structureId);
-        }
-    }
-*/
-
-// @todo 1.21
-/*    @Override
-    public void loadInfo(CompoundTag tagCompound) {
-        super.loadInfo(tagCompound);
-        CompoundTag info = tagCompound.getCompound("Info");
-        absorbing = info.getInt("absorbing");
-        if (info.contains("structure")) {
-            structureId = info.getString("structure");
-        } else {
-            structureId = null;
-        }
-    }
-*/
 }

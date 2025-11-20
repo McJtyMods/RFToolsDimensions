@@ -14,11 +14,11 @@ import mcjty.theoneprobe.api.IProbeHitData;
 import mcjty.theoneprobe.api.IProbeInfo;
 import mcjty.theoneprobe.api.ProbeMode;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.HashMap;
@@ -65,11 +65,11 @@ public class RFToolsDimensionsTOPDriver implements TOPDriver {
             McJtyLibTOPDriver.DRIVER.addStandardProbeInfo(mode, probeInfo, player, world, blockState, data);
             Tools.safeConsume(world.getBlockEntity(data.getPos()), (BlockAbsorberTileEntity te) -> {
                 int absorbing = te.getAbsorbing();
-                Block block = te.getAbsorbingBlock();
+                ResourceLocation block = te.getAbsorbingBlock();
                 int pct = ((EssencesConfig.maxBlockAbsorption.get() - absorbing) * 100) / EssencesConfig.maxBlockAbsorption.get();
-                ItemStack stack = new ItemStack(block, 1);
+                ItemStack stack = new ItemStack(Tools.getBlock(block), 1);
                 if (!stack.isEmpty()) {
-                    probeInfo.text((ComponentFactory.literal("Block: ").append(ComponentFactory.translatable(stack.getDescriptionId())).withStyle(ChatFormatting.GREEN)))
+                    probeInfo.text((ComponentFactory.literal("Block: ").append(ComponentFactory.translatable(block.toLanguageKey(Registries.BLOCK.location().getPath()).replace('/', '.'))).withStyle(ChatFormatting.GREEN)))
                             .horizontal()
                             .progress(pct, 100, probeInfo.defaultProgressStyle().suffix("%"))
                             .item(stack);
@@ -84,10 +84,10 @@ public class RFToolsDimensionsTOPDriver implements TOPDriver {
             McJtyLibTOPDriver.DRIVER.addStandardProbeInfo(mode, probeInfo, player, world, blockState, data);
             Tools.safeConsume(world.getBlockEntity(data.getPos()), (FluidAbsorberTileEntity te) -> {
                 int absorbing = te.getAbsorbing();
-                Block block = te.getAbsorbingBlock();
+                ResourceLocation block = te.getAbsorbingBlock();
                 if (block != null) {
                     int pct = ((EssencesConfig.maxFluidAbsorption.get() - absorbing) * 100) / EssencesConfig.maxFluidAbsorption.get();
-                    probeInfo.text((ComponentFactory.literal("Fluid: ").append(ComponentFactory.translatable(block.getDescriptionId())).withStyle(ChatFormatting.GREEN)))
+                    probeInfo.text((ComponentFactory.literal("Fluid: ").append(ComponentFactory.translatable(block.toLanguageKey(Registries.FLUID.location().getPath().replace('/', '.')))).withStyle(ChatFormatting.GREEN)))
                             .horizontal()
                             .progress(pct, 100, probeInfo.defaultProgressStyle().suffix("%"));
                 }
@@ -101,12 +101,9 @@ public class RFToolsDimensionsTOPDriver implements TOPDriver {
             McJtyLibTOPDriver.DRIVER.addStandardProbeInfo(mode, probeInfo, player, world, blockState, data);
             Tools.safeConsume(world.getBlockEntity(data.getPos()), (BiomeAbsorberTileEntity te) -> {
                 int absorbing = te.getAbsorbing();
-                String biome = te.getAbsorbingBiome();
+                ResourceLocation biome = te.getAbsorbingBiome();
                 int pct = ((EssencesConfig.maxBiomeAbsorption.get() - absorbing) * 100) / EssencesConfig.maxBiomeAbsorption.get();
-                ResourceLocation id = ResourceLocation.parse(biome);
-                String trans = "biome." + id.getNamespace() + "." + id.getPath();
-
-                probeInfo.text((ComponentFactory.literal("Biome: ").append(ComponentFactory.translatable(trans)).withStyle(ChatFormatting.GREEN)))
+                probeInfo.text((ComponentFactory.literal("Biome: ").append(ComponentFactory.translatable(biome.toLanguageKey(Registries.BIOME.location().getPath().replace('/', '.')))).withStyle(ChatFormatting.GREEN)))
                         .horizontal()
                         .progress(pct, 100, probeInfo.defaultProgressStyle().suffix("%"));
             }, "Bad tile entity!");
@@ -119,12 +116,10 @@ public class RFToolsDimensionsTOPDriver implements TOPDriver {
             McJtyLibTOPDriver.DRIVER.addStandardProbeInfo(mode, probeInfo, player, world, blockState, data);
             Tools.safeConsume(world.getBlockEntity(data.getPos()), (StructureAbsorberTileEntity te) -> {
                 int absorbing = te.getAbsorbing();
-                String structure = te.getAbsorbingStructure();
+                ResourceLocation structure = te.getAbsorbingStructure();
                 if (structure != null) {
                     int pct = ((EssencesConfig.maxStructureAbsorption.get() - absorbing) * 100) / EssencesConfig.maxStructureAbsorption.get();
-                    ResourceLocation id = ResourceLocation.parse(structure);
-
-                    probeInfo.text((ComponentFactory.literal("Structure: ").append(ComponentFactory.literal(id.getPath())).withStyle(ChatFormatting.GREEN)))
+                    probeInfo.text((ComponentFactory.literal("Structure: ").append(ComponentFactory.translatable(structure.toLanguageKey(Registries.STRUCTURE.location().getPath().replace('/', '.')))).withStyle(ChatFormatting.GREEN)))
                             .horizontal()
                             .progress(pct, 100, probeInfo.defaultProgressStyle().suffix("%"));
                 }
