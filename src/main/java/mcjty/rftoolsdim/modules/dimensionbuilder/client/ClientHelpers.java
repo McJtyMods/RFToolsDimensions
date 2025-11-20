@@ -4,6 +4,8 @@ import mcjty.lib.varia.SafeClientTools;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.dimension.data.ClientDimensionData;
 import mcjty.rftoolsdim.modules.dimensionbuilder.DimensionBuilderConfig;
+import mcjty.rftoolsdim.modules.dimensionbuilder.DimensionBuilderModule;
+import mcjty.rftoolsdim.modules.dimensionbuilder.data.PhasedFieldGeneratorData;
 import mcjty.rftoolsdim.modules.dimensionbuilder.items.DimensionMonitorItem;
 import mcjty.rftoolsdim.modules.dimensionbuilder.items.PhasedFieldGenerator;
 import net.minecraft.client.renderer.item.ItemProperties;
@@ -59,11 +61,7 @@ public class ClientHelpers {
 
     public static void initOverrides(PhasedFieldGenerator item) {
         ItemProperties.register(item, ResourceLocation.fromNamespaceAndPath(RFToolsDim.MODID, "power"), (stack, world, livingEntity, seed) -> {
-            long power = 0;
-            // @todo 1.21 data
-//            if (stack.hasTag()) {
-//                power = stack.getTag().getLong("Energy");
-//            }
+            long power = PhasedFieldGeneratorData.getEnergy(stack);
             long max = DimensionBuilderConfig.PHASEDFIELD_MAXENERGY.get();
             long level = (9 * power) / max;
             if (level < 0) {

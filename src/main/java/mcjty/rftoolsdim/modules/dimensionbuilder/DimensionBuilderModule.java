@@ -103,7 +103,7 @@ public class DimensionBuilderModule implements IModule {
                 Dob.blockBuilder(DIMENSION_BUILDER)
                         .ironPickaxeTags()
                         .parentedItem("block/dimension_builder")
-                        .standardLoot() // @todo 1.21
+                        .standardLoot()
                         .blockState(p -> p.orientedBlock(DIMENSION_BUILDER.block().get(), p.frontBasedModel("dimension_builder", p.modLoc("block/dimensionbuilder"))))
                         .shaped(builder -> builder
                                         .define('F', mcjty.rftoolsbase.modules.various.VariousModule.MACHINE_FRAME.get())

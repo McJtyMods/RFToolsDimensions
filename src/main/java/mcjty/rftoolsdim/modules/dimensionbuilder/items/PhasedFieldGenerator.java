@@ -3,23 +3,21 @@ package mcjty.rftoolsdim.modules.dimensionbuilder.items;
 import mcjty.lib.builder.TooltipBuilder;
 import mcjty.lib.tooltips.ITooltipSettings;
 import mcjty.lib.varia.IEnergyItem;
-import mcjty.lib.varia.ItemCapabilityProvider;
 import mcjty.lib.varia.Tools;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.dimension.DimensionConfig;
 import mcjty.rftoolsdim.dimension.power.PowerHandler;
 import mcjty.rftoolsdim.modules.dimensionbuilder.DimensionBuilderConfig;
 import mcjty.rftoolsdim.modules.dimensionbuilder.DimensionBuilderModule;
-import net.minecraft.nbt.CompoundTag;
+import mcjty.rftoolsdim.modules.dimensionbuilder.data.PhasedFieldGeneratorData;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.Item.TooltipContext;
-import net.neoforged.neoforge.capabilities.ICapabilityProvider;
 import net.neoforged.neoforge.common.util.Lazy;
+import net.neoforged.neoforge.energy.IEnergyStorage;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -35,9 +33,7 @@ public class PhasedFieldGenerator extends Item implements IEnergyItem, ITooltipS
                     TooltipBuilder.parameter("power", this::getEnergyString)));
 
     private String getEnergyString(ItemStack stack) {
-        // @todo 1.21 data
-//        return Integer.toString(stack.hasTag() ? stack.getTag().getInt("Energy") : 0);
-        return "";
+        return Long.toString(PhasedFieldGeneratorData.getEnergy(stack));
     }
 
     public PhasedFieldGenerator() {
@@ -52,13 +48,6 @@ public class PhasedFieldGenerator extends Item implements IEnergyItem, ITooltipS
         return oldStack.getItem() != newStack.getItem();
     }
 
-    // @todo 1.21
-//    @Override
-//    public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
-//        return new ItemCapabilityProvider(stack, this);
-//    }
-
-
     @Override
     public void appendHoverText(@Nonnull ItemStack stack, @Nullable TooltipContext context, @Nonnull List<Component> list, @Nonnull TooltipFlag flagIn) {
         super.appendHoverText(stack, context, list, flagIn);
@@ -67,42 +56,31 @@ public class PhasedFieldGenerator extends Item implements IEnergyItem, ITooltipS
 
     @Override
     public long receiveEnergyL(ItemStack container, long maxReceive, boolean simulate) {
-        // @todo 1.21 data
-//        CompoundTag tag = container.getOrCreateTag();
-//        long energy = tag.getLong("Energy");
-//        long energyReceived = Math.min(getMaxEnergyStoredL(container) - energy, Math.min(DimensionBuilderConfig.PHASEDFIELD_RECEIVEPERTICK.get(), maxReceive));
-//
-//        if (!simulate) {
-//            energy += energyReceived;
-//            tag.putLong("Energy", energy);
-//        }
-//        return energyReceived;
-        return 0;
+        long energy = PhasedFieldGeneratorData.getEnergy(container);
+        long energyReceived = Math.min(getMaxEnergyStoredL(container) - energy, Math.min(DimensionBuilderConfig.PHASEDFIELD_RECEIVEPERTICK.get(), maxReceive));
+
+        if (!simulate) {
+            energy += energyReceived;
+            PhasedFieldGeneratorData.setEnergy(container, energy);
+        }
+        return energyReceived;
     }
 
     @Override
     public long extractEnergyL(ItemStack container, long maxExtract, boolean simulate) {
-        // @todo 1.21 data
-//        CompoundTag tag = container.getOrCreateTag();
-//        long energy = tag.getLong("Energy");
-//        long energyExtracted = Math.min(energy, Math.min(DimensionBuilderConfig.PHASEDFIELD_CONSUMEPERTICK.get() * PowerHandler.MAXTICKS, maxExtract));
-//
-//        if (!simulate) {
-//            energy -= energyExtracted;
-//            tag.putLong("Energy", energy);
-//        }
-//        return energyExtracted;
-        return 0;
+        long energy = PhasedFieldGeneratorData.getEnergy(container);
+        long energyExtracted = Math.min(energy, Math.min(DimensionBuilderConfig.PHASEDFIELD_CONSUMEPERTICK.get() * PowerHandler.MAXTICKS, maxExtract));
+
+        if (!simulate) {
+            energy -= energyExtracted;
+            PhasedFieldGeneratorData.setEnergy(container, energy);
+        }
+        return energyExtracted;
     }
 
     @Override
     public long getEnergyStoredL(ItemStack container) {
-        // @todo 1.21
-//        if (container.getTag() == null || !container.getTag().contains("Energy")) {
-//            return 0;
-//        }
-//        return container.getTag().getLong("Energy");
-        return 0;
+        return PhasedFieldGeneratorData.getEnergy(container);
     }
 
     @Override
@@ -134,4 +112,37 @@ public class PhasedFieldGenerator extends Item implements IEnergyItem, ITooltipS
         return false;
     }
 
+    public IEnergyStorage createEnergyStorage(ItemStack container) {
+        return new IEnergyStorage() {
+            @Override
+            public int receiveEnergy(int maxReceive, boolean simulate) {
+                return (int) receiveEnergyL(container, maxReceive, simulate);
+            }
+
+            @Override
+            public int extractEnergy(int maxExtract, boolean simulate) {
+                return (int) extractEnergyL(container, maxExtract, simulate);
+            }
+
+            @Override
+            public int getEnergyStored() {
+                return (int) getEnergyStoredL(container);
+            }
+
+            @Override
+            public int getMaxEnergyStored() {
+                return (int) getMaxEnergyStoredL(container);
+            }
+
+            @Override
+            public boolean canExtract() {
+                return false;
+            }
+
+            @Override
+            public boolean canReceive() {
+                return true;
+            }
+        };
+    }
 }

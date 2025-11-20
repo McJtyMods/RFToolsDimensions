@@ -2,6 +2,7 @@ package mcjty.rftoolsdim.compat;
 
 import mcjty.rftoolsbase.api.teleportation.ITeleportationManager;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.WorldGenLevel;
 import net.neoforged.fml.InterModComms;
 import net.neoforged.fml.ModList;
@@ -38,6 +39,13 @@ public class RFToolsUtilityCompat {
         if (teleportationManager != null) {
             teleportationManager.createReceiver(reader.getLevel(), pos, name, power);
         }
+    }
+
+    public static String getReceiverName(ItemStack stack) {
+        if (teleportationManager != null) {
+            return teleportationManager.getReceiverName(stack);
+        }
+        return "";
     }
 
     public static class GetTeleportationManager implements Function<ITeleportationManager, Void> {

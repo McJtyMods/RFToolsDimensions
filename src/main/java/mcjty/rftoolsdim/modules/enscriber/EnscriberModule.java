@@ -67,7 +67,7 @@ public class EnscriberModule implements IModule {
                 Dob.blockBuilder(ENSCRIBER)
                         .ironPickaxeTags()
                         .parentedItem("block/enscriber")
-//                        .standardLoot(TYPE_ENSCRIBER) @todo 1.21
+                        .standardLoot()
                         .blockState(p -> p.orientedBlock(ENSCRIBER.block().get(), p.frontBasedModel("enscriber", p.modLoc("block/dimensionenscriber"))))
                         .shaped(builder -> builder
                                         .define('F', mcjty.rftoolsbase.modules.various.VariousModule.MACHINE_FRAME.get())

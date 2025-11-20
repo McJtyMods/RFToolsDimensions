@@ -9,6 +9,7 @@ import mcjty.rftoolsdim.dimension.data.DimensionCreator;
 import mcjty.rftoolsdim.modules.blob.BlobModule;
 import mcjty.rftoolsdim.modules.decorative.DecorativeModule;
 import mcjty.rftoolsdim.modules.dimensionbuilder.DimensionBuilderModule;
+import mcjty.rftoolsdim.modules.dimensionbuilder.items.PhasedFieldGenerator;
 import mcjty.rftoolsdim.modules.dimensioneditor.DimensionEditorModule;
 import mcjty.rftoolsdim.modules.dimlets.DimletModule;
 import mcjty.rftoolsdim.modules.enscriber.EnscriberModule;
@@ -27,6 +28,8 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.InterModProcessEvent;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
@@ -56,6 +59,8 @@ public class RFToolsDim {
         bus.addListener(this::onDataGen);
         bus.addListener(RFToolsDimMessages::registerMessages);
         NeoForge.EVENT_BUS.addListener(this::onJoinWorld);
+        bus.addListener(setup.getBlockCapabilityRegistrar(Registration.RBLOCKS));
+        bus.addListener(this::onRegisterCapabilities);
 
         if (dist.isClient()) {
             NeoForge.EVENT_BUS.addListener(ClientSetup::onPlayerLogin);
@@ -97,6 +102,15 @@ public class RFToolsDim {
         modules.register(new KnowledgeModule());
         modules.register(new EssencesModule());
         modules.register(new DecorativeModule());
+    }
+
+    private void onRegisterCapabilities(RegisterCapabilitiesEvent event) {
+        Registration.ITEMS.getRegister().getEntries().forEach(entry -> {
+            Item item = entry.get();
+            if (item instanceof PhasedFieldGenerator generator) {
+                event.registerItem(Capabilities.EnergyStorage.ITEM, (stack, context) -> generator.createEnergyStorage(stack), item);
+            }
+        });
     }
 
     private void onJoinWorld(PlayerEvent.PlayerLoggedInEvent event) {

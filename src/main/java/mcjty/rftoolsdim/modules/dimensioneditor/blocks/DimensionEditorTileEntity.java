@@ -3,6 +3,7 @@ package mcjty.rftoolsdim.modules.dimensioneditor.blocks;
 import mcjty.lib.api.container.DefaultContainerProvider;
 import mcjty.lib.api.infusable.DefaultInfusable;
 import mcjty.lib.api.infusable.IInfusable;
+import mcjty.lib.api.power.ItemEnergy;
 import mcjty.lib.bindings.GuiValue;
 import mcjty.lib.blocks.BaseBlock;
 import mcjty.lib.blocks.RotationType;
@@ -252,9 +253,9 @@ public class DimensionEditorTileEntity extends TickingTileEntity {
                                 BlockPos pos = new BlockPos(8, y, 8);
                                 dimWorld.setBlock(pos, state, Block.UPDATE_NEIGHBORS);
                                 Block block = dimWorld.getBlockState(pos).getBlock();
-                                // @@@@@@@@@@@@@@ check if right?
-                                String name = ""; // @todo 1.21 data NBTTools.getInfoNBT(injectableItemStack, CompoundTag::getString, "tpName", "");
-                                long energy = 0; // @todo 1.21 data NBTTools.getBlockEntityNBT(injectableItemStack, CompoundTag::getLong, "Energy", 0L);
+                                String name = RFToolsUtilityCompat.getReceiverName(injectableItemStack);
+                                ItemEnergy itemEnergy = injectableItemStack.get(Registration.ITEM_ENERGY);
+                                long energy = itemEnergy == null ? 0 : itemEnergy.energy();
                                 RFToolsUtilityCompat.createTeleporter(dimWorld, pos, name, (int) energy);
                                 block.setPlacedBy(dimWorld, pos, state, null, injectableItemStack);
 //                            block.onBlockActivated(dimWorld, pos, state, FakePlayerFactory.getMinecraft((WorldServer) dimWorld), EnumHand.MAIN_HAND, EnumFacing.DOWN, 0.0F, 0.0F, 0.0F);

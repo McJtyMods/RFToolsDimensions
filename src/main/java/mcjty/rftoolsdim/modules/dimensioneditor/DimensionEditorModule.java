@@ -66,7 +66,7 @@ public class DimensionEditorModule implements IModule {
                 Dob.blockBuilder(DIMENSION_EDITOR)
                         .ironPickaxeTags()
                         .parentedItem( "block/dimensioneditor")
-//                        .standardLoot(TYPE_DIMENSION_EDITOR) @todo 1.21
+                        .standardLoot()
                         .blockState(DataGenHelper::registerDimensionEditor)
                         .shaped(builder -> builder
                                         .define('F', mcjty.rftoolsbase.modules.various.VariousModule.MACHINE_FRAME.get())

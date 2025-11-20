@@ -254,16 +254,16 @@ public class EnscriberTileEntity extends GenericTileEntity {
 
     private void extractDimlets() {
         ItemStack realizedTab = items.getStackInSlot(SLOT_TAB);
-        CompoundTag tagCompound = null; // @todo 1.21 data realizedTab.getTag();
-        if (tagCompound != null) {
-            long forcedSeed = tagCompound.getLong("forcedSeed");
-            String descString = tagCompound.getString("descriptor");
+        RealizedTabData tab = realizedTab.get(DimensionBuilderModule.ITEM_REALIZED_TAB_DATA);
+        if (tab != null) {
+//            long forcedSeed = tab.forcedSeed();
+            String descString = tab.descriptor();
             DimensionDescriptor descriptor = new DimensionDescriptor();
             descriptor.read(descString);
             List<DimletKey> dimlets = descriptor.getDimlets();
             int idx = SLOT_DIMLETS;
             for (DimletKey key : dimlets) {
-                boolean hasDimension = tagCompound.contains("dimension");
+                boolean hasDimension = tab.dimension().isPresent();
                 if (DimensionConfig.OWNER_DIMLET_REQUIRED.get() && hasDimension) {
                     // If we need owner dimlets and the dimension is created we don't extract the owern dimlet.
                     if (DimletTools.isOwnerDimlet(key)) {
