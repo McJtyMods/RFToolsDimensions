@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "S": {
+      "tag": "c:stones"
+    },
+    "s": {
+      "item": "rftoolsbase:dimensionalshard"
+    }
+  },
+  "pattern": [
+    "sS",
+    "sS"
+  ],
+  "result": {
+    "count": 1,
+    "id": "rftoolsdim:dimensional_pattern1_block"
+  }
+}

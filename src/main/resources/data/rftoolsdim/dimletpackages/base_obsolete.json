@@ -9,7 +9,7 @@
     "worldgen": false,
     "dimlet": false,
     "essence": {
-      "item": "minecraft:stone_pressure_plate"
+      "id": "minecraft:stone_pressure_plate"
     }
   },
   {
@@ -22,7 +22,7 @@
     "worldgen": false,
     "dimlet": false,
     "essence": {
-      "item": "minecraft:white_wool"
+      "id": "minecraft:white_wool"
     }
   },
   {
@@ -35,7 +35,7 @@
     "worldgen": false,
     "dimlet": false,
     "essence": {
-      "item": "minecraft:obsidian"
+      "id": "minecraft:obsidian"
     }
   },
   {
@@ -48,7 +48,7 @@
     "worldgen": false,
     "dimlet": false,
     "essence": {
-      "item": "minecraft:dirt"
+      "id": "minecraft:dirt"
     }
   }
 ]

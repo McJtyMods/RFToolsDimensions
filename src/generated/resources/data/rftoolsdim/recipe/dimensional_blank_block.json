@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "s": {
+      "item": "rftoolsbase:dimensionalshard"
+    }
+  },
+  "pattern": [
+    "ss",
+    "ss"
+  ],
+  "result": {
+    "count": 1,
+    "id": "rftoolsdim:dimensional_blank_block"
+  }
+}

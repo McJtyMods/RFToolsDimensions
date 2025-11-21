@@ -1,0 +1,33 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "empty_dimlet": {
+      "conditions": {
+        "items": [
+          {
+            "items": "rftoolsdim:empty_dimlet"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "rftoolsdim:digit1"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "empty_dimlet",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "rftoolsdim:digit1"
+    ]
+  },
+  "sends_telemetry_event": true
+}

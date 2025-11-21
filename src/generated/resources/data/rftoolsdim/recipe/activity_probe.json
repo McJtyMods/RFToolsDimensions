@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "item": "rftoolsbase:infused_enderpearl"
+    },
+    "F": {
+      "item": "rftoolsbase:machine_frame"
+    },
+    "s": {
+      "item": "rftoolsbase:dimensionalshard"
+    }
+  },
+  "pattern": [
+    "sCs",
+    "CFC",
+    "sCs"
+  ],
+  "result": {
+    "count": 1,
+    "id": "rftoolsdim:activity_probe"
+  }
+}

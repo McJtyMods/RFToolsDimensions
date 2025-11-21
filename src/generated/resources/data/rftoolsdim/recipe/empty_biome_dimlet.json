@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "item": "minecraft:clay_ball"
+    },
+    "E": {
+      "item": "rftoolsdim:empty_dimlet"
+    },
+    "r": {
+      "item": "minecraft:redstone"
+    }
+  },
+  "pattern": [
+    "rCr",
+    "CEC",
+    "rCr"
+  ],
+  "result": {
+    "count": 1,
+    "id": "rftoolsdim:empty_biome_dimlet"
+  }
+}

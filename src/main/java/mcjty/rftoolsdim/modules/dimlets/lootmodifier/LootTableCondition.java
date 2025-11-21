@@ -21,7 +21,7 @@ public record LootTableCondition(Set<ResourceLocation> tables) implements LootIt
 
     @Override
     public LootItemConditionType getType() {
-        return DimletModule.LOOT_TABLE_CONDITION;
+        return DimletModule.LOOT_TABLE_CONDITION.get();
     }
 
     @Override

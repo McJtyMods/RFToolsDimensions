@@ -55,7 +55,7 @@ public class DimletLootEntry extends LootPoolSingletonContainer {
     }
 
     public LootPoolEntryType getType() {
-        return DimletModule.DIMLET_LOOT_ENTRY;
+        return DimletModule.DIMLET_LOOT_ENTRY.get();
     }
 
     public static LootPoolSingletonContainer.Builder<?> builder(DimletRarity rarity) {

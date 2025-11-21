@@ -5,7 +5,6 @@ import mcjty.lib.datagen.DataGen;
 import mcjty.lib.datagen.Dob;
 import mcjty.lib.modules.IModule;
 import mcjty.rftoolsbase.modules.various.VariousModule;
-import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.dimension.DimensionRegistry;
 import mcjty.rftoolsdim.modules.dimlets.data.*;
 import mcjty.rftoolsdim.modules.dimlets.items.DimletItem;
@@ -17,14 +16,10 @@ import mcjty.rftoolsdim.modules.dimlets.recipes.DimletCycleRecipeBuilder;
 import mcjty.rftoolsdim.modules.dimlets.recipes.DimletCycleRecipeSerializer;
 import mcjty.rftoolsdim.modules.dimlets.recipes.DimletRecipeBuilder;
 import mcjty.rftoolsdim.modules.dimlets.recipes.DimletRecipeSerializer;
-import mcjty.rftoolsdim.modules.essences.data.StructureAbsorberData;
 import mcjty.rftoolsdim.setup.Config;
 import mcjty.rftoolsdim.setup.Registration;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponentType;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -100,25 +95,17 @@ public class DimletModule implements IModule {
     public static final Supplier<DimletRecipeSerializer> DIMLET_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register("dimlet_recipe", DimletRecipeSerializer::new);
     public static final Supplier<DimletCycleRecipeSerializer> DIMLET_CYCLE_SERIALIZER = RECIPE_SERIALIZERS.register("dimlet_cycle_recipe", DimletCycleRecipeSerializer::new);
 
+    public static final Supplier<LootPoolEntryType> DIMLET_LOOT_ENTRY = LOOT_POOL_ENTRY_TYPES.register("dimlet_loot", () -> new LootPoolEntryType(DimletLootEntry.codec()));
+    public static final Supplier<LootItemConditionType> LOOT_TABLE_CONDITION = LOOT_CONDITIONS.register("check_tables", () -> new LootItemConditionType(LootTableCondition.CODEC));
+
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<DimletData>> ITEM_DIMLET_DATA = COMPONENTS.registerComponentType(
             "dimlet_data",
             builder -> builder
                     .persistent(DimletData.CODEC)
                     .networkSynchronized(DimletData.STREAM_CODEC));
 
-    public static LootItemConditionType LOOT_TABLE_CONDITION;
-    public static LootPoolEntryType DIMLET_LOOT_ENTRY;
-
     @Override
     public void init(FMLCommonSetupEvent event) {
-        event.enqueueWork(() -> {
-            registerLootHelpers();
-        });
-    }
-
-    public static void registerLootHelpers() {
-        LOOT_TABLE_CONDITION = Registry.register(BuiltInRegistries.LOOT_CONDITION_TYPE, ResourceLocation.fromNamespaceAndPath(RFToolsDim.MODID, "check_tables"), new LootItemConditionType(LootTableCondition.CODEC));
-        DIMLET_LOOT_ENTRY = Registry.register(BuiltInRegistries.LOOT_POOL_ENTRY_TYPE, ResourceLocation.fromNamespaceAndPath(RFToolsDim.MODID, "dimlet_loot"), new LootPoolEntryType(DimletLootEntry.codec()));
     }
 
     @Override
@@ -133,7 +120,6 @@ public class DimletModule implements IModule {
 
     @Override
     public void initDatagen(DataGen dataGen, HolderLookup.Provider provider) {
-        registerLootHelpers();
         dataGen.add(
                 Dob.itemBuilder(EMPTY_DIMLET)
                         .generatedItem("item/dimlets/empty_dimlet")

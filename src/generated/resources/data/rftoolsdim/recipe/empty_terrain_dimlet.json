@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "tag": "c:cobblestones"
+    },
+    "D": {
+      "item": "minecraft:dirt"
+    },
+    "E": {
+      "item": "rftoolsdim:empty_dimlet"
+    }
+  },
+  "pattern": [
+    "CDC",
+    "DED",
+    "CDC"
+  ],
+  "result": {
+    "count": 1,
+    "id": "rftoolsdim:empty_terrain_dimlet"
+  }
+}

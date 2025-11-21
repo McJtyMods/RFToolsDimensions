@@ -9,7 +9,7 @@
     "worldgen": true,
     "dimlet": true,
     "essence": {
-      "item": "minecraft:wool"
+      "id": "minecraft:wool"
     }
   },
   {
@@ -22,7 +22,7 @@
     "worldgen": true,
     "dimlet": true,
     "essence": {
-      "item": "minecraft:stone"
+      "id": "minecraft:stone"
     }
   },
   {

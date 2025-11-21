@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "item": "minecraft:chest"
+    },
+    "F": {
+      "item": "rftoolsbase:machine_frame"
+    },
+    "s": {
+      "item": "rftoolsbase:dimensionalshard"
+    },
+    "u": {
+      "item": "rftoolsdim:empty_dimlet"
+    }
+  },
+  "pattern": [
+    "sus",
+    "CFC",
+    "sus"
+  ],
+  "result": {
+    "count": 1,
+    "id": "rftoolsdim:knowledge_holder"
+  }
+}

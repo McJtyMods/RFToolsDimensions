@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "F": {
+      "item": "rftoolsbase:machine_frame"
+    },
+    "g": {
+      "item": "minecraft:gold_ingot"
+    },
+    "i": {
+      "tag": "c:ingots/iron"
+    },
+    "o": {
+      "tag": "c:ender_pearls"
+    }
+  },
+  "pattern": [
+    "oio",
+    "iFi",
+    "ggg"
+  ],
+  "result": {
+    "count": 1,
+    "id": "rftoolsdim:dimension_editor"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "rftoolsdim:dimensional_pattern2_block"
+        }
+      ],
+      "name": "dimensional_pattern2_block",
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "rftoolsdim:blocks/dimensional_pattern2_block"
+}

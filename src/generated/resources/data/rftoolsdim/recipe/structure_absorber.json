@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "item": "minecraft:sponge"
+    },
+    "s": {
+      "item": "rftoolsbase:dimensionalshard"
+    },
+    "u": {
+      "tag": "minecraft:stone_bricks"
+    }
+  },
+  "pattern": [
+    "usu",
+    "sCs",
+    "usu"
+  ],
+  "result": {
+    "count": 1,
+    "id": "rftoolsdim:structure_absorber"
+  }
+}

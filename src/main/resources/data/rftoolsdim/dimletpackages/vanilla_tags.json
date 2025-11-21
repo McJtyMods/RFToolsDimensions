@@ -9,7 +9,7 @@
     "worldgen": true,
     "dimlet": true,
     "essence": {
-      "item": "minecraft:nether_star"
+      "id": "minecraft:nether_star"
     }
   },
   {
@@ -22,7 +22,7 @@
     "worldgen": true,
     "dimlet": true,
     "essence": {
-      "item": "minecraft:oak_planks"
+      "id": "minecraft:oak_planks"
     }
   },
   {
@@ -35,7 +35,7 @@
     "worldgen": true,
     "dimlet": true,
     "essence": {
-      "item": "minecraft:white_wool"
+      "id": "minecraft:white_wool"
     }
   },
   {
@@ -48,7 +48,7 @@
     "worldgen": true,
     "dimlet": true,
     "essence": {
-      "item": "minecraft:oak_log"
+      "id": "minecraft:oak_log"
     }
   },
   {
@@ -61,7 +61,7 @@
     "worldgen": true,
     "dimlet": true,
     "essence": {
-      "item": "minecraft:ice"
+      "id": "minecraft:ice"
     }
   },
   {
@@ -74,7 +74,7 @@
     "worldgen": true,
     "dimlet": true,
     "essence": {
-      "item": "minecraft:glass"
+      "id": "minecraft:glass"
     }
   },
   {
@@ -87,7 +87,7 @@
     "worldgen": true,
     "dimlet": true,
     "essence": {
-      "item": "minecraft:dirt"
+      "id": "minecraft:dirt"
     }
   }
 ]

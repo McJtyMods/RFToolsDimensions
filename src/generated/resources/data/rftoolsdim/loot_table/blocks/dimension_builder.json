@@ -1,0 +1,31 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:copy_name",
+              "source": "block_entity"
+            },
+            {
+              "function": "minecraft:copy_components",
+              "include": [
+                "mcjtylib:item_energy",
+                "mcjtylib:item_inventory"
+              ],
+              "source": "block_entity"
+            }
+          ],
+          "name": "rftoolsdim:dimension_builder"
+        }
+      ],
+      "name": "dimension_builder",
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "rftoolsdim:blocks/dimension_builder"
+}

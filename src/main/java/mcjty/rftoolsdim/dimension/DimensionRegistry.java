@@ -8,8 +8,6 @@ import net.minecraft.world.level.storage.loot.LootTable;
 
 public class DimensionRegistry {
 
-    public static final ResourceLocation RFTOOLS_BIOMES_ID = ResourceLocation.fromNamespaceAndPath(RFToolsDim.MODID, "biomes");
-    public static final ResourceLocation RFTOOLS_CHUNKGEN_ID = ResourceLocation.fromNamespaceAndPath(RFToolsDim.MODID, "rftools");
     public static final ResourceLocation RFTOOLS_EFFECTS_ID = ResourceLocation.fromNamespaceAndPath(RFToolsDim.MODID, "effects");
 
     public static final ResourceLocation FIXED_DAY_ID = ResourceLocation.fromNamespaceAndPath(RFToolsDim.MODID, "fixed_day");

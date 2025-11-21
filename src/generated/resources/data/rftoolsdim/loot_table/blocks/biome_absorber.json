@@ -1,0 +1,32 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:copy_name",
+              "source": "block_entity"
+            },
+            {
+              "function": "minecraft:copy_components",
+              "include": [
+                "mcjtylib:item_energy",
+                "mcjtylib:item_inventory",
+                "rftoolsdim:biome_absorber_data"
+              ],
+              "source": "block_entity"
+            }
+          ],
+          "name": "rftoolsdim:biome_absorber"
+        }
+      ],
+      "name": "biome_absorber",
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "rftoolsdim:blocks/biome_absorber"
+}

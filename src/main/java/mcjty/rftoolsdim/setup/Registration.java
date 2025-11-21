@@ -7,7 +7,9 @@ import mcjty.lib.blocks.RBlockRegistry;
 import mcjty.lib.setup.DeferredBlocks;
 import mcjty.lib.setup.DeferredItems;
 import mcjty.rftoolsdim.RFToolsDim;
+import mcjty.rftoolsdim.dimension.biomes.RFTBiomeProvider;
 import mcjty.rftoolsdim.dimension.features.RFTFeature;
+import mcjty.rftoolsdim.dimension.terraintypes.RFToolsChunkGenerator;
 import mcjty.rftoolsdim.modules.dimlets.DimletModule;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -18,12 +20,17 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.level.biome.BiomeSource;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
+import net.minecraft.world.level.storage.loot.entries.LootPoolEntryType;
+import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.common.loot.IGlobalLootModifier;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
@@ -46,12 +53,15 @@ public class Registration {
     public static final DeferredRegister<SoundEvent> SOUNDS = DeferredRegister.create(BuiltInRegistries.SOUND_EVENT, MODID);
     public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(BuiltInRegistries.ENTITY_TYPE, MODID);
     public static final DeferredRegister<MapCodec<? extends IGlobalLootModifier>> LOOT_MODIFIER_SERIALIZERS = DeferredRegister.create(NeoForgeRegistries.Keys.GLOBAL_LOOT_MODIFIER_SERIALIZERS, MODID);
+    public static final DeferredRegister<LootPoolEntryType> LOOT_POOL_ENTRY_TYPES = DeferredRegister.create(BuiltInRegistries.LOOT_POOL_ENTRY_TYPE, MODID);
+    public static final DeferredRegister<LootItemConditionType> LOOT_CONDITIONS = DeferredRegister.create(BuiltInRegistries.LOOT_CONDITION_TYPE, MODID);
     public static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(BuiltInRegistries.RECIPE_SERIALIZER, MODID);
     public static final DeferredRegister<CreativeModeTab> TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MODID);
     public static final DeferredRegister.DataComponents COMPONENTS = DeferredRegister.createDataComponents(Registries.DATA_COMPONENT_TYPE, MODID);
-    public static final DeferredRegister<net.neoforged.neoforge.attachment.AttachmentType<?>> ATTACHMENT_TYPES = DeferredRegister.create(NeoForgeRegistries.Keys.ATTACHMENT_TYPES, MODID);
-
+    public static final DeferredRegister<AttachmentType<?>> ATTACHMENT_TYPES = DeferredRegister.create(NeoForgeRegistries.Keys.ATTACHMENT_TYPES, MODID);
     public static final DeferredRegister<Feature<?>> FEATURES = DeferredRegister.create(BuiltInRegistries.FEATURE, MODID);
+    public static final DeferredRegister<MapCodec<? extends ChunkGenerator>> CHUNK_GENERATORS = DeferredRegister.create(BuiltInRegistries.CHUNK_GENERATOR, MODID);
+    public static final DeferredRegister<MapCodec<? extends BiomeSource>> BIOME_SOURCES = DeferredRegister.create(BuiltInRegistries.BIOME_SOURCE, MODID);
 
     public static void register(IEventBus bus) {
         RBLOCKS.register(bus);
@@ -62,13 +72,19 @@ public class Registration {
         SOUNDS.register(bus);
         ENTITIES.register(bus);
         LOOT_MODIFIER_SERIALIZERS.register(bus);
+        LOOT_POOL_ENTRY_TYPES.register(bus);
+        LOOT_CONDITIONS.register(bus);
         RECIPE_SERIALIZERS.register(bus);
         FEATURES.register(bus);
         TABS.register(bus);
         COMPONENTS.register(bus);
         ATTACHMENT_TYPES.register(bus);
+        CHUNK_GENERATORS.register(bus);
+        BIOME_SOURCES.register(bus);
     }
 
+    public static final Supplier<MapCodec<RFToolsChunkGenerator>> RFTCHUNKGEN = CHUNK_GENERATORS.register("rftools", () -> RFToolsChunkGenerator.CODEC);
+    public static final Supplier<MapCodec<RFTBiomeProvider>> RFTBIOMESOURCE = BIOME_SOURCES.register("biomes", () -> RFTBiomeProvider.CODEC);
 
     public static final Supplier<RFTFeature> RFTFEATURE = FEATURES.register(
             RFTFeature.RFTFEATURE_ID.getPath(),

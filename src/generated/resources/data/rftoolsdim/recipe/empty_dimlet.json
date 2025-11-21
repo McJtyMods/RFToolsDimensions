@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "p": {
+      "item": "minecraft:paper"
+    },
+    "s": {
+      "item": "rftoolsbase:dimensionalshard"
+    }
+  },
+  "pattern": [
+    " p ",
+    "psp",
+    " p "
+  ],
+  "result": {
+    "count": 1,
+    "id": "rftoolsdim:empty_dimlet"
+  }
+}

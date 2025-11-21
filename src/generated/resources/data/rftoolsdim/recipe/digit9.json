@@ -1,0 +1,18 @@
+{
+  "type": "rftoolsdim:dimlet_cycle_recipe",
+  "category": "misc",
+  "input": "8",
+  "key": {
+    "C": {
+      "item": "rftoolsdim:digit_dimlet"
+    }
+  },
+  "output": "9",
+  "pattern": [
+    "C"
+  ],
+  "result": {
+    "count": 1,
+    "id": "rftoolsdim:digit_dimlet"
+  }
+}

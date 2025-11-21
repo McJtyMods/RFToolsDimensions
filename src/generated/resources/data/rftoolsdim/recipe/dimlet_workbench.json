@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "item": "minecraft:crafting_table"
+    },
+    "F": {
+      "item": "rftoolsbase:machine_frame"
+    },
+    "r": {
+      "item": "minecraft:redstone"
+    },
+    "u": {
+      "item": "rftoolsdim:empty_dimlet"
+    }
+  },
+  "pattern": [
+    "rur",
+    "CFC",
+    "rur"
+  ],
+  "result": {
+    "count": 1,
+    "id": "rftoolsdim:dimlet_workbench"
+  }
+}

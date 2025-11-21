@@ -6,18 +6,11 @@ import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.commands.ModCommands;
 import mcjty.rftoolsdim.compat.LostCityCompat;
 import mcjty.rftoolsdim.compat.RFToolsUtilityCompat;
-import mcjty.rftoolsdim.dimension.DimensionRegistry;
-import mcjty.rftoolsdim.dimension.biomes.RFTBiomeProvider;
-import mcjty.rftoolsdim.dimension.terraintypes.RFToolsChunkGenerator;
-import net.minecraft.core.Registry;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
-
-import static mcjty.rftoolsdim.dimension.DimensionRegistry.RFTOOLS_CHUNKGEN_ID;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.RegisterCommandsEvent;
 
 @EventBusSubscriber(modid = RFToolsDim.MODID)
 public class ModSetup extends DefaultModSetup {
@@ -31,11 +24,6 @@ public class ModSetup extends DefaultModSetup {
 //            TerrainPresets.init();
 //        });
         NeoForge.EVENT_BUS.register(new ForgeEventHandlers());
-
-        e.enqueueWork(() -> {
-            Registry.register(BuiltInRegistries.CHUNK_GENERATOR, RFTOOLS_CHUNKGEN_ID, RFToolsChunkGenerator.CODEC);
-            Registry.register(BuiltInRegistries.BIOME_SOURCE, DimensionRegistry.RFTOOLS_BIOMES_ID, RFTBiomeProvider.CODEC);
-        });
     }
 
     @SubscribeEvent

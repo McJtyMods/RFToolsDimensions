@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "rftoolsdim:structure_absorber"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "sponge": {
+      "conditions": {
+        "items": [
+          {
+            "items": "minecraft:sponge"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "sponge"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "rftoolsdim:structure_absorber"
+    ]
+  }
+}

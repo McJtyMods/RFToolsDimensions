@@ -129,7 +129,7 @@
     "worldgen": true,
     "dimlet": true,
     "essence": {
-      "item": "minecraft:stone"
+      "id": "minecraft:stone"
     }
   },
   {
@@ -142,7 +142,7 @@
     "worldgen": true,
     "dimlet": true,
     "essence": {
-      "item": "minecraft:end_stone"
+      "id": "minecraft:end_stone"
     }
   },
   {
@@ -155,7 +155,7 @@
     "worldgen": true,
     "dimlet": true,
     "essence": {
-      "item": "minecraft:netherrack"
+      "id": "minecraft:netherrack"
     }
   },
   {
@@ -168,7 +168,7 @@
     "worldgen": true,
     "dimlet": true,
     "essence": {
-      "item": "minecraft:ink_sac"
+      "id": "minecraft:ink_sac"
     }
   },
   {
@@ -181,7 +181,7 @@
     "worldgen": true,
     "dimlet": true,
     "essence": {
-      "item": "minecraft:quartz"
+      "id": "minecraft:quartz"
     }
   },
   {
@@ -194,7 +194,7 @@
     "worldgen": true,
     "dimlet": true,
     "essence": {
-      "item": "minecraft:redstone"
+      "id": "minecraft:redstone"
     }
   },
   {
@@ -207,7 +207,7 @@
     "worldgen": true,
     "dimlet": true,
     "essence": {
-      "item": "minecraft:gray_wool"
+      "id": "minecraft:gray_wool"
     }
   },
   {
@@ -220,7 +220,7 @@
     "worldgen": true,
     "dimlet": true,
     "essence": {
-      "item": "minecraft:black_stained_glass"
+      "id": "minecraft:black_stained_glass"
     }
   },
   {
@@ -233,7 +233,7 @@
     "worldgen": true,
     "dimlet": true,
     "essence": {
-      "item": "minecraft:red_stained_glass"
+      "id": "minecraft:red_stained_glass"
     }
   },
   {
@@ -246,7 +246,7 @@
     "worldgen": true,
     "dimlet": true,
     "essence": {
-      "item": "minecraft:white_stained_glass"
+      "id": "minecraft:white_stained_glass"
     }
   },
 
@@ -260,7 +260,7 @@
     "worldgen": true,
     "dimlet": true,
     "essence": {
-      "item": "minecraft:black_wool"
+      "id": "minecraft:black_wool"
     }
   },
   {
@@ -273,7 +273,7 @@
     "worldgen": true,
     "dimlet": true,
     "essence": {
-      "item": "minecraft:red_wool"
+      "id": "minecraft:red_wool"
     }
   },
   {
@@ -286,7 +286,7 @@
     "worldgen": true,
     "dimlet": true,
     "essence": {
-      "item": "minecraft:white_wool"
+      "id": "minecraft:white_wool"
     }
   },
 
@@ -300,7 +300,7 @@
     "worldgen": true,
     "dimlet": true,
     "essence": {
-      "item": "minecraft:redstone"
+      "id": "minecraft:redstone"
     }
   },
   {
@@ -313,7 +313,7 @@
     "worldgen": true,
     "dimlet": true,
     "essence": {
-      "item": "minecraft:black_dye"
+      "id": "minecraft:black_dye"
     }
   },
   {
@@ -326,7 +326,7 @@
     "worldgen": true,
     "dimlet": true,
     "essence": {
-      "item": "minecraft:glowstone_dust"
+      "id": "minecraft:glowstone_dust"
     }
   },
   {
@@ -339,7 +339,7 @@
     "worldgen": true,
     "dimlet": true,
     "essence": {
-      "item": "minecraft:paper"
+      "id": "minecraft:paper"
     }
   },
   {
@@ -352,7 +352,7 @@
     "worldgen": true,
     "dimlet": true,
     "essence": {
-      "item": "minecraft:bricks"
+      "id": "minecraft:bricks"
     }
   },
   {
@@ -365,7 +365,7 @@
     "worldgen": true,
     "dimlet": true,
     "essence": {
-      "item": "minecraft:sponge"
+      "id": "minecraft:sponge"
     }
   },
   {
@@ -378,7 +378,7 @@
     "worldgen": true,
     "dimlet": true,
     "essence": {
-      "item": "minecraft:water_bucket"
+      "id": "minecraft:water_bucket"
     }
   },
   {
@@ -391,7 +391,7 @@
     "worldgen": true,
     "dimlet": true,
     "essence": {
-      "item": "rftoolsdim:common_essence"
+      "id": "rftoolsdim:common_essence"
     }
   },
   {
@@ -404,7 +404,7 @@
     "worldgen": true,
     "dimlet": true,
     "essence": {
-      "item": "minecraft:obsidian"
+      "id": "minecraft:obsidian"
     }
   },
   {
@@ -417,7 +417,7 @@
     "worldgen": true,
     "dimlet": true,
     "essence": {
-      "item": "minecraft:netherrack"
+      "id": "minecraft:netherrack"
     }
   },
   {
@@ -430,7 +430,7 @@
     "worldgen": true,
     "dimlet": true,
     "essence": {
-      "item": "minecraft:gunpowder"
+      "id": "minecraft:gunpowder"
     }
   },
   {
@@ -443,7 +443,7 @@
     "worldgen": true,
     "dimlet": true,
     "essence": {
-      "item": "minecraft:iron_bars"
+      "id": "minecraft:iron_bars"
     }
   },
   {
@@ -456,7 +456,7 @@
     "worldgen": true,
     "dimlet": true,
     "essence": {
-      "item": "minecraft:stone_pressure_plate"
+      "id": "minecraft:stone_pressure_plate"
     }
   },
   {
@@ -469,7 +469,7 @@
     "worldgen": true,
     "dimlet": true,
     "essence": {
-      "item": "minecraft:feather"
+      "id": "minecraft:feather"
     }
   },
   {
@@ -482,7 +482,7 @@
     "worldgen": true,
     "dimlet": true,
     "essence": {
-      "item": "minecraft:paper"
+      "id": "minecraft:paper"
     }
   },
   {
@@ -495,7 +495,7 @@
     "worldgen": true,
     "dimlet": true,
     "essence": {
-      "item": "minecraft:nether_wart"
+      "id": "minecraft:nether_wart"
     }
   },
   {
@@ -508,7 +508,7 @@
     "worldgen": true,
     "dimlet": true,
     "essence": {
-      "item": "minecraft:redstone_wire"
+      "id": "minecraft:redstone_wire"
     }
   },
   {
@@ -521,7 +521,7 @@
     "worldgen": true,
     "dimlet": true,
     "essence": {
-      "item": "minecraft:gravel"
+      "id": "minecraft:gravel"
     }
   },
   {
@@ -534,7 +534,7 @@
     "worldgen": true,
     "dimlet": true,
     "essence": {
-      "item": "minecraft:dirt"
+      "id": "minecraft:dirt"
     }
   },
   {
@@ -547,7 +547,7 @@
     "worldgen": true,
     "dimlet": true,
     "essence": {
-      "item": "minecraft:dripstone_block"
+      "id": "minecraft:dripstone_block"
     }
   },
   {
@@ -560,7 +560,7 @@
     "worldgen": true,
     "dimlet": true,
     "essence": {
-      "item": "minecraft:obsidian"
+      "id": "minecraft:obsidian"
     }
   },
   {
@@ -573,7 +573,7 @@
     "worldgen": true,
     "dimlet": true,
     "essence": {
-      "item": "minecraft:white_terracotta"
+      "id": "minecraft:white_terracotta"
     }
   },
   {
@@ -586,7 +586,7 @@
     "worldgen": true,
     "dimlet": true,
     "essence": {
-      "item": "minecraft:dripstone_block"
+      "id": "minecraft:dripstone_block"
     }
   },
   {
@@ -599,7 +599,7 @@
     "worldgen": true,
     "dimlet": true,
     "essence": {
-      "item": "minecraft:jungle_sapling"
+      "id": "minecraft:jungle_sapling"
     }
   },
   {
@@ -612,7 +612,7 @@
     "worldgen": true,
     "dimlet": true,
     "essence": {
-      "item": "minecraft:orange_terracotta"
+      "id": "minecraft:orange_terracotta"
     }
   },
   {
@@ -625,7 +625,7 @@
     "worldgen": true,
     "dimlet": true,
     "essence": {
-      "item": "minecraft:dirt"
+      "id": "minecraft:dirt"
     }
   },
   {
@@ -638,7 +638,7 @@
     "worldgen": true,
     "dimlet": true,
     "essence": {
-      "item": "minecraft:red_sandstone"
+      "id": "minecraft:red_sandstone"
     }
   },
   {
@@ -651,7 +651,7 @@
     "worldgen": true,
     "dimlet": true,
     "essence": {
-      "item": "minecraft:ice"
+      "id": "minecraft:ice"
     }
   },
   {
@@ -664,7 +664,7 @@
     "worldgen": true,
     "dimlet": true,
     "essence": {
-      "item": "minecraft:end_stone"
+      "id": "minecraft:end_stone"
     }
   },
   {
@@ -677,7 +677,7 @@
     "worldgen": true,
     "dimlet": true,
     "essence": {
-      "item": "minecraft:dead_tube_coral_block"
+      "id": "minecraft:dead_tube_coral_block"
     }
   },
   {
@@ -690,7 +690,7 @@
     "worldgen": true,
     "dimlet": true,
     "essence": {
-      "item": "minecraft:spruce_sapling"
+      "id": "minecraft:spruce_sapling"
     }
   },
   {
@@ -703,7 +703,7 @@
     "worldgen": true,
     "dimlet": true,
     "essence": {
-      "item": "minecraft:water_bucket"
+      "id": "minecraft:water_bucket"
     }
   },
   {
@@ -716,7 +716,7 @@
     "worldgen": true,
     "dimlet": true,
     "essence": {
-      "item": "minecraft:sand"
+      "id": "minecraft:sand"
     }
   },
   {
@@ -729,7 +729,7 @@
     "worldgen": true,
     "dimlet": true,
     "essence": {
-      "item": "minecraft:bucket"
+      "id": "minecraft:bucket"
     }
   },
   {
@@ -742,7 +742,7 @@
     "worldgen": true,
     "dimlet": true,
     "essence": {
-      "item": "minecraft:slime_ball"
+      "id": "minecraft:slime_ball"
     }
   },
   {
@@ -755,7 +755,7 @@
     "worldgen": true,
     "dimlet": true,
     "essence": {
-      "item": "minecraft:brown_mushroom"
+      "id": "minecraft:brown_mushroom"
     }
   },
   {
@@ -768,7 +768,7 @@
     "worldgen": true,
     "dimlet": true,
     "essence": {
-      "item": "minecraft:netherrack"
+      "id": "minecraft:netherrack"
     }
   },
   {
@@ -781,7 +781,7 @@
     "worldgen": true,
     "dimlet": true,
     "essence": {
-      "item": "minecraft:deepslate"
+      "id": "minecraft:deepslate"
     }
   },
   {
@@ -794,7 +794,7 @@
     "worldgen": true,
     "dimlet": true,
     "essence": {
-      "item": "minecraft:cobblestone"
+      "id": "minecraft:cobblestone"
     }
   },
   {
@@ -807,7 +807,7 @@
     "worldgen": true,
     "dimlet": true,
     "essence": {
-      "item": "minecraft:dirt"
+      "id": "minecraft:dirt"
     }
   },
   {
@@ -820,7 +820,7 @@
     "worldgen": true,
     "dimlet": true,
     "essence": {
-      "item": "minecraft:stone"
+      "id": "minecraft:stone"
     }
   },
   {
@@ -833,7 +833,7 @@
     "worldgen": true,
     "dimlet": true,
     "essence": {
-      "item": "minecraft:redstone"
+      "id": "minecraft:redstone"
     }
   },
   {
@@ -846,7 +846,7 @@
     "worldgen": true,
     "dimlet": true,
     "essence": {
-      "item": "minecraft:redstone"
+      "id": "minecraft:redstone"
     }
   },
   {
@@ -859,7 +859,7 @@
     "worldgen": true,
     "dimlet": true,
     "essence": {
-      "item": "minecraft:string"
+      "id": "minecraft:string"
     }
   },
   {
@@ -872,7 +872,7 @@
     "worldgen": true,
     "dimlet": true,
     "essence": {
-      "item": "minecraft:clay_ball"
+      "id": "minecraft:clay_ball"
     }
   },
   {
@@ -885,7 +885,7 @@
     "worldgen": true,
     "dimlet": true,
     "essence": {
-      "item": "minecraft:slime_ball"
+      "id": "minecraft:slime_ball"
     }
   },
   {
@@ -898,7 +898,7 @@
     "worldgen": true,
     "dimlet": true,
     "essence": {
-      "item": "minecraft:snowball"
+      "id": "minecraft:snowball"
     }
   },
   {
@@ -911,7 +911,7 @@
     "worldgen": true,
     "dimlet": true,
     "essence": {
-      "item": "minecraft:stone"
+      "id": "minecraft:stone"
     }
   },
   {
@@ -924,7 +924,7 @@
     "worldgen": true,
     "dimlet": true,
     "essence": {
-      "item": "minecraft:glass"
+      "id": "minecraft:glass"
     }
   },
   {
@@ -937,7 +937,7 @@
     "worldgen": true,
     "dimlet": true,
     "essence": {
-      "item": "minecraft:ice"
+      "id": "minecraft:ice"
     }
   }
 ]

@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "item": "minecraft:comparator"
+    },
+    "r": {
+      "item": "minecraft:redstone"
+    },
+    "s": {
+      "item": "rftoolsbase:dimensionalshard"
+    }
+  },
+  "pattern": [
+    " s ",
+    "rCr",
+    " s "
+  ],
+  "result": {
+    "count": 1,
+    "id": "rftoolsdim:dimension_monitor"
+  }
+}
