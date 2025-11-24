@@ -1,0 +1,41 @@
+{
+  "type": "rftoolsdim:enderman_extra",
+  "commonDimletChance": 0.04,
+  "commonKnowledgeChance": 0.1,
+  "conditions": [
+    {
+      "condition": "neoforge:loot_table_id",
+      "loot_table_id": "minecraft:chests/stronghold_library"
+    },
+    {
+      "condition": "neoforge:loot_table_id",
+      "loot_table_id": "minecraft:chests/bastion_treasure"
+    },
+    {
+      "condition": "neoforge:loot_table_id",
+      "loot_table_id": "minecraft:chests/ancient_city"
+    },
+    {
+      "condition": "neoforge:loot_table_id",
+      "loot_table_id": "minecraft:chests/end_city_treasure"
+    },
+    {
+      "condition": "neoforge:loot_table_id",
+      "loot_table_id": "minecraft:chests/pillager_outpost"
+    },
+    {
+      "condition": "neoforge:loot_table_id",
+      "loot_table_id": "minecraft:chests/buried_treasure"
+    },
+    {
+      "condition": "neoforge:loot_table_id",
+      "loot_table_id": "minecraft:chests/woodland_mansion"
+    }
+  ],
+  "legendaryDimletChance": 2.0E-5,
+  "legendaryKnowledgeChance": 0.001,
+  "rareDimletChance": 2.0E-4,
+  "rareKnowledgeChance": 0.002,
+  "uncommonDimletChance": 0.01,
+  "uncommonKnowledgeChance": 0.02
+}

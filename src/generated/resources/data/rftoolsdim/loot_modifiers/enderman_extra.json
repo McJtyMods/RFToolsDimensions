@@ -1,0 +1,17 @@
+{
+  "type": "rftoolsdim:enderman_extra",
+  "commonDimletChance": 0.02,
+  "commonKnowledgeChance": 0.1,
+  "conditions": [
+    {
+      "condition": "neoforge:loot_table_id",
+      "loot_table_id": "minecraft:entities/enderman"
+    }
+  ],
+  "legendaryDimletChance": 1.0E-5,
+  "legendaryKnowledgeChance": 0.0,
+  "rareDimletChance": 1.0E-4,
+  "rareKnowledgeChance": 0.002,
+  "uncommonDimletChance": 0.005,
+  "uncommonKnowledgeChance": 0.02
+}
