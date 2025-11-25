@@ -131,7 +131,7 @@
           "name": "rftoolsdim:legendary_lost_knowledge"
         }
       ],
-      "name": "chests/hut_loot",
+      "name": "hut_loot",
       "rolls": {
         "type": "minecraft:uniform",
         "max": 5.0,
@@ -139,5 +139,5 @@
       }
     }
   ],
-  "random_sequence": "rftoolsdim:chests/chests/hut_loot"
+  "random_sequence": "rftoolsdim:chests/hut_loot"
 }

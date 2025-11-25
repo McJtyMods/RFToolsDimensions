@@ -15,5 +15,5 @@ public class DimensionRegistry {
     public static final ResourceLocation NORMAL_TIME_ID = ResourceLocation.fromNamespaceAndPath(RFToolsDim.MODID, "normal_time");
     public static final ResourceLocation CAVERN_ID = ResourceLocation.fromNamespaceAndPath(RFToolsDim.MODID, "cavern");
 
-    public static final ResourceKey<LootTable> HUT_LOOT = ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.fromNamespaceAndPath(RFToolsDim.MODID, "chests/hut_loot"));
+    public static final ResourceKey<LootTable> HUT_LOOT = ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.fromNamespaceAndPath(RFToolsDim.MODID, "hut_loot"));
 }

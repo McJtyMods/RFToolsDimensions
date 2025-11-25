@@ -9,7 +9,7 @@
     "worldgen": true,
     "dimlet": true,
     "essence": {
-      "id": "minecraft:wool"
+      "id": "minecraft:white_wool"
     }
   },
   {
