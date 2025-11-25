@@ -78,7 +78,11 @@ public class DimletSettings {
         JSonTools.getElement(jsonObject, "worldgen").ifPresent(e -> builder.worldgen(e.getAsBoolean()));
         JSonTools.getElement(jsonObject, "dimlet").ifPresent(e -> builder.dimlet(e.getAsBoolean()));
         if (jsonObject.has("essence")) {
-            builder.essence(JSonTools.jsonToItemStack(jsonObject.getAsJsonObject("essence")));
+            try {
+                builder.essence(JSonTools.jsonToItemStack(jsonObject.getAsJsonObject("essence")));
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         }
 
         return builder.build();

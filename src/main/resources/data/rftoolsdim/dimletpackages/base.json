@@ -508,7 +508,7 @@
     "worldgen": true,
     "dimlet": true,
     "essence": {
-      "id": "minecraft:redstone_wire"
+      "id": "minecraft:redstone"
     }
   },
   {

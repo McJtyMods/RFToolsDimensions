@@ -51,7 +51,6 @@ public class RFToolsDim {
 
         Config.register(mod, bus, modules);
         Registration.register(bus);
-        bus.addListener(setup.getBlockCapabilityRegistrar(Registration.RBLOCKS));
 
         bus.addListener(setup::init);
         bus.addListener(modules::init);
@@ -74,7 +73,7 @@ public class RFToolsDim {
 
     private void processIMC(final InterModProcessEvent event) {
         event.getIMCStream().forEach(message -> {
-            if ("getDimensionManager".equals(message.getMethod())) {
+            if (IDimensionManager.GET_DIMENSION_MANAGER.equals(message.getMethod())) {
                 Supplier<Function<IDimensionManager, Void>> supplier = message.getMessageSupplier();
                 supplier.get().apply(new DimensionManager());
             }
