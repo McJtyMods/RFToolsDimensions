@@ -1,6 +1,5 @@
 package mcjty.rftoolsdim.dimension.terraintypes;
 
-import com.google.common.base.Suppliers;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -30,6 +29,7 @@ import net.minecraft.world.level.levelgen.RandomState;
 import net.minecraft.world.level.levelgen.blending.Blender;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.level.levelgen.structure.StructureSet;
+import net.neoforged.neoforge.common.util.Lazy;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
@@ -37,7 +37,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executor;
 import java.util.function.Consumer;
 
 public class RFToolsChunkGenerator extends NoiseBasedChunkGenerator {
@@ -64,7 +63,7 @@ public class RFToolsChunkGenerator extends NoiseBasedChunkGenerator {
         this.dimensionSettings = dimensionSettings;
         this.overrideStructures = overrideStructures;
         this.seed = seed;
-        this.featuresPerStep = Suppliers.memoize(() -> {
+        this.featuresPerStep = Lazy.of(() -> {
             return FeatureSorter.buildFeaturesPerStep(List.copyOf(biomeSource.possibleBiomes()), (biome) -> {
                 List<HolderSet<PlacedFeature>> features = biome.value().getGenerationSettings().features();
                 List<HolderSet<PlacedFeature>> newFeatures = new ArrayList<>();

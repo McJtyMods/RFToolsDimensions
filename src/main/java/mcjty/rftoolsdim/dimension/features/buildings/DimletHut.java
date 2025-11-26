@@ -27,8 +27,8 @@ public class DimletHut extends BuildingTemplate {
         palette('C', (reader, pos) -> {
             reader.setBlock(pos, Blocks.CHEST.defaultBlockState(), 0);
             BlockEntity te = reader.getBlockEntity(pos);
-            if (te instanceof ChestBlockEntity) {
-                ((ChestBlockEntity) te).setLootTable(DimensionRegistry.HUT_LOOT, reader.getRandom().nextLong());
+            if (te instanceof ChestBlockEntity chest) {
+                chest.setLootTable(DimensionRegistry.HUT_LOOT, reader.getRandom().nextLong());
             }
 
         });

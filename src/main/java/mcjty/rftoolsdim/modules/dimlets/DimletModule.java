@@ -129,7 +129,7 @@ public class DimletModule implements IModule {
                                 " p ", "psp", " p ")
                         .loot(p -> {
                             LootPool.Builder builder = LootPool.lootPool()
-                                    .name(DimensionRegistry.HUT_LOOT.location().getPath())
+                                    .name(DimensionRegistry.HUT_LOOT_ID.getPath())
                                     .setRolls(UniformGenerator.between(1, 5))
                                     .add(DimletLootEntry.builder(DimletRarity.COMMON)
                                             .setWeight(14)
@@ -164,7 +164,7 @@ public class DimletModule implements IModule {
                                             .apply(SetItemCountFunction
                                                     .setCount(UniformGenerator.between(0, 1))))
                                     ;
-                            p.addChestLootTable(DimensionRegistry.HUT_LOOT.location(), LootTable.lootTable().withPool(builder));
+                            p.addChestLootTable(DimensionRegistry.HUT_LOOT_ID, LootTable.lootTable().withPool(builder));
 
                         }),
                 Dob.itemBuilder(EMPTY_TERRAIN_DIMLET)
