@@ -33,6 +33,6 @@ Create dimensions and power them with Forge Energy
 [[dependencies.rftoolsdim]]
     modId="rftoolsbase"
     mandatory=true
-    versionRange="[1.21-6.0.9,)"
+    versionRange="[1.21-6.0.10,)"
     ordering="AFTER"
     side="BOTH"
