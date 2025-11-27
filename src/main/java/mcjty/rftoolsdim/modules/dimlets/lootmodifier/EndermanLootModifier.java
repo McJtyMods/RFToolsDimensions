@@ -21,19 +21,6 @@ import java.util.List;
 
 public class EndermanLootModifier extends LootModifier {
 
-    // @todo better but doesn't work for some reason
-//    public static final Codec<EndermanLootModifier> CODEC = RecordCodecOBuilder.create(instance -> codecStart(instance).and(
-//            instance.group(
-//                    Codec.FLOAT.fieldOf("commonKnowledgeChance").forGetter(l -> l.commonKnowledgeChance),
-//                    Codec.FLOAT.fieldOf("uncommonKnowledgeChance").forGetter(l -> l.uncommonKnowledgeChance),
-//                    Codec.FLOAT.fieldOf("rareKnowledgeChance").forGetter(l -> l.rareKnowledgeChance),
-//                    Codec.FLOAT.fieldOf("legendaryKnowledgeChance").forGetter(l -> l.legendaryKnowledgeChance),
-//                    Codec.FLOAT.fieldOf("commonDimletChance").forGetter(l -> l.commonDimletChance),
-//                    Codec.FLOAT.fieldOf("uncommonDimletChance").forGetter(l -> l.uncommonDimletChance),
-//                    Codec.FLOAT.fieldOf("rareDimletChance").forGetter(l -> l.rareDimletChance),
-//                    Codec.FLOAT.fieldOf("legendaryDimletChance").forGetter(l -> l.legendaryDimletChance))
-//    ).apply(instance, EndermanLootModifier::new));
-
     public static final MapCodec<EndermanLootModifier> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             LOOT_CONDITIONS_CODEC.fieldOf("conditions").forGetter(l -> l.conditions),
             Codec.FLOAT.fieldOf("commonKnowledgeChance").forGetter(l -> l.commonKnowledgeChance),
@@ -68,38 +55,6 @@ public class EndermanLootModifier extends LootModifier {
         this.uncommonDimletChance = uncommonDimletChance;
         this.rareDimletChance = rareDimletChance;
         this.legendaryDimletChance = legendaryDimletChance;
-    }
-
-    public float getCommonKnowledgeChance() {
-        return commonKnowledgeChance;
-    }
-
-    public float getUncommonKnowledgeChance() {
-        return uncommonKnowledgeChance;
-    }
-
-    public float getRareKnowledgeChance() {
-        return rareKnowledgeChance;
-    }
-
-    public float getLegendaryKnowledgeChance() {
-        return legendaryKnowledgeChance;
-    }
-
-    public float getCommonDimletChance() {
-        return commonDimletChance;
-    }
-
-    public float getUncommonDimletChance() {
-        return uncommonDimletChance;
-    }
-
-    public float getRareDimletChance() {
-        return rareDimletChance;
-    }
-
-    public float getLegendaryDimletChance() {
-        return legendaryDimletChance;
     }
 
     @Override

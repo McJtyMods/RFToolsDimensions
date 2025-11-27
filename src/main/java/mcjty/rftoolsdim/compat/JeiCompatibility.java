@@ -7,12 +7,12 @@ import mcjty.rftoolsdim.modules.dimlets.data.DimletTools;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.VanillaTypes;
-import mezz.jei.api.ingredients.subtypes.IIngredientSubtypeInterpreter;
+import mezz.jei.api.ingredients.subtypes.ISubtypeInterpreter;
 import mezz.jei.api.ingredients.subtypes.UidContext;
 import mezz.jei.api.registration.ISubtypeRegistration;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
 
@@ -40,15 +40,19 @@ public class JeiCompatibility implements IModPlugin {
         registration.registerSubtypeInterpreter(VanillaTypes.ITEM_STACK, DimletModule.ADMIN_DIMLET.get(), DimletInterpreter.INSTANCE);
     }
 
-    public static class DimletInterpreter implements IIngredientSubtypeInterpreter<ItemStack> {
+    public static class DimletInterpreter implements ISubtypeInterpreter<ItemStack> {
 
         public static final DimletInterpreter INSTANCE = new DimletInterpreter();
 
         @Override
-        @Nonnull
-        public String apply(ItemStack ingredient, UidContext context) {
+        public @Nullable Object getSubtypeData(ItemStack ingredient, UidContext context) {
             DimletKey key = DimletTools.getDimletKey(ingredient);
             return key == null ? "null" : key.key();
+        }
+
+        @Override
+        public String getLegacyStringSubtypeInfo(ItemStack ingredient, UidContext context) {
+            return "";
         }
     }
 }
