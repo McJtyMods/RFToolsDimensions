@@ -34,6 +34,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
+import net.minecraft.core.component.DataComponentMap;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -271,5 +272,21 @@ public class FluidAbsorberTileEntity extends TickingTileEntity {
         tagCompound.putIntArray("toscanx", x);
         tagCompound.putIntArray("toscany", y);
         tagCompound.putIntArray("toscanz", z);
+    }
+
+    @Override
+    protected void applyImplicitComponents(DataComponentInput input) {
+        super.applyImplicitComponents(input);
+        BlockFluidAbsorberData data = input.get(EssencesModule.ITEM_BLOCKFLUID_ABSORBER_DATA);
+        if (data != null) {
+            setData(EssencesModule.BLOCKFLUID_ABSORBER_DATA, data);
+        }
+    }
+
+    @Override
+    protected void collectImplicitComponents(DataComponentMap.Builder builder) {
+        super.collectImplicitComponents(builder);
+        BlockFluidAbsorberData data = getData(EssencesModule.BLOCKFLUID_ABSORBER_DATA);
+        builder.set(EssencesModule.ITEM_BLOCKFLUID_ABSORBER_DATA.get(), data);
     }
 }

@@ -22,6 +22,7 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.core.component.DataComponentMap;
 
 import javax.annotation.Nullable;
 
@@ -134,5 +135,21 @@ public class BiomeAbsorberTileEntity extends TickingTileEntity {
             absorbing--;
         }
         setData(EssencesModule.BIOME_ABSORBER_DATA, new BiomeAbsorberData(biomeId, absorbing));
+    }
+
+    @Override
+    protected void applyImplicitComponents(DataComponentInput input) {
+        super.applyImplicitComponents(input);
+        BiomeAbsorberData data = input.get(EssencesModule.ITEM_BIOME_ABSORBER_DATA);
+        if (data != null) {
+            setData(EssencesModule.BIOME_ABSORBER_DATA, data);
+        }
+    }
+
+    @Override
+    protected void collectImplicitComponents(DataComponentMap.Builder builder) {
+        super.collectImplicitComponents(builder);
+        BiomeAbsorberData data = getData(EssencesModule.BIOME_ABSORBER_DATA);
+        builder.set(EssencesModule.ITEM_BIOME_ABSORBER_DATA.get(), data);
     }
 }

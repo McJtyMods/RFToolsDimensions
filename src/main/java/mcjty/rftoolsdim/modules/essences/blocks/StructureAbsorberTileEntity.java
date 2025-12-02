@@ -21,6 +21,7 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.core.component.DataComponentMap;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -161,5 +162,21 @@ public class StructureAbsorberTileEntity extends TickingTileEntity {
             }
         }
         return false;
+    }
+
+    @Override
+    protected void applyImplicitComponents(DataComponentInput input) {
+        super.applyImplicitComponents(input);
+        StructureAbsorberData data = input.get(EssencesModule.ITEM_STRUCTURE_ABSORBER_DATA);
+        if (data != null) {
+            setData(EssencesModule.STRUCTURE_ABSORBER_DATA, data);
+        }
+    }
+
+    @Override
+    protected void collectImplicitComponents(DataComponentMap.Builder builder) {
+        super.collectImplicitComponents(builder);
+        StructureAbsorberData data = getData(EssencesModule.STRUCTURE_ABSORBER_DATA);
+        builder.set(EssencesModule.ITEM_STRUCTURE_ABSORBER_DATA.get(), data);
     }
 }

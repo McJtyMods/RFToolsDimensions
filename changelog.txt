@@ -1,3 +1,6 @@
+Upcoming:
+- Fixed the essence absorbers not keeping their data when broken
+
 1.21-12.0.0:
 - First port to 1.21!
 
