@@ -1,4 +1,4 @@
-Upcoming:
+1.21-12.0.1:
 - Fixed the essence absorbers not keeping their data when broken
 - Fixed patchouli integration
 
