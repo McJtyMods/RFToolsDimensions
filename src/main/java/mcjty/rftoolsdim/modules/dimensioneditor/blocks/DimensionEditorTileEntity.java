@@ -144,7 +144,7 @@ public class DimensionEditorTileEntity extends TickingTileEntity {
         return new BaseBlock(new BlockBuilder()
                 .tileEntitySupplier(DimensionEditorTileEntity::new)
                 .infusable()
-                .manualEntry(ManualHelper.create("rftoolsdim:dimensions/dimension_editor"))
+                .manualEntry(ManualHelper.create("rftoolsbase:dimensions/dimension_editor"))
                 .info(key("message.rftoolsdim.shiftmessage"))
                 .infoShift(header(), gold())) {
             @Override

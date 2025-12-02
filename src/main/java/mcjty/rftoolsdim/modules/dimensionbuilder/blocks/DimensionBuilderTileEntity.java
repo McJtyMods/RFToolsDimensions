@@ -105,7 +105,7 @@ public class DimensionBuilderTileEntity extends TickingTileEntity {
         return new BaseBlock(new BlockBuilder()
                 .tileEntitySupplier(DimensionBuilderTileEntity::new)
                 .infusable()
-                .manualEntry(ManualHelper.create("rftoolsdim:dimensions/dimension_builder"))
+                .manualEntry(ManualHelper.create("rftoolsbase:dimensions/dimension_builder"))
                 .info(key("message.rftoolsdim.shiftmessage"))
                 .infoShift(header(), gold())) {
             @Override

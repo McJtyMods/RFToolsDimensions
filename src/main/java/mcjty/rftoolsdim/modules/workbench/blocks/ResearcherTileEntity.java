@@ -126,7 +126,7 @@ public class ResearcherTileEntity extends TickingTileEntity {
         return new BaseBlock(new BlockBuilder()
                 .tileEntitySupplier(ResearcherTileEntity::new)
                 .infusable()
-                .manualEntry(ManualHelper.create("rftoolsdim:dimlets/researcher"))
+                .manualEntry(ManualHelper.create("rftoolsbase:dimlets/researcher"))
                 .info(key("message.rftoolsdim.shiftmessage"))
                 .infoShift(header(), gold())) {
             @Override

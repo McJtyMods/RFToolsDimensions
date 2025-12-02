@@ -69,7 +69,7 @@ public class KnowledgeHolderTileEntity extends GenericTileEntity {
         return new BaseBlock(new BlockBuilder()
                 .tileEntitySupplier(KnowledgeHolderTileEntity::new)
                 .infusable()
-                .manualEntry(ManualHelper.create("rftoolsdim:dimlets/knowledge_holder"))
+                .manualEntry(ManualHelper.create("rftoolsbase:dimlets/knowledge_holder"))
                 .info(key("message.rftoolsdim.shiftmessage"))
                 .infoShift(header(), gold())) {
             @Override

@@ -115,7 +115,7 @@ public class WorkbenchTileEntity extends GenericTileEntity {
         return new BaseBlock(new BlockBuilder()
                 .tileEntitySupplier(WorkbenchTileEntity::new)
                 .infusable()
-                .manualEntry(ManualHelper.create("rftoolsdim:dimlets/dimlet_workbench"))
+                .manualEntry(ManualHelper.create("rftoolsbase:dimlets/dimlet_workbench"))
                 .info(key("message.rftoolsdim.shiftmessage"))
                 .infoShift(header(), gold())) {
             @Override

@@ -43,7 +43,7 @@ public class StructureAbsorberTileEntity extends TickingTileEntity {
                         .noOcclusion())
                 .tileEntitySupplier(StructureAbsorberTileEntity::new)
                 .topDriver(RFToolsDimensionsTOPDriver.DRIVER)
-                .manualEntry(ManualHelper.create("rftoolsdim:dimlets/dimlet_workbench"))
+                .manualEntry(ManualHelper.create("rftoolsbase:dimlets/dimlet_workbench"))
                 .info(key("message.rftoolsdim.shiftmessage"))
                 .infoShift(header(),
                         parameter("block", StructureAbsorberTileEntity::getStructureName),

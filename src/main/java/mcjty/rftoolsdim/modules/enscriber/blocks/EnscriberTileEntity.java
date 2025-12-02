@@ -97,7 +97,7 @@ public class EnscriberTileEntity extends GenericTileEntity {
         return new BaseBlock(new BlockBuilder()
                 .tileEntitySupplier(EnscriberTileEntity::new)
                 .infusable()
-                .manualEntry(ManualHelper.create("rftoolsdim:dimensions/enscriber"))
+                .manualEntry(ManualHelper.create("rftoolsbase:dimensions/enscriber"))
                 .info(key("message.rftoolsdim.shiftmessage"))
                 .infoShift(header(), gold())) {
             @Override
