@@ -1,4 +1,4 @@
-Upcoming:
+1.21-12.0.2:
 - The researcher, knowledge holder, and workbench did not correctly restore their items and energy when broken
 - The researcher could sometimes produce knowledge items that would crash the game
 - Fixed the namespace of a few tags ('forge' -> 'c')
