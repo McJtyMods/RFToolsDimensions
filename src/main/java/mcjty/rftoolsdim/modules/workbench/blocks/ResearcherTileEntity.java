@@ -10,6 +10,7 @@ import mcjty.lib.builder.BlockBuilder;
 import mcjty.lib.container.ContainerFactory;
 import mcjty.lib.container.GenericContainer;
 import mcjty.lib.container.GenericItemHandler;
+import mcjty.lib.setup.Registration;
 import mcjty.lib.tileentity.Cap;
 import mcjty.lib.tileentity.CapType;
 import mcjty.lib.tileentity.GenericEnergyStorage;
@@ -31,6 +32,7 @@ import mcjty.rftoolsdim.modules.workbench.WorkbenchConfig;
 import mcjty.rftoolsdim.modules.workbench.WorkbenchModule;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.MenuProvider;
@@ -290,6 +292,19 @@ public class ResearcherTileEntity extends TickingTileEntity {
         super.saveAdditional(tagCompound, provider);
     }
 
+    @Override
+    protected void applyImplicitComponents(DataComponentInput input) {
+        super.applyImplicitComponents(input);
+        energyStorage.applyImplicitComponents(input.get(Registration.ITEM_ENERGY));
+        items.applyImplicitComponents(input.get(Registration.ITEM_INVENTORY));
+    }
+
+    @Override
+    protected void collectImplicitComponents(DataComponentMap.Builder builder) {
+        super.collectImplicitComponents(builder);
+        energyStorage.collectImplicitComponents(builder);
+        items.collectImplicitComponents(builder);
+    }
     @Override
     public void saveClientDataToNBT(CompoundTag tag, HolderLookup.Provider provider) {
         // Item is required at client side because it is rendered in world

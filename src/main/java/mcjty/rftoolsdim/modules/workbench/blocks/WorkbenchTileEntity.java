@@ -10,6 +10,7 @@ import mcjty.lib.builder.BlockBuilder;
 import mcjty.lib.container.ContainerFactory;
 import mcjty.lib.container.GenericContainer;
 import mcjty.lib.container.GenericItemHandler;
+import mcjty.lib.setup.Registration;
 import mcjty.lib.tileentity.Cap;
 import mcjty.lib.tileentity.CapType;
 import mcjty.lib.tileentity.GenericTileEntity;
@@ -33,6 +34,7 @@ import mcjty.rftoolsdim.modules.workbench.WorkbenchModule;
 import mcjty.rftoolsdim.modules.workbench.network.PacketPatternToClient;
 import mcjty.rftoolsdim.setup.RFToolsDimMessages;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.server.level.ServerPlayer;
@@ -255,6 +257,18 @@ public class WorkbenchTileEntity extends GenericTileEntity {
                 return;
             }
         }
+    }
+
+    @Override
+    protected void applyImplicitComponents(DataComponentInput input) {
+        super.applyImplicitComponents(input);
+        items.applyImplicitComponents(input.get(Registration.ITEM_INVENTORY));
+    }
+
+    @Override
+    protected void collectImplicitComponents(DataComponentMap.Builder builder) {
+        super.collectImplicitComponents(builder);
+        items.collectImplicitComponents(builder);
     }
 
     public static final Key<String> PARAM_TYPE = new Key<>("type", Type.STRING);

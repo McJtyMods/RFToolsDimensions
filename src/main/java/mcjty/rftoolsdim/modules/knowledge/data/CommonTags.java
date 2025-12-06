@@ -51,11 +51,11 @@ public class CommonTags {
             commonTags.add(Tags.Blocks.ORES_QUARTZ);
             commonTags.add(Tags.Blocks.ORES_IRON);
             commonTags.add(Tags.Blocks.ORES_LAPIS);
-            commonTags.add(TagTools.createBlockTagKey(ResourceLocation.fromNamespaceAndPath("forge", "ores/copper")));
-            commonTags.add(TagTools.createBlockTagKey(ResourceLocation.fromNamespaceAndPath("forge", "ores/tin")));
-            commonTags.add(TagTools.createBlockTagKey(ResourceLocation.fromNamespaceAndPath("forge", "ores/silver")));
-            commonTags.add(TagTools.createBlockTagKey(ResourceLocation.fromNamespaceAndPath("forge", "ores/manganese")));
-            commonTags.add(TagTools.createBlockTagKey(ResourceLocation.fromNamespaceAndPath("forge", "ores/platinum")));
+            commonTags.add(Tags.Blocks.ORES_COPPER);
+            commonTags.add(TagTools.createBlockTagKey(ResourceLocation.fromNamespaceAndPath("c", "ores/tin")));
+            commonTags.add(TagTools.createBlockTagKey(ResourceLocation.fromNamespaceAndPath("c", "ores/silver")));
+            commonTags.add(TagTools.createBlockTagKey(ResourceLocation.fromNamespaceAndPath("c", "ores/manganese")));
+            commonTags.add(TagTools.createBlockTagKey(ResourceLocation.fromNamespaceAndPath("c", "ores/platinum")));
 
             commonTags.add(Tags.Blocks.STORAGE_BLOCKS_COAL);
             commonTags.add(Tags.Blocks.STORAGE_BLOCKS_DIAMOND);
@@ -64,11 +64,11 @@ public class CommonTags {
             commonTags.add(Tags.Blocks.STORAGE_BLOCKS_REDSTONE);
             commonTags.add(Tags.Blocks.STORAGE_BLOCKS_IRON);
             commonTags.add(Tags.Blocks.STORAGE_BLOCKS_LAPIS);
-            commonTags.add(TagTools.createBlockTagKey(ResourceLocation.fromNamespaceAndPath("forge", "storage_blocks/copper")));
-            commonTags.add(TagTools.createBlockTagKey(ResourceLocation.fromNamespaceAndPath("forge", "storage_blocks/tin")));
-            commonTags.add(TagTools.createBlockTagKey(ResourceLocation.fromNamespaceAndPath("forge", "storage_blocks/silver")));
-            commonTags.add(TagTools.createBlockTagKey(ResourceLocation.fromNamespaceAndPath("forge", "storage_blocks/manganese")));
-            commonTags.add(TagTools.createBlockTagKey(ResourceLocation.fromNamespaceAndPath("forge", "storage_blocks/platinum")));
+            commonTags.add(Tags.Blocks.STORAGE_BLOCKS_COPPER);
+            commonTags.add(TagTools.createBlockTagKey(ResourceLocation.fromNamespaceAndPath("c", "storage_blocks/tin")));
+            commonTags.add(TagTools.createBlockTagKey(ResourceLocation.fromNamespaceAndPath("c", "storage_blocks/silver")));
+            commonTags.add(TagTools.createBlockTagKey(ResourceLocation.fromNamespaceAndPath("c", "storage_blocks/manganese")));
+            commonTags.add(TagTools.createBlockTagKey(ResourceLocation.fromNamespaceAndPath("c", "storage_blocks/platinum")));
         }
     }
 
