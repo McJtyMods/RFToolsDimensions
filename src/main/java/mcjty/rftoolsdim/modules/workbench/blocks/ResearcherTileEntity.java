@@ -281,15 +281,19 @@ public class ResearcherTileEntity extends TickingTileEntity {
     }
 
     @Override
-    public void loadAdditional(CompoundTag tagCompound, HolderLookup.Provider provider) {
-        super.loadAdditional(tagCompound, provider);
-        progress = tagCompound.getInt("progress");
+    public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
+        super.loadAdditional(tag, provider);
+        progress = tag.getInt("progress");
+        energyStorage.load(tag, "energy", provider);
+        items.load(tag, "items", provider);
     }
 
     @Override
-    public void saveAdditional(@Nonnull CompoundTag tagCompound, HolderLookup.Provider provider) {
-        tagCompound.putInt("progress", progress);
-        super.saveAdditional(tagCompound, provider);
+    public void saveAdditional(@Nonnull CompoundTag tag, HolderLookup.Provider provider) {
+        super.saveAdditional(tag, provider);
+        tag.putInt("progress", progress);
+        energyStorage.save(tag, "energy", provider);
+        items.save(tag, "items", provider);
     }
 
     @Override

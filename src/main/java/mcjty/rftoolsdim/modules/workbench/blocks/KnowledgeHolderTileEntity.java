@@ -16,7 +16,9 @@ import mcjty.rftoolsdim.modules.knowledge.data.KnowledgeKey;
 import mcjty.rftoolsdim.modules.knowledge.items.LostKnowledgeItem;
 import mcjty.rftoolsdim.modules.workbench.WorkbenchModule;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponentMap;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -79,6 +81,18 @@ public class KnowledgeHolderTileEntity extends GenericTileEntity {
                 return RotationType.ROTATION;
             }
         };
+    }
+
+    @Override
+    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
+        super.saveAdditional(tag, provider);
+        items.save(tag, "items", provider);
+    }
+
+    @Override
+    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
+        super.loadAdditional(tag, provider);
+        items.load(tag, "items", provider);
     }
 
     @Override
