@@ -2,6 +2,13 @@
   "name": "Dimlet Workbench",
   "icon": "rftoolsdim:dimlet_workbench",
   "category": "rftoolsbase:category_rftoolsdimensions_dimlets",
+  "extra_recipe_mappings": {
+    "rftoolsdim:dimlet_workbench": 0,
+    "rftoolsdim:biome_absorber": 0,
+    "rftoolsdim:block_absorber": 0,
+    "rftoolsdim:fluid_absorber": 0,
+    "rftoolsdim:structure_absorber": 0
+  },
   "sortnum": 20,
   "pages": [
     {

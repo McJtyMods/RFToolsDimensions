@@ -2,6 +2,9 @@
   "name": "Researcher",
   "icon": "rftoolsdim:researcher",
   "category": "rftoolsbase:category_rftoolsdimensions_dimlets",
+  "extra_recipe_mappings": {
+    "rftoolsdim:researcher": 0
+  },
   "sortnum": 40,
   "pages": [
     {

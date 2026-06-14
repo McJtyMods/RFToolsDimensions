@@ -2,6 +2,9 @@
   "name": "Knowledge Holder",
   "icon": "rftoolsdim:knowledge_holder",
   "category": "rftoolsbase:category_rftoolsdimensions_dimlets",
+  "extra_recipe_mappings": {
+    "rftoolsdim:knowledge_holder": 0
+  },
   "sortnum": 30,
   "pages": [
     {

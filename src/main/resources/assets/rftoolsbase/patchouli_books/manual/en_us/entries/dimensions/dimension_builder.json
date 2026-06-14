@@ -2,6 +2,9 @@
   "name": "Dimension Builder",
   "icon": "rftoolsdim:dimension_builder",
   "category": "rftoolsbase:category_rftoolsdimensions_dimensions",
+  "extra_recipe_mappings": {
+    "rftoolsdim:dimension_builder": 0
+  },
   "sortnum": 20,
   "pages": [
     {

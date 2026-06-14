@@ -1,0 +1,15 @@
+{
+  "name": "Dimension Editor",
+  "icon": "rftoolsdim:dimension_editor",
+  "category": "rftoolsbase:category_rftoolsdimensions_dimensions",
+  "extra_recipe_mappings": {
+    "rftoolsdim:dimension_editor": 0
+  },
+  "sortnum": 30,
+  "pages": [
+    {
+      "type": "text",
+      "text": "The Dimension Editor is used to modify existing dimension tabs."
+    }
+  ]
+}

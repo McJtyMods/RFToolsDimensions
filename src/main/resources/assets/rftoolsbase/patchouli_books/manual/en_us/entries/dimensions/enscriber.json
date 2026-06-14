@@ -2,6 +2,9 @@
   "name": "Enscriber",
   "icon": "rftoolsdim:enscriber",
   "category": "rftoolsbase:category_rftoolsdimensions_dimensions",
+  "extra_recipe_mappings": {
+    "rftoolsdim:enscriber": 0
+  },
   "sortnum": 10,
   "pages": [
     {
