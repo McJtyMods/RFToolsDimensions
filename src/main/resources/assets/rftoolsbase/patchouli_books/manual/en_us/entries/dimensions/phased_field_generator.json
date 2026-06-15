@@ -1,0 +1,23 @@
+{
+  "name": "Phased Field Generator",
+  "icon": "rftoolsdim:phased_field_generator",
+  "category": "rftoolsbase:category_rftoolsdimensions_dimensions",
+  "extra_recipe_mappings": {
+    "rftoolsdim:phased_field_generator": 0
+  },
+  "sortnum": 50,
+  "pages": [
+    {
+      "type": "text",
+      "text": "The Phased Field Generator is a charged safety item for RFTools dimensions. Keep it in your hotbar before entering unstable or unpowered dimensions."
+    },
+    {
+      "type": "crafting",
+      "recipe": "rftoolsdim:phased_field_generator"
+    },
+    {
+      "type": "text",
+      "text": "It stores FE and consumes that energy when protection is needed. Recharge it before long trips."
+    }
+  ]
+}

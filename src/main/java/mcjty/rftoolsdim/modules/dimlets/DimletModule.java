@@ -18,6 +18,7 @@ import mcjty.rftoolsdim.modules.dimlets.recipes.DimletRecipeBuilder;
 import mcjty.rftoolsdim.modules.dimlets.recipes.DimletRecipeSerializer;
 import mcjty.rftoolsdim.setup.Config;
 import mcjty.rftoolsdim.setup.Registration;
+import mcjty.rftoolsdim.modules.dimlets.items.DimensionManualItem;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.tags.ItemTags;
@@ -87,9 +88,9 @@ public class DimletModule implements IModule {
     public static final DeferredItem<PartItem> PART_MEMORY_2 = ITEMS.register("part_memory_2", tab(PartItem::new));
     public static final DeferredItem<PartItem> PART_MEMORY_3 = ITEMS.register("part_memory_3", tab(PartItem::new));
 
-    public static final DeferredItem<Item> COMMON_ESSENCE = ITEMS.register("common_essence", tab(() -> new Item(Registration.createStandardProperties())));
-    public static final DeferredItem<Item> RARE_ESSENCE = ITEMS.register("rare_essence", tab(() -> new Item(Registration.createStandardProperties())));
-    public static final DeferredItem<Item> LEGENDARY_ESSENCE = ITEMS.register("legendary_essence", tab(() -> new Item(Registration.createStandardProperties())));
+    public static final DeferredItem<Item> COMMON_ESSENCE = ITEMS.register("common_essence", tab(() -> new DimensionManualItem("rftoolsdim:dimlets/essences")));
+    public static final DeferredItem<Item> RARE_ESSENCE = ITEMS.register("rare_essence", tab(() -> new DimensionManualItem("rftoolsdim:dimlets/essences")));
+    public static final DeferredItem<Item> LEGENDARY_ESSENCE = ITEMS.register("legendary_essence", tab(() -> new DimensionManualItem("rftoolsdim:dimlets/essences")));
 
     public static final Supplier<MapCodec<? extends IGlobalLootModifier>> ENDERMAN_LOOT_MODIFIER = LOOT_MODIFIER_SERIALIZERS.register("enderman_extra", () -> EndermanLootModifier.CODEC);
     public static final Supplier<DimletRecipeSerializer> DIMLET_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register("dimlet_recipe", DimletRecipeSerializer::new);

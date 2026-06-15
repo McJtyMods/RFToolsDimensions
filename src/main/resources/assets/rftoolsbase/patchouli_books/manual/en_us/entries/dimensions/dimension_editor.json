@@ -1,0 +1,23 @@
+{
+  "name": "Dimension Editor",
+  "icon": "rftoolsdim:dimension_editor",
+  "category": "rftoolsbase:category_rftoolsdimensions_dimensions",
+  "extra_recipe_mappings": {
+    "rftoolsdim:dimension_editor": 0
+  },
+  "sortnum": 30,
+  "pages": [
+    {
+      "type": "text",
+      "text": "The Dimension Editor modifies existing Realized Dimension Tabs. Insert a tab and a supported dimlet to change the descriptor stored on the tab."
+    },
+    {
+      "type": "crafting",
+      "recipe": "rftoolsdim:dimension_editor"
+    },
+    {
+      "type": "text",
+      "text": "Editing costs FE and time. Use it before or after creation when you need to adjust a dimension without rebuilding the whole tab from scratch."
+    }
+  ]
+}

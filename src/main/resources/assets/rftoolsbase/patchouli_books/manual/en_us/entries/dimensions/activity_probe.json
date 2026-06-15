@@ -1,0 +1,23 @@
+{
+  "name": "Activity Probe",
+  "icon": "rftoolsdim:activity_probe",
+  "category": "rftoolsbase:category_rftoolsdimensions_dimensions",
+  "extra_recipe_mappings": {
+    "rftoolsdim:activity_probe": 0
+  },
+  "sortnum": 60,
+  "pages": [
+    {
+      "type": "text",
+      "text": "Activity Probes mark an RFTools dimension as intentionally active. Place them inside the dimension when you need machinery or chunks there to keep mattering."
+    },
+    {
+      "type": "crafting",
+      "recipe": "rftoolsdim:activity_probe"
+    },
+    {
+      "type": "text",
+      "text": "The dimension tracks how many probes are placed. Breaking a probe reduces that count again."
+    }
+  ]
+}

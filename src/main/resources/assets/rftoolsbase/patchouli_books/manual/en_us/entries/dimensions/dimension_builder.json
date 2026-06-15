@@ -2,11 +2,26 @@
   "name": "Dimension Builder",
   "icon": "rftoolsdim:dimension_builder",
   "category": "rftoolsbase:category_rftoolsdimensions_dimensions",
+  "extra_recipe_mappings": {
+    "rftoolsdim:dimension_builder": 0
+  },
   "sortnum": 20,
   "pages": [
     {
       "type": "text",
-      "text": "The Dimension Builder takes a Realized Dimension Tab and creates a dimension from it. If the dimension is already created it will maintain the dimension (give it power)"
+      "text": "The Dimension Builder turns a $(l:rftoolsbase:dimensions/dimension_tabs)Realized Dimension Tab$(/l) into an actual dimension. Insert the tab and supply enough FE to create it."
+    },
+    {
+      "type": "crafting",
+      "recipe": "rftoolsdim:dimension_builder"
+    },
+    {
+      "type": "text",
+      "text": "After creation the Builder keeps that dimension powered. If power runs out, the dimension becomes unsafe or unusable until the Builder is powered again."
+    },
+    {
+      "type": "text",
+      "text": "Keep the Realized Dimension Tab safe. It stores the descriptor, progress, costs, and the created dimension id."
     }
   ]
 }

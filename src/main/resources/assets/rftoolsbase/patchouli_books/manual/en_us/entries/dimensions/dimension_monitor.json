@@ -1,0 +1,23 @@
+{
+  "name": "Dimension Monitor",
+  "icon": "rftoolsdim:dimension_monitor",
+  "category": "rftoolsbase:category_rftoolsdimensions_dimensions",
+  "extra_recipe_mappings": {
+    "rftoolsdim:dimension_monitor": 0
+  },
+  "sortnum": 40,
+  "pages": [
+    {
+      "type": "text",
+      "text": "The Dimension Monitor shows the power state of an RFTools dimension. Use it to check if a dimension still has enough energy to stay active."
+    },
+    {
+      "type": "crafting",
+      "recipe": "rftoolsdim:dimension_monitor"
+    },
+    {
+      "type": "text",
+      "text": "The tooltip changes with the stored dimension data. Keep one available when testing new dimensions or diagnosing power loss."
+    }
+  ]
+}

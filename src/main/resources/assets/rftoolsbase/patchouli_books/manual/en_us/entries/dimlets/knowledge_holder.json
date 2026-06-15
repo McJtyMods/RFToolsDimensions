@@ -2,11 +2,22 @@
   "name": "Knowledge Holder",
   "icon": "rftoolsdim:knowledge_holder",
   "category": "rftoolsbase:category_rftoolsdimensions_dimlets",
+  "extra_recipe_mappings": {
+    "rftoolsdim:knowledge_holder": 0
+  },
   "sortnum": 30,
   "pages": [
     {
       "type": "text",
-      "text": "The Knowledge Holder is a big storage item that can only hold knowledge. Set this block adjacent to a Dimlet Workbench so that you can create dimlets that correspond to the knowledge that you discovered"
+      "text": "The Knowledge Holder stores researched knowledge. Place it adjacent to a Dimlet Workbench so the workbench can craft dimlets for the knowledge you have discovered."
+    },
+    {
+      "type": "crafting",
+      "recipe": "rftoolsdim:knowledge_holder"
+    },
+    {
+      "type": "text",
+      "text": "Use a Researcher to identify Lost Knowledge, then move the result into the holder. Larger setups can use multiple holders next to the workbench."
     }
   ]
 }

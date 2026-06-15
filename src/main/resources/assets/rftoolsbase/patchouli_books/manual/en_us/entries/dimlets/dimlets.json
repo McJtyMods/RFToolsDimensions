@@ -2,11 +2,47 @@
   "name": "Dimlets",
   "icon": "rftoolsdim:empty_dimlet",
   "category": "rftoolsbase:category_rftoolsdimensions_dimlets",
+  "extra_recipe_mappings": {
+    "rftoolsdim:empty_dimlet": 0,
+    "rftoolsdim:empty_terrain_dimlet": 0,
+    "rftoolsdim:empty_attribute_dimlet": 0,
+    "rftoolsdim:empty_feature_dimlet": 0,
+    "rftoolsdim:empty_structure_dimlet": 0,
+    "rftoolsdim:empty_biome_dimlet": 0,
+    "rftoolsdim:empty_biome_controller_dimlet": 0,
+    "rftoolsdim:empty_biome_category_dimlet": 0,
+    "rftoolsdim:empty_block_dimlet": 0,
+    "rftoolsdim:empty_fluid_dimlet": 0,
+    "rftoolsdim:empty_time_dimlet": 0,
+    "rftoolsdim:empty_tag_dimlet": 0,
+    "rftoolsdim:empty_sky_dimlet": 0,
+    "rftoolsdim:terrain_dimlet": 0,
+    "rftoolsdim:attribute_dimlet": 0,
+    "rftoolsdim:feature_dimlet": 0,
+    "rftoolsdim:structure_dimlet": 0,
+    "rftoolsdim:biome_dimlet": 0,
+    "rftoolsdim:biome_controller_dimlet": 0,
+    "rftoolsdim:biome_category_dimlet": 0,
+    "rftoolsdim:block_dimlet": 0,
+    "rftoolsdim:fluid_dimlet": 0,
+    "rftoolsdim:time_dimlet": 0,
+    "rftoolsdim:digit_dimlet": 0,
+    "rftoolsdim:tag_dimlet": 0,
+    "rftoolsdim:sky_dimlet": 0
+  },
   "sortnum": 10,
   "pages": [
     {
       "type": "text",
-      "text": "Dimlets are little items that help describe a dimension. They represent various features of a dimension.$(br2)You can loot dimlets from enderman as a rare drop but it's best to make them using the $(l:rftoolsdim:dimlets/dimlet_workbench)Dimlet Workbench$(/l)"
+      "text": "Dimlets describe dimensions. They can specify terrain, attributes, features, structures, biomes, biome controllers, blocks, fluids, time, tags, sky, digits, and admin rules."
+    },
+    {
+      "type": "text",
+      "text": "Ready dimlets go in the Enscriber. Empty dimlets are crafting ingredients for the $(l:rftoolsbase:dimlets/dimlet_workbench)Dimlet Workbench$(/l). Some dimlets can also be found as rare loot."
+    },
+    {
+      "type": "crafting",
+      "recipe": "rftoolsdim:empty_dimlet"
     }
   ]
 }

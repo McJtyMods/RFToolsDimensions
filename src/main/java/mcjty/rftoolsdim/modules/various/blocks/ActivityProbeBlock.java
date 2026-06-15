@@ -3,13 +3,16 @@ package mcjty.rftoolsdim.modules.various.blocks;
 import mcjty.rftoolsdim.dimension.data.DimensionData;
 import mcjty.rftoolsdim.dimension.data.PersistantDimensionManager;
 import mcjty.rftoolsdim.dimension.terraintypes.RFToolsChunkGenerator;
+import mcjty.lib.tooltips.ITooltipSettings;
+import mcjty.lib.gui.ManualEntry;
+import mcjty.rftoolsbase.tools.ManualHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class ActivityProbeBlock extends Block {
+public class ActivityProbeBlock extends Block implements ITooltipSettings {
 
     public ActivityProbeBlock(Properties properties) {
         super(properties);
@@ -40,4 +43,10 @@ public class ActivityProbeBlock extends Block {
             }
         }
     }
+
+    @Override
+    public ManualEntry getManualEntry() {
+        return ManualHelper.create("rftoolsdim:dimensions/activity_probe");
+    }
+
 }

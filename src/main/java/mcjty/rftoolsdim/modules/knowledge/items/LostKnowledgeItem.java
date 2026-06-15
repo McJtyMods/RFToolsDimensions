@@ -13,6 +13,8 @@ import mcjty.rftoolsdim.modules.knowledge.data.KnowledgeKey;
 import mcjty.rftoolsdim.modules.knowledge.data.KnowledgeManager;
 import mcjty.rftoolsdim.modules.knowledge.data.LostKnowledgeData;
 import mcjty.rftoolsdim.setup.Registration;
+import mcjty.lib.gui.ManualEntry;
+import mcjty.rftoolsbase.tools.ManualHelper;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
@@ -129,4 +131,10 @@ public class LostKnowledgeItem extends Item implements ITooltipSettings {
             case LEGENDARY -> KnowledgeModule.LEGENDARY_LOST_KNOWLEDGE.get();
         };
     }
+
+    @Override
+    public ManualEntry getManualEntry() {
+        return ManualHelper.create("rftoolsdim:dimlets/lost_knowledge");
+    }
+
 }

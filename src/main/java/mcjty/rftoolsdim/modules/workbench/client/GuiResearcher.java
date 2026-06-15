@@ -30,7 +30,7 @@ public class GuiResearcher extends GenericGuiContainer<ResearcherTileEntity, Gen
     private static final ResourceLocation iconLocation = ResourceLocation.fromNamespaceAndPath(RFToolsDim.MODID, "textures/gui/researcher.png");
 
     public GuiResearcher(GenericContainer container, Inventory inventory, Component title) {
-        super(container, inventory, title, WorkbenchModule.HOLDER.block().get().getManualEntry());
+        super(container, inventory, title, WorkbenchModule.RESEARCHER.block().get().getManualEntry());
 
         imageWidth = WIDTH;
         imageHeight = HEIGHT;

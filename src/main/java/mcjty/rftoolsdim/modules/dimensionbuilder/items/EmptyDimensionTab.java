@@ -2,6 +2,9 @@ package mcjty.rftoolsdim.modules.dimensionbuilder.items;
 
 import mcjty.lib.varia.ComponentFactory;
 import mcjty.rftoolsdim.RFToolsDim;
+import mcjty.lib.tooltips.ITooltipSettings;
+import mcjty.lib.gui.ManualEntry;
+import mcjty.rftoolsbase.tools.ManualHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
@@ -13,7 +16,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class EmptyDimensionTab extends Item {
+public class EmptyDimensionTab extends Item implements ITooltipSettings {
 
     public EmptyDimensionTab() {
         super(RFToolsDim.setup.defaultProperties().stacksTo(1));
@@ -26,4 +29,10 @@ public class EmptyDimensionTab extends Item {
         list.add(ComponentFactory.literal(ChatFormatting.YELLOW + "Put this empty dimension tab in a 'Dimension Enscriber'"));
         list.add(ComponentFactory.literal(ChatFormatting.YELLOW + "where you can construct a dimension using dimlets"));
     }
+
+    @Override
+    public ManualEntry getManualEntry() {
+        return ManualHelper.create("rftoolsdim:dimensions/dimension_tabs");
+    }
+
 }

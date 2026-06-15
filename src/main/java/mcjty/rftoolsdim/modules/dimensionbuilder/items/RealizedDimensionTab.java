@@ -15,6 +15,9 @@ import mcjty.rftoolsdim.dimension.descriptor.DimensionDescriptor;
 import mcjty.rftoolsdim.dimension.terraintypes.RFToolsChunkGenerator;
 import mcjty.rftoolsdim.modules.dimensionbuilder.DimensionBuilderModule;
 import mcjty.rftoolsdim.modules.dimensionbuilder.data.RealizedTabData;
+import mcjty.lib.tooltips.ITooltipSettings;
+import mcjty.lib.gui.ManualEntry;
+import mcjty.rftoolsbase.tools.ManualHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -35,7 +38,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class RealizedDimensionTab extends Item {
+public class RealizedDimensionTab extends Item implements ITooltipSettings {
 
     public RealizedDimensionTab() {
         super(new Item.Properties().stacksTo(1));
@@ -144,4 +147,10 @@ public class RealizedDimensionTab extends Item {
             list.add(ComponentFactory.literal(ChatFormatting.RED + "Parse error: " + error.getMessage()));
         }
     }
+
+    @Override
+    public ManualEntry getManualEntry() {
+        return ManualHelper.create("rftoolsdim:dimensions/dimension_tabs");
+    }
+
 }
