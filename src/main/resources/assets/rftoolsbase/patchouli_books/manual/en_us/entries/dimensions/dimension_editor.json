@@ -9,7 +9,15 @@
   "pages": [
     {
       "type": "text",
-      "text": "The Dimension Editor is used to modify existing dimension tabs."
+      "text": "The Dimension Editor modifies existing Realized Dimension Tabs. Insert a tab and a supported dimlet to change the descriptor stored on the tab."
+    },
+    {
+      "type": "crafting",
+      "recipe": "rftoolsdim:dimension_editor"
+    },
+    {
+      "type": "text",
+      "text": "Editing costs FE and time. Use it before or after creation when you need to adjust a dimension without rebuilding the whole tab from scratch."
     }
   ]
 }

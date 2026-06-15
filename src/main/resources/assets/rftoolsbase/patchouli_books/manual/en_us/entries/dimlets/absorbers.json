@@ -1,0 +1,30 @@
+{
+  "name": "Absorbers",
+  "icon": "rftoolsdim:block_absorber",
+  "category": "rftoolsbase:category_rftoolsdimensions_dimlets",
+  "extra_recipe_mappings": {
+    "rftoolsdim:block_absorber": 0,
+    "rftoolsdim:fluid_absorber": 0,
+    "rftoolsdim:biome_absorber": 0,
+    "rftoolsdim:structure_absorber": 0
+  },
+  "sortnum": 80,
+  "pages": [
+    {
+      "type": "text",
+      "text": "Absorbers capture world data for dimlets. Block and Fluid Absorbers consume matching blocks or fluids below them. Biome and Structure Absorbers scan their surroundings."
+    },
+    {
+      "type": "crafting",
+      "recipe": "rftoolsdim:block_absorber"
+    },
+    {
+      "type": "crafting",
+      "recipe": "rftoolsdim:fluid_absorber"
+    },
+    {
+      "type": "text",
+      "text": "When an absorber is complete, use it as an ingredient in the Dimlet Workbench for matching block, fluid, biome, or structure dimlets."
+    }
+  ]
+}

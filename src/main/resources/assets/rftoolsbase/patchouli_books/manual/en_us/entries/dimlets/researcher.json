@@ -9,7 +9,15 @@
   "pages": [
     {
       "type": "text",
-      "text": "The Researcher is used to find out what type of knowledge you have. You can use it on knowledge items that you loot from enderman or from chests. The Researcher can also research dimlets or block or biome essence items"
+      "text": "The Researcher identifies Lost Knowledge and turns it into usable knowledge patterns. It can also research dimlets and essence items."
+    },
+    {
+      "type": "crafting",
+      "recipe": "rftoolsdim:researcher"
+    },
+    {
+      "type": "text",
+      "text": "Research is the bridge between loot and crafting. Once knowledge is known and stored, the Dimlet Workbench can make matching dimlets."
     }
   ]
 }

@@ -1,0 +1,21 @@
+{
+  "name": "Essences",
+  "icon": "rftoolsdim:common_essence",
+  "category": "rftoolsbase:category_rftoolsdimensions_dimlets",
+  "extra_recipe_mappings": {
+    "rftoolsdim:common_essence": 0,
+    "rftoolsdim:rare_essence": 0,
+    "rftoolsdim:legendary_essence": 0
+  },
+  "sortnum": 60,
+  "pages": [
+    {
+      "type": "text",
+      "text": "Common, Rare, and Legendary Essence are crafting ingredients for dimlets and higher tier dimlet parts. They represent the rarity cost of a dimlet."
+    },
+    {
+      "type": "text",
+      "text": "The Dimlet Workbench shows which essence a selected dimlet needs. Absorbers can also produce specific essence-like data for block, fluid, biome, and structure dimlets."
+    }
+  ]
+}

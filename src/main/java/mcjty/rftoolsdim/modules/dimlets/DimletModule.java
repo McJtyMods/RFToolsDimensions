@@ -13,6 +13,7 @@ import mcjty.rftoolsdim.modules.dimlets.data.DimletRarity;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletTools;
 import mcjty.rftoolsdim.modules.dimlets.data.DimletType;
 import mcjty.rftoolsdim.modules.dimlets.items.DimletItem;
+import mcjty.rftoolsdim.modules.dimlets.items.DimensionManualItem;
 import mcjty.rftoolsdim.modules.dimlets.items.PartItem;
 import mcjty.rftoolsdim.modules.dimlets.lootmodifier.DimletLootEntry;
 import mcjty.rftoolsdim.modules.dimlets.lootmodifier.EndermanLootModifier;
@@ -91,9 +92,9 @@ public class DimletModule implements IModule {
     public static final DeferredItem<PartItem> PART_MEMORY_2 = ITEMS.register("part_memory_2", tab(PartItem::new));
     public static final DeferredItem<PartItem> PART_MEMORY_3 = ITEMS.register("part_memory_3", tab(PartItem::new));
 
-    public static final DeferredItem<Item> COMMON_ESSENCE = ITEMS.register("common_essence", tab(() -> new Item(Registration.createStandardProperties())));
-    public static final DeferredItem<Item> RARE_ESSENCE = ITEMS.register("rare_essence", tab(() -> new Item(Registration.createStandardProperties())));
-    public static final DeferredItem<Item> LEGENDARY_ESSENCE = ITEMS.register("legendary_essence", tab(() -> new Item(Registration.createStandardProperties())));
+    public static final DeferredItem<Item> COMMON_ESSENCE = ITEMS.register("common_essence", tab(() -> new DimensionManualItem("rftoolsdim:dimlets/essences")));
+    public static final DeferredItem<Item> RARE_ESSENCE = ITEMS.register("rare_essence", tab(() -> new DimensionManualItem("rftoolsdim:dimlets/essences")));
+    public static final DeferredItem<Item> LEGENDARY_ESSENCE = ITEMS.register("legendary_essence", tab(() -> new DimensionManualItem("rftoolsdim:dimlets/essences")));
 
     public static final Supplier<Codec<? extends IGlobalLootModifier>> ENDERMAN_LOOT_MODIFIER = LOOT_MODIFIER_SERIALIZERS.register("enderman_extra", () -> EndermanLootModifier.CODEC);
     public static final Supplier<DimletRecipeSerializer> DIMLET_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register("dimlet_recipe", DimletRecipeSerializer::new);

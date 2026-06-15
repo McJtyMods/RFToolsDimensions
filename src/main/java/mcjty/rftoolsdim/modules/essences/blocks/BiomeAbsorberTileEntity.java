@@ -42,7 +42,7 @@ public class BiomeAbsorberTileEntity extends TickingTileEntity {
                         .noOcclusion())
                 .tileEntitySupplier(BiomeAbsorberTileEntity::new)
                 .topDriver(RFToolsDimensionsTOPDriver.DRIVER)
-                .manualEntry(ManualHelper.create("rftoolsdim:dimlets/dimlet_workbench"))
+                .manualEntry(ManualHelper.create("rftoolsdim:dimlets/absorbers"))
                 .info(key("message.rftoolsdim.shiftmessage"))
                 .infoShift(header(),
                         parameter("block", BiomeAbsorberTileEntity::getBiomeName),

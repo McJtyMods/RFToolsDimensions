@@ -1,8 +1,10 @@
 package mcjty.rftoolsdim.modules.dimensionbuilder.items;
 
 import mcjty.lib.builder.TooltipBuilder;
+import mcjty.lib.gui.ManualEntry;
 import mcjty.lib.tooltips.ITooltipSettings;
 import mcjty.lib.varia.Tools;
+import mcjty.rftoolsbase.tools.ManualHelper;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.modules.dimensionbuilder.client.ClientHelpers;
 import net.minecraft.network.chat.Component;
@@ -37,5 +39,9 @@ public class DimensionMonitorItem extends Item implements ITooltipSettings {
         tooltipBuilder.get().makeTooltip(Tools.getId(this), stack, list, flagIn);
     }
 
+    @Override
+    public ManualEntry getManualEntry() {
+        return ManualHelper.create("rftoolsdim:dimensions/dimension_monitor");
+    }
 
 }

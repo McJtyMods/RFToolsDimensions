@@ -1,8 +1,10 @@
 package mcjty.rftoolsdim.modules.dimlets.items;
 
 import mcjty.lib.builder.TooltipBuilder;
+import mcjty.lib.gui.ManualEntry;
 import mcjty.lib.tooltips.ITooltipSettings;
 import mcjty.lib.varia.Tools;
+import mcjty.rftoolsbase.tools.ManualHelper;
 import mcjty.rftoolsdim.setup.Registration;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
@@ -30,5 +32,10 @@ public class PartItem extends Item implements ITooltipSettings {
     public void appendHoverText(@Nonnull ItemStack itemStack, Level world, @Nonnull List<Component> list, @Nonnull TooltipFlag flags) {
         super.appendHoverText(itemStack, world, list, flags);
         tooltipBuilder.get().makeTooltip(Tools.getId(this), itemStack, list, flags);
+    }
+
+    @Override
+    public ManualEntry getManualEntry() {
+        return ManualHelper.create("rftoolsdim:dimlets/parts");
     }
 }

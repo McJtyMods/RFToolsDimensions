@@ -1,10 +1,12 @@
 package mcjty.rftoolsdim.modules.dimensionbuilder.items;
 
 import mcjty.lib.builder.TooltipBuilder;
+import mcjty.lib.gui.ManualEntry;
 import mcjty.lib.tooltips.ITooltipSettings;
 import mcjty.lib.varia.IEnergyItem;
 import mcjty.lib.varia.ItemCapabilityProvider;
 import mcjty.lib.varia.Tools;
+import mcjty.rftoolsbase.tools.ManualHelper;
 import mcjty.rftoolsdim.RFToolsDim;
 import mcjty.rftoolsdim.dimension.DimensionConfig;
 import mcjty.rftoolsdim.dimension.power.PowerHandler;
@@ -99,6 +101,11 @@ public class PhasedFieldGenerator extends Item implements IEnergyItem, ITooltipS
     @Override
     public long getMaxEnergyStoredL(ItemStack container) {
         return DimensionBuilderConfig.PHASEDFIELD_MAXENERGY.get();
+    }
+
+    @Override
+    public ManualEntry getManualEntry() {
+        return ManualHelper.create("rftoolsdim:dimensions/phased_field_generator");
     }
 
     public static boolean checkValidPhasedFieldGenerator(Player player, boolean consume, int tickCost) {

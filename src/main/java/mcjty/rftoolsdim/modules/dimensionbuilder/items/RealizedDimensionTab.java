@@ -1,9 +1,12 @@
 package mcjty.rftoolsdim.modules.dimensionbuilder.items;
 
+import mcjty.lib.gui.ManualEntry;
+import mcjty.lib.tooltips.ITooltipSettings;
 import mcjty.lib.varia.ComponentFactory;
 import mcjty.lib.varia.LevelTools;
 import mcjty.lib.varia.Logging;
 import mcjty.lib.varia.SafeClientTools;
+import mcjty.rftoolsbase.tools.ManualHelper;
 import mcjty.rftoolsdim.dimension.data.ClientDimensionData;
 import mcjty.rftoolsdim.dimension.data.DimensionData;
 import mcjty.rftoolsdim.dimension.data.DimensionSettings;
@@ -33,7 +36,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class RealizedDimensionTab extends Item {
+public class RealizedDimensionTab extends Item implements ITooltipSettings {
 
     public RealizedDimensionTab() {
         super(new Item.Properties().stacksTo(1));
@@ -141,5 +144,10 @@ public class RealizedDimensionTab extends Item {
         } catch (DescriptorError error) {
             list.add(ComponentFactory.literal(ChatFormatting.RED + "Parse error: " + error.getMessage()));
         }
+    }
+
+    @Override
+    public ManualEntry getManualEntry() {
+        return ManualHelper.create("rftoolsdim:dimensions/dimension_tabs");
     }
 }

@@ -1,0 +1,24 @@
+{
+  "name": "Dimension Tabs",
+  "icon": "rftoolsdim:realized_dimension_tab",
+  "category": "rftoolsbase:category_rftoolsdimensions_dimensions",
+  "extra_recipe_mappings": {
+    "rftoolsdim:empty_dimension_tab": 0,
+    "rftoolsdim:realized_dimension_tab": 0
+  },
+  "sortnum": 15,
+  "pages": [
+    {
+      "type": "text",
+      "text": "An Empty Dimension Tab is the blank item used by the Enscriber. Add dimlets there to turn it into a Realized Dimension Tab."
+    },
+    {
+      "type": "crafting",
+      "recipe": "rftoolsdim:empty_dimension_tab"
+    },
+    {
+      "type": "text",
+      "text": "A Realized Dimension Tab stores the dimension descriptor, creation progress, costs, and created dimension id. The Dimension Builder uses it to create and maintain the dimension."
+    }
+  ]
+}

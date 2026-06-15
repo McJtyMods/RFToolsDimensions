@@ -58,7 +58,7 @@ public class FluidAbsorberTileEntity extends TickingTileEntity {
                         .sound(SoundType.METAL)
                         .noOcclusion())
                 .tileEntitySupplier(FluidAbsorberTileEntity::new)
-                .manualEntry(ManualHelper.create("rftoolsdim:dimlets/dimlet_workbench"))
+                .manualEntry(ManualHelper.create("rftoolsdim:dimlets/absorbers"))
                 .topDriver(RFToolsDimensionsTOPDriver.DRIVER)
                 .info(key("message.rftoolsdim.shiftmessage"))
                 .infoShift(header(),

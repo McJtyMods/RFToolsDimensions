@@ -1,0 +1,34 @@
+{
+  "name": "Dimlet Parts",
+  "icon": "rftoolsdim:part_energy_0",
+  "category": "rftoolsbase:category_rftoolsdimensions_dimlets",
+  "extra_recipe_mappings": {
+    "rftoolsdim:part_energy_0": 0,
+    "rftoolsdim:part_energy_1": 0,
+    "rftoolsdim:part_energy_2": 0,
+    "rftoolsdim:part_energy_3": 0,
+    "rftoolsdim:part_memory_0": 0,
+    "rftoolsdim:part_memory_1": 0,
+    "rftoolsdim:part_memory_2": 0,
+    "rftoolsdim:part_memory_3": 0
+  },
+  "sortnum": 50,
+  "pages": [
+    {
+      "type": "text",
+      "text": "Energy and memory parts are used by the Dimlet Workbench when crafting ready dimlets. Higher tier dimlets require higher tier parts."
+    },
+    {
+      "type": "crafting",
+      "recipe": "rftoolsdim:part_energy_0"
+    },
+    {
+      "type": "crafting",
+      "recipe": "rftoolsdim:part_memory_0"
+    },
+    {
+      "type": "text",
+      "text": "Tier 1-3 parts upgrade the previous tier using essences and infused materials. Keep a supply near the workbench."
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "name": "Lost Knowledge",
+  "icon": "rftoolsdim:common_lost_knowledge",
+  "category": "rftoolsbase:category_rftoolsdimensions_dimlets",
+  "extra_recipe_mappings": {
+    "rftoolsdim:common_lost_knowledge": 0,
+    "rftoolsdim:uncommon_lost_knowledge": 0,
+    "rftoolsdim:rare_lost_knowledge": 0,
+    "rftoolsdim:legendary_lost_knowledge": 0
+  },
+  "sortnum": 70,
+  "pages": [
+    {
+      "type": "text",
+      "text": "Lost Knowledge is unidentified dimlet knowledge. It can be found as loot and then researched with the Researcher."
+    },
+    {
+      "type": "crafting",
+      "recipe": "rftoolsdim:uncommon_lost_knowledge"
+    },
+    {
+      "type": "text",
+      "text": "After research, store the discovered knowledge in a Knowledge Holder next to the Dimlet Workbench. Higher rarity knowledge unlocks rarer dimlets."
+    }
+  ]
+}
