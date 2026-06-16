@@ -1,3 +1,6 @@
+1.20-11.0.11:
+- Various Patchouli documentation updates and fixes
+
 1.20-11.0.10:
 - Fixed the hitboxes for the dimensional blobs
 
