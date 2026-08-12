@@ -191,12 +191,9 @@ public class PowerHandler {
             // We ran out of power!
             if (world != null) {
                 List<Player> players = new ArrayList<>(world.players());
-                // @todo 1.16
-//                if (PowerConfiguration.dimensionDifficulty >= 1) {
                 for (Player player : players) {
                     if (!PhasedFieldGenerator.checkValidPhasedFieldGenerator(player, true, phasedCost)) {
-                        // @todo 1.19.4
-//                        player.hurt(new DamageSourcePowerLow("powerLow"), 1000000.0f);
+                        player.hurt(new DamageSourcePowerLow(world.registryAccess()), 1000000.0f);
                     } else {
                         if (doEffects && DimensionConfig.PHASED_FIELD_GENERATOR_DEBUF.get()) {
                             player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, EFFECTS_MAX * MAXTICKS, 2, true, true));
@@ -205,28 +202,6 @@ public class PowerHandler {
                         }
                     }
                 }
-//                } else {
-//                    Random random = new Random();
-//                    for (EntityPlayer player : players) {
-//                        if (!RfToolsDimensionManager.checkValidPhasedFieldGenerator(player, true, phasedCost)) {
-//                            WorldServer worldServerForDimension = player.getEntityWorld().getMinecraftServer().getWorld(GeneralConfiguration.spawnDimension);
-//                            int x = random.nextInt(2000) - 1000;
-//                            int z = random.nextInt(2000) - 1000;
-//                            int y = worldServerForDimension.getTopSolidOrLiquidBlock(new BlockPos(x, 0, z)).getY();
-//                            if (y == -1) {
-//                                y = 63;
-//                            }
-//
-//                            RFToolsDim.teleportationManager.teleportPlayer(player, GeneralConfiguration.spawnDimension, new BlockPos(x, y, z));
-//                        } else {
-//                            if (doEffects) {
-//                                player.addPotionEffect(new PotionEffect(moveSlowdown, EFFECTS_MAX * MAXTICKS, 4, true, true));
-//                                player.addPotionEffect(new PotionEffect(digSlowdown, EFFECTS_MAX * MAXTICKS, 4, true, true));
-//                                player.addPotionEffect(new PotionEffect(hunger, EFFECTS_MAX * MAXTICKS, 2, true, true));
-//                            }
-//                        }
-//                    }
-//                }
             }
         }
     }
